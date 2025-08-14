@@ -6,8 +6,3 @@ def html_head(meta_title, meta_description):
     '''
     return html
 
-def html_header():
-    return ''
-
-def html_footer():
-    return ''

@@ -928,19 +928,6 @@ def remedies_ailments_preparations_featured_gen():
                 shutil.copy2(image_input_filepath, image_output_filepath)
 
 
-def home_hero_gen():
-    positive_prompt = f'''
-        desert
-    '''
-    negative_prompt = f'''
-        text, watermark 
-    '''
-    print(positive_prompt)
-    pipe_init()
-    image = pipe(prompt=positive_prompt, negative_prompt=negative_prompt, width=1216, height=832, num_inference_steps=30, guidance_scale=7.0).images[0]
-    # image = img_resize(image, w=1216, h=832)
-    image.save(f'{g.WEBSITE_FOLDERPATH}/images-static/medicinal-plants.jpg')
-
 def herbs_ai():
     global pipe
     herbs = []

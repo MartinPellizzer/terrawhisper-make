@@ -7,18 +7,27 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.firefox.options import Options
 
+from lib import g
 from lib import io
 
-driver = webdriver.Firefox()
+
+with open('/home/ubuntu/vault/terrawhisper/accounts/buffer-username.txt') as f: username = f.read().strip()
+with open('/home/ubuntu/vault/terrawhisper/accounts/buffer-password.txt') as f: password = f.read().strip()
+
+
+geckodriver_path = 'geckodriver'
+driver_service = webdriver.FirefoxService(executable_path=geckodriver_path)
+
+driver = webdriver.Firefox(service=driver_service)
 driver.get('https://www.google.com')
 driver.maximize_window()
 driver.get("https://login.buffer.com/login")
 time.sleep(10)
 e = driver.find_element(By.XPATH, '//input[@type="email"]')
-e.send_keys('martinpellizzer@gmail.com') 
+e.send_keys(username) 
 time.sleep(5)
 e = driver.find_element(By.XPATH, '//input[@type="password"]')
-e.send_keys('Newoliark1') 
+e.send_keys(password) 
 time.sleep(5)
 e = driver.find_element(By.XPATH, '//button[@id="login-form-submit"]')
 e.click()
@@ -27,8 +36,7 @@ time.sleep(5)
 i = 0
 running = True
 while running:
-    twitter_folderpath = f'social/twitter'
-    twitter_posts_filepath = f'{twitter_folderpath}/twitter-posts-2.json'
+    twitter_posts_filepath = f'{g.twitter_folderpath}/posts.json'
     twitter_posts_json = io.json_read(twitter_posts_filepath)
     posts = [post for post in twitter_posts_json['posts'] if post['posted'] == 0]
     if posts == []: 

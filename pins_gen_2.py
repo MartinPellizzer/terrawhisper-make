@@ -10,12 +10,12 @@ from PIL import Image, ImageFont, ImageDraw, ImageColor, ImageOps
 
 from lib import g
 from lib import io
-from lib import utils
 from lib import data
+from lib import media
 
 pipe = None
 
-checkpoint_filepath = f'{g.vault_tmp_folderpath}/stable-diffusion/checkpoints/xl/juggernautXL_ragnarokBy.safetensors'
+checkpoint_filepath = f'{g.vault_tmp_folderpath}/stable-diffusion/juggernautXL_ragnarokBy.safetensors'
 
 random_num = random.randint(-2, 2)
 # random_num = 0
@@ -62,8 +62,8 @@ print(essential_oils_articles_filepath)
 print(creams_articles_filepath)
 '''
 
-herbs_0000 = io.csv_to_dict(f'{g.database_folderpath}/csv/herbs.csv')
-herbs_0000 = [herb['latin_name'].lower().strip() for herb in herbs_0000]
+herbs_0000 = io.csv_to_dict(f'{g.database_folderpath}/csv/herbs-book-0000.csv')
+herbs_0000 = [herb['herb_name_scientific'].lower().strip() for herb in herbs_0000]
 with open(f'{g.database_folderpath}/csv/medical-herbalism.txt') as f:
     herbs_0001 = [line.lower().strip() for line in f.read().split('\n') if line.lower().strip() != '']
 herbs = []
@@ -106,8 +106,8 @@ for json_herb_filename in os.listdir(json_herbs_folderpath):
             herbs_articles_filepath.append(json_herb_benefits_filepath)
 
 preparations_best_articles_filepath = []
-preparation_list = io.csv_to_dict(f'database/entities/preparations.csv')
-json_preparations_folderpath = f'database/json/preparations'
+preparation_list = io.csv_to_dict(f'{g.database_folderpath}/entities/preparations.csv')
+json_preparations_folderpath = f'{g.database_folderpath}/json/preparations'
 for json_preparation_filename in os.listdir(json_preparations_folderpath):
     json_preparation_filepath = f'{json_preparations_folderpath}/{json_preparation_filename}'
     if os.path.isdir(json_preparation_filepath):
@@ -269,7 +269,7 @@ print(len(preparations_best_articles_filepath))
 ###########################################################################
 
 def pin_save(img, filename):
-    img_filepath = f'pinterest/images/{filename}.jpg'
+    img_filepath = f'{g.pinterest_tmp_image_folderpath}/images/{filename}.jpg'
     img.save(
         img_filepath,
         format='JPEG',
@@ -292,7 +292,7 @@ def gen_text_num(img, line_list, num):
     x = img_w//2-circle_size//2
     font_size = 240
     font_family, font_weight = 'Lato', 'Bold'
-    font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+    font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
     font = ImageFont.truetype(font_path, font_size)
     text = num
     text_w = font.getbbox(text)[2]
@@ -301,7 +301,7 @@ def gen_text_num(img, line_list, num):
     text_pos_x = 50 + text_w
     font_size = 48
     font_family, font_weight = 'Lato', 'Regular'
-    font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+    font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
     font = ImageFont.truetype(font_path, font_size)
     text = line_list[0]
     text_w = font.getbbox(text)[2]
@@ -309,7 +309,7 @@ def gen_text_num(img, line_list, num):
     draw.text((img_w//2 - text_w//2, img_h//2 - 50), text, '#ffffff', font=font)
     font_size = 96
     font_family, font_weight = 'Lato', 'Bold'
-    font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+    font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
     font = ImageFont.truetype(font_path, font_size)
     text = line_list[1]
     text_w = font.getbbox(text)[2]
@@ -339,7 +339,7 @@ def product_card_gen(pin_i):
     pin_w_adj = 900 - gap*(col_n-1)
     pin_h_adj = 1500 - gap*(row_n-1)
     # cards
-    card_folderpath = 'assets/digital-products/cards/plants-new/cards-images'
+    card_folderpath = '{g.assets_folderpath}/digital-products/cards/plants-new/cards-images'
     card_filepaths = [f'{card_folderpath}/{filename}' for filename in os.listdir(card_folderpath)]
     random.shuffle(card_filepaths)
     card_n = 23
@@ -354,14 +354,14 @@ def product_card_gen(pin_i):
             card_img = Image.open(card_filepaths[card_i])
             card_w_resized = pin_w_adj//col_n
             card_h_resized = pin_h_adj//col_n
-            card_img = util.img_resize(card_img, card_w_resized, card_h_resized)
+            card_img = media.resize(card_img, card_w_resized, card_h_resized)
             img.paste(card_img, (x_off+card_w_resized*col_i + gap*col_i, y_off+card_h_resized*row_i + gap*row_i))
             card_i += 1
             if card_i >= card_n: no_more_cards = True
     # label center
     label_img_w = 900
     label_img_h = 900
-    label_img = Image.open('pinterest/components/label-0000.png')
+    label_img = Image.open('{g.pinterest_tmp_image_folderpath}/components/label-0000.png')
     label_img.thumbnail((label_img_w, label_img_h), Image.LANCZOS)
     img.paste(label_img, (pin_w//2-label_img_w//2, pin_h//2-label_img_h//2), label_img)
     # rects top/bottom
@@ -374,12 +374,12 @@ def product_card_gen(pin_i):
     # copyright
     text = 'Terra Whisper'
     font_size = 48
-    font_path = f"assets/fonts/allura/Allura-Regular.ttf"
+    font_path = f"{g.assets_folderpath}/fonts/allura/Allura-Regular.ttf"
     font = ImageFont.truetype(font_path, font_size)
     draw.text((675, 1325), text, '#ece0c4', font=font)
     # save img
     img = img.convert('RGB')
-    img_filepath = f'pinterest/images/botanical-name-cards.jpg'
+    img_filepath = f'{g.pinterest_tmp_image_folderpath}/images/botanical-name-cards.jpg'
     img.save(img_filepath, format='JPEG', subsampling=0, quality=100)
     # img.show()
     # save json
@@ -390,7 +390,7 @@ def product_card_gen(pin_i):
         'url': 'https://www.etsy.com/listing/1905803593/40-botanical-name-card-medicinal-herb',
         'board_name': 'Herb Digital Products',
     }
-    io.json_write(f'{g.PINTEREST_PINS_IMAGE_FOLDERPATH}/{pin_i}.json', json_data)
+    io.json_write(f'{g.pinterest_tmp_image_folderpath}/pins/{pin_i}.json', json_data)
 
 def card_template_2(pin_i):
     c_yellow = '#ece0c4'
@@ -402,7 +402,7 @@ def card_template_2(pin_i):
     gap = 8
     rect_h = 440
 
-    card_folderpath = 'assets/shop/cards/plants/final'
+    card_folderpath = '{g.assets_folderpath}/shop/cards/plants/final'
     images_filepaths = [f'{card_folderpath}/{filename}' for filename in os.listdir(card_folderpath)]
     random.shuffle(images_filepaths)
 
@@ -414,12 +414,12 @@ def card_template_2(pin_i):
     img_0003 = Image.open(images_filepaths[3])
     img_0004 = Image.open(images_filepaths[4])
     img_0005 = Image.open(images_filepaths[5])
-    # img_0000 = util.img_resize(img_0000, int(img_w*0.33), int(img_h*0.33))
-    # img_0001 = util.img_resize(img_0001, int(pin_w*0.33), int(pin_h*0.33))
-    # img_0002 = util.img_resize(img_0002, int(pin_w*0.33), int(pin_h*0.33))
-    # img_0003 = util.img_resize(img_0003, int(pin_w*0.33), int(pin_h*0.33))
-    # img_0004 = util.img_resize(img_0004, int(pin_w*0.33), int(pin_h*0.33))
-    # img_0005 = util.img_resize(img_0005, int(pin_w*0.33), int(pin_h*0.33))
+    # img_0000 = media.resize(img_0000, int(img_w*0.33), int(img_h*0.33))
+    # img_0001 = media.resize(img_0001, int(pin_w*0.33), int(pin_h*0.33))
+    # img_0002 = media.resize(img_0002, int(pin_w*0.33), int(pin_h*0.33))
+    # img_0003 = media.resize(img_0003, int(pin_w*0.33), int(pin_h*0.33))
+    # img_0004 = media.resize(img_0004, int(pin_w*0.33), int(pin_h*0.33))
+    # img_0005 = media.resize(img_0005, int(pin_w*0.33), int(pin_h*0.33))
     x_off = 17
     img_w_factor = 1.02
     img_h_factor = 1.02
@@ -449,9 +449,9 @@ def card_template_2(pin_i):
     # numer
     text = '545'
     font_size = 256
-    font_path = f"assets/fonts/crimson-pro/static/CrimsonPro-Regular.ttf"
-    # font_path = f"assets/fonts/rye/Rye-Regular.ttf"
-    # font_path = f"assets/fonts/lora/static/Lora-Regular.ttf"
+    font_path = f"{g.assets_folderpath}/fonts/crimson-pro/static/CrimsonPro-Regular.ttf"
+    # font_path = f"{g.assets_folderpath}/fonts/rye/Rye-Regular.ttf"
+    # font_path = f"{g.assets_folderpath}/fonts/lora/static/Lora-Regular.ttf"
     font = ImageFont.truetype(font_path, font_size)
     _, _, text_w, text_h = font.getbbox(text)
     draw.text((pin_w//2 - text_w//2, pin_h//2 - text_h//2 - 150 + 20), text, '#ece0c4', font=font)
@@ -460,8 +460,8 @@ def card_template_2(pin_i):
     # line 1
     text = 'Healing Herb'.upper()
     font_size = 72
-    font_path = f"assets/fonts/crimson-pro/static/CrimsonPro-Regular.ttf"
-    font_path = f"assets/fonts/lora/static/Lora-Regular.ttf"
+    font_path = f"{g.assets_folderpath}/fonts/crimson-pro/static/CrimsonPro-Regular.ttf"
+    font_path = f"{g.assets_folderpath}/fonts/lora/static/Lora-Regular.ttf"
     font = ImageFont.truetype(font_path, font_size)
     _, _, text_w, text_h = font.getbbox(text)
     draw.text((pin_w//2 - text_w//2, pin_h//2 - text_h//2 + y_off), text, '#ece0c4', font=font)
@@ -469,8 +469,8 @@ def card_template_2(pin_i):
     # line 2
     text = 'Botanical Name Cards'.upper()
     font_size = 72
-    font_path = f"assets/fonts/crimson-pro/static/CrimsonPro-Regular.ttf"
-    font_path = f"assets/fonts/lora/static/Lora-Regular.ttf"
+    font_path = f"{g.assets_folderpath}/fonts/crimson-pro/static/CrimsonPro-Regular.ttf"
+    font_path = f"{g.assets_folderpath}/fonts/lora/static/Lora-Regular.ttf"
     font = ImageFont.truetype(font_path, font_size)
     _, _, text_w, text_h = font.getbbox(text)
     draw.text((pin_w//2 - text_w//2, pin_h//2 - text_h//2 + 80 + y_off), text, '#ece0c4', font=font)
@@ -497,7 +497,7 @@ def card_template_2(pin_i):
     #text = 'Breastfeeding'.upper()
     font_size = 96
     font_family, font_weight = 'Lato', 'Bold'
-    font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+    font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
     font = ImageFont.truetype(font_path, font_size)
     _, _, text_w, text_h = font.getbbox(text)
     if text_w > pin_w - 80:
@@ -516,14 +516,14 @@ def card_template_2(pin_i):
         text = f'best herbal {preparation_name} for'.title()
         font_size = 48
         font_family, font_weight = 'Lato', 'Regular'
-        font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+        font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
         font = ImageFont.truetype(font_path, font_size)
         _, _, text_w, text_h = font.getbbox(text)
         draw.text((pin_w//2 - text_w//2, pin_h//2 - text_h//2 - text_h*1.5), text, text_color, font=font)
         text = str(data['main_lst_num'])
         font_size = 160
         font_family, font_weight = 'Lato', 'Regular'
-        font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+        font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
         font = ImageFont.truetype(font_path, font_size)
         _, _, text_w, text_h = font.getbbox(text)
         x1 = pin_w//2 - text_w//2
@@ -536,14 +536,14 @@ def card_template_2(pin_i):
         text = f'best herbal {preparation_name} for'.title()
         font_size = 48
         font_family, font_weight = 'Lato', 'Regular'
-        font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+        font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
         font = ImageFont.truetype(font_path, font_size)
         _, _, text_w, text_h = font.getbbox(text)
         draw.text((pin_w//2 - text_w//2, pin_h//2 - text_h//2 - text_h*1.2), text, text_color, font=font)
         text = '10'
         font_size = 160
         font_family, font_weight = 'Lato', 'Regular'
-        font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+        font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
         font = ImageFont.truetype(font_path, font_size)
         _, _, text_w, text_h = font.getbbox(text)
         x1 = pin_w//2 - text_w//2
@@ -552,7 +552,7 @@ def card_template_2(pin_i):
     '''
     # save img
     img = img.convert('RGB')
-    img_filepath = f'pinterest/images/botanical-name-cards.jpg'
+    img_filepath = f'{g.pinterest_tmp_image_folderpath}/images/botanical-name-cards.jpg'
     img.save(img_filepath, format='JPEG', subsampling=0, quality=100)
     # save json
     json_data = {
@@ -562,7 +562,7 @@ def card_template_2(pin_i):
         'url': 'https://www.etsy.com/listing/1905803593/545-printable-herb-card-set-botanical',
         'board_name': 'Herb Digital Products',
     }
-    io.json_write(f'{g.PINTEREST_PINS_IMAGE_FOLDERPATH}/{pin_i}.json', json_data)
+    io.json_write(f'{g.pinterest_tmp_image_folderpath}/pins/{pin_i}.json', json_data)
 
 def shop_herb_drying_checklist(pin_i):
     c_light_1 = '#f8f7f2'
@@ -572,6 +572,10 @@ def shop_herb_drying_checklist(pin_i):
     images_filepaths = []
     width = 1216
     height = 832
+    entities_herbs_folderpath = f'{g.database_folderpath}/entities/herbs'
+    # herb_list = io.csv_to_dict(f'{g.database_folderpath}/csv/herbs.csv')
+    herb_list = io.csv_to_dict(f'{g.database_folderpath}/csv/herbs-book-0000.csv')
+    herbs_names_scientific = [x['herb_name_scientific'] for x in herb_list]
     for i in range(2):
         herb_name_scientific = random.choice(herbs_names_scientific).strip()
         prompt = f'''
@@ -588,8 +592,15 @@ def shop_herb_drying_checklist(pin_i):
             high resolution,
             cinematic
         '''.replace('  ', ' ')
+        prompt = f'''
+            dry {herb_name_scientific} herb,
+            on a wooden table,
+            rustic, vintage, boho,
+            warm tones,
+            high resolution,
+        '''.replace('  ', ' ')
         image = image_ai(prompt, width, height)
-        image_filepath = f'pinterest/tmp/img-{i}.jpg'
+        image_filepath = f'{g.pinterest_tmp_image_folderpath}/tmp/img-{i}.jpg'
         image.save(image_filepath)
         images_filepaths.append(image_filepath)
     ###
@@ -604,8 +615,8 @@ def shop_herb_drying_checklist(pin_i):
     rect_h = 320
     img_0000 = Image.open(images_filepaths[0])
     img_0001 = Image.open(images_filepaths[1])
-    img_0000 = util.img_resize(img_0000, int(pin_w*1), int(pin_h*0.5))
-    img_0001 = util.img_resize(img_0001, int(pin_w*1), int(pin_h*0.5))
+    img_0000 = media.resize(img_0000, int(pin_w*1), int(pin_h*0.5))
+    img_0001 = media.resize(img_0001, int(pin_w*1), int(pin_h*0.5))
     img.paste(img_0000, (0, 0))
     img.paste(img_0001, (0, int(pin_h*0.5) + gap))
     random_theme = random.randint(0, 1)
@@ -624,26 +635,26 @@ def shop_herb_drying_checklist(pin_i):
     text = f'herb drying'.upper()
     font_size = 128
     font_family, font_weight = 'Lato', 'Bold'
-    font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+    font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
     font = ImageFont.truetype(font_path, font_size)
     _, _, text_w, text_h = font.getbbox(text)
     draw.text((pin_w//2 - text_w//2, pin_h//2 - text_h//2 - int(font_size*text_y_off)), text, text_color, font=font)
     text = f'checklist'.upper()
     font_family, font_weight = 'Lato', 'Bold'
-    font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+    font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
     font = ImageFont.truetype(font_path, font_size)
     _, _, text_w, text_h = font.getbbox(text)
     draw.text((pin_w//2 - text_w//2, pin_h//2 - text_h//2 + font_size - int(font_size*text_y_off)), text, text_color, font=font)
     ###
     # image_logo_size = 128
-    # image_logo = Image.open('assets/logo/terrawhisper-logo-round.png')
-    # image_logo = util.img_resize(image_logo, image_logo_size, image_logo_size)
+    # image_logo = Image.open('{g.assets_folderpath}/logo/terrawhisper-logo-round.png')
+    # image_logo = media.resize(image_logo, image_logo_size, image_logo_size)
     # img.paste(image_logo, (pin_w//2 - image_logo_size//2, pin_h - image_logo_size - 80), image_logo)
     ###
     text = f'terrawhisper.com'.upper()
     font_size = 24
     font_family, font_weight = 'Lato', 'Bold'
-    font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+    font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
     font = ImageFont.truetype(font_path, font_size)
     _, _, text_w, text_h = font.getbbox(text)
     draw.text((pin_w//2 - text_w//2, pin_h - text_h - 80), text, '#ffffff', font=font)
@@ -651,7 +662,7 @@ def shop_herb_drying_checklist(pin_i):
     img_filepath = pin_save(img, 'herb-drying-checklist')
     ###
     img = img.convert('RGB')
-    img_filepath = f'pinterest/images/herb-drying-checklist.jpg'
+    img_filepath = f'{g.pinterest_tmp_image_folderpath}/images/herb-drying-checklist.jpg'
     img.save(img_filepath, format='JPEG', subsampling=0, quality=100)
     description = f'''Ready to dry your garden herbs the right way? Download the Ultimate Herb Drying Checklist — a free, easy-to-use digital guide covering everything from harvesting tips to storage methods. Perfect for beginners and seasoned growers alike, this checklist helps you preserve flavor and potency with confidence. Get organized and make the most of your herbal harvest today.'''
     json_data = {
@@ -661,9 +672,10 @@ def shop_herb_drying_checklist(pin_i):
         'url': 'https://terrawhisper.com/shop/herb-drying-checklist.html',
         'board_name': 'Herbalism Guides',
     }
-    io.json_write(f'{g.PINTEREST_PINS_IMAGE_FOLDERPATH}/{pin_i}.json', json_data)
+    io.json_write(f'{g.pinterest_tmp_image_folderpath}/pins/{pin_i}.json', json_data)
 
 def shop_labels(pin_i):
+    '''
     herb_list = [
         {'herb_name_scientific': 'Matriarca chamomilla', 'herb_name_common': 'Chamomile'},
         {'herb_name_scientific': 'Mentha x piperita', 'herb_name_common': 'Peppermint'},
@@ -676,6 +688,8 @@ def shop_labels(pin_i):
         {'herb_name_scientific': 'Hypericum perforatum', 'herb_name_common': 'St. John\'s Wort'},
         {'herb_name_scientific': 'Melissa officinalis', 'herb_name_common': 'Lemon Balm'},
     ]
+    '''
+    herb_list = os.listdir(f'{g.assets_folderpath}/shop/labels/public/100/vintage/oval/1x2/png')
     c_light_2 = g.color_linen
     c_dark_2 = g.color_carbon_powder
     images_filepaths = []
@@ -694,42 +708,37 @@ def shop_labels(pin_i):
     pin_image = Image.new(mode="RGBA", size=(pin_w, pin_h), color=g.color_linen)
     herb_list_shuffle = herb_list[:]
     random.shuffle(herb_list_shuffle)
-    for row_i in range(row_num):
-        for col_i in range(col_num):
+    x_cur = mx
+    for col_i in range(col_num):
+        y_cur = my
+        for row_i in range(row_num):
             img_i = img_i % len(herb_list_shuffle)
-            if img_i < len(herb_list_shuffle):
-                herb = herb_list_shuffle[img_i]
-                herb_name_scientific = herb['herb_name_scientific']
-                herb_name_common = herb['herb_name_common']
-                herb_slug = herb_name_scientific.lower().strip().replace(' ', '-')
-                herb_filename_correct = ''
-                for herb_filename in os.listdir(f'assets/shop/labels/public/vintage/oval/3x4/png'):
-                    if herb_slug in herb_filename:
-                        herb_filename_correct = herb_filename
-                        break
-                rnd = random.randint(0, 3)
-                if rnd == 0:
-                    image_filepath = f'assets/shop/labels/public/vintage/round/3x3/png/{herb_filename_correct}'
-                    label_w = int(3 * 300 * scale)
-                    label_h = int(3 * 300 * scale)
-                elif rnd == 1:
-                    image_filepath = f'assets/shop/labels/public/vintage/oval/3x4/png/{herb_filename_correct}'
-                    label_w = int(3 * 300 * scale)
-                    label_h = int(4 * 300 * scale)
-                elif rnd == 2:
-                    image_filepath = f'assets/shop/labels/public/vintage/square/3x3/png/{herb_filename_correct}'
-                    label_w = int(3 * 300 * scale)
-                    label_h = int(3 * 300 * scale)
-                else:
-                    image_filepath = f'assets/shop/labels/public/vintage/rectangle/3x4/png/{herb_filename_correct}'
-                    label_w = int(3 * 300 * scale)
-                    label_h = int(4 * 300 * scale)
-                image = Image.open(image_filepath)
-                image = img_resize(image, label_w, label_h)
+            herb_filename_correct = herb_list[img_i]
+            print(herb_filename_correct)
+            rnd = random.randint(0, 3)
+            if rnd == 0:
+                image_filepath = f'{g.assets_folderpath}/shop/labels/public/100/vintage/round/3x3/png/{herb_filename_correct}'
                 label_w = int(3 * 300 * scale)
-                label_h = int(4 * 300 * scale)
-                pin_image.paste(image, (label_w*col_i+gap*col_i+mx, label_h*row_i+gap*row_i+my), image)
-                img_i += 1
+                label_h = int(3 * 300 * scale)
+            elif rnd == 1:
+                image_filepath = f'{g.assets_folderpath}/shop/labels/public/100/vintage/oval/3x5/png/{herb_filename_correct}'
+                label_w = int(3 * 300 * scale)
+                label_h = int(5 * 300 * scale)
+            elif rnd == 2:
+                image_filepath = f'{g.assets_folderpath}/shop/labels/public/100/vintage/square/3x3/png/{herb_filename_correct}'
+                label_w = int(3 * 300 * scale)
+                label_h = int(3 * 300 * scale)
+            else:
+                image_filepath = f'{g.assets_folderpath}/shop/labels/public/100/vintage/rectangle/3x5/png/{herb_filename_correct}'
+                label_w = int(3 * 300 * scale)
+                label_h = int(5 * 300 * scale)
+            image = Image.open(image_filepath)
+            image = media.resize(image, label_w, label_h)
+            # pin_image.paste(image, (label_w*col_i+gap*col_i+mx, label_h*row_i+gap*row_i+my), image)
+            pin_image.paste(image, (x_cur, y_cur), image)
+            y_cur += label_h + gap
+            img_i += 1
+        x_cur += label_w + gap
     pin_image = pin_image.convert('RGB')
     ### rectangle
     draw = ImageDraw.Draw(pin_image)
@@ -746,7 +755,7 @@ def shop_labels(pin_i):
     line = '120'
     font_size = 192
     font_family, font_weight = 'Lato', 'Bold'
-    font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+    font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
     font = ImageFont.truetype(font_path, font_size)
     _, _, line_w, line_h = font.getbbox(line)
     draw.text((pin_w//2 - line_w//2, pin_h//2 - line_h//2 - 220), line, color, font=font)
@@ -756,7 +765,7 @@ def shop_labels(pin_i):
     line = 'healing herb'.upper()
     font_size = 96
     font_family, font_weight = 'Lato', 'Regular'
-    font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+    font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
     font = ImageFont.truetype(font_path, font_size)
     _, _, line_w, line_h = font.getbbox(line)
     draw.text((pin_w//2 - line_w//2, pin_h//2 - line_h//2 - gap + y_off), line, color, font=font)
@@ -765,7 +774,7 @@ def shop_labels(pin_i):
     font_size = 96
     font_family, font_weight = 'Allura', 'Regular'
     font_family, font_weight = 'Lato', 'Regular'
-    font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+    font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
     font = ImageFont.truetype(font_path, font_size)
     _, _, line_w, line_h = font.getbbox(line)
     draw.text((pin_w//2 - line_w//2, pin_h//2 - line_h//2 + gap + y_off), line, color, font=font)
@@ -778,14 +787,14 @@ def shop_labels(pin_i):
     line = 'free designs'.title()
     font_size = 48
     font_family, font_weight = 'Lato', 'Regular'
-    font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+    font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
     font = ImageFont.truetype(font_path, font_size)
     _, _, line_w, line_h = font.getbbox(line)
     draw.text((pin_w//2 - line_w//2, pin_h - y_off - rect_h + text_off_y), line, color, font=font)
     line = 'terrawhisper.com'.upper()
     font_size = 16
     font_family, font_weight = 'Lato', 'Regular'
-    font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+    font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
     font = ImageFont.truetype(font_path, font_size)
     _, _, line_w, line_h = font.getbbox(line)
     draw.text((pin_w//2 - line_w//2, pin_h - y_off - rect_h + text_off_y + 70), line, color, font=font)
@@ -793,7 +802,166 @@ def shop_labels(pin_i):
     img = pin_image.convert('RGB')
     pin_filename = 'herbal-jar-labels'
     img_filepath = pin_save(img, pin_filename)
-    img_filepath = f'pinterest/images/{pin_filename}.jpg'
+    img_filepath = f'{g.pinterest_tmp_image_folderpath}/images/{pin_filename}.jpg'
+    img.save(img_filepath, format='JPEG', subsampling=0, quality=100)
+    # pin_image.show()
+    ###
+    description = f'''Give Your Herbal Jars a Vintage Makeover (For Free). Love herbs? Want to organize your jars in style? Download 120 beautifully designed vintage-style herbal jar labels. These digital labels are inspired by antique apothecary designs and feature the 10 most popular healing herbs, including lavender, chamomile, peppermint, and more.'''
+    json_data = {
+        'img_filepath': img_filepath,
+        'title': 'Healing Herbs Jar Labels',
+        'description': description,
+        'url': 'https://terrawhisper.com/shop/labels.html',
+        'board_name': 'Herbal Designs',
+    }
+    io.json_write(f'{g.pinterest_tmp_image_folderpath}/pins/{pin_i}.json', json_data)
+
+def shop_labels_etsy(pin_i):
+    herb_list = os.listdir(f'{g.assets_folderpath}/shop/labels/public/100/vintage/oval/1x2/png')
+    c_light_2 = g.color_linen
+    c_dark_2 = g.color_carbon_powder
+    images_filepaths = []
+    width = 1216
+    height = 832
+    ### images
+    pin_w = 1000
+    pin_h = 1500
+    row_num = 10
+    scale = 0.30
+    col_num = 5
+    gap = 30
+    img_i = 0
+    mx = -100
+    my = -100
+    pin_image = Image.new(mode="RGBA", size=(pin_w, pin_h), color=g.color_linen)
+    herb_list_shuffle = herb_list[:]
+    random.shuffle(herb_list_shuffle)
+    if 0:
+        for row_i in range(row_num):
+            for col_i in range(col_num):
+                img_i = img_i % len(herb_list_shuffle)
+                if img_i < len(herb_list_shuffle):
+                    herb_filename_correct = herb_list[img_i]
+                    rnd = random.randint(0, 3)
+                    if rnd == 0:
+                        image_filepath = f'{g.assets_folderpath}/shop/labels/public/100/vintage/round/3x3/png/{herb_filename_correct}'
+                        label_w = int(3 * 300 * scale)
+                        label_h = int(3 * 300 * scale)
+                    elif rnd == 1:
+                        image_filepath = f'{g.assets_folderpath}/shop/labels/public/100/vintage/oval/3x5/png/{herb_filename_correct}'
+                        label_w = int(3 * 300 * scale)
+                        label_h = int(5 * 300 * scale)
+                    elif rnd == 2:
+                        image_filepath = f'{g.assets_folderpath}/shop/labels/public/100/vintage/square/3x3/png/{herb_filename_correct}'
+                        label_w = int(3 * 300 * scale)
+                        label_h = int(3 * 300 * scale)
+                    else:
+                        image_filepath = f'{g.assets_folderpath}/shop/labels/public/100/vintage/rectangle/3x5/png/{herb_filename_correct}'
+                        label_w = int(3 * 300 * scale)
+                        label_h = int(5 * 300 * scale)
+                    image = Image.open(image_filepath)
+                    image = media.resize(image, label_w, label_h)
+                    label_w = int(3 * 300 * scale)
+                    label_h = int(5 * 300 * scale)
+                    pin_image.paste(image, (label_w*col_i+gap*col_i+mx, label_h*row_i+gap*row_i+my), image)
+                    img_i += 1
+
+    x_cur = mx
+    for col_i in range(col_num):
+        y_cur = my
+        for row_i in range(row_num):
+            img_i = img_i % len(herb_list_shuffle)
+            herb_filename_correct = herb_list[img_i]
+            print(herb_filename_correct)
+            rnd = random.randint(0, 3)
+            if rnd == 0:
+                image_filepath = f'{g.assets_folderpath}/shop/labels/public/100/vintage/round/3x3/png/{herb_filename_correct}'
+                label_w = int(3 * 300 * scale)
+                label_h = int(3 * 300 * scale)
+            elif rnd == 1:
+                image_filepath = f'{g.assets_folderpath}/shop/labels/public/100/vintage/oval/3x5/png/{herb_filename_correct}'
+                label_w = int(3 * 300 * scale)
+                label_h = int(5 * 300 * scale)
+            elif rnd == 2:
+                image_filepath = f'{g.assets_folderpath}/shop/labels/public/100/vintage/square/3x3/png/{herb_filename_correct}'
+                label_w = int(3 * 300 * scale)
+                label_h = int(3 * 300 * scale)
+            else:
+                image_filepath = f'{g.assets_folderpath}/shop/labels/public/100/vintage/rectangle/3x5/png/{herb_filename_correct}'
+                label_w = int(3 * 300 * scale)
+                label_h = int(5 * 300 * scale)
+            image = Image.open(image_filepath)
+            image = media.resize(image, label_w, label_h)
+            # pin_image.paste(image, (label_w*col_i+gap*col_i+mx, label_h*row_i+gap*row_i+my), image)
+            pin_image.paste(image, (x_cur, y_cur), image)
+            y_cur += label_h + gap
+            img_i += 1
+        x_cur += label_w + gap
+
+    pin_image = pin_image.convert('RGB')
+    ### rectangle
+    draw = ImageDraw.Draw(pin_image)
+    draw.rectangle(((0, pin_h//2 - 160), (pin_w, pin_h//2 + 160)), fill=g.color_carbon_powder)
+    ### circle
+    circle_size = 420
+    x1 = pin_w//2 - circle_size//2
+    y1 = pin_h//2 - 160 - circle_size//2
+    x2 = pin_w//2 + circle_size//2
+    y2 = pin_h//2 - 160 + circle_size//2
+    draw.ellipse((x1, y1, x2, y2), fill=g.color_carbon_powder)
+    ### number
+    color = g.color_linen
+    line = '120'
+    font_size = 192
+    font_family, font_weight = 'Lato', 'Bold'
+    font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+    font = ImageFont.truetype(font_path, font_size)
+    _, _, line_w, line_h = font.getbbox(line)
+    draw.text((pin_w//2 - line_w//2, pin_h//2 - line_h//2 - 220), line, color, font=font)
+    ### text
+    gap = 55
+    y_off = 0
+    line = 'healing herb'.upper()
+    font_size = 96
+    font_family, font_weight = 'Lato', 'Regular'
+    font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+    font = ImageFont.truetype(font_path, font_size)
+    _, _, line_w, line_h = font.getbbox(line)
+    draw.text((pin_w//2 - line_w//2, pin_h//2 - line_h//2 - gap + y_off), line, color, font=font)
+    ###
+    line = 'jar labels'.upper()
+    font_size = 96
+    font_family, font_weight = 'Allura', 'Regular'
+    font_family, font_weight = 'Lato', 'Regular'
+    font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+    font = ImageFont.truetype(font_path, font_size)
+    _, _, line_w, line_h = font.getbbox(line)
+    draw.text((pin_w//2 - line_w//2, pin_h//2 - line_h//2 + gap + y_off), line, color, font=font)
+    # copyright
+    y_off = 120
+    rect_h = 150
+    rect_w = 200
+    text_off_y = 25
+    draw.rectangle(((pin_w//2 - rect_w, pin_h - y_off - rect_h), (pin_w//2 + rect_w, pin_h - y_off)), fill=g.color_carbon_powder)
+    line = 'free designs'.title()
+    font_size = 48
+    font_family, font_weight = 'Lato', 'Regular'
+    font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+    font = ImageFont.truetype(font_path, font_size)
+    _, _, line_w, line_h = font.getbbox(line)
+    draw.text((pin_w//2 - line_w//2, pin_h - y_off - rect_h + text_off_y), line, color, font=font)
+    line = 'terrawhisper.com'.upper()
+    font_size = 16
+    font_family, font_weight = 'Lato', 'Regular'
+    font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+    font = ImageFont.truetype(font_path, font_size)
+    _, _, line_w, line_h = font.getbbox(line)
+    draw.text((pin_w//2 - line_w//2, pin_h - y_off - rect_h + text_off_y + 70), line, color, font=font)
+    ### save pin
+    img = pin_image.convert('RGB')
+    pin_filename = 'herbal-jar-labels'
+    img_filepath = pin_save(img, pin_filename)
+    img_filepath = f'{g.pinterest_tmp_image_folderpath}/images/{pin_filename}.jpg'
     img.save(img_filepath, format='JPEG', subsampling=0, quality=100)
     pin_image.show()
     ###
@@ -805,13 +973,13 @@ def shop_labels(pin_i):
         'url': 'https://terrawhisper.com/shop/labels.html',
         'board_name': 'Herbal Designs',
     }
-    io.json_write(f'{g.PINTEREST_PINS_IMAGE_FOLDERPATH}/{pin_i}.json', json_data)
+    io.json_write(f'{g.pinterest_tmp_image_folderpath}/pins/{pin_i}.json', json_data)
 
 def template_plain(images_file_paths, export_file_name):
     pin_w = 1000
     pin_h = 1500
     img = Image.open(images_file_paths[0])
-    img = util.img_resize(img, pin_w, pin_h)
+    img = media.resize(img, pin_w, pin_h)
     export_file_path = pin_save(img, export_file_name)
     return export_file_path
 
@@ -824,10 +992,10 @@ def template_mosaic(images_file_paths, export_file_name):
     img_0001 = Image.open(images_file_paths[1])
     img_0002 = Image.open(images_file_paths[2])
     img_0003 = Image.open(images_file_paths[3])
-    img_0000 = util.img_resize(img_0000, int(pin_w*0.66), int(pin_h*0.5))
-    img_0001 = util.img_resize(img_0001, int(pin_w*0.66), int(pin_h*0.5))
-    img_0002 = util.img_resize(img_0002, int(pin_w*0.66), int(pin_h*0.5))
-    img_0003 = util.img_resize(img_0003, int(pin_w*0.66), int(pin_h*0.5))
+    img_0000 = media.resize(img_0000, int(pin_w*0.66), int(pin_h*0.5))
+    img_0001 = media.resize(img_0001, int(pin_w*0.66), int(pin_h*0.5))
+    img_0002 = media.resize(img_0002, int(pin_w*0.66), int(pin_h*0.5))
+    img_0003 = media.resize(img_0003, int(pin_w*0.66), int(pin_h*0.5))
     img.paste(img_0000, (0, 0))
     img.paste(img_0001, (int(pin_w*0.66) + gap, 0))
     img.paste(img_0002, (-int(pin_w*0.32), int(pin_h*0.5) + gap))
@@ -844,10 +1012,10 @@ def template_mosaic_inverted(images_file_paths, export_file_name):
     img_0001 = Image.open(images_file_paths[1])
     img_0002 = Image.open(images_file_paths[2])
     img_0003 = Image.open(images_file_paths[3])
-    img_0000 = util.img_resize(img_0000, int(pin_w*0.66), int(pin_h*0.5))
-    img_0001 = util.img_resize(img_0001, int(pin_w*0.66), int(pin_h*0.5))
-    img_0002 = util.img_resize(img_0002, int(pin_w*0.66), int(pin_h*0.5))
-    img_0003 = util.img_resize(img_0003, int(pin_w*0.66), int(pin_h*0.5))
+    img_0000 = media.resize(img_0000, int(pin_w*0.66), int(pin_h*0.5))
+    img_0001 = media.resize(img_0001, int(pin_w*0.66), int(pin_h*0.5))
+    img_0002 = media.resize(img_0002, int(pin_w*0.66), int(pin_h*0.5))
+    img_0003 = media.resize(img_0003, int(pin_w*0.66), int(pin_h*0.5))
     img.paste(img_0000, (-int(pin_w*0.32), 0))
     img.paste(img_0001, (int(pin_w*0.34) + gap, 0))
     img.paste(img_0002, (0, int(pin_h*0.5) + gap))
@@ -866,8 +1034,8 @@ def template_text_backup(data, images_file_paths, export_file_name):
     img_0001 = Image.open(images_file_paths[1])
     img_0002 = Image.open(images_file_paths[2])
     img_0003 = Image.open(images_file_paths[3])
-    img_0000 = util.img_resize(img_0000, int(pin_w*1), int(pin_h*0.5))
-    img_0001 = util.img_resize(img_0001, int(pin_w*1), int(pin_h*0.5))
+    img_0000 = media.resize(img_0000, int(pin_w*1), int(pin_h*0.5))
+    img_0001 = media.resize(img_0001, int(pin_w*1), int(pin_h*0.5))
     img.paste(img_0000, (0, 0))
     img.paste(img_0001, (0, int(pin_h*0.5) + gap))
     random_theme = random.randint(0, 2)
@@ -921,13 +1089,13 @@ def template_text_backup(data, images_file_paths, export_file_name):
     offset_y = int(preparations_font_size*0.2)
     line_spacing = int(preparations_font_size*0.75)
     font_family, font_weight = 'Lato', 'Bold'
-    font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+    font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
     font = ImageFont.truetype(font_path, preparations_font_size)
     _, _, text_w, text_h = font.getbbox(text)
     draw.text((pin_w//2 - text_w//2, pin_h//2 - text_h//2 - offset_y - line_spacing- ml_off_y), text, text_color, font=font)
     # text status
     font_family, font_weight = 'Lato', 'Bold'
-    font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+    font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
     font = ImageFont.truetype(font_path, font_size)
     _, _, text_w, text_h = font.getbbox(lines[0])
     draw.text((pin_w//2 - text_w//2, pin_h//2 - text_h//2 - offset_y + line_spacing - ml_off_y), lines[0], text_color, font=font)
@@ -948,8 +1116,8 @@ def template_text(data, images_file_paths, export_file_name):
     img_0001 = Image.open(images_file_paths[1])
     img_0002 = Image.open(images_file_paths[2])
     img_0003 = Image.open(images_file_paths[3])
-    img_0000 = util.img_resize(img_0000, int(pin_w*1), int(pin_h*0.5))
-    img_0001 = util.img_resize(img_0001, int(pin_w*1), int(pin_h*0.5))
+    img_0000 = media.resize(img_0000, int(pin_w*1), int(pin_h*0.5))
+    img_0001 = media.resize(img_0001, int(pin_w*1), int(pin_h*0.5))
     img.paste(img_0000, (0, 0))
     img.paste(img_0001, (0, int(pin_h*0.5) + gap))
     random_theme = random.randint(0, 2)
@@ -986,7 +1154,7 @@ def template_text(data, images_file_paths, export_file_name):
     #text = 'Breastfeeding'.upper()
     font_size = 96
     font_family, font_weight = 'Lato', 'Bold'
-    font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+    font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
     font = ImageFont.truetype(font_path, font_size)
     _, _, text_w, text_h = font.getbbox(text)
 
@@ -1007,7 +1175,7 @@ def template_text(data, images_file_paths, export_file_name):
         text = f'best herbal {preparation_name} for'.title()
         font_size = 48
         font_family, font_weight = 'Lato', 'Regular'
-        font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+        font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
         font = ImageFont.truetype(font_path, font_size)
         _, _, text_w, text_h = font.getbbox(text)
         draw.text((pin_w//2 - text_w//2, pin_h//2 - text_h//2 - text_h*1.5), text, text_color, font=font)
@@ -1015,7 +1183,7 @@ def template_text(data, images_file_paths, export_file_name):
         text = str(data['main_lst_num'])
         font_size = 160
         font_family, font_weight = 'Lato', 'Regular'
-        font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+        font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
         font = ImageFont.truetype(font_path, font_size)
         _, _, text_w, text_h = font.getbbox(text)
         x1 = pin_w//2 - text_w//2
@@ -1029,7 +1197,7 @@ def template_text(data, images_file_paths, export_file_name):
         text = f'best herbal {preparation_name} for'.title()
         font_size = 48
         font_family, font_weight = 'Lato', 'Regular'
-        font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+        font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
         font = ImageFont.truetype(font_path, font_size)
         _, _, text_w, text_h = font.getbbox(text)
         draw.text((pin_w//2 - text_w//2, pin_h//2 - text_h//2 - text_h*1.2), text, text_color, font=font)
@@ -1037,7 +1205,7 @@ def template_text(data, images_file_paths, export_file_name):
         text = '10'
         font_size = 160
         font_family, font_weight = 'Lato', 'Regular'
-        font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+        font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
         font = ImageFont.truetype(font_path, font_size)
         _, _, text_w, text_h = font.getbbox(text)
         x1 = pin_w//2 - text_w//2
@@ -1058,8 +1226,8 @@ def template_text_2(data, images_file_paths, export_file_name):
     rect_h = 320
     img_0000 = Image.open(images_file_paths[0])
     img_0001 = Image.open(images_file_paths[1])
-    img_0000 = util.img_resize(img_0000, int(pin_w*1), int(pin_h*0.5))
-    img_0001 = util.img_resize(img_0001, int(pin_w*1), int(pin_h*0.5))
+    img_0000 = media.resize(img_0000, int(pin_w*1), int(pin_h*0.5))
+    img_0001 = media.resize(img_0001, int(pin_w*1), int(pin_h*0.5))
     img.paste(img_0000, (0, 0))
     img.paste(img_0001, (0, int(pin_h*0.5) + gap))
     random_theme = random.randint(0, 1)
@@ -1090,7 +1258,7 @@ def template_text_2(data, images_file_paths, export_file_name):
     #text = 'Breastfeeding'.upper()
     font_size = 96
     font_family, font_weight = 'Lato', 'Bold'
-    font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+    font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
     font = ImageFont.truetype(font_path, font_size)
     _, _, text_w, text_h = font.getbbox(text)
     if text_w > pin_w - 80:
@@ -1109,14 +1277,14 @@ def template_text_2(data, images_file_paths, export_file_name):
         text = f'best herbal {preparation_name} for'.title()
         font_size = 48
         font_family, font_weight = 'Lato', 'Regular'
-        font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+        font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
         font = ImageFont.truetype(font_path, font_size)
         _, _, text_w, text_h = font.getbbox(text)
         draw.text((pin_w//2 - text_w//2, pin_h//2 - text_h//2 - text_h*1.5), text, text_color, font=font)
         text = str(data['main_lst_num'])
         font_size = 160
         font_family, font_weight = 'Lato', 'Regular'
-        font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+        font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
         font = ImageFont.truetype(font_path, font_size)
         _, _, text_w, text_h = font.getbbox(text)
         x1 = pin_w//2 - text_w//2
@@ -1129,14 +1297,14 @@ def template_text_2(data, images_file_paths, export_file_name):
         text = f'best herbal {preparation_name} for'.title()
         font_size = 48
         font_family, font_weight = 'Lato', 'Regular'
-        font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+        font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
         font = ImageFont.truetype(font_path, font_size)
         _, _, text_w, text_h = font.getbbox(text)
         draw.text((pin_w//2 - text_w//2, pin_h//2 - text_h//2 - text_h*1.2), text, text_color, font=font)
         text = '10'
         font_size = 160
         font_family, font_weight = 'Lato', 'Regular'
-        font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+        font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
         font = ImageFont.truetype(font_path, font_size)
         _, _, text_w, text_h = font.getbbox(text)
         x1 = pin_w//2 - text_w//2
@@ -1151,7 +1319,7 @@ def template_overlay(data, images_file_paths, export_file_name):
     pin_h = 1500
     img = Image.new(mode="RGB", size=(pin_w, pin_h), color='#ffffff')
     img_0000 = Image.open(images_file_paths[0])
-    img_0000 = util.img_resize(img_0000, int(pin_w*1), int(pin_h*1))
+    img_0000 = media.resize(img_0000, int(pin_w*1), int(pin_h*1))
     img.paste(img_0000, (0, 0))
     img = img.convert('RGBA')
     img_overlay = Image.new(mode="RGBA", size=(pin_w, pin_h), color=(0, 0, 0, int(255*0.75)))
@@ -1162,9 +1330,9 @@ def template_overlay(data, images_file_paths, export_file_name):
     text_color = '#ffffff'
     y_cur = 50
     font_family, font_weight = 'Lato', 'Bold'
-    font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
-    font_path = f"assets/fonts/arial/ARIAL.TTF"
-    font_path = f"assets/fonts/EB_Garamond/static/EBGaramond-Regular.ttf"
+    font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+    font_path = f"{g.assets_folderpath}/fonts/arial/ARIAL.TTF"
+    font_path = f"{g.assets_folderpath}/fonts/EB_Garamond/static/EBGaramond-Regular.ttf"
     ###
     text = '10'
     font_size = 384
@@ -1175,7 +1343,7 @@ def template_overlay(data, images_file_paths, export_file_name):
     y_cur += 50
     line_height = 1.3
     ###
-    font_path = f"assets/fonts/arial/ARIAL.TTF"
+    font_path = f"{g.assets_folderpath}/fonts/arial/ARIAL.TTF"
     text = 'BEST HERBAL'
     font_size = 32
     font = ImageFont.truetype(font_path, font_size)
@@ -1285,7 +1453,7 @@ def gen_img_template(line_list, img_list, out_filename, num=0,):
     draw.ellipse((img_w//2 - circle_size//2, img_h//2 - 160 - circle_size//2, img_w//2 + circle_size//2, img_h//2 - 160 + circle_size//2), fill = "#ffffff")
     font_size = 160
     font_family, font_weight = 'Lato', 'Bold'
-    font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+    font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
     font = ImageFont.truetype(font_path, font_size)
     text = num
     text_w = font.getbbox(text)[2]
@@ -1294,7 +1462,7 @@ def gen_img_template(line_list, img_list, out_filename, num=0,):
     text_pos_x = 50 + text_w
     font_size = 48
     font_family, font_weight = 'Lato', 'Regular'
-    font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+    font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
     font = ImageFont.truetype(font_path, font_size)
     text = line_list[0]
     text_w = font.getbbox(text)[2]
@@ -1315,7 +1483,7 @@ def gen_img_template(line_list, img_list, out_filename, num=0,):
         font_size = 32
         text_y = img_h//2 - 0 
     font_family, font_weight = 'Lato', 'Bold'
-    font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+    font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
     font = ImageFont.truetype(font_path, font_size)
     text_w = font.getbbox(text)[2]
     text_h = font.getbbox(text)[3]
@@ -1326,7 +1494,7 @@ def gen_img_template(line_list, img_list, out_filename, num=0,):
 
 def pin_gen_backup(article_filepath, preparation_slug):
     preparation_name = preparation_slug.replace('-', ' ')
-    data = util.json_read(article_filepath)
+    data = io.json_read(article_filepath)
     remedy_num = data['main_lst_num']
     title = data['title']
     try: status_name = data['ailment_name']
@@ -1369,7 +1537,7 @@ def pin_gen_backup(article_filepath, preparation_slug):
 
 def pin_gen(article_filepath, article_i, preparation_slug):
     preparation_name = preparation_slug.replace('-', ' ')
-    data = util.json_read(article_filepath)
+    data = io.json_read(article_filepath)
     remedy_num = data['main_lst_num']
     title = data['title']
     try: status_name = data['ailment_name']
@@ -1456,8 +1624,8 @@ def pin_gen(article_filepath, article_i, preparation_slug):
         # 832x1216  portrait
         # 1216x832  landscape
         image = pipe(prompt=prompt, width=832, height=1216, num_inference_steps=30, guidance_scale=7.0).images[0]
-        image.save(f'pinterest/tmp/img-{i}.jpg')
-        images.append(f'pinterest/tmp/img-{i}.jpg')
+        image.save(f'{g.pinterest_tmp_image_folderpath}/tmp/img-{i}.jpg')
+        images.append(f'{g.pinterest_tmp_image_folderpath}/tmp/img-{i}.jpg')
 
     # gen pins
     rand_template = random.randint(0, 100)
@@ -1475,12 +1643,11 @@ def pin_gen(article_filepath, article_i, preparation_slug):
         'img_filepath': img_filepath,
         'board_name': board_name
     }
-    json_write(f'{g.PINTEREST_PINS_IMAGE_FOLDERPATH}/{article_i}.json', obj)
-
+    io.json_write(f'{g.pinterest_tmp_image_folderpath}/pins/{article_i}.json', obj)
 
 def pin_gen_2(article_filepath, article_i, preparation_slug):
     preparation_name = preparation_slug.replace('-', ' ')
-    data = util.json_read(article_filepath)
+    data = io.json_read(article_filepath)
 
     title = data['title']
     status_name = data['ailment_name']
@@ -1548,8 +1715,8 @@ def pin_gen_2(article_filepath, article_i, preparation_slug):
         # 1216x832  landscape
         # image = pipe(prompt=prompt, width=832, height=1216, num_inference_steps=30, guidance_scale=7.0).images[0]
         image = pipe(prompt=prompt, width=1216, height=832, num_inference_steps=30, guidance_scale=7.0).images[0]
-        image.save(f'pinterest/tmp/img-{i}.jpg')
-        images.append(f'pinterest/tmp/img-{i}.jpg')
+        image.save(f'{g.pinterest_tmp_image_folderpath}/tmp/img-{i}.jpg')
+        images.append(f'{g.pinterest_tmp_image_folderpath}/tmp/img-{i}.jpg')
 
     # gen pins
     pin_w = 1000
@@ -1562,8 +1729,8 @@ def pin_gen_2(article_filepath, article_i, preparation_slug):
     img_0000 = Image.open(images[0])
     img_0001 = Image.open(images[1])
 
-    img_0000 = util.img_resize(img_0000, int(pin_w*1), int(pin_h*0.5))
-    img_0001 = util.img_resize(img_0001, int(pin_w*1), int(pin_h*0.5))
+    img_0000 = media.resize(img_0000, int(pin_w*1), int(pin_h*0.5))
+    img_0001 = media.resize(img_0001, int(pin_w*1), int(pin_h*0.5))
 
     img.paste(img_0000, (0, 0))
     img.paste(img_0001, (0, int(pin_h*0.5) + gap))
@@ -1598,7 +1765,7 @@ def pin_gen_2(article_filepath, article_i, preparation_slug):
     #text = 'Breastfeeding'.upper()
     font_size = 96
     font_family, font_weight = 'Lato', 'Bold'
-    font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+    font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
     font = ImageFont.truetype(font_path, font_size)
     _, _, text_w, text_h = font.getbbox(text)
 
@@ -1619,7 +1786,7 @@ def pin_gen_2(article_filepath, article_i, preparation_slug):
         text = f'best herbal {preparation_name} for'.title()
         font_size = 48
         font_family, font_weight = 'Lato', 'Regular'
-        font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+        font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
         font = ImageFont.truetype(font_path, font_size)
         _, _, text_w, text_h = font.getbbox(text)
         draw.text((pin_w//2 - text_w//2, pin_h//2 - text_h//2 - text_h*1.5), text, text_color, font=font)
@@ -1627,7 +1794,7 @@ def pin_gen_2(article_filepath, article_i, preparation_slug):
         text = str(data['main_lst_num'])
         font_size = 160
         font_family, font_weight = 'Lato', 'Regular'
-        font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+        font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
         font = ImageFont.truetype(font_path, font_size)
         _, _, text_w, text_h = font.getbbox(text)
         x1 = pin_w//2 - text_w//2
@@ -1641,7 +1808,7 @@ def pin_gen_2(article_filepath, article_i, preparation_slug):
         text = f'best herbal {preparation_name} for'.title()
         font_size = 48
         font_family, font_weight = 'Lato', 'Regular'
-        font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+        font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
         font = ImageFont.truetype(font_path, font_size)
         _, _, text_w, text_h = font.getbbox(text)
         draw.text((pin_w//2 - text_w//2, pin_h//2 - text_h//2 - text_h*1.2), text, text_color, font=font)
@@ -1649,7 +1816,7 @@ def pin_gen_2(article_filepath, article_i, preparation_slug):
         text = '10'
         font_size = 160
         font_family, font_weight = 'Lato', 'Regular'
-        font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+        font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
         font = ImageFont.truetype(font_path, font_size)
         _, _, text_w, text_h = font.getbbox(text)
         x1 = pin_w//2 - text_w//2
@@ -1669,8 +1836,7 @@ def pin_gen_2(article_filepath, article_i, preparation_slug):
         'img_filepath': img_filepath,
         'board_name': board_name
     }
-    json_write(f'{g.PINTEREST_PINS_IMAGE_FOLDERPATH}/{article_i}.json', obj)
-
+    io.json_write(f'{g.pinterest_tmp_image_folderpath}/pins/{article_i}.json', obj)
 
 def gen_image_equipment(images, i, equipment_name, image_style, width, height):
     rnd_table = random.choice(['wooden', 'dark'])
@@ -1698,12 +1864,12 @@ def gen_image_equipment(images, i, equipment_name, image_style, width, height):
     prompt = prompt_juggernaut_xi
     print(prompt)
     image = pipe(prompt=prompt, width=width, height=height, num_inference_steps=30, guidance_scale=7.0).images[0]
-    image.save(f'pinterest/tmp/img-{i}.jpg')
-    images.append(f'pinterest/tmp/img-{i}.jpg')
+    image.save(f'{g.pinterest_tmp_image_folderpath}/tmp/img-{i}.jpg')
+    images.append(f'{g.pinterest_tmp_image_folderpath}/tmp/img-{i}.jpg')
 
 
 def gen_image(images, i, preparation_name, image_style, width, height):
-    rnd_herb_name_scientific = random.choice(herbs_names_scientific).strip()
+    rnd_herb_name_scientific = random.choice(herbs).strip()
     if preparation_name[-1] == 's': preparation_name_singular = preparation_name[:-1]
     else: preparation_name_singular = preparation_name
 
@@ -1747,8 +1913,8 @@ def gen_image(images, i, preparation_name, image_style, width, height):
     prompt = prompt_juggernaut_xi
     print(prompt)
     image = image_ai(prompt, width, height)
-    image.save(f'pinterest/tmp/img-{i}.jpg')
-    images.append(f'pinterest/tmp/img-{i}.jpg')
+    image.save(f'{g.pinterest_tmp_image_folderpath}/tmp/img-{i}.jpg')
+    images.append(f'{g.pinterest_tmp_image_folderpath}/tmp/img-{i}.jpg')
 
 def gen_image_2(images, i, preparation_name, width, height):
     rnd_herb_name_scientific = random.choice(herbs_names_scientific).strip()
@@ -1764,8 +1930,8 @@ def gen_image_2(images, i, preparation_name, width, height):
     '''.replace('  ', ' ')
     print(prompt)
     image = image_ai(prompt, width, height)
-    image.save(f'pinterest/tmp/img-{i}.jpg')
-    images.append(f'pinterest/tmp/img-{i}.jpg')
+    image.save(f'{g.pinterest_tmp_image_folderpath}/tmp/img-{i}.jpg')
+    images.append(f'{g.pinterest_tmp_image_folderpath}/tmp/img-{i}.jpg')
 
 def ai_img_herb(images, i, herb_name_scientific, width, height):
     prompt = f'''
@@ -1777,8 +1943,8 @@ def ai_img_herb(images, i, herb_name_scientific, width, height):
     '''.replace('  ', ' ')
     print(prompt)
     image = image_ai(prompt, width, height)
-    image.save(f'pinterest/tmp/img-{i}.jpg')
-    images.append(f'pinterest/tmp/img-{i}.jpg')
+    image.save(f'{g.pinterest_tmp_image_folderpath}/tmp/img-{i}.jpg')
+    images.append(f'{g.pinterest_tmp_image_folderpath}/tmp/img-{i}.jpg')
 
 def ai_img_preparation(images, i, preparation_name_plural, herb_name_scientific, width, height):
     prompt = f'''
@@ -1790,8 +1956,8 @@ def ai_img_preparation(images, i, preparation_name_plural, herb_name_scientific,
     '''.replace('  ', ' ')
     print(prompt)
     image = image_ai(prompt, width, height)
-    image.save(f'pinterest/tmp/img-{i}.jpg')
-    images.append(f'pinterest/tmp/img-{i}.jpg')
+    image.save(f'{g.pinterest_tmp_image_folderpath}/tmp/img-{i}.jpg')
+    images.append(f'{g.pinterest_tmp_image_folderpath}/tmp/img-{i}.jpg')
 
 def equipment_template_1_img_b(data, images_file_paths, export_file_name):
     random_theme = random.randint(0, 1)
@@ -1810,7 +1976,7 @@ def equipment_template_1_img_b(data, images_file_paths, export_file_name):
     img = Image.new(mode="RGB", size=(pin_w, pin_h), color=bg_color)
     draw = ImageDraw.Draw(img)
     img_0000 = Image.open(images_file_paths[0])
-    img_0000 = util.img_resize(img_0000, pin_w, pin_w)
+    img_0000 = media.resize(img_0000, pin_w, pin_w)
     img.paste(img_0000, (0, pin_h//3))
 
     y_cur = 0
@@ -1819,7 +1985,7 @@ def equipment_template_1_img_b(data, images_file_paths, export_file_name):
     text = str(data['products_num'])
     font_size = 192
     font_family, font_weight = 'Lato', 'Regular'
-    font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+    font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
     font = ImageFont.truetype(font_path, font_size)
     _, _, text_w, text_h = font.getbbox(text)
     x1 = pin_w//2 - text_w//2
@@ -1831,7 +1997,7 @@ def equipment_template_1_img_b(data, images_file_paths, export_file_name):
     except: text = f'best {data["equipment_name"]}'.upper()
     font_size = 96
     font_family, font_weight = 'Lato', 'Bold'
-    font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+    font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
     font = ImageFont.truetype(font_path, font_size)
     _, _, text_w, text_h = font.getbbox(text)
     draw.text((pin_w//2 - text_w//2, y_cur), text, text_color, font=font)
@@ -1841,7 +2007,7 @@ def equipment_template_1_img_b(data, images_file_paths, export_file_name):
     text = 'for apothecary'.upper()
     font_size = 96
     font_family, font_weight = 'Lato', 'Bold'
-    font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+    font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
     font = ImageFont.truetype(font_path, font_size)
     _, _, text_w, text_h = font.getbbox(text)
     draw.text((pin_w//2 - text_w//2, y_cur), text, text_color, font=font)
@@ -1866,7 +2032,7 @@ def equipment_template_1_img_t(data, images_file_paths, export_file_name):
     img = Image.new(mode="RGB", size=(pin_w, pin_h), color=bg_color)
     draw = ImageDraw.Draw(img)
     img_0000 = Image.open(images_file_paths[0])
-    img_0000 = util.img_resize(img_0000, pin_w, pin_w)
+    img_0000 = media.resize(img_0000, pin_w, pin_w)
     img.paste(img_0000, (0, 0))
 
     y_cur = 1000
@@ -1875,7 +2041,7 @@ def equipment_template_1_img_t(data, images_file_paths, export_file_name):
     text = str(data['products_num'])
     font_size = 192
     font_family, font_weight = 'Lato', 'Regular'
-    font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+    font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
     font = ImageFont.truetype(font_path, font_size)
     _, _, text_w, text_h = font.getbbox(text)
     x1 = pin_w//2 - text_w//2
@@ -1887,7 +2053,7 @@ def equipment_template_1_img_t(data, images_file_paths, export_file_name):
     except: text = f'best {data["equipment_name"]}'.upper()
     font_size = 96
     font_family, font_weight = 'Lato', 'Bold'
-    font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+    font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
     font = ImageFont.truetype(font_path, font_size)
     _, _, text_w, text_h = font.getbbox(text)
     draw.text((pin_w//2 - text_w//2, y_cur), text, text_color, font=font)
@@ -1897,7 +2063,7 @@ def equipment_template_1_img_t(data, images_file_paths, export_file_name):
     text = 'for apothecary'.upper()
     font_size = 96
     font_family, font_weight = 'Lato', 'Bold'
-    font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+    font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
     font = ImageFont.truetype(font_path, font_size)
     _, _, text_w, text_h = font.getbbox(text)
     draw.text((pin_w//2 - text_w//2, y_cur), text, text_color, font=font)
@@ -1923,10 +2089,10 @@ def equipment_template_1_img_c(data, images_file_paths, export_file_name):
     draw = ImageDraw.Draw(img)
     # ;jump
     img_0000 = Image.open(images_file_paths[0])
-    img_0000 = util.img_resize(img_0000, pin_w, 500)
+    img_0000 = media.resize(img_0000, pin_w, 500)
     img.paste(img_0000, (0, 0))
     img_0001 = Image.open(images_file_paths[1])
-    img_0001 = util.img_resize(img_0001, pin_w, 500)
+    img_0001 = media.resize(img_0001, pin_w, 500)
     img.paste(img_0001, (0, 1000))
 
     y_cur = 500
@@ -1937,7 +2103,7 @@ def equipment_template_1_img_c(data, images_file_paths, export_file_name):
     text = str(data['products_num'])
     font_size = 192
     font_family, font_weight = 'Lato', 'Regular'
-    font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+    font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
     font = ImageFont.truetype(font_path, font_size)
     _, _, text_w, text_h = font.getbbox(text)
     x1 = pin_w//2 - text_w//2
@@ -1949,7 +2115,7 @@ def equipment_template_1_img_c(data, images_file_paths, export_file_name):
     except: text = f'best {data["equipment_name"]}'.upper()
     font_size = 96
     font_family, font_weight = 'Lato', 'Bold'
-    font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+    font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
     font = ImageFont.truetype(font_path, font_size)
     _, _, text_w, text_h = font.getbbox(text)
     draw.text((pin_w//2 - text_w//2, y_cur), text, text_color, font=font)
@@ -1959,7 +2125,7 @@ def equipment_template_1_img_c(data, images_file_paths, export_file_name):
     text = 'for apothecary'.upper()
     font_size = 96
     font_family, font_weight = 'Lato', 'Bold'
-    font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+    font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
     font = ImageFont.truetype(font_path, font_size)
     _, _, text_w, text_h = font.getbbox(text)
     draw.text((pin_w//2 - text_w//2, y_cur), text, text_color, font=font)
@@ -1985,7 +2151,7 @@ def gen_template_1_img_b(data, images_file_paths, export_file_name):
     img = Image.new(mode="RGB", size=(pin_w, pin_h), color=bg_color)
     draw = ImageDraw.Draw(img)
     img_0000 = Image.open(images_file_paths[0])
-    img_0000 = util.img_resize(img_0000, pin_w, pin_w)
+    img_0000 = media.resize(img_0000, pin_w, pin_w)
     img.paste(img_0000, (0, pin_h//3))
 
 
@@ -1999,7 +2165,7 @@ def gen_template_1_img_b(data, images_file_paths, export_file_name):
     ailment_text = f'{ailment_name}'.upper()
     font_size = 96
     font_family, font_weight = 'Lato', 'Bold'
-    font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+    font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
     font = ImageFont.truetype(font_path, font_size)
     _, _, ailment_w, ailment_h = font.getbbox(ailment_text)
 
@@ -2030,7 +2196,7 @@ def gen_template_1_img_b(data, images_file_paths, export_file_name):
     text = str(data['main_lst_num'])
     font_size = 160
     font_family, font_weight = 'Lato', 'Regular'
-    font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+    font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
     font = ImageFont.truetype(font_path, font_size)
     _, _, text_w, text_h = font.getbbox(text)
     x1 = pin_w//2 - text_w//2
@@ -2042,7 +2208,7 @@ def gen_template_1_img_b(data, images_file_paths, export_file_name):
     text = f'best herbal {preparation_name} for'.title()
     font_size = 48
     font_family, font_weight = 'Lato', 'Regular'
-    font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+    font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
     font = ImageFont.truetype(font_path, font_size)
     _, _, text_w, text_h = font.getbbox(text)
     draw.text((pin_w//2 - text_w//2, y_cur), text, text_color, font=font)
@@ -2051,7 +2217,7 @@ def gen_template_1_img_b(data, images_file_paths, export_file_name):
     # ailment
     font_size = 96
     font_family, font_weight = 'Lato', 'Bold'
-    font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+    font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
     font = ImageFont.truetype(font_path, font_size)
     for line in ailment_lines:
         _, _, line_w, line_h = font.getbbox(line)
@@ -2074,7 +2240,7 @@ def gen_template_1_img_b(data, images_file_paths, export_file_name):
         text = f'best herbal {preparation_name} for'.title()
         font_size = 48
         font_family, font_weight = 'Lato', 'Regular'
-        font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+        font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
         font = ImageFont.truetype(font_path, font_size)
         _, _, text_w, text_h = font.getbbox(text)
         draw.text((pin_w//2 - text_w//2, y_cur), text, text_color, font=font)
@@ -2083,7 +2249,7 @@ def gen_template_1_img_b(data, images_file_paths, export_file_name):
         # ailment
         font_size = 96
         font_family, font_weight = 'Lato', 'Bold'
-        font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+        font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
         font = ImageFont.truetype(font_path, font_size)
         line_1 = ailment_lines[0]
         line_2 = ailment_lines[1]
@@ -2099,7 +2265,7 @@ def gen_template_1_img_b(data, images_file_paths, export_file_name):
         text = f'best herbal {preparation_name} for'.title()
         font_size = 48
         font_family, font_weight = 'Lato', 'Regular'
-        font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+        font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
         font = ImageFont.truetype(font_path, font_size)
         _, _, text_w, text_h = font.getbbox(text)
         draw.text((pin_w//2 - text_w//2, y_cur), text, text_color, font=font)
@@ -2108,7 +2274,7 @@ def gen_template_1_img_b(data, images_file_paths, export_file_name):
         # ailment
         font_size = 96
         font_family, font_weight = 'Lato', 'Bold'
-        font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+        font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
         font = ImageFont.truetype(font_path, font_size)
         line_1 = ailment_lines[0]
         _, _, line_1_w, line_1_h = font.getbbox(line_1)
@@ -2136,7 +2302,7 @@ def gen_template_1_img_t(data, images_file_paths, export_file_name):
     img = Image.new(mode="RGB", size=(pin_w, pin_h), color=bg_color)
     draw = ImageDraw.Draw(img)
     img_0000 = Image.open(images_file_paths[0])
-    img_0000 = util.img_resize(img_0000, pin_w, pin_w)
+    img_0000 = media.resize(img_0000, pin_w, pin_w)
     img.paste(img_0000, (0, 0))
 
 
@@ -2150,7 +2316,7 @@ def gen_template_1_img_t(data, images_file_paths, export_file_name):
     ailment_text = f'{ailment_name}'.upper()
     font_size = 96
     font_family, font_weight = 'Lato', 'Bold'
-    font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+    font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
     font = ImageFont.truetype(font_path, font_size)
     _, _, ailment_w, ailment_h = font.getbbox(ailment_text)
 
@@ -2181,7 +2347,7 @@ def gen_template_1_img_t(data, images_file_paths, export_file_name):
     text = str(data['main_lst_num'])
     font_size = 160
     font_family, font_weight = 'Lato', 'Regular'
-    font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+    font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
     font = ImageFont.truetype(font_path, font_size)
     _, _, text_w, text_h = font.getbbox(text)
     x1 = pin_w//2 - text_w//2
@@ -2193,7 +2359,7 @@ def gen_template_1_img_t(data, images_file_paths, export_file_name):
     text = f'best herbal {preparation_name} for'.title()
     font_size = 48
     font_family, font_weight = 'Lato', 'Regular'
-    font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+    font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
     font = ImageFont.truetype(font_path, font_size)
     _, _, text_w, text_h = font.getbbox(text)
     draw.text((pin_w//2 - text_w//2, y_cur), text, text_color, font=font)
@@ -2202,7 +2368,7 @@ def gen_template_1_img_t(data, images_file_paths, export_file_name):
     # ailment
     font_size = 96
     font_family, font_weight = 'Lato', 'Bold'
-    font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+    font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
     font = ImageFont.truetype(font_path, font_size)
     for line in ailment_lines:
         _, _, line_w, line_h = font.getbbox(line)
@@ -2236,14 +2402,14 @@ def template_herb_1(json_article, images_filepaths, export_filename):
     img = Image.new(mode="RGB", size=(pin_w, pin_h), color=bg_color)
     draw = ImageDraw.Draw(img)
     img_0000 = Image.open(images_filepaths[0])
-    img_0000 = util.img_resize(img_0000, pin_w, pin_w)
+    img_0000 = media.resize(img_0000, pin_w, pin_w)
     img.paste(img_0000, (0, pin_h//3))
     ###
     text = json_article['herb_name_scientific']
     text = f'{text}'.upper()
     font_size = 96
     font_family, font_weight = 'Lato', 'Bold'
-    font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+    font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
     font = ImageFont.truetype(font_path, font_size)
     _, _, text_w, text_h = font.getbbox(text)
     lines = []
@@ -2264,10 +2430,11 @@ def template_herb_1(json_article, images_filepaths, export_filename):
     y_cur = y_start
     y_cur += 0
     ###
-    text = str(json_article['benefits_num'])
+    # text = str(json_article['benefits_num'])
+    text = str(10)
     font_size = 160
     font_family, font_weight = 'Lato', 'Regular'
-    font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+    font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
     font = ImageFont.truetype(font_path, font_size)
     _, _, text_w, text_h = font.getbbox(text)
     x1 = pin_w//2 - text_w//2
@@ -2277,7 +2444,7 @@ def template_herb_1(json_article, images_filepaths, export_filename):
     text = f'best health benefits of'.title()
     font_size = 48
     font_family, font_weight = 'Lato', 'Regular'
-    font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+    font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
     font = ImageFont.truetype(font_path, font_size)
     _, _, text_w, text_h = font.getbbox(text)
     draw.text((pin_w//2 - text_w//2, y_cur), text, text_color, font=font)
@@ -2285,7 +2452,7 @@ def template_herb_1(json_article, images_filepaths, export_filename):
     ###
     font_size = 96
     font_family, font_weight = 'Lato', 'Bold'
-    font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+    font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
     font = ImageFont.truetype(font_path, font_size)
     for line in lines:
         _, _, line_w, line_h = font.getbbox(line)
@@ -2311,14 +2478,14 @@ def template_herb_2(json_article, images_filepaths, export_filename):
     img = Image.new(mode="RGB", size=(pin_w, pin_h), color=bg_color)
     draw = ImageDraw.Draw(img)
     img_0000 = Image.open(images_filepaths[0])
-    img_0000 = util.img_resize(img_0000, pin_w, pin_w)
+    img_0000 = media.resize(img_0000, pin_w, pin_w)
     img.paste(img_0000, (0, 0))
     ###
     text = json_article['herb_name_scientific']
     text = f'{text}'.upper()
     font_size = 96
     font_family, font_weight = 'Lato', 'Bold'
-    font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+    font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
     font = ImageFont.truetype(font_path, font_size)
     _, _, text_w, text_h = font.getbbox(text)
     lines = []
@@ -2339,10 +2506,11 @@ def template_herb_2(json_article, images_filepaths, export_filename):
     y_cur = y_start
     y_cur += 0
     ###
-    text = str(json_article['benefits_num'])
+    # text = str(json_article['benefits_num'])
+    text = str(10)
     font_size = 160
     font_family, font_weight = 'Lato', 'Regular'
-    font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+    font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
     font = ImageFont.truetype(font_path, font_size)
     _, _, text_w, text_h = font.getbbox(text)
     x1 = pin_w//2 - text_w//2
@@ -2352,7 +2520,7 @@ def template_herb_2(json_article, images_filepaths, export_filename):
     text = f'best health benefits of'.title()
     font_size = 48
     font_family, font_weight = 'Lato', 'Regular'
-    font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+    font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
     font = ImageFont.truetype(font_path, font_size)
     _, _, text_w, text_h = font.getbbox(text)
     draw.text((pin_w//2 - text_w//2, y_cur), text, text_color, font=font)
@@ -2360,7 +2528,7 @@ def template_herb_2(json_article, images_filepaths, export_filename):
     ###
     font_size = 96
     font_family, font_weight = 'Lato', 'Bold'
-    font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+    font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
     font = ImageFont.truetype(font_path, font_size)
     for line in lines:
         _, _, line_w, line_h = font.getbbox(line)
@@ -2386,13 +2554,13 @@ def template_preparation_1(preparation_name_plural, images_filepaths, export_fil
     img = Image.new(mode="RGB", size=(pin_w, pin_h), color=bg_color)
     draw = ImageDraw.Draw(img)
     img_0000 = Image.open(images_filepaths[0])
-    img_0000 = util.img_resize(img_0000, pin_w, pin_w)
+    img_0000 = media.resize(img_0000, pin_w, pin_w)
     img.paste(img_0000, (0, pin_h//3))
     ###
     text = f'herbal {preparation_name_plural}'.upper()
     font_size = 96
     font_family, font_weight = 'Lato', 'Bold'
-    font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+    font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
     font = ImageFont.truetype(font_path, font_size)
     _, _, text_w, text_h = font.getbbox(text)
     lines = []
@@ -2416,7 +2584,7 @@ def template_preparation_1(preparation_name_plural, images_filepaths, export_fil
     text = str(100)
     font_size = 160
     font_family, font_weight = 'Lato', 'Regular'
-    font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+    font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
     font = ImageFont.truetype(font_path, font_size)
     _, _, text_w, text_h = font.getbbox(text)
     x1 = pin_w//2 - text_w//2
@@ -2426,7 +2594,7 @@ def template_preparation_1(preparation_name_plural, images_filepaths, export_fil
     text = f'best medicinal'.title()
     font_size = 48
     font_family, font_weight = 'Lato', 'Regular'
-    font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+    font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
     font = ImageFont.truetype(font_path, font_size)
     _, _, text_w, text_h = font.getbbox(text)
     draw.text((pin_w//2 - text_w//2, y_cur), text, text_color, font=font)
@@ -2434,7 +2602,7 @@ def template_preparation_1(preparation_name_plural, images_filepaths, export_fil
     ###
     font_size = 96
     font_family, font_weight = 'Lato', 'Bold'
-    font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+    font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
     font = ImageFont.truetype(font_path, font_size)
     for line in lines:
         _, _, line_w, line_h = font.getbbox(line)
@@ -2460,13 +2628,13 @@ def template_preparation_2(preparation_name_plural, images_filepaths, export_fil
     img = Image.new(mode="RGB", size=(pin_w, pin_h), color=bg_color)
     draw = ImageDraw.Draw(img)
     img_0000 = Image.open(images_filepaths[0])
-    img_0000 = util.img_resize(img_0000, pin_w, pin_w)
+    img_0000 = media.resize(img_0000, pin_w, pin_w)
     img.paste(img_0000, (0, 0))
     ###
     text = f'herbal {preparation_name_plural}'.upper()
     font_size = 96
     font_family, font_weight = 'Lato', 'Bold'
-    font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+    font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
     font = ImageFont.truetype(font_path, font_size)
     _, _, text_w, text_h = font.getbbox(text)
     lines = []
@@ -2490,7 +2658,7 @@ def template_preparation_2(preparation_name_plural, images_filepaths, export_fil
     text = str(100)
     font_size = 160
     font_family, font_weight = 'Lato', 'Regular'
-    font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+    font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
     font = ImageFont.truetype(font_path, font_size)
     _, _, text_w, text_h = font.getbbox(text)
     x1 = pin_w//2 - text_w//2
@@ -2500,7 +2668,7 @@ def template_preparation_2(preparation_name_plural, images_filepaths, export_fil
     text = f'best medicinal'.title()
     font_size = 48
     font_family, font_weight = 'Lato', 'Regular'
-    font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+    font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
     font = ImageFont.truetype(font_path, font_size)
     _, _, text_w, text_h = font.getbbox(text)
     draw.text((pin_w//2 - text_w//2, y_cur), text, text_color, font=font)
@@ -2508,7 +2676,7 @@ def template_preparation_2(preparation_name_plural, images_filepaths, export_fil
     ###
     font_size = 96
     font_family, font_weight = 'Lato', 'Bold'
-    font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+    font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
     font = ImageFont.truetype(font_path, font_size)
     for line in lines:
         _, _, line_w, line_h = font.getbbox(line)
@@ -2527,8 +2695,8 @@ def template_preparation_3(preparation_name_plural, images_filepaths, export_fil
     rect_h = 320
     img_0000 = Image.open(images_filepaths[0])
     img_0001 = Image.open(images_filepaths[1])
-    img_0000 = util.img_resize(img_0000, int(pin_w*1), int(pin_h*0.5))
-    img_0001 = util.img_resize(img_0001, int(pin_w*1), int(pin_h*0.5))
+    img_0000 = media.resize(img_0000, int(pin_w*1), int(pin_h*0.5))
+    img_0001 = media.resize(img_0001, int(pin_w*1), int(pin_h*0.5))
     img.paste(img_0000, (0, 0))
     img.paste(img_0001, (0, int(pin_h*0.5) + gap))
     random_theme = random.randint(0, 1)
@@ -2551,7 +2719,7 @@ def template_preparation_3(preparation_name_plural, images_filepaths, export_fil
     text = f'herbal {preparation_name_plural}'.upper()
     font_size = 96
     font_family, font_weight = 'Lato', 'Bold'
-    font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+    font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
     font = ImageFont.truetype(font_path, font_size)
     _, _, text_w, text_h = font.getbbox(text)
     if text_w > pin_w - 80:
@@ -2568,14 +2736,14 @@ def template_preparation_3(preparation_name_plural, images_filepaths, export_fil
         text = f'best medicinal'.title()
         font_size = 48
         font_family, font_weight = 'Lato', 'Regular'
-        font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+        font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
         font = ImageFont.truetype(font_path, font_size)
         _, _, text_w, text_h = font.getbbox(text)
         draw.text((pin_w//2 - text_w//2, pin_h//2 - text_h//2 - text_h*1.5), text, text_color, font=font)
         text = str(100)
         font_size = 160
         font_family, font_weight = 'Lato', 'Regular'
-        font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+        font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
         font = ImageFont.truetype(font_path, font_size)
         _, _, text_w, text_h = font.getbbox(text)
         x1 = pin_w//2 - text_w//2
@@ -2586,14 +2754,14 @@ def template_preparation_3(preparation_name_plural, images_filepaths, export_fil
         text = f'best medicinal'.title()
         font_size = 48
         font_family, font_weight = 'Lato', 'Regular'
-        font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+        font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
         font = ImageFont.truetype(font_path, font_size)
         _, _, text_w, text_h = font.getbbox(text)
         draw.text((pin_w//2 - text_w//2, pin_h//2 - text_h//2 - text_h*1.2), text, text_color, font=font)
         text = str(100)
         font_size = 160
         font_family, font_weight = 'Lato', 'Regular'
-        font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+        font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
         font = ImageFont.truetype(font_path, font_size)
         _, _, text_w, text_h = font.getbbox(text)
         x1 = pin_w//2 - text_w//2
@@ -2604,7 +2772,7 @@ def template_preparation_3(preparation_name_plural, images_filepaths, export_fil
     return export_file_path
 
 def pin_herb(article_filepath, article_i):
-    json_article = util.json_read(article_filepath)
+    json_article = io.json_read(article_filepath)
     ###
     title = json_article['title']
     herb_slug = json_article['herb_slug']
@@ -2615,7 +2783,7 @@ def pin_herb(article_filepath, article_i):
     benefits = json_article['benefits']
     benefits_descriptions = []
     for benefit in benefits:
-        benefits_descriptions.append(benefit['desc'])
+        benefits_descriptions.append(benefit['benefit_desc'])
     if benefits_descriptions:
         random.shuffle(benefits_descriptions)
         description = benefits_descriptions[0][:490] + '...'
@@ -2667,11 +2835,11 @@ def pin_herb(article_filepath, article_i):
         'url': url,
         'board_name': board_name
     }
-    json_write(f'{g.PINTEREST_PINS_IMAGE_FOLDERPATH}/{article_i}.json', obj)
+    io.json_write(f'{g.pinterest_tmp_image_folderpath}/pins/{article_i}.json', obj)
     pass
 
 def pin_preparation(article_filepath, article_i):
-    json_article = util.json_read(article_filepath)
+    json_article = io.json_read(article_filepath)
     print(json_article)
     ###
     title = json_article['title']
@@ -2741,13 +2909,13 @@ def pin_preparation(article_filepath, article_i):
         'url': url,
         'board_name': board_name
     }
-    json_write(f'{g.PINTEREST_PINS_IMAGE_FOLDERPATH}/{article_i}.json', obj)
+    io.json_write(f'{g.pinterest_tmp_image_folderpath}/pins/{article_i}.json', obj)
     pass
 
 def pin_gen_equipments(article_filepath, article_i, equipment_slug):
     equipment_name = equipment_slug.replace('-', ' ')
 
-    data = util.json_read(article_filepath)
+    data = io.json_read(article_filepath)
     title = data['title']
     url = data["url"]
     img_slug = url.replace('/', '-')
@@ -2803,12 +2971,12 @@ def pin_gen_equipments(article_filepath, article_i, equipment_slug):
         'img_filepath': img_filepath,
         'board_name': board_name
     }
-    json_write(f'{g.PINTEREST_PINS_IMAGE_FOLDERPATH}/{article_i}.json', obj)
+    io.json_write(f'{g.pinterest_tmp_image_folderpath}/pins/{article_i}.json', obj)
     # quit()
 
 def pin_gen_3(article_filepath, article_i, preparation_slug):
     preparation_name = preparation_slug.replace('-', ' ')
-    data = util.json_read(article_filepath)
+    data = io.json_read(article_filepath)
     ###
     title = data['title']
     status_name = data['ailment_name']
@@ -2860,7 +3028,7 @@ def pin_gen_3(article_filepath, article_i, preparation_slug):
         # gen_image(images, 0, preparation_name, image_style, width, height)
         gen_image_2(images, 0, preparation_name, width, height)
 
-    # gen pins
+    ### gen pins
     if template == '1_img_b':
         img_filepath = gen_template_1_img_b(data, images, filename_out)
     elif template == '1_img_t':
@@ -2880,7 +3048,7 @@ def pin_gen_3(article_filepath, article_i, preparation_slug):
         'url': url,
         'board_name': board_name
     }
-    json_write(f'{g.PINTEREST_PINS_IMAGE_FOLDERPATH}/{article_i}.json', obj)
+    io.json_write(f'{g.pinterest_tmp_image_folderpath}/pins/{article_i}.json', obj)
 
 i = 0
 for article_filepath in articles_filepath:
@@ -2888,12 +3056,12 @@ for article_filepath in articles_filepath:
     print(f'{i}/{len(articles_filepath)} >> {article_filepath}')
 
 if 1:
-    for filename in os.listdir(g.PINTEREST_TMP_IMAGE_FOLDERPATH):
-        os.remove(f'{g.PINTEREST_TMP_IMAGE_FOLDERPATH}/{filename}')
-    for filename in os.listdir(g.PINTEREST_PINS_IMAGE_FOLDERPATH):
-        os.remove(f'{g.PINTEREST_PINS_IMAGE_FOLDERPATH}/{filename}')
-    for filename in os.listdir('pinterest/images'):
-        os.remove(f'pinterest/images/{filename}')
+    for filename in os.listdir(f'{g.pinterest_tmp_image_folderpath}/tmp'):
+        os.remove(f'{g.pinterest_tmp_image_folderpath}/tmp/{filename}')
+    for filename in os.listdir(f'{g.pinterest_tmp_image_folderpath}/images'):
+        os.remove(f'{g.pinterest_tmp_image_folderpath}/images/{filename}')
+    for filename in os.listdir(f'{g.pinterest_tmp_image_folderpath}/pins'):
+        os.remove(f'{g.pinterest_tmp_image_folderpath}/pins/{filename}')
 
 def image_ai(prompt, width, height):
     import torch
@@ -2913,10 +3081,11 @@ def image_ai(prompt, width, height):
     return image
 
 i = 0
-
 shop_labels(i)
-# shop_herb_drying_checklist(i)
 i += 1
+shop_herb_drying_checklist(i)
+i += 1
+# quit()
 
 # PINS HERBS
 for article_filepath in herbs_articles_filepath:

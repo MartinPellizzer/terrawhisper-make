@@ -1,13 +1,17 @@
+import os
 import json
 import random
+import shutil
 
 from lib import g
 from lib import io
 from lib import llm
+from lib import media
+from lib import utils
 from lib import components
+from lib import sections
 
-wcvp_rows = io.csv_read(f'{g.database_folderpath}/csv/wcvp/wcvp_names.csv', '|')
-wcvp_dict = io.csv_to_dict(f'{g.database_folderpath}/csv/wcvp/wcvp_names.csv', '|')
+# wcvp_dict = io.csv_to_dict(f'{g.database_folderpath}/csv/wcvp/wcvp_names.csv', '|')
 
 def ai_llm_intro(obj, regen=False, dispel=False):
     json_article_filepath = f'''{g.database_folderpath}/json/{obj['url']}.json'''
@@ -17,6 +21,7 @@ def ai_llm_intro(obj, regen=False, dispel=False):
         json_article[key] = ''
     if dispel: 
         json_article[key] = ''
+        io.json_write(json_article_filepath, json_article)
         return
     if regen: 
         json_article[key] = ''
@@ -39,6 +44,7 @@ def ai_llm_list_init(obj, regen=False, dispel=False):
         json_article[key] = []
     if dispel: 
         json_article[key] = []
+        io.json_write(json_article_filepath, json_article)
         return
     if regen: 
         json_article[key] = []
@@ -127,6 +133,7 @@ def ai_llm_list_desc(obj, regen=False, dispel=False):
             json_obj[key] = ''
         if dispel: 
             json_obj[key] = ''
+            io.json_write(json_article_filepath, json_article)
             return
         if regen: 
             json_obj[key] = ''
@@ -159,6 +166,42 @@ def json_gen(obj):
     ai_llm_list_init(obj, regen=False, dispel=False)
     ai_llm_list_desc(obj, regen=False, dispel=False)
 
+def image_ai(obj):
+    json_article_filepath = f'''{g.database_folderpath}/json/{obj['url']}.json'''
+    json_article = io.json_read(json_article_filepath)
+    preparation_slug = json_article['preparation_slug']
+    preparation_name_singular = json_article['preparation_name_singular']
+    preparation_name_plural = json_article['preparation_name_plural']
+    preparation_list = json_article['preparations']
+    for preparation_i, preparation in enumerate(preparation_list[:10]):
+        herb_name_scientific = preparation['herb_name_scientific']
+        herb_slug = herb_name_scientific.lower().strip().replace(' ', '-').replace('.', '')
+        out_filepath = f'''{g.database_folderpath}/images/preparations/{herb_slug}-{preparation_slug}.jpg'''
+        if not os.path.exists(out_filepath):
+            prompt = f'''
+                herbal {preparation_name_plural} made with dry {herb_name_scientific},
+                on a wooden table,
+                rustic, vintage, boho,
+                warm tones,
+                high resolution,
+            '''.replace('  ', ' ')
+            image = media.image_gen(prompt, 1024, 1024)
+            image = media.resize(image, 768, 768)
+            # image.show()
+            image.save(out_filepath)
+        # quit()
+
+def image_pil(obj):
+    in_folderpath = f'''{g.database_folderpath}/images/preparations'''
+    web_folderpath = f'''{g.website_folderpath}/images/preparations'''
+    for in_filename in os.listdir(in_folderpath):
+        in_filepath = f'''{in_folderpath}/{in_filename}'''
+        web_filepath = f'''{web_folderpath}/{in_filename}'''
+        print(in_filepath)
+        print(web_filepath)
+        print()
+        shutil.copy2(in_filepath, web_filepath)
+
 def html_gen(obj):
     json_article_filepath = f'''{g.database_folderpath}/json/{obj['url']}.json'''
     json_article = io.json_read(json_article_filepath)
@@ -166,40 +209,51 @@ def html_gen(obj):
     json_title = f'''{json_article['title']}'''
     meta_title = f'''{json_title}'''
     meta_description = f''
-    html_article += f'''<h1>{json_title}</h1>'''
-    html_article += f'''<p>{json_article['intro']}</p>'''
+    html_article += f'''<h1>{json_title.title()}</h1>'''
+    src = f'''/images/ailments/{json_article['ailment_slug']}-{json_article['preparation_slug']}.jpg'''
+    alt = f'''{json_article['ailment_name']} {json_article['preparation_name_singular']}'''
+    html_article += f'''<img src="{src}" alt="{alt}">'''
+    html_article += f'''{utils.format_1N1(json_article['intro'])}'''
     for preparation_i, preparation in enumerate(json_article['preparations'][:10]):
         html_article += f'''<h2>{preparation_i+1}. {preparation['herb_name_scientific'].capitalize()}</h2>'''
-        html_article += f'''<p>{preparation['preparation_desc']}</p>'''
+        herb_slug = preparation['herb_name_scientific'].strip().lower().replace(' ', '-').replace('.', '')
+        src = f'''/images/preparations/{herb_slug}-{json_article['preparation_slug']}.jpg'''
+        alt = f'''{preparation['herb_name_scientific']} {json_article['preparation_name_singular']}'''
+        html_article += f'''<img src="{src}" alt="{alt}">'''
+        html_article += f'''{utils.format_1N1(preparation['preparation_desc'])}'''
     html = f'''
         <!DOCTYPE html>
         <html lang="en">
         {components.html_head(meta_title, meta_description)}
         <body>
-            {components.html_header()}
+            {sections.header()}
+            {sections.breadcrumbs(obj['url'])}
             <main class="container-md article">
                 {html_article}
             </main>
             <div class="mt-64"></div>
-            {components.html_footer()}
+            {sections.footer()}
         </body>
         </html>
     '''
-    html_filepath = f'{g.website_folderpath}/index.html'
+    html_filepath = f'''{g.website_folderpath}/{obj['url']}.html'''
     with open(html_filepath, 'w') as f: f.write(html)
 
 def gen():
     ailment_list = io.csv_to_dict(f'{g.database_folderpath}/csv/ailments.csv')
     preparation_list = io.csv_to_dict(f'{g.database_folderpath}/csv/preparations.csv')
-    for ailment in ailment_list:
+    for ailment_i, ailment in enumerate(ailment_list):
         ailment_slug = ailment['ailment_slug']
         ailment_name = ailment['ailment_name']
         organ_slug = ailment['organ_slug']
         system_slug = ailment['system_slug']
-        for preparation in preparation_list:
+        print(f'AILMENT: {ailment_i}/{len(ailment_list)} - {ailment_name}')
+        for preparation_i, preparation in enumerate(preparation_list):
             preparation_slug = preparation['preparation_slug']
             preparation_name_singular = preparation['preparation_name_singular']
             preparation_name_plural = preparation['preparation_name_plural']
+            print(f'PREPARATION: {preparation_slug}')
+            # if preparation_slug == 'teas': continue
             url = f'ailments/{ailment_slug}/{preparation_slug}'
             obj = {
                 'url': url,
@@ -211,7 +265,9 @@ def gen():
                 'preparation_name_singular': preparation_name_singular,
                 'preparation_name_plural': preparation_name_plural,
             }
-            json_gen(obj)
+            # json_gen(obj)
+            # image_ai(obj)
             html_gen(obj)
-            quit()
+            # quit()
+    # image_pil(obj)
 

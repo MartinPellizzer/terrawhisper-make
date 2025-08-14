@@ -1,3 +1,4 @@
+import os
 import csv
 import json
 
@@ -18,11 +19,16 @@ def csv_to_dict(filepath, delimiter='\\'):
     for row in rows_body:
         obj = {}
         for element_i, e in enumerate(row):
-            obj[row_header[element_i]] = e
+            obj[row_header[element_i]] = e.strip()
         obj_list.append(obj)
     return obj_list
 
-def json_read(filepath):
+def json_create(filepath):
+    if not os.path.exists(filepath):
+        json_write(filepath, {})
+
+def json_read(filepath, create=False):
+    if create == True: json_create(filepath)
     with open(filepath) as f:
         data = json.load(f)
     return data

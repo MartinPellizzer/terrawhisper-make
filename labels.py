@@ -2,8 +2,6 @@ import os
 import random
 import shutil
 
-from lib import io
-
 import torch
 from diffusers import DiffusionPipeline
 from diffusers import StableDiffusionXLPipeline
@@ -14,17 +12,15 @@ import matplotlib.pyplot as plt
 from transformers import AutoModelForImageSegmentation
 
 from PIL import Image, ImageFont, ImageDraw, ImageEnhance
-
-from oliark_llm import llm_reply
-from oliark import img_resize
+import numpy as np
 
 from lib import g
+from lib import io
+from lib import llm
 from lib import data
+from lib import media
 
 model_filepath = '/home/ubuntu/vault-tmp/llms/Qwen3-8B-Q4_K_M.gguf'
-
-# checkpoint_filepath = f'{g.VAULT}/stable-diffusion/checkpoints/xl/juggernautXL_juggXIByRundiffusion.safetensors'
-checkpoint_filepath = f'{g.VAULT}/stable-diffusion/checkpoints/xl/juggernautXL_ragnarokBy.safetensors'
 pipe = None
 bg_model = None
 
@@ -32,15 +28,14 @@ def pipe_init():
     global pipe
     if pipe == None:
         pipe = StableDiffusionXLPipeline.from_single_file(
-            checkpoint_filepath, 
+            g.checkpoint_filepath, 
             torch_dtype=torch.float16, 
             use_safetensors=True, 
             variant="fp16"
         ).to('cuda')
         pipe.scheduler = DPMSolverMultistepScheduler.from_config(pipe.scheduler.config)
 
-
-herb_list = data.preparations_popular_100_get('teas')
+herb_list = data.preparations_popular_100('teas')
 if 0:
     for herb in herb_list:
         herb_name_scientific = herb['herb_name_scientific']
@@ -56,8 +51,7 @@ herb_list = [
   {"herb_name_scientific":"Mentha x piperita","herb_name_common":"Peppermint"},
   {"herb_name_scientific":"Lavandula angustifolia","herb_name_common":"Lavender"},
   {"herb_name_scientific":"Echinacea purpurea","herb_name_common":"Echinacea"},
-  {"herb_name_scientific":"Allium sativum","herb_name_common":"Garlic"},
-  {"herb_name_scientific":"Curcuma longa","herb_name_common":"Turmeric"},
+  {"herb_name_scientific":"Allium sativum","herb_name_common":"Garlic"}, {"herb_name_scientific":"Curcuma longa","herb_name_common":"Turmeric"},
   {"herb_name_scientific":"Taraxacum officinale","herb_name_common":"Dandelion"},
   {"herb_name_scientific":"Hypericum perforatum","herb_name_common":"St. John's Wort"},
   {"herb_name_scientific":"Melissa officinalis","herb_name_common":"Lemon Balm"},
@@ -144,14 +138,7 @@ herb_list = [
   {"herb_name_scientific":"Laurus nobilis","herb_name_common":"Bay Leaf"},
   {"herb_name_scientific":"Peumus boldus","herb_name_common":"Boldo"},
   {"herb_name_scientific": "Rheum palmatum", "herb_name_common": "Chinese Rhubarb"},
-  {"herb_name_scientific": "Uncaria tomentosa", "herb_name_common": "Cat's Claw"},
   {"herb_name_scientific": "Cnicus benedictus", "herb_name_common": "Blessed Thistle"},
-  {"herb_name_scientific": "Piper methysticum", "herb_name_common": "Kava"},
-  {"herb_name_scientific": "Commiphora myrrha", "herb_name_common": "Myrrh"},
-  {"herb_name_scientific": "Boswellia serrata", "herb_name_common": "Frankincense"},
-  {"herb_name_scientific": "Aspalathus linearis", "herb_name_common": "Rooibos"},
-  {"herb_name_scientific": "Harpagophytum procumbens", "herb_name_common": "Devil's Claw"},
-  {"herb_name_scientific": "Schisandra chinensis", "herb_name_common": "Schisandra"}
 ]
 '''
 
@@ -245,7 +232,7 @@ herb_list = [
     {'herb_name_scientific': 'Rhodiola rosea', 'herb_name_common': 'roseroot'},
     {'herb_name_scientific': 'Ulmus rubra', 'herb_name_common': 'slippery elm'},
     {'herb_name_scientific': 'Ligusticum wallichii', 'herb_name_common': 'chuan xiong'},
-    {'herb_name_scientific': 'Eurycoma longifolia', 'herb_name_common': 'tongkat ali'},
+    {"herb_name_scientific": "Aspalathus linearis", "herb_name_common": "rooibos"},
     {'herb_name_scientific': 'Digitalis purpurea', 'herb_name_common': 'foxglove'},
     {'herb_name_scientific': 'Hyptis suaveolens', 'herb_name_common': 'pignut'},
     {'herb_name_scientific': 'Allium sativum', 'herb_name_common': 'garlic'},
@@ -255,29 +242,13 @@ herb_list = [
     {"herb_name_scientific": "Papaver rhoeas", "herb_name_common": "poppy"},
     {"herb_name_scientific": "Primula vulgaris", "herb_name_common": "primrose"},
     {"herb_name_scientific": "Verbena officinalis", "herb_name_common": "vervain"},
-    {"herb_name_scientific": "Trigonella foenum-graecum", "herb_name_common": "fenugreek"},
+    {"herb_name_scientific": "Uncaria tomentosa", "herb_name_common": "cat's claw"},
 ]
+    # {'herb_name_scientific': 'Eurycoma longifolia', 'herb_name_common': 'tongkat ali'},
 # herb_list = sorted(herb_list, key=lambda x: x['herb_name_common'].lower(), reverse=False)
-# for herb in herb_list:
-    # print(herb)
-# quit()
-
-if 0:
-    prompt = f'''
-        Give me a list of the 10 best, most popular, most common, most available medicinal herbs used in western countries.
-    '''
-    prompt += '/no-think'
-    reply = llm_reply(prompt, model_path=model_filepath).strip()
-    if '</think>' in reply:
-        reply = reply.split('</think>')[1].strip()
-
-    prompt = f'''
-        Give me a list of the 10 easiest to cultivate and most available medicinal herbs used in western regions.
-    '''
-    prompt += '/no-think'
-    reply = llm_reply(prompt, model_path=model_filepath).strip()
-    if '</think>' in reply:
-        reply = reply.split('</think>')[1].strip()
+for herb in herb_list:
+    print(herb['herb_name_common'].title())
+quit()
 
 def ai_img_herb(herb_i, herb_name='scientific'):
     herb = herb_list[herb_i]
@@ -407,10 +378,10 @@ def ai_img_herbs_desaturate():
         image.save(image_filepath)
 
 def ai_img_herbs_100_alpha():
-    input_folderpath = f'assets/shop/labels/herbs/valid'
+    input_folderpath = f'{g.assets_folderpath}/shop/labels/herbs/valid'
     try: os.makedirs(input_folderpath)
     except: pass
-    output_folderpath = f'assets/shop/labels/herbs/alpha'
+    output_folderpath = f'{g.assets_folderpath}/shop/labels/herbs/alpha'
     try: os.makedirs(output_folderpath)
     except: pass
     for herb_i, herb in enumerate(herb_list):
@@ -3228,9 +3199,12 @@ def sheets_100_oval_5x8():
         sheet.save(output_filepath)
         # sheet.show()
 
-def labels_100(shape, size, herb_image_size, herb_image_y, herb_name_common_size, herb_name_common_y, herb_name_common_width_max, herb_name_scientific_width_max, herb_name_scientific_size, herb_name_scientific_y, text_vertical=False):
-    label_folderpath = f'assets/shop/labels/public/100/vintage/{shape}/{size}'
-    background_filepath = f'assets/shop/labels/{shape}-alpha.png'
+def labels_100(shape, size, herb_image_size, herb_image_y, herb_name_common_size, herb_name_common_y, herb_name_common_width_max, herb_name_scientific_width_max, herb_name_scientific_size, herb_name_scientific_y, text_vertical=False, alpha=True, mod=False):
+    label_folderpath = f'{g.assets_folderpath}/shop/labels/public/100/vintage/{shape}/{size}'
+    if alpha:
+        background_filepath = f'{g.assets_folderpath}/shop/labels/backgrounds/mod/{shape}-alpha.png'
+    else:
+        background_filepath = f'{g.assets_folderpath}/shop/labels/backgrounds/mod/{shape}.png'
     dpi = 300
     size_w, size_h = size.split('x')
     label_w = int(int(size_w) * dpi)
@@ -3254,36 +3228,58 @@ def labels_100(shape, size, herb_image_size, herb_image_y, herb_name_common_size
         line = herb_name_common
         font_size = herb_name_common_size
         font_family, font_weight = 'cinzel-decorative', 'regular'
-        font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+        font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
         font = ImageFont.truetype(font_path, font_size)
         lines = text_to_lines(line, font, herb_name_common_width_max)
-        for line in lines:
+        if text_vertical:
+            line = lines[0]
             _, _, line_w, line_h = font.getbbox(line)
-            draw.text((label_w//2 - line_w//2, y_cur), line, '#423626', font=font)
-            y_cur += font_size*1.2
-        y_cur += (font_size//2)
-        # y_cur += herb_name_scientific_y
+            text_image = Image.new('RGBA', (line_w, line_h))
+            text_image_draw = ImageDraw.Draw(text_image)
+            text_image_draw.text((0, 0), line, '#423626', font=font)
+            text_image = text_image.rotate(90, expand=1)
+            text_image_w, text_image_h = text_image.size
+            label.paste(text_image, (herb_name_common_y, label_h//2 - text_image_h//2), text_image)
+        else:
+            for line in lines:
+                _, _, line_w, line_h = font.getbbox(line)
+                draw.text((label_w//2 - line_w//2, y_cur), line, '#423626', font=font)
+                y_cur += font_size*1.2
+        y_cur += herb_name_scientific_y
         ### name scientific
         line = herb_name_scientific
         font_size = herb_name_scientific_size
         font_family, font_weight = 'vollkorn-sc', 'regular'
-        font_path = f"assets/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+        font_path = f"{g.assets_folderpath}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
         font = ImageFont.truetype(font_path, font_size)
         _, _, line_w, line_h = font.getbbox(line)
         lines = text_to_lines(line, font, herb_name_scientific_width_max)
-        for line in lines:
+        if text_vertical:
+            line = lines[0]
             _, _, line_w, line_h = font.getbbox(line)
-            draw.text((label_w//2 - line_w//2, y_cur), line, '#423626', font=font)
-            y_cur += font_size*1.2
+            text_image = Image.new('RGBA', (line_w, line_h))
+            text_image_draw = ImageDraw.Draw(text_image)
+            text_image_draw.text((0, 0), line, '#423626', font=font)
+            text_image = text_image.rotate(90, expand=1)
+            text_image_w, text_image_h = text_image.size
+            label.paste(text_image, (herb_name_scientific_y, label_h//2 - text_image_h//2), text_image)
+        else:
+            for line in lines:
+                _, _, line_w, line_h = font.getbbox(line)
+                draw.text((label_w//2 - line_w//2, y_cur), line, '#423626', font=font)
+                y_cur += font_size*1.2
         ### herb image
         herb_y = herb_image_y
         herb_size_mul = herb_image_size
         herb_w = int(832 * herb_size_mul)
         herb_h = int(1216 * herb_size_mul)
-        herb_alpha_folderpath = f'assets/shop/labels/herbs/alpha'
+        if mod:
+            herb_alpha_folderpath = f'{g.assets_folderpath}/shop/labels/herbs/alpha-mod'
+        else:
+            herb_alpha_folderpath = f'{g.assets_folderpath}/shop/labels/herbs/alpha'
         herb_filepath = f'{herb_alpha_folderpath}/{herb_i}-{herb_slug}.png'
         herb_image = Image.open(herb_filepath)
-        herb_image = img_resize(herb_image, herb_w, herb_h)
+        herb_image = media.resize(herb_image, herb_w, herb_h)
         label.paste(herb_image, (int(label_w//2 - herb_w//2), int(label_h//2 - herb_h//2) + herb_y), herb_image)
         ### png
         label = label.convert('RGBA')
@@ -3292,7 +3288,6 @@ def labels_100(shape, size, herb_image_size, herb_image_y, herb_name_common_size
         except: pass
         label_png_filepath = f'{label_png_folderpath}/{herb_i}-{herb_slug}.png'
         label.save(label_png_filepath)
-        # label.show()
         ### jpg
         label_bg = Image.new('RGBA', (label_w, label_h), '#ffffff')
         label_bg.paste(label, (0, 0), label)
@@ -3303,21 +3298,21 @@ def labels_100(shape, size, herb_image_size, herb_image_y, herb_name_common_size
         except: pass
         label_jpg_filepath = f'{label_jpg_folderpath}/{herb_i}-{herb_slug}.jpg'
         label.save(label_jpg_filepath, format='JPEG', quality=30)
-        # label.show()
         # quit()
+        # break
 
 def ai_img_herb_100(val=''):
-    image_folderpath = f'assets/shop/labels/herbs'
+    image_folderpath = f'{g.assets_folderpath}/shop/labels/herbs'
     try: os.makedirs(image_folderpath)
     except: pass
-    image_tmp_folderpath = f'assets/shop/labels/herbs/tmp'
+    image_tmp_folderpath = f'{g.assets_folderpath}/shop/labels/herbs/tmp'
     try: os.makedirs(image_tmp_folderpath)
     except: pass
-    image_valid_folderpath = f'assets/shop/labels/herbs/valid'
+    image_valid_folderpath = f'{g.assets_folderpath}/shop/labels/herbs/valid'
     try: os.makedirs(image_valid_folderpath)
     except: pass
     for herb_i, herb in enumerate(herb_list):
-        print(herb_i)
+        print(f'{herb_i}/{len(herb_list)} - {herb}')
         herb_name_scientific = herb['herb_name_scientific']
         herb_slug = herb_name_scientific.lower().strip().replace(' ', '-')
         ###
@@ -3352,76 +3347,314 @@ def ai_img_herb_100(val=''):
         # image.show()
         return img_tmp_filepath, img_valid_filepath
 
-img_valid_filepath = ''
-while True:
-    val = input('gen >> ')
-    if val == '': 
-        img_tmp_filepath, img_valid_filepath = ai_img_herb_100()
-    elif val == ' ': 
-        shutil.copy2(img_tmp_filepath, img_valid_filepath)
-        img_tmp_filepath, img_valid_filepath = ai_img_herb_100()
-    else:
-        img_tmp_filepath, img_valid_filepath = ai_img_herb_100(val)
-# ai_img_herbs_100_alpha()
+
+
+####################################################################
+####################################################################
+####################################################################
+if 0:
+    img_valid_filepath = ''
+    while True:
+        val = input('gen >> ')
+        if val == '': 
+            img_tmp_filepath, img_valid_filepath = ai_img_herb_100()
+        elif val == ' ': 
+            shutil.copy2(img_tmp_filepath, img_valid_filepath)
+            img_tmp_filepath, img_valid_filepath = ai_img_herb_100()
+        else:
+            img_tmp_filepath, img_valid_filepath = ai_img_herb_100(val)
+    ai_img_herbs_100_alpha()
+
+def calculate_image_state(image):
+    img = image.convert('RGB')
+    img_array = np.array(img) / 255.0
+
+    brightness = np.mean(img_array)
+    
+    avg_color = np.mean(img_array, axis=(0, 1))
+
+    hsv = np.array(img.convert('HSV'))
+    saturation = np.mean(hsv[:, :, 1]) / 255.0
+
+    contrast = np.std(img_array)
+    
+    return brightness, avg_color, saturation, contrast
+
+def match_style(source_image, target_image):
+    target_brightness, target_color, target_saturation, target_contrast = calculate_image_state(target_image)
+    source_brightness, source_color, source_saturation, source_contrast = calculate_image_state(source_image)
+
+    img = source_image.convert('RGB')
+    brightness_factor = target_brightness / source_brightness if source_brightness > 0 else 1
+    img = ImageEnhance.Brightness(img).enhance(brightness_factor)
+
+    img_array = np.array(img) / 255.0
+    current_color = np.mean(img_array, axis=(0, 1))
+    color_factors = target_color / current_color
+    img_balance = np.clip(img_array * color_factors, 0, 1)
+    img = Image.fromarray((img_balance*255).astype(np.uint8))
+    
+    current_hsv = np.array(img.convert('HSV'))
+    current_saturation = np.mean(current_hsv[:, :, 1]) / 255.0
+    saturation_factor = target_saturation / current_saturation if current_saturation > 0 else 1
+    img = ImageEnhance.Color(img).enhance(saturation_factor)
+
+    img_array = np.array(img) / 255.0
+    current_contrast = np.std(img_array)
+    current_contrast *= 0.8
+    contrast_factor = target_contrast / current_contrast if current_contrast > 0 else 1 
+    img = ImageEnhance.Contrast(img).enhance(contrast_factor)
+    
+    return img
+
+def valid_mod(input_folderpath_rel, output_folderpath_rel, target_filepath_rel):
+    input_folderpath = f'{g.database_folderpath}/assets/shop/labels/{input_folderpath_rel}'
+    output_folderpath = f'{g.database_folderpath}/assets/shop/labels/{output_folderpath_rel}'
+    filename_list = sorted(os.listdir(input_folderpath))
+    for filename in filename_list:
+        input_filepath = f'{input_folderpath}/{filename}'
+        output_filepath = f'{output_folderpath}/{filename}'
+        '''
+        source_filepath = f'{g.database_folderpath}/assets/shop/labels/herbs/valid/0-zingiber-officinale.jpg'
+        source_filepath = f'{g.database_folderpath}/assets/shop/labels/herbs/valid/3-lavandula-angustifolia.jpg'
+        target_filepath = f'{g.database_folderpath}/assets/shop/labels/oval-alpha.png'
+        '''
+        source_filepath = input_filepath
+        target_filepath = f'{g.database_folderpath}/assets/shop/labels/{target_filepath_rel}'
+        source_image = Image.open(source_filepath)
+        target_image = Image.open(target_filepath)
+        img = match_style(source_image, target_image)
+        sheet = Image.new('RGB', (832*3, 1216), color='#ffffff')
+        sheet.paste(target_image, (832*0, 0)) 
+        sheet.paste(source_image, (832*1, 1)) 
+        sheet.paste(img, (832*2, 0)) 
+        # sheet.save(f'{g.database_folderpath}/assets/shop/labels/test.jpg')
+        img.save(output_filepath)
+
+# valid_mod('herbs/valid', 'herbs/valid-mod', 'oval-alpha.png')
+# valid_mod('backgrounds/raw', 'backgrounds/mod', 'backgrounds/raw/oval-alpha.png')
+# quit()
+
+def alpha_mod():
+    input_folderpath = f'{g.assets_folderpath}/shop/labels/herbs/valid-mod'
+    try: os.makedirs(input_folderpath)
+    except: pass
+    output_folderpath = f'{g.assets_folderpath}/shop/labels/herbs/alpha-mod'
+    try: os.makedirs(output_folderpath)
+    except: pass
+    for herb_i, herb in enumerate(herb_list):
+        # herb_slug = herb['herb_slug']
+        herb_name_scientific = herb['herb_name_scientific']
+        herb_slug = herb_name_scientific.lower().strip().replace(' ', '-').replace('.', '')
+        image_filepath = f'{input_folderpath}/{herb_i}-{herb_slug}.jpg'
+        image = Image.open(image_filepath)
+        global bg_model
+        if not bg_model:
+            bg_model = AutoModelForImageSegmentation.from_pretrained('briaai/RMBG-2.0', trust_remote_code=True)
+        torch.set_float32_matmul_precision(['high', 'highest'][0])
+        bg_model.to('cuda')
+        bg_model.eval()
+        # Data settings
+        image_size = (832, 1216)
+        transform_image = transforms.Compose([
+            transforms.Resize(image_size),
+            transforms.ToTensor(),
+            transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
+        ])
+        input_images = transform_image(image).unsqueeze(0).to('cuda')
+        # Prediction
+        with torch.no_grad():
+            preds = bg_model(input_images)[-1].sigmoid().cpu()
+        pred = preds[0].squeeze()
+        pred_pil = transforms.ToPILImage()(pred)
+        mask = pred_pil.resize(image.size)
+        image.putalpha(mask)
+        image_filepath = f'{output_folderpath}/{herb_i}-{herb_slug}.png'
+        image.save(image_filepath)
+
+# alpha_mod()
 
 # oval
-if 0:
-    labels_100(
-        'oval', '1x2', 
-        herb_image_size = 0.25,
-        herb_image_y = 70,
-        herb_name_common_size = 20,
-        herb_name_common_y = 100,
-        herb_name_common_width_max = 9999,
-        herb_name_scientific_size = 18,
-        herb_name_scientific_y = 40,
-        herb_name_scientific_width_max = 9999,
-        text_vertical = True,
-    )
-if 0:
-    labels_100(
-        'oval', '2x3', 
-        herb_image_size = 0.45,
-        herb_image_y = 70,
-        herb_name_common_size = 36,
-        herb_name_common_y = 120,
-        herb_name_common_width_max = 9999,
-        herb_name_scientific_size = 24,
-        herb_name_scientific_y = 60,
-        herb_name_scientific_width_max = 9999,
-        text_vertical = True,
-    )
 if 1:
-    labels_100(
-        'oval', '3x5', 
-        herb_image_size = 0.50,
-        herb_image_y = 0,
-        herb_name_common_size = 24,
-        herb_name_common_y = 60,
-        herb_name_common_width_max = 9999,
-        herb_name_scientific_size = 18,
-        herb_name_scientific_y = 40,
-        herb_name_scientific_width_max = 9999,
-        text_vertical = True,
-    )
-if 0:
-    sheets_100_oval_1x2()
-    sheets_100_oval_2x3()
-    sheets_100_oval_3x5()
+    if 1:
+        labels_100(
+            'oval', '1x2', 
+            herb_name_common_size = 20,
+            herb_name_common_y = 140,
+            herb_name_common_width_max = 9999,
+            herb_name_scientific_size = 16,
+            herb_name_scientific_y = 10,
+            herb_name_scientific_width_max = 100,
+            herb_image_size = 0.20,
+            herb_image_y = 60,
+            text_vertical = False,
+            mod = True,
+        )
+    if 1:
+        labels_100(
+            'oval', '2x3', 
+            herb_name_common_size = 40,
+            herb_name_common_y = 200,
+            herb_name_common_width_max = 9999,
+            herb_name_scientific_size = 20,
+            herb_name_scientific_y = 10,
+            herb_name_scientific_width_max = 9999,
+            herb_image_size = 0.35,
+            herb_image_y = 70,
+            text_vertical = False,
+            mod = True,
+        )
+    if 1:
+        labels_100(
+            'oval', '3x5', 
+            herb_name_common_size = 60,
+            herb_name_common_y = 320,
+            herb_name_common_width_max = 9999,
+            herb_name_scientific_size = 36,
+            herb_name_scientific_y = 10,
+            herb_name_scientific_width_max = 9999,
+            herb_image_size = 0.60,
+            herb_image_y = 100,
+            text_vertical = False,
+            mod = True,
+        )
+    if 0:
+        sheets_100_oval_1x2()
+        sheets_100_oval_2x3()
+        sheets_100_oval_3x5()
+
+# rectangle
+if 1:
+    if 1:
+        labels_100(
+            'rectangle', '1x2', 
+            herb_name_common_size = 20,
+            herb_name_common_y = 140,
+            herb_name_common_width_max = 9999,
+            herb_name_scientific_size = 16,
+            herb_name_scientific_y = 10,
+            herb_name_scientific_width_max = 100,
+            herb_image_size = 0.20,
+            herb_image_y = 60,
+            text_vertical = False,
+            mod = True,
+        )
+    if 1:
+        labels_100(
+            'rectangle', '2x3', 
+            herb_name_common_size = 40,
+            herb_name_common_y = 200,
+            herb_name_common_width_max = 9999,
+            herb_name_scientific_size = 20,
+            herb_name_scientific_y = 10,
+            herb_name_scientific_width_max = 9999,
+            herb_image_size = 0.35,
+            herb_image_y = 70,
+            text_vertical = False,
+            mod = True,
+        )
+    if 1:
+        labels_100(
+            'rectangle', '3x5', 
+            herb_name_common_size = 60,
+            herb_name_common_y = 320,
+            herb_name_common_width_max = 9999,
+            herb_name_scientific_size = 36,
+            herb_name_scientific_y = 10,
+            herb_name_scientific_width_max = 9999,
+            herb_image_size = 0.60,
+            herb_image_y = 100,
+            text_vertical = False,
+            mod = True,
+        )
+
+# square
+if 1:
+    if 1:
+        labels_100(
+            'square', '1x1', 
+            herb_name_common_size = 20,
+            herb_name_common_y = 60,
+            herb_name_common_width_max = 9999,
+            herb_name_scientific_size = 14,
+            herb_name_scientific_y = 5,
+            herb_name_scientific_width_max = 9999,
+            herb_image_size = 0.10,
+            herb_image_y = 30,
+            text_vertical = False,
+            mod = True,
+        )
+    if 1:
+        labels_100(
+            'square', '2x2', 
+            herb_name_common_size = 40,
+            herb_name_common_y = 110,
+            herb_name_common_width_max = 9999,
+            herb_name_scientific_size = 20,
+            herb_name_scientific_y = 10,
+            herb_name_scientific_width_max = 9999,
+            herb_image_size = 0.25,
+            herb_image_y = 60,
+            text_vertical = False,
+            mod = True,
+        )
+    if 1:
+        labels_100(
+            'square', '3x3', 
+            herb_name_common_size = 60,
+            herb_name_common_y = 160,
+            herb_name_common_width_max = 9999,
+            herb_name_scientific_size = 30,
+            herb_name_scientific_y = 10,
+            herb_name_scientific_width_max = 9999,
+            herb_image_size = 0.40,
+            herb_image_y = 90,
+            text_vertical = False,
+            mod = True,
+        )
 
 # round
-if 0:
-    labels_100(
-        'round', '1x1', 
-        herb_image_size = 0.15,
-        herb_image_y = 0,
-        herb_name_common_size = 24,
-        herb_name_common_y = 60,
-        herb_name_scientific_size = 18,
-        herb_name_scientific_y = 40,
-        text_vertical = True,
-    ),
 if 1:
-    pass
+    if 1:
+        labels_100(
+            'round', '1x1', 
+            herb_name_common_size = 18,
+            herb_name_common_y = 70,
+            herb_name_common_width_max = 9999,
+            herb_name_scientific_size = 12,
+            herb_name_scientific_y = 5,
+            herb_name_scientific_width_max = 9999,
+            herb_image_size = 0.10,
+            herb_image_y = 30,
+            # text_vertical = True,
+            mod = True,
+        ),
+    if 1:
+        labels_100(
+            'round', '2x2', 
+            herb_name_common_size = 36,
+            herb_name_common_y = 130,
+            herb_name_common_width_max = 9999,
+            herb_name_scientific_size = 18,
+            herb_name_scientific_y = 10,
+            herb_name_scientific_width_max = 9999,
+            herb_image_size = 0.20,
+            herb_image_y = 50,
+            # text_vertical = True,
+            mod = True,
+        ),
+    if 1:
+        labels_100(
+            'round', '3x3', 
+            herb_name_common_size = 54,
+            herb_name_common_y = 200,
+            herb_name_common_width_max = 9999,
+            herb_name_scientific_size = 24,
+            herb_name_scientific_y = 10,
+            herb_name_scientific_width_max = 9999,
+            herb_image_size = 0.30,
+            herb_image_y = 70,
+            # text_vertical = True,
+            mod = True,
+        ),
 
-quit()

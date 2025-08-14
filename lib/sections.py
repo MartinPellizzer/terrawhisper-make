@@ -1,0 +1,46 @@
+def header():
+    html = f'''
+        <header>
+            <nav class="container-xl">
+                <a href='/'>TerraWhisper</a>
+                <ul>
+                    <li><a href='/herbs.html'>Herbs</a></li>
+                    <li><a href='/preparations.html'>Preparations</a></li>
+                    <li><a href='/ailments.html'>Ailments</a></li>
+                </ul>
+            </nav>
+        </header>
+    '''
+    return html
+
+def footer():
+    html = f'''
+        <footer>
+            <div class="container-xl">
+                <span>Copyright TerraWhisper | All rights reserved</span>
+            </div>
+        </footer>
+    '''
+    return html
+
+def breadcrumbs(url):
+    breadcrumb_list = url.split('/')
+    breadcrumb_href = f'/'
+    breadcrumb_html = f'<a href="{breadcrumb_href}">Home</a>'
+    for breadcrumb_i, breadcrumb_text in enumerate(breadcrumb_list):
+        breadcrumb_href += '/' + breadcrumb_text
+        breadcrumb_href = breadcrumb_href.replace('//', '/')
+        breadcrumb_text = breadcrumb_text.strip().replace('-', ' ').title()
+        if breadcrumb_i == len(breadcrumb_list)-1:
+            breadcrumb_html += f' > {breadcrumb_text}'
+        else:
+            breadcrumb_html += f' > <a href="{breadcrumb_href}.html">{breadcrumb_text}</a>'
+    html = f'''
+        <section class="breadcrumbs">
+            <div class="container-xl">
+                {breadcrumb_html}
+            </div>
+        </section>
+    '''
+    return html
+

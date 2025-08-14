@@ -2,7 +2,7 @@ import os
 import json
 import random
 
-from oliark_llm import llm_reply
+from lib import llm
 
 from lib import io
 
@@ -23,27 +23,15 @@ model_filepath = '/home/ubuntu/vault-tmp/llms/Qwen3-8B-Q4_K_M.gguf'
 problem = 'mold, spoilage, potency loss when storing herbs for medicinal purposes'
 problem = 'labeling jars for herb storage'
 problem = 'no labeling jars for herb storage'
+problem = 'summer heat exhaustion'
 
 #######################################################
 # story
 #######################################################
 prompt = f'''
-    today i want to write an email about the following seasonal ailment: {problem}.
-    i want to start the email with a story, so give me 10 ideas of story plots i can write to start this email.
-    the story ideas must be about someone i know, be relatable, and be a real story, not a fiction story.
-    reply in the following JSON format: 
-    [
-        {{"answer": "write story plot idea 1 here"}}, 
-        {{"answer": "write story plot idea 2 here"}}, 
-        {{"answer": "write story plot idea 3 here"}} 
-    ]
-    only reply with the JSON, don't add additional info.
-    /no_think
-'''
-prompt = f'''
     today i want to write an email about the following problem: {problem}.
     i want to start the email with a story, so give me 10 ideas of story plots i can write to start this email.
-    the story ideas must be about me or someone i know, be relatable, and be a real story, not a fiction story.
+    the story ideas must be about me, be relatable, and be a real story, not a fiction story.
     reply in the following JSON format: 
     [
         {{"answer": "write story plot idea 1 here"}}, 
@@ -54,7 +42,7 @@ prompt = f'''
     /no_think
 '''
 print(prompt)
-reply = llm_reply(prompt, model_path=model_filepath).strip()
+reply = llm.reply(prompt).strip()
 if '</think>' in reply:
     reply = reply.split('</think>')[1].strip()
 json_data = {}
@@ -75,10 +63,10 @@ story = random.choice(lst)
 #######################################################
 # failed solution
 #######################################################
-if 0:
+if 1:
     prompt = f'''
-        today i want to write an email about the following seasonal ailment: {problem}.
-        i want you to list the 10 most common solution people use for this ailment, and why they are not enough.
+        today i want to write an email about the following problem: {problem}.
+        i want you to list the 10 most common solution people use for this problem, and why they are not enough.
         don't include herbal remedies as solutions.
         reply in the following JSON format: 
         [
@@ -90,7 +78,7 @@ if 0:
         /no_think
     '''
     print(prompt)
-    reply = llm_reply(prompt).strip()
+    reply = llm.reply(prompt).strip()
     if '</think>' in reply:
         reply = reply.split('</think>')[1].strip()
     json_data = {}
@@ -110,8 +98,8 @@ if 0:
 # working solution
 #######################################################
 prompt = f'''
-    today i want to write an email about the following seasonal ailment: {problem}.
-    i want you to give me the 10 best herbal remedies to use for this ailment, why they works, and how to use them.
+    today i want to write an email about the following problem: {problem}.
+    i want you to give me the 10 best herbal remedies to use for this problem, why they works, and how to use them.
     reply in the following JSON format: 
     [
         {{"answer": "write the herbal remedy 1 here", "why": "write why herbal remedy 1 works here", "how": "write how to use herbal remedy 1 here"}}, 
@@ -129,7 +117,7 @@ prompt = f'''
     /no_think
 '''
 print(prompt)
-reply = llm_reply(prompt).strip()
+reply = llm.reply(prompt).strip()
 if '</think>' in reply:
     reply = reply.split('</think>')[1].strip()
 json_data = {}
@@ -157,6 +145,8 @@ prompt = f'''
     <STRUCTURE>
     Introduction: 
     {story}
+    Insufficient solution:
+    {failed_solution}
     Working solution:
     {working_solution}
     Conclusion:
@@ -164,6 +154,8 @@ prompt = f'''
     Start the email with the words "Dear Apothecary, " and end it with the words "Stay Grounded, Leen".
     Add a P.S. section.
     </STRUCTURE>
+'''
+'''
     <GUIDELINES>
     Write this in my personal voice. Make it raw, honest, and unfiltered. Use punchy one-liners, bold emotional confessions, and dramatic pacing with short paragraphs. Don’t polish the language too much—I want it real. It should feel like I’m talking directly to a friend over a drink, not giving a TED Talk.
     Use casual slang where it fits. Curse if it serves the point. Use ellipses, parentheses, and capitalization for rhythm and emphasis. Balance vulnerability with wit. Show that I’m not afraid to admit mistakes, but I’m also not afraid to laugh at them.
@@ -171,12 +163,10 @@ prompt = f'''
     Never swear.
     Never use acronym.
     </GUIDELINES>
-    /no_think
-
 '''
 print(prompt)
 '''
-reply = llm_reply(prompt).strip()
+reply = llm.reply(prompt).strip()
 if '</think>' in reply:
     reply = reply.split('</think>')[1].strip()
 email = reply
