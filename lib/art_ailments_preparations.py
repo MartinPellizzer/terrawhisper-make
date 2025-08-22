@@ -11,7 +11,6 @@ from lib import utils
 from lib import components
 from lib import sections
 
-# wcvp_dict = io.csv_to_dict(f'{g.database_folderpath}/csv/wcvp/wcvp_names.csv', '|')
 
 def ai_llm_intro(obj, regen=False, dispel=False):
     json_article_filepath = f'''{g.database_folderpath}/json/{obj['url']}.json'''
@@ -49,12 +48,14 @@ def ai_llm_list_init(obj, regen=False, dispel=False):
     if regen: 
         json_article[key] = []
     if json_article[key] == []:
+        wcvp_dict = io.csv_to_dict(f'{g.database_folderpath}/csv/wcvp/wcvp_names.csv', '|')
         output_list = []
         for i in range(10):
             rnd_num = random.randint(10, 15)
             prompt = f'''
                 Write a list of the {rnd_num} best herbal {obj['preparation_name_plural']} for {obj['ailment_name']}.
                 Write only the scientific name of the herbs uses, not the type of preparation.
+                By scientific name I mean botanical names in latin.
                 Don't repeat herbs.
                 Also write a confidence score from 1 to 10 for each answer, indicating how confident you are about the answer.
                 Reply using the following JSON format:
@@ -80,9 +81,12 @@ def ai_llm_list_init(obj, regen=False, dispel=False):
                     except: continue
                     ###
                     found = False
+                    _herb_name_scientific = ''
                     for wcvp_obj in wcvp_dict:
                         wcvp_herb_name_scientific = f'''{wcvp_obj['genus']} {wcvp_obj['species']}'''.strip().lower()
                         if wcvp_herb_name_scientific in herb_name_scientific:
+                            if len(wcvp_herb_name_scientific.split()) == 1: continue
+                            _herb_name_scientific = wcvp_herb_name_scientific
                             found = True
                             print(f'#########################################')
                             print(f'FOUND: {herb_name_scientific}')
@@ -92,12 +96,12 @@ def ai_llm_list_init(obj, regen=False, dispel=False):
                     ###
                     found = False
                     for output in output_list_tmp:
-                        if output['herb_name_scientific'] == herb_name_scientific:
+                        if output['herb_name_scientific'] == _herb_name_scientific:
                             found = True
                             break
                     if not found:
                         _obj = {
-                            "herb_name_scientific": herb_name_scientific, 
+                            "herb_name_scientific": _herb_name_scientific, 
                             "herb_confidence_score": herb_confidence_score,
                         }
                         output_list_tmp.append(_obj)
@@ -151,7 +155,7 @@ def ai_llm_list_desc(obj, regen=False, dispel=False):
 
 def json_gen(obj):
     json_article_filepath = f'''{g.database_folderpath}/json/{obj['url']}.json'''
-    json_article = io.json_read(json_article_filepath)
+    json_article = io.json_read(json_article_filepath, create=True)
     json_article['url'] = obj['url']
     json_article['ailment_slug'] = obj['ailment_slug']
     json_article['ailment_name'] = obj['ailment_name']
@@ -214,6 +218,7 @@ def html_gen(obj):
     alt = f'''{json_article['ailment_name']} {json_article['preparation_name_singular']}'''
     html_article += f'''<img src="{src}" alt="{alt}">'''
     html_article += f'''{utils.format_1N1(json_article['intro'])}'''
+    html_article += f'''[toc]'''
     for preparation_i, preparation in enumerate(json_article['preparations'][:10]):
         html_article += f'''<h2>{preparation_i+1}. {preparation['herb_name_scientific'].capitalize()}</h2>'''
         herb_slug = preparation['herb_name_scientific'].strip().lower().replace(' ', '-').replace('.', '')
@@ -221,6 +226,7 @@ def html_gen(obj):
         alt = f'''{preparation['herb_name_scientific']} {json_article['preparation_name_singular']}'''
         html_article += f'''<img src="{src}" alt="{alt}">'''
         html_article += f'''{utils.format_1N1(preparation['preparation_desc'])}'''
+    html_article = sections.toc(html_article)
     html = f'''
         <!DOCTYPE html>
         <html lang="en">
@@ -254,6 +260,10 @@ def gen():
             preparation_name_plural = preparation['preparation_name_plural']
             print(f'PREPARATION: {preparation_slug}')
             # if preparation_slug == 'teas': continue
+            try: os.mkdir(f'''{g.website_folderpath}/ailments''')
+            except: pass
+            try: os.mkdir(f'''{g.website_folderpath}/ailments/{ailment_slug}''')
+            except: pass
             url = f'ailments/{ailment_slug}/{preparation_slug}'
             obj = {
                 'url': url,
@@ -267,7 +277,7 @@ def gen():
             }
             # json_gen(obj)
             # image_ai(obj)
-            html_gen(obj)
+            # html_gen(obj)
             # quit()
     # image_pil(obj)
 

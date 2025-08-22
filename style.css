@@ -1,5 +1,7 @@
 :root {
     --color-carbon-powder: #101211;
+    --color-forest-green: #3b5e3b;
+    --color-copper-herbal: #a64828;
 }
 
 @font-face {
@@ -148,7 +150,9 @@ header nav ul {
     justify-content: space-between;
     align-items: center;
     gap: 2.4rem;
+    list-style-type: none;
 }
+
 
 /*********************************************/
 /* footer..............................[ftr] */
@@ -157,7 +161,6 @@ footer {
     background-color: var(--color-carbon-powder);
     padding-top: 2.4rem;
     padding-bottom: 2.4rem;
-    margin-top: 6.4rem;
 }
 
 footer span {
@@ -215,6 +218,12 @@ footer span {
     margin-left: 3.2rem;
 }
 
+.article ol {
+    margin-left: 3.2rem;
+    display: flex;
+    flex-direction: column;
+}
+
 .article li {
 }
 
@@ -224,6 +233,27 @@ footer span {
 .button-default {
     display: inline-block;
     background-color: var(--color-carbon-powder);
+    border: 1px solid var(--color-carbon-powder);
+    color: white;
+    padding: 1.6rem 2.4rem;
+    text-decoration: none;
+    
+}
+
+.button-ghost {
+    display: inline-block;
+    border: 1px solid #ffffff;
+    color: white;
+    padding: 1.6rem 2.4rem;
+    text-decoration: none;
+    
+}
+
+.button-accent {
+    display: inline-block;
+    background-color: var(--color-forest-green);
+    background-color: var(--color-copper-herbal);
+    border: 1px solid var(--color-copper-herbal);
     color: white;
     padding: 1.6rem 2.4rem;
     text-decoration: none;
@@ -238,3 +268,31 @@ footer span {
     color: var(--color-carbon-powder);
 }
 
+
+/*********************************************/
+/* sections............................[sct] */
+/*********************************************/
+.toc-heading {
+    font-size: 3.2rem;
+    line-height: 3.6rem;
+    margin-top: 3.2rem;
+}
+
+
+/*********************************************/
+/* home...............................[home] */
+/*********************************************/
+.home-hero {
+    color: #ffffff;
+}
+
+.home-hero h1 {
+    font-family: playfair-display-regular;
+    font-size: 9.6rem;
+    margin-bottom: 3.2rem;
+}
+
+.home-hero h1 span {
+    font-family: playfair-display-regular;
+    font-size: 4.8rem;
+}

@@ -105,7 +105,7 @@ def herb_benefits_ai(entity_herb_filepath, regen=False, clear=False):
         entity_herb[key] = ''
         io.json_write(entity_herb_filepath, entity_herb)
         return
-    if entity_herb[key] == '':
+    if entity_herb[key] == '' or entity_herb[key] == []:
         outputs = []
         prompt = f'''
             Write a list of the 10 best health benefits of the plant {herb_name_scientific}.
@@ -163,8 +163,7 @@ def gen():
     except: pass
     ###
     # herb_list = io.csv_to_dict(f'{g.database_folderpath}/csv/herbs.csv')
-    herb_list = io.csv_to_dict(f'{g.database_folderpath}/csv/herbs-book-0001.csv')
-    herb_list = sorted(herb_list, key=lambda x: x['herb_name_scientific'], reverse=False)
+    herb_list = data.herbs_get()
     herb_medicinal_list = []
     for herb_i, herb in enumerate(herb_list):
         print('####################################')
@@ -181,11 +180,9 @@ def gen():
         entity_herb['herb_name_common'] = herb_name_common
         io.json_write(entity_herb_filepath, entity_herb)
         herb_medicine_or_poison_ai(entity_herb_filepath, regen=False, clear=False)
-        if data.herb_medicine_or_poison_get(entity_herb_filepath) == 'medicine':
-            print('medicine')
-            herb_medicinal_list.append(herb)
-            herb_benefits_ai(entity_herb_filepath, regen=False, clear=False)
-            # quit()
+        herb_medicinal_list.append(herb)
+        herb_benefits_ai(entity_herb_filepath, regen=False, clear=False)
+        # quit()
         print('####################################')
         print()
         print()

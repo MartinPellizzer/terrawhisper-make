@@ -95,7 +95,6 @@ def json_gen(obj):
     json_article['url'] = obj['url']
     json_article['herb_slug'] = obj['herb_slug']
     json_article['herb_name_scientific'] = obj['herb_name_scientific']
-    json_article['herb_name_common'] = obj['herb_name_common']
     json_article['main_lst_num'] = 10
     json_article['title'] = f'''10 best {obj['herb_name_scientific']} health benefits'''
     io.json_write(json_article_filepath, json_article)
@@ -142,37 +141,26 @@ def html_gen(obj):
     with open(html_filepath, 'w') as f: f.write(html)
 
 def gen():
-    herbs = data.herbs_medicinal_get()
-    # for herb in herbs:
-        # print(herb)
-    # print(len(herbs))
-    # quit()
     entities_herbs_folderpath = f'{g.database_folderpath}/entities/herbs'
-    # herbs = io.csv_to_dict(f'{g.database_folderpath}/csv/herbs-book-0001.csv')
-    # herbs = sorted(herbs, key=lambda x: x['herb_name_scientific'], reverse=False)
+    herbs = data.herbs_medicinal_get()
     for herb_i, herb in enumerate(herbs):
+        print(f'HERB: {herb_i}/{len(herbs)} - {herb}')
         herb_name_scientific = herb['herb_name_scientific']
-        if 'herb_name_common' in herb: herb_name_common = herb['herb_name_common']
-        else: herb_name_common = ''
         herb_slug = polish.sluggify(herb_name_scientific)
         entity_herb_filepath = f'{entities_herbs_folderpath}/{herb_slug}.json'
-        if data.herb_medicine_or_poison_get(entity_herb_filepath) == 'medicine':
-        # if True:
-            print(f'HERB: {herb_i}/{len(herbs)} - {herb_name_scientific}')
-            try: os.mkdir(f'{g.database_folderpath}/json/herbs/{herb_slug}')
-            except: pass
-            url_relative = f'herbs/{herb_slug}/benefits'
-            json_article_filepath = f'{g.database_folderpath}/json/{url_relative}.json'
-            obj = {
-                'url': url_relative,
-                'json_article_filepath': json_article_filepath,
-                'herb_slug': herb_slug,
-                'herb_name_scientific': herb_name_scientific,
-                'herb_name_common': herb_name_common,
-            }
-            json_gen(obj)
-            # image_ai(obj)
-            html_gen(obj)
-            # quit()
+        try: os.mkdir(f'{g.database_folderpath}/json/herbs/{herb_slug}')
+        except: pass
+        url_relative = f'herbs/{herb_slug}/benefits'
+        json_article_filepath = f'{g.database_folderpath}/json/{url_relative}.json'
+        obj = {
+            'url': url_relative,
+            'json_article_filepath': json_article_filepath,
+            'herb_slug': herb_slug,
+            'herb_name_scientific': herb_name_scientific,
+        }
+        json_gen(obj)
+        # image_ai(obj)
+        html_gen(obj)
+        # quit()
     # image_pil(obj)
 

@@ -62,25 +62,19 @@ if 0:
 # SHOP...........................[SHP]
 ########################################
 if 1:
-    if 1:
+    if 0:
         from lib import pag_shop_labels_download
         pag_shop_labels_download.gen()
-    if 0:
+    if 1:
         from lib import pag_shop_tincture_dosage_and_safety_download
         pag_shop_tincture_dosage_and_safety_download.gen()
-    if 0:
+    if 1:
         from lib import pag_shop_herb_drying_checklist
         pag_shop_herb_drying_checklist.gen()
-    if 0:
+    if 1:
         from lib import pag_shop_herb_drying_checklist_download
         pag_shop_herb_drying_checklist_download.gen()
     if 1:
-        from lib import pag_shop_tincture_dosage_safety_cheatsheet
-        pag_shop_tincture_dosage_safety_cheatsheet.gen()
-    if 1:
-        from lib import pag_shop_tincture_dosage_safety_cheatsheet_download
-        pag_shop_tincture_dosage_safety_cheatsheet_download.gen()
-    if 0:
         from lib import pag_shop_labels
         pag_shop_labels.gen()
     if 1:

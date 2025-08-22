@@ -225,6 +225,8 @@ def html_gen(obj):
     alt = f'''{json_article['ailment_name']} herbs'''
     html_article += f'''<img src="{src}" alt="{alt}">'''
     html_article += f'''{utils.format_1N1(json_article['intro'])}'''
+    html_article += f'''[toc]'''
+    ###
     html_article += f'''<h2>What is {json_article['ailment_name']} and how does it affect your body?</h2>'''
     html_article += f'''{utils.format_1N1(json_article['definition'])}'''
     html_article += f'''<h2>Underlying causes and risk factors of {json_article['ailment_name']}</h2>'''
@@ -248,6 +250,8 @@ def html_gen(obj):
     html_article += f'''{utils.format_1N1(json_article['complementary'])}'''
     html_article += f'''<h2>Case studies and historical usage of herbs for {obj['ailment_name']}</h2>'''
     html_article += f'''{utils.format_1N1(json_article['studies'])}'''
+    ###
+    html_article = sections.toc(html_article)
     html = f'''
         <!DOCTYPE html>
         <html lang="en">
@@ -281,6 +285,6 @@ def gen():
         json_gen(obj)
         # image_ai(obj)
         html_gen(obj)
-        quit()
+        # quit()
     # image_pil(obj)
 

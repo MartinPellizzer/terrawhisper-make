@@ -161,9 +161,10 @@ def html_gen(obj):
     html_article += f'''{utils.format_1N1(json_article['intro'])}'''
     html_article += f'''<h2>Health Benefits</h2>'''
     html_article += f'''{utils.format_1N1(json_article['benefits'])}'''
+    html_article += f'''<p><a href="/herbs/{json_article['herb_slug']}/benefits.html">10 Best Health Beneift of {json_article['herb_name_scientific']}</a></p>'''
+    ###
     html_article += f'''<h2>Bioactive Constituents</h2>'''
     html_article += f'''{utils.format_1N1(json_article['constituents'])}'''
-    html_article += f'''<p><a href="/herbs/{json_article['herb_slug']}/benefits.html">10 Best Health Beneift of {json_article['herb_name_scientific']}</a></p>'''
     html_article += f'''<h2>Medicinal Preparations</h2>'''
     html_article += f'''{utils.format_1N1(json_article['preparations'])}'''
     html_article += f'''<h2>Side Effects</h2>'''

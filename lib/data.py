@@ -2,11 +2,40 @@ from lib import g
 from lib import io
 from lib import polish
 
-def herbs_medicinal_get():
-    herbs_filepath = f'{g.database_folderpath}/csv/herbs-book-0001.csv'
-    herbs = io.csv_to_dict(herbs_filepath)
-    herbs_names_scientific = [x['herb_name_scientific'] for x in herbs]
+def is_herb_in_list(herb_tmp, herbs):
+    found = False
+    for herb in herbs:
+        if herb['herb_name_scientific'] == herb_tmp['herb_name_scientific']:
+            found = True
+            break
+    return found
+
+def herbs_get():
+    herbs = []
+    ###
+    if 1:
+        herbs_filepath = f'{g.database_folderpath}/csv/herbs-book-0001.csv'
+        herbs_tmp = io.csv_to_dict(herbs_filepath)
+        for herb_tmp in herbs_tmp:
+            herb_tmp_name_scientific = herb_tmp['herb_name_scientific'].lower().strip()
+            herb_tmp_slug = polish.sluggify(herb_tmp_name_scientific)
+            found = is_herb_in_list(herb_tmp, herbs)
+            if not found: herbs.append(herb_tmp)
+    ###
+    if 1:
+        herbs_filepath = f'{g.database_folderpath}/csv/herbs-legacy.csv'
+        herbs_tmp = io.csv_to_dict(herbs_filepath)
+        for herb_tmp in herbs_tmp:
+            herb_tmp_name_scientific = herb_tmp['herb_name_scientific'].lower().strip()
+            herb_tmp_slug = polish.sluggify(herb_tmp_name_scientific)
+            found = is_herb_in_list(herb_tmp, herbs)
+            if not found: herbs.append(herb_tmp)
+    ###
     herbs = sorted(herbs, key=lambda x: x['herb_name_scientific'], reverse=False)
+    return herbs
+
+def herbs_medicinal_get():
+    herbs = herbs_get()
     herbs_medicinal = []
     for herb in herbs:
         print(herb)
@@ -17,6 +46,17 @@ def herbs_medicinal_get():
         print('###################################')
         if herb_medicine_or_poison_get(entity_herb_filepath) == 'medicine':
             herbs_medicinal.append(herb)
+    ### + legacy
+    if 1:
+        herbs_filepath = f'{g.database_folderpath}/csv/herbs-legacy.csv'
+        herbs_tmp = io.csv_to_dict(herbs_filepath)
+        for herb_tmp in herbs_tmp:
+            herb_tmp_name_scientific = herb_tmp['herb_name_scientific'].lower().strip()
+            herb_tmp_slug = polish.sluggify(herb_tmp_name_scientific)
+            found = is_herb_in_list(herb_tmp, herbs_medicinal)
+            if not found: herbs_medicinal.append(herb_tmp)
+    herbs_medicinal = sorted(herbs_medicinal, key=lambda x: x['herb_name_scientific'], reverse=False)
+    print(len(herbs_medicinal))
     return herbs_medicinal
 
 if 0:
@@ -110,3 +150,43 @@ def herb_medicine_or_poison_get(entity_herb_filepath):
     else:
         medicine_or_poison = 'inert'
     return medicine_or_poison
+
+def preparation_herbs_popular_100(preparation_slug):
+    herbs = []
+    ailments = io.csv_to_dict(f'{g.database_folderpath}/csv/ailments.csv')
+    preparations = io.csv_to_dict(f'{g.database_folderpath}/csv/preparations.csv')
+    for ailment_i, ailment in enumerate(ailments):
+        ailment_slug = ailment['ailment_slug']
+        ailment_name = ailment['ailment_name']
+        print(f'AILMENT: {ailment_i}/{len(ailments)} - {ailment_name}')
+        for preparation_i, preparation in enumerate(preparations):
+            _preparation_slug = preparation['preparation_slug']
+            preparation_name_singular = preparation['preparation_name_singular']
+            preparation_name_plural = preparation['preparation_name_plural']
+            print(f'PREPARATION: {preparation_slug}')
+            if preparation_slug != _preparation_slug: continue
+            url_relative = f'ailments/{ailment_slug}/{preparation_slug}'
+            json_article_filepath = f'''{g.database_folderpath}/json/{url_relative}.json'''
+            json_article = io.json_read(json_article_filepath)
+            json_article_preparations = json_article['preparations']
+            for json_article_preparation in json_article_preparations:
+                herb_name_scientific = json_article_preparation['herb_name_scientific']
+                found = False
+                for herb in herbs:
+                    if herb['herb_name_scientific'] == herb_name_scientific:
+                        herb['mentions'] += 1
+                        found = True
+                        break
+                if not found:
+                    herbs.append({
+                        'herb_name_scientific': herb_name_scientific,
+                        'mentions': 1,
+                    })
+            # quit()
+    herbs = sorted(herbs, key=lambda x: x['mentions'], reverse=True)
+    for herb in herbs:
+        print(herb)
+    print(len(herbs))
+    herbs = herbs[:100]
+
+    return herbs

@@ -4,11 +4,14 @@ import random
 from lib import io
 from lib import llm
 
+topic = 'tincture dosage and safety checklist'
+
 def story_gen(topic):
     prompt = f'''
         today i want to write an email about the following topic: {topic}.
         i want to start the email with a story, so give me 10 ideas of story plots i can write to start this email.
-        the story ideas must be about me, be relatable, and be a real story, not a fiction story.
+        the story ideas must be about me, be relatable, and be a real story (not a fiction story).
+        also, it must be a story about a long time ago past.
         reply in the following JSON format: 
         [
             {{"answer": "write story plot idea 1 here"}}, 
@@ -74,15 +77,16 @@ def working_solution_gen(topic):
     working_solution = random.choice(lst)
     return working_solution
 
-topic = 'herbal tinctures: your 5-minute equipment checklist - minimal tools you need'
 story = story_gen(topic)
-working_solution = working_solution_gen(topic)
+# working_solution = working_solution_gen(topic)
+working_solution = 'checklist'
 print('========================================')
 print(story)
 print(working_solution)
 print('========================================')
 prompt = f'''
     Write a short email for my newsletter with the following STRUCTURE and GUIDELINES:
+    
     <STRUCTURE>
     Introduction: 
     {story}
@@ -93,5 +97,29 @@ prompt = f'''
     Start the email with the words "Dear Apothecary, " and end it with the words "Stay Grounded, Leen".
     Add a P.S. section.
     </STRUCTURE>
+
+    <GUIDELINES>
+    Write using a blend of the following 2 styles:
+    Style 1:
+        Write this in my personal voice. Make it raw, honest, and unfiltered. Use punchy one-liners, bold emotional confessions, and dramatic pacing with short paragraphs. Don’t polish the language too much—I want it real. It should feel like I’m talking directly to a friend over a drink, not giving a TED Talk.
+        Use casual slang where it fits. Curse if it serves the point. Use ellipses, parentheses, and capitalization for rhythm and emphasis. Balance vulnerability with wit. Show that I’m not afraid to admit mistakes, but I’m also not afraid to laugh at them.
+        Think: Gary Vee meets Brene Brown with a little Dave Chappelle spice.
+        Never swear.
+        Never use acronym.
+    Style 2:
+        Write in a warm, grounded, poetic tone that feels like ancient wisdom remembered. 
+        Use short, gentle sentences that speak directly to the reader (“you”), often beginning with a truth and ending with a soft reframe or reminder. 
+        Prioritize simplicity, slowness, and intuition over trends or complexity. 
+        Use earthy, sensory language (e.g. bloated, nourished, rooted, ritual, tea, thrive, remember). 
+        Healing is nonlinear, and herbs are gentle guides—not quick fixes. 
+        Let each post feel like a quiet truth shared over tea.
+    </GUIDELINES>
 '''
+prompt += '/no_think'
+print(prompt)
 print('========================================')
+
+reply = llm.reply(prompt).strip()
+if '</think>' in reply:
+    reply = reply.split('</think>')[1].strip()
+

@@ -192,20 +192,26 @@ def html_page_style_shape_size_gen(style, size):
     with open(html_filepath, 'w') as f: f.write(html)
 
 def html_page_free_gen():
+    url = f'shop/labels/download'
+    obj = {
+        'url': url,
+    }
     input_folderpath = f'{g.website_folderpath}/assets/shop/labels/100/vintage/oval/1x2/jpg'
-    preview_folderpath = f'/assets/shop/labels/100/vintage/oval/1x2/jpg'
     filename_list = sorted(os.listdir(input_folderpath))
     html_labels = ''
     styles = ['oval', 'rectangle', 'round', 'square']
     for style in styles:
-        html_labels += f'''<h2 style="margin-bottom: 1.6rem;">{style}</h2>'''
+        if style == 'oval' or style == 'rectangle':
+            preview_folderpath = f'/assets/shop/labels/100/vintage/{style}/1x2/jpg'
+        else:
+            preview_folderpath = f'/assets/shop/labels/100/vintage/{style}/1x1/jpg'
+        html_labels += f'''<h2 style="font-size: 4.8rem; margin-bottom: 3.2rem; margin-top: 6.4rem;">{style.title()}</h2>'''
+        html_labels += f'''<hr style="margin-bottom: 3.2rem;">'''
         html_labels += f'''<div class="grid-4" style="gap: 3.2rem;">'''
         for filename in filename_list[:10]:
             preview_filepath = f'{preview_folderpath}/{filename}'
             download_filepath = preview_filepath.replace('jpg', 'png')
             title = filename
-            print(title)
-
             title = ' '.join(title.split('-')[1:]).capitalize()
             title = ' '.join(title.split('.')[:-1]).capitalize()
             title = '<br>'.join(title.split(' ')).capitalize()
@@ -221,7 +227,7 @@ def html_page_free_gen():
 
     html_main = ''
     html_main += f'''
-        <h1>1200 Vintage Herbal Jar Labels [Digital Designs]</h1>
+        <h1>120 Herbal Jar Label Designs</h1>
         <div class="spacer-md"></div>
         {html_labels}
     '''
@@ -273,6 +279,7 @@ def html_page_free_gen():
         {components.html_head(meta_title, meta_description)}
         <body>
             {sections.header()}
+            {sections.breadcrumbs(obj['url'])}
             <div class="spacer"></div>
             <main class="container-xl">
                 {html_main}
@@ -282,7 +289,7 @@ def html_page_free_gen():
         </body>
         </html>
     '''
-    html_filepath = f'''{g.website_folderpath}/shop/labels-free/download.html'''
+    html_filepath = f'''{g.website_folderpath}/{obj["url"]}.html'''
     with open(html_filepath, 'w') as f: f.write(html)
 
 def free_gen():
@@ -309,4 +316,4 @@ def premium_gen():
 
 def gen():
     free_gen()
-    premium_gen()
+    # premium_gen()

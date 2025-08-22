@@ -2849,12 +2849,12 @@ def pin_preparation(article_filepath, article_i):
     url = json_article["url"]
     img_slug = url.replace('/', '-')
     filename_out = url.replace('/', '-')
-    preparation_list = json_article['preparation_list']
+    preparation_list = json_article['herbs']
     preparation_list_herbs_names = []
     preparation_list_descriptions = []
     for preparation in preparation_list:
         preparation_list_herbs_names.append(preparation['herb_name_scientific'])
-        preparation_list_descriptions.append(preparation['desc'])
+        preparation_list_descriptions.append(preparation['herb_desc'])
     if preparation_list_descriptions:
         random.shuffle(preparation_list_herbs_names)
         random.shuffle(preparation_list_descriptions)
@@ -3134,3 +3134,5 @@ for article_filepath in creams_articles_filepath:
 
 # card_template_2(i)
 i += 1
+
+print(datetime.now())
