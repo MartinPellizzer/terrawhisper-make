@@ -21,7 +21,7 @@ def resize(img, target_w, target_h):
 
     return cropped_img
 
-def image_gen(prompt, width, height):
+def image_gen(prompt, width, height, steps=30, cfg=7.0):
     import torch
     from diffusers import DiffusionPipeline, StableDiffusionXLPipeline
     from diffusers import DPMSolverMultistepScheduler
@@ -35,6 +35,6 @@ def image_gen(prompt, width, height):
         ).to('cuda')
         pipe.scheduler = DPMSolverMultistepScheduler.from_config(pipe.scheduler.config)
     print(prompt)
-    image = pipe(prompt=prompt, width=width, height=height, num_inference_steps=30, guidance_scale=7.0).images[0]
+    image = pipe(prompt=prompt, width=width, height=height, num_inference_steps=steps, guidance_scale=cfg).images[0]
     return image
 

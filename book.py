@@ -388,20 +388,109 @@ def answer_random_get():
     print(answer)
     print('################################################################################')
 
-start_time = time.time()
-# outline_init()
-# answer_gen()
-# pdf_gen('short')
-# pdf_gen('medium')
-# pdf_gen('long')
-# pdf_gen('long-book')
-# answer_merge_gen('short')
-# answer_merge_gen('medium')
-# pdf_merge_answers_gen('medium')
-answer_random_get()
-delta_time = time.time() - start_time
-print(f'EXECUTION SECONDS: {delta_time}')
-print(f'EXECUTION MINUTES: {delta_time//60}')
-    
+def course_ideas_gen():
+    json_filepath = f'{g.assets_folderpath}/shop/books/tincture-mastery.json'
+    json_data = io.json_read(json_filepath)
+    chapter_list = json_data['chapter_list']
+    outline_filepath = f'{g.assets_folderpath}/shop/books/tincture-mastery-outline.txt'
+    with open(outline_filepath) as f: content = f.read().strip()
+    lines = [line for line in content.split('\n') if line.strip() != '']
+    random.shuffle(lines)
+    lines = '\n'.join(lines[:100])
+    prompt = f'''
+        Given the list of topics below, I want you to suggest me a list of 15 ideas of valuable teaching materials.
+        This material must be in form of mini-courses, checklist, cheat sheet, template, or other easy consumable meterial.
+        These courses must be about 2 hour long, easy and fast to consume.
+        They must provide quick actionable advice for instant results and gratification.
+        They must appeal to a mass market and be beginner friendly.
+        These should be so valuable that people would gladly pay a premium price to get them. 
+        Give me just the list of ideas and explain in one sentence each what is that idea and why it is a valuable idea.
+        Start each idea title with the words "how to". Include between brackets the type of material (course, checklist, etc.)
+        Give me only 15 ideas.
+        Here are the topics:
+        {lines}
+    '''
+    print(prompt)
+    prompt += f'/no_think'
+    reply = llm.reply(prompt, model_filepath='')
+    if '</think>' in reply:
+        reply = reply.split('</think>')[1].strip()
+
+def course_outline_gen(topic):
+        # I'm making a mini-course in audio format about the following topic: {topic}
+    prompt = f'''
+        I'm interested in this:
+        {topic}
+        Expand on it. Explaing to me how to create a full mini-course of it and all the supporting material that I can offer to people as a "sampler" for free to then have their trust in buying the course.
+    '''
+    print(prompt)
+    prompt += f'/no_think'
+    reply = llm.reply(prompt, model_filepath='')
+    if '</think>' in reply:
+        reply = reply.split('</think>')[1].strip()
+
+def jason_course_outline_gen(topic):
+    prompt = f'''
+        Identify the top 6 experts on "{topic}", and give me their top 9 strategies. Provide it to me in a list.
+    '''
+    print(prompt)
+    prompt += f'/no_think'
+    reply = llm.reply(prompt, model_filepath='')
+    if '</think>' in reply:
+        reply = reply.split('</think>')[1].strip()
+    ###
+    prompt = f'''
+        Here's a list of experts and their strategies on "{topic}":
+        {reply}
+        Do you see any duplicate answers repeated from one expert to the next? Give me 9.
+    '''
+    print(prompt)
+    prompt += f'/no_think'
+    reply = llm.reply(prompt, model_filepath='')
+    if '</think>' in reply:
+        reply = reply.split('</think>')[1].strip()
+    ###
+    prompt = f'''
+        Here's a list of overlaps strategies from experts on "{topic}":
+        {reply}
+        Merge these overlaps into one "universal starter method" distilled from all these experts, so you get a single, non-redundant recipe/checklist.
+    '''
+    print(prompt)
+    prompt += f'/no_think'
+    reply = llm.reply(prompt, model_filepath='')
+    if '</think>' in reply:
+        reply = reply.split('</think>')[1].strip()
+
+
+'''
+how to make your first medicinal herbal tincture
+how to choose the right herb for your wellness goals
+how to store tinctures for optimal shelf life
+
+'''
+# course_ideas_gen()
+topic = 'how to make your first medicinal herbal tincture'
+# course_outline_gen(topic)
+
+jason_course_outline_gen(topic)
+
+if 0:
+    start_time = time.time()
+    # outline_init()
+    # answer_gen()
+    # pdf_gen('short')
+    # pdf_gen('medium')
+    # pdf_gen('long')
+    # pdf_gen('long-book')
+    # answer_merge_gen('short')
+    # answer_merge_gen('medium')
+    # pdf_merge_answers_gen('medium')
+    answer_random_get()
+    delta_time = time.time() - start_time
+    print(f'EXECUTION SECONDS: {delta_time}')
+    print(f'EXECUTION MINUTES: {delta_time//60}')
+
+
+        
 quit()
 

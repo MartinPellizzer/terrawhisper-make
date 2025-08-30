@@ -7,6 +7,7 @@ shutil.copy2('style.css', f'{g.website_folderpath}/style.css')
 # HERBS..........................[HRB]
 # PREPARATIONS...................[PRP]
 # AILMENTS.......................[ALM]
+# WELLNESS.......................[WLL]
 # SHOP...........................[SHP]
 # HOME...........................[HOM]
 
@@ -14,7 +15,7 @@ shutil.copy2('style.css', f'{g.website_folderpath}/style.css')
 # HERBS..........................[HRB]
 ########################################
 if 0:
-    if 0:
+    if 1:
         from ai import herbs
         herbs.gen()
     if 0:
@@ -23,7 +24,7 @@ if 0:
     if 0:
         from lib import art_herbs_benefits
         art_herbs_benefits.gen()
-    if 1:
+    if 0:
         from lib import art_herbs
         art_herbs.gen()
     if 0:
@@ -59,9 +60,17 @@ if 0:
         cat_ailments.gen()
 
 ########################################
-# SHOP...........................[SHP]
+# WELLNESS.......................[WLL]
 ########################################
 if 1:
+    if 1:
+        from lib import art_wellness
+        art_wellness.gen()
+
+########################################
+# SHOP...........................[SHP]
+########################################
+if 0:
     if 1:
         from lib import pag_shop_labels_download
         pag_shop_labels_download.gen()
@@ -90,7 +99,7 @@ if 1:
 ########################################
 # HOME...........................[HOM]
 ########################################
-if 1:
+if 0:
     if 1:
         from lib import pag_home
         pag_home.gen()

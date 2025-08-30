@@ -1,0 +1,139 @@
+import os
+import markdown
+
+from lib import g
+from lib import io
+from lib import llm
+from lib import utils
+from lib import polish
+from lib import components
+from lib import sections
+
+def art_wellness_hair_care_json_gen(article_data):
+    print(f'ART: wellness hair care [json]')
+
+def art_wellness_hair_care_html_gen(article_data):
+    print(f'ART: wellness hair care [html]')
+
+def art_wellness_hair_care():
+    print(f'ART: wellness hair care')
+    article_slug = f'wellness/hair-care'
+    try: os.mkdir(f'wellness')
+    except: pass
+    article_data = {
+        'article_slug': article_slug,
+    }
+    art_wellness_hair_care_json_gen(article_data)
+    art_wellness_hair_care_html_gen(article_data)
+
+def art_wellness_skin_care_herbs_json_gen(article_data):
+    print(f'ART: wellness skin care herbs [json]')
+    article_slug = article_data['article_slug']
+    try: os.mkdir(f'{g.database_folderpath}/json/wellness')
+    except: pass
+    try: os.mkdir(f'{g.database_folderpath}/json/wellness/skin-care')
+    except: pass
+    json_article_filepath = f'''{g.database_folderpath}/json/{article_slug}.json'''
+    json_article = io.json_read(json_article_filepath, create=True)
+
+def art_wellness_skin_care_herbs_html_gen(article_data):
+    print(f'ART: wellness skin care herbs [html]')
+
+def art_wellness_skin_care_herbs():
+    print(f'ART: wellness skin care herbs')
+    article_slug = f'wellness/skin-care/herbs'
+    try: os.mkdir(f'wellness/skin-care')
+    except: pass
+    article_data = {
+        'article_slug': article_slug,
+    }
+    art_wellness_skin_care_herbs_json_gen(article_data)
+    art_wellness_skin_care_herbs_html_gen(article_data)
+
+def art_wellness_skin_care_json_gen(article_data):
+    print(f'ART: wellness skin care [json]')
+
+def art_wellness_skin_care_html_gen(article_data):
+    print(f'ART: wellness skin care [html]')
+
+def art_wellness_skin_care():
+    print(f'ART: wellness skin care')
+    article_slug = f'wellness/skin-care'
+    try: os.mkdir(f'wellness')
+    except: pass
+    article_data = {
+        'article_slug': article_slug,
+    }
+    art_wellness_skin_care_json_gen(article_data)
+    art_wellness_skin_care_html_gen(article_data)
+    art_wellness_skin_care_herbs()
+
+def art_wellness_json_gen(article_data):
+    print(f'ART: wellness [json]')
+
+def art_wellness_html_gen(article_data):
+    print(f'ART: wellness [html]')
+
+def art_wellness():
+    article_slug = f'wellness'
+    with open(f'{g.database_folderpath}/markdown/{article_slug}.md', encoding='utf-8') as f: 
+        markdown_content = f.read()
+    markdown_formatted = ''
+    line_prev = ''
+    for line in markdown_content.split('\n'):
+        line = polish.to_ascii(line)
+        if line.startswith('---'): continue
+        if line_prev == '':
+            markdown_formatted += '\n'
+            markdown_formatted += line
+            markdown_formatted += '\n'
+        elif line_prev.startswith('-'): 
+            markdown_formatted += line
+            markdown_formatted += '\n'
+        elif line_prev[0].isdigit(): 
+            markdown_formatted += line
+            markdown_formatted += '\n'
+        elif line_prev.startswith('|'): 
+            markdown_formatted += line
+            markdown_formatted += '\n'
+        else:
+            markdown_formatted += '\n'
+            markdown_formatted += line
+            markdown_formatted += '\n'
+        line_prev = line
+        
+    print(markdown_formatted)
+    html_article = markdown.markdown(markdown_formatted, extensions=['markdown.extensions.tables'])
+    meta_title = ''
+    meta_description = ''
+    html = f'''
+        <!DOCTYPE html>
+        <html lang="en">
+        {components.html_head(meta_title, meta_description)}
+        <body>
+            {sections.header()}
+            {sections.breadcrumbs(article_slug)}
+            <main class="container-md article">
+                <div class="article container-md">
+                    {html_article}
+                </div>
+            </main>
+            <div class="mt-64"></div>
+            {sections.footer()}
+        </body>
+        </html>
+    '''
+    with open(f'{g.website_folderpath}/{article_slug}.html', 'w') as f: f.write(html)
+
+    print(f'ART: wellness')
+    article_slug = f'wellness'
+    article_data = {
+        'article_slug': article_slug,
+    }
+    art_wellness_json_gen(article_data)
+    art_wellness_html_gen(article_data)
+    art_wellness_skin_care()
+    art_wellness_hair_care()
+
+def gen():
+    art_wellness()

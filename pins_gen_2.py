@@ -963,7 +963,7 @@ def shop_labels_etsy(pin_i):
     img_filepath = pin_save(img, pin_filename)
     img_filepath = f'{g.pinterest_tmp_image_folderpath}/images/{pin_filename}.jpg'
     img.save(img_filepath, format='JPEG', subsampling=0, quality=100)
-    pin_image.show()
+    # pin_image.show()
     ###
     description = f'''Give Your Herbal Jars a Vintage Makeover (For Free). Love herbs? Want to organize your jars in style? Download 120 beautifully designed vintage-style herbal jar labels. These digital labels are inspired by antique apothecary designs and feature the 10 most popular healing herbs, including lavender, chamomile, peppermint, and more.'''
     json_data = {
@@ -1226,8 +1226,10 @@ def template_text_2(data, images_file_paths, export_file_name):
     rect_h = 320
     img_0000 = Image.open(images_file_paths[0])
     img_0001 = Image.open(images_file_paths[1])
-    img_0000 = media.resize(img_0000, int(pin_w*1), int(pin_h*0.5))
-    img_0001 = media.resize(img_0001, int(pin_w*1), int(pin_h*0.5))
+    img_0000 = media.resize(img_0000, int(pin_w*1), int(pin_w*1))
+    img_0001 = media.resize(img_0001, int(pin_w*1), int(pin_w*1))
+    print(img_0000.size)
+    print(img_0001.size)
     img.paste(img_0000, (0, 0))
     img.paste(img_0001, (0, int(pin_h*0.5) + gap))
     random_theme = random.randint(0, 1)
@@ -1312,6 +1314,8 @@ def template_text_2(data, images_file_paths, export_file_name):
         draw.text((x1, y1), text, text_color, font=font)
     # text
     export_file_path = pin_save(img, export_file_name)
+    # img.show()
+    # quit()
     return export_file_path
 
 def template_overlay(data, images_file_paths, export_file_name):
@@ -1917,12 +1921,14 @@ def gen_image(images, i, preparation_name, image_style, width, height):
     images.append(f'{g.pinterest_tmp_image_folderpath}/tmp/img-{i}.jpg')
 
 def gen_image_2(images, i, preparation_name, width, height):
+    herb_list = data.herbs_medicinal_get()
+    herbs_names_scientific = [x['herb_name_scientific'] for x in herb_list]
     rnd_herb_name_scientific = random.choice(herbs_names_scientific).strip()
     if preparation_name[-1] == 's': preparation_name_singular = preparation_name[:-1]
     else: preparation_name_singular = preparation_name
     ###
     prompt = f'''
-        herbal {preparation_name} made with dry {rnd_herb_name_scientific},
+        herbal {preparation_name_singular} made with dry {rnd_herb_name_scientific},
         on a wooden table,
         rustic, vintage, boho,
         warm tones,
@@ -2807,10 +2813,10 @@ def pin_herb(article_filepath, article_i):
         height = 1024
         ai_img_herb(images, 0, herb_name_scientific, width, height)
     elif template == '2_img_tb': 
-        for i in range(2):
-            ai_img_herb(images, i, herb_name_scientific, width, height)
         width = 1216
         height = 832
+        for i in range(2):
+            ai_img_herb(images, i, herb_name_scientific, width, height)
     elif template == 'overlay': 
         width = 832
         height = 1216
@@ -2985,49 +2991,42 @@ def pin_gen_3(article_filepath, article_i, preparation_slug):
     filename_out = url.replace('/', '-')
     remedies = data['preparations']
     remedies_descriptions = []
-
     for remedy in remedies:
         remedies_descriptions.append(remedy['preparation_desc'])
-
     if remedies_descriptions:
         random.shuffle(remedies_descriptions)
         description = remedies_descriptions[0][:490] + '...'
     else:
         description = ''
-
     board_name = f'herbal {preparation_name}'.title()
-    
+    ###
     styles = ['website', 'watercolor']
     # templates = ['1_img_b', '1_img_t', '2_img_tb', 'overlay']
     templates = ['1_img_b', '1_img_t', '2_img_tb']
     image_style = random.choice(styles)
+    image_style = styles[0]
     template = random.choice(templates)
-    # template = 'overlay' 
-    print(template)
-
+    # template = '2_img_tb' 
+    ###
     images = []
-
     width = 0
     height = 0
     if template == '1_img_b': 
         width = 1024
         height = 1024
-        gen_image(images, 0, preparation_name, image_style, width, height)
+        # gen_image(images, 0, preparation_name, image_style, width, height)
+        gen_image_2(images, 0, preparation_name, width, height)
     elif template == '1_img_t': 
         width = 1024
         height = 1024
-        gen_image(images, 0, preparation_name, image_style, width, height)
-    elif template == '2_img_tb': 
-        for i in range(2):
-            gen_image(images, i, preparation_name, image_style, width, height)
-        width = 1216
-        height = 832
-    elif template == 'overlay': 
-        width = 832
-        height = 1216
         # gen_image(images, 0, preparation_name, image_style, width, height)
         gen_image_2(images, 0, preparation_name, width, height)
-
+    elif template == '2_img_tb': 
+        width = 1216
+        height = 832
+        for i in range(2):
+            # gen_image(images, i, preparation_name, image_style, width, height)
+            gen_image_2(images, i, preparation_name, width, height)
     ### gen pins
     if template == '1_img_b':
         img_filepath = gen_template_1_img_b(data, images, filename_out)
@@ -3035,8 +3034,6 @@ def pin_gen_3(article_filepath, article_i, preparation_slug):
         img_filepath = gen_template_1_img_t(data, images, filename_out)
     elif template == '2_img_tb': 
         img_filepath = template_text_2(data, images, filename_out)
-    elif template == 'overlay': 
-        img_filepath = template_overlay(data, images, filename_out)
     ###
     url = f'http://terrawhisper.com/{url}.html'
     obj = {
@@ -3081,23 +3078,25 @@ def image_ai(prompt, width, height):
     return image
 
 i = 0
-shop_labels(i)
-i += 1
-shop_herb_drying_checklist(i)
-i += 1
-# quit()
-
-# PINS HERBS
-for article_filepath in herbs_articles_filepath:
-    print(f'{i}/{len(articles_filepath)} >> {article_filepath}')
-    pin_herb(article_filepath, i)
+if 1:
+    shop_labels(i)
     i += 1
-
-# PINS PREPARATIONS
-for article_filepath in preparations_best_articles_filepath:
-    print(f'{i}/{len(articles_filepath)} >> {article_filepath}')
-    pin_preparation(article_filepath, i)
+    shop_herb_drying_checklist(i)
     i += 1
+    # quit()
+
+if 1:
+    # PINS HERBS
+    for article_filepath in herbs_articles_filepath:
+        print(f'{i}/{len(articles_filepath)} >> {article_filepath}')
+        pin_herb(article_filepath, i)
+        i += 1
+
+    # PINS PREPARATIONS
+    for article_filepath in preparations_best_articles_filepath:
+        print(f'{i}/{len(articles_filepath)} >> {article_filepath}')
+        pin_preparation(article_filepath, i)
+        i += 1
 
 # PINS EQUIPMENTS
 if 0:
