@@ -1,0 +1,392 @@
+:root {
+    --color-carbon-powder: #101211;
+    --color-forest-green: #3b5e3b;
+    --color-copper-herbal: #a64828;
+    --color-whisper-white: #f7f6f2;
+}
+
+@font-face {
+    font-family: lora-regular;
+    src: url("./assets/fonts/lora/static/Lora-Regular.ttf");
+}
+
+@font-face {
+    font-family: lora-bold;
+    src: url("./assets/fonts/lora/static/Lora-Bold.ttf");
+}
+
+@font-face {
+    font-family: playfair-display-regular;
+    src: url("./assets/fonts/playfair-display/static/PlayfairDisplay-Regular.ttf");
+}
+
+@font-face {
+    font-family: playfair-display-bold;
+    src: url("./assets/fonts/playfair-display/static/PlayfairDisplay-Bold.ttf");
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 62.5%;
+}
+
+body {
+    font-size: 1.8rem;
+    line-height: 2.7rem;
+    font-family: lora-regular;
+    font-family: serif;
+    font-family: sans-serif;
+}
+
+.container-xl {
+    max-width: 128.0rem;
+    margin: 0 auto;
+    padding-left: 2.4rem;
+    padding-right: 2.4rem;
+}
+
+.container-lg {
+    max-width: 99.2rem;
+    margin: 0 auto;
+    padding-left: 2.4rem;
+    padding-right: 2.4rem;
+}
+
+.container-md {
+    max-width: 76.8rem;
+    margin: 0 auto;
+    padding-left: 2.4rem;
+    padding-right: 2.4rem;
+}
+
+.container-sm {
+    max-width: 57.6rem;
+    margin: 0 auto;
+    padding-left: 2.4rem;
+    padding-right: 2.4rem;
+}
+
+.spacer {
+    margin-bottom: 6.4rem;
+}
+
+.spacer-sm {
+    margin-bottom: 1.6rem;
+}
+
+.spacer-md {
+    margin-bottom: 3.2rem;
+}
+
+h1 {
+    font-size: 6.4rem;
+    line-height: 1;
+}
+
+img {
+    width: 100%;
+}
+
+p {
+    font-family: lora-regular;
+    font-family: sans-serif;
+}
+
+/*********************************************/
+/* layout..............................[lyt] */
+/*********************************************/
+
+@media screen and (min-width: 768px) {
+    .grid-2 {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .grid-3 {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .grid-4 {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+}
+
+
+/*********************************************/
+/* header..............................[hdr] */
+/*********************************************/
+header {
+    background-color: var(--color-carbon-powder);
+    padding-top: 2.4rem;
+    padding-bottom: 2.4rem;
+}
+
+header nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header nav a {
+    color: white;
+    text-decoration: none;
+}
+
+header nav ul {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2.4rem;
+    list-style-type: none;
+}
+
+
+/*********************************************/
+/* footer..............................[ftr] */
+/*********************************************/
+footer {
+    background-color: var(--color-carbon-powder);
+    padding-top: 2.4rem;
+    padding-bottom: 2.4rem;
+}
+
+footer span {
+    color: white;
+}
+
+/*********************************************/
+/* breadcrumbs.........................[brd] */
+/*********************************************/
+.breadcrumbs {
+    padding-top: 2.4rem;
+}
+
+.breadcrumbs a {
+    color: var(--color-carbon-powder);
+    text-decoration: none;
+}
+
+/*********************************************/
+/* article.............................[art] */
+/*********************************************/
+.article {
+}
+
+.article h1 {
+    font-size: 6.4rem;
+    line-height: 1;
+    margin-top: 6.4rem;
+    margin-bottom: 2.4rem;
+}
+
+.article h2 {
+    font-size: 4.8rem;
+    line-height: 5.4rem;
+    margin-top: 6.4rem;
+    margin-bottom: 2.4rem;
+}
+
+.article h3 {
+    font-size: 2.4rem;
+    line-height: 3.2rem;
+    margin-top: 6.4rem;
+    margin-bottom: 2.4rem;
+}
+
+.article h4 {
+    font-size: 1.8rem;
+    line-height: 2.7rem;
+    margin-bottom: 2.4rem;
+}
+
+.article p {
+    margin-bottom: 1.6rem;
+}
+
+.article img {
+    margin-bottom: 1.6rem;
+}
+
+.article ul {
+    margin-left: 3.2rem;
+}
+
+.article ol {
+    margin-left: 3.2rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.article li {
+}
+
+.article-markdown {
+}
+
+.article-markdown h1 {
+    font-size: 6.4rem;
+    line-height: 1;
+    margin-top: 6.4rem;
+    margin-bottom: 1.6rem;
+}
+
+.article-markdown h2 {
+    font-size: 4.8rem;
+    line-height: 5.4rem;
+    margin-top: 6.4rem;
+    margin-bottom: 1.6rem;
+}
+
+.article-markdown h3 {
+    font-size: 2.4rem;
+    line-height: 3.2rem;
+    margin-top: 4.8rem;
+    margin-bottom: 1.6rem;
+}
+
+.article-markdown h4 {
+    font-size: 1.8rem;
+    line-height: 2.7rem;
+    margin-bottom: 1.6rem;
+}
+
+.article-markdown p {
+    margin-bottom: 1.6rem;
+}
+
+.article-markdown ul {
+    margin-left: 3.2rem;
+    margin-bottom: 1.6rem;
+}
+
+.article-markdown ol {
+    margin-left: 3.2rem;
+    margin-bottom: 1.6rem;
+}
+
+/*********************************************/
+/* components..........................[cmp] */
+/*********************************************/
+.button-default {
+    display: inline-block;
+    background-color: var(--color-carbon-powder);
+    border: 1px solid var(--color-carbon-powder);
+    color: white;
+    padding: 1.6rem 2.4rem;
+    text-decoration: none;
+    
+}
+
+.button-invert {
+    display: inline-block;
+    background-color: #ffffff;
+    border: 1px solid #ffffff;
+    color: var(--color-carbon-powder);
+    padding: 1.6rem 2.4rem;
+    text-decoration: none;
+    
+}
+
+.button-default-ghost {
+    display: inline-block;
+    border: 1px solid var(--color-carbon-powder);
+    color: var(--color-carbon-powder);
+    padding: 1.6rem 2.4rem;
+    text-decoration: none;
+    
+}
+
+.button-ghost {
+    display: inline-block;
+    border: 1px solid #ffffff;
+    color: white;
+    padding: 1.6rem 2.4rem;
+    text-decoration: none;
+    
+}
+
+.button-accent {
+    display: inline-block;
+    background-color: var(--color-forest-green);
+    background-color: var(--color-copper-herbal);
+    border: 1px solid var(--color-copper-herbal);
+    color: white;
+    padding: 1.6rem 2.4rem;
+    text-decoration: none;
+    
+}
+
+/*********************************************/
+/* blocks..............................[blk] */
+/*********************************************/
+.card-default a {
+    text-decoration: none;
+    color: var(--color-carbon-powder);
+}
+
+
+/*********************************************/
+/* sections............................[sct] */
+/*********************************************/
+.toc-heading {
+    font-size: 3.2rem;
+    line-height: 3.6rem;
+    margin-top: 3.2rem;
+}
+
+
+/*********************************************/
+/* home...............................[home] */
+/*********************************************/
+.home-hero {
+    color: #ffffff;
+}
+
+.home-hero h1 {
+    font-family: playfair-display-regular;
+    font-size: 9.6rem;
+    margin-bottom: 3.2rem;
+}
+
+.home-hero h1 span {
+    font-family: playfair-display-regular;
+    font-size: 4.8rem;
+}
+
+.home h2 {
+    font-size: 4.8rem;
+    line-height: 5.4rem;
+}
+
+.home h3 {
+    font-size: 2.4rem;
+    line-height: 3.2rem;
+}
+
+/*********************************************/
+/* free gift..........................[home] */
+/*********************************************/
+
+.free-gift {
+    margin-top: 4.8rem;
+    padding: 1.6rem 3.2rem;
+    background-color: var(--color-copper-herbal);
+    background-color: var(--color-carbon-powder);
+    background-color: var(--color-forest-green);
+    background-color: var(--color-whisper-white);
+}
+
+.free-gift-heading {
+    padding-top: 1.6rem;
+    font-size: 3.2rem;
+    color: var(--color-carbon-powder);
+    text-align: center;
+}

@@ -1,0 +1,15 @@
+from lib import g
+
+def html_head(meta_title, meta_description, form_head=''):
+    with open(g.GOOGLE_ADSENSE_SCRIPT) as f: google_adsense_script = f.read()
+    with open(g.GOOGLE_ANALYTICS_SCRIPT) as f: google_analytics_script = f.read()
+    html = f'''
+        <head>
+            <link rel="stylesheet" href="/style.css">
+            {google_adsense_script}
+            {google_analytics_script}
+            {form_head}
+        </head>
+    '''
+    return html
+
