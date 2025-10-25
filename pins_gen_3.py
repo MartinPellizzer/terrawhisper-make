@@ -765,7 +765,7 @@ def pin_template_0000(text_top, text_center, text_bottom, images_file_paths, exp
     return export_file_path
 
 def gen_image(images, i, preparation_name, width, height, prompt=''):
-    herb_list = data.herbs_medicinal_get()
+    herb_list = data.herbs_primary_medicinal_get()
     herbs_names_scientific = [x['herb_name_scientific'] for x in herb_list]
     rnd_herb_name_scientific = random.choice(herbs_names_scientific).strip()
     if preparation_name[-1] == 's': preparation_name_singular = preparation_name[:-1]

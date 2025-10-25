@@ -5,6 +5,7 @@ def html_head(meta_title, meta_description, form_head=''):
     with open(g.GOOGLE_ANALYTICS_SCRIPT) as f: google_analytics_script = f.read()
     html = f'''
         <head>
+            <meta name="viewport" content="width=device-width, inital-scale=1">
             <link rel="stylesheet" href="/style.css">
             {google_adsense_script}
             {google_analytics_script}

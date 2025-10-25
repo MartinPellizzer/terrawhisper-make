@@ -8,6 +8,8 @@ from lib import g
 from lib import io
 from lib import media
 
+from infoproduct import checklist_vanilla
+
 def file_parse(filepath):
     with open(filepath) as f: dump = f.read().strip()
 
@@ -21,31 +23,27 @@ def file_parse(filepath):
     for line in content.split('\n'):
         line = line.strip()
         if line == '': continue
-        if line.startswith('# '):
+        elif line.startswith('# '):
             title = line.replace('# ', '')
-        if line.startswith('## '):
+        elif line.startswith('## '):
             subtitle = line.replace('## ', '')
-        if line.startswith('### '):
+        elif line.startswith('### '):
             if category != []: categories.append(category)
             category = {
                 'heading': line.replace('### ', ''),
                 'items': [],
             }
-        if line.startswith('* '):
+        elif line.startswith('* '):
             line = line.replace('* ', '')
-            # items = line.split('|')
-            items = [line]
-            category['items'].append(items)
-        if line.startswith('[] '):
+            category['items'].append([line])
+        elif line.startswith('[] '):
             line = line.replace('[] ', '')
-            # items = line.split('|')
-            items = [line]
-            category['items'].append(items)
-        if line.startswith('- '):
+            category['items'].append([line])
+        elif line.startswith('- '):
             line = line.replace('- ', '')
-            # items = line.split('|')
-            items = [line]
-            category['items'].append(items)
+            category['items'].append([line])
+        else:
+            category['items'].append([line])
     if category != []: categories.append(category)
     file_data = {
         'title': title,
@@ -185,8 +183,101 @@ def draw_cell(draw, text, font_size, font_weight, cell_x, cell_y, cell_w, gap_x,
     rect_x2 = cell_x + cell_w
     # rect_y2 = cell_y + (font_size*len(lines)*line_height) + py*2
     rect_y2 = y
+    rect_y2_min = rect_y1 + checkbox_size + py*2
+    if rect_y2 < rect_y2_min: rect_y2 = rect_y2_min
     draw.rectangle([(rect_x1, rect_y1), (rect_x2, rect_y2)], outline=color, width=border_width)
     return rect_y2
+
+def checklist_vanilla_create(data):
+    product_type_slug = data['product_type'].strip().lower().replace(' ', '-')
+    base_folderpath = f'{g.DATABASE_FOLDERPATH}/shop/one-page/{product_type_slug}'
+    input_filepath = f'''{base_folderpath}/{data['slug']}/{data['input_filename']}'''
+    with open(input_filepath) as f: dump = f.read().strip()
+    content = dump.split('---')[0]
+    print(content)
+    title = ''
+    subtitle = ''
+    categories = []
+    category = []
+    file_data = file_parse(input_filepath)
+    title = file_data['title']
+    subtitle = file_data['subtitle']
+    categories = file_data['categories']
+    print(title)
+    print(subtitle)
+    print(categories)
+    ################################################################################
+    # IMAGE GENERATE
+    ################################################################################
+    color_whisper_white = '#f7f6f2'
+    color_carbon_powder = '#101211'
+    img_w = 2480
+    img_h = 3508
+    gap_x = int((img_w / 100) * 5)
+    gap_y = int((img_h / 100) * 5)
+    img = Image.new(mode="RGBA", size=(img_w, img_h), color=color_whisper_white)
+    ### OUTLINE
+    draw = ImageDraw.Draw(img)
+    draw.rectangle([(gap_x, gap_y), (img_w - gap_x, img_h - gap_y)], outline=color_carbon_powder, width=3)
+    y_cur = 0
+    cols_num = 1
+    cols_gap = 48
+    print_area_x = gap_x*2
+    print_area_y = gap_y*2
+    print_area_w = img_w - gap_x*4
+    col_w = (print_area_w - cols_gap * (cols_num-1)) / cols_num
+    ### TITLE
+    text = title
+    font_size = 256
+    font_family, font_weight = 'Lato', 'Bold'
+    font_path = f"{g.ASSETS_FOLDERPATH}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+    font = ImageFont.truetype(font_path, font_size)
+    lines = text_to_lines(text, font, img_w - gap_x*2)
+    y_cur += gap_y * 1.5
+    line_height = 1.0
+    for line in lines:
+        _, _, line_w, line_h = font.getbbox(line)
+        draw.text((img_w//2 - line_w//2, y_cur), line, color_carbon_powder, font=font)
+        y_cur += font_size * line_height
+    ### CATEGORY
+    y_cur += gap_y
+    x_cur = gap_x * 2
+    col_i = 0
+    for category in categories:
+        text = category['heading'].upper()
+        cell_width = img_w//2 - gap_x*2 - gap_x//2
+        cell_width = img_w - gap_x*4
+        rect_y2 = draw_cell(draw, text, 48, 'Bold', x_cur + col_w*col_i + cols_gap*col_i, y_cur, col_w, gap_x=gap_x, color=color_carbon_powder, checkbox=False)
+        y_cur = rect_y2
+        ### ITEMS
+        for item in category['items']:
+            text = item[0]
+            rect_y2 = draw_cell(draw, text, 32, 'Regular', x_cur + col_w*col_i + cols_gap*col_i, y_cur, col_w, gap_x=gap_x, color=color_carbon_powder, checkbox=True)
+            # rect_y2 = draw_cell(draw, text, 48, 'Regular', x_cur, y_cur, cell_width, checkbox=True)
+            y_cur = rect_y2
+        # col_i += 1
+        y_cur += 64 
+    ### GUIDES
+    # draw.line([(img_w//2, 0), (img_w//2, img_h)], fill="#FF00FF", width=3)
+    ### COPYRIGHT
+    text = 'terrawhisper.com'.upper()
+    font_size = 32
+    font_family, font_weight = 'Lato', 'Bold'
+    font_path = f"{g.ASSETS_FOLDERPATH}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+    font = ImageFont.truetype(font_path, font_size)
+    lines = text_to_lines(text, font, img_w - gap_x*2)
+    line_height = 1.0
+    y_cur = img_h - gap_y*2
+    for line in lines:
+        _, _, line_w, line_h = font.getbbox(line)
+        draw.text((img_w//2 - line_w//2, y_cur), line, color_carbon_powder, font=font)
+        y_cur += font_size * line_height
+    img = img.convert('RGB')
+    output_filepath = f'''{base_folderpath}/{data['slug']}/{data['slug']}.jpg'''
+    img.save(output_filepath, format='JPEG', subsampling=0, quality=100)
+    output_filepath = f'''{base_folderpath}/{data['slug']}/{data['slug']}-preview.jpg'''
+    img = media.resize(img, img_w//4, img_h//4)
+    img.save(output_filepath, format='JPEG', subsampling=0, quality=70)
 
 def checklist_create(data):
     product_type_slug = data['product_type'].strip().lower().replace(' ', '-')
@@ -459,6 +550,8 @@ def lead_magnet_create(data):
         quick_start_guide_create(data)
     elif data['product_type'] == 'checklist':
         checklist_create(data)
+    elif data['product_type'] == 'checklist vanilla':
+        checklist_vanilla_create(data)
 
 def lead_magnet_banner_create(data, regen=False):
     if regen:
@@ -559,6 +652,11 @@ def lead_magnet_upload(data):
         f'''{g.WEBSITE_FOLDERPATH}/images/shop/{data['slug']}.jpg''',
     )
 
+json_dict = io.json_read(f'{g.DATABASE_FOLDERPATH}/shop/data.json')
+data = json_dict[-1]
+lead_magnet_create(data)
+
+quit()
 json_dict = io.json_read(f'{g.DATABASE_FOLDERPATH}/shop/data.json')
 for data in json_dict:
     lead_magnet_create(data)

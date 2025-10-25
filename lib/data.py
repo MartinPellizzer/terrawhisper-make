@@ -10,7 +10,7 @@ def is_herb_in_list(herb_tmp, herbs):
             break
     return found
 
-def herbs_get():
+def herbs_primary_get():
     herbs = []
     ###
     herbs_filepaths = [
@@ -28,13 +28,13 @@ def herbs_get():
             if not found: herbs.append(herb_tmp)
     ###
     herbs = sorted(herbs, key=lambda x: x['herb_name_scientific'], reverse=False)
-    for herb in herbs:
-        print(herb)
+    # for herb in herbs:
+        # print(herb)
     # quit()
     return herbs
 
-def herbs_medicinal_get():
-    herbs = herbs_get()
+def herbs_primary_medicinal_get():
+    herbs = herbs_primary_get()
     herbs_medicinal = []
     for herb in herbs:
         print(herb)
@@ -42,60 +42,9 @@ def herbs_medicinal_get():
         entity_herb_filepath = f'''{g.database_folderpath}/entities/herbs/{herb['herb_slug']}.json'''
         if herb_medicine_or_poison_get(entity_herb_filepath) == 'medicine':
             herbs_medicinal.append(herb)
-    ### + legacy
-    '''
-    if 1:
-        herbs_filepath = f'{g.database_folderpath}/csv/herbs-legacy.csv'
-        herbs_tmp = io.csv_to_dict(herbs_filepath)
-        for herb_tmp in herbs_tmp:
-            herb_tmp_name_scientific = herb_tmp['herb_name_scientific'].lower().strip()
-            herb_tmp_slug = polish.sluggify(herb_tmp_name_scientific)
-            found = is_herb_in_list(herb_tmp, herbs_medicinal)
-            if not found: herbs_medicinal.append(herb_tmp)
-    '''
     herbs_medicinal = sorted(herbs_medicinal, key=lambda x: x['herb_name_scientific'], reverse=False)
-    print(len(herbs_medicinal))
+    # print(len(herbs_medicinal))
     return herbs_medicinal
-
-if 0:
-    def herbs_medicinal_get():
-        herbs_names_scientific = []
-        ###
-        herbs_filepath = f'{g.database_folderpath}/csv/herbs-book-0000.csv'
-        herbs = io.csv_to_dict(herbs_filepath)
-        for herb in herbs:
-            if herb['herb_name_scientific'].lower().strip() not in herbs_names_scientific:
-                herbs_names_scientific.append(herb['herb_name_scientific'].lower().strip())
-        ###
-        herbs_filepath = f'{g.database_folderpath}/csv/herbs-book-0001.csv'
-        herbs = io.csv_to_dict(herbs_filepath)
-        for herb in herbs:
-            if herb['herb_name_scientific'].lower().strip() not in herbs_names_scientific:
-                herbs_names_scientific.append(herb['herb_name_scientific'].lower().strip())
-        # herbs_names_scientific = [x['herb_name_scientific'] for x in herbs]
-        # herbs = sorted(herbs, key=lambda x: x['herb_name_scientific'], reverse=False)
-        herbs_names_scientific = sorted(herbs_names_scientific)
-        print(herbs_names_scientific)
-        print(len(herbs_names_scientific))
-        herbs_medicinal = []
-        if 0:
-            for herb in herbs:
-                print(herb)
-                entities_herbs_folderpath = f''
-                entity_herb_filepath = f'''{g.database_folderpath}/entities/herbs/{herb['herb_slug']}.json'''
-                print('###################################')
-                print(io.json_read(entity_herb_filepath))
-                print('###################################')
-                if herb_medicine_or_poison_get(entity_herb_filepath) == 'medicine':
-                    herbs_medicinal.append(herb)
-        for herb_name_scientific in herbs_names_scientific:
-            herb_slug = polish.sluggify(herb_name_scientific)
-            entity_herb_filepath = f'''{g.database_folderpath}/entities/herbs/{herb_slug}.json'''
-            if herb_medicine_or_poison_get(entity_herb_filepath) == 'medicine':
-                herbs_medicinal.append(herb)
-        print(len(herbs_medicinal))
-        quit()
-        return herbs_medicinal
 
 def herbs_by_ailments():
     output_herb_list = []
@@ -149,7 +98,7 @@ def herb_medicine_or_poison_get(entity_herb_filepath):
         medicine_or_poison = 'inert'
     return medicine_or_poison
 
-def preparation_herbs_popular_100(preparation_slug):
+def herbs_popular_get(preparation_slug, herbs_num):
     herbs = []
     ailments = io.csv_to_dict(f'{g.database_folderpath}/csv/ailments.csv')
     preparations = io.csv_to_dict(f'{g.database_folderpath}/csv/preparations.csv')
@@ -185,6 +134,6 @@ def preparation_herbs_popular_100(preparation_slug):
     for herb in herbs:
         print(herb)
     print(len(herbs))
-    herbs = herbs[:100]
+    herbs = herbs[:herbs_num]
 
     return herbs

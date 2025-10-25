@@ -7,6 +7,7 @@ shutil.copy2('style.css', f'{g.website_folderpath}/style.css')
 # HERBS..........................[HRB]
 # PREPARATIONS...................[PRP]
 # AILMENTS.......................[ALM]
+# EQUIPMENT......................[EQP]
 # APOTHECARY.....................[APT]
 # WELLNESS.......................[WLL]
 # NUTRITION......................[NTR]
@@ -16,9 +17,22 @@ shutil.copy2('style.css', f'{g.website_folderpath}/style.css')
 # HOME...........................[HOM]
 
 ########################################
+# ART............................[ART]
+########################################
+if 1:
+    if 1:
+        from hub import art_hub
+        art_hub.main()
+        quit()
+
+########################################
 # HERBS..........................[HRB]
 ########################################
-if 0:
+if 1:
+    if 1:
+        from hub import herb_hub
+        herb_hub.main()
+        quit()
     if 0:
         import legacy
         legacy.gen()
@@ -26,31 +40,29 @@ if 0:
         from ai import herbs_wcvp
         herbs_wcvp.gen()
         quit()
-    if 1:
+    if 0:
         from ai import herbs_existing
         herbs_existing.gen()
         quit()
-    if 0:
-        from ai import herbs
-        herbs.gen()
     if 0:
         from ai import herbs_images
         herbs_images.gen()
     if 0:
         from lib import art_herbs_benefits
         art_herbs_benefits.gen()
-    if 1:
+    if 0:
         from lib import art_herbs
         art_herbs.gen()
-    if 0:
-        from lib import cat_herbs
-        cat_herbs.gen()
+
+if 1:
+    from ai import herbs_ai
+    herbs_ai.main()
 
 ########################################
 # PREPARATIONS...................[PRP]
 ########################################
 if 0:
-    if 1:
+    if 0:
         from hub import hub_preparations
         hub_preparations.hub_preparations_gen()
     if 0:
@@ -67,7 +79,7 @@ if 0:
 # AILMENTS.......................[ALM]
 ########################################
 if 0:
-    if 1:
+    if 0:
         from hub import hub_ailments
         hub_ailments.gen()
     if 0:
@@ -81,16 +93,26 @@ if 0:
         cat_ailments.gen()
 
 ########################################
+# EQUIPMENT......................[EQP]
+########################################
+if 0:
+    if 0:
+        from hub import hub_equipment
+        hub_equipment.main()
+
+########################################
 # HUBS...........................[HUB]
 ########################################
 if 0:
     from hub import hub_herbs
+    hub_herbs.gen()
+
+if 0:
     from hub import hub_apothecary
     from hub import hub_wellness
     from hub import hub_nutrition
     from hub import hub_spirituality
     from hub import hub_art
-    hub_herbs.gen()
     hub_apothecary.gen()
     hub_wellness.gen()
     hub_nutrition.gen()
@@ -108,7 +130,7 @@ if 0:
 ########################################
 # SHOP...........................[SHP]
 ########################################
-if 1:
+if 0:
     from hub import hub_shop
     hub_shop.gen()
 
@@ -144,7 +166,7 @@ if 1:
 # HOME...........................[HOM]
 ########################################
 if 0:
-    if 1:
+    if 0:
         from lib import pag_home
         pag_home.gen()
 

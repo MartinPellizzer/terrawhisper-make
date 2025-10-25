@@ -40,15 +40,6 @@ driver.maximize_window()
 
 driver.get("https://www.pinterest.com/login/")
 time.sleep(10)
-e = driver.find_element(By.XPATH, '//input[@type="email"]')
-e.send_keys(username) 
-time.sleep(10)
-e = driver.find_element(By.XPATH, '//input[@id="password"]')
-e.send_keys(password) 
-time.sleep(10)
-e = driver.find_element(By.XPATH, '//div[text()="Log in"]')
-e.click()
-time.sleep(30)
     
 COOKIE_FILEPATH = 'cookies-2.plk'
 if os.path.exists(COOKIE_FILEPATH):
@@ -83,6 +74,11 @@ else:
     cookies = driver.get_cookies()
     with open(COOKIE_FILEPATH, 'wb') as f:
         pickle.dump(cookies, f)
+
+
+
+
+
 
 def pin_post(article_filepath):
     global failed_pins_num
