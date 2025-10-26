@@ -1,5 +1,6 @@
 import os
 import random
+import shutil
 
 from lib import g
 from lib import io
@@ -10,22 +11,17 @@ from lib import polish
 from lib import components
 from lib import sections
 
+from data import art_data
+
 def article_art_aesthetic_gen():
-    data = [
-        {'article_url_slug': 'art/aesthetic/pink', 'article_keyword': 'pink aesthetic', },
-        {'article_url_slug': 'art/aesthetic/pfp', 'article_keyword': 'pfp aesthetic', },
-        {'article_url_slug': 'art/aesthetic/blue', 'article_keyword': 'blue aesthetic', },
-        {'article_url_slug': 'art/aesthetic/orange', 'article_keyword': 'orange aesthetic', },
-        {'article_url_slug': 'art/aesthetic/green', 'article_keyword': 'green aesthetic', },
-        {'article_url_slug': 'art/aesthetic/black', 'article_keyword': 'black aesthetic', },
-        {'article_url_slug': 'art/aesthetic/black-white', 'article_keyword': 'black and white aesthetic', },
-        {'article_url_slug': 'art/aesthetic/night', 'article_keyword': 'night aesthetic', },
-        {'article_url_slug': 'art/aesthetic/autumn', 'article_keyword': 'autumn aesthetic', },
-    ]
-    for item in data:
+    print(len(art_data.art_aesthetic_data))
+    # quit()
+    for item in art_data.art_aesthetic_data:
         article_url_slug = item['article_url_slug']
         article_keyword = item['article_keyword']
         article_keyword_slug = polish.sluggify(article_keyword)
+        article_regen = 0
+        if 'regen' in item: article_regen = item['regen']
 
         ########################################
         # init
@@ -34,10 +30,9 @@ def article_art_aesthetic_gen():
         json_article = io.json_read(json_article_filepath, create=True)
         json_article['article_url_slug'] = article_url_slug
         json_article['article_keyword'] = article_keyword
-        json_article['article_keyword_slug'] = article_keyword
+        json_article['article_keyword_slug'] = article_keyword_slug
         json_article['article_title'] = f'''{article_keyword} with medicinal herbs'''.title()
         json_article['main_list_num'] = f'''10'''
-        json_article['images_prompts'] = [f'''{article_keyword} with medicinal herbs, soft focus, bokeh, depth of field, high resolution''']
         io.json_write(json_article_filepath, json_article)
 
         ########################################
@@ -47,7 +42,7 @@ def article_art_aesthetic_gen():
         io.folders_recursive_gen(images_folderpath)
         regen = False
         dispel = False
-        if regen:
+        if regen or article_regen:
             for image_filename in os.listdir(images_folderpath):
                 image_filepath = f'{images_folderpath}/{image_filename}'
                 if os.path.isfile(image_filepath):
@@ -65,6 +60,22 @@ def article_art_aesthetic_gen():
                     found = True
                     break
             if not found:
+                ### decide if indoor outdoor setting
+                prompt = f'''
+                    I have to generate an image about the following keyword: {article_keyword}.
+                    Would it be better to generate an image indoor or outdoor?
+                    Reply only with one word: "indoor" or "outdoor".
+                '''
+                prompt += f'/no_think'
+                print(prompt)
+                reply = llm.reply(prompt).strip()
+                if '</think>' in reply:
+                    reply = reply.split('</think>')[1].strip()
+                reply = reply.strip().lower().replace(' ', '-')
+                if 'indoor' in reply:
+                    json_article['images_prompts'] = [f'''{article_keyword} with medicinal herbs, indoor, interior design, soft focus, bokeh, depth of field, high resolution''']
+                else:
+                    json_article['images_prompts'] = [f'''{article_keyword} with medicinal herbs, outdoor, nature photography, scenic view, soft focus, bokeh, depth of field, high resolution''']
                 image_prompt = json_article['images_prompts'][i % len(json_article['images_prompts'])]
                 print(f'##################################################')
                 print(f'{image_prompt}')
@@ -95,6 +106,13 @@ def article_art_aesthetic_gen():
         if not os.path.exists(image_filepath):
             image = media.image_gen(image_prompt, 1024, 1024)
             image.save(image_filepath)
+            ### for test
+            shutil.copy2(
+                f'{g.WEBSITE_FOLDERPATH}/images/{article_url_slug}/{image_filename}',
+                f'{g.VAULT_TMP_FOLDERPATH}/terrawhisper/website-images/{image_filename}',
+            )
+        json_article['article_image_featured'] = f'''/images/{article_url_slug}/{image_filename}'''
+        io.json_write(json_article_filepath, json_article)
 
         ########################################
         # json
@@ -108,7 +126,7 @@ def article_art_aesthetic_gen():
             json_article[key] = ''
             io.json_write(json_article_filepath, json_article)
             return
-        if regen: 
+        if regen or article_regen: 
             json_article[key] = ''
         if json_article[key] == '':
             prompt = f'''
@@ -133,7 +151,7 @@ def article_art_aesthetic_gen():
             json_article[key] = []
             io.json_write(json_article_filepath, json_article)
             return
-        if regen: 
+        if regen or article_regen: 
             json_article[key] = []
         if json_article[key] == []:
             images_folderpath = f'''{g.WEBSITE_FOLDERPATH}/images/{article_url_slug}'''
@@ -155,7 +173,7 @@ def article_art_aesthetic_gen():
                 json_obj[key] = ''
                 io.json_write(json_article_filepath, json_article)
                 return
-            if regen: 
+            if regen or article_regen: 
                 json_obj[key] = ''
             if json_obj[key] == '':
                 images_folderpath = f'''{g.WEBSITE_FOLDERPATH}/images/{article_url_slug}'''
@@ -184,7 +202,7 @@ def article_art_aesthetic_gen():
                 json_obj[key] = ''
                 io.json_write(json_article_filepath, json_article)
                 return
-            if regen: 
+            if regen or article_regen: 
                 json_obj[key] = ''
             if json_obj[key] == '':
                 images_folderpath = f'''{g.WEBSITE_FOLDERPATH}/images/{article_url_slug}'''
@@ -262,10 +280,138 @@ def article_art_aesthetic_gen():
             </body>
             </html>
         '''
-        html_filepath = f'''{g.website_folderpath}/{json_article['article_url_slug']}.html'''
+        html_filepath = f'''{g.WEBSITE_FOLDERPATH}/{json_article['article_url_slug']}.html'''
+        html_folderpath = '/'.join(html_filepath.split('/')[:-1])
+        io.folders_recursive_gen(html_folderpath)
         with open(html_filepath, 'w') as f: f.write(html)
         # quit()
 
 def main():
     article_art_aesthetic_gen()
-    pass
+    ###
+
+    ########################################
+    # init
+    ########################################
+    article_url_slug = 'art/aesthetic'
+    article_keyword = 'aesthetic'
+    article_keyword_slug = 'aesthetic'
+    json_article_filepath = f'''{g.DATABASE_FOLDERPATH}/json/{article_url_slug}.json'''
+    json_article = io.json_read(json_article_filepath, create=True)
+    json_article['article_url_slug'] = article_url_slug
+    json_article['article_keyword'] = article_keyword
+    json_article['article_keyword_slug'] = article_keyword
+    json_article['article_title'] = f'''{article_keyword} with medicinal herbs'''.title()
+    json_article['images_prompts'] = [f'''{article_keyword} with medicinal herbs, soft focus, bokeh, depth of field, high resolution''']
+    io.json_write(json_article_filepath, json_article)
+
+    ########################################
+    # images
+    ########################################
+    images_folderpath = f'{g.WEBSITE_FOLDERPATH}/images/{article_url_slug}'
+    io.folders_recursive_gen(images_folderpath)
+    regen = False
+    dispel = False
+    if regen:
+        for image_filename in os.listdir(images_folderpath):
+            image_filepath = f'{images_folderpath}/{image_filename}'
+            if os.path.isfile(image_filepath):
+                os.remove(image_filepath)
+    if dispel:
+        for image_filename in os.listdir(images_folderpath):
+            image_filepath = f'{images_folderpath}/{image_filename}'
+            if os.path.isfile(image_filepath):
+                os.remove(image_filepath)
+        return
+    ### featured
+    image_prompt = random.choice(json_article['images_prompts'])
+    image_filename = f'''{json_article['article_keyword_slug']}.jpg'''
+    image_filepath = f'{g.WEBSITE_FOLDERPATH}/images/{article_url_slug}/{image_filename}' 
+    if not os.path.exists(image_filepath):
+        image = media.image_gen(image_prompt, 1024, 1024)
+        image.save(image_filepath)
+    json_article['article_image_featured'] = f'''/images/{article_url_slug}/{image_filename}'''
+    io.json_write(json_article_filepath, json_article)
+
+    ########################################
+    # json
+    ########################################
+    regen = False
+    dispel = False
+    key = 'intro'
+    if key not in json_article: 
+        json_article[key] = ''
+    if dispel: 
+        json_article[key] = ''
+        io.json_write(json_article_filepath, json_article)
+        return
+    if regen: 
+        json_article[key] = ''
+    if json_article[key] == '':
+        prompt = f'''
+            Write a detailed intro paragraph in 5 sentences for an article with the following title: {json_article['article_title']}.
+            Write only the paragaraph.
+            Use only ascii characters.
+        '''
+        prompt += f'/no_think'
+        reply = llm.reply(prompt).strip()
+        if '</think>' in reply:
+            reply = reply.split('</think>')[1].strip()
+        json_article[key] = reply
+        io.json_write(json_article_filepath, json_article)
+
+    ########################################
+    # html
+    ########################################
+    html_article = ''
+    html_article += f'<h1>{json_article["article_title"].title()}</h1>\n'
+    src = f'''/images/{json_article['article_url_slug']}/{json_article['article_keyword_slug']}.jpg'''
+    alt = f'''{json_article['article_keyword']}.jpg'''
+    html_article += f'''<img src="{src}" alt="{alt}">\n'''
+    html_article += f'<p>{json_article["intro"]}</p>\n'
+    for item in art_data.art_aesthetic_data:
+        item_json_filepath = f'''{g.DATABASE_FOLDERPATH}/json/{item['article_url_slug']}.json'''
+        item_json = io.json_read(item_json_filepath)
+        item_image_src = f'''{item_json['article_image_featured']}''' 
+        item_image_alt = f'''''' 
+        
+        html_article += f'<h2>{item_json["article_title"].title()}</h2>\n'
+        html_article += f'''<img src="{item_image_src}" alt="{item_image_alt}">\n'''
+        html_article += f'<p>{item_json["intro"].capitalize()}</p>\n'
+        item_href = f'''/{item_json['article_url_slug']}.html'''
+        item_anchor = item_json['article_title']
+        html_article += f'''<p>See <a href="{item_href}">{item_anchor}</a> for more.</p>\n'''
+    if 0:
+        main_list = json_article['main_list']
+        for i, item in enumerate(main_list):
+            html_article += f'<h2>{item["title"].title()}</h2>\n'
+            html_article += f'''<img src="{item['image_src']}" alt="{item['image_alt']}">\n'''
+            html_article += f'<p>{item["desc"].capitalize()}</p>\n'
+            html_article += f'''<p>See <a href="{item['href']}">{item['anchor']}</a> for more.</p>\n'''
+        if json_article['links'] != []:
+            html_article += f'<h2>Additional Resources</h2>\n'
+            html_article += f'''<ul>\n'''
+            for link in json_article['links']:
+                html_article += f'''<li><a href="{link['href']}">{link['keyword'].title()}</a></li>\n'''
+            html_article += f'''</ul>\n'''
+        html_article += f'''</div>\n'''
+    html = f'''
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <link rel="stylesheet" href="/style.css">
+        </head>
+        <body>
+            {sections.header()}
+            <main>
+                {sections.breadcrumbs(article_url_slug)}
+                <div class="article container-md">
+                    {html_article}
+                </div>
+            </main>
+            {sections.footer()}
+        </body>
+        </html>
+    '''
+    with open(f'{g.website_folderpath}/{article_url_slug}.html', 'w') as f: f.write(html)
+

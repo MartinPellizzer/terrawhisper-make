@@ -29,7 +29,7 @@ if 1:
 # HERBS..........................[HRB]
 ########################################
 if 1:
-    if 1:
+    if 0:
         from hub import herb_hub
         herb_hub.main()
         quit()
