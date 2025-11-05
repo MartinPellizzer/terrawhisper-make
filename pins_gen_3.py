@@ -17,10 +17,15 @@ from lib import media
 pipe = None
 
 checkpoint_filepath = f'{g.vault_tmp_folderpath}/stable-diffusion/juggernautXL_ragnarokBy.safetensors'
+file_content = '51'
+try:
+    with open('pinterest_article_num') as f: file_content = f.read()
+except:
+    with open('pinterest_article_num', 'w') as f: f.write(file_content)
 
-random_num = random.randint(-2, 2)
+random_num = random.randint(-4, 4)
 # random_num = 0
-ARTICLES_NUM = 51 - random_num
+ARTICLES_NUM = int(file_content) - random_num
 
 preparation_list = io.csv_to_dict(f'{g.database_folderpath}/csv/preparations.csv')
 ailment_list = io.csv_to_dict(f'{g.database_folderpath}/csv/ailments.csv')
@@ -1746,3 +1751,7 @@ for article_filepath in creams_articles_filepath:
 i += 1
 
 print(datetime.now())
+if int(file_content < 90):
+    with open('pinterest_article_num', 'w') as f: f.write(f'{int(file_content)+1}')
+else:
+    with open('pinterest_article_num', 'w') as f: f.write(f'{int(file_content)}')

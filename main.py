@@ -40,7 +40,7 @@ if 1:
         from ai import herbs_wcvp
         herbs_wcvp.gen()
         quit()
-    if 0:
+    if 1:
         from ai import herbs_existing
         herbs_existing.gen()
         quit()

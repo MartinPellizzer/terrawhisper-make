@@ -49,8 +49,8 @@ def article_herbs_herb_gen():
         json_article = io.json_read(json_article_filepath, create=True)
         json_article['url'] = url_slug
         json_article['herb_slug'] = herb_slug
-        json_article['herb_name_scientific'] = herb_name_scientific
-        json_article['title'] = f'''{herb_name_scientific}'''
+        json_article['herb_name_scientific'] = f'{herb_name_scientific}'
+        json_article['title'] = f'{herb_name_common} ({herb_name_scientific})'
         io.json_write(json_article_filepath, json_article)
 
         ### json intro
@@ -304,11 +304,21 @@ def article_herbs_herb_gen():
         ########################################
         # html
         ########################################
-        html_article = ''
         json_title = f'''{json_article['title']}'''
         meta_title = f'''{json_title}'''
         meta_description = f''
+        html_article = ''
         html_article += f'''<h1>{json_title.title()}</h1>'''
+        html_article += f'''
+            <div style="font-size: 1.4rem; line-height: 2.0rem; background-color: #f7f6f2; padding: 1.6rem; margin-bottom: 3.2rem;">
+                <p style="font-size: 1.4rem; line-height: 2.0rem;">
+                    <strong>Information Reliability Score: 5/10</strong>
+                </p>
+                <p style="font-size: 1.4rem; line-height: 2.0rem; margin: 0;">
+                    This score reflects the overall reliability of the information presented in this article. It is based on the quality of scientific evidence, accuracy of sources, and the transparency of references related to {herb_name_scientific.capitalize()}.
+                </p>
+            </div>
+        '''
         src = f'''/images/herbs/{herb_slug}.jpg'''
         alt = f'''herbal {herb_name_common}'''
         html_article += f'''<img src="{src}" alt="{alt}">'''
