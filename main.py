@@ -19,7 +19,7 @@ shutil.copy2('style.css', f'{g.website_folderpath}/style.css')
 ########################################
 # ART............................[ART]
 ########################################
-if 1:
+if 0:
     if 1:
         from hub import art_hub
         art_hub.main()
@@ -29,7 +29,7 @@ if 1:
 # HERBS..........................[HRB]
 ########################################
 if 1:
-    if 0:
+    if 1:
         from hub import herb_hub
         herb_hub.main()
         quit()

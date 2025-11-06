@@ -376,6 +376,38 @@ def article_herbs_herb_gen():
 # TODO
 def category_herbs_popular_gen():
     herbs_popular = data.herbs_popular_get('teas', 100)
+    ###
+    url_slug = f'herbs/popular'
+    html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
+    html_main = f''
+    ### page main
+    html_main += f'''
+        <div>
+            <h1 style="margin-bottom: 9.6rem;">Popular Healing Herbs</h1>
+            {html_herbs_popular}
+            <div class="grid-3" style="gap: 3.2rem;">
+            </div>
+        </div>
+    '''
+    meta_title = f'''Popular Healing Herbs'''
+    meta_description = f''''''
+    html = f'''
+        <!DOCTYPE html>
+        <html lang="en">
+        {components.html_head(meta_title, meta_description)}
+        <body>
+            {sections.header()}
+            {sections.breadcrumbs(url_slug)}
+            <div class="spacer"></div>
+            <main class="container-xl">
+                {html_main}
+            </main>
+            <div class="spacer"></div>
+            {sections.footer()}
+        </body>
+        </html>
+    '''
+    with open(html_filepath, 'w') as f: f.write(html)
 
 def main():
     ### categories

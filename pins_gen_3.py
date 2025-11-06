@@ -1751,7 +1751,7 @@ for article_filepath in creams_articles_filepath:
 i += 1
 
 print(datetime.now())
-if int(file_content < 90):
+if int(file_content) < 90:
     with open('pinterest_article_num', 'w') as f: f.write(f'{int(file_content)+1}')
 else:
     with open('pinterest_article_num', 'w') as f: f.write(f'{int(file_content)}')
