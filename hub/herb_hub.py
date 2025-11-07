@@ -375,19 +375,50 @@ def article_herbs_herb_gen():
 
 # TODO
 def category_herbs_popular_gen():
-    herbs_popular = data.herbs_popular_get('teas', 100)
+    herbs_popular_num = 100
+    herbs_popular = data.herbs_popular_get('teas', herbs_popular_num)
     ###
     url_slug = f'herbs/popular'
     html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
-    html_main = f''
     ### page main
-    html_main += f'''
-        <div>
-            <h1 style="margin-bottom: 9.6rem;">Popular Healing Herbs</h1>
-            {html_herbs_popular}
-            <div class="grid-3" style="gap: 3.2rem;">
+    html_herbs_popular_grid = f''
+    for herb_i, herb in enumerate(herbs_popular[:herbs_popular_num]):
+        print(f'HERB: {herb_i}/{len(herbs_popular[:herbs_popular_num])} - {herb}')
+        herb_name_scientific = herb['herb_name_scientific']
+        herb_name_scientific = polish.sanitize(herb_name_scientific)
+        herb_slug = polish.sluggify(herb_name_scientific)
+        json_filepath = f'{g.DATABASE_FOLDERPATH}/entities/herbs/{herb_slug}.json'
+        try: json_article = io.json_read(json_filepath)
+        except: print(herb_slug)
+        herb_name_common = json_article['herb_name_common'][0]['answer']
+        src = f'''/images/herbs/{herb_slug}.jpg'''
+        alt = f'''{herb_name_scientific}'''
+        html_herbs_popular_grid += f'''
+            <div class="card-default">
+                <a href="/herbs/{herb_slug}.html">
+                    <img src="{src}" alt="{alt}" style="margin-bottom: 0.8rem;">
+                    <h3 style="margin-bottom: 0.8rem;">{herb_name_common.title()}</h3>
+                    <p style="font-size: 1.4rem; background-color: #f7f6f2; padding: 0.4rem 1.6rem; border-radius: 9999px;"><em>Latin Name: {herb_name_scientific.capitalize()}</em></p>
+                </a>
             </div>
-        </div>
+        '''
+    section_py = '12.8rem'
+    html_main = f''
+    html_main += f'''
+        <section style="padding-top: {section_py}; padding-bottom: {section_py};">
+            <h1 style="margin-bottom: 1.6rem; text-align: center;">{herbs_popular_num} Most Popular Healing Herbs</h1>
+            <p class="container-md" style="margin-bottom: 9.6rem; text-align: center; font-size: 2.4rem; line-height: 3.2rem;">
+                Discover what are the top 100 medicial plants used by home herbalists all around the world for common ailments.
+            </p>
+            <div class="grid-4" style="gap: 3.2rem;">
+                {html_herbs_popular_grid}
+            </div>
+        </section>
+        <div style="width: 100%; height: 1px; background-color: #f2f2f2;"></div>
+        <section style="padding-top: {section_py}; padding-bottom: {section_py};">
+            <h2 style="font-size: 3.2rem; line-height: 1.3; font-weight: normal; margin-bottom: 3.2rem;">Join the Apothecary Letter</h2>
+            <p>If you feel alone in your herbal healing journey, enter your best email below and I'll send you weekly emails where I'll take you by the hand and guide you towards the joys of herbalism.</p>
+        </section>
     '''
     meta_title = f'''Popular Healing Herbs'''
     meta_description = f''''''
@@ -398,11 +429,9 @@ def category_herbs_popular_gen():
         <body>
             {sections.header()}
             {sections.breadcrumbs(url_slug)}
-            <div class="spacer"></div>
             <main class="container-xl">
                 {html_main}
             </main>
-            <div class="spacer"></div>
             {sections.footer()}
         </body>
         </html>
@@ -413,7 +442,7 @@ def main():
     ### categories
     category_herbs_popular_gen()
     ### articles
-    article_herbs_herb_gen()
+    # article_herbs_herb_gen()
     ###
     url_slug = f'herbs'
     html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
@@ -468,7 +497,7 @@ def main():
         <div style="margin-bottom: 9.6rem;">
             <div style="display: flex; justify-content: space-between; align-items: center;">
                 <h2 style="font-size: 4.8rem; line-height: 1; margin-bottom: 3.2rem;">Popular</h2>
-                <p><a href="#">View All</a></p>
+                <p><a href="/herbs/popular.html">View All</a></p>
             </div>
             <div class="grid-4" style="gap: 3.2rem;">
                 {html_herbs_popular_grid}
