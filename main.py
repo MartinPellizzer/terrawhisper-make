@@ -67,7 +67,7 @@ if 1:
         from lib import art_herbs
         art_herbs.gen()
 
-if 1:
+if 0:
     from ai import herbs_ai
     herbs_ai.main()
     quit()

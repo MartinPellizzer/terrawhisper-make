@@ -609,7 +609,7 @@ def main():
     category_herbs_popular_gen()
     category_herbs_actions_gen()
     ### articles
-    # article_herbs_herb_gen()
+    article_herbs_herb_gen()
     ###
     url_slug = f'herbs'
     html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
