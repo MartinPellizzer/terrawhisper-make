@@ -1,3 +1,5 @@
+import random
+
 from lib import g
 from lib import io
 from lib import llm
@@ -9,6 +11,45 @@ from lib import sections
 
 herbs_primary_medicinal = data.herbs_primary_medicinal_get()
 herbs_popular = data.herbs_popular_get('teas', 100)
+
+def actions_clusters_get():
+    clusters_actions = []
+    for herb_i, herb in enumerate(herbs_popular[:]):
+        print(f'HERB: {herb_i}/{len(herbs_popular[:])} - {herb}')
+        herb_name_scientific = herb['herb_name_scientific']
+        herb_name_scientific = polish.sanitize(herb_name_scientific)
+        herb_slug = polish.sluggify(herb_name_scientific)
+        json_filepath = f'{g.DATABASE_FOLDERPATH}/entities/herbs/{herb_slug}.json'
+        try: json_article = io.json_read(json_filepath)
+        except: print(herb_slug)
+        herb_name_common = json_article['herb_name_common'][0]['answer']
+        herb_therapeutic_actions = json_article['herb_therapeutic_actions']
+        for x in herb_therapeutic_actions:
+            print(x)
+        # quit()
+        for herb_therapeutic_action in herb_therapeutic_actions[:4]:
+            herb_therapeutic_action_name = herb_therapeutic_action['answer'].strip().lower()
+            found = False
+            _obj = {
+                'herb_name_scientific': herb_name_scientific,
+                'herb_name_common': herb_name_common,
+                'herb_image_src': f'''/images/herbs/{herb_slug}.jpg''',
+                'herb_image_alt': f'''{herb_name_scientific}''',
+            }
+            for cluster_action in clusters_actions:
+                if herb_therapeutic_action_name == cluster_action['name']:
+                    cluster_action['herbs'].append(_obj)
+                    found = True
+                    break
+            if not found:
+                clusters_actions.append(
+                    {
+                        'name': herb_therapeutic_action_name,
+                        'herbs': [_obj],
+                    },
+                )
+    clusters_actions = sorted(clusters_actions, key=lambda x: x['name'], reverse=False)
+    return clusters_actions
 
 def herb_in_list(herbs_list, herb_obj):
     found = False
@@ -373,7 +414,6 @@ def article_herbs_herb_gen():
         with open(html_filepath, 'w') as f: f.write(html)
         # quit()
 
-# TODO
 def category_herbs_popular_gen():
     herbs_popular_num = 100
     herbs_popular = data.herbs_popular_get('teas', herbs_popular_num)
@@ -438,9 +478,136 @@ def category_herbs_popular_gen():
     '''
     with open(html_filepath, 'w') as f: f.write(html)
 
+def category_herbs_actions_gen():
+    herbs_popular_num = 100
+    herbs_popular = data.herbs_popular_get('teas', herbs_popular_num)
+    ###
+    url_slug = f'herbs/actions'
+    html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
+    ### cluster actions
+    clusters_actions = []
+    for herb_i, herb in enumerate(herbs_popular[:herbs_popular_num]):
+        print(f'HERB: {herb_i}/{len(herbs_popular[:herbs_popular_num])} - {herb}')
+        herb_name_scientific = herb['herb_name_scientific']
+        herb_name_scientific = polish.sanitize(herb_name_scientific)
+        herb_slug = polish.sluggify(herb_name_scientific)
+        json_filepath = f'{g.DATABASE_FOLDERPATH}/entities/herbs/{herb_slug}.json'
+        try: json_article = io.json_read(json_filepath)
+        except: print(herb_slug)
+        herb_name_common = json_article['herb_name_common'][0]['answer']
+        herb_therapeutic_actions = json_article['herb_therapeutic_actions']
+        for x in herb_therapeutic_actions:
+            print(x)
+        # quit()
+        for herb_therapeutic_action in herb_therapeutic_actions[:4]:
+            herb_therapeutic_action_name = herb_therapeutic_action['answer'].strip().lower()
+            found = False
+            _obj = {
+                'herb_name_scientific': herb_name_scientific,
+                'herb_name_common': herb_name_common,
+                'herb_image_src': f'''/images/herbs/{herb_slug}.jpg''',
+                'herb_image_alt': f'''{herb_name_scientific}''',
+            }
+            for cluster_action in clusters_actions:
+                if herb_therapeutic_action_name == cluster_action['name']:
+                    cluster_action['herbs'].append(_obj)
+                    found = True
+                    break
+            if not found:
+                clusters_actions.append(
+                    {
+                        'name': herb_therapeutic_action_name,
+                        'herbs': [_obj],
+                    },
+                )
+    clusters_actions = sorted(clusters_actions, key=lambda x: x['name'], reverse=False)
+    # for cluster_action in clusters_actions[:10]:
+        # print(cluster_action)
+    ### html clusters
+    html_clusters_actions = f''
+    for cluster_action in clusters_actions:
+        print(cluster_action)
+        # quit()
+        html_herbs_actions_grid = f''
+        herbs_num = 4
+        herbs = cluster_action['herbs'][:herbs_num]
+        for herb_i, herb in enumerate(herbs):
+            print(f'HERB: {herb_i}/{len(herbs[:herbs_num])} - {herb}')
+            herb_name_scientific = herb['herb_name_scientific']
+            herb_name_scientific = polish.sanitize(herb_name_scientific)
+            herb_slug = polish.sluggify(herb_name_scientific)
+            json_filepath = f'{g.DATABASE_FOLDERPATH}/entities/herbs/{herb_slug}.json'
+            try: json_article = io.json_read(json_filepath)
+            except: print(herb_slug)
+            herb_name_common = json_article['herb_name_common'][0]['answer']
+            herb_therapeutic_actions = json_article['herb_therapeutic_actions']
+            herb_therapeutic_action = herb_therapeutic_actions[0]['answer']
+            src = f'''/images/herbs/{herb_slug}.jpg'''
+            alt = f'''{herb_name_scientific}'''
+            html_herbs_actions_grid += f'''
+                <div class="card-default">
+                    <a href="/herbs/{herb_slug}.html">
+                        <img src="{src}" alt="{alt}" style="margin-bottom: 0.8rem;">
+                        <h3 style="margin-bottom: 0.8rem;">{herb_name_common.title()}</h3>
+                        <p style="font-size: 1.4rem; background-color: #f7f6f2; padding: 0.4rem 1.6rem; border-radius: 9999px;"><em>Latin Name: {herb_name_scientific.capitalize()}</em></p>
+                    </a>
+                </div>
+            '''
+        html = f'''
+            <div style="margin-bottom: 9.6rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <h2 style="font-size: 4.8rem; line-height: 1; margin-bottom: 3.2rem;">{cluster_action['name'].capitalize()}</h2>
+                    <p><a href="/herbs/popular.html">View All</a></p>
+                </div>
+                <div class="grid-4" style="gap: 3.2rem;">
+                    {html_herbs_actions_grid}
+                </div>
+            </div>
+        '''
+        html_clusters_actions += html
+    section_py = '12.8rem'
+    html_main = f'''
+        <section style="padding-top: {section_py}; padding-bottom: {section_py};">
+            <h1 class="container-lg" style="margin-bottom: 1.6rem; text-align: center;">{len(clusters_actions)} Therapeutic Actions of Healing Herbs</h1>
+            <p class="container-md" style="margin-bottom: 9.6rem; text-align: center; font-size: 2.4rem; line-height: 3.2rem;">
+                The sections below show the most important therapeutic actions of healing herbs for the human body.
+            </p>
+            {html_clusters_actions}
+        </section>
+        <div style="width: 100%; height: 1px; background-color: #f2f2f2;"></div>
+        <section style="padding-top: {section_py}; padding-bottom: {section_py};">
+            <h2 style="font-size: 3.2rem; line-height: 1.3; font-weight: normal; margin-bottom: 3.2rem;">Join the Apothecary Letter</h2>
+            <p>If you feel alone in your herbal healing journey, enter your best email below and I'll send you weekly emails where I'll take you by the hand and guide you towards the joys of herbalism.</p>
+        </section>
+    '''
+    meta_title = f'''Therapeutic Actions of Healing Herbs'''
+    meta_description = f''''''
+    html = f'''
+        <!DOCTYPE html>
+        <html lang="en">
+        {components.html_head(meta_title, meta_description)}
+        <body>
+            {sections.header()}
+            {sections.breadcrumbs(url_slug)}
+            <main class="container-xl">
+                {html_main}
+            </main>
+            {sections.footer()}
+        </body>
+        </html>
+    '''
+    with open(html_filepath, 'w') as f: f.write(html)
+
 def main():
+    herb = herbs_primary_medicinal[0]
+    herb_slug = herb['herb_slug']
+    json_article = io.json_read(f'{g.DATABASE_FOLDERPATH}/entities/herbs/{herb_slug}.json')
+    print(json_article)
+    print(list(json_article.keys()))
+    # quit()
     ### categories
     category_herbs_popular_gen()
+    category_herbs_actions_gen()
     ### articles
     # article_herbs_herb_gen()
     ###
@@ -466,11 +633,6 @@ def main():
             </div>
         '''
     ### category herbs popular
-    html_herbs_popular = f''
-    html_herbs_popular += f'''
-        <h2 style="font-size: 4.8rem; line-height: 1; padding-bottom: 1.6rem; margin-bottom: 1.6rem; border-bottom: 1px solid #333333;">Systems</h2>
-        <div class="grid-3" style="gap: 3.2rem;">
-    '''
     html_herbs_popular_grid = f''
     herbs_popular_num = 4
     for herb_i, herb in enumerate(herbs_popular[:herbs_popular_num]):
@@ -504,16 +666,55 @@ def main():
             </div>
         </div>
     '''
+    ### category herbs actions
+    actions_clusters = actions_clusters_get()
+    html_herbs_grid = f''
+    herbs_num = 4
+    for cluster_i, cluster in enumerate(actions_clusters[:herbs_num]):
+        print(f'HERB: {cluster_i}/{len(actions_clusters[:herbs_num])} - {cluster}')
+        cluster_name = cluster['name']
+        cluster_herbs = cluster['herbs']
+        cluster_herb = random.choice(cluster_herbs)
+        herb_name_scientific = cluster_herb['herb_name_scientific']
+        herb_name_scientific = polish.sanitize(herb_name_scientific)
+        herb_slug = polish.sluggify(herb_name_scientific)
+        json_filepath = f'{g.DATABASE_FOLDERPATH}/entities/herbs/{herb_slug}.json'
+        try: json_article = io.json_read(json_filepath)
+        except: print(herb_slug)
+        herb_name_common = json_article['herb_name_common'][0]['answer']
+        herb_image_src = f'''/images/herbs/{herb_slug}.jpg'''
+        herb_image_alt = f'''{herb_name_scientific}'''
+        html_herbs_grid += f'''
+            <div class="card-default">
+                <a href="/{url_slug}/{herb_slug}.html">
+                    <img src="{herb_image_src}" alt="{herb_image_alt}" style="margin-bottom: 0.8rem;">
+                    <h3 style="margin-bottom: 0.8rem;">{cluster_name.title()}</h3>
+                    <p style="font-size: 1.4rem; background-color: #f7f6f2; padding: 0.4rem 1.6rem; border-radius: 9999px;"><em>Latin Name: {herb_name_scientific.capitalize()}</em></p>
+                </a>
+            </div>
+        '''
+    html_herbs_actions = f'''
+        <div style="margin-bottom: 9.6rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h2 style="font-size: 4.8rem; line-height: 1; margin-bottom: 3.2rem;">Therapeutic Actions</h2>
+                <p><a href="/herbs/actions.html">View All</a></p>
+            </div>
+            <div class="grid-4" style="gap: 3.2rem;">
+                {html_herbs_grid}
+            </div>
+        </div>
+    '''
     ### page main
     html_main += f'''
         <div>
             <h1 style="margin-bottom: 9.6rem;">Medicinal Herbs For Natural Healing</h1>
             {html_herbs_popular}
-            <div class="grid-3" style="gap: 3.2rem;">
-                {html_herbs}
-            </div>
+            {html_herbs_actions}
         </div>
     '''
+            # <div class="grid-3" style="gap: 3.2rem;">
+                # {html_herbs}
+            # </div>
     meta_title = f'''Herbs'''
     meta_description = f''''''
     html = f'''

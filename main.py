@@ -1,3 +1,16 @@
+########################################
+# TODO
+########################################
+
+# herbs category page (new categories: action, etc. ask GPT)
+# ailments category page (new categories. ask GPT)
+# add CTA newsletter at end of herbs articles
+# add related posts (herbs) at end of herbs articles
+# make lead magnet 10 herbs for 90% ailments (one herb per system?)
+# crash course on herbalism
+# equipments pages
+# sitemap xml (all plants, divided in a, b, c?)
+
 import shutil
 
 from lib import g
@@ -29,7 +42,7 @@ if 0:
 # HERBS..........................[HRB]
 ########################################
 if 1:
-    if 0:
+    if 1:
         from hub import herb_hub
         herb_hub.main()
         quit()
@@ -57,6 +70,7 @@ if 1:
 if 1:
     from ai import herbs_ai
     herbs_ai.main()
+    quit()
 
 ########################################
 # PREPARATIONS...................[PRP]

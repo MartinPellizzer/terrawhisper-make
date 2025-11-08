@@ -157,7 +157,9 @@ def herb_benefits_ai(entity_herb_filepath, regen=False, clear=False):
         print(entity_herb_filepath)
         io.json_write(entity_herb_filepath, entity_herb)
 
+new_actions_candidates = []
 def herb_therapeutic_actions_ai(entity_herb_filepath, regen=False, clear=False):
+    global new_actions_candidates
     entity_herb = io.json_read(entity_herb_filepath)
     herb_name_scientific = entity_herb['herb_name_scientific']
     key = 'herb_therapeutic_actions'
@@ -169,13 +171,17 @@ def herb_therapeutic_actions_ai(entity_herb_filepath, regen=False, clear=False):
         return
     if entity_herb[key] == '' or entity_herb[key] == []:
         outputs = []
+        list_random_num = random.randint(7, 13)
         with open(f'{g.database_folderpath}/categories/herbs/therapeutic-actions.txt') as f: 
             therapeutic_actions_prompt = f.read().lower()
         therapeutic_actions_list = [line.strip() for line in therapeutic_actions_prompt.split('\n') if line.strip() != '']
+        therapeutic_actions_list_clipped = therapeutic_actions_list[:list_random_num]
         prompt_json_list = []
-        for i, item in enumerate(therapeutic_actions_list):
+        for i, _ in enumerate(therapeutic_actions_list_clipped):
             prompt_json_list.append(f'''{{"answer": "write name of therapeutic action {i+1} here", "score": "write score {i+1} here"}}''')
         prompt_json_list = ',\n'.join(prompt_json_list)
+        random.shuffle(therapeutic_actions_list_clipped)
+        prompt_json_list_examples = ', '.join(therapeutic_actions_list_clipped[:3])
         prompt = f'''
             For each of the following therapeutic actions, write a confidence score from 1 to 10 indicating how much the plant {herb_name_scientific} has each therapeutic action.
             {therapeutic_actions_prompt}
@@ -185,7 +191,17 @@ def herb_therapeutic_actions_ai(entity_herb_filepath, regen=False, clear=False):
             ]
             Reply only with the JSON.
         '''
+        prompt = f'''
+            Write a list of about {list_random_num} therapeutic actions of the plant {herb_name_scientific}.
+            For reference, by therapeutic actions I mean things like: {prompt_json_list_examples}.
+            Reply using the following JSON format:
+            [
+                {prompt_json_list}
+            ]
+            Reply only with the JSON.
+        '''
         prompt += f'/no_think'
+        print(prompt)
         reply = llm.reply(prompt)
         if '</think>' in reply:
             reply = reply.split('</think>')[1].strip()
@@ -195,9 +211,12 @@ def herb_therapeutic_actions_ai(entity_herb_filepath, regen=False, clear=False):
         if json_data != {}:
             _objs = answer_score_extract(json_data)
             for _obj in _objs:
-                answer = _obj['answer']
-                score = _obj['score']
+                answer = _obj['answer'].lower().strip()
+                score = int(float(_obj['score']))
                 if answer not in therapeutic_actions_list: 
+                    if answer not in new_actions_candidates:
+                        new_actions_candidates.append(answer)
+                    print(therapeutic_actions_list)
                     print(f'''
                         ##########################################################
                         NOT FOUND: {answer}
@@ -221,6 +240,9 @@ def herb_therapeutic_actions_ai(entity_herb_filepath, regen=False, clear=False):
         entity_herb[key] = outputs
         print(entity_herb_filepath)
         io.json_write(entity_herb_filepath, entity_herb)
+        # quit()
+        for x in new_actions_candidates:
+            print(x)
 
 def herb_name_common_gen(entity_herb_filepath, regen=False, clear=False):
     entity_herb = io.json_read(entity_herb_filepath)
