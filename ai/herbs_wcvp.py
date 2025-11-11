@@ -146,7 +146,7 @@ def medicine_poison_inert_get(tmp_filepath):
         return _obj
 
 def gen():
-    if 1:
+    if 0:
         wcvp_data = io.csv_to_dict(f'{g.WCVP_FOLDERPATH}/wcvp_names.csv', '|')
         for wcvp_item_i, wcvp_item in enumerate(wcvp_data):
             print(f'>>> {wcvp_item_i}/{len(wcvp_data)} - {wcvp_item}')

@@ -42,14 +42,14 @@ if 0:
 # HERBS..........................[HRB]
 ########################################
 if 1:
-    if 1:
+    if 0:
         from hub import herb_hub
         herb_hub.main()
         quit()
     if 0:
         import legacy
         legacy.gen()
-    if 1:
+    if 0:
         from ai import herbs_wcvp
         herbs_wcvp.gen()
         quit()
