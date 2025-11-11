@@ -295,6 +295,12 @@ def gen():
                     'href': f'''/shop/{json_dict[1]['slug']}.html''',
                 },
                 {
+                    'name': f'''{json_dict[3]['product_title']} ({json_dict[3]['product_type']})''',
+                    'img_src': f'''/images/shop/{json_dict[3]['slug']}-banner.jpg''',
+                    'img_alt': f'''{json_dict[3]['product_title']} {json_dict[3]['product_type']} banner''',
+                    'href': f'''/shop/{json_dict[3]['slug']}.html''',
+                },
+                {
                     'name': 'Herb Drying Checklist',
                     'img_src': '/images/shop/herb-drying-checklist-blurred.jpg',
                     'img_alt': 'herb drying checklist blurred',
