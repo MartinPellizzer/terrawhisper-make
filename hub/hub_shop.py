@@ -214,6 +214,9 @@ def shop_product_download_gen(data):
     with open(html_filepath, 'w') as f: f.write(html)
 
 def shop_product_gen(data):
+    try: os.makedirs(f'''{g.WEBSITE_FOLDERPATH}/shop/{data['slug']}''')
+    except: pass
+    print()
     shop_product_download_gen(data)
     ###
     url_slug = f'''shop/{data['slug']}'''
@@ -261,6 +264,7 @@ def gen():
     shop_item_gen()
     shop_product_gen(json_dict[0])
     shop_product_gen(json_dict[1])
+    shop_product_gen(json_dict[3])
 
     url_slug = f'shop'
     obj = {

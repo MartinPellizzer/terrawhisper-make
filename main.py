@@ -41,8 +41,8 @@ if 0:
 ########################################
 # HERBS..........................[HRB]
 ########################################
-if 0:
-    if 0:
+if 1:
+    if 1:
         from hub import herb_hub
         herb_hub.main()
         quit()
@@ -67,7 +67,7 @@ if 0:
         from lib import art_herbs
         art_herbs.gen()
 
-if 0:
+if 1:
     from ai import herbs_ai
     herbs_ai.main()
     quit()

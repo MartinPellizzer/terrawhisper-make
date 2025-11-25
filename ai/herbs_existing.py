@@ -1,5 +1,6 @@
 import os
 import json
+import shutil
 
 from lib import g
 from lib import io
@@ -129,6 +130,8 @@ def medicine_poison_inert_get(tmp_filepath):
         return _obj
 
 def gen():
+    copy()
+    quit()
     tmp_filenames = os.listdir(f'{g.PLANTS_TMP_FOLDERPATH}')
     for tmp_filename_i, tmp_filename in enumerate(tmp_filenames[:]):
         tmp_filepath = f'{g.PLANTS_TMP_FOLDERPATH}/{tmp_filename}'
@@ -141,4 +144,29 @@ def gen():
                 print(json_herb_filepath)
                 json_gen(json_herb_filepath)
                 # quit()
+
+def copy():
+    tmp_filenames = os.listdir(f'{g.PLANTS_TMP_FOLDERPATH}')
+    print()
+    for tmp_filename_i, tmp_filename in enumerate(tmp_filenames[:]):
+        tmp_filepath = f'{g.PLANTS_TMP_FOLDERPATH}/{tmp_filename}'
+        print(f'{tmp_filename_i} - {tmp_filepath}')
+        medicine_poison_inert = medicine_poison_inert_get(tmp_filepath)
+        if medicine_poison_inert == None: continue
+        if medicine_poison_inert['answer'] == 'medicine':
+            json_herb_filepath_from = tmp_filepath
+            json_herb_filepath_to = f'{g.PLANT_MEDICINE_FOLDERPATH}/{tmp_filename}'
+            if not os.path.exists(json_herb_filepath_to):
+                shutil.copy2(json_herb_filepath_from, json_herb_filepath_to)
+        elif medicine_poison_inert['answer'] == 'poison':
+            json_herb_filepath_from = tmp_filepath
+            json_herb_filepath_to = f'{g.PLANT_POISON_FOLDERPATH}/{tmp_filename}'
+            if not os.path.exists(json_herb_filepath_to):
+                shutil.copy2(json_herb_filepath_from, json_herb_filepath_to)
+        elif medicine_poison_inert['answer'] == 'inert':
+            json_herb_filepath_from = tmp_filepath
+            json_herb_filepath_to = f'{g.PLANT_INERT_FOLDERPATH}/{tmp_filename}'
+            if not os.path.exists(json_herb_filepath_to):
+                shutil.copy2(json_herb_filepath_from, json_herb_filepath_to)
+            # quit()
 

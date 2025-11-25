@@ -558,7 +558,7 @@ def text_to_lines(text, font, max_w):
         lines.append(line.strip())
     return lines
 
-def template_herbs(data, images_file_paths, export_file_name):
+def template_herbs(data, images_file_paths, export_file_name, herb_name_common):
     pin_w = 1000
     pin_h = 1500
     img = Image.new(mode="RGB", size=(pin_w, pin_h), color='#ffffff')
@@ -593,9 +593,22 @@ def template_herbs(data, images_file_paths, export_file_name):
         _, _, line_w, line_h = font.getbbox(line)
         draw.text((pin_w//2 - line_w//2, y_cur), line, text_color, font=font)
         y_cur += font_size
-    y_cur += 16
+    y_cur += 32
     ## pin image keyword
-    text = f'best herbal teas'.upper()
+    text = f'most popular benefits of'.upper()
+    font_size = 48
+    font_family, font_weight = 'Lato', 'Bold'
+    font_path = f"{g.ASSETS_FOLDERPATH}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+    font = ImageFont.truetype(font_path, font_size)
+    _, _, text_w, text_h = font.getbbox(text)
+    lines = text_to_lines(text, font, 800)
+    for line in lines:
+        _, _, line_w, line_h = font.getbbox(line)
+        draw.text((pin_w//2 - line_w//2, y_cur), line, text_color, font=font)
+        y_cur += font_size
+    y_cur += 16
+    ###
+    text = f'{herb_name_common}'.upper()
     font_size = 96
     font_family, font_weight = 'Lato', 'Bold'
     font_path = f"{g.ASSETS_FOLDERPATH}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
@@ -606,7 +619,21 @@ def template_herbs(data, images_file_paths, export_file_name):
         _, _, line_w, line_h = font.getbbox(line)
         draw.text((pin_w//2 - line_w//2, y_cur), line, text_color, font=font)
         y_cur += font_size
-    y_cur += 32
+    y_cur += 64
+    ###
+    if len(lines) == 1:
+        text = f'Discover Benefits >'.upper()
+        font_size = 24
+        font_family, font_weight = 'Lato', 'Bold'
+        font_path = f"{g.ASSETS_FOLDERPATH}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+        font = ImageFont.truetype(font_path, font_size)
+        _, _, text_w, text_h = font.getbbox(text)
+        lines = text_to_lines(text, font, 800)
+        for line in lines:
+            _, _, line_w, line_h = font.getbbox(line)
+            draw.text((pin_w//2 - line_w//2, y_cur), line, text_color, font=font)
+            y_cur += font_size
+        y_cur += 0
     if 0:
         ## pin image ailment
         text = f'''for {data['ailment_name']}'''.title()
@@ -627,6 +654,115 @@ def template_herbs(data, images_file_paths, export_file_name):
     # quit()
     return export_file_path
 
+def template_herbs_new(data, images_file_paths, export_file_name, herb_name_common, template):
+    pin_w = 1000
+    pin_h = 1500
+    img = Image.new(mode="RGB", size=(pin_w, pin_h), color='#ffffff')
+    draw = ImageDraw.Draw(img)
+    gap = 8
+    rect_h = 500
+    if template == 1:
+        img_0000 = Image.open(images_file_paths[0])
+        img_0000 = media.resize(img_0000, pin_w//2, pin_h//2)
+        img_0001 = Image.open(images_file_paths[1])
+        img_0001 = media.resize(img_0001, pin_w//2, pin_h//2)
+        img_0002 = Image.open(images_file_paths[2])
+        img_0002 = media.resize(img_0002, pin_w//2, pin_h//2)
+        img_0003 = Image.open(images_file_paths[3])
+        img_0003 = media.resize(img_0003, pin_w//2, pin_h//2)
+        img.paste(img_0000, (int(0.0), int(pin_h*0.0) - gap))
+        img.paste(img_0001, (int(0.0), int(pin_h*0.66) + gap))
+        img.paste(img_0002, (int(pin_w*0.5) + gap, int(pin_h*0.0) - gap))
+        img.paste(img_0003, (int(pin_w*0.5) + gap, int(pin_h*0.66) + gap))
+    if template == 2:
+        img_0000 = Image.open(images_file_paths[0])
+        img_0000 = media.resize(img_0000, 1000, 700)
+        img_0001 = Image.open(images_file_paths[1])
+        img_0001 = media.resize(img_0001, 1000, 700)
+        img.paste(img_0000, (int(0.0), -int(pin_h*0.1) - gap))
+        img.paste(img_0001, (int(0.0), int(pin_h*0.6) + gap))
+    random_theme = random.randint(0, 1)
+    if random_theme == 0:
+        text_color = '#ffffff'
+        bg_color = '#000000'    
+    else:
+        text_color = '#000000'    
+        bg_color = '#ffffff'
+    # rect
+    draw.rectangle(((0, pin_h//2 - rect_h//2), (pin_w, pin_h//2 + rect_h//2)), fill=bg_color)
+    y_cur = 500
+    ### pin image numer 
+    text = f'''10'''.upper()
+    font_size = 160
+    font_family, font_weight = 'Lato', 'Bold'
+    font_path = f"{g.ASSETS_FOLDERPATH}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+    font = ImageFont.truetype(font_path, font_size)
+    _, _, text_w, text_h = font.getbbox(text)
+    lines = text_to_lines(text, font, 800)
+    for line in lines:
+        _, _, line_w, line_h = font.getbbox(line)
+        draw.text((pin_w//2 - line_w//2, y_cur), line, text_color, font=font)
+        y_cur += font_size
+    y_cur += 32
+    ## pin image keyword
+    text = f'most popular benefits of'.upper()
+    font_size = 48
+    font_family, font_weight = 'Lato', 'Bold'
+    font_path = f"{g.ASSETS_FOLDERPATH}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+    font = ImageFont.truetype(font_path, font_size)
+    _, _, text_w, text_h = font.getbbox(text)
+    lines = text_to_lines(text, font, 800)
+    for line in lines:
+        _, _, line_w, line_h = font.getbbox(line)
+        draw.text((pin_w//2 - line_w//2, y_cur), line, text_color, font=font)
+        y_cur += font_size
+    y_cur += 16
+    ###
+    text = f'{herb_name_common}'.upper()
+    font_size = 96
+    font_family, font_weight = 'Lato', 'Bold'
+    font_path = f"{g.ASSETS_FOLDERPATH}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+    font = ImageFont.truetype(font_path, font_size)
+    _, _, text_w, text_h = font.getbbox(text)
+    lines = text_to_lines(text, font, 800)
+    for line in lines:
+        _, _, line_w, line_h = font.getbbox(line)
+        draw.text((pin_w//2 - line_w//2, y_cur), line, text_color, font=font)
+        y_cur += font_size
+    y_cur += 64
+    ###
+    if len(lines) == 1:
+        text = f'Discover Benefits >'.upper()
+        font_size = 24
+        font_family, font_weight = 'Lato', 'Bold'
+        font_path = f"{g.ASSETS_FOLDERPATH}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+        font = ImageFont.truetype(font_path, font_size)
+        _, _, text_w, text_h = font.getbbox(text)
+        lines = text_to_lines(text, font, 800)
+        for line in lines:
+            _, _, line_w, line_h = font.getbbox(line)
+            draw.text((pin_w//2 - line_w//2, y_cur), line, text_color, font=font)
+            y_cur += font_size
+        y_cur += 0
+    if 0:
+        ## pin image ailment
+        text = f'''for {data['ailment_name']}'''.title()
+        font_size = 48
+        font_family, font_weight = 'Lato', 'Regular'
+        font_path = f"{g.ASSETS_FOLDERPATH}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+        font = ImageFont.truetype(font_path, font_size)
+        _, _, text_w, text_h = font.getbbox(text)
+        lines = text_to_lines(text, font, 800)
+        for line in lines:
+            _, _, line_w, line_h = font.getbbox(line)
+            draw.text((pin_w//2 - line_w//2, y_cur), line, text_color, font=font)
+            y_cur += font_size
+        y_cur += 32
+    # text
+    export_file_path = pin_save(img, export_file_name)
+    # img.show()
+    # quit()
+    return export_file_path
 
 def template_ailments(data, images_file_paths, export_file_name):
     pin_w = 1000
@@ -807,6 +943,31 @@ def ai_img_herb(images, i, herb_name_scientific, width, height):
     image = media.image_gen(prompt, width, height, steps=20, cfg=6.0)
     image.save(f'{g.pinterest_tmp_image_folderpath}/tmp/img-{i}.jpg')
     images.append(f'{g.pinterest_tmp_image_folderpath}/tmp/img-{i}.jpg')
+
+def ai_img_herb_new(template, herb_name_scientific):
+    for filename in os.listdir(f'{g.pinterest_tmp_image_folderpath}/tmp'):
+        os.remove(f'{g.pinterest_tmp_image_folderpath}/tmp/{filename}')
+    prompt = f'''
+        dry {herb_name_scientific} herb,
+        on a wooden table,
+        rustic, vintage, boho,
+        warm tones,
+        high resolution,
+    '''.replace('  ', ' ')
+    if template == 1:
+        width = 1024
+        height = 1024
+        for i in range(4):
+            print(prompt)
+            image = media.image_gen(prompt, width, height, steps=20, cfg=6.0)
+            image.save(f'{g.pinterest_tmp_image_folderpath}/tmp/img-{i}.jpg')
+    if template == 2:
+        width = 1216
+        height = 832
+        for i in range(2):
+            print(prompt)
+            image = media.image_gen(prompt, width, height, steps=20, cfg=6.0)
+            image.save(f'{g.pinterest_tmp_image_folderpath}/tmp/img-{i}.jpg')
 
 def ai_img_preparation(images, i, preparation_name_plural, herb_name_scientific, width, height):
     prompt = f'''
@@ -1064,6 +1225,9 @@ def pin_herb(article_filepath, article_i):
     title = json_article['title']
     herb_slug = json_article['herb_slug']
     herb_name_scientific = json_article['herb_name_scientific']
+    json_herb_filepath = f'{g.DATABASE_FOLDERPATH}/entities/herbs/{herb_slug}.json'
+    json_herb_data = io.json_read(json_herb_filepath)
+    herb_name_common = json_herb_data['herb_name_common'][0]['answer']
     url = json_article["url"]
     img_slug = url.replace('/', '-')
     filename_out = url.replace('/', '-')
@@ -1077,15 +1241,16 @@ def pin_herb(article_filepath, article_i):
     else:
         description = ''
     board_name = f'herbs'.title()
-    ###
-    images = []
-    width = 1216
-    height = 832
-    for i in range(2):
-        ai_img_herb(images, i, herb_name_scientific, width, height)
-    ####
-    img_filepath = template_herbs(data, images, filename_out)
-    ###
+    ### TEMPLATE
+    template = random.randint(1, 2)
+    template = 1
+    ### TMP IMAGES
+    ai_img_herb_new(template, herb_name_scientific)
+    tmp_images_folderpath = f'{g.pinterest_tmp_image_folderpath}/tmp'
+    images_filepaths = [f'{tmp_images_folderpath}/{filename}' for filename in os.listdir(tmp_images_folderpath)]
+    ### PIN IMAGE
+    img_filepath = template_herbs_new(data, images_filepaths, filename_out, herb_name_common, template)
+    ### PIN JSON
     url = f'http://terrawhisper.com/{url}.html'
     obj = {
         'img_filepath': img_filepath,
@@ -1097,6 +1262,7 @@ def pin_herb(article_filepath, article_i):
         'board_name': board_name
     }
     io.json_write(f'{g.pinterest_tmp_image_folderpath}/pins/{article_i}.json', obj)
+    # quit()
     pass
 
 def pin_preparation(article_filepath, article_i):
@@ -1543,8 +1709,6 @@ for article_filepath in articles_filepath:
     print(f'{i}/{len(articles_filepath)} >> {article_filepath}')
 
 if 1:
-    for filename in os.listdir(f'{g.pinterest_tmp_image_folderpath}/tmp'):
-        os.remove(f'{g.pinterest_tmp_image_folderpath}/tmp/{filename}')
     for filename in os.listdir(f'{g.pinterest_tmp_image_folderpath}/images'):
         os.remove(f'{g.pinterest_tmp_image_folderpath}/images/{filename}')
     for filename in os.listdir(f'{g.pinterest_tmp_image_folderpath}/pins'):
@@ -1556,11 +1720,11 @@ i = 0
 ########################################
 ### 1-page handouts
 ########################################
-if 0:
+if 1:
     pin_quick_start_guide_preparation_lotion(i)
     i += 1
 
-if 0:
+if 1:
     pin_checklist_foraging_fall(i)
     i += 1
 
@@ -1569,7 +1733,7 @@ if 0:
 ########################################
 ### course
 ########################################
-if 0:
+if 1:
     pin_course_preparation_tincture(i)
     i += 1
 
@@ -1595,62 +1759,6 @@ art_aesthetic_articles_slugs = [item['article_url_slug'] for item in art_data.ar
 for item in art_aesthetic_articles_slugs:
     articles_slugs.append([item])
 
-if 0:
-    articles_slugs = [
-        [
-            f'''wellness/skin-care/herbs''',
-        ],
-        [
-            f'''herbs/types/flowers''',
-        ],
-        [
-            f'''herbs/types/trees/christmas/ideas''',
-        ],
-        [
-            f'''nutrition/drinks/coffee/aesthetic''',
-            f'''nutrition/drinks/matcha/aesthetic''',
-        ],
-        [
-            f'''art/crafts/pumpkin/carving/ideas''',
-            f'''art/crafts/pumpkin/painting/ideas''',
-        ],
-        [
-            f'''art/wallpapers/green''',
-            f'''art/wallpapers/dark''',
-            f'''art/wallpapers/dark/aesthetic''',
-            f'''art/wallpapers/iphone/aesthetic''',
-        ],
-        [
-            f'''art/nature/travel/aesthetic''',
-        ],
-        [
-            f'''apothecary/kitchen/design''',
-        ],
-        [
-            f'''apothecary/academia/dark/aesthetic''',
-        ],
-        [
-            f'''spirituality/moon/aesthetic''',
-            f'''spirituality/moon/wallpaper''',
-            f'''spirituality/stars/aesthetic''',
-        ],
-        [
-            f'''nature/photography''',
-        ],
-    ]
-
-
-
-    if 0:
-        articles_slugs = [
-            [
-                f'''herbs/types/trees/christmas/ideas''',
-            ],
-            [
-                f'''nature/photography''',
-            ],
-        ]
-
 def tmp_image_gen(json_article, keyword_main_slug):
     width = 1024
     height = 1024
@@ -1659,64 +1767,68 @@ def tmp_image_gen(json_article, keyword_main_slug):
         image = media.image_gen(prompt, width, height)
         image.save(f'{g.pinterest_tmp_image_folderpath}/tmp/img-{i}.jpg')
         ###
-
-random.shuffle(articles_slugs)
-for cluster_slugs in articles_slugs[:10]:
-    article_slug = random.choice(cluster_slugs)
-    print(article_slug)
-    json_article_filepath = f'''{g.database_folderpath}/json/{article_slug}.json'''
-    json_article = io.json_read(json_article_filepath)
-    try: article_slug = json_article['article_slug']
-    except: article_slug = json_article['article_url_slug']
-    article_title = json_article['article_title']
-    try: keyword_main = json_article['keyword_main']
-    except: keyword_main = json_article['article_keyword']
-    try: keyword_main_slug = json_article['keyword_main_slug']
-    except: keyword_main_slug = json_article['article_keyword_slug']
-    try: pin_board_name = json_article['pin_board_name'].title()
-    except: pin_board_name = 'Herbal Art'
-    ### gen tmp images
-    tmp_image_gen(json_article, keyword_main_slug)
-    ### gen pin image
-    pin_image_filepath = pin_image_gen(article_slug)
-    ### gen pin json
-    article_description = ''
-    prompt = f'''
-        Write a description in less that 500 characters for a pinterest pin with the following title: {article_title}.
-        Write only the description.
-        Use only ascii characters.
-    '''
-    prompt += f'/no_think'
-    reply = llm.reply(prompt).strip()
-    if '</think>' in reply:
-        reply = reply.split('</think>')[1].strip()
-    if len(article_description) >= 500:
-        article_description = reply[:490] + '...'
-    else:
-        article_description = reply
-    # board_name = 'plants art'.title()
-    article_url = f'https://terrawhisper.com/{article_slug}.html'
-    obj = {
-        'img_filepath': pin_image_filepath,
-        'title': article_title,
-        'description': article_description,
-        'url': article_url,
-        'board_name': pin_board_name
-    }
-    io.json_write(f'{g.pinterest_tmp_image_folderpath}/pins/{i}.json', obj)
-    # quit()
-    i += 1
+if 1:
+    random.shuffle(articles_slugs)
+    for cluster_slugs in articles_slugs[:10]:
+        article_slug = random.choice(cluster_slugs)
+        print(article_slug)
+        json_article_filepath = f'''{g.database_folderpath}/json/{article_slug}.json'''
+        json_article = io.json_read(json_article_filepath)
+        try: article_slug = json_article['article_slug']
+        except: article_slug = json_article['article_url_slug']
+        article_title = json_article['article_title']
+        try: keyword_main = json_article['keyword_main']
+        except: keyword_main = json_article['article_keyword']
+        try: keyword_main_slug = json_article['keyword_main_slug']
+        except: keyword_main_slug = json_article['article_keyword_slug']
+        try: pin_board_name = json_article['pin_board_name'].title()
+        except: pin_board_name = 'Herbal Art'
+        ### gen tmp images
+        tmp_image_gen(json_article, keyword_main_slug)
+        ### gen pin image
+        pin_image_filepath = pin_image_gen(article_slug)
+        ### gen pin json
+        article_description = ''
+        prompt = f'''
+            Write a description in less that 500 characters for a pinterest pin with the following title: {article_title}.
+            Write only the description.
+            Use only ascii characters.
+        '''
+        prompt += f'/no_think'
+        reply = llm.reply(prompt).strip()
+        if '</think>' in reply:
+            reply = reply.split('</think>')[1].strip()
+        if len(article_description) >= 500:
+            article_description = reply[:490] + '...'
+        else:
+            article_description = reply
+        # board_name = 'plants art'.title()
+        article_url = f'https://terrawhisper.com/{article_slug}.html'
+        obj = {
+            'img_filepath': pin_image_filepath,
+            'title': article_title,
+            'description': article_description,
+            'url': article_url,
+            'board_name': pin_board_name
+        }
+        io.json_write(f'{g.pinterest_tmp_image_folderpath}/pins/{i}.json', obj)
+        # quit()
+        i += 1
 
 # quit()
 
-if 0:
+########################################
+### PINS HERBS
+########################################
+if 1:
     # PINS HERBS
     for article_filepath in herbs_articles_filepath:
         print(f'{i}/{len(articles_filepath)} >> {article_filepath}')
         pin_herb(article_filepath, i)
         i += 1
-        quit()
+        # quit()
 
+if 0:
     # PINS PREPARATIONS
     for article_filepath in preparations_best_articles_filepath:
         print(f'{i}/{len(articles_filepath)} >> {article_filepath}')
