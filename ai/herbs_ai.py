@@ -8,6 +8,8 @@ from lib import llm
 from lib import data
 from lib import polish
 
+herbs_num = 30000
+
 def medicine_poison_inert_get(tmp_filepath):
     tmp_data = io.json_read(tmp_filepath)
     try: tmp_medicine_poison_inert = tmp_data['medicine_poison_inert'] 
@@ -557,7 +559,7 @@ def herbs_wcvp_medicinal_gen():
     herbs = [
         io.json_read(f'{g.PLANT_MEDICINE_FOLDERPATH}/{filename}')
         for filename in os.listdir(f'{g.PLANT_MEDICINE_FOLDERPATH}')
-    ][:20000]
+    ][:herbs_num]
     for herb_i, herb in enumerate(herbs):
         print('####################################')
         print(f'{herb_i}/{len(herbs)} - {herb}')
@@ -568,22 +570,22 @@ def herbs_wcvp_medicinal_gen():
 
 def main():
     herbs_wcvp_medicinal_gen()
-    quit()
-    herbs = data.herbs_primary_get()
-    for herb_i, herb in enumerate(herbs):
-        print('####################################')
-        print(f'{herb_i}/{len(herbs)} - {herb}')
-        json_gen(herb)
-        print('####################################')
-        print()
-        print()
-        print()
-    herbs = data.herbs_popular_get('teas', 100)
-    for herb_i, herb in enumerate(herbs):
-        print('####################################')
-        print(f'{herb_i}/{len(herbs)} - {herb}')
-        json_gen(herb)
-        print('####################################')
-        print()
-        print()
-        print()
+    if 0:
+        herbs = data.herbs_primary_get()
+        for herb_i, herb in enumerate(herbs):
+            print('####################################')
+            print(f'{herb_i}/{len(herbs)} - {herb}')
+            json_gen(herb)
+            print('####################################')
+            print()
+            print()
+            print()
+        herbs = data.herbs_popular_get('teas', 100)
+        for herb_i, herb in enumerate(herbs):
+            print('####################################')
+            print(f'{herb_i}/{len(herbs)} - {herb}')
+            json_gen(herb)
+            print('####################################')
+            print()
+            print()
+            print()

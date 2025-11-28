@@ -507,6 +507,7 @@ def article_herbs_herb_wcvp_gen():
         json_article['title'] = f'{herb_name_common} ({herb_name_scientific})'
         io.json_write(json_article_filepath, json_article)
         ### json intro
+        print(f'HERB: {herb_i}/{len(herbs)} - {herb_slug}')
         regen = False
         dispel = False
         key = 'intro'
@@ -534,6 +535,7 @@ def article_herbs_herb_wcvp_gen():
                 json_article[key] = reply
                 io.json_write(json_article_filepath, json_article)
         ### json botany
+        print(f'HERB: {herb_i}/{len(herbs)} - {herb_slug}')
         regen = False
         dispel = False
         key = 'botany'
@@ -563,6 +565,7 @@ def article_herbs_herb_wcvp_gen():
                 json_article[key] = reply
                 io.json_write(json_article_filepath, json_article)
         ### json history
+        print(f'HERB: {herb_i}/{len(herbs)} - {herb_slug}')
         regen = False
         dispel = False
         key = 'history'
@@ -588,6 +591,7 @@ def article_herbs_herb_wcvp_gen():
                 json_article[key] = reply
                 io.json_write(json_article_filepath, json_article)
         ### json chemistry
+        print(f'HERB: {herb_i}/{len(herbs)} - {herb_slug}')
         regen = False
         dispel = False
         key = 'chemistry'
@@ -613,6 +617,7 @@ def article_herbs_herb_wcvp_gen():
                 json_article[key] = reply
                 io.json_write(json_article_filepath, json_article)
         ### json benefits
+        print(f'HERB: {herb_i}/{len(herbs)} - {herb_slug}')
         regen = False
         dispel = False
         key = 'benefits'
@@ -637,6 +642,7 @@ def article_herbs_herb_wcvp_gen():
                 json_article[key] = reply
                 io.json_write(json_article_filepath, json_article)
         ### json preparations
+        print(f'HERB: {herb_i}/{len(herbs)} - {herb_slug}')
         regen = False
         dispel = False
         key = 'preparations'
@@ -663,6 +669,7 @@ def article_herbs_herb_wcvp_gen():
                 json_article[key] = reply
                 io.json_write(json_article_filepath, json_article)
         ### json safety
+        print(f'HERB: {herb_i}/{len(herbs)} - {herb_slug}')
         regen = False
         dispel = False
         key = 'safety'
@@ -689,6 +696,7 @@ def article_herbs_herb_wcvp_gen():
                 json_article[key] = reply
                 io.json_write(json_article_filepath, json_article)
         ### json gardening
+        print(f'HERB: {herb_i}/{len(herbs)} - {herb_slug}')
         regen = False
         dispel = False
         key = 'gardening'
@@ -715,6 +723,7 @@ def article_herbs_herb_wcvp_gen():
                 json_article[key] = reply
                 io.json_write(json_article_filepath, json_article)
         ### json faq
+        print(f'HERB: {herb_i}/{len(herbs)} - {herb_slug}')
         regen = False
         dispel = False
         key = 'faq'
