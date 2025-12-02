@@ -8,7 +8,7 @@ from lib import llm
 from lib import data
 from lib import polish
 
-herbs_num = 30000
+herbs_num = 40000
 
 def medicine_poison_inert_get(tmp_filepath):
     tmp_data = io.json_read(tmp_filepath)
@@ -568,18 +568,48 @@ def herbs_wcvp_medicinal_gen():
         # break
     print(len(herbs))
 
+def herbs_primary_json(herb):
+    herbs_folderpath = f'{g.SSOT_FOLDERPATH}/herbs/herbs-primary'
+    try: os.mkdir(herbs_folderpath)
+    except: pass
+    ###
+    herb_name_scientific = herb['herb_name_scientific']
+    try: herb_slug = herb['herb_slug']
+    except: herb_slug = polish.sluggify(herb_name_scientific)
+    try: herb_family = herb['herb_family']
+    except: herb_family = ''
+    ###
+    herb_filepath = f'''{herbs_folderpath}/{herb_slug}.json'''
+    herb_data = io.json_read(herb_filepath, create=True)
+    herb_data['herb_slug'] = herb_slug
+    herb_data['herb_name_scientific'] = herb_name_scientific
+    herb_data['herb_family'] = herb_family
+    io.json_write(herb_filepath, herb_data)
+    ###
+    herb_names_common_gen(herb_filepath, regen=False, clear=False)
+    herb_origin_continents_gen(herb_filepath, regen=False, clear=False)
+    herb_medicine_or_poison_gen(herb_filepath, regen=False, clear=False)
+    # herb_family_ai(entity_herb_filepath, regen=False, clear=False)
+    # herb_native_regions_ai(entity_herb_filepath, regen=False, clear=False)
+    # herb_benefits_ai(entity_herb_filepath, regen=False, clear=False)
+    # herb_therapeutic_actions_ai(entity_herb_filepath, regen=False, clear=False)
+
+
+def herbs_primary_gen():
+    herbs = data.herbs_primary_get()
+    for herb_i, herb in enumerate(herbs):
+        print('####################################')
+        print(f'{herb_i}/{len(herbs)} - {herb}')
+        herbs_primary_json(herb)
+        print('####################################')
+        print()
+        print()
+        print()
+
 def main():
+    herbs_primary_gen()
     herbs_wcvp_medicinal_gen()
     if 0:
-        herbs = data.herbs_primary_get()
-        for herb_i, herb in enumerate(herbs):
-            print('####################################')
-            print(f'{herb_i}/{len(herbs)} - {herb}')
-            json_gen(herb)
-            print('####################################')
-            print()
-            print()
-            print()
         herbs = data.herbs_popular_get('teas', 100)
         for herb_i, herb in enumerate(herbs):
             print('####################################')

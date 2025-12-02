@@ -22,10 +22,7 @@ with open('/home/ubuntu/vault/terrawhisper/accounts/pinterest-password.txt') as 
 
 proj_filepath_abs = '/home/ubuntu/proj/terrawhisper-compiler'
 
-random_num = random.randint(-2, 2)
-ARTICLES_NUM = 40 - random_num
-WAIT_SECONDS = 400
-NUM_TINCTURES = 8
+WAIT_SECONDS = 300
 
 # options = Options()
 # options.binary_location = r'C:\Program Files\Mozilla Firefox\firefox.exe'

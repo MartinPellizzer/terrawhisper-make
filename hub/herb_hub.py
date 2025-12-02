@@ -100,7 +100,19 @@ def herb_in_list(herbs_list, herb_obj):
             break
     return found
 
-def article_herbs_herb_gen():
+def p2s(paragraph):
+    html = ''
+    sentences = [sentence for sentence in paragraph.split('.') if sentence.strip() != '']
+    chunk_1 = '. '.join(sentences[:1]) + '.'
+    chunk_2 = '. '.join(sentences[1:-1]) + '.'
+    chunk_3 = '. '.join(sentences[-1:]) + '.'
+    html += f'''<p>{chunk_1}</p>\n'''
+    html += f'''<p>{chunk_2}</p>\n'''
+    html += f'''<p>{chunk_3}</p>\n'''
+    return html
+    
+
+def article_herbs_herb_primary_gen():
     herbs = []
     if 1:
         for herb in herbs_primary_medicinal: 
@@ -393,9 +405,8 @@ def article_herbs_herb_gen():
         '''
         src = f'''/images/herbs/{herb_slug}.jpg'''
         alt = f'''herbal {herb_name_common}'''
-        html_article += f'''<img src="{src}" alt="{alt}">'''
-        # html_article += f'''{utils.format_1N1(json_article['intro'])}'''
-        html_article += f'''{json_article['intro']}'''
+        html_article += f'''<img src="{src}" alt="{alt}">\n'''
+        html_article += p2s(json_article['intro'])
         ### lead magnet
         form_head = ''
         form_body = ''
@@ -433,29 +444,22 @@ def article_herbs_herb_gen():
         html_article += f'''[toc]'''
         html_article += f'''<h2>Scientific and Botanical Profile</h2>'''
         # html_article += f'''{utils.format_1N1(json_article['botany'])}'''
-        html_article += f'''{json_article['botany']}'''
+        html_article += p2s(json_article['botany'])
         html_article += f'''<h2>History and Cultural Relevance</h2>'''
-        # html_article += f'''{utils.format_1N1(json_article['history'])}'''
-        html_article += f'''{json_article['history']}'''
+        html_article += p2s(json_article['history'])
         html_article += f'''<h2>Chemical Composition and Nutritional Profile</h2>'''
-        # html_article += f'''{utils.format_1N1(json_article['chemistry'])}'''
-        html_article += f'''{json_article['chemistry']}'''
+        html_article += p2s(json_article['chemistry'])
         html_article += f'''<h2>Medicinal Properties and Health Benefits</h2>'''
-        # html_article += f'''{utils.format_1N1(json_article['benefits'])}'''
-        html_article += f'''{json_article['benefits']}'''
+        html_article += p2s(json_article['benefits'])
         html_article += f'''<p>Discover the <a href="/herbs/{herb_slug}/benefits.html">10 best health benefits of {herb_name_common}</a>.</p>'''
         html_article += f'''<h2>Forms, Preparation and Usage</h2>'''
-        # html_article += f'''{utils.format_1N1(json_article['preparations'])}'''
-        html_article += f'''{json_article['preparations']}'''
+        html_article += p2s(json_article['preparations'])
         html_article += f'''<h2>Safety, Side Effects and Contraindications</h2>'''
-        # html_article += f'''{utils.format_1N1(json_article['safety'])}'''
-        html_article += f'''{json_article['safety']}'''
+        html_article += p2s(json_article['safety'])
         html_article += f'''<h2>Growing, Harvesting and Storage</h2>'''
-        # html_article += f'''{utils.format_1N1(json_article['gardening'])}'''
-        html_article += f'''{json_article['gardening']}'''
-        html_article += f'''<h2>FAQ</h2>'''
-        # html_article += f'''{utils.format_1N1(json_article['faq'])}'''
-        html_article += f'''{json_article['faq']}'''
+        html_article += p2s(json_article['gardening'])
+        # html_article += f'''<h2>FAQ</h2>'''
+        # html_article += p2s(json_article['faq'])
         html_article = sections.toc(html_article)
         html = f'''
             <!DOCTYPE html>
@@ -990,7 +994,7 @@ def main():
     # category_herbs_popular_gen()
     # category_herbs_actions_gen()
     ### articles
-    # article_herbs_herb_gen()
+    article_herbs_herb_primary_gen()
     article_herbs_herb_wcvp_gen()
     ###
     url_slug = f'herbs'

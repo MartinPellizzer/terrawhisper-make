@@ -28,12 +28,25 @@ def herbs_primary_get():
             if not found: herbs.append(herb_tmp)
     ###
     herbs = sorted(herbs, key=lambda x: x['herb_name_scientific'], reverse=False)
-    # for herb in herbs:
-        # print(herb)
+    for herb in herbs:
+        print(herb)
+    print(len(herbs))
     # quit()
     return herbs
 
 def herbs_primary_medicinal_get():
+    herbs = herbs_primary_get()
+    herbs_medicinal = []
+    for herb in herbs:
+        print(herb)
+        ssot_herb_filepath = f'''{g.database_folderpath}/ssot/herbs/herbs-primary/{herb['herb_slug']}.json'''
+        if herb_medicine_or_poison_get(ssot_herb_filepath) == 'medicine':
+            herbs_medicinal.append(herb)
+    herbs_medicinal = sorted(herbs_medicinal, key=lambda x: x['herb_name_scientific'], reverse=False)
+    # print(len(herbs_medicinal))
+    return herbs_medicinal
+
+def herbs_primary_medicinal_get_old():
     herbs = herbs_primary_get()
     herbs_medicinal = []
     for herb in herbs:
