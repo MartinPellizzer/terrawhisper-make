@@ -663,6 +663,33 @@ def template_herbs_new(data, images_file_paths, export_file_name, herb_name_comm
     rect_h = 500
     if template == 1:
         img_0000 = Image.open(images_file_paths[0])
+        img_0000 = media.resize(img_0000, 1000, 700)
+        img_0001 = Image.open(images_file_paths[1])
+        img_0001 = media.resize(img_0001, 1000, 700)
+        img.paste(img_0000, (int(0.0), -int(pin_h*0.1) - gap))
+        img.paste(img_0001, (int(0.0), int(pin_h*0.66) + gap))
+    if template == 2:
+        img_0000 = Image.open(images_file_paths[0])
+        img_0000 = media.resize(img_0000, 1000, 700)
+        img_0001 = Image.open(images_file_paths[1])
+        img_0001 = media.resize(img_0001, pin_w//2, pin_h//2)
+        img_0002 = Image.open(images_file_paths[2])
+        img_0002 = media.resize(img_0002, pin_w//2, pin_h//2)
+        img.paste(img_0000, (int(0.0), -int(pin_h*0.1) - gap))
+        img.paste(img_0001, (int(0.0), int(pin_h*0.66) + gap))
+        img.paste(img_0002, (int(pin_w*0.5) + gap, int(pin_h*0.66) + gap))
+    if template == 3:
+        img_0000 = Image.open(images_file_paths[0])
+        img_0000 = media.resize(img_0000, pin_w//2, pin_h//2)
+        img_0001 = Image.open(images_file_paths[1])
+        img_0001 = media.resize(img_0001, pin_w//2, pin_h//2)
+        img_0002 = Image.open(images_file_paths[2])
+        img_0002 = media.resize(img_0002, 1000, 700)
+        img.paste(img_0000, (int(0.0), int(pin_h*0.0) - gap))
+        img.paste(img_0001, (int(pin_w*0.5) + gap, int(pin_h*0.0) - gap))
+        img.paste(img_0002, (int(0.0), int(pin_h*0.66) + gap))
+    if template == 4:
+        img_0000 = Image.open(images_file_paths[0])
         img_0000 = media.resize(img_0000, pin_w//2, pin_h//2)
         img_0001 = Image.open(images_file_paths[1])
         img_0001 = media.resize(img_0001, pin_w//2, pin_h//2)
@@ -671,16 +698,9 @@ def template_herbs_new(data, images_file_paths, export_file_name, herb_name_comm
         img_0003 = Image.open(images_file_paths[3])
         img_0003 = media.resize(img_0003, pin_w//2, pin_h//2)
         img.paste(img_0000, (int(0.0), int(pin_h*0.0) - gap))
-        img.paste(img_0001, (int(0.0), int(pin_h*0.66) + gap))
-        img.paste(img_0002, (int(pin_w*0.5) + gap, int(pin_h*0.0) - gap))
+        img.paste(img_0001, (int(pin_w*0.5) + gap, int(pin_h*0.0) - gap))
+        img.paste(img_0002, (int(0.0), int(pin_h*0.66) + gap))
         img.paste(img_0003, (int(pin_w*0.5) + gap, int(pin_h*0.66) + gap))
-    if template == 2:
-        img_0000 = Image.open(images_file_paths[0])
-        img_0000 = media.resize(img_0000, 1000, 700)
-        img_0001 = Image.open(images_file_paths[1])
-        img_0001 = media.resize(img_0001, 1000, 700)
-        img.paste(img_0000, (int(0.0), -int(pin_h*0.1) - gap))
-        img.paste(img_0001, (int(0.0), int(pin_h*0.6) + gap))
     random_theme = random.randint(0, 1)
     if random_theme == 0:
         text_color = '#ffffff'
@@ -955,16 +975,48 @@ def ai_img_herb_new(template, herb_name_scientific):
         high resolution,
     '''.replace('  ', ' ')
     if template == 1:
-        width = 1024
-        height = 1024
-        for i in range(4):
+        width = 1216
+        height = 832
+        for i in range(2):
             print(prompt)
             image = media.image_gen(prompt, width, height, steps=20, cfg=6.0)
             image.save(f'{g.pinterest_tmp_image_folderpath}/tmp/img-{i}.jpg')
     if template == 2:
+        i = 0
         width = 1216
         height = 832
-        for i in range(2):
+        for _ in range(1):
+            print(prompt)
+            image = media.image_gen(prompt, width, height, steps=20, cfg=6.0)
+            image.save(f'{g.pinterest_tmp_image_folderpath}/tmp/img-{i}.jpg')
+            i += 1
+        width = 1024
+        height = 1024
+        for _ in range(2):
+            print(prompt)
+            image = media.image_gen(prompt, width, height, steps=20, cfg=6.0)
+            image.save(f'{g.pinterest_tmp_image_folderpath}/tmp/img-{i}.jpg')
+            i += 1
+    if template == 3:
+        i = 0
+        width = 1024
+        height = 1024
+        for _ in range(2):
+            print(prompt)
+            image = media.image_gen(prompt, width, height, steps=20, cfg=6.0)
+            image.save(f'{g.pinterest_tmp_image_folderpath}/tmp/img-{i}.jpg')
+            i += 1
+        width = 1216
+        height = 832
+        for _ in range(1):
+            print(prompt)
+            image = media.image_gen(prompt, width, height, steps=20, cfg=6.0)
+            image.save(f'{g.pinterest_tmp_image_folderpath}/tmp/img-{i}.jpg')
+            i += 1
+    if template == 4:
+        width = 1024
+        height = 1024
+        for i in range(4):
             print(prompt)
             image = media.image_gen(prompt, width, height, steps=20, cfg=6.0)
             image.save(f'{g.pinterest_tmp_image_folderpath}/tmp/img-{i}.jpg')
@@ -1242,8 +1294,8 @@ def pin_herb(article_filepath, article_i):
         description = ''
     board_name = f'herbs'.title()
     ### TEMPLATE
-    template = random.randint(1, 2)
-    template = 1
+    template = random.randint(1, 4)
+    # template = 4
     ### TMP IMAGES
     ai_img_herb_new(template, herb_name_scientific)
     tmp_images_folderpath = f'{g.pinterest_tmp_image_folderpath}/tmp'
@@ -1721,12 +1773,13 @@ i = 0
 ### 1-page handouts
 ########################################
 if 1:
-    pin_quick_start_guide_preparation_lotion(i)
-    i += 1
+    if 1:
+        pin_quick_start_guide_preparation_lotion(i)
+        i += 1
 
-if 1:
-    pin_checklist_foraging_fall(i)
-    i += 1
+    if 1:
+        pin_checklist_foraging_fall(i)
+        i += 1
 
 # quit()
 
@@ -1826,7 +1879,7 @@ if 1:
         print(f'{i}/{len(articles_filepath)} >> {article_filepath}')
         pin_herb(article_filepath, i)
         i += 1
-        # quit()
+    # quit()
 
 if 0:
     # PINS PREPARATIONS

@@ -2,6 +2,7 @@ import os
 import json
 import random
 import shutil
+import time
 
 from lib import g
 from lib import io
@@ -10,6 +11,7 @@ from lib import media
 from lib import utils
 from lib import components
 from lib import sections
+from lib import zimage
 
 
 def ai_llm_intro(obj, regen=False, dispel=False):
@@ -125,7 +127,7 @@ def ai_llm_list_init(obj, regen=False, dispel=False):
         output_list = sorted(output_list, key=lambda x: x['herb_grade'], reverse=True)
         for output in output_list:
             print(output)
-        json_article[key] = output_list
+        json_article[key] = output_list[:10]
         io.json_write(json_article_filepath, json_article)
 
 def ai_llm_list_desc(obj, regen=False, dispel=False):
@@ -170,7 +172,7 @@ def json_gen(obj):
     ai_llm_list_init(obj, regen=False, dispel=False)
     ai_llm_list_desc(obj, regen=False, dispel=False)
 
-def image_ai(obj):
+def image_ai_old(obj, clear=False):
     json_article_filepath = f'''{g.database_folderpath}/json/{obj['url']}.json'''
     json_article = io.json_read(json_article_filepath)
     preparation_slug = json_article['preparation_slug']
@@ -180,8 +182,14 @@ def image_ai(obj):
     for preparation_i, preparation in enumerate(preparation_list[:10]):
         herb_name_scientific = preparation['herb_name_scientific']
         herb_slug = herb_name_scientific.lower().strip().replace(' ', '-').replace('.', '')
-        out_filepath = f'''{g.database_folderpath}/images/preparations/{herb_slug}-{preparation_slug}.jpg'''
+        out_filepath = f'''{g.WEBSITE_FOLDERPATH}/images/preparations/{herb_slug}-{preparation_slug}.jpg'''
+        print(f'{preparation_i}/{len(preparation_list)} - {out_filepath}')
+        if clear:
+            try: os.remove(out_filepath)
+            except: pass
+            continue
         if not os.path.exists(out_filepath):
+        # if True:
             prompt = f'''
                 herbal {preparation_name_plural} made with dry {herb_name_scientific},
                 on a wooden table,
@@ -193,6 +201,41 @@ def image_ai(obj):
             image = media.resize(image, 768, 768)
             # image.show()
             image.save(out_filepath)
+        # quit()
+
+def image_ai(obj, clear=False):
+    json_article_filepath = f'''{g.database_folderpath}/json/{obj['url']}.json'''
+    json_article = io.json_read(json_article_filepath)
+    preparation_slug = json_article['preparation_slug']
+    preparation_name_singular = json_article['preparation_name_singular']
+    preparation_name_plural = json_article['preparation_name_plural']
+    preparation_list = json_article['preparations']
+    for preparation_i, preparation in enumerate(preparation_list[:10]):
+        herb_name_scientific = preparation['herb_name_scientific']
+        herb_slug = herb_name_scientific.lower().strip().replace(' ', '-').replace('.', '')
+        out_filepath = f'''{g.WEBSITE_FOLDERPATH}/images/preparations/{herb_slug}-{preparation_slug}.jpg'''
+        print(f'{preparation_i}/{len(preparation_list)} - {out_filepath}')
+        if clear:
+            try: os.remove(out_filepath)
+            except: pass
+            continue
+        if not os.path.exists(out_filepath):
+        # if True:
+            prompt = f'''
+                herbal {preparation_name_plural} made with dry {herb_name_scientific},
+                on a wooden table,
+                rustic, vintage, boho,
+                warm tones,
+                high resolution,
+            '''.replace('  ', ' ')
+            zimage.image_create(
+                output_filepath=f'{out_filepath}', 
+                prompt=prompt, width=768, height=768, seed=-1,
+            )
+            # image = media.image_gen(prompt, 1024, 1024)
+            # image = media.resize(image, 768, 768)
+            # image.show()
+            # image.save(out_filepath)
         # quit()
 
 def image_pil(obj):
@@ -251,7 +294,7 @@ def html_gen(obj):
     for preparation_i, preparation in enumerate(json_article['preparations'][:10]):
         html_article += f'''<h2>{preparation_i+1}. {preparation['herb_name_scientific'].capitalize()}</h2>'''
         herb_slug = preparation['herb_name_scientific'].strip().lower().replace(' ', '-').replace('.', '')
-        src = f'''/images/preparations/{herb_slug}-{json_article['preparation_slug']}.jpg'''
+        src = f'''/images/preparations/{json_article['preparation_slug']}/{herb_slug}-{json_article['preparation_slug']}.jpg'''
         alt = f'''{preparation['herb_name_scientific']} {json_article['preparation_name_singular']}'''
         html_article += f'''<img src="{src}" alt="{alt}">'''
         html_article += f'''{utils.format_1N1(preparation['preparation_desc'])}'''
@@ -287,8 +330,9 @@ def gen():
             preparation_slug = preparation['preparation_slug']
             preparation_name_singular = preparation['preparation_name_singular']
             preparation_name_plural = preparation['preparation_name_plural']
+            # if preparation_slug != 'teas': continue
+            if preparation_slug != 'tinctures': continue
             print(f'PREPARATION: {preparation_slug}')
-            # if preparation_slug == 'teas': continue
             try: os.mkdir(f'''{g.website_folderpath}/ailments''')
             except: pass
             try: os.mkdir(f'''{g.website_folderpath}/ailments/{ailment_slug}''')
@@ -304,8 +348,8 @@ def gen():
                 'preparation_name_singular': preparation_name_singular,
                 'preparation_name_plural': preparation_name_plural,
             }
-            # json_gen(obj)
-            # image_ai(obj)
+            json_gen(obj)
+            # image_ai(obj, clear=False)
             html_gen(obj)
             # quit()
     # image_pil(obj)

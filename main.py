@@ -30,6 +30,22 @@ shutil.copy2('style.css', f'{g.website_folderpath}/style.css')
 # HOME...........................[HOM]
 
 ########################################
+# IMAGES.........................[IMG]
+########################################
+if 0:
+    from lib import zimage
+    from lib import data
+    from lib import polish
+    output_folderpath = f'{g.VAULT_TMP_FOLDERPATH}/terrawhisper/zimage'
+    herbs = data.herbs_popular_get('teas', 100)
+    for herb_i, herb in enumerate(herbs):
+        herb_name_scientific = herb['herb_name_scientific']
+        herb_slug = polish.sluggify(herb_name_scientific)
+        prompt = f'a cup of {herb_name_scientific} tea'
+        zimage.image_create(f'{output_folderpath}/{herb_i}-{herb_slug}.jpg', prompt)
+    quit()
+
+########################################
 # ART............................[ART]
 ########################################
 if 0:
@@ -45,7 +61,7 @@ if 1:
     from ai import herbs_ai
     herbs_ai.main()
 
-if 1:
+if 0:
     if 1:
         from hub import herb_hub
         herb_hub.main()
@@ -85,6 +101,11 @@ if 0:
         from lib import cat_preparations
         cat_preparations.gen()
 
+if 1:
+    if 1:
+        from ai import preparations_images
+        preparations_images.gen()
+
 ########################################
 # AILMENTS.......................[ALM]
 ########################################
@@ -92,7 +113,7 @@ if 0:
     if 0:
         from hub import hub_ailments
         hub_ailments.gen()
-    if 0:
+    if 1:
         from lib import art_ailments_preparations
         art_ailments_preparations.gen()
     if 0:

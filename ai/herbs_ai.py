@@ -8,7 +8,7 @@ from lib import llm
 from lib import data
 from lib import polish
 
-herbs_num = 50000
+herbs_num = 60000
 
 def medicine_poison_inert_get(tmp_filepath):
     tmp_data = io.json_read(tmp_filepath)
