@@ -14,13 +14,16 @@ def image_ai(obj, clear=False):
     for preparation_i, preparation in enumerate(preparation_list[:10]):
         herb_name_scientific = preparation['herb_name_scientific']
         herb_slug = herb_name_scientific.lower().strip().replace(' ', '-').replace('.', '')
-        out_filepath = f'''{g.WEBSITE_FOLDERPATH}/images/preparations/{preparation_slug}/{herb_slug}-{preparation_slug}.jpg'''
+        output_folderpath = f'''{g.WEBSITE_FOLDERPATH}/images/preparations/{preparation_slug}'''
+        out_filepath = f'''{output_folderpath}/{herb_slug}-{preparation_slug}.jpg'''
         if clear:
             try: os.remove(out_filepath)
             except: pass
             continue
-        # if not os.path.exists(out_filepath):
-        if True:
+        try: os.makedirs(output_folderpath)
+        except: pass
+        if not os.path.exists(out_filepath):
+        # if True:
             if 0:
                 prompt = f'''
                     herbal {preparation_name_plural} made with dry {herb_name_scientific},
@@ -38,7 +41,17 @@ def image_ai(obj, clear=False):
                 prompt = f'''
                     a dark amber glass dropper bottle of {herb_name_scientific} tincture on a wooden table surrounded by dry herbs,
                     rustic, vintage, boho,
-        '''
+                '''
+            elif preparation_name_plural == 'essential oils':
+                prompt = f'''
+                    an amber glass bottle with black cap of {herb_name_scientific} essential oil on a wooden table surrounded by dry herbs,
+                    rustic, vintage, boho,
+                '''
+            elif preparation_name_plural == 'creams':
+                prompt = f'''
+                    a glass jar of {herb_name_scientific} cream on a wooden table surrounded by dry herbs,
+                    rustic, vintage, boho,
+                '''
             zimage.image_create(
                 output_filepath=f'{out_filepath}', 
                 prompt=prompt, width=768, height=768, seed=-1,
@@ -57,7 +70,10 @@ def gen():
             preparation_slug = preparation['preparation_slug']
             preparation_name_singular = preparation['preparation_name_singular']
             preparation_name_plural = preparation['preparation_name_plural']
-            if preparation_slug != 'tinctures': continue
+            # if preparation_slug != 'teas': continue
+            # if preparation_slug != 'tinctures': continue
+            # if preparation_slug != 'essential-oils': continue
+            if preparation_slug != 'creams': continue
             print(f'PREPARATION: {preparation_slug}')
             try: os.mkdir(f'''{g.website_folderpath}/ailments''')
             except: pass
@@ -75,8 +91,8 @@ def gen():
                 'preparation_name_plural': preparation_name_plural,
             }
             image_ai(obj, clear=False)
-            print(f'########################################')
-            print(f'DONE')
-            print(f'########################################')
-            quit()
+    print(f'########################################')
+    print(f'DONE')
+    print(f'########################################')
+    # quit()
 

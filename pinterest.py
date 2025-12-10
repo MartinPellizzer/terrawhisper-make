@@ -22,7 +22,7 @@ with open('/home/ubuntu/vault/terrawhisper/accounts/pinterest-password.txt') as 
 
 proj_filepath_abs = '/home/ubuntu/proj/terrawhisper-compiler'
 
-WAIT_SECONDS = 300
+WAIT_SECONDS = 240
 
 # options = Options()
 # options.binary_location = r'C:\Program Files\Mozilla Firefox\firefox.exe'

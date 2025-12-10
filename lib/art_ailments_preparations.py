@@ -331,7 +331,9 @@ def gen():
             preparation_name_singular = preparation['preparation_name_singular']
             preparation_name_plural = preparation['preparation_name_plural']
             # if preparation_slug != 'teas': continue
-            if preparation_slug != 'tinctures': continue
+            # if preparation_slug != 'tinctures': continue
+            # if preparation_slug != 'essential-oils': continue
+            if preparation_slug != 'creams': continue
             print(f'PREPARATION: {preparation_slug}')
             try: os.mkdir(f'''{g.website_folderpath}/ailments''')
             except: pass

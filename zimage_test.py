@@ -46,7 +46,16 @@ for row_i in range(rows_num):
             a dark amber glass dropper bottle of {herb_name_scientific} tincture on a wooden table surrounded by dry herbs,
             rustic, vintage, boho,
         '''
-        zimage.image_create(f'{output_folderpath}/{str_i}-{herb_slug}.jpg', prompt_tincture, seed=seeds[img_i])
+        prompt_essential_oil = f'''
+            an amber glass bottle with black cap of {herb_name_scientific} essential oil on a wooden table surrounded by dry herbs,
+            rustic, vintage, boho,
+        '''
+        prompt_cream = f'''
+            a glass jar of {herb_name_scientific} cream on a wooden table surrounded by dry herbs,
+            rustic, vintage, boho,
+        '''
+        # zimage.image_create(f'{output_folderpath}/{str_i}-{herb_slug}.jpg', prompt_cream, seed=seeds[img_i])
+        zimage.image_create(f'{output_folderpath}/{str_i}-{herb_slug}.jpg', prompt_cream, seed=-1)
         img_i += 1
 
 img_w = rows_num * 400
@@ -62,4 +71,5 @@ for row_i in range(rows_num):
         img.paste(img_0000, (400 * col_i, 400 * row_i))
         img_i += 1
 img.save(f'{output_folderpath}/grid.jpg', format='JPEG', subsampling=0, quality=100)
+
 

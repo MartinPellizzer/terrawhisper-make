@@ -1,16 +1,3 @@
-########################################
-# TODO
-########################################
-
-# herbs category page (new categories: action, etc. ask GPT)
-# ailments category page (new categories. ask GPT)
-# add CTA newsletter at end of herbs articles
-# add related posts (herbs) at end of herbs articles
-# make lead magnet 10 herbs for 90% ailments (one herb per system?)
-# crash course on herbalism
-# equipments pages
-# sitemap xml (all plants, divided in a, b, c?)
-
 import shutil
 
 from lib import g
@@ -101,14 +88,14 @@ if 0:
         from lib import cat_preparations
         cat_preparations.gen()
 
+########################################
+# AILMENTS.......................[ALM]
+########################################
 if 1:
     if 1:
         from ai import preparations_images
         preparations_images.gen()
 
-########################################
-# AILMENTS.......................[ALM]
-########################################
 if 0:
     if 0:
         from hub import hub_ailments
@@ -161,7 +148,7 @@ if 0:
 ########################################
 # SHOP...........................[SHP]
 ########################################
-if 1:
+if 0:
     from hub import hub_shop
     hub_shop.gen()
 
