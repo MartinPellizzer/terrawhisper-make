@@ -44,11 +44,11 @@ if 0:
 ########################################
 # HERBS..........................[HRB]
 ########################################
-if 1:
+if 0:
     from ai import herbs_ai
     herbs_ai.main()
 
-if 0:
+if 1:
     if 1:
         from hub import herb_hub
         herb_hub.main()
@@ -91,7 +91,7 @@ if 0:
 ########################################
 # AILMENTS.......................[ALM]
 ########################################
-if 1:
+if 0:
     if 1:
         from ai import preparations_images
         preparations_images.gen()
@@ -148,9 +148,10 @@ if 0:
 ########################################
 # SHOP...........................[SHP]
 ########################################
-if 0:
-    from hub import hub_shop
-    hub_shop.gen()
+if 1:
+    if 1:
+        from hub import hub_shop
+        hub_shop.gen()
 
     # from hub import hub_shop
     # hub_shop.gen()

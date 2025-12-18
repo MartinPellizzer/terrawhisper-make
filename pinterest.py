@@ -1,6 +1,4 @@
 import os
-import re
-import csv
 import time
 import random
 import pickle

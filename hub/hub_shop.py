@@ -124,14 +124,12 @@ def shop_course_prapration_tincture_download_gen():
     html_filepath = f'''{g.website_folderpath}/{obj['url_slug']}.html'''
     with open(html_filepath, 'w') as f: f.write(html)
 
-def shop_item_gen():
+def shop_course_tincture_gen():
     shop_course_prapration_tincture_download_gen()
-
     url_slug = f'shop/course-preparation-tincture'
     obj = {
         'url_slug': url_slug,
     }
-
     form_head = file_read_txt(f'{g.ASSETS_FOLDERPATH}/scripts/newsletter/form-head.txt')
     form_body = file_read_txt(f'{g.ASSETS_FOLDERPATH}/scripts/newsletter/form-course-preparation-tincture.txt')
     img_src = '/images/shop/banner-course-preparation-tincture.jpg'
@@ -148,7 +146,6 @@ def shop_item_gen():
             {form_body}
         </div>
     '''
-
     ###
     meta_title = f'''Tincture Preparation Course | TerraWhisper Shop'''
     meta_description = f''''''
@@ -170,6 +167,95 @@ def shop_item_gen():
     '''
     html_filepath = f'''{g.website_folderpath}/{obj['url_slug']}.html'''
     with open(html_filepath, 'w') as f: f.write(html)
+
+def shop_course_prapration_lotion_bar_download_gen():
+    url_slug = f'shop/course-preparation-lotion-bar/download'
+    obj = {
+        'url_slug': url_slug,
+    }
+    ###
+    with open(f'{g.DATABASE_FOLDERPATH}/shop/courses/lotion-bar/embeddings/00.txt') as f: lesson_00 = f.read()
+    css_lesson_margin_top = '1.6rem;'
+    css_lesson_margin_bottom = '9.6rem;'
+    html_lessons = f'''
+        <div class="container-xl">
+            <h2 style="text-align: center; margin-bottom: {css_lesson_margin_top};">Full Video</h2>
+            <div style="display: flex; justify-content: center; margin-bottom: {css_lesson_margin_bottom};">
+                {lesson_00}
+            </div>
+        </div>
+    '''
+    html_main = f'''
+        <h1 style="font-size: 6.4rem; line-height: 1; margin-bottom: 1.6rem; text-align: center;">Natural Lotion Bar</h1>
+        <p style="margin-bottom: 4.8rem; text-align: center;">How to make natural lotion bar at home for only $1 a piece.</p>
+        {html_lessons}
+    '''
+    ###
+    meta_title = f'''Lotion Bar Preparation Course Download | TerraWhisper Shop'''
+    meta_description = f''''''
+    html = f'''
+        <!DOCTYPE html>
+        <html lang="en">
+        {components.html_head(meta_title, meta_description)}
+        <body>
+            {sections.header()}
+            {sections.breadcrumbs(obj['url_slug'])}
+            <div class="spacer"></div>
+            <main class="container-md">
+                {html_main}
+            </main>
+            <div class="spacer"></div>
+            {sections.footer()}
+        </body>
+        </html>
+    '''
+    html_filepath = f'''{g.website_folderpath}/{obj['url_slug']}.html'''
+    with open(html_filepath, 'w') as f: f.write(html)
+
+def shop_course_lotion_bar_gen():
+    shop_course_prapration_lotion_bar_download_gen()
+    if 0:
+        url_slug = f'shop/course-preparation-lotion-bar'
+        obj = {
+            'url_slug': url_slug,
+        }
+        form_head = file_read_txt(f'{g.ASSETS_FOLDERPATH}/scripts/newsletter/form-head.txt')
+        form_body = file_read_txt(f'{g.ASSETS_FOLDERPATH}/scripts/newsletter/form-course-preparation-lotion-bar.txt')
+        img_src = '/images/shop/banner-course-preparation-tincture.jpg'
+        img_alt = 'tincture preparation course banner'
+        html_main = f'''
+            <div class='product'>
+                <p style="text-align: center; margin-bottom: 1.6rem;">FREE COURSE</p>
+                <h1 style="text-align: center; margin-bottom: 1.6rem;">Tincture Preparation Course</h1>
+                <p style="text-align: center; margin-bottom: 1.6rem;">How to make medicinal herbal tinctures for common ailments at home and in a weekend (using the Healing Drops System).</p>
+                <div class="container-sm" style="margin-bottom: 1.6rem;">
+                    <img src="{img_src}" alt="{img_alt}">
+                </div>
+                <p style="text-align: center; margin-bottom: 1.6rem;">Enter the email where you want me to send your free download in the form below.</p>
+                {form_body}
+            </div>
+        '''
+        ###
+        meta_title = f'''Tincture Preparation Course | TerraWhisper Shop'''
+        meta_description = f''''''
+        html = f'''
+            <!DOCTYPE html>
+            <html lang="en">
+            {components.html_head(meta_title, meta_description, form_head)}
+            <body>
+                {sections.header()}
+                {sections.breadcrumbs(obj['url_slug'])}
+                <div class="spacer"></div>
+                <main class="container-md">
+                    {html_main}
+                </main>
+                <div class="spacer"></div>
+                {sections.footer()}
+            </body>
+            </html>
+        '''
+        html_filepath = f'''{g.website_folderpath}/{obj['url_slug']}.html'''
+        with open(html_filepath, 'w') as f: f.write(html)
 
 def shop_product_download_gen(data):
     url_slug = f'''shop/{data['slug']}/download'''
@@ -261,10 +347,20 @@ def shop_product_gen(data):
 def gen():
     json_dict = io.json_read(f'{g.DATABASE_FOLDERPATH}/shop/data.json')
 
-    shop_item_gen()
+    shop_course_tincture_gen()
+    shop_course_lotion_bar_gen()
     shop_product_gen(json_dict[0])
     shop_product_gen(json_dict[1])
     shop_product_gen(json_dict[3])
+
+    '''
+                {
+                    'name': 'Lotion Bar Preparation Course',
+                    'img_src': '/images/shop/banner-course-preparation-lotion-bar.jpg',
+                    'img_alt': 'lotion bar preparation course',
+                    'href': '/shop/course-preparation-lotion-bar.html',
+                },
+    '''
 
     url_slug = f'shop'
     obj = {

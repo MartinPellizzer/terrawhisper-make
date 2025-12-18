@@ -7,6 +7,7 @@ from PIL import Image, ImageFont, ImageDraw, ImageColor, ImageOps
 
 from lib import g
 from lib import io
+from lib import llm
 from lib import data
 from lib import media
 from lib import zimage
@@ -154,6 +155,12 @@ print(len(creams_articles_filepath))
 # quit()
 
 ###########################################################################
+# PROMPTS
+###########################################################################
+
+prompts_tables = ['table', 'wooden table', 'oak table', 'mapple table', 'walnut table', 'marble table', 'granite table', 'dark table']
+
+###########################################################################
 # UTILS
 ###########################################################################
 
@@ -183,52 +190,6 @@ def text_to_lines(text, font, max_w):
     return lines
 
 def template_herbs_new(data, images_file_paths, export_file_name, herb_name_common, template):
-    pin_w = 1000
-    pin_h = 1500
-    img = Image.new(mode="RGB", size=(pin_w, pin_h), color='#ffffff')
-    draw = ImageDraw.Draw(img)
-    gap = 8
-    rect_h = 500
-    if template == 1:
-        img_0000 = Image.open(images_file_paths[0])
-        img_0000 = media.resize(img_0000, 1000, 700)
-        img_0001 = Image.open(images_file_paths[1])
-        img_0001 = media.resize(img_0001, 1000, 700)
-        img.paste(img_0000, (int(0.0), -int(pin_h*0.1) - gap))
-        img.paste(img_0001, (int(0.0), int(pin_h*0.66) + gap))
-    if template == 2:
-        img_0000 = Image.open(images_file_paths[0])
-        img_0000 = media.resize(img_0000, 1000, 700)
-        img_0001 = Image.open(images_file_paths[1])
-        img_0001 = media.resize(img_0001, pin_w//2, pin_h//2)
-        img_0002 = Image.open(images_file_paths[2])
-        img_0002 = media.resize(img_0002, pin_w//2, pin_h//2)
-        img.paste(img_0000, (int(0.0), -int(pin_h*0.1) - gap))
-        img.paste(img_0001, (int(0.0), int(pin_h*0.66) + gap))
-        img.paste(img_0002, (int(pin_w*0.5) + gap, int(pin_h*0.66) + gap))
-    if template == 3:
-        img_0000 = Image.open(images_file_paths[0])
-        img_0000 = media.resize(img_0000, pin_w//2, pin_h//2)
-        img_0001 = Image.open(images_file_paths[1])
-        img_0001 = media.resize(img_0001, pin_w//2, pin_h//2)
-        img_0002 = Image.open(images_file_paths[2])
-        img_0002 = media.resize(img_0002, 1000, 700)
-        img.paste(img_0000, (int(0.0), int(pin_h*0.0) - gap))
-        img.paste(img_0001, (int(pin_w*0.5) + gap, int(pin_h*0.0) - gap))
-        img.paste(img_0002, (int(0.0), int(pin_h*0.66) + gap))
-    if template == 4:
-        img_0000 = Image.open(images_file_paths[0])
-        img_0000 = media.resize(img_0000, pin_w//2, pin_h//2)
-        img_0001 = Image.open(images_file_paths[1])
-        img_0001 = media.resize(img_0001, pin_w//2, pin_h//2)
-        img_0002 = Image.open(images_file_paths[2])
-        img_0002 = media.resize(img_0002, pin_w//2, pin_h//2)
-        img_0003 = Image.open(images_file_paths[3])
-        img_0003 = media.resize(img_0003, pin_w//2, pin_h//2)
-        img.paste(img_0000, (int(0.0), int(pin_h*0.0) - gap))
-        img.paste(img_0001, (int(pin_w*0.5) + gap, int(pin_h*0.0) - gap))
-        img.paste(img_0002, (int(0.0), int(pin_h*0.66) + gap))
-        img.paste(img_0003, (int(pin_w*0.5) + gap, int(pin_h*0.66) + gap))
     random_theme = random.randint(0, 1)
     if random_theme == 0:
         text_color = '#ffffff'
@@ -236,6 +197,43 @@ def template_herbs_new(data, images_file_paths, export_file_name, herb_name_comm
     else:
         text_color = '#000000'    
         bg_color = '#ffffff'
+    pin_w = 1000
+    pin_h = 1500
+    img = Image.new(mode="RGB", size=(pin_w, pin_h), color='#ffffff')
+    draw = ImageDraw.Draw(img)
+    gap = 4
+    rect_h = 500
+    if template == 1:
+        img_0000 = Image.open(images_file_paths[0])
+        img_0001 = Image.open(images_file_paths[1])
+        img.paste(img_0000, (int(0.0), int(pin_h*0.0)))
+        img.paste(img_0001, (int(0.0), int(pin_h*0.66)))
+    if template == 2:
+        img_0000 = Image.open(images_file_paths[0])
+        img_0001 = Image.open(images_file_paths[1])
+        img_0002 = Image.open(images_file_paths[2])
+        img.paste(img_0000, (int(0.0), int(pin_h*0.0)))
+        img.paste(img_0001, (int(0.0), int(pin_h*0.66)))
+        img.paste(img_0002, (int(pin_w*0.5) + gap, int(pin_h*0.66) + gap))
+        draw.rectangle(((pin_w//2-gap, int(pin_h*0.5)), (pin_w//2+gap, pin_h)), fill=bg_color)
+    if template == 3:
+        img_0000 = Image.open(images_file_paths[0])
+        img_0001 = Image.open(images_file_paths[1])
+        img_0002 = Image.open(images_file_paths[2])
+        img.paste(img_0000, (int(0.0), int(pin_h*0.0)))
+        img.paste(img_0001, (int(pin_w*0.5), int(pin_h*0.0)))
+        img.paste(img_0002, (int(0.0), int(pin_h*0.66) + gap))
+        draw.rectangle(((pin_w//2-gap, int(pin_h*0.0)), (pin_w//2+gap, int(pin_h*0.5))), fill=bg_color)
+    if template == 4:
+        img_0000 = Image.open(images_file_paths[0])
+        img_0001 = Image.open(images_file_paths[1])
+        img_0002 = Image.open(images_file_paths[2])
+        img_0003 = Image.open(images_file_paths[3])
+        img.paste(img_0000, (int(0.0), int(pin_h*0.0)))
+        img.paste(img_0001, (int(pin_w*0.5), int(pin_h*0.0)))
+        img.paste(img_0002, (int(0.0), int(pin_h*0.66)))
+        img.paste(img_0003, (int(pin_w*0.5), int(pin_h*0.66)))
+        draw.rectangle(((pin_w//2-gap, 0), (pin_w//2+gap, pin_h)), fill=bg_color)
     # rect
     draw.rectangle(((0, pin_h//2 - rect_h//2), (pin_w, pin_h//2 + rect_h//2)), fill=bg_color)
     y_cur = 500
@@ -382,6 +380,107 @@ def template_ailments(data, images_file_paths, export_file_name):
     # quit()
     return export_file_path
 
+def template_ailments_new(data, images_file_paths, export_file_name, template):
+    random_theme = random.randint(0, 1)
+    if random_theme == 0:
+        text_color = '#ffffff'
+        bg_color = '#000000'    
+    else:
+        text_color = '#000000'    
+        bg_color = '#ffffff'
+    pin_w = 1000
+    pin_h = 1500
+    img = Image.new(mode="RGB", size=(pin_w, pin_h), color='#ffffff')
+    draw = ImageDraw.Draw(img)
+    gap = 4
+    rect_h = 500
+    if template == 1:
+        img_0000 = Image.open(images_file_paths[0])
+        img_0001 = Image.open(images_file_paths[1])
+        img.paste(img_0000, (int(0.0), int(pin_h*0.0)))
+        img.paste(img_0001, (int(0.0), int(pin_h*0.66)))
+    if template == 2:
+        img_0000 = Image.open(images_file_paths[0])
+        img_0001 = Image.open(images_file_paths[1])
+        img_0002 = Image.open(images_file_paths[2])
+        img.paste(img_0000, (int(0.0), int(pin_h*0.0)))
+        img.paste(img_0001, (int(0.0), int(pin_h*0.66)))
+        img.paste(img_0002, (int(pin_w*0.5) + gap, int(pin_h*0.66) + gap))
+        draw.rectangle(((pin_w//2-gap, int(pin_h*0.5)), (pin_w//2+gap, pin_h)), fill=bg_color)
+    if template == 3:
+        img_0000 = Image.open(images_file_paths[0])
+        img_0001 = Image.open(images_file_paths[1])
+        img_0002 = Image.open(images_file_paths[2])
+        img.paste(img_0000, (int(0.0), int(pin_h*0.0)))
+        img.paste(img_0001, (int(pin_w*0.5), int(pin_h*0.0)))
+        img.paste(img_0002, (int(0.0), int(pin_h*0.66) + gap))
+        draw.rectangle(((pin_w//2-gap, int(pin_h*0.0)), (pin_w//2+gap, int(pin_h*0.5))), fill=bg_color)
+    if template == 4:
+        img_0000 = Image.open(images_file_paths[0])
+        img_0001 = Image.open(images_file_paths[1])
+        img_0002 = Image.open(images_file_paths[2])
+        img_0003 = Image.open(images_file_paths[3])
+        img.paste(img_0000, (int(0.0), int(pin_h*0.0)))
+        img.paste(img_0001, (int(pin_w*0.5), int(pin_h*0.0)))
+        img.paste(img_0002, (int(0.0), int(pin_h*0.66)))
+        img.paste(img_0003, (int(pin_w*0.5), int(pin_h*0.66)))
+        draw.rectangle(((pin_w//2-gap, 0), (pin_w//2+gap, pin_h)), fill=bg_color)
+    # img_0000 = Image.open(images_file_paths[0])
+    # img_0001 = Image.open(images_file_paths[1])
+    # img_0000 = media.resize(img_0000, int(pin_w*1), int(pin_w*1))
+    # img_0001 = media.resize(img_0001, int(pin_w*1), int(pin_w*1))
+    # img.paste(img_0000, (0, 0))
+    # img.paste(img_0001, (0, int(pin_h*0.66) + gap))
+    # img.paste(img_0000, (0, 0))
+    # img.paste(img_0001, (0, int(pin_h*0.66)))
+    # rect
+    draw.rectangle(((0, pin_h//2 - rect_h//2), (pin_w, pin_h//2 + rect_h//2)), fill=bg_color)
+    y_cur = 500
+    ### pin image numer 
+    text = f'''10'''.upper()
+    font_size = 160
+    font_family, font_weight = 'Lato', 'Bold'
+    font_path = f"{g.ASSETS_FOLDERPATH}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+    font = ImageFont.truetype(font_path, font_size)
+    _, _, text_w, text_h = font.getbbox(text)
+    lines = text_to_lines(text, font, 800)
+    for line in lines:
+        _, _, line_w, line_h = font.getbbox(line)
+        draw.text((pin_w//2 - line_w//2, y_cur), line, text_color, font=font)
+        y_cur += font_size
+    y_cur += 16
+    ## pin image keyword
+    text = f'''best herbal {data['preparation_name_plural']}'''.upper()
+    font_size = 96
+    font_family, font_weight = 'Lato', 'Bold'
+    font_path = f"{g.ASSETS_FOLDERPATH}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+    font = ImageFont.truetype(font_path, font_size)
+    _, _, text_w, text_h = font.getbbox(text)
+    lines = text_to_lines(text, font, 800)
+    for line in lines:
+        _, _, line_w, line_h = font.getbbox(line)
+        draw.text((pin_w//2 - line_w//2, y_cur), line, text_color, font=font)
+        y_cur += font_size
+    y_cur += 32
+    ## pin image ailment
+    text = f'''for {data['ailment_name']}'''.title()
+    font_size = 48
+    font_family, font_weight = 'Lato', 'Regular'
+    font_path = f"{g.ASSETS_FOLDERPATH}/fonts/{font_family}/{font_family}-{font_weight}.ttf"
+    font = ImageFont.truetype(font_path, font_size)
+    _, _, text_w, text_h = font.getbbox(text)
+    lines = text_to_lines(text, font, 800)
+    for line in lines:
+        _, _, line_w, line_h = font.getbbox(line)
+        draw.text((pin_w//2 - line_w//2, y_cur), line, text_color, font=font)
+        y_cur += font_size
+    y_cur += 32
+    # text
+    export_file_path = pin_save(img, export_file_name)
+    # img.show()
+    # quit()
+    return export_file_path
+
 def gen_image(images, i, preparation_name_plural, width, height):
     herb_list = data.herbs_primary_medicinal_get()
     herbs_names_scientific = [x['herb_name_scientific'] for x in herb_list]
@@ -419,14 +518,20 @@ def gen_image(images, i, preparation_name_plural, width, height):
 def ai_img_herb_new(template, herb_name_scientific):
     for filename in os.listdir(f'{g.pinterest_tmp_image_folderpath}/tmp'):
         os.remove(f'{g.pinterest_tmp_image_folderpath}/tmp/{filename}')
+    # prompt_table = random.choice(['wooden table', 'dark table'])
+    prompt_table = random.choice(prompts_tables)
     prompt = f'''
-        dry {herb_name_scientific} herb on a wooden table surrounded by medicinal herbs,
+        dry {herb_name_scientific} herb on a {prompt_table} surrounded by medicinal herbs,
         rustic, vintage, boho,
     '''.replace('  ', ' ')
+    square_w = 512
+    square_h = 512
+    landscape_w = 1024
+    landscape_h = 512
     if template == 1:
         i = 0
-        width = 1216
-        height = 832
+        width = landscape_w
+        height = landscape_h
         for _ in range(2):
             print(prompt)
             output_filepath = f'{g.pinterest_tmp_image_folderpath}/tmp/img-{i}.jpg'
@@ -434,15 +539,15 @@ def ai_img_herb_new(template, herb_name_scientific):
             i += 1
     if template == 2:
         i = 0
-        width = 1216
-        height = 832
+        width = landscape_w
+        height = landscape_h
         for _ in range(1):
             print(prompt)
             output_filepath = f'{g.pinterest_tmp_image_folderpath}/tmp/img-{i}.jpg'
             image = zimage.image_create(output_filepath, prompt, width=width, height=height, seed=-1)
             i += 1
-        width = 1024
-        height = 1024
+        width = square_w
+        height = square_h
         for _ in range(2):
             print(prompt)
             output_filepath = f'{g.pinterest_tmp_image_folderpath}/tmp/img-{i}.jpg'
@@ -450,15 +555,15 @@ def ai_img_herb_new(template, herb_name_scientific):
             i += 1
     if template == 3:
         i = 0
-        width = 1024
-        height = 1024
+        width = square_w
+        height = square_h
         for _ in range(2):
             print(prompt)
             output_filepath = f'{g.pinterest_tmp_image_folderpath}/tmp/img-{i}.jpg'
             image = zimage.image_create(output_filepath, prompt, width=width, height=height, seed=-1)
             i += 1
-        width = 1216
-        height = 832
+        width = landscape_w
+        height = landscape_h
         for _ in range(1):
             print(prompt)
             output_filepath = f'{g.pinterest_tmp_image_folderpath}/tmp/img-{i}.jpg'
@@ -466,8 +571,98 @@ def ai_img_herb_new(template, herb_name_scientific):
             i += 1
     if template == 4:
         i = 0
-        width = 1024
-        height = 1024
+        width = square_w
+        height = square_h
+        for _ in range(4):
+            print(prompt)
+            output_filepath = f'{g.pinterest_tmp_image_folderpath}/tmp/img-{i}.jpg'
+            image = zimage.image_create(output_filepath, prompt, width=width, height=height, seed=-1)
+            i += 1
+
+
+def ai_img_preparation_new(template, preparation_name_plural):
+    for filename in os.listdir(f'{g.pinterest_tmp_image_folderpath}/tmp'):
+        os.remove(f'{g.pinterest_tmp_image_folderpath}/tmp/{filename}')
+    herb_list = data.herbs_primary_medicinal_get()
+    herbs_names_scientific = [x['herb_name_scientific'] for x in herb_list]
+    herb_name_scientific = random.choice(herbs_names_scientific).strip()
+    prompt_table = random.choice(prompts_tables)
+    # prompt_table = prompts_tables[0]
+    if preparation_name_plural == 'teas':
+        prompts_cups = ['ceramic cup', 'glass cup']
+        prompt_cup = random.choice(prompts_cups)
+        prompt = f'''
+            a {prompt_cup} of {herb_name_scientific} tea on a {prompt_table} surrounded by dry herbs,
+            rustic, vintage, boho
+        '''.replace('  ', ' ')
+    elif preparation_name_plural == 'tinctures':
+        prompt = f'''
+            a dark amber glass dropper bottle of {herb_name_scientific} tincture on a {prompt_table} surrounded by dry herbs,
+            rustic, vintage, boho,
+        '''
+    elif preparation_name_plural == 'essential oils':
+        prompt = f'''
+            an amber glass bottle with black cap of {herb_name_scientific} essential oil on a {prompt_table} surrounded by dry herbs,
+            rustic, vintage, boho,
+        '''
+    elif preparation_name_plural == 'creams':
+        prompt = f'''
+            a glass jar of {herb_name_scientific} cream on a {prompt_table} surrounded by dry herbs,
+            rustic, vintage, boho,
+        '''
+    else:
+        prompt = f'''
+            cat
+        '''.replace('  ', ' ')
+    square_w = 512
+    square_h = 512
+    landscape_w = 1024
+    landscape_h = 512
+    if template == 1:
+        i = 0
+        width = landscape_w
+        height = landscape_h
+        for _ in range(2):
+            print(prompt)
+            output_filepath = f'{g.pinterest_tmp_image_folderpath}/tmp/img-{i}.jpg'
+            image = zimage.image_create(output_filepath, prompt, width=width, height=height, seed=-1)
+            i += 1
+    if template == 2:
+        i = 0
+        width = landscape_w
+        height = landscape_h
+        for _ in range(1):
+            print(prompt)
+            output_filepath = f'{g.pinterest_tmp_image_folderpath}/tmp/img-{i}.jpg'
+            image = zimage.image_create(output_filepath, prompt, width=width, height=height, seed=-1)
+            i += 1
+        width = square_w
+        height = square_h
+        for _ in range(2):
+            print(prompt)
+            output_filepath = f'{g.pinterest_tmp_image_folderpath}/tmp/img-{i}.jpg'
+            image = zimage.image_create(output_filepath, prompt, width=width, height=height, seed=-1)
+            i += 1
+    if template == 3:
+        i = 0
+        width = square_w
+        height = square_h
+        for _ in range(2):
+            print(prompt)
+            output_filepath = f'{g.pinterest_tmp_image_folderpath}/tmp/img-{i}.jpg'
+            image = zimage.image_create(output_filepath, prompt, width=width, height=height, seed=-1)
+            i += 1
+        width = landscape_w
+        height = landscape_h
+        for _ in range(1):
+            print(prompt)
+            output_filepath = f'{g.pinterest_tmp_image_folderpath}/tmp/img-{i}.jpg'
+            image = zimage.image_create(output_filepath, prompt, width=width, height=height, seed=-1)
+            i += 1
+    if template == 4:
+        i = 0
+        width = square_w
+        height = square_h
         for _ in range(4):
             print(prompt)
             output_filepath = f'{g.pinterest_tmp_image_folderpath}/tmp/img-{i}.jpg'
@@ -501,7 +696,7 @@ def pin_herb(article_filepath, article_i):
     ### TMP IMAGES
     ai_img_herb_new(template, herb_name_scientific)
     tmp_images_folderpath = f'{g.pinterest_tmp_image_folderpath}/tmp'
-    images_filepaths = [f'{tmp_images_folderpath}/{filename}' for filename in os.listdir(tmp_images_folderpath)]
+    images_filepaths = sorted([f'{tmp_images_folderpath}/{filename}' for filename in os.listdir(tmp_images_folderpath)])
     ### PIN IMAGE
     img_filepath = template_herbs_new(data, images_filepaths, filename_out, herb_name_common, template)
     ### PIN JSON
@@ -538,14 +733,16 @@ def pin_gen_ailment(article_filepath, article_i, preparation_slug):
     else:
         description = ''
     board_name = f'herbal {preparation_name_plural}'.title()
-    ###
-    images = []
-    width = 1216
-    height = 832
-    for i in range(2):
-        gen_image(images, i, preparation_name_plural, width, height)
+    ### TEMPLATE
+    template = random.randint(1, 4)
+    # template = 2
+    ### TMP IMAGES
+    ai_img_preparation_new(template, preparation_name_plural)
+    tmp_images_folderpath = f'{g.pinterest_tmp_image_folderpath}/tmp'
+    images_filepaths = sorted([f'{tmp_images_folderpath}/{filename}' for filename in os.listdir(tmp_images_folderpath)])
+    print(f'template: {template}')
     ### gen pins
-    img_filepath = template_ailments(data, images, filename_out)
+    img_filepath = template_ailments_new(data, images_filepaths, filename_out, template)
     ###
     url = f'http://terrawhisper.com/{url}.html'
     obj = {
@@ -559,6 +756,99 @@ def pin_gen_ailment(article_filepath, article_i, preparation_slug):
     }
     io.json_write(f'{g.pinterest_tmp_image_folderpath}/pins/{article_i}.json', obj)
 
+def json_pin_ailment_gen(article_filepath, article_i, preparation_slug):
+    preparation_name_plural = preparation_slug.replace('-', ' ')
+    data = io.json_read(article_filepath)
+    ###
+    title = data['title']
+    status_name = data['ailment_name']
+    url = data["url"]
+    img_slug = url.replace('/', '-')
+    filename_out = url.replace('/', '-')
+    remedies = data['preparations']
+    remedies_descriptions = []
+    for remedy in remedies:
+        remedies_descriptions.append(remedy['preparation_desc'])
+    if remedies_descriptions:
+        random.shuffle(remedies_descriptions)
+        description = remedies_descriptions[0][:490] + '...'
+    else:
+        description = ''
+    board_name = f'herbal {preparation_name_plural}'.title()
+    img_filepath = f'{g.pinterest_tmp_image_folderpath}/images/{filename_out}.jpg'
+    ###
+    prompt = f'''
+        Write a list of 15 titles about the following topic: 
+        {title}
+        Reply only with the titles.
+    '''
+    prompt += f'/no_think'
+    reply = llm.reply(prompt)
+    if '</think>' in reply:
+        reply = reply.split('</think>')[1].strip()
+    lines = []
+    for line in reply.split('\n'):
+        line = line.strip()
+        if line == '': continue
+        line = line.replace('"', '')
+        line = line.replace('*', '')
+        if not line[0].isdigit(): continue
+        if '. ' not in line: continue
+        line = '. '.join(line.split('. ')[1:])
+        if line[-1] == '.': line = line[:-1]
+        line = line.strip()
+        lines.append(line)
+    '''
+    for line in lines:
+        print(line)
+    '''
+    title = random.choice(lines)
+    print('################################################################################')
+    print(line)
+    print('################################################################################')
+    ###
+    output_filepath = f'{g.pinterest_tmp_image_folderpath}/tmp/img-{i}.jpg'
+    url = f'http://terrawhisper.com/{url}.html'
+    obj = {
+        'img_filepath': img_filepath,
+        'title': title,
+        'status_name': status_name,
+        'preparation_slug': preparation_slug,
+        'description': description,
+        'url': url,
+        'board_name': board_name
+    }
+    io.json_write(f'{g.pinterest_tmp_image_folderpath}/pins/{article_i}.json', obj)
+
+def image_pin_ailment_gen(article_filepath, article_i, preparation_slug):
+    preparation_name_plural = preparation_slug.replace('-', ' ')
+    data = io.json_read(article_filepath)
+    ###
+    title = data['title']
+    status_name = data['ailment_name']
+    url = data["url"]
+    img_slug = url.replace('/', '-')
+    filename_out = url.replace('/', '-')
+    remedies = data['preparations']
+    remedies_descriptions = []
+    for remedy in remedies:
+        remedies_descriptions.append(remedy['preparation_desc'])
+    if remedies_descriptions:
+        random.shuffle(remedies_descriptions)
+        description = remedies_descriptions[0][:490] + '...'
+    else:
+        description = ''
+    ### TEMPLATE
+    template = random.randint(1, 4)
+    # template = 2
+    ### TMP IMAGES
+    ai_img_preparation_new(template, preparation_name_plural)
+    tmp_images_folderpath = f'{g.pinterest_tmp_image_folderpath}/tmp'
+    images_filepaths = sorted([f'{tmp_images_folderpath}/{filename}' for filename in os.listdir(tmp_images_folderpath)])
+    print(f'template: {template}')
+    ### gen pins
+    img_filepath = template_ailments_new(data, images_filepaths, filename_out, template)
+
 if 1:
     for filename in os.listdir(f'{g.pinterest_tmp_image_folderpath}/images'):
         os.remove(f'{g.pinterest_tmp_image_folderpath}/images/{filename}')
@@ -569,14 +859,47 @@ if 1:
 i = 0
 
 ########################################
-### PINS HERBS
+### PIN JSON 
+########################################
+if 1:
+    for article_filepath in teas_articles_filepath:
+        print(f'{i}/{len(articles_filepath)} >> {article_filepath}')
+        json_pin_ailment_gen(article_filepath, i, 'teas')
+        i += 1
+    for article_filepath in tinctures_articles_filepath:
+        print(f'{i}/{len(articles_filepath)} >> {article_filepath}')
+        json_pin_ailment_gen(article_filepath, i, 'tinctures')
+        i += 1
+    for article_filepath in essential_oils_articles_filepath:
+        print(f'{i}/{len(articles_filepath)} >> {article_filepath}')
+        json_pin_ailment_gen(article_filepath, i, 'essential-oils')
+        i += 1
+    for article_filepath in creams_articles_filepath:
+        print(f'{i}/{len(articles_filepath)} >> {article_filepath}')
+        json_pin_ailment_gen(article_filepath, i, 'creams')
+        i += 1
+
+quit()
+
+########################################
+### PIN IMAGE 
+########################################
+if 0:
+    for article_filepath in teas_articles_filepath:
+        print(f'{i}/{len(articles_filepath)} >> {article_filepath}')
+        image_pin_ailment_gen(article_filepath, i, 'teas')
+        i += 1
+
+########################################
+### TODO
 ########################################
 
 # PINS HERBS
-for article_filepath in herbs_articles_filepath:
-    print(f'{i}/{len(articles_filepath)} >> {article_filepath}')
-    pin_herb(article_filepath, i)
-    i += 1
+if 1:
+    for article_filepath in herbs_articles_filepath:
+        print(f'{i}/{len(articles_filepath)} >> {article_filepath}')
+        pin_herb(article_filepath, i)
+        i += 1
 
 # PINS TEAS
 for article_filepath in teas_articles_filepath:
@@ -609,3 +932,4 @@ if int(file_content) < 90:
     with open('pinterest_article_num', 'w') as f: f.write(f'{int(file_content)+1}')
 else:
     with open('pinterest_article_num', 'w') as f: f.write(f'{int(file_content)}')
+

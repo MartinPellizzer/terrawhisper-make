@@ -994,7 +994,7 @@ def main():
     # category_herbs_popular_gen()
     # category_herbs_actions_gen()
     ### articles
-    article_herbs_herb_primary_gen()
+    # article_herbs_herb_primary_gen()
     article_herbs_herb_wcvp_gen()
     ###
     url_slug = f'herbs'
