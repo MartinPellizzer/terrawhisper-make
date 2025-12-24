@@ -12,7 +12,7 @@ from lib import data
 from lib import media
 from lib import zimage
 
-file_content = '50'
+file_content = '70'
 if 0:
     try:
         with open('pinterest_article_num') as f: file_content = f.read()
@@ -28,6 +28,8 @@ teas_articles_filepath = []
 tinctures_articles_filepath = []
 essential_oils_articles_filepath = []
 creams_articles_filepath = []
+juices_articles_filepath = []
+syrups_articles_filepath = []
 for ailment in ailment_list:
     ailment_slug = ailment['ailment_slug']
     json_filepath = f'{g.database_folderpath}/json/ailments/{ailment_slug}/teas.json'
@@ -54,6 +56,16 @@ for ailment in ailment_list:
         creams_articles_filepath.append(json_filepath)
     else: 
         print(f'NOT FOUND: {json_filepath}')
+    json_filepath = f'{g.database_folderpath}/json/ailments/{ailment_slug}/juices.json'
+    if os.path.exists(json_filepath): 
+        print(f'ok: {json_filepath}')
+        juices_articles_filepath.append(json_filepath)
+    json_filepath = f'{g.database_folderpath}/json/ailments/{ailment_slug}/syrups.json'
+    if os.path.exists(json_filepath): 
+        print(f'ok: {json_filepath}')
+        syrups_articles_filepath.append(json_filepath)
+    else: 
+        print(f'NOT FOUND: {json_filepath}')
 
 herbs_articles_filepath = []
 json_herbs_folderpath = f'{g.database_folderpath}/json/herbs'
@@ -70,12 +82,16 @@ random.shuffle(teas_articles_filepath)
 random.shuffle(tinctures_articles_filepath)
 random.shuffle(essential_oils_articles_filepath)
 random.shuffle(creams_articles_filepath)
+random.shuffle(juices_articles_filepath)
+random.shuffle(syrups_articles_filepath)
 
 herbs_articles_filepath_tmp = []
 teas_articles_filepath_tmp = []
 tinctures_articles_filepath_tmp = []
 essential_oils_articles_filepath_tmp = []
 creams_articles_filepath_tmp = []
+juices_articles_filepath_tmp = []
+syrups_articles_filepath_tmp = []
 
 articles_filepath = []
 for i in range(999):
@@ -85,6 +101,8 @@ for i in range(999):
         len(tinctures_articles_filepath_tmp) + \
         len(essential_oils_articles_filepath_tmp) + \
         len(creams_articles_filepath_tmp) + \
+        len(juices_articles_filepath_tmp) + \
+        len(syrups_articles_filepath_tmp) + \
         len(herbs_articles_filepath_tmp) + \
         len([]) \
         >= ARTICLES_NUM:
@@ -95,6 +113,8 @@ for i in range(999):
         len(tinctures_articles_filepath_tmp) + \
         len(essential_oils_articles_filepath_tmp) + \
         len(creams_articles_filepath_tmp) + \
+        len(juices_articles_filepath_tmp) + \
+        len(syrups_articles_filepath_tmp) + \
         len(herbs_articles_filepath_tmp) + \
         len([]) \
         >= ARTICLES_NUM:
@@ -105,6 +125,8 @@ for i in range(999):
         len(tinctures_articles_filepath_tmp) + \
         len(essential_oils_articles_filepath_tmp) + \
         len(creams_articles_filepath_tmp) + \
+        len(juices_articles_filepath_tmp) + \
+        len(syrups_articles_filepath_tmp) + \
         len(herbs_articles_filepath_tmp) + \
         len([]) \
         >= ARTICLES_NUM:
@@ -115,6 +137,8 @@ for i in range(999):
         len(tinctures_articles_filepath_tmp) + \
         len(essential_oils_articles_filepath_tmp) + \
         len(creams_articles_filepath_tmp) + \
+        len(juices_articles_filepath_tmp) + \
+        len(syrups_articles_filepath_tmp) + \
         len(herbs_articles_filepath_tmp) + \
         len([]) \
         >= ARTICLES_NUM:
@@ -125,6 +149,32 @@ for i in range(999):
         len(tinctures_articles_filepath_tmp) + \
         len(essential_oils_articles_filepath_tmp) + \
         len(creams_articles_filepath_tmp) + \
+        len(juices_articles_filepath_tmp) + \
+        len(syrups_articles_filepath_tmp) + \
+        len(herbs_articles_filepath_tmp) + \
+        len([]) \
+        >= ARTICLES_NUM:
+        break
+    try: juices_articles_filepath_tmp.append(juices_articles_filepath[i])
+    except: pass
+    if len(teas_articles_filepath_tmp) + \
+        len(tinctures_articles_filepath_tmp) + \
+        len(essential_oils_articles_filepath_tmp) + \
+        len(creams_articles_filepath_tmp) + \
+        len(juices_articles_filepath_tmp) + \
+        len(syrups_articles_filepath_tmp) + \
+        len(herbs_articles_filepath_tmp) + \
+        len([]) \
+        >= ARTICLES_NUM:
+        break
+    try: syrups_articles_filepath_tmp.append(syrups_articles_filepath[i])
+    except: pass
+    if len(teas_articles_filepath_tmp) + \
+        len(tinctures_articles_filepath_tmp) + \
+        len(essential_oils_articles_filepath_tmp) + \
+        len(creams_articles_filepath_tmp) + \
+        len(juices_articles_filepath_tmp) + \
+        len(syrups_articles_filepath_tmp) + \
         len(herbs_articles_filepath_tmp) + \
         len([]) \
         >= ARTICLES_NUM:
@@ -135,12 +185,16 @@ teas_articles_filepath = teas_articles_filepath_tmp
 tinctures_articles_filepath = tinctures_articles_filepath_tmp
 essential_oils_articles_filepath = essential_oils_articles_filepath_tmp
 creams_articles_filepath = creams_articles_filepath_tmp
+juices_articles_filepath = juices_articles_filepath_tmp
+syrups_articles_filepath = syrups_articles_filepath_tmp
 
 for filepath in herbs_articles_filepath: articles_filepath.append(filepath)
 for filepath in teas_articles_filepath: articles_filepath.append(filepath)
 for filepath in tinctures_articles_filepath: articles_filepath.append(filepath)
 for filepath in essential_oils_articles_filepath: articles_filepath.append(filepath)
 for filepath in creams_articles_filepath: articles_filepath.append(filepath)
+for filepath in juices_articles_filepath: articles_filepath.append(filepath)
+for filepath in syrups_articles_filepath: articles_filepath.append(filepath)
 
 for filepath in articles_filepath:
     print(filepath)
@@ -151,6 +205,8 @@ print(len(teas_articles_filepath))
 print(len(tinctures_articles_filepath))
 print(len(essential_oils_articles_filepath))
 print(len(creams_articles_filepath))
+print(len(juices_articles_filepath))
+print(len(syrups_articles_filepath))
 
 # quit()
 
@@ -669,6 +725,7 @@ def ai_img_preparation_new(template, preparation_name_plural):
             image = zimage.image_create(output_filepath, prompt, width=width, height=height, seed=-1)
             i += 1
 
+# jump
 def pin_herb(article_filepath, article_i):
     json_article = io.json_read(article_filepath)
     ###
@@ -756,6 +813,107 @@ def pin_gen_ailment(article_filepath, article_i, preparation_slug):
     }
     io.json_write(f'{g.pinterest_tmp_image_folderpath}/pins/{article_i}.json', obj)
 
+# jump
+def json_pin_herb_gen(article_filepath, article_i):
+    json_article = io.json_read(article_filepath)
+    ###
+    title = json_article['title']
+    herb_slug = json_article['herb_slug']
+    herb_name_scientific = json_article['herb_name_scientific']
+    json_herb_filepath = f'{g.DATABASE_FOLDERPATH}/entities/herbs/{herb_slug}.json'
+    json_herb_data = io.json_read(json_herb_filepath)
+    herb_name_common = json_herb_data['herb_name_common'][0]['answer']
+    url = json_article["url"]
+    img_slug = url.replace('/', '-')
+    filename_out = url.replace('/', '-')
+    benefits = json_article['benefits']
+    benefits_descriptions = []
+    for benefit in benefits:
+        benefits_descriptions.append(benefit['benefit_desc'])
+    if benefits_descriptions:
+        random.shuffle(benefits_descriptions)
+        description = benefits_descriptions[0][:490] + '...'
+    else:
+        description = ''
+    board_name = f'herbs'.title()
+    img_filepath = f'{g.pinterest_tmp_image_folderpath}/images/{filename_out}.jpg'
+    ###
+    prompt = f'''
+        I'm interested in this topic:
+        {title}
+        Please come up with a numbered list of 15 clickbait youtube titles all about this topic. 
+        Make each one slightly different, get as micro as you'd like. 
+        Make each title as similar with the topic as possible.
+        Each title must be less than 10 words.
+        Reply only with the titles.
+    '''
+    prompt += f'/no_think'
+    print(prompt)
+    reply = llm.reply(prompt)
+    if '</think>' in reply:
+        reply = reply.split('</think>')[1].strip()
+    lines = []
+    for line in reply.split('\n'):
+        line = line.strip()
+        if line == '': continue
+        # if ':' in line: continue
+        line = line.replace('"', '')
+        line = line.replace('*', '')
+        if not line[0].isdigit(): continue
+        if '. ' not in line: continue
+        line = '. '.join(line.split('. ')[1:])
+        if line[-1] == '.': line = line[:-1]
+        line = line.strip()
+        lines.append(line)
+    print(lines)
+    title = random.choice(lines)
+    print('################################################################################')
+    print(line)
+    print('################################################################################')
+    ### PIN JSON
+    url = f'http://terrawhisper.com/{url}.html'
+    obj = {
+        'img_filepath': img_filepath,
+        'type': 'herb',
+        'title': title,
+        'herb_slug': herb_slug,
+        'herb_name_scientific': herb_name_scientific,
+        'description': description,
+        'url': url,
+        'board_name': board_name
+    }
+    io.json_write(f'{g.pinterest_tmp_image_folderpath}/pins/{article_i}.json', obj)
+    pass
+
+def image_pin_ailment_gen(article_filepath, article_i, preparation_slug):
+    preparation_name_plural = preparation_slug.replace('-', ' ')
+    data = io.json_read(article_filepath)
+    ###
+    title = data['title']
+    status_name = data['ailment_name']
+    url = data["url"]
+    img_slug = url.replace('/', '-')
+    filename_out = url.replace('/', '-')
+    remedies = data['preparations']
+    remedies_descriptions = []
+    for remedy in remedies:
+        remedies_descriptions.append(remedy['preparation_desc'])
+    if remedies_descriptions:
+        random.shuffle(remedies_descriptions)
+        description = remedies_descriptions[0][:490] + '...'
+    else:
+        description = ''
+    ### TEMPLATE
+    template = random.randint(1, 4)
+    # template = 2
+    ### TMP IMAGES
+    ai_img_preparation_new(template, preparation_name_plural)
+    tmp_images_folderpath = f'{g.pinterest_tmp_image_folderpath}/tmp'
+    images_filepaths = sorted([f'{tmp_images_folderpath}/{filename}' for filename in os.listdir(tmp_images_folderpath)])
+    print(f'template: {template}')
+    ### gen pins
+    img_filepath = template_ailments_new(data, images_filepaths, filename_out, template)
+
 def json_pin_ailment_gen(article_filepath, article_i, preparation_slug):
     preparation_name_plural = preparation_slug.replace('-', ' ')
     data = io.json_read(article_filepath)
@@ -776,13 +934,29 @@ def json_pin_ailment_gen(article_filepath, article_i, preparation_slug):
         description = ''
     board_name = f'herbal {preparation_name_plural}'.title()
     img_filepath = f'{g.pinterest_tmp_image_folderpath}/images/{filename_out}.jpg'
-    ###
+    ### TITLE GEN
+    # random_word_num = random.choice([3, 5, 7])
     prompt = f'''
-        Write a list of 15 titles about the following topic: 
+        Write a numbered list of 15 titles about the following topic: 
         {title}
         Reply only with the titles.
+        Never use the character colon ":".
     '''
+    # TODO: test this prompt for better titles
+    if 1:
+        prompt = f'''
+            I'm interested in this topic:
+            {title}
+            Please come up with a numbered list of 15 clickbait youtube titles all about this topic. 
+            Make each one slightly different, get as micro as you'd like. 
+            Make each title as similar with the topic as possible.
+            Each title must be less than 10 words.
+            Reply only with the titles.
+        '''
+            # Include the ailment name and the number in each title.
+            # Never use the following characters: colon, asterisk, double quotes.
     prompt += f'/no_think'
+    print(prompt)
     reply = llm.reply(prompt)
     if '</think>' in reply:
         reply = reply.split('</think>')[1].strip()
@@ -790,6 +964,7 @@ def json_pin_ailment_gen(article_filepath, article_i, preparation_slug):
     for line in reply.split('\n'):
         line = line.strip()
         if line == '': continue
+        if ':' in line: continue
         line = line.replace('"', '')
         line = line.replace('*', '')
         if not line[0].isdigit(): continue
@@ -798,10 +973,7 @@ def json_pin_ailment_gen(article_filepath, article_i, preparation_slug):
         if line[-1] == '.': line = line[:-1]
         line = line.strip()
         lines.append(line)
-    '''
-    for line in lines:
-        print(line)
-    '''
+    print(lines)
     title = random.choice(lines)
     print('################################################################################')
     print(line)
@@ -811,6 +983,7 @@ def json_pin_ailment_gen(article_filepath, article_i, preparation_slug):
     url = f'http://terrawhisper.com/{url}.html'
     obj = {
         'img_filepath': img_filepath,
+        'type': 'ailment',
         'title': title,
         'status_name': status_name,
         'preparation_slug': preparation_slug,
@@ -849,18 +1022,24 @@ def image_pin_ailment_gen(article_filepath, article_i, preparation_slug):
     ### gen pins
     img_filepath = template_ailments_new(data, images_filepaths, filename_out, template)
 
-if 1:
+if 0:
     for filename in os.listdir(f'{g.pinterest_tmp_image_folderpath}/images'):
         os.remove(f'{g.pinterest_tmp_image_folderpath}/images/{filename}')
+if 1:
     for filename in os.listdir(f'{g.pinterest_tmp_image_folderpath}/pins'):
         os.remove(f'{g.pinterest_tmp_image_folderpath}/pins/{filename}')
-    pass
 
 i = 0
 
 ########################################
 ### PIN JSON 
 ########################################
+if 1:
+    for article_filepath in herbs_articles_filepath:
+        print(f'{i}/{len(articles_filepath)} >> {article_filepath}')
+        json_pin_herb_gen(article_filepath, i)
+        i += 1
+
 if 1:
     for article_filepath in teas_articles_filepath:
         print(f'{i}/{len(articles_filepath)} >> {article_filepath}')
@@ -877,6 +1056,14 @@ if 1:
     for article_filepath in creams_articles_filepath:
         print(f'{i}/{len(articles_filepath)} >> {article_filepath}')
         json_pin_ailment_gen(article_filepath, i, 'creams')
+        i += 1
+    for article_filepath in juices_articles_filepath:
+        print(f'{i}/{len(articles_filepath)} >> {article_filepath}')
+        json_pin_ailment_gen(article_filepath, i, 'juices')
+        i += 1
+    for article_filepath in syrups_articles_filepath:
+        print(f'{i}/{len(articles_filepath)} >> {article_filepath}')
+        json_pin_ailment_gen(article_filepath, i, 'syrups')
         i += 1
 
 quit()

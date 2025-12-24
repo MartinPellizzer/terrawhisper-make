@@ -54,8 +54,11 @@ for row_i in range(rows_num):
             a glass jar of {herb_name_scientific} cream on a wooden table surrounded by dry herbs,
             rustic, vintage, boho,
         '''
-        # zimage.image_create(f'{output_folderpath}/{str_i}-{herb_slug}.jpg', prompt_cream, seed=seeds[img_i])
-        zimage.image_create(f'{output_folderpath}/{str_i}-{herb_slug}.jpg', prompt_cream, seed=-1)
+        prompt_juice = f'''
+            a glass bottle of {herb_name_scientific} juice on a wooden table surrounded by dry herbs,
+            rustic, vintage, boho,
+        '''
+        zimage.image_create(f'{output_folderpath}/{str_i}-{herb_slug}.jpg', prompt_juice, width=512, height=512, seed=-1)
         img_i += 1
 
 img_w = rows_num * 400

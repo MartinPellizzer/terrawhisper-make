@@ -24,14 +24,6 @@ def image_ai(obj, clear=False):
         except: pass
         if not os.path.exists(out_filepath):
         # if True:
-            if 0:
-                prompt = f'''
-                    herbal {preparation_name_plural} made with dry {herb_name_scientific},
-                    on a wooden table,
-                    rustic, vintage, boho,
-                    warm tones,
-                    high resolution,
-                '''.replace('  ', ' ')
             if preparation_name_plural == 'teas':
                 prompt = f'''
                     a ceramic cup of {herb_name_scientific} tea on a wooden table surrounded by dry herbs,
@@ -50,6 +42,16 @@ def image_ai(obj, clear=False):
             elif preparation_name_plural == 'creams':
                 prompt = f'''
                     a glass jar of {herb_name_scientific} cream on a wooden table surrounded by dry herbs,
+                    rustic, vintage, boho,
+                '''
+            elif preparation_name_plural == 'juices':
+                prompt = f'''
+                    a glass bottle of {herb_name_scientific} juice on a wooden table surrounded by dry herbs,
+                    rustic, vintage, boho,
+                '''
+            elif preparation_name_plural == 'syrups':
+                prompt = f'''
+                    a glass bottle of {herb_name_scientific} syrup on a wooden table surrounded by dry herbs,
                     rustic, vintage, boho,
                 '''
             zimage.image_create(
@@ -73,7 +75,9 @@ def gen():
             # if preparation_slug != 'teas': continue
             # if preparation_slug != 'tinctures': continue
             # if preparation_slug != 'essential-oils': continue
-            if preparation_slug != 'creams': continue
+            # if preparation_slug != 'creams': continue
+            # if preparation_slug != 'juices': continue
+            if preparation_slug != 'syrups': continue
             print(f'PREPARATION: {preparation_slug}')
             try: os.mkdir(f'''{g.website_folderpath}/ailments''')
             except: pass
