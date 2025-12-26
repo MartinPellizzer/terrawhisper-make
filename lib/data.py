@@ -131,6 +131,7 @@ def herbs_popular_get(preparation_slug, herbs_num):
             json_article_preparations = json_article['preparations']
             for json_article_preparation in json_article_preparations:
                 herb_name_scientific = json_article_preparation['herb_name_scientific']
+                # herb_name_scientific = herb_name_scientific.replace('mentha piperita', 'mentha x piperita')
                 found = False
                 for herb in herbs:
                     if herb['herb_name_scientific'] == herb_name_scientific:
@@ -150,3 +151,15 @@ def herbs_popular_get(preparation_slug, herbs_num):
     herbs = herbs[:herbs_num]
 
     return herbs
+
+def herb_name_common_get(herb_slug):
+    herb_name_common = ''
+    try:
+        herb_slug = herb_slug.replace('mentha-piperita', 'mentha-x-piperita')
+        ssot_herb_primary_filepath = f'{g.SSOT_FOLDERPATH}/herbs/herbs-primary/{herb_slug}.json'
+        herb_data = io.json_read(ssot_herb_primary_filepath)
+        herb_name_common = herb_data['herb_names_common'][0]['answer']
+    except:
+        pass
+    return herb_name_common
+

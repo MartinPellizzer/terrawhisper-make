@@ -12,7 +12,7 @@ from lib import data
 from lib import media
 from lib import zimage
 
-file_content = '70'
+file_content = '80'
 if 0:
     try:
         with open('pinterest_article_num') as f: file_content = f.read()
@@ -30,6 +30,8 @@ essential_oils_articles_filepath = []
 creams_articles_filepath = []
 juices_articles_filepath = []
 syrups_articles_filepath = []
+baths_articles_filepath = []
+capsules_articles_filepath = []
 for ailment in ailment_list:
     ailment_slug = ailment['ailment_slug']
     json_filepath = f'{g.database_folderpath}/json/ailments/{ailment_slug}/teas.json'
@@ -64,6 +66,14 @@ for ailment in ailment_list:
     if os.path.exists(json_filepath): 
         print(f'ok: {json_filepath}')
         syrups_articles_filepath.append(json_filepath)
+    json_filepath = f'{g.database_folderpath}/json/ailments/{ailment_slug}/baths.json'
+    if os.path.exists(json_filepath): 
+        print(f'ok: {json_filepath}')
+        baths_articles_filepath.append(json_filepath)
+    json_filepath = f'{g.database_folderpath}/json/ailments/{ailment_slug}/capsules.json'
+    if os.path.exists(json_filepath): 
+        print(f'ok: {json_filepath}')
+        capsules_articles_filepath.append(json_filepath)
     else: 
         print(f'NOT FOUND: {json_filepath}')
 
@@ -84,6 +94,8 @@ random.shuffle(essential_oils_articles_filepath)
 random.shuffle(creams_articles_filepath)
 random.shuffle(juices_articles_filepath)
 random.shuffle(syrups_articles_filepath)
+random.shuffle(baths_articles_filepath)
+random.shuffle(capsules_articles_filepath)
 
 herbs_articles_filepath_tmp = []
 teas_articles_filepath_tmp = []
@@ -92,93 +104,52 @@ essential_oils_articles_filepath_tmp = []
 creams_articles_filepath_tmp = []
 juices_articles_filepath_tmp = []
 syrups_articles_filepath_tmp = []
+baths_articles_filepath_tmp = []
+capsules_articles_filepath_tmp = []
+
+def article_num_cur_get():
+    return (
+        len(herbs_articles_filepath_tmp) + \
+        len(teas_articles_filepath_tmp) + \
+        len(tinctures_articles_filepath_tmp) + \
+        len(essential_oils_articles_filepath_tmp) + \
+        len(creams_articles_filepath_tmp) + \
+        len(juices_articles_filepath_tmp) + \
+        len(syrups_articles_filepath_tmp) + \
+        len(baths_articles_filepath_tmp) + \
+        len(capsules_articles_filepath_tmp) + \
+        len([])
+    )
 
 articles_filepath = []
 for i in range(999):
     try: herbs_articles_filepath_tmp.append(herbs_articles_filepath[i])
     except: pass
-    if len(teas_articles_filepath_tmp) + \
-        len(tinctures_articles_filepath_tmp) + \
-        len(essential_oils_articles_filepath_tmp) + \
-        len(creams_articles_filepath_tmp) + \
-        len(juices_articles_filepath_tmp) + \
-        len(syrups_articles_filepath_tmp) + \
-        len(herbs_articles_filepath_tmp) + \
-        len([]) \
-        >= ARTICLES_NUM:
-        break
+    if article_num_cur_get() >= ARTICLES_NUM: break
     try: teas_articles_filepath_tmp.append(teas_articles_filepath[i])
     except: pass
-    if len(teas_articles_filepath_tmp) + \
-        len(tinctures_articles_filepath_tmp) + \
-        len(essential_oils_articles_filepath_tmp) + \
-        len(creams_articles_filepath_tmp) + \
-        len(juices_articles_filepath_tmp) + \
-        len(syrups_articles_filepath_tmp) + \
-        len(herbs_articles_filepath_tmp) + \
-        len([]) \
-        >= ARTICLES_NUM:
-        break
+    if article_num_cur_get() >= ARTICLES_NUM: break
     try: tinctures_articles_filepath_tmp.append(tinctures_articles_filepath[i])
     except: pass
-    if len(teas_articles_filepath_tmp) + \
-        len(tinctures_articles_filepath_tmp) + \
-        len(essential_oils_articles_filepath_tmp) + \
-        len(creams_articles_filepath_tmp) + \
-        len(juices_articles_filepath_tmp) + \
-        len(syrups_articles_filepath_tmp) + \
-        len(herbs_articles_filepath_tmp) + \
-        len([]) \
-        >= ARTICLES_NUM:
-        break
+    if article_num_cur_get() >= ARTICLES_NUM: break
     try: essential_oils_articles_filepath_tmp.append(essential_oils_articles_filepath[i])
     except: pass
-    if len(teas_articles_filepath_tmp) + \
-        len(tinctures_articles_filepath_tmp) + \
-        len(essential_oils_articles_filepath_tmp) + \
-        len(creams_articles_filepath_tmp) + \
-        len(juices_articles_filepath_tmp) + \
-        len(syrups_articles_filepath_tmp) + \
-        len(herbs_articles_filepath_tmp) + \
-        len([]) \
-        >= ARTICLES_NUM:
-        break
+    if article_num_cur_get() >= ARTICLES_NUM: break
     try: creams_articles_filepath_tmp.append(creams_articles_filepath[i])
     except: pass
-    if len(teas_articles_filepath_tmp) + \
-        len(tinctures_articles_filepath_tmp) + \
-        len(essential_oils_articles_filepath_tmp) + \
-        len(creams_articles_filepath_tmp) + \
-        len(juices_articles_filepath_tmp) + \
-        len(syrups_articles_filepath_tmp) + \
-        len(herbs_articles_filepath_tmp) + \
-        len([]) \
-        >= ARTICLES_NUM:
-        break
+    if article_num_cur_get() >= ARTICLES_NUM: break
     try: juices_articles_filepath_tmp.append(juices_articles_filepath[i])
     except: pass
-    if len(teas_articles_filepath_tmp) + \
-        len(tinctures_articles_filepath_tmp) + \
-        len(essential_oils_articles_filepath_tmp) + \
-        len(creams_articles_filepath_tmp) + \
-        len(juices_articles_filepath_tmp) + \
-        len(syrups_articles_filepath_tmp) + \
-        len(herbs_articles_filepath_tmp) + \
-        len([]) \
-        >= ARTICLES_NUM:
-        break
+    if article_num_cur_get() >= ARTICLES_NUM: break
     try: syrups_articles_filepath_tmp.append(syrups_articles_filepath[i])
     except: pass
-    if len(teas_articles_filepath_tmp) + \
-        len(tinctures_articles_filepath_tmp) + \
-        len(essential_oils_articles_filepath_tmp) + \
-        len(creams_articles_filepath_tmp) + \
-        len(juices_articles_filepath_tmp) + \
-        len(syrups_articles_filepath_tmp) + \
-        len(herbs_articles_filepath_tmp) + \
-        len([]) \
-        >= ARTICLES_NUM:
-        break
+    if article_num_cur_get() >= ARTICLES_NUM: break
+    try: baths_articles_filepath_tmp.append(baths_articles_filepath[i])
+    except: pass
+    if article_num_cur_get() >= ARTICLES_NUM: break
+    try: capsules_articles_filepath_tmp.append(capsules_articles_filepath[i])
+    except: pass
+    if article_num_cur_get() >= ARTICLES_NUM: break
 
 herbs_articles_filepath = herbs_articles_filepath_tmp
 teas_articles_filepath = teas_articles_filepath_tmp
@@ -187,6 +158,8 @@ essential_oils_articles_filepath = essential_oils_articles_filepath_tmp
 creams_articles_filepath = creams_articles_filepath_tmp
 juices_articles_filepath = juices_articles_filepath_tmp
 syrups_articles_filepath = syrups_articles_filepath_tmp
+baths_articles_filepath = baths_articles_filepath_tmp
+capsules_articles_filepath = capsules_articles_filepath_tmp
 
 for filepath in herbs_articles_filepath: articles_filepath.append(filepath)
 for filepath in teas_articles_filepath: articles_filepath.append(filepath)
@@ -195,6 +168,8 @@ for filepath in essential_oils_articles_filepath: articles_filepath.append(filep
 for filepath in creams_articles_filepath: articles_filepath.append(filepath)
 for filepath in juices_articles_filepath: articles_filepath.append(filepath)
 for filepath in syrups_articles_filepath: articles_filepath.append(filepath)
+for filepath in baths_articles_filepath: articles_filepath.append(filepath)
+for filepath in capsules_articles_filepath: articles_filepath.append(filepath)
 
 for filepath in articles_filepath:
     print(filepath)
@@ -207,6 +182,8 @@ print(len(essential_oils_articles_filepath))
 print(len(creams_articles_filepath))
 print(len(juices_articles_filepath))
 print(len(syrups_articles_filepath))
+print(len(baths_articles_filepath))
+print(len(capsules_articles_filepath))
 
 # quit()
 
@@ -935,26 +912,17 @@ def json_pin_ailment_gen(article_filepath, article_i, preparation_slug):
     board_name = f'herbal {preparation_name_plural}'.title()
     img_filepath = f'{g.pinterest_tmp_image_folderpath}/images/{filename_out}.jpg'
     ### TITLE GEN
-    # random_word_num = random.choice([3, 5, 7])
     prompt = f'''
-        Write a numbered list of 15 titles about the following topic: 
+        I'm interested in this topic:
         {title}
+        Please come up with a numbered list of 15 clickbait youtube titles all about this topic. 
+        Make each one slightly different, get as micro as you'd like. 
+        Make each title as similar with the topic as possible.
+        Each title must be less than 10 words.
         Reply only with the titles.
-        Never use the character colon ":".
     '''
-    # TODO: test this prompt for better titles
-    if 1:
-        prompt = f'''
-            I'm interested in this topic:
-            {title}
-            Please come up with a numbered list of 15 clickbait youtube titles all about this topic. 
-            Make each one slightly different, get as micro as you'd like. 
-            Make each title as similar with the topic as possible.
-            Each title must be less than 10 words.
-            Reply only with the titles.
-        '''
-            # Include the ailment name and the number in each title.
-            # Never use the following characters: colon, asterisk, double quotes.
+        # Include the ailment name and the number in each title.
+        # Never use the following characters: colon, asterisk, double quotes.
     prompt += f'/no_think'
     print(prompt)
     reply = llm.reply(prompt)
@@ -1064,6 +1032,14 @@ if 1:
     for article_filepath in syrups_articles_filepath:
         print(f'{i}/{len(articles_filepath)} >> {article_filepath}')
         json_pin_ailment_gen(article_filepath, i, 'syrups')
+        i += 1
+    for article_filepath in baths_articles_filepath:
+        print(f'{i}/{len(articles_filepath)} >> {article_filepath}')
+        json_pin_ailment_gen(article_filepath, i, 'baths')
+        i += 1
+    for article_filepath in capsules_articles_filepath:
+        print(f'{i}/{len(articles_filepath)} >> {article_filepath}')
+        json_pin_ailment_gen(article_filepath, i, 'capsules')
         i += 1
 
 quit()

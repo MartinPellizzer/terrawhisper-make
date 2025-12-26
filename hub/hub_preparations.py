@@ -5,19 +5,18 @@ from lib import utils
 from lib import components
 from lib import sections
 
+preparation_list = io.csv_to_dict(f'{g.database_folderpath}/csv/preparations.csv')
+
 def hub_preparations_preparation_gen():
-    preparation_list = io.csv_to_dict(f'{g.database_folderpath}/csv/preparations.csv')
     for preparation_i, preparation in enumerate(preparation_list):
         preparation_slug = preparation['preparation_slug']
         preparation_name_singular = preparation['preparation_name_singular']
         preparation_name_plural = preparation['preparation_name_plural']
         print(f'PREPARATION: {preparation_slug}')
         url_slug = f'preparations/{preparation_slug}'
-
         ################################################################################ 
         ### json
         ################################################################################ 
-
         ### json init
         json_article_filepath = f'''{g.database_folderpath}/json/{url_slug}.json'''
         json_article = io.json_read(json_article_filepath, create=True)
@@ -27,7 +26,6 @@ def hub_preparations_preparation_gen():
         json_article['preparation_name_plural'] = preparation_name_plural
         json_article['title'] = f'''What to know about medicinal herbal {preparation_name_plural}'''
         io.json_write(json_article_filepath, json_article)
-
         ### json intro
         regen = False
         dispel = False
@@ -52,7 +50,6 @@ def hub_preparations_preparation_gen():
                 reply = reply.split('</think>')[1].strip()
             json_article[key] = reply
             io.json_write(json_article_filepath, json_article)
-
         ### json benefits
         regen = False
         dispel = False
@@ -77,7 +74,6 @@ def hub_preparations_preparation_gen():
                 reply = reply.split('</think>')[1].strip()
             json_article[key] = reply
             io.json_write(json_article_filepath, json_article)
-
         ### json how works
         regen = False
         dispel = False
@@ -100,7 +96,6 @@ def hub_preparations_preparation_gen():
                 reply = reply.split('</think>')[1].strip()
             json_article[key] = reply
             io.json_write(json_article_filepath, json_article)
-
         ### json ingredients
         regen = False
         dispel = False
@@ -123,7 +118,6 @@ def hub_preparations_preparation_gen():
                 reply = reply.split('</think>')[1].strip()
             json_article[key] = reply
             io.json_write(json_article_filepath, json_article)
-
         ### json instructions
         regen = False
         dispel = False
@@ -146,7 +140,6 @@ def hub_preparations_preparation_gen():
                 reply = reply.split('</think>')[1].strip()
             json_article[key] = reply
             io.json_write(json_article_filepath, json_article)
-
         ### json how to use
         regen = False
         dispel = False
@@ -170,7 +163,6 @@ def hub_preparations_preparation_gen():
                 reply = reply.split('</think>')[1].strip()
             json_article[key] = reply
             io.json_write(json_article_filepath, json_article)
-
         ### json storage
         regen = False
         dispel = False
@@ -193,7 +185,6 @@ def hub_preparations_preparation_gen():
                 reply = reply.split('</think>')[1].strip()
             json_article[key] = reply
             io.json_write(json_article_filepath, json_article)
-
         ### json safety
         regen = False
         dispel = False
@@ -217,7 +208,6 @@ def hub_preparations_preparation_gen():
                 reply = reply.split('</think>')[1].strip()
             json_article[key] = reply
             io.json_write(json_article_filepath, json_article)
-
         ### json faq
         regen = False
         dispel = False
@@ -241,7 +231,6 @@ def hub_preparations_preparation_gen():
                 reply = reply.split('</think>')[1].strip()
             json_article[key] = reply
             io.json_write(json_article_filepath, json_article)
-
         ### html
         html_article = ''
         json_title = f'''{json_article['title']}'''
@@ -307,6 +296,69 @@ def hub_preparations_preparation_gen():
         html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
         with open(html_filepath, 'w') as f: f.write(html)
 
-def hub_preparations_gen():
-    hub_preparations_preparation_gen()
+def preparations_gen():
+    url_slug = f'preparations'
+    html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
+    html_main = f''
+    for preparation_i, preparation in enumerate(preparation_list):
+        print(preparation)
+    ###
+    ### category herbs popular
+    html_popular_grid = f''
+    popular_num = 100
+    for preparation_i, preparation in enumerate(preparation_list[:popular_num]):
+        print(f'PREPARATION: {preparation_i}/{len(preparation_list[:popular_num])} - {preparation}')
+        preparation_name_plural = preparation['preparation_name_plural']
+        preparation_slug = preparation['preparation_slug']
+        src = f'''/images/preparations/herbal-{preparation_slug}.jpg'''
+        alt = f'''herbal {preparation_name_plural}'''
+        html_popular_grid += f'''
+            <div class="card-default">
+                <a href="/{url_slug}/{preparation_slug}.html">
+                    <img src="{src}" alt="{alt}" style="margin-bottom: 0.8rem;">
+                    <h3 style="margin-bottom: 0.8rem;">{preparation_name_plural.title()}</h3>
+                </a>
+            </div>
+        '''
+    html_popular = f'''
+        <div style="margin-bottom: 9.6rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h2 style="font-size: 4.8rem; line-height: 1; margin-bottom: 3.2rem;">Popular</h2>
+                <p><a href="/herbs/popular.html">View All</a></p>
+            </div>
+            <div class="grid-4" style="gap: 3.2rem;">
+                {html_popular_grid}
+            </div>
+        </div>
+    '''
+    html_h1 = f'<h1 style="margin-bottom: 9.6rem;">Herbal Preparations For Natural Healing</h1>'
+    html_main += f'''
+        <div>
+            {html_popular}
+        </div>
+    '''
+    meta_title = f'''Preparations'''
+    meta_description = f''''''
+    html = f'''
+        <!DOCTYPE html>
+        <html lang="en">
+        {components.html_head(meta_title, meta_description)}
+        <body>
+            {sections.header()}
+            {sections.breadcrumbs(url_slug)}
+            <div class="spacer"></div>
+            <main class="container-xl">
+                {html_main}
+            </main>
+            <div class="spacer"></div>
+            {sections.footer()}
+        </body>
+        </html>
+    '''
+    with open(html_filepath, 'w') as f: f.write(html)
+    print(html_filepath)
+
+def gen():
+    preparations_gen()
+    # hub_preparations_preparation_gen()
 

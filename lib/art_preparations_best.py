@@ -44,7 +44,7 @@ def ai_llm_list_init(obj, regen=False, dispel=False):
     if regen: 
         json_article[key] = []
     if json_article[key] == []:
-        herbs = data.preparation_herbs_popular_100(obj['preparation_slug'])
+        herbs = data.herbs_popular_get(obj['preparation_slug'], 100)
         json_article[key] = herbs
         io.json_write(json_article_filepath, json_article)
 
@@ -109,9 +109,9 @@ def html_gen(obj):
     html_article += f'''<img src="{src}" alt="{alt}">'''
     html_article += f'''{utils.format_1N1(json_article['intro'])}'''
     ### lead magnet
-    with open(f'{g.assets_folderpath}/scripts/newsletter/form-head.txt') as f: 
+    with open(f'{g.DATABASE_FOLDERPATH}/assets/scripts/newsletter/form-head.txt') as f: 
         form_head = f.read()
-    with open(f'{g.assets_folderpath}/scripts/newsletter/form-herb-drying-checklist.txt') as f: 
+    with open(f'{g.DATABASE_FOLDERPATH}/assets/scripts/newsletter/form-herb-drying-checklist.txt') as f: 
         form_herb_drying_checklist = f.read()
     html_article += f'''
         <div class="free-gift">
@@ -122,10 +122,20 @@ def html_gen(obj):
     '''
     ### toc
     html_article += f'''[toc]'''
+    ### list
     for i, herb in enumerate(json_article['herbs']):
-        html_article += f'''<h2>{i+1}. {herb['herb_name_scientific'].capitalize()}</h2>'''
+        preparation_slug = json_article['preparation_slug']
         herb_slug = herb['herb_name_scientific'].strip().lower().replace(' ', '-').replace('.', '')
-        src = f'''/images/preparations/{herb_slug}-{json_article['preparation_slug']}.jpg'''
+        # print(herb_slug)
+        try:
+            herb_slug_patched_for_common_name = herb_slug.replace('mentha-piperita', 'mentha-x-piperita')
+            ssot_herb_primary_filepath = f'{g.SSOT_FOLDERPATH}/herbs/herbs-primary/{herb_slug_patched_for_common_name}.json'
+            herb_data = io.json_read(ssot_herb_primary_filepath)
+            herb_name_common = herb_data['herb_names_common'][0]['answer']
+            html_article += f'''<h2>{i+1}. {herb_name_common.capitalize()} ({herb['herb_name_scientific'].capitalize()})</h2>'''
+        except:
+            html_article += f'''<h2>{i+1}. {herb['herb_name_scientific'].capitalize()}</h2>'''
+        src = f'''/images/preparations/{preparation_slug}/{herb_slug}-{preparation_slug}.jpg'''
         alt = f'''{herb['herb_name_scientific']} {json_article['preparation_name_singular']}'''
         html_article += f'''<img src="{src}" alt="{alt}">'''
         html_article += f'''{utils.format_1N1(herb['herb_desc'])}'''
@@ -186,8 +196,8 @@ def gen():
             'preparation_name_singular': preparation_name_singular,
             'preparation_name_plural': preparation_name_plural,
         }
-        # json_gen(obj)
-        image_ai(obj, regen=False)
+        json_gen(obj)
+        # image_ai(obj, regen=False)
         html_gen(obj)
         # quit()
 

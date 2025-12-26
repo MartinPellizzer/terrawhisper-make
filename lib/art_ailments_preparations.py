@@ -7,8 +7,10 @@ import time
 from lib import g
 from lib import io
 from lib import llm
+from lib import data
 from lib import media
 from lib import utils
+from lib import polish
 from lib import components
 from lib import sections
 from lib import zimage
@@ -257,8 +259,12 @@ def html_gen(obj):
     meta_title = f'''{json_title}'''
     meta_description = f''
     html_article += f'''<h1>{json_title.title()}</h1>'''
-    src = f'''/images/ailments/{json_article['ailment_slug']}-{json_article['preparation_slug']}.jpg'''
-    alt = f'''{json_article['ailment_name']} {json_article['preparation_name_singular']}'''
+    _preparation = json_article['preparations'][0]
+    _herb_slug = _preparation['herb_name_scientific'].strip().lower().replace(' ', '-').replace('.', '')
+    src = f'''/images/preparations/{json_article['preparation_slug']}/{_herb_slug}-{json_article['preparation_slug']}.jpg'''
+    alt = f'''{_preparation['herb_name_scientific']} {json_article['preparation_name_singular']}'''
+    # src = f'''/images/ailments/{json_article['ailment_slug']}-{json_article['preparation_slug']}.jpg'''
+    # alt = f'''{json_article['ailment_name']} {json_article['preparation_name_singular']}'''
     html_article += f'''<img src="{src}" alt="{alt}">'''
     html_article += f'''{utils.format_1N1(json_article['intro'])}'''
     ### lead magnet
@@ -292,8 +298,13 @@ def html_gen(obj):
     html_article += f'''[toc]'''
     ### sections
     for preparation_i, preparation in enumerate(json_article['preparations'][:10]):
-        html_article += f'''<h2>{preparation_i+1}. {preparation['herb_name_scientific'].capitalize()}</h2>'''
-        herb_slug = preparation['herb_name_scientific'].strip().lower().replace(' ', '-').replace('.', '')
+        herb_name_scientific = preparation['herb_name_scientific'].capitalize()
+        herb_slug = polish.sluggify(herb_name_scientific)
+        herb_name_common = data.herb_name_common_get(herb_slug).capitalize()
+        if herb_name_common != '':
+            html_article += f'''<h2>{preparation_i+1}. {herb_name_common} ({herb_name_scientific})</h2>'''
+        else:
+            html_article += f'''<h2>{preparation_i+1}. {herb_name_scientific.capitalize()}</h2>'''
         src = f'''/images/preparations/{json_article['preparation_slug']}/{herb_slug}-{json_article['preparation_slug']}.jpg'''
         alt = f'''{preparation['herb_name_scientific']} {json_article['preparation_name_singular']}'''
         html_article += f'''<img src="{src}" alt="{alt}">'''
@@ -330,12 +341,19 @@ def gen():
             preparation_slug = preparation['preparation_slug']
             preparation_name_singular = preparation['preparation_name_singular']
             preparation_name_plural = preparation['preparation_name_plural']
+            ### TODO redo all these because accidentally deleted jsons
             # if preparation_slug != 'teas': continue
             # if preparation_slug != 'tinctures': continue
+            # if preparation_slug != 'decoctions': continue
             # if preparation_slug != 'essential-oils': continue
+
             # if preparation_slug != 'creams': continue
+            # if preparation_slug != 'syrups': continue
             # if preparation_slug != 'juices': continue
-            if preparation_slug != 'syrups': continue
+            if preparation_slug != 'linctuses': continue
+
+            # if preparation_slug != 'capsules': continue
+            # if preparation_slug != 'baths': continue
             print(f'PREPARATION: {preparation_slug}')
             try: os.mkdir(f'''{g.website_folderpath}/ailments''')
             except: pass

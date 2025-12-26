@@ -42,43 +42,13 @@ if 0:
         quit()
 
 ########################################
-# HERBS..........................[HRB]
-########################################
-if 1:
-    from ai import herbs_ai
-    herbs_ai.main()
-
-if 1:
-    if 1:
-        from hub import herb_hub
-        herb_hub.main()
-    if 0:
-        import legacy
-        legacy.gen()
-    if 0:
-        from ai import herbs_wcvp
-        herbs_wcvp.gen()
-    if 0:
-        from ai import herbs_existing
-        herbs_existing.gen()
-    if 0:
-        from ai import herbs_images
-        herbs_images.gen()
-    if 0:
-        from lib import art_herbs_benefits
-        art_herbs_benefits.gen()
-    if 0:
-        from lib import art_herbs
-        art_herbs.gen()
-
-########################################
 # PREPARATIONS...................[PRP]
 ########################################
 if 0:
-    if 0:
+    if 1:
         from hub import hub_preparations
-        hub_preparations.hub_preparations_gen()
-    if 0:
+        hub_preparations.gen()
+    if 1:
         from lib import art_preparations_best
         art_preparations_best.gen()
     if 0:
@@ -91,10 +61,11 @@ if 0:
 ########################################
 # AILMENTS.......................[ALM]
 ########################################
-if 1:
+if 0:
     if 1:
         from ai import preparations_images
         preparations_images.gen()
+        quit()
 
 if 0:
     if 0:
@@ -148,7 +119,7 @@ if 0:
 ########################################
 # SHOP...........................[SHP]
 ########################################
-if 1:
+if 0:
     if 1:
         from hub import hub_shop
         hub_shop.gen()
@@ -182,10 +153,44 @@ if 1:
         pag_shop.gen()
 
 ########################################
-# HOME...........................[HOM]
+# HERBS..........................[HRB]
 ########################################
 if 0:
+    from ai import herbs_ai
+    herbs_ai.main()
+
+if 0:
+    if 1:
+        from hub import herb_hub
+        herb_hub.main()
     if 0:
+        import legacy
+        legacy.gen()
+    if 0:
+        from ai import herbs_wcvp
+        herbs_wcvp.gen()
+    if 0:
+        from ai import herbs_existing
+        herbs_existing.gen()
+    if 0:
+        from ai import herbs_images
+        herbs_images.gen()
+    if 0:
+        from lib import art_herbs_benefits
+        art_herbs_benefits.gen()
+    if 0:
+        from lib import art_herbs
+        art_herbs.gen()
+
+########################################
+# HOME...........................[HOM]
+########################################
+if 1:
+    if 0:
+        ### OLD
         from lib import pag_home
         pag_home.gen()
+    if 1:
+        from hub import home_hub
+        home_hub.gen()
 

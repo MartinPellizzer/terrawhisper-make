@@ -146,6 +146,16 @@ def ai_img_preparation_new(template, preparation_name_plural):
             a glass bottle of {herb_name_scientific} syrup on a {prompt_table} surrounded by dry herbs,
             rustic, vintage, boho,
         '''
+    elif preparation_name_plural == 'baths':
+        prompt = f'''
+            a bathtub full of water and dry {herb_name_scientific} herbs,
+            rustic, vintage, boho,
+        '''
+    elif preparation_name_plural == 'capsules':
+        prompt = f'''
+            a pile of {herb_name_scientific} herbal capsules on a wooden table surrounded by dry herbs,
+            rustic, vintage, boho,
+        '''
     else:
         prompt = f'''
             cat

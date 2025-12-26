@@ -25,6 +25,16 @@
     src: url("./assets/fonts/playfair-display/static/PlayfairDisplay-Bold.ttf");
 }
 
+@font-face {
+    font-family: playfair-display-bold;
+    src: url("./assets/fonts/playfair-display/static/PlayfairDisplay-Bold.ttf");
+}
+
+@font-face {
+    font-family: SourceSerif-Regular;
+    src: url("./assets/fonts/SourceSerif-Regular.ttf");
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -38,7 +48,7 @@ html {
 body {
     font-size: 1.8rem;
     line-height: 2.7rem;
-    font-family: lora-regular;
+    font-family: "SourceSerif-Regular", serif;
     font-family: serif;
     font-family: sans-serif;
 }
@@ -86,6 +96,20 @@ body {
 h1 {
     font-size: 6.4rem;
     line-height: 1;
+}
+
+h2 {
+    font-family: SourceSerif-Regular;
+    font-size: 4.8rem;
+    line-height: 1;
+    margin-bottom: 1.6rem;
+}
+
+h3 {
+    font-family: SourceSerif-Regular;
+    font-size: 2.4rem;
+    line-height: 1;
+    margin-bottom: 1.6rem;
 }
 
 img {
@@ -356,14 +380,14 @@ footer span {
 }
 
 .home-hero h1 {
-    font-family: playfair-display-regular;
-    font-size: 9.6rem;
-    margin-bottom: 3.2rem;
+    font-family: SourceSerif-Regular;
+    font-size: 6.4rem;
+    margin-bottom: 1.6rem;
 }
 
-.home-hero h1 span {
-    font-family: playfair-display-regular;
-    font-size: 4.8rem;
+
+.home-hero p {
+    margin-bottom: 1.6rem;
 }
 
 .home h2 {
