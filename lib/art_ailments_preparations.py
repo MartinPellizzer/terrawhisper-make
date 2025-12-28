@@ -350,10 +350,14 @@ def gen():
             # if preparation_slug != 'creams': continue
             # if preparation_slug != 'syrups': continue
             # if preparation_slug != 'juices': continue
-            if preparation_slug != 'linctuses': continue
+            # if preparation_slug != 'linctuses': continue
 
+            # if preparation_slug != 'mucillages': continue
             # if preparation_slug != 'capsules': continue
+            # if preparation_slug != 'lozenges': continue
             # if preparation_slug != 'baths': continue
+
+            if preparation_slug != 'lotions': continue
             print(f'PREPARATION: {preparation_slug}')
             try: os.mkdir(f'''{g.website_folderpath}/ailments''')
             except: pass

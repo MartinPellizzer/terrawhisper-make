@@ -62,6 +62,11 @@ def image_ai(obj, clear=False):
                     a glass bottle of {herb_name_scientific} syrup on a wooden table surrounded by dry herbs,
                     rustic, vintage, boho,
                 '''
+            elif preparation_name_plural == 'linctuses':
+                prompt = f'''
+                    herbal linctuses on a wooden table surrounded by dry herbs,
+                    rustic, vintage, boho,
+                '''
             elif preparation_name_plural == 'capsules':
                 prompt = f'''
                     a pile of {herb_name_scientific} herbal capsules on a wooden table surrounded by dry herbs,
@@ -188,7 +193,7 @@ def preparations_gen(preparations_rows):
                     herbal capsules on a wooden table surrounded by dry herbs,
                     rustic, vintage, boho,
                 '''
-            elif preparation_name_plural == 'lozenges':
+            elif preparation_name_plural == 'linctuses':
                 prompt = f'''
                     herbal lozenges on a wooden table surrounded by dry herbs,
                     rustic, vintage, boho,

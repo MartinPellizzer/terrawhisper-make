@@ -61,13 +61,7 @@ if 0:
 ########################################
 # AILMENTS.......................[ALM]
 ########################################
-if 0:
-    if 1:
-        from ai import preparations_images
-        preparations_images.gen()
-        quit()
-
-if 0:
+if 1:
     if 0:
         from hub import hub_ailments
         hub_ailments.gen()
@@ -80,6 +74,12 @@ if 0:
     if 0:
         from lib import cat_ailments
         cat_ailments.gen()
+
+if 0:
+    if 1:
+        from ai import preparations_images
+        preparations_images.gen()
+        quit()
 
 ########################################
 # EQUIPMENT......................[EQP]
@@ -155,11 +155,11 @@ if 0:
 ########################################
 # HERBS..........................[HRB]
 ########################################
-if 0:
+if 1:
     from ai import herbs_ai
     herbs_ai.main()
 
-if 0:
+if 1:
     if 1:
         from hub import herb_hub
         herb_hub.main()
