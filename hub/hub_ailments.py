@@ -25,7 +25,7 @@ def ailments_systems_gen():
             alt = f'''{ailment_name}'''
             html_ailments += f'''
                 <div class="card-default">
-                    <a href="/{url_slug}/{ailment_slug}.html">
+                    <a href="/ailments/{ailment_slug}.html">
                         <img src="{src}" alt="{alt}" style="margin-bottom: 0.8rem;">
                         <h3 style="margin-bottom: 0.8rem;">{ailment_name.title()}</h3>
                     </a>
@@ -43,7 +43,7 @@ def ailments_systems_gen():
             </div>
         '''
     html_main = f'''
-        <h1 style="font-size: 6.4rem; line-height: 1; margin-bottom: 9.6rem;">Common Ailments and Their Herbal Remedies</h1>
+        <h1 style="font-size: 6.4rem; line-height: 1; margin-bottom: 9.6rem;">Body Systems Ailments and Their Herbal Remedies</h1>
         {html_clusters}
     '''
     meta_title = f'''Ailments'''
@@ -91,7 +91,7 @@ def ailments_systems_system_gen():
                 </div>
             '''
         html_main = f'''
-            <h1 style="font-size: 6.4rem; line-height: 1; margin-bottom: 9.6rem;">Common Ailments and Their Herbal Remedies</h1>
+            <h1 style="font-size: 6.4rem; line-height: 1; margin-bottom: 9.6rem;">{system_name.title()} Ailments and Their Herbal Remedies</h1>
             <div style="margin-bottom: 9.6rem;">
                 <div style="display: flex; justify-content: space-between; align-items: center;">
                     <h2 style="font-size: 4.8rem; line-height: 1; margin-bottom: 3.2rem;">{system_name.title()}</h2>
@@ -124,64 +124,7 @@ def ailments_systems_system_gen():
         html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
         with open(html_filepath, 'w') as f: f.write(html)
 
-def ailments_organs_organ_gen():
-    ailments = io.csv_to_dict(f'{g.DATABASE_FOLDERPATH}/csv/ailments.csv')
-    ### cluster by organ
-    clusters = data.ailments_by_organ_get()
-    for cluster in clusters:
-        organ_name = cluster['organ_slug']
-        organ_slug = organ_name.strip().lower().replace(' ', '-')
-        url_slug = f'ailments/organs/{organ_slug}'
-        html_ailments = f''
-        for ailment_i, ailment in enumerate(cluster['ailments']):
-            ailment_slug = ailment['ailment_slug']
-            ailment_name = ailment['ailment_name']
-            print(f'AILMENT: {ailment_i}/{len(ailments)} - {ailment_name}')
-            src = f'''/images/ailments/{ailment_slug}-herbs.jpg'''
-            alt = f'''{ailment_name} herbs'''
-            html_ailments += f'''
-                <div class="card-default">
-                    <a href="/ailments/{ailment_slug}.html">
-                        <img src="{src}" alt="{alt}">
-                        <h2>{ailment_name.title()}</h2>
-                    </a>
-                </div>
-            '''
-        html_main = f'''
-            <h1 style="font-size: 6.4rem; line-height: 1; margin-bottom: 9.6rem;">Common Ailments and Their Herbal Remedies</h1>
-            <div style="margin-bottom: 9.6rem;">
-                <h2 style="font-size: 4.8rem; line-height: 1; padding-bottom: 1.6rem; margin-bottom: 1.6rem; border-bottom: 1px solid #333333;">{organ_name.title()}</h2>
-                <div class="grid-3" style="gap: 3.2rem;">
-                    {html_ailments}
-                </div>
-            </div>
-        '''
-        meta_title = f'''{organ_name.title()} Ailments'''
-        meta_description = f''''''
-        html = f'''
-            <!DOCTYPE html>
-            <html lang="en">
-            {components.html_head(meta_title, meta_description)}
-            <body>
-                {sections.header()}
-                {sections.breadcrumbs(url_slug)}
-                <div class="spacer"></div>
-                <main class="container-xl">
-                    {html_main}
-                </main>
-                <div class="spacer"></div>
-                {sections.footer()}
-            </body>
-            </html>
-        '''
-        try: os.mkdir(f'{g.website_folderpath}/ailments/organs')
-        except: pass
-        html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
-        with open(html_filepath, 'w') as f: f.write(html)
-
 def ailments_organs_gen():
-    ailments_organs_organ_gen()
-    ###
     ailments = io.csv_to_dict(f'{g.DATABASE_FOLDERPATH}/csv/ailments.csv')
     url_slug = 'ailments/organs'
     ### cluster by organ
@@ -217,7 +160,7 @@ def ailments_organs_gen():
             </div>
         '''
     html_main = f'''
-        <h1 style="font-size: 6.4rem; line-height: 1; margin-bottom: 9.6rem;">Common Ailments and Their Herbal Remedies</h1>
+        <h1 style="font-size: 6.4rem; line-height: 1; margin-bottom: 9.6rem;">Body Organs Ailments and Their Herbal Remedies</h1>
         {html_clusters}
     '''
     meta_title = f'''Ailments'''
@@ -240,6 +183,58 @@ def ailments_organs_gen():
     '''
     html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
     with open(html_filepath, 'w') as f: f.write(html)
+
+def ailments_organs_organ_gen():
+    clusters = data.ailments_by_organ_get()
+    for cluster in clusters:
+        organ_name = cluster['organ_slug']
+        organ_slug = organ_name.strip().lower().replace(' ', '-')
+        url_slug = f'ailments/organs/{organ_slug}'
+        html_ailments = f''
+        for ailment_i, ailment in enumerate(cluster['ailments']):
+            ailment_slug = ailment['ailment_slug']
+            ailment_name = ailment['ailment_name']
+            print(f'AILMENT: {ailment_i} - {ailment_name}')
+            src = f'''/images/ailments/{ailment_slug}.jpg'''
+            alt = f'''{ailment_name}'''
+            html_ailments += f'''
+                <div class="card-default">
+                    <a href="/ailments/{ailment_slug}.html">
+                        <img src="{src}" alt="{alt}" style="margin-bottom: 0.8rem;">
+                        <h3 style="margin-bottom: 0.8rem;">{ailment_name.title()}</h3>
+                    </a>
+                </div>
+            '''
+        html_main = f'''
+            <h1 style="font-size: 6.4rem; line-height: 1; margin-bottom: 9.6rem;">{organ_name.title()} Ailments and Their Herbal Remedies</h1>
+            <div style="margin-bottom: 9.6rem;">
+                <div class="grid-4" style="gap: 3.2rem;">
+                    {html_ailments}
+                </div>
+            </div>
+        '''
+        meta_title = f'''{organ_name.title()} Ailments'''
+        meta_description = f''''''
+        html = f'''
+            <!DOCTYPE html>
+            <html lang="en">
+            {components.html_head(meta_title, meta_description)}
+            <body>
+                {sections.header()}
+                {sections.breadcrumbs(url_slug)}
+                <div class="spacer"></div>
+                <main class="container-xl">
+                    {html_main}
+                </main>
+                <div class="spacer"></div>
+                {sections.footer()}
+            </body>
+            </html>
+        '''
+        try: os.mkdir(f'{g.website_folderpath}/ailments/organs')
+        except: pass
+        html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
+        with open(html_filepath, 'w') as f: f.write(html)
 
 def ailments_gen():
     url_slug = 'ailments'
@@ -370,7 +365,7 @@ def ailments_all_gen():
         alt = f'''{ailment_name} remedies'''
         html_ailments_cards += f'''
             <div class="card-default">
-                <a href="/{url_slug}/{ailment_slug}.html">
+                <a href="/ailments/{ailment_slug}.html">
                     <img src="{src}" alt="{alt}" style="margin-bottom: 0.8rem;">
                     <h3 style="margin-bottom: 0.8rem;">{ailment_name.title()}</h3>
                 </a>
@@ -414,4 +409,5 @@ def gen():
     ailments_systems_gen()
     ailments_systems_system_gen()
     ailments_organs_gen()
+    ailments_organs_organ_gen()
 

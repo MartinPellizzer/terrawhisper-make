@@ -62,17 +62,18 @@ if 0:
 # AILMENTS.......................[ALM]
 ########################################
 if 1:
-    if 1:
+    if 0:
         from hub import hub_ailments
         hub_ailments.gen()
         quit()
-    if 1:
+    if 0:
         from lib import art_ailments_preparations
         art_ailments_preparations.gen()
         quit()
-    if 0:
+    if 1:
         from lib import art_ailments
         art_ailments.gen()
+        quit()
     if 0:
         from lib import cat_ailments
         cat_ailments.gen()
