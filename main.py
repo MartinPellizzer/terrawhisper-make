@@ -66,9 +66,10 @@ if 1:
         from hub import hub_ailments
         hub_ailments.gen()
         quit()
-    if 0:
+    if 1:
         from lib import art_ailments_preparations
         art_ailments_preparations.gen()
+        quit()
     if 0:
         from lib import art_ailments
         art_ailments.gen()
@@ -156,7 +157,7 @@ if 0:
 ########################################
 # HERBS..........................[HRB]
 ########################################
-if 1:
+if 0:
     from ai import herbs_ai
     herbs_ai.main()
 

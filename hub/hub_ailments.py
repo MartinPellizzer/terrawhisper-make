@@ -188,26 +188,30 @@ def ailments_organs_gen():
     clusters = data.ailments_by_organ_get()
     html_clusters = f''
     for cluster in clusters:
+        cluster_slug = cluster['organ_slug']
         cluster_name = cluster['organ_slug']
         html_ailments = f''
         for ailment_i, ailment in enumerate(cluster['ailments']):
             ailment_slug = ailment['ailment_slug']
             ailment_name = ailment['ailment_name']
             print(f'AILMENT: {ailment_i}/{len(ailments)} - {ailment_name}')
-            src = f'''/images/ailments/{ailment_slug}-herbs.jpg'''
-            alt = f'''{ailment_name} herbs'''
+            src = f'''/images/ailments/{ailment_slug}.jpg'''
+            alt = f'''{ailment_name}'''
             html_ailments += f'''
                 <div class="card-default">
                     <a href="/ailments/{ailment_slug}.html">
-                        <img src="{src}" alt="{alt}">
-                        <h2>{ailment_name.title()}</h2>
+                        <img src="{src}" alt="{alt}" style="margin-bottom: 0.8rem;">
+                        <h3 style="margin-bottom: 0.8rem;">{ailment_name.title()}</h3>
                     </a>
                 </div>
             '''
         html_clusters += f'''
             <div style="margin-bottom: 9.6rem;">
-                <h2 style="font-size: 4.8rem; line-height: 1; padding-bottom: 1.6rem; margin-bottom: 1.6rem; border-bottom: 1px solid #333333;">{cluster_name.title()}</h2>
-                <div class="grid-3" style="gap: 3.2rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <h2 style="font-size: 4.8rem; line-height: 1; margin-bottom: 3.2rem;">{cluster_name.title()}</h2>
+                    <a style="color: #111111; text-decoration: none;" href="/ailments/organs/{cluster_slug}.html">View All >></a>
+                </div>
+                <div class="grid-4" style="gap: 3.2rem;">
                     {html_ailments}
                 </div>
             </div>
@@ -409,4 +413,5 @@ def gen():
     ailments_all_gen()
     ailments_systems_gen()
     ailments_systems_system_gen()
-    # ailments_organs_gen()
+    ailments_organs_gen()
+
