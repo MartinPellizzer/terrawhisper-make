@@ -343,7 +343,7 @@ def gen():
             preparation_name_plural = preparation['preparation_name_plural']
             ### TODO redo all these because accidentally deleted jsons
             # if preparation_slug != 'teas': continue
-            # if preparation_slug != 'tinctures': continue
+            if preparation_slug != 'tinctures': continue
             # if preparation_slug != 'decoctions': continue
             # if preparation_slug != 'essential-oils': continue
 
@@ -357,7 +357,7 @@ def gen():
             # if preparation_slug != 'lozenges': continue
             # if preparation_slug != 'baths': continue
 
-            if preparation_slug != 'lotions': continue
+            # if preparation_slug != 'lotions': continue
             print(f'PREPARATION: {preparation_slug}')
             try: os.mkdir(f'''{g.website_folderpath}/ailments''')
             except: pass

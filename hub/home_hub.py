@@ -17,6 +17,7 @@ def gen():
             <strong>Herbalism</strong> is the practice of using <strong>medicinal herbs</strong> to support health and well-being through simple preparations such as teas, tinctures, salves, and infused oils. This site offers <strong>beginner-friendly, educational guidance</strong> on medicinal herbs, herbal remedies, and their traditional use for common concerns, with an emphasis on <strong>safe and responsible use</strong>.
         </p>
     '''
+
     html_hero = f'''
         <section class="home-hero" style="padding-top: 9.6rem; padding-bottom: 9.6rem;">
             <div class="container-xl">
@@ -46,33 +47,134 @@ def gen():
         <section style="padding-bottom: 9.6rem;">
             <div class="container-xl">
                 <h2>What Is Herbalism?</h2>
-                <p>
+                <p style="max-width: 720px;">
                     Herbalism is the traditional and modern practice of working with <strong>medicinal plants</strong> to create remedies, teas, tinctures, and salves that support everyday health. 
                     It combines plant knowledge, hands-on preparation skills, and an understanding of how herbs have been used historically for digestion, sleep, stress, skin, and immunity.
                 </p>
                 <div style="display: flex; gap: 4.8rem; margin-top: 4.8rem;">
                     <div style="flex: 1;">
+                        <img style="margin-bottom: 1.6rem;" src="/images/home/herbs-medicinal-educational.jpg" alt="Herbs with medicinal properties for educational use in herbalism">
                         <h3>Medicinal Herbs</h3>
                         <p style="margin-bottom: 1.6rem;">Learn about the most common medicinal herbs and their traditional uses for everyday health.</p>
                         <p style="margin-bottom: 1.6rem;"><a href="/herbs.html">Explore Medicinal Herbs</a></p>
-                        <img src="/images/home/herbs-medicinal-educational.jpg" alt="Herbs with medicinal properties for educational use in herbalism">
                     </div>
                     <div style="flex: 1;">
+                        <img style="margin-bottom: 1.6rem;" src="/images/home/herbs-preparations-hands-on.jpg" alt="Herbs with preparation methods for making teas, tinctures, and salves at home">
                         <h3>Herbal Preparations</h3>
                         <p style="margin-bottom: 1.6rem;">Step-by-step guidance on creating teas, tinctures, salves, and other remedies at home.</p>
                         <p style="margin-bottom: 1.6rem;"><a href="/preparations.html">Learn Herbal Preparation Methods</a></p>
-                        <img src="/images/home/herbs-preparations-hands-on.jpg" alt="Herbs with preparation methods for making teas, tinctures, and salves at home">
                     </div>
                     <div style="flex: 1;">
+                        <img style="margin-bottom: 1.6rem;" src="/images/home/herbal-remedies-for-ailments.jpg" alt="Herbal remedies in jars and teas for common ailments like digestion, sleep, stress, and immunity">
                         <h3>Ailments and Remedies</h3>
                         <p style="margin-bottom: 1.6rem;">Understand how herbal remedies support digestion, sleep, stress management, skin health, and immunity.</p>
                         <p style="margin-bottom: 1.6rem;"><a href="/ailments.html">See Herbal Remedies for Common Ailments</a></p>
-                        <img src="/images/home/herbal-remedies-for-ailments.jpg" alt="Herbal remedies in jars and teas for common ailments like digestion, sleep, stress, and immunity">
                     </div>
                 </div>
             </div>
         </section>
     '''
+
+    html_section_2 = f'''
+        <section style="padding-bottom: 9.6rem;">
+            <div class="container-xl">
+                <h2>Medicinal Herbs and Their Uses</h2>
+                <div style="display: flex; justify-content: space-between;">
+                    <p style="max-width: 720px;">
+                        <strong>Medicinal herbs</strong> are plants that contain natural compounds traditionally used to support health and well-being. 
+                        Their properties depend on the plant species, the part used, and the way the herb is prepared.
+                    </p>
+                    <div>
+                        <a class="button-default" href="/herbs.html">View All Herbs</a>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 4.8rem; margin-top: 4.8rem;">
+                    <div style="flex: 1;">
+                        <h3>What Makes a Plant Medicinal?</h3>
+                        <p>
+                        A plant is considered medicinal when it contains bioactive compounds that have been traditionally used to support the body. 
+                        These compounds may include essential oils, flavonoids, bitters, or alkaloids.
+                        </p>
+                    </div>
+                    <div style="flex: 1;">
+                        <h3>Plant Parts Used in Herbalism</h3>
+                        <p style="margin-bottom: 1.6rem;">
+                            Different parts of a medicinal plant are used in herbalism depending on where the active compounds are concentrated.
+                        </p>
+                        <ul>
+                          <li><strong>Leaves and flowers</strong>: often used for teas and infusions</li>
+                          <li><strong>Roots and rhizomes</strong>: commonly prepared as decoctions or tinctures</li>
+                          <li><strong>Seeds and fruits</strong>: used for oils, powders, or teas</li>
+                          <li><strong>Bark and resins</strong>: valued for concentrated herbal preparations</li>
+                        </ul>
+                    </div>
+                    <div style="flex: 1;">
+                        <h3>General Categories of Herbal Use</h3>
+                        <p style="margin-bottom: 1.6rem;">
+                        Medicinal herbs are commonly grouped by the type of support they have traditionally been used to provide.
+                        </p>
+                        <ul>
+                          <li>Digestive support</li>
+                          <li>Immune support</li>
+                          <li>Relaxation and sleep support</li>
+                          <li>Skin care and topical use</li>
+                          <li>Respiratory support</li>
+                        </ul>
+                    </div>
+                <div>
+            </div>
+        </section>
+    '''
+
+    html_section_3 = f'''
+        <section style="padding-bottom: 9.6rem;">
+            <div class="container-xl">
+                <h2 style="max-width: 720px;">Herbal Remedies and Preparation Methods</h2>
+                <div style="display: flex; justify-content: space-between;">
+                    <p style="max-width: 720px;">
+                        <strong>Herbal remedies</strong> are made by preparing medicinal herbs in specific ways to make their beneficial compounds available for use. 
+                        Common preparation methods include teas, tinctures, salves, oils, and syrups, each suited to different herbs and purposes.
+                    </p>
+                    <div>
+                        <a class="button-default" href="/herbs.html">Learn All Preparations</a>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 4.8rem; margin-top: 4.8rem;">
+                    <div style="flex: 1;">
+<h3>Types of Herbal Preparation Methods</h3>
+<p>
+Herbal remedies are prepared using different methods depending on the plant material, the desired strength, and how the remedy will be used.
+</p>
+
+<ul>
+  <li><strong>Teas and infusions</strong>: gentle preparations made with hot water</li>
+  <li><strong>Decoctions</strong>: simmered preparations for roots and bark</li>
+  <li><strong>Tinctures</strong>: concentrated extracts made with alcohol or glycerin</li>
+  <li><strong>Salves and balms</strong>: topical remedies made with infused oils and wax</li>
+  <li><strong>Infused oils</strong>: herbs steeped in oil for external use</li>
+</ul>
+                    </div>
+                    <div style="flex: 1;">
+<h3>What Is a Home Apothecary?</h3>
+<p>
+A <strong>home apothecary</strong> is a personal collection of herbs, remedies, and tools used to prepare and store herbal preparations at home. 
+It typically includes dried herbs, jars, measuring tools, and basic supplies for making simple remedies.
+</p>
+                    </div>
+                    <div style="flex: 1;">
+<h3>Herbal Preparation for Beginners</h3>
+<p>
+Beginners often start with simple herbal preparations such as teas, infused oils, and basic salves. 
+These methods require minimal equipment and allow new herbalists to learn safely while building confidence.
+</p>
+                    </div>
+                <div>
+            </div>
+        </section>
+    '''
+
+
+
 
     intro_html = f'''
         <section style="padding-top: 9.6rem; padding-bottom: 9.6rem;">
@@ -175,6 +277,8 @@ def gen():
             {sections.header()}
             {html_hero}
             {html_section_1}
+            {html_section_2}
+            {html_section_3}
             {intro_html}
             {section_2_html}
             {section_3_html}

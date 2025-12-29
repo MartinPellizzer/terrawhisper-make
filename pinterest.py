@@ -1,4 +1,5 @@
 import os
+import sys
 import time
 import random
 import pickle
@@ -65,7 +66,6 @@ else:
     e = driver.find_element(By.XPATH, '//div[text()="Log in"]')
     e.click()
     time.sleep(60)
-
     cookies = driver.get_cookies()
     with open(COOKIE_FILEPATH, 'wb') as f:
         pickle.dump(cookies, f)
@@ -78,6 +78,7 @@ else:
 
 def pin_post(article_filepath):
     global failed_pins_num
+    global failed_pins_url_num
     data = io.json_read(article_filepath)
     title = data['title'].title()
     url = data["url"]
@@ -112,8 +113,28 @@ def pin_post(article_filepath):
         try: e.send_keys(c)
         except: break
     time.sleep(5)
+    success = False
+    for _ in range(5):
+        e = driver.find_element(By.XPATH, '//input[@id="WebsiteField"]')
+        e.send_keys(Keys.CONTROL + "a")
+        e.send_keys(Keys.BACKSPACE)
+        for c in url:
+            try: e.send_keys(c)
+            except: break
+        time.sleep(1) 
+        written_text = e.get_attribute('value')
+        if url == written_text:
+            print('success')
+            success = True
+            break
+        else:
+            print('fail')
+    if not success:
+        failed_pins_num += 1
+        failed_pins_url_num += 1
+        return
     e = driver.find_element(By.XPATH, '//input[@id="WebsiteField"]')
-    e.send_keys(url) 
+    ###
     time.sleep(5)
     e = driver.find_element(By.XPATH, '//div[@data-test-id="board-dropdown-select-button"]')
     e.click()
@@ -133,7 +154,8 @@ def pin_post(article_filepath):
     time.sleep(60)
 
 failed_pins_num = 0
-jsons_filenames = os.listdir(f'{g.pinterest_tmp_image_folderpath}/pins')
+failed_pins_url_num = 0
+jsons_filenames = sorted(os.listdir(f'{g.pinterest_tmp_image_folderpath}/pins'))
 for i in range(len(jsons_filenames)): 
     # if i < 3: continue
     found = False
@@ -153,3 +175,4 @@ for i in range(len(jsons_filenames)):
         time_to_wait = WAIT_SECONDS + random_time_to_wait
         time.sleep(time_to_wait)
 print(f'FAILED PINS NUM: {failed_pins_num}')
+print(f'FAILED PINS URL NUM: {failed_pins_url_num}')

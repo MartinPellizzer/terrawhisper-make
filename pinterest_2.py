@@ -113,9 +113,28 @@ def pin_post(article_filepath):
         try: e.send_keys(c)
         except: break
     time.sleep(5)
-    e = driver.find_element(By.XPATH, '//input[@id="WebsiteField"]')
-    e.send_keys(url) 
-    time.sleep(5)
+    ###
+    success = False
+    for _ in range(5):
+        e = driver.find_element(By.XPATH, '//input[@id="WebsiteField"]')
+        e.send_keys(Keys.CONTROL + "a")
+        e.send_keys(Keys.BACKSPACE)
+        for c in url:
+            try: e.send_keys(c)
+            except: break
+        time.sleep(1) 
+        written_text = e.get_attribute('value')
+        if url == written_text:
+            print('success')
+            success = True
+            break
+        else:
+            print('fail')
+    if not success:
+        failed_pins_num += 1
+        failed_pins_url_num += 1
+        return
+    ###
     e = driver.find_element(By.XPATH, '//div[@data-test-id="board-dropdown-select-button"]')
     e.click()
     time.sleep(30)

@@ -67,14 +67,29 @@ def image_ai(obj, clear=False):
                     herbal linctuses on a wooden table surrounded by dry herbs,
                     rustic, vintage, boho,
                 '''
+            elif preparation_name_plural == 'mucillages':
+                prompt = f'''
+                    herbal mucillages on a wooden table surrounded by dry herbs,
+                    rustic, vintage, boho,
+                '''
             elif preparation_name_plural == 'capsules':
                 prompt = f'''
                     a pile of {herb_name_scientific} herbal capsules on a wooden table surrounded by dry herbs,
                     rustic, vintage, boho,
                 '''
+            elif preparation_name_plural == 'lozenges':
+                prompt = f'''
+                    herbal lozenges on a wooden table surrounded by dry herbs,
+                    rustic, vintage, boho,
+                '''
             elif preparation_name_plural == 'baths':
                 prompt = f'''
                     a bathtub full of water and dry {herb_name_scientific} herbs,
+                    rustic, vintage, boho,
+                '''
+            elif preparation_name_plural == 'lotions':
+                prompt = f'''
+                    herbal lotions on a wooden table surrounded by dry herbs,
                     rustic, vintage, boho,
                 '''
             zimage.image_create(
@@ -105,10 +120,14 @@ def ailments_preparations_gen(ailments_rows, preparations_rows):
             # if preparation_slug != 'creams': continue
             # if preparation_slug != 'syrups': continue
             # if preparation_slug != 'juices': continue
-            if preparation_slug != 'linctuses': continue
+            # if preparation_slug != 'linctuses': continue
 
+            # if preparation_slug != 'mucillages': continue
             # if preparation_slug != 'capsules': continue
+            # if preparation_slug != 'lozenges': continue
             # if preparation_slug != 'baths': continue
+
+            if preparation_slug != 'lotions': continue
             print(f'PREPARATION: {preparation_slug}')
             try: os.mkdir(f'''{g.website_folderpath}/ailments''')
             except: pass
@@ -193,7 +212,7 @@ def preparations_gen(preparations_rows):
                     herbal capsules on a wooden table surrounded by dry herbs,
                     rustic, vintage, boho,
                 '''
-            elif preparation_name_plural == 'linctuses':
+            elif preparation_name_plural == 'lozenges':
                 prompt = f'''
                     herbal lozenges on a wooden table surrounded by dry herbs,
                     rustic, vintage, boho,

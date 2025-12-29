@@ -6,8 +6,9 @@ from lib import io
 from lib import data
 from lib import media
 from lib import polish
+from lib import zimage
 
-def gen():
+def gen_old():
     herbs = data.herbs_medicinal_get()
     for herb_i, herb in enumerate(herbs):
         herb_name_scientific = herb['herb_name_scientific']
@@ -37,4 +38,32 @@ def gen():
         print()
         shutil.copy2(in_filepath, web_filepath)
 
-gen()
+
+def herbs_gen(dispel=False):
+    herbs = data.herbs_primary_get()
+    for herb_i, herb in enumerate(herbs):
+        herb_name_scientific = herb['herb_name_scientific']
+        herb_slug = polish.sluggify(herb_name_scientific)
+        ###
+        output_folderpath = f'''{g.WEBSITE_FOLDERPATH}/images/herbs/primary'''
+        output_filepath = f'''{output_folderpath}/{herb_slug}.jpg'''
+        try: os.makedirs(output_folderpath)
+        except: pass
+        if dispel:
+            try: os.remove(out_filepath)
+            except: pass
+            continue
+        ###
+        if not os.path.exists(output_filepath):
+            prompt = f'''
+                dry {herb_name_scientific} herb on a wooden table surrounded by other medicinal herbs,
+                rustic, vintage, boho,
+            '''.replace('  ', ' ')
+            zimage.image_create(
+                output_filepath=f'{output_filepath}', 
+                prompt=prompt, width=768, height=768, seed=-1,
+            )
+
+def gen():
+    herbs_gen(dispel=False)
+
