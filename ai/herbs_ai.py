@@ -606,16 +606,19 @@ def herbs_primary_gen():
         print()
         print()
 
+def herbs_popular_gen():
+    herbs = data.herbs_popular_get('teas', 100)
+    for herb_i, herb in enumerate(herbs):
+        print('####################################')
+        print(f'{herb_i}/{len(herbs)} - {herb}')
+        herbs_primary_json(herb)
+        print('####################################')
+        print()
+        print()
+        print()
+
 def main():
     herbs_primary_gen()
     herbs_wcvp_medicinal_gen()
-    if 0:
-        herbs = data.herbs_popular_get('teas', 100)
-        for herb_i, herb in enumerate(herbs):
-            print('####################################')
-            print(f'{herb_i}/{len(herbs)} - {herb}')
-            json_gen(herb)
-            print('####################################')
-            print()
-            print()
-            print()
+
+    herbs_popular_gen()

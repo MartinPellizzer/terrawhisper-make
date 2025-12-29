@@ -8,6 +8,9 @@ from lib import media
 from lib import polish
 from lib import zimage
 
+herbs_primary = data.herbs_primary_get()
+herbs_popular = data.herbs_popular_get('teas', 100)
+
 def gen_old():
     herbs = data.herbs_medicinal_get()
     for herb_i, herb in enumerate(herbs):
@@ -40,7 +43,13 @@ def gen_old():
 
 
 def herbs_gen(dispel=False):
-    herbs = data.herbs_primary_get()
+    herbs = []
+    if 1:
+        for herb in herbs_primary: 
+            herbs.append({'herb_name_scientific': herb['herb_name_scientific']})
+    if 1:
+        for herb in herbs_popular: 
+            herbs.append({'herb_name_scientific': herb['herb_name_scientific']})
     for herb_i, herb in enumerate(herbs):
         herb_name_scientific = herb['herb_name_scientific']
         herb_slug = polish.sluggify(herb_name_scientific)

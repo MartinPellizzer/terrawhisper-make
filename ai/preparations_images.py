@@ -2,6 +2,7 @@ import os
 
 from lib import g
 from lib import io
+from lib import data
 from lib import zimage
 
 ailments_rows = io.csv_to_dict(f'{g.database_folderpath}/csv/ailments.csv')
@@ -236,7 +237,56 @@ def preparations_gen(preparations_rows):
                 prompt=prompt, width=768, height=768, seed=-1,
             )
 
+def ailments_gen():
+    clusters = data.systems_ailments_get()
+    systems_slugs = [cluster['system_slug'] for cluster in clusters]
+    for system_slug in systems_slugs:
+        output_filepath = f'''{g.WEBSITE_FOLDERPATH}/images/systems/{system_slug}.jpg'''
+        if os.path.exists(output_filepath): continue
+        system_text = system_slug
+        if system_text == 'integumentary': system_text = 'skin'
+        elif system_text == 'musculoskeletal': system_text = 'muscular'
+        prompt = f'''
+a glass jar with dry herbs inside and a white label with black text "{system_text}" in script font, on a wooden table surrounded by medicinal herbs, rustic, vintage, boho
+        '''
+        print(prompt)
+        zimage.image_create(
+            output_filepath=f'{output_filepath}', 
+            prompt=prompt, width=768, height=768, seed=-1,
+        )
+
+    organs_slugs = data.organs_get()
+    for organ_slug in organs_slugs:
+        output_filepath = f'''{g.WEBSITE_FOLDERPATH}/images/organs/{organ_slug}.jpg'''
+        if os.path.exists(output_filepath): continue
+        organ_text = organ_slug
+        if organ_text == 'stomach': organ_text = 'belly'
+        elif organ_text == 'adrenal glands': organ_text = 'adrenal'
+        prompt = f'''
+a glass jar with dry herbs inside and a white label with black text "{organ_text}" in script font, on a wooden table surrounded by medicinal herbs, rustic, vintage, boho
+        '''
+        zimage.image_create(
+            output_filepath=f'{output_filepath}', 
+            prompt=prompt, width=768, height=768, seed=-1,
+        )
+
+    ailments = io.csv_to_dict(f'{g.DATABASE_FOLDERPATH}/csv/ailments.csv')
+    for ailment in ailments:
+        ailment_slug = ailment['ailment_slug']
+        ailment_name = ailment['ailment_name']
+        output_filepath = f'''{g.WEBSITE_FOLDERPATH}/images/ailments/{ailment_slug}.jpg'''
+        if os.path.exists(output_filepath): continue
+        ailment_text = ailment_name
+        prompt = f'''
+a glass jar with dry herbs inside and a white label with black text "{ailment_text}" in script font, on a wooden table surrounded by medicinal herbs, rustic, vintage, boho
+        '''
+        zimage.image_create(
+            output_filepath=f'{output_filepath}', 
+            prompt=prompt, width=768, height=768, seed=-1,
+        )
+
 def gen():
-    ailments_preparations_gen(ailments_rows, preparations_rows)
-    preparations_gen(preparations_rows)
+    ailments_gen()
+    # ailments_preparations_gen(ailments_rows, preparations_rows)
+    # preparations_gen(preparations_rows)
 

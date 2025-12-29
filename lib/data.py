@@ -163,3 +163,69 @@ def herb_name_common_get(herb_slug):
         pass
     return herb_name_common
 
+########################################
+# return ailments grouped by system
+########################################
+def systems_ailments_get():
+    ailments = io.csv_to_dict(f'{g.DATABASE_FOLDERPATH}/csv/ailments.csv')
+    clusters = []
+    for ailment in ailments:
+        system_slug = ailment['system_slug']
+        organ_slug = ailment['organ_slug']
+        ailment_slug = ailment['ailment_slug']
+        ailment_name = ailment['ailment_name']
+        found = False
+        for cluster_i, cluster in enumerate(clusters):
+            if system_slug == cluster['system_slug']:
+                clusters[cluster_i]['ailments'].append(ailment)
+                found = True
+                break
+        if not found:
+            clusters.append(
+                {
+                    'system_slug': system_slug,
+                    'ailments': [ailment],
+                }
+            )
+    return clusters
+
+########################################
+# return ailments grouped by organ
+########################################
+def ailments_by_organ_get():
+    ailments = io.csv_to_dict(f'{g.DATABASE_FOLDERPATH}/csv/ailments.csv')
+    clusters = []
+    for ailment in ailments:
+        system_slug = ailment['system_slug']
+        organ_slug = ailment['organ_slug']
+        ailment_slug = ailment['ailment_slug']
+        ailment_name = ailment['ailment_name']
+        found = False
+        for cluster_i, cluster in enumerate(clusters):
+            if organ_slug == cluster['organ_slug']:
+                clusters[cluster_i]['ailments'].append(ailment)
+                found = True
+                break
+        if not found:
+            clusters.append(
+                {
+                    'organ_slug': organ_slug,
+                    'ailments': [ailment],
+                }
+            )
+    return clusters
+
+def organs_get():
+    ailments = io.csv_to_dict(f'{g.DATABASE_FOLDERPATH}/csv/ailments.csv')
+    organs = []
+    for ailment in ailments:
+        if ailment['organ_slug'] not in organs: organs.append(ailment['organ_slug'])
+    return organs
+
+def systems_get():
+    ailments = io.csv_to_dict(f'{g.DATABASE_FOLDERPATH}/csv/ailments.csv')
+    systems = []
+    for ailment in ailments:
+        if ailment['system_slug'] not in systems: systems.append(ailment['system_slug'])
+    return systems
+

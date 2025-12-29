@@ -129,12 +129,12 @@ def article_herbs_herb_primary_gen():
         herb_slug = polish.sluggify(herb_name_scientific)
         url_slug = f'herbs/{herb_slug}'
         print(f'HERB: {herb_i}/{len(herbs)} - {herb_slug}')
-        json_entity_filepath = f'''{g.DATABASE_FOLDERPATH}/entities/herbs/{herb_slug}.json'''
+        json_entity_filepath = f'''{g.DATABASE_FOLDERPATH}/ssot/herbs/herbs-primary/{herb_slug}.json'''
         json_entity = io.json_read(json_entity_filepath)
-        herb_names_common = [name['answer'].title() for name in json_entity['herb_name_common']]
+        herb_names_common = [name['answer'].title() for name in json_entity['herb_names_common']]
         herb_name_common = herb_names_common[0]
-        herb_family = json_entity['family'][0]['answer'].title()
-        herb_native_regions = [item['answer'].title() for item in json_entity['native_regions']]
+        # herb_family = json_entity['family'][0]['answer'].title()
+        # herb_native_regions = [item['answer'].title() for item in json_entity['native_regions']]
         ########################################
         # json
         ########################################
@@ -189,13 +189,22 @@ def article_herbs_herb_primary_gen():
         if not dispel:
             if json_article[key] == '':
                 prompt_herb_names_common = ', '.join(herb_names_common)
-                prompt_herb_family = herb_family
-                prompt_herb_native_regions = ', '.join(herb_native_regions)
+                # prompt_herb_family = herb_family
+                # prompt_herb_native_regions = ', '.join(herb_native_regions)
+                if 0:
+                    prompt_backup = f'''
+                        Write a detailed paragraph in 5 sentences about the scientifi and botanical profile of {herb_name_common} ({herb_name_scientific}).
+                        Include the following common names: {prompt_herb_names_common}.
+                        Include the following family name: {prompt_herb_family}.
+                        Include the following native regions: {prompt_herb_native_regions}.
+                        Include a botanical (morphological) description.
+                        Start with the following words: {herb_name_common}, with botanical name {herb_name_scientific}, 
+                    '''
                 prompt = f'''
                     Write a detailed paragraph in 5 sentences about the scientifi and botanical profile of {herb_name_common} ({herb_name_scientific}).
                     Include the following common names: {prompt_herb_names_common}.
-                    Include the following family name: {prompt_herb_family}.
-                    Include the following native regions: {prompt_herb_native_regions}.
+                    Include the family name.
+                    Include the native regions.
                     Include a botanical (morphological) description.
                     Start with the following words: {herb_name_common}, with botanical name {herb_name_scientific}, 
                 '''
@@ -403,7 +412,7 @@ def article_herbs_herb_primary_gen():
                 </p>
             </div>
         '''
-        src = f'''/images/herbs/{herb_slug}.jpg'''
+        src = f'''/images/herbs/primary/{herb_slug}.jpg'''
         alt = f'''herbal {herb_name_common}'''
         html_article += f'''<img src="{src}" alt="{alt}">\n'''
         html_article += p2s(json_article['intro'])
@@ -995,7 +1004,7 @@ def main():
     # category_herbs_actions_gen()
     ### articles
     # article_herbs_herb_primary_gen()
-    article_herbs_herb_wcvp_gen()
+    # article_herbs_herb_wcvp_gen()
     ###
     url_slug = f'herbs'
     html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
@@ -1008,7 +1017,7 @@ def main():
         herb_name_scientific = herb['herb_name_scientific']
         json_article = io.json_read(f'{g.DATABASE_FOLDERPATH}/entities/herbs/{herb_slug}.json')
         herb_name_common = json_article['herb_name_common'][0]['answer']
-        src = f'''/images/herbs/{herb_slug}.jpg'''
+        src = f'''/images/herbs/primary/{herb_slug}.jpg'''
         alt = f'''{herb_name_scientific}'''
         html_herbs += f'''
             <div class="card-default">
@@ -1030,7 +1039,7 @@ def main():
         try: json_article = io.json_read(json_filepath)
         except: print(herb_slug)
         herb_name_common = json_article['herb_name_common'][0]['answer']
-        src = f'''/images/herbs/{herb_slug}.jpg'''
+        src = f'''/images/herbs/primary/{herb_slug}.jpg'''
         alt = f'''{herb_name_scientific}'''
         html_herbs_popular_grid += f'''
             <div class="card-default">
@@ -1068,14 +1077,13 @@ def main():
         try: json_article = io.json_read(json_filepath)
         except: print(herb_slug)
         herb_name_common = json_article['herb_name_common'][0]['answer']
-        herb_image_src = f'''/images/herbs/{herb_slug}.jpg'''
+        herb_image_src = f'''/images/herbs/primary/{herb_slug}.jpg'''
         herb_image_alt = f'''{herb_name_scientific}'''
         html_herbs_grid += f'''
             <div class="card-default">
                 <a href="/{url_slug}/{herb_slug}.html">
                     <img src="{herb_image_src}" alt="{herb_image_alt}" style="margin-bottom: 0.8rem;">
                     <h3 style="margin-bottom: 0.8rem;">{cluster_name.title()}</h3>
-                    <p style="font-size: 1.4rem; background-color: #f7f6f2; padding: 0.4rem 1.6rem; border-radius: 9999px;"><em>Latin Name: {herb_name_scientific.capitalize()}</em></p>
                 </a>
             </div>
         '''
