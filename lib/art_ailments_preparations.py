@@ -274,26 +274,28 @@ def html_gen(obj):
             form_head = f.read()
         with open(f'{g.ASSETS_FOLDERPATH}/scripts/newsletter/form-course-preparation-tincture.txt') as f: 
             form_body = f.read()
-        html_article += f'''
-            <div class="free-gift">
-                <p class="free-gift-heading">FREE COURSE</p>
-                <p style="text-align: center; margin-bottom: 1.6rem;">How to make medicinal herbal tinctures for common ailments at home and in a weekend (using the Healing Drops System).</p>
-                <img src="/images/shop/banner-course-preparation-tincture.jpg" alt="tincture preparation course banner">
-                {form_body}
-            </div>
-        '''
+        if 0:
+            html_article += f'''
+                <div class="free-gift">
+                    <p class="free-gift-heading">FREE COURSE</p>
+                    <p style="text-align: center; margin-bottom: 1.6rem;">How to make medicinal herbal tinctures for common ailments at home and in a weekend (using the Healing Drops System).</p>
+                    <img src="/images/shop/banner-course-preparation-tincture.jpg" alt="tincture preparation course banner">
+                    {form_body}
+                </div>
+            '''
     else:
         with open(f'{g.ASSETS_FOLDERPATH}/scripts/newsletter/form-head.txt') as f: 
             form_head = f.read()
         with open(f'{g.ASSETS_FOLDERPATH}/scripts/newsletter/form-herb-drying-checklist.txt') as f: 
             form_body = f.read()
-        html_article += f'''
-            <div class="free-gift">
-                <p class="free-gift-heading">FREE Herb Drying Checklist</p>
-                <p style="text-align: center; margin-bottom: 1.6rem;">How to make sure every batch retains maximum flavor, color, and aroma without the risk of mold or over-drying. Eliminate guesswork and trial-and-error, making herb drying faster, easier, and more efficient every time.</p>
-                {form_body}
-            </div>
-        '''
+        if 0:
+            html_article += f'''
+                <div class="free-gift">
+                    <p class="free-gift-heading">FREE Herb Drying Checklist</p>
+                    <p style="text-align: center; margin-bottom: 1.6rem;">How to make sure every batch retains maximum flavor, color, and aroma without the risk of mold or over-drying. Eliminate guesswork and trial-and-error, making herb drying faster, easier, and more efficient every time.</p>
+                    {form_body}
+                </div>
+            '''
     ### toc
     html_article += f'''[toc]'''
     ### sections
@@ -343,7 +345,7 @@ def gen():
             preparation_name_plural = preparation['preparation_name_plural']
             ### TODO redo all these because accidentally deleted jsons
             # if preparation_slug != 'teas': continue
-            if preparation_slug != 'tinctures': continue
+            # if preparation_slug != 'tinctures': continue
             # if preparation_slug != 'decoctions': continue
             # if preparation_slug != 'essential-oils': continue
 

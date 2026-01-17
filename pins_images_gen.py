@@ -126,6 +126,11 @@ def ai_img_preparation_new(template, preparation_name_plural):
             a dark amber glass dropper bottle of {herb_name_scientific} tincture on a {prompt_table} surrounded by dry herbs,
             rustic, vintage, boho,
         '''
+    elif preparation_name_plural == 'decoctions':
+        prompt = f'''
+            a pot of herbal {herb_name_scientific} decoction on a {prompt_table} surrounded by dry herbs,
+            rustic, vintage, boho,
+        '''
     elif preparation_name_plural == 'essential oils':
         prompt = f'''
             an amber glass bottle with black cap of {herb_name_scientific} essential oil on a {prompt_table} surrounded by dry herbs,
@@ -144,6 +149,11 @@ def ai_img_preparation_new(template, preparation_name_plural):
     elif preparation_name_plural == 'syrups':
         prompt = f'''
             a glass bottle of {herb_name_scientific} syrup on a {prompt_table} surrounded by dry herbs,
+            rustic, vintage, boho,
+        '''
+    elif preparation_name_plural == 'linctuses':
+        prompt = f'''
+            herbal {herb_name_scientific} linctuses on a {prompt_table} surrounded by dry herbs,
             rustic, vintage, boho,
         '''
     elif preparation_name_plural == 'baths':

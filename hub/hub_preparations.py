@@ -253,9 +253,9 @@ def hub_preparations_preparation_gen():
                     <p class="free-gift-heading">FREE COURSE</p>
                     <p style="text-align: center; margin-bottom: 1.6rem;">How to make medicinal herbal tinctures for common ailments at home and in a weekend (using the Healing Drops System).</p>
                     <img src="/images/shop/banner-course-preparation-tincture.jpg" alt="tincture preparation course banner">
-                    {form_body}
                 </div>
             '''
+                    # {form_body}
         ### toc
         html_article += f'''[toc]'''
         html_article += f'''<h2>Purpose and Benefits</h2>'''
@@ -281,7 +281,7 @@ def hub_preparations_preparation_gen():
         html = f'''
             <!DOCTYPE html>
             <html lang="en">
-            {components.html_head(meta_title, meta_description, form_head)}
+            {components.html_head(meta_title, meta_description)}
             <body>
                 {sections.header()}
                 {sections.breadcrumbs(url_slug)}

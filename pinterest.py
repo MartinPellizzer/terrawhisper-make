@@ -156,6 +156,7 @@ def pin_post(article_filepath):
 failed_pins_num = 0
 failed_pins_url_num = 0
 jsons_filenames = sorted(os.listdir(f'{g.pinterest_tmp_image_folderpath}/pins'))
+random.shuffle(jsons_filenames)
 for i in range(len(jsons_filenames)): 
     # if i < 3: continue
     found = False

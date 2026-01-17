@@ -113,13 +113,14 @@ def html_gen(obj):
         form_head = f.read()
     with open(f'{g.DATABASE_FOLDERPATH}/assets/scripts/newsletter/form-herb-drying-checklist.txt') as f: 
         form_herb_drying_checklist = f.read()
-    html_article += f'''
-        <div class="free-gift">
-            <p class="free-gift-heading">FREE Herb Drying Checklist</p>
-            <p style="text-align: center; margin-bottom: 1.6rem;">How to make sure every batch retains maximum flavor, color, and aroma without the risk of mold or over-drying. Eliminate guesswork and trial-and-error, making herb drying faster, easier, and more efficient every time.</p>
-            {form_herb_drying_checklist}
-        </div>
-    '''
+    if 0:
+        html_article += f'''
+            <div class="free-gift">
+                <p class="free-gift-heading">FREE Herb Drying Checklist</p>
+                <p style="text-align: center; margin-bottom: 1.6rem;">How to make sure every batch retains maximum flavor, color, and aroma without the risk of mold or over-drying. Eliminate guesswork and trial-and-error, making herb drying faster, easier, and more efficient every time.</p>
+            </div>
+        '''
+                # {form_herb_drying_checklist}
     ### toc
     html_article += f'''[toc]'''
     ### list
@@ -143,7 +144,7 @@ def html_gen(obj):
     html = f'''
         <!DOCTYPE html>
         <html lang="en">
-        {components.html_head(meta_title, meta_description, form_head)}
+        {components.html_head(meta_title, meta_description)}
         <body>
             {sections.header()}
             {sections.breadcrumbs(obj['url'])}

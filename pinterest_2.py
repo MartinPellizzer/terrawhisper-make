@@ -153,6 +153,7 @@ def pin_post(article_filepath):
     time.sleep(60)
 
 failed_pins_num = 0
+failed_pins_url_num = 0
 jsons_filenames = os.listdir(f'{g.pinterest_tmp_image_folderpath}/pins')
 for i in range(len(jsons_filenames)): 
     # if i < 3: continue
@@ -173,3 +174,4 @@ for i in range(len(jsons_filenames)):
         time_to_wait = WAIT_SECONDS + random_time_to_wait
         time.sleep(time_to_wait)
 print(f'FAILED PINS NUM: {failed_pins_num}')
+print(f'FAILED PINS URL NUM: {failed_pins_url_num}')
