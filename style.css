@@ -35,6 +35,11 @@
     src: url("./assets/fonts/SourceSerif-Regular.ttf");
 }
 
+@font-face {
+    font-family: LibreBaskerville-Regular;
+    src: url("./assets/fonts/Libre_Baskerville/static/LibreBaskerville-Regular.ttf");
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -46,8 +51,8 @@ html {
 }
 
 body {
-    font-size: 1.8rem;
-    line-height: 2.7rem;
+    font-size: 1.6rem;
+    line-height: 2.4rem;
     font-family: "SourceSerif-Regular", serif;
     font-family: serif;
     font-family: sans-serif;
@@ -94,15 +99,20 @@ body {
 }
 
 h1 {
+    font-family: LibreBaskerville-Regular;
+    font-weight: 400;
     font-size: 6.4rem;
     line-height: 1;
+    color: #111111;
 }
 
 h2 {
-    font-family: SourceSerif-Regular;
-    font-size: 4.8rem;
+    font-family: LibreBaskerville-Regular;
+    font-weight: 400;
+    font-size: 2.4rem;
     line-height: 1;
     margin-bottom: 1.6rem;
+    color: #111111;
 }
 
 h3 {
@@ -117,8 +127,9 @@ img {
 }
 
 p {
-    font-family: lora-regular;
+    font-family: Georgia;
     font-family: sans-serif;
+    color: #333333;
 }
 
 ul {

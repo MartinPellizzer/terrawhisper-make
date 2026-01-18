@@ -3,6 +3,7 @@ import shutil
 from lib import g
 
 shutil.copy2('style.css', f'{g.website_folderpath}/style.css')
+shutil.copy2('styles-tmp.css', f'{g.website_folderpath}/styles-tmp.css')
 
 # HERBS..........................[HRB]
 # PREPARATIONS...................[PRP]
@@ -62,7 +63,7 @@ if 0:
 ########################################
 # AILMENTS.......................[ALM]
 ########################################
-if 1:
+if 0:
     if 0:
         from hub import hub_ailments
         hub_ailments.gen()
@@ -158,7 +159,7 @@ if 0:
 ########################################
 # HERBS..........................[HRB]
 ########################################
-if 1:
+if 0:
     from ai import herbs_ai
     herbs_ai.main()
 

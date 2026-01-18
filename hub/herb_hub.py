@@ -1,6 +1,8 @@
 import os
 import random
 
+import lorem
+
 from lib import g
 from lib import io
 from lib import llm
@@ -441,14 +443,15 @@ def article_herbs_herb_primary_gen():
             },
         ]
         lead_magnet = random.choice(lead_magnets)
-        html_article += f'''
-            <div class="free-gift">
-                <p class="free-gift-heading">{lead_magnet['suptitle']}</p>
-                <p style="text-align: center; margin-bottom: 1.6rem;">{lead_magnet['title']}</p>
-                <img src="{lead_magnet['img_src']}" alt="{lead_magnet['img_alt']}">
-                {lead_magnet['form_body']}
-            </div>
-        '''
+        if 0:
+            html_article += f'''
+                <div class="free-gift">
+                    <p class="free-gift-heading">{lead_magnet['suptitle']}</p>
+                    <p style="text-align: center; margin-bottom: 1.6rem;">{lead_magnet['title']}</p>
+                    <img src="{lead_magnet['img_src']}" alt="{lead_magnet['img_alt']}">
+                    {lead_magnet['form_body']}
+                </div>
+            '''
         ### toc
         html_article += f'''[toc]'''
         html_article += f'''<h2>Scientific and Botanical Profile</h2>'''
@@ -995,6 +998,351 @@ def category_herbs_actions_gen():
     '''
     with open(html_filepath, 'w') as f: f.write(html)
 
+def page_herbs_gen():
+    url_slug = f'herbs'
+    html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
+    ###
+    html_main = f''
+    html_title = f'''
+        <section class="container-xl" style="margin-bottom: 9.6rem;">
+            {sections.breadcrumbs(url_slug)}
+            <h1 style="margin-top: 4.8rem;">Medicinal Herbs</h1>
+        </section>
+    '''
+    html_cards = ''
+    for i in range(10):
+        herb = herbs_primary_medicinal[i]
+        herb_slug = herb['herb_slug']
+        herb_name_scientific = herb['herb_name_scientific']
+        ###
+        card_title = herb_name_scientific.capitalize()
+        card_desc = ' '.join(lorem.paragraph().split(' ')[:12]) + '...'
+        card_img_src = f'/images/herbs/primary/{herb_slug}.jpg'
+        ###
+        card_padding_right = ''
+        card_padding_left = ''
+        card_margin_right = ''
+        card_margin_left = ''
+        card_border_right = ''
+        if i % 3 == 0:
+            card_padding_right = 'padding-right: 3.2rem;';
+            card_border_right = 'border-right: 1px solid #e7e7e7; '
+        if i % 3 == 1:
+            card_padding_right = 'padding-right: 3.2rem;';
+            card_padding_left = 'padding-left: 3.2rem;';
+            card_border_right = 'border-right: 1px solid #e7e7e7; '
+        elif i % 3 == 2:
+            card_padding_left = 'padding-left: 3.2rem;';
+            card_border_right = ''
+        ###
+        html_card = f'''
+            <div style="border-bottom: 1px solid #e7e7e7; padding-bottom: 3.2rem; margin-bottom: 3.2rem;">
+                <div style="{card_border_right}{card_padding_right}{card_padding_left}{card_margin_right}{card_margin_left}">
+                    <div style="">
+                        <img 
+                            style="margin-bottom: 1.6rem; height: 24rem; object-fit: cover;"
+                            src="{card_img_src}"
+                        >
+                        <h2>{card_title}</h2>
+                        <p>{card_desc}</p>
+                    </div>
+                </div>
+            </div>
+        '''
+        html_cards += html_card
+    ###
+    herb = herbs_primary_medicinal[99]
+    herb_slug = herb['herb_slug']
+    herb_name_scientific = herb['herb_name_scientific']
+    ###
+    card_title = herb_name_scientific.capitalize()
+    card_desc = ' '.join(lorem.paragraph().split(' ')[:12])
+    card_img_src = f'/images/leen-randell.jpg'
+    html_sidebar = f'''
+        <div style="padding-right: 6.4rem;">
+            <img 
+                style="margin-bottom: 1.6rem; height: 40rem; object-fit: cover; object-position: top;"
+                src="{card_img_src}"
+            >
+            <p>{card_desc}</p>
+        </div>
+    '''
+    ###
+    html_herbs = f'''
+        <section style="max-width: 160rem; margin: 0 auto; padding-left: 1.6rem; padding-right: 1.6rem;">
+            <div style="display: flex;">
+                <div style="flex: 1;">
+                    {html_sidebar}
+                </div>
+                <div style="flex: 3; padding-left: 6.4rem; border-left: 1px solid #e7e7e7;">
+                    <div class="grid-3">
+                        {html_cards}
+                    </div>
+                </div>
+            </div>
+        </section>
+    '''
+    html_main += f'''
+        {html_title}
+        {html_herbs}
+    '''
+    if 0:
+        html_herbs = f''
+        ### category herbs primary medicinal
+        for herb_i, herb in enumerate(herbs_primary_medicinal):
+            print(f'HERB: {herb_i}/{len(herbs_primary_medicinal)} - {herb}')
+            herb_slug = herb['herb_slug']
+            herb_name_scientific = herb['herb_name_scientific']
+            json_article = io.json_read(f'{g.DATABASE_FOLDERPATH}/entities/herbs/{herb_slug}.json')
+            herb_name_common = json_article['herb_name_common'][0]['answer']
+            src = f'''/images/herbs/primary/{herb_slug}.jpg'''
+            alt = f'''{herb_name_scientific}'''
+            html_herbs += f'''
+                <div class="card-default">
+                    <a href="/{url_slug}/{herb_slug}.html">
+                        <img src="{src}" alt="{alt}">
+                        <h2>{herb_name_common} ({herb_name_scientific.title()})</h2>
+                    </a>
+                </div>
+            '''
+        ### category herbs popular
+        html_herbs_popular_grid = f''
+        herbs_popular_num = 4
+        for herb_i, herb in enumerate(herbs_popular[:herbs_popular_num]):
+            print(f'HERB: {herb_i}/{len(herbs_popular[:herbs_popular_num])} - {herb}')
+            herb_name_scientific = herb['herb_name_scientific']
+            herb_name_scientific = polish.sanitize(herb_name_scientific)
+            herb_slug = polish.sluggify(herb_name_scientific)
+            json_filepath = f'{g.DATABASE_FOLDERPATH}/entities/herbs/{herb_slug}.json'
+            try: json_article = io.json_read(json_filepath)
+            except: print(herb_slug)
+            herb_name_common = json_article['herb_name_common'][0]['answer']
+            src = f'''/images/herbs/primary/{herb_slug}.jpg'''
+            alt = f'''{herb_name_scientific}'''
+            html_herbs_popular_grid += f'''
+                <div class="card-default">
+                    <a href="/{url_slug}/{herb_slug}.html">
+                        <img src="{src}" alt="{alt}" style="margin-bottom: 0.8rem;">
+                        <h3 style="margin-bottom: 0.8rem;">{herb_name_common.title()}</h3>
+                        <p style="font-size: 1.4rem; background-color: #f7f6f2; padding: 0.4rem 1.6rem; border-radius: 9999px;"><em>Latin Name: {herb_name_scientific.capitalize()}</em></p>
+                    </a>
+                </div>
+            '''
+        html_herbs_popular = f'''
+            <div style="margin-bottom: 9.6rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <h2 style="font-size: 4.8rem; line-height: 1; margin-bottom: 3.2rem;">Popular</h2>
+                    <p><a href="/herbs/popular.html">View All</a></p>
+                </div>
+                <div class="grid-4" style="gap: 3.2rem;">
+                    {html_herbs_popular_grid}
+                </div>
+            </div>
+        '''
+        ### category herbs actions
+        actions_clusters = actions_clusters_get()
+        html_herbs_grid = f''
+        herbs_num = 4
+        for cluster_i, cluster in enumerate(actions_clusters[:herbs_num]):
+            print(f'HERB: {cluster_i}/{len(actions_clusters[:herbs_num])} - {cluster}')
+            cluster_name = cluster['name']
+            cluster_herbs = cluster['herbs']
+            cluster_herb = random.choice(cluster_herbs)
+            herb_name_scientific = cluster_herb['herb_name_scientific']
+            herb_name_scientific = polish.sanitize(herb_name_scientific)
+            herb_slug = polish.sluggify(herb_name_scientific)
+            json_filepath = f'{g.DATABASE_FOLDERPATH}/entities/herbs/{herb_slug}.json'
+            try: json_article = io.json_read(json_filepath)
+            except: print(herb_slug)
+            herb_name_common = json_article['herb_name_common'][0]['answer']
+            herb_image_src = f'''/images/herbs/primary/{herb_slug}.jpg'''
+            herb_image_alt = f'''{herb_name_scientific}'''
+            html_herbs_grid += f'''
+                <div class="card-default">
+                    <a href="/{url_slug}/{herb_slug}.html">
+                        <img src="{herb_image_src}" alt="{herb_image_alt}" style="margin-bottom: 0.8rem;">
+                        <h3 style="margin-bottom: 0.8rem;">{cluster_name.title()}</h3>
+                    </a>
+                </div>
+            '''
+        html_herbs_actions = f'''
+            <div style="margin-bottom: 9.6rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <h2 style="font-size: 4.8rem; line-height: 1; margin-bottom: 3.2rem;">Therapeutic Actions</h2>
+                    <p><a href="/herbs/actions.html">View All</a></p>
+                </div>
+                <div class="grid-4" style="gap: 3.2rem;">
+                    {html_herbs_grid}
+                </div>
+            </div>
+        '''
+        ### page main
+        html_main += f'''
+            <div>
+                <h1 style="margin-bottom: 9.6rem;">Medicinal Herbs For Natural Healing</h1>
+                {html_herbs_popular}
+                {html_herbs_actions}
+            </div>
+        '''
+                # <div class="grid-3" style="gap: 3.2rem;">
+                    # {html_herbs}
+                # </div>
+    meta_title = f'''Herbs'''
+    meta_description = f''''''
+
+    if 1:
+        html = f'''
+            <!DOCTYPE html>
+            <html lang="en">
+            {components.html_head(meta_title, meta_description)}
+            <body>
+                {sections.header()}
+                <main>
+                    {html_main}
+                </main>
+                <div class="spacer"></div>
+                {sections.footer()}
+            </body>
+            </html>
+        '''
+
+    if 0:
+        html = f'''
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+              <meta charset="UTF-8">
+              <title>Blog Layout</title>
+              <link rel="stylesheet" href="styles-tmp.css">
+            </head>
+            <body>
+            <div class="container">
+              <!-- SIDEBAR -->
+              <aside class="sidebar">
+                <div class="widget">
+                  <h3>About Author</h3>
+                  <img src="https://picsum.photos/400/450?random=1" alt="Author">
+                  <p>
+                    There are many variations of passages of Lorem Ipsum available,
+                    but the majority have suffered alteration in some form.
+                  </p>
+                </div>
+                <div class="widget">
+                  <h3>Recent Post</h3>
+                  <div class="recent-post">
+                    <img src="https://picsum.photos/80/80?random=2">
+                    <div>
+                      <span class="date">July 30, 2024</span>
+                      <p>Treat your makeup like jewelry for the face</p>
+                    </div>
+                  </div>
+                  <div class="recent-post">
+                    <img src="https://picsum.photos/80/80?random=3">
+                    <div>
+                      <span class="date">July 30, 2024</span>
+                      <p>Glowing skin is a result of proper skincare</p>
+                    </div>
+                  </div>
+                  <div class="recent-post">
+                    <img src="https://picsum.photos/80/80?random=4">
+                    <div>
+                      <span class="date">July 30, 2024</span>
+                      <p>5 Steps to Mastering the Bold Red Lip</p>
+                    </div>
+                  </div>
+                </div>
+              </aside>
+              <!-- MAIN CONTENT -->
+              <main class="content">
+                <!-- FILTER TABS -->
+                <nav class="tabs">
+                  <a class="active">ALL</a>
+                  <a>COMPANY NEWS</a>
+                  <a>FEATURED</a>
+                  <a>GUIDE</a>
+                  <a>RECIPE</a>
+                  <a>UNCATEGORIZED</a>
+                </nav>
+                <!-- BLOG GRID -->
+                <div class="grid">
+                  <article class="card">
+                    <img src="https://picsum.photos/600/400?random=5">
+                    <div class="card-body">
+                      <span class="meta">ADMIN · JULY 30, 2024</span>
+                      <h2>Treat Your Makeup Like Jewelry For The Face</h2>
+                      <p>
+                        Amet minim mollit non deserunt ullamco est sit aliqua dolor.
+                      </p>
+                      <a href="#">READ MORE</a>
+                    </div>
+                  </article>
+                  <article class="card">
+                    <img src="https://picsum.photos/600/400?random=6">
+                    <div class="card-body">
+                      <span class="meta">ADMIN · JULY 30, 2024</span>
+                      <h2>Glowing Skin Is A Result Of Proper Skincare</h2>
+                      <p>
+                        Amet minim mollit non deserunt ullamco est sit aliqua dolor.
+                      </p>
+                      <a href="#">READ MORE</a>
+                    </div>
+                  </article>
+                  <article class="card">
+                    <img src="https://picsum.photos/600/400?random=7">
+                    <div class="card-body">
+                      <span class="meta">ADMIN · JULY 30, 2024</span>
+                      <h2>5 Steps To Mastering The Bold Red Lip</h2>
+                      <p>
+                        Amet minim mollit non deserunt ullamco est sit aliqua dolor.
+                      </p>
+                      <a href="#">READ MORE</a>
+                    </div>
+                  </article>
+                  <article class="card">
+                    <img src="https://picsum.photos/600/400?random=8">
+                    <div class="card-body">
+                      <span class="meta">ADMIN · JULY 30, 2024</span>
+                      <h2>I Believe That All Women Are Pretty Without Makeup</h2>
+                      <p>
+                        Amet minim mollit non deserunt ullamco est sit aliqua dolor.
+                      </p>
+                      <a href="#">READ MORE</a>
+                    </div>
+                  </article>
+                  <article class="card">
+                    <img src="https://picsum.photos/600/400?random=9">
+                    <div class="card-body">
+                      <span class="meta">ADMIN · JULY 30, 2024</span>
+                      <h2>Chocolate Bread With Drinking Chocolate Crumbles</h2>
+                      <p>
+                        Amet minim mollit non deserunt ullamco est sit aliqua dolor.
+                      </p>
+                      <a href="#">READ MORE</a>
+                    </div>
+                  </article>
+                  <article class="card">
+                    <img src="https://picsum.photos/600/400?random=10">
+                    <div class="card-body">
+                      <span class="meta">ADMIN · JULY 30, 2024</span>
+                      <h2>When The Eye Makes A Statement, The Lips Should</h2>
+                      <p>
+                        Amet minim mollit non deserunt ullamco est sit aliqua dolor.
+                      </p>
+                      <a href="#">READ MORE</a>
+                    </div>
+                  </article>
+                </div>
+              </main>
+            </div>
+            </body>
+            </html>
+        '''
+
+    with open(html_filepath, 'w') as f: f.write(html)
+
+    sitemaps_gen()
+    # quit()
+
 def main():
     # clusters_get(data)
     # sitemaps_gen()
@@ -1005,129 +1353,6 @@ def main():
     ### articles
     # article_herbs_herb_primary_gen()
     # article_herbs_herb_wcvp_gen()
-    ###
-    url_slug = f'herbs'
-    html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
-    html_main = f''
-    html_herbs = f''
-    ### category herbs primary medicinal
-    for herb_i, herb in enumerate(herbs_primary_medicinal):
-        print(f'HERB: {herb_i}/{len(herbs_primary_medicinal)} - {herb}')
-        herb_slug = herb['herb_slug']
-        herb_name_scientific = herb['herb_name_scientific']
-        json_article = io.json_read(f'{g.DATABASE_FOLDERPATH}/entities/herbs/{herb_slug}.json')
-        herb_name_common = json_article['herb_name_common'][0]['answer']
-        src = f'''/images/herbs/primary/{herb_slug}.jpg'''
-        alt = f'''{herb_name_scientific}'''
-        html_herbs += f'''
-            <div class="card-default">
-                <a href="/{url_slug}/{herb_slug}.html">
-                    <img src="{src}" alt="{alt}">
-                    <h2>{herb_name_common} ({herb_name_scientific.title()})</h2>
-                </a>
-            </div>
-        '''
-    ### category herbs popular
-    html_herbs_popular_grid = f''
-    herbs_popular_num = 4
-    for herb_i, herb in enumerate(herbs_popular[:herbs_popular_num]):
-        print(f'HERB: {herb_i}/{len(herbs_popular[:herbs_popular_num])} - {herb}')
-        herb_name_scientific = herb['herb_name_scientific']
-        herb_name_scientific = polish.sanitize(herb_name_scientific)
-        herb_slug = polish.sluggify(herb_name_scientific)
-        json_filepath = f'{g.DATABASE_FOLDERPATH}/entities/herbs/{herb_slug}.json'
-        try: json_article = io.json_read(json_filepath)
-        except: print(herb_slug)
-        herb_name_common = json_article['herb_name_common'][0]['answer']
-        src = f'''/images/herbs/primary/{herb_slug}.jpg'''
-        alt = f'''{herb_name_scientific}'''
-        html_herbs_popular_grid += f'''
-            <div class="card-default">
-                <a href="/{url_slug}/{herb_slug}.html">
-                    <img src="{src}" alt="{alt}" style="margin-bottom: 0.8rem;">
-                    <h3 style="margin-bottom: 0.8rem;">{herb_name_common.title()}</h3>
-                    <p style="font-size: 1.4rem; background-color: #f7f6f2; padding: 0.4rem 1.6rem; border-radius: 9999px;"><em>Latin Name: {herb_name_scientific.capitalize()}</em></p>
-                </a>
-            </div>
-        '''
-    html_herbs_popular = f'''
-        <div style="margin-bottom: 9.6rem;">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <h2 style="font-size: 4.8rem; line-height: 1; margin-bottom: 3.2rem;">Popular</h2>
-                <p><a href="/herbs/popular.html">View All</a></p>
-            </div>
-            <div class="grid-4" style="gap: 3.2rem;">
-                {html_herbs_popular_grid}
-            </div>
-        </div>
-    '''
-    ### category herbs actions
-    actions_clusters = actions_clusters_get()
-    html_herbs_grid = f''
-    herbs_num = 4
-    for cluster_i, cluster in enumerate(actions_clusters[:herbs_num]):
-        print(f'HERB: {cluster_i}/{len(actions_clusters[:herbs_num])} - {cluster}')
-        cluster_name = cluster['name']
-        cluster_herbs = cluster['herbs']
-        cluster_herb = random.choice(cluster_herbs)
-        herb_name_scientific = cluster_herb['herb_name_scientific']
-        herb_name_scientific = polish.sanitize(herb_name_scientific)
-        herb_slug = polish.sluggify(herb_name_scientific)
-        json_filepath = f'{g.DATABASE_FOLDERPATH}/entities/herbs/{herb_slug}.json'
-        try: json_article = io.json_read(json_filepath)
-        except: print(herb_slug)
-        herb_name_common = json_article['herb_name_common'][0]['answer']
-        herb_image_src = f'''/images/herbs/primary/{herb_slug}.jpg'''
-        herb_image_alt = f'''{herb_name_scientific}'''
-        html_herbs_grid += f'''
-            <div class="card-default">
-                <a href="/{url_slug}/{herb_slug}.html">
-                    <img src="{herb_image_src}" alt="{herb_image_alt}" style="margin-bottom: 0.8rem;">
-                    <h3 style="margin-bottom: 0.8rem;">{cluster_name.title()}</h3>
-                </a>
-            </div>
-        '''
-    html_herbs_actions = f'''
-        <div style="margin-bottom: 9.6rem;">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <h2 style="font-size: 4.8rem; line-height: 1; margin-bottom: 3.2rem;">Therapeutic Actions</h2>
-                <p><a href="/herbs/actions.html">View All</a></p>
-            </div>
-            <div class="grid-4" style="gap: 3.2rem;">
-                {html_herbs_grid}
-            </div>
-        </div>
-    '''
-    ### page main
-    html_main += f'''
-        <div>
-            <h1 style="margin-bottom: 9.6rem;">Medicinal Herbs For Natural Healing</h1>
-            {html_herbs_popular}
-            {html_herbs_actions}
-        </div>
-    '''
-            # <div class="grid-3" style="gap: 3.2rem;">
-                # {html_herbs}
-            # </div>
-    meta_title = f'''Herbs'''
-    meta_description = f''''''
-    html = f'''
-        <!DOCTYPE html>
-        <html lang="en">
-        {components.html_head(meta_title, meta_description)}
-        <body>
-            {sections.header()}
-            {sections.breadcrumbs(url_slug)}
-            <div class="spacer"></div>
-            <main class="container-xl">
-                {html_main}
-            </main>
-            <div class="spacer"></div>
-            {sections.footer()}
-        </body>
-        </html>
-    '''
-    with open(html_filepath, 'w') as f: f.write(html)
 
-    sitemaps_gen()
-    # quit()
+    page_herbs_gen()
+

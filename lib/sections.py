@@ -7,7 +7,6 @@ def header():
                     <li><a href='/herbs.html'>Herbs</a></li>
                     <li><a href='/preparations.html'>Preparations</a></li>
                     <li><a href='/ailments.html'>Ailments</a></li>
-                    <li><a href='/shop.html'>Shop</a></li>
                 </ul>
             </nav>
         </header>
@@ -36,11 +35,17 @@ def breadcrumbs(url):
             breadcrumb_html += f' > {breadcrumb_text}'
         else:
             breadcrumb_html += f' > <a href="{breadcrumb_href}.html">{breadcrumb_text}</a>'
+    if 0:
+        html = f'''
+            <section class="breadcrumbs">
+                <div class="container-xl">
+                    {breadcrumb_html}
+                </div>
+            </section>
+        '''
     html = f'''
         <section class="breadcrumbs">
-            <div class="container-xl">
-                {breadcrumb_html}
-            </div>
+            {breadcrumb_html}
         </section>
     '''
     return html
