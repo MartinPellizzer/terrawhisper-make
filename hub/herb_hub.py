@@ -1016,7 +1016,7 @@ def page_herbs_gen():
         herb_name_scientific = herb['herb_name_scientific']
         ###
         card_title = herb_name_scientific.capitalize()
-        card_desc = ' '.join(lorem.paragraph().split(' ')[:12]) + '...'
+        card_desc = ' '.join(lorem.paragraph().split(' ')[:16]) + '...'
         card_img_src = f'/images/herbs/primary/{herb_slug}.jpg'
         ###
         card_padding_right = ''
@@ -1043,40 +1043,70 @@ def page_herbs_gen():
                             style="margin-bottom: 1.6rem; height: 24rem; object-fit: cover;"
                             src="{card_img_src}"
                         >
-                        <h2>{card_title}</h2>
-                        <p>{card_desc}</p>
+                        <p style="margin-bottom: 1.6rem; font-size: 1.2rem; font-weight: bold; letter-spacing: 1px; color: #aaaaaa;">JULY 30, 2024</p>
+                        <h2><a style="color: #111111; text-decoration: none;" href="/herbs/{herb_slug}.html">{card_title}</a></h2>
+                        <p style="margin-bottom: 1.6rem;">{card_desc}</p>
+                        <p><a style="color: #111111; font-weight: bold; font-size: 1.4rem; letter-spacing: 0.5px;" href="/herbs/{herb_slug}.html">READ MORE</a></p>
                     </div>
                 </div>
             </div>
         '''
         html_cards += html_card
     ###
-    herb = herbs_primary_medicinal[99]
-    herb_slug = herb['herb_slug']
-    herb_name_scientific = herb['herb_name_scientific']
-    ###
-    card_title = herb_name_scientific.capitalize()
-    card_desc = ' '.join(lorem.paragraph().split(' ')[:12])
-    card_img_src = f'/images/leen-randell.jpg'
+    sidebar_cards_html = ''
+    for i in range(4):
+        herb = herbs_primary_medicinal[i+10]
+        herb_slug = herb['herb_slug']
+        herb_name_scientific = herb['herb_name_scientific']
+        ###
+        card_title = herb_name_scientific.capitalize()
+        card_desc = ' '.join(lorem.paragraph().split(' ')[:8])
+        card_img_src = f'/images/herbs/primary/{herb_slug}.jpg'
+        html_card = f'''
+            <div style="display: flex; gap: 2.4rem; margin-bottom: 2.4rem; padding-bottom: 1.6rem; border-bottom: 1px solid #e7e7e7;">
+                <div style="flex: 1;">
+                    <img 
+                        style="height: 10rem; object-fit: cover;"
+                        src="{card_img_src}"
+                    >
+                </div>
+                <div style="flex: 2;">
+                    <p style="margin-bottom: 1.6rem; font-size: 1.2rem; font-weight: bold; letter-spacing: 1px; color: #aaaaaa;">JULY 30, 2024</p>
+                    <h3 style="font-size: 1.6rem; font-weight: 400;">{card_title}</h3>
+                </div>
+            </div>
+        '''
+        sidebar_cards_html += html_card
     html_sidebar = f'''
-        <div style="padding-right: 6.4rem;">
+        <div style="padding-right: 4.8rem;">
             <img 
                 style="margin-bottom: 1.6rem; height: 40rem; object-fit: cover; object-position: top;"
                 src="{card_img_src}"
             >
-            <p>{card_desc}</p>
+            <p style="margin-bottom: 4.8rem;">{card_desc}</p>
+            <h2 style="font-size: 1.8rem;">Recent Posts</h2>
+            {sidebar_cards_html}
+            <img 
+                style="margin-bottom: 1.6rem; height: 40rem; object-fit: cover; object-position: top;"
+                src="{card_img_src}"
+            >
         </div>
     '''
     ###
     html_herbs = f'''
-        <section style="max-width: 160rem; margin: 0 auto; padding-left: 1.6rem; padding-right: 1.6rem;">
+        <section style="max-width: 175rem; margin: 0 auto; padding-left: 1.6rem; padding-right: 1.6rem;">
             <div style="display: flex;">
                 <div style="flex: 1;">
                     {html_sidebar}
                 </div>
-                <div style="flex: 3; padding-left: 6.4rem; border-left: 1px solid #e7e7e7;">
+                <div style="flex: 3; padding-left: 4.8rem; border-left: 1px solid #e7e7e7;">
                     <div class="grid-3">
                         {html_cards}
+                    </div>
+                    <div style="display: flex; justify-content: center; gap: 0.8rem;">
+                        <p style="font-size: 1.2rem; font-weight: bold; padding: 0.8rem 1.6rem; border: 1px solid #e7e7e7; color: #ffffff; background-color: #222222;">1</p>
+                        <p style="font-size: 1.2rem; font-weight: bold; padding: 0.8rem 1.6rem; border: 1px solid #e7e7e7;">2</p>
+                        <p style="font-size: 1.2rem; font-weight: bold; padding: 0.8rem 1.6rem; border: 1px solid #e7e7e7;">NEXT</p>
                     </div>
                 </div>
             </div>
