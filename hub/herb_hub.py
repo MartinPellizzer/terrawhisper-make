@@ -998,60 +998,56 @@ def category_herbs_actions_gen():
     '''
     with open(html_filepath, 'w') as f: f.write(html)
 
-def page_herbs_gen():
-    url_slug = f'herbs'
-    html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
+def groups_gen(items, group_len):
+    ### pages
+    pages = []
+    page_cur = []
+    for item_i, item in enumerate(items):
+        if len(page_cur) < group_len:
+            page_cur.append(item)
+        else:
+            pages.append(page_cur)
+            page_cur = [item]
+    if page_cur != []: pages.append(page_cur)
+    return pages
+
+def card_primary_gen(i, card_img_src, herb_slug, card_title, card_desc):
     ###
-    html_main = f''
-    html_title = f'''
-        <section class="container-xl" style="margin-bottom: 9.6rem;">
-            {sections.breadcrumbs(url_slug)}
-            <h1 style="margin-top: 4.8rem;">Medicinal Herbs</h1>
-        </section>
-    '''
-    html_cards = ''
-    for i in range(10):
-        herb = herbs_primary_medicinal[i]
-        herb_slug = herb['herb_slug']
-        herb_name_scientific = herb['herb_name_scientific']
-        ###
-        card_title = herb_name_scientific.capitalize()
-        card_desc = ' '.join(lorem.paragraph().split(' ')[:16]) + '...'
-        card_img_src = f'/images/herbs/primary/{herb_slug}.jpg'
-        ###
-        card_padding_right = ''
-        card_padding_left = ''
-        card_margin_right = ''
-        card_margin_left = ''
+    card_padding_right = ''
+    card_padding_left = ''
+    card_margin_right = ''
+    card_margin_left = ''
+    card_border_right = ''
+    if i % 3 == 0:
+        card_padding_right = 'padding-right: 3.2rem;';
+        card_border_right = 'border-right: 1px solid #e7e7e7; '
+    if i % 3 == 1:
+        card_padding_right = 'padding-right: 3.2rem;';
+        card_padding_left = 'padding-left: 3.2rem;';
+        card_border_right = 'border-right: 1px solid #e7e7e7; '
+    elif i % 3 == 2:
+        card_padding_left = 'padding-left: 3.2rem;';
         card_border_right = ''
-        if i % 3 == 0:
-            card_padding_right = 'padding-right: 3.2rem;';
-            card_border_right = 'border-right: 1px solid #e7e7e7; '
-        if i % 3 == 1:
-            card_padding_right = 'padding-right: 3.2rem;';
-            card_padding_left = 'padding-left: 3.2rem;';
-            card_border_right = 'border-right: 1px solid #e7e7e7; '
-        elif i % 3 == 2:
-            card_padding_left = 'padding-left: 3.2rem;';
-            card_border_right = ''
-        ###
-        html_card = f'''
-            <div style="border-bottom: 1px solid #e7e7e7; padding-bottom: 3.2rem; margin-bottom: 3.2rem;">
-                <div style="{card_border_right}{card_padding_right}{card_padding_left}{card_margin_right}{card_margin_left}">
-                    <div style="">
-                        <img 
-                            style="margin-bottom: 1.6rem; height: 24rem; object-fit: cover;"
-                            src="{card_img_src}"
-                        >
-                        <p style="margin-bottom: 1.6rem; font-size: 1.2rem; font-weight: bold; letter-spacing: 1px; color: #aaaaaa;">JULY 30, 2024</p>
-                        <h2><a style="color: #111111; text-decoration: none;" href="/herbs/{herb_slug}.html">{card_title}</a></h2>
-                        <p style="margin-bottom: 1.6rem;">{card_desc}</p>
-                        <p><a style="color: #111111; font-weight: bold; font-size: 1.4rem; letter-spacing: 0.5px;" href="/herbs/{herb_slug}.html">READ MORE</a></p>
-                    </div>
+    ###
+    html_card = f'''
+        <div style="border-bottom: 1px solid #e7e7e7; padding-bottom: 3.2rem; margin-bottom: 3.2rem;">
+            <div style="{card_border_right}{card_padding_right}{card_padding_left}{card_margin_right}{card_margin_left}">
+                <div style="">
+                    <img 
+                        style="margin-bottom: 1.6rem; height: 24rem; object-fit: cover;"
+                        src="{card_img_src}"
+                    >
+                    <p style="margin-bottom: 1.6rem; font-size: 1.2rem; font-weight: bold; letter-spacing: 1px; color: #aaaaaa;">JULY 30, 2024</p>
+                    <h2><a style="color: #111111; text-decoration: none;" href="/herbs/{herb_slug}.html">{card_title}</a></h2>
+                    <p style="margin-bottom: 1.6rem;">{card_desc}</p>
+                    <p><a style="color: #111111; font-weight: bold; font-size: 1.4rem; letter-spacing: 0.5px;" href="/herbs/{herb_slug}.html">READ MORE</a></p>
                 </div>
             </div>
-        '''
-        html_cards += html_card
+        </div>
+    '''
+    return html_card
+
+def sidebar_gen():
     ###
     sidebar_cards_html = ''
     for i in range(4):
@@ -1092,30 +1088,9 @@ def page_herbs_gen():
             >
         </div>
     '''
-    ###
-    html_herbs = f'''
-        <section style="max-width: 175rem; margin: 0 auto; padding-left: 1.6rem; padding-right: 1.6rem;">
-            <div style="display: flex;">
-                <div style="flex: 1;">
-                    {html_sidebar}
-                </div>
-                <div style="flex: 3; padding-left: 4.8rem; border-left: 1px solid #e7e7e7;">
-                    <div class="grid-3">
-                        {html_cards}
-                    </div>
-                    <div style="display: flex; justify-content: center; gap: 0.8rem;">
-                        <p style="font-size: 1.2rem; font-weight: bold; padding: 0.8rem 1.6rem; border: 1px solid #e7e7e7; color: #ffffff; background-color: #222222;">1</p>
-                        <p style="font-size: 1.2rem; font-weight: bold; padding: 0.8rem 1.6rem; border: 1px solid #e7e7e7;">2</p>
-                        <p style="font-size: 1.2rem; font-weight: bold; padding: 0.8rem 1.6rem; border: 1px solid #e7e7e7;">NEXT</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-    '''
-    html_main += f'''
-        {html_title}
-        {html_herbs}
-    '''
+    return html_sidebar
+
+def page_herbs_gen_old():
     if 0:
         html_herbs = f''
         ### category herbs primary medicinal
@@ -1217,25 +1192,6 @@ def page_herbs_gen():
                 # <div class="grid-3" style="gap: 3.2rem;">
                     # {html_herbs}
                 # </div>
-    meta_title = f'''Herbs'''
-    meta_description = f''''''
-
-    if 1:
-        html = f'''
-            <!DOCTYPE html>
-            <html lang="en">
-            {components.html_head(meta_title, meta_description)}
-            <body>
-                {sections.header()}
-                <main>
-                    {html_main}
-                </main>
-                <div class="spacer"></div>
-                {sections.footer()}
-            </body>
-            </html>
-        '''
-
     if 0:
         html = f'''
             <!DOCTYPE html>
@@ -1368,7 +1324,83 @@ def page_herbs_gen():
             </html>
         '''
 
-    with open(html_filepath, 'w') as f: f.write(html)
+def page_herbs_gen():
+    groups = groups_gen(herbs_primary_medicinal, 15)
+    for group_i, group in enumerate(groups):
+        url_slug = f'herbs'
+        if group_i == 0:
+            html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
+        else:
+            try: os.makedirs(f'''{g.website_folderpath}/{url_slug}/page''')
+            except: pass
+            html_filepath = f'''{g.website_folderpath}/{url_slug}/page/{group_i+1}.html'''
+        ###
+        meta_title = f'''Herbs'''
+        meta_description = f''''''
+        ###
+        html_main = f''
+        html_title = f'''
+            <section class="container-xl" style="margin-bottom: 9.6rem;">
+                {sections.breadcrumbs(url_slug)}
+                <h1 style="margin-top: 4.8rem;">Medicinal Herbs</h1>
+            </section>
+        '''
+        ###
+        html_cards = ''
+        for i in range(len(group)):
+            herb = group[i]
+            herb_slug = herb['herb_slug']
+            herb_name_scientific = herb['herb_name_scientific']
+            ###
+            card_title = herb_name_scientific.capitalize()
+            card_desc = ' '.join(lorem.paragraph().split(' ')[:16]) + '...'
+            card_img_src = f'/images/herbs/primary/{herb_slug}.jpg'
+            ###
+            html_card = card_primary_gen(i, card_img_src, herb_slug, card_title, card_desc)
+            html_cards += html_card
+        ###
+        html_sidebar = sidebar_gen()
+        ###
+        html_herbs = f'''
+            <section style="max-width: 175rem; margin: 0 auto; padding-left: 1.6rem; padding-right: 1.6rem;">
+                <div style="display: flex;">
+                    <div style="flex: 1;">
+                        {html_sidebar}
+                    </div>
+                    <div style="flex: 3; padding-left: 4.8rem; border-left: 1px solid #e7e7e7;">
+                        <div class="grid-3">
+                            {html_cards}
+                        </div>
+                        <div style="display: flex; justify-content: center; gap: 0.8rem;">
+                            <p style="font-size: 1.2rem; font-weight: bold; padding: 0.8rem 1.6rem; border: 1px solid #e7e7e7; color: #ffffff; background-color: #222222;">1</p>
+                            <p style="font-size: 1.2rem; font-weight: bold; padding: 0.8rem 1.6rem; border: 1px solid #e7e7e7;">2</p>
+                            <p style="font-size: 1.2rem; font-weight: bold; padding: 0.8rem 1.6rem; border: 1px solid #e7e7e7;">NEXT</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        '''
+        html_main += f'''
+            {html_title}
+            {html_herbs}
+        '''
+
+        html = f'''
+            <!DOCTYPE html>
+            <html lang="en">
+            {components.html_head(meta_title, meta_description)}
+            <body>
+                {sections.header()}
+                <main>
+                    {html_main}
+                </main>
+                <div class="spacer"></div>
+                {sections.footer()}
+            </body>
+            </html>
+        '''
+
+        with open(html_filepath, 'w') as f: f.write(html)
 
     sitemaps_gen()
     # quit()
