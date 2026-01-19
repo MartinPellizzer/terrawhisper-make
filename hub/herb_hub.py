@@ -998,8 +998,10 @@ def category_herbs_actions_gen():
     '''
     with open(html_filepath, 'w') as f: f.write(html)
 
+### split a list of items in groups
+### the number of element x groups is given by "group_len"
+### this function is being used for "pagination purposes"
 def groups_gen(items, group_len):
-    ### pages
     pages = []
     page_cur = []
     for item_i, item in enumerate(items):
@@ -1328,15 +1330,13 @@ def page_herbs_gen():
     groups = groups_gen(herbs_primary_medicinal, 15)
     for group_i, group in enumerate(groups):
         url_slug = f'herbs'
+        ### page url
         if group_i == 0:
             html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
         else:
             try: os.makedirs(f'''{g.website_folderpath}/{url_slug}/page''')
             except: pass
             html_filepath = f'''{g.website_folderpath}/{url_slug}/page/{group_i+1}.html'''
-        ###
-        meta_title = f'''Herbs'''
-        meta_description = f''''''
         ###
         html_main = f''
         html_title = f'''
@@ -1361,6 +1361,148 @@ def page_herbs_gen():
         ###
         html_sidebar = sidebar_gen()
         ###
+        meta_title = f'''Herbs'''
+        meta_description = f''''''
+
+        ### PAGINATION
+        ########################################
+        ### prev
+        if group_i > 1:
+            prev_html = f'''
+                <a style="text-decoration: none;" href="/{url_slug}/page/{group_i}.html">
+                    <p style="font-size: 1.2rem; font-weight: bold; padding: 0.8rem 1.6rem; border: 1px solid #e7e7e7;">
+                        PREV
+                    </p>
+                </a>
+            '''
+        elif group_i > 0:
+            prev_html = f'''
+                <a style="text-decoration: none;" href="/{url_slug}.html">
+                    <p style="
+                        font-size: 1.2rem; font-weight: bold; padding: 0.8rem 1.6rem; border: 1px solid #e7e7e7;
+                        "
+                    >
+                        PREV
+                    </p>
+                </a>
+            '''
+        else:
+            prev_html = f''
+        ### numbers
+        numbers_html = ''
+        ### first
+        if group_i != 0:
+            number_html = f'''
+                <a style="text-decoration: none;" href="/{url_slug}.html">
+                    <p 
+                        style="
+                            font-size: 1.2rem; font-weight: bold; padding: 0.8rem 1.6rem; border: 1px solid #e7e7e7;
+                        "
+                    >
+                        1
+                    </p>
+                </a>
+            '''
+            numbers_html += number_html
+        ### current prev ...
+        if group_i > 4:
+            number_html = f'''
+                <p 
+                    style="
+                        font-size: 1.2rem; font-weight: bold; padding: 0.8rem 1.6rem; border: 1px solid #e7e7e7;
+                    "
+                >
+                    ...
+                </p>
+            '''
+            numbers_html += number_html
+        ### current prev
+        for i in range(3, 0, -1):
+            page_index = group_i+1-i
+            if page_index > 1:
+                number_html = f'''
+                    <a style="text-decoration: none;" href="/{url_slug}/page/{page_index}.html">
+                        <p 
+                            style="
+                                font-size: 1.2rem; font-weight: bold; padding: 0.8rem 1.6rem; border: 1px solid #e7e7e7;
+                            "
+                        >
+                            {page_index}
+                        </p>
+                    </a>
+                '''
+                numbers_html += number_html
+        ### current
+        number_html = f'''
+            <a style="text-decoration: none;" href="#">
+                <p 
+                    style="
+                        font-size: 1.2rem; font-weight: bold; padding: 0.8rem 1.6rem; 
+                        border: 1px solid #e7e7e7; color: #ffffff; background-color: #222222;
+                    "
+                >
+                    {group_i+1}
+                </p>
+            </a>
+        '''
+        numbers_html += number_html
+        ### current next
+        for i in range(3):
+            page_index = group_i+1+i+1
+            if page_index < len(groups):
+                number_html = f'''
+                    <a style="text-decoration: none;" href="/{url_slug}/page/{page_index}.html">
+                        <p 
+                            style="
+                                font-size: 1.2rem; font-weight: bold; padding: 0.8rem 1.6rem; border: 1px solid #e7e7e7;
+                            "
+                        >
+                            {page_index}
+                        </p>
+                    </a>
+                '''
+                numbers_html += number_html
+        ### current next ...
+        if group_i < len(groups)-1 - 4:
+            number_html = f'''
+                <p 
+                    style="
+                        font-size: 1.2rem; font-weight: bold; padding: 0.8rem 1.6rem; border: 1px solid #e7e7e7;
+                    "
+                >
+                    ...
+                </p>
+            '''
+            numbers_html += number_html
+        ### last
+        if group_i != len(groups)-1:
+            number_html = f'''
+                <a style="text-decoration: none;" href="/{url_slug}/page/{len(groups)}.html">
+                    <p 
+                        style="
+                            font-size: 1.2rem; font-weight: bold; padding: 0.8rem 1.6rem; border: 1px solid #e7e7e7;
+                        "
+                    >
+                        {len(groups)}
+                    </p>
+                </a>
+            '''
+            numbers_html += number_html
+
+        ### next
+        if group_i != len(groups)-1:
+            next_html = f'''
+                <a style="text-decoration: none;" href="/{url_slug}/page/{group_i+2}.html">
+                    <p style="font-size: 1.2rem; font-weight: bold; padding: 0.8rem 1.6rem; border: 1px solid #e7e7e7;">
+                        NEXT
+                    </p>
+                </a>
+            '''
+        else:
+            next_html = f''
+
+        ### HERBS
+        ########################################
         html_herbs = f'''
             <section style="max-width: 175rem; margin: 0 auto; padding-left: 1.6rem; padding-right: 1.6rem;">
                 <div style="display: flex;">
@@ -1372,9 +1514,9 @@ def page_herbs_gen():
                             {html_cards}
                         </div>
                         <div style="display: flex; justify-content: center; gap: 0.8rem;">
-                            <p style="font-size: 1.2rem; font-weight: bold; padding: 0.8rem 1.6rem; border: 1px solid #e7e7e7; color: #ffffff; background-color: #222222;">1</p>
-                            <p style="font-size: 1.2rem; font-weight: bold; padding: 0.8rem 1.6rem; border: 1px solid #e7e7e7;">2</p>
-                            <p style="font-size: 1.2rem; font-weight: bold; padding: 0.8rem 1.6rem; border: 1px solid #e7e7e7;">NEXT</p>
+                            {prev_html}
+                            {numbers_html}
+                            {next_html}
                         </div>
                     </div>
                 </div>
