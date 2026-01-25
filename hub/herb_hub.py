@@ -13,7 +13,176 @@ from lib import components
 from lib import sections
 
 herbs_primary_medicinal = data.herbs_primary_medicinal_get()
+herbs_top = data.herbs_popular_get('teas', 10)
 herbs_popular = data.herbs_popular_get('teas', 100)
+
+categories_html = f'''
+    <div style="display: flex; gap: 2.4rem; justify-content: center; margin-bottom: 1.6rem;">
+        <a 
+            style="color: #111111; font-weight: bold; font-size: 1.4rem; letter-spacing: 0.5px; text-decoration: none;" 
+            href="/herbs.html"
+        >
+            ALL
+        </a>
+        <a 
+            style="color: #111111; font-weight: bold; font-size: 1.4rem; letter-spacing: 0.5px; text-decoration: none;" 
+            href="/herbs/top.html"
+        >
+            TOP 10
+        </a>
+        <a 
+            style="color: #111111; font-weight: bold; font-size: 1.4rem; letter-spacing: 0.5px; text-decoration: none;" 
+            href="/herbs/popular.html"
+        >
+            POPULAR 100
+        </a>
+        <a 
+            style="color: #111111; font-weight: bold; font-size: 1.4rem; letter-spacing: 0.5px; text-decoration: none;" 
+            href="/herbs/unverified.html"
+        >
+            UNVERIFIED
+        </a>
+    </div>
+'''
+
+def pagination_gen(group_i, groups, url_slug):
+    ### prev
+    if group_i > 1:
+        prev_html = f'''
+            <a style="text-decoration: none;" href="/{url_slug}/page/{group_i}.html">
+                <p style="font-size: 1.2rem; font-weight: bold; padding: 0.8rem 1.6rem; border: 1px solid #e7e7e7;">
+                    PREV
+                </p>
+            </a>
+        '''
+    elif group_i > 0:
+        prev_html = f'''
+            <a style="text-decoration: none;" href="/{url_slug}.html">
+                <p style="
+                    font-size: 1.2rem; font-weight: bold; padding: 0.8rem 1.6rem; border: 1px solid #e7e7e7;
+                    "
+                >
+                    PREV
+                </p>
+            </a>
+        '''
+    else:
+        prev_html = f''
+    ### numbers
+    numbers_html = ''
+    ### first
+    if group_i != 0:
+        number_html = f'''
+            <a style="text-decoration: none;" href="/{url_slug}.html">
+                <p 
+                    style="
+                        font-size: 1.2rem; font-weight: bold; padding: 0.8rem 1.6rem; border: 1px solid #e7e7e7;
+                    "
+                >
+                    1
+                </p>
+            </a>
+        '''
+        numbers_html += number_html
+    ### current prev ...
+    if group_i > 4:
+        number_html = f'''
+            <p 
+                style="
+                    font-size: 1.2rem; font-weight: bold; padding: 0.8rem 1.6rem; border: 1px solid #e7e7e7;
+                "
+            >
+                ...
+            </p>
+        '''
+        numbers_html += number_html
+    ### current prev
+    for i in range(3, 0, -1):
+        page_index = group_i+1-i
+        if page_index > 1:
+            number_html = f'''
+                <a style="text-decoration: none;" href="/{url_slug}/page/{page_index}.html">
+                    <p 
+                        style="
+                            font-size: 1.2rem; font-weight: bold; padding: 0.8rem 1.6rem; border: 1px solid #e7e7e7;
+                        "
+                    >
+                        {page_index}
+                    </p>
+                </a>
+            '''
+            numbers_html += number_html
+    ### current
+    number_html = f'''
+            <p 
+                style="
+                    font-size: 1.2rem; font-weight: bold; padding: 0.8rem 1.6rem; 
+                    border: 1px solid #e7e7e7; color: #ffffff; background-color: #222222;
+                "
+            >
+                {group_i+1}
+            </p>
+    '''
+    numbers_html += number_html
+    ### current next
+    for i in range(3):
+        page_index = group_i+1+i+1
+        if page_index < len(groups):
+            number_html = f'''
+                <a style="text-decoration: none;" href="/{url_slug}/page/{page_index}.html">
+                    <p 
+                        style="
+                            font-size: 1.2rem; font-weight: bold; padding: 0.8rem 1.6rem; border: 1px solid #e7e7e7;
+                        "
+                    >
+                        {page_index}
+                    </p>
+                </a>
+            '''
+            numbers_html += number_html
+    ### current next ...
+    if group_i < len(groups)-1 - 4:
+        number_html = f'''
+            <p 
+                style="
+                    font-size: 1.2rem; font-weight: bold; padding: 0.8rem 1.6rem; border: 1px solid #e7e7e7;
+                "
+            >
+                ...
+            </p>
+        '''
+        numbers_html += number_html
+    ### last
+    if group_i != len(groups)-1:
+        number_html = f'''
+            <a style="text-decoration: none;" href="/{url_slug}/page/{len(groups)}.html">
+                <p 
+                    style="
+                        font-size: 1.2rem; font-weight: bold; padding: 0.8rem 1.6rem; border: 1px solid #e7e7e7;
+                    "
+                >
+                    {len(groups)}
+                </p>
+            </a>
+        '''
+        numbers_html += number_html
+    ### next
+    if group_i != len(groups)-1:
+        next_html = f'''
+            <a style="text-decoration: none;" href="/{url_slug}/page/{group_i+2}.html">
+                <p style="font-size: 1.2rem; font-weight: bold; padding: 0.8rem 1.6rem; border: 1px solid #e7e7e7;">
+                    NEXT
+                </p>
+            </a>
+        '''
+    else:
+        next_html = f''
+    pagination_html = f'''
+        {prev_html}
+        {numbers_html}
+        {next_html}
+    '''
+    return pagination_html
 
 def sitemaps_gen():
     sitemaps_folderpath = f'{g.WEBSITE_FOLDERPATH}/sitemaps'
@@ -114,7 +283,7 @@ def p2s(paragraph):
     return html
     
 
-def article_herbs_herb_primary_gen():
+def herbs_herb_primary_gen():
     herbs = []
     if 1:
         for herb in herbs_primary_medicinal: 
@@ -124,7 +293,7 @@ def article_herbs_herb_primary_gen():
         for herb in herbs_popular: 
             # if not herb_in_list(herbs, herb):
             herbs.append({'herb_name_scientific': herb['herb_name_scientific']})
-    # quit()
+    ###
     for herb_i, herb in enumerate(herbs):
         herb_name_scientific = herb['herb_name_scientific']
         herb_name_scientific = polish.sanitize(herb_name_scientific)
@@ -135,7 +304,11 @@ def article_herbs_herb_primary_gen():
         json_entity = io.json_read(json_entity_filepath)
         herb_names_common = [name['answer'].title() for name in json_entity['herb_names_common']]
         herb_name_common = herb_names_common[0]
-        # herb_family = json_entity['family'][0]['answer'].title()
+        print(json_entity)
+        herb_traditional_uses = json_entity['herb_traditional_uses']
+        print(herb_name_common)
+        # if herb_i == 15: quit()
+        herb_family = json_entity['herb_family'][0]['answer'].title()
         # herb_native_regions = [item['answer'].title() for item in json_entity['native_regions']]
         ########################################
         # json
@@ -179,6 +352,7 @@ def article_herbs_herb_primary_gen():
                 reply = polish.vanilla(reply)
                 json_article[key] = reply
                 io.json_write(json_article_filepath, json_article)
+        # continue
         ### json botany
         regen = False
         dispel = False
@@ -473,22 +647,159 @@ def article_herbs_herb_primary_gen():
         # html_article += f'''<h2>FAQ</h2>'''
         # html_article += p2s(json_article['faq'])
         html_article = sections.toc(html_article)
-        html = f'''
+        if 0:
+            html = f'''
+                <!DOCTYPE html>
+                <html lang="en">
+                {components.html_head(meta_title, meta_description, form_head)}
+                <body>
+                    {sections.header()}
+                    <section class="container-xl">
+                        {sections.breadcrumbs(url_slug)}
+                    </section>
+                    <main class="container-md article">
+                        {html_article}
+                    </main>
+                    <div class="mt-64"></div>
+                    {sections.footer()}
+                </body>
+                </html>
+            '''
+
+        meta_title = f'{herb_name_common} ({herb_name_scientific.capitalize()}) – Medicinal Uses, Benefits & Safety'
+
+        ### json meta description
+        regen = False
+        dispel = False
+        key = 'meta_description'
+        if key not in json_article: json_article[key] = ''
+        if regen: json_article[key] = ''
+        if dispel: 
+            json_article[key] = ''
+            io.json_write(json_article_filepath, json_article)
+        if not dispel:
+            if json_article[key] == '':
+                prompt = textwrap.dedent(f'''
+                    Write a meta description for a website page about the following medicinal plant:
+                    {herb_name_common} ({herb_name_scientific.capitalize()}) 
+                    I will provide the TEMPLATE you must follow.
+                    The goal is to insert the [COMMON NAME] and the [SCIENTIFIC NAME] in the template with the provided data.
+                    Also, you must fill the [BROAD ACTIONS] in the template with your own knowledge. Try to include 3 comma-separated actions using as few words as possible.
+                    Here is the data.
+                    COMMON NAME: {herb_name_common}
+                    SCIENTIFIC NAME: {herb_name_scientific}
+                    TEMPLATE TO FILL:
+                    [COMMON NAME] ([SCIENTIFIC NAME]) is a medicinal plant traditionally used for [BROAD ACTIONS]. This page covers its botanical background, traditional uses, active compounds, preparation methods, and safety considerations.
+                    GUIDELINES:
+                    Replay only with the asked content, which is the meta description.
+                ''').strip()
+                prompt += f'/no_think'
+                reply = llm.reply(prompt).strip()
+                if '</think>' in reply:
+                    reply = reply.split('</think>')[1].strip()
+                reply = polish.vanilla(reply)
+                json_article[key] = reply
+                io.json_write(json_article_filepath, json_article)
+
+        ### json intro 
+        import textwrap
+        regen = False
+        dispel = False
+        key = 'intro'
+        if key not in json_article: json_article[key] = ''
+        if regen: json_article[key] = ''
+        if dispel: 
+            json_article[key] = ''
+            io.json_write(json_article_filepath, json_article)
+        if not dispel:
+            if json_article[key] == '':
+                prompt = textwrap.dedent(f'''
+                    You are an expert herbalist and content writer. 
+                    Generate a **neutral, factual, 2–3 sentence introduction paragraph** for a medicinal herb page. 
+                    Follow these rules:
+                    1. Start with the **common name** followed by the **scientific name in parentheses**.
+                    2. Mention the herb’s **primary traditional uses**, but do NOT make any health claims.
+                    3. Include the **plant family** and optionally the **cultural or regional use** if available.
+                    4. Include **plant parts used** (e.g., flowers, leaves, roots) if relevant.
+                    5. Keep the paragraph **informational and neutral**, suitable for search engines and human readers.
+                    6. Do not use promotional or persuasive language.
+                    Here is the data for the herb:
+                    - Common Name: {herb_name_common}  
+                    - Scientific Name: {herb_name_scientific}  
+                    - Family: {herb_family}  
+                    - Primary Traditional Uses: {herb_traditional_uses}  
+                    Generate the paragraph **only**, do not add titles, headings, or explanations.
+                ''').strip()
+                    # - Plant Parts Used: {plant_parts}  
+                    # - Cultural/Regional Origin: {cultural_origin}  
+                prompt += f'/no_think'
+                reply = llm.reply(prompt).strip()
+                if '</think>' in reply:
+                    reply = reply.split('</think>')[1].strip()
+                reply = polish.vanilla(reply)
+                json_article[key] = reply
+                io.json_write(json_article_filepath, json_article)
+
+        ###
+        meta_description = json_article['meta_description']
+        html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
+        import textwrap
+        site_name = 'Terra Whisper'
+        html = textwrap.dedent(f''' 
             <!DOCTYPE html>
             <html lang="en">
-            {components.html_head(meta_title, meta_description, form_head)}
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>{meta_title}</title>
+                <meta name="description" content="{meta_description}">
+                <link rel="canonical" href="https://terrawhisper.com/herbs/{herb_slug}.html">
+                <meta property="og:title" content="{meta_title}">
+                <meta property="og:description" content="{meta_description}">
+                <meta property="og:type" content="article">
+                <meta property="og:url" content="https://terrawhisper.com/herbs/{herb_slug}.html">
+                <meta property="og:image" content="https://terrawhisper.com/images/herbs/primary/{herb_slug}.jpg">
+                <meta property="og:site_name" content="{site_name}">
+                <meta property="og:locale" content="en_US">
+            </head>
             <body>
-                {sections.header()}
-                {sections.breadcrumbs(url_slug)}
-                <main class="container-md article">
-                    {html_article}
-                </main>
-                <div class="mt-64"></div>
-                {sections.footer()}
+              <header></header>
+              <main>
+                <article>
+                  <section id="overview">
+                    <h1>{herb_name_common} ({herb_name_scientific.capitalize()})</h1>
+                    <p>{json_article['intro']}</p>
+                  </section>
+                  <section id="quick-facts">
+                  </section>
+                  <section id="botanical-description">
+                  </section>
+                  <section id="traditional-uses">
+                  </section>
+                  <section id="medicinal-actions">
+                  </section>
+                  <section id="active-compounds">
+                  </section>
+                  <section id="research">
+                  </section>
+                  <section id="safety">
+                  </section>
+                  <section id="preparation">
+                  </section>
+                  <section id="cultivation">
+                  </section>
+                  <section id="related-herbs">
+                  </section>
+                  <section id="faq">
+                  </section>
+                  <section id="disclaimer">
+                  </section>
+                </article>
+              </main>
+              <footer></footer>
             </body>
             </html>
-        '''
-        html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
+        ''').strip()
         with open(html_filepath, 'w') as f: f.write(html)
         # quit()
 
@@ -1013,7 +1324,7 @@ def groups_gen(items, group_len):
     if page_cur != []: pages.append(page_cur)
     return pages
 
-def card_primary_gen(i, card_img_src, herb_slug, card_title, card_desc):
+def card_primary_gen(i, card_img_src, herb_slug, card_title, card_desc, card_subtitle):
     ###
     card_padding_right = ''
     card_padding_left = ''
@@ -1035,14 +1346,25 @@ def card_primary_gen(i, card_img_src, herb_slug, card_title, card_desc):
         <div style="border-bottom: 1px solid #e7e7e7; padding-bottom: 3.2rem; margin-bottom: 3.2rem;">
             <div style="{card_border_right}{card_padding_right}{card_padding_left}{card_margin_right}{card_margin_left}">
                 <div style="">
-                    <img 
-                        style="margin-bottom: 1.6rem; height: 24rem; object-fit: cover;"
-                        src="{card_img_src}"
-                    >
+                    <a href="/herbs/{herb_slug}.html">
+                        <img 
+                            style="margin-bottom: 1.6rem; height: 24rem; object-fit: cover;"
+                            src="{card_img_src}"
+                        >
+                    </a>
                     <p style="margin-bottom: 1.6rem; font-size: 1.2rem; font-weight: bold; letter-spacing: 1px; color: #aaaaaa;">JULY 30, 2024</p>
                     <h2><a style="color: #111111; text-decoration: none;" href="/herbs/{herb_slug}.html">{card_title}</a></h2>
+                    <p style="
+                        font-size: 1.4rem; background-color: #f7f6f2; 
+                        padding: 0.4rem 1.6rem; border-radius: 9999px;
+                        margin-bottom: 1.6rem;
+                    ">
+                        Common Name: <strong>{card_subtitle}</strong>
+                    </p>
                     <p style="margin-bottom: 1.6rem;">{card_desc}</p>
-                    <p><a style="color: #111111; font-weight: bold; font-size: 1.4rem; letter-spacing: 0.5px;" href="/herbs/{herb_slug}.html">READ MORE</a></p>
+                    <p> 
+                        <a style="color: #111111; font-weight: bold; font-size: 1.4rem; letter-spacing: 0.5px;" href="/herbs/{herb_slug}.html">READ MORE</a>
+                    </p>
                 </div>
             </div>
         </div>
@@ -1058,15 +1380,18 @@ def sidebar_gen():
         herb_name_scientific = herb['herb_name_scientific']
         ###
         card_title = herb_name_scientific.capitalize()
-        card_desc = ' '.join(lorem.paragraph().split(' ')[:8])
+        # card_desc = ' '.join(lorem.paragraph().split(' ')[:8])
+        card_desc = 'Leen Randell is a herbalist, apothecary, and journalist, who loves to report insights on medicinal herbs and herbal preparations.'
         card_img_src = f'/images/herbs/primary/{herb_slug}.jpg'
         html_card = f'''
             <div style="display: flex; gap: 2.4rem; margin-bottom: 2.4rem; padding-bottom: 1.6rem; border-bottom: 1px solid #e7e7e7;">
                 <div style="flex: 1;">
-                    <img 
-                        style="height: 10rem; object-fit: cover;"
-                        src="{card_img_src}"
-                    >
+                    <a href="/herbs/{herb_slug}.html">
+                        <img 
+                            style="height: 10rem; object-fit: cover;"
+                            src="{card_img_src}"
+                        >
+                    </a>
                 </div>
                 <div style="flex: 2;">
                     <p style="margin-bottom: 1.6rem; font-size: 1.2rem; font-weight: bold; letter-spacing: 1px; color: #aaaaaa;">JULY 30, 2024</p>
@@ -1077,9 +1402,10 @@ def sidebar_gen():
         sidebar_cards_html += html_card
     html_sidebar = f'''
         <div style="padding-right: 4.8rem;">
+            <h2 style="font-size: 1.8rem;">About Author</h2>
             <img 
                 style="margin-bottom: 1.6rem; height: 40rem; object-fit: cover; object-position: top;"
-                src="{card_img_src}"
+                src="/images/leen-randell.jpg"
             >
             <p style="margin-bottom: 4.8rem;">{card_desc}</p>
             <h2 style="font-size: 1.8rem;">Recent Posts</h2>
@@ -1327,9 +1653,38 @@ def page_herbs_gen_old():
         '''
 
 def page_herbs_gen():
+    url_slug = f'herbs'
+    ###
+    json_article_filepath = f'''{g.DATABASE_FOLDERPATH}/json/{url_slug}.json'''
+    json_article = io.json_read(json_article_filepath, create=True)
+    json_article['url'] = url_slug
+    io.json_write(json_article_filepath, json_article)
+    ### json intro
+    regen = False
+    dispel = False
+    key = 'intro'
+    if key not in json_article: json_article[key] = ''
+    if regen: json_article[key] = ''
+    if dispel: 
+        json_article[key] = ''
+        io.json_write(json_article_filepath, json_article)
+    if not dispel:
+        if json_article[key] == '':
+            prompt = f'''
+                Write a detailed paragraph in 5 sentences for a page in my website.
+                This page is about listing 1000+ medicinal herbs.
+                Start with the following words: This page .
+            '''
+            prompt += f'/no_think'
+            reply = llm.reply(prompt).strip()
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            json_article[key] = reply
+            io.json_write(json_article_filepath, json_article)
+    ###
     groups = groups_gen(herbs_primary_medicinal, 15)
     for group_i, group in enumerate(groups):
-        url_slug = f'herbs'
         ### page url
         if group_i == 0:
             html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
@@ -1340,9 +1695,40 @@ def page_herbs_gen():
         ###
         html_main = f''
         html_title = f'''
-            <section class="container-xl" style="margin-bottom: 9.6rem;">
+            <section class="container-xl" style="margin-bottom: 6.4rem;">
                 {sections.breadcrumbs(url_slug)}
-                <h1 style="margin-top: 4.8rem;">Medicinal Herbs</h1>
+                <h1 style="margin-top: 4.8rem;">Browse 1000+ Medicinal Herbs</h1>
+            </section>
+        '''
+        intro_paragraphs = [f'{line}.'.replace('..', '.') for line in json_article['intro'].strip().split('. ')]
+        intro_paragraphs_html = ''
+        for intro_paragraph in intro_paragraphs:
+            intro_paragraphs_html += f'''
+                <p style="max-width: 76.8rem; margin: 0 auto; 
+                    color: #ffffff; font-size: 1.8rem; line-height: 2.7rem;
+                    padding-left: 3.2rem;
+                    padding-right: 3.2rem;
+                    margin-bottom: 1.6rem;
+                ">
+                    {intro_paragraph}
+                </p>
+            '''
+        html_intro = f'''
+            <section style="margin-bottom: 9.6rem; padding: 8.0rem 5%; background-color: #222222;">
+                <div class="">
+                    <div style="display: flex;">
+                        <div style="flex: 1;">
+                            <img style="
+                                    display: block; height: 60rem; object-fit: cover;
+                                    padding-right: 3.2rem; border-right: 1px solid #444444;
+                                " 
+                                src="/images/herbs/primary/adiantum-capillus-veneris.jpg">
+                        </div>
+                        <div style="flex: 1; display: flex; flex-direction: column; justify-content: center;">
+                            {intro_paragraphs_html}
+                        </div>
+                    </div>
+                </div>
             </section>
         '''
         ###
@@ -1352,155 +1738,31 @@ def page_herbs_gen():
             herb_slug = herb['herb_slug']
             herb_name_scientific = herb['herb_name_scientific']
             ###
-            card_title = herb_name_scientific.capitalize()
-            card_desc = ' '.join(lorem.paragraph().split(' ')[:16]) + '...'
-            card_img_src = f'/images/herbs/primary/{herb_slug}.jpg'
+            json_entity_filepath = f'''{g.DATABASE_FOLDERPATH}/ssot/herbs/herbs-primary/{herb_slug}.json'''
+            json_entity = io.json_read(json_entity_filepath)
+            herb_names_common = [name['answer'].title() for name in json_entity['herb_names_common']]
+            herb_name_common = herb_names_common[0]
             ###
-            html_card = card_primary_gen(i, card_img_src, herb_slug, card_title, card_desc)
+            card_img_src = f'/images/herbs/primary/{herb_slug}.jpg'
+            card_title = herb_name_scientific.capitalize()
+            # card_title = herb_name_common.title().replace("'S", "'s")
+            card_subtitle = herb_name_common.title().replace("'S", "'s")
+            ###
+            json_herb = io.json_read(f'{g.DATABASE_FOLDERPATH}/json/herbs/{herb_slug}.json')
+            print(json_herb)
+            card_article_preview = json_herb['intro']
+            card_desc = ' '.join(card_article_preview.split(' ')[:16]) + '...'
+            ###
+            html_card = card_primary_gen(i, card_img_src, herb_slug, card_title, card_desc, card_subtitle)
             html_cards += html_card
         ###
         html_sidebar = sidebar_gen()
         ###
         meta_title = f'''Herbs'''
         meta_description = f''''''
-
-        ### PAGINATION
-        ########################################
-        ### prev
-        if group_i > 1:
-            prev_html = f'''
-                <a style="text-decoration: none;" href="/{url_slug}/page/{group_i}.html">
-                    <p style="font-size: 1.2rem; font-weight: bold; padding: 0.8rem 1.6rem; border: 1px solid #e7e7e7;">
-                        PREV
-                    </p>
-                </a>
-            '''
-        elif group_i > 0:
-            prev_html = f'''
-                <a style="text-decoration: none;" href="/{url_slug}.html">
-                    <p style="
-                        font-size: 1.2rem; font-weight: bold; padding: 0.8rem 1.6rem; border: 1px solid #e7e7e7;
-                        "
-                    >
-                        PREV
-                    </p>
-                </a>
-            '''
-        else:
-            prev_html = f''
-        ### numbers
-        numbers_html = ''
-        ### first
-        if group_i != 0:
-            number_html = f'''
-                <a style="text-decoration: none;" href="/{url_slug}.html">
-                    <p 
-                        style="
-                            font-size: 1.2rem; font-weight: bold; padding: 0.8rem 1.6rem; border: 1px solid #e7e7e7;
-                        "
-                    >
-                        1
-                    </p>
-                </a>
-            '''
-            numbers_html += number_html
-        ### current prev ...
-        if group_i > 4:
-            number_html = f'''
-                <p 
-                    style="
-                        font-size: 1.2rem; font-weight: bold; padding: 0.8rem 1.6rem; border: 1px solid #e7e7e7;
-                    "
-                >
-                    ...
-                </p>
-            '''
-            numbers_html += number_html
-        ### current prev
-        for i in range(3, 0, -1):
-            page_index = group_i+1-i
-            if page_index > 1:
-                number_html = f'''
-                    <a style="text-decoration: none;" href="/{url_slug}/page/{page_index}.html">
-                        <p 
-                            style="
-                                font-size: 1.2rem; font-weight: bold; padding: 0.8rem 1.6rem; border: 1px solid #e7e7e7;
-                            "
-                        >
-                            {page_index}
-                        </p>
-                    </a>
-                '''
-                numbers_html += number_html
-        ### current
-        number_html = f'''
-            <a style="text-decoration: none;" href="#">
-                <p 
-                    style="
-                        font-size: 1.2rem; font-weight: bold; padding: 0.8rem 1.6rem; 
-                        border: 1px solid #e7e7e7; color: #ffffff; background-color: #222222;
-                    "
-                >
-                    {group_i+1}
-                </p>
-            </a>
-        '''
-        numbers_html += number_html
-        ### current next
-        for i in range(3):
-            page_index = group_i+1+i+1
-            if page_index < len(groups):
-                number_html = f'''
-                    <a style="text-decoration: none;" href="/{url_slug}/page/{page_index}.html">
-                        <p 
-                            style="
-                                font-size: 1.2rem; font-weight: bold; padding: 0.8rem 1.6rem; border: 1px solid #e7e7e7;
-                            "
-                        >
-                            {page_index}
-                        </p>
-                    </a>
-                '''
-                numbers_html += number_html
-        ### current next ...
-        if group_i < len(groups)-1 - 4:
-            number_html = f'''
-                <p 
-                    style="
-                        font-size: 1.2rem; font-weight: bold; padding: 0.8rem 1.6rem; border: 1px solid #e7e7e7;
-                    "
-                >
-                    ...
-                </p>
-            '''
-            numbers_html += number_html
-        ### last
-        if group_i != len(groups)-1:
-            number_html = f'''
-                <a style="text-decoration: none;" href="/{url_slug}/page/{len(groups)}.html">
-                    <p 
-                        style="
-                            font-size: 1.2rem; font-weight: bold; padding: 0.8rem 1.6rem; border: 1px solid #e7e7e7;
-                        "
-                    >
-                        {len(groups)}
-                    </p>
-                </a>
-            '''
-            numbers_html += number_html
-
-        ### next
-        if group_i != len(groups)-1:
-            next_html = f'''
-                <a style="text-decoration: none;" href="/{url_slug}/page/{group_i+2}.html">
-                    <p style="font-size: 1.2rem; font-weight: bold; padding: 0.8rem 1.6rem; border: 1px solid #e7e7e7;">
-                        NEXT
-                    </p>
-                </a>
-            '''
-        else:
-            next_html = f''
-
+        ###
+        pagination_html = pagination_gen(group_i, groups, url_slug)
+        ###
         ### HERBS
         ########################################
         html_herbs = f'''
@@ -1509,14 +1771,17 @@ def page_herbs_gen():
                     <div style="flex: 1;">
                         {html_sidebar}
                     </div>
-                    <div style="flex: 3; padding-left: 4.8rem; border-left: 1px solid #e7e7e7;">
-                        <div class="grid-3">
-                            {html_cards}
+                    <div style="flex: 3; 
+                            padding-left: 4.8rem; border-left: 1px solid #e7e7e7; 
+                        ">
+                        {categories_html}
+                        <div style="padding-top: 3.2rem; border-top: 1px solid #e7e7e7;">
+                            <div class="grid-3">
+                                {html_cards}
+                            </div>
                         </div>
                         <div style="display: flex; justify-content: center; gap: 0.8rem;">
-                            {prev_html}
-                            {numbers_html}
-                            {next_html}
+                            {pagination_html}
                         </div>
                     </div>
                 </div>
@@ -1524,9 +1789,9 @@ def page_herbs_gen():
         '''
         html_main += f'''
             {html_title}
+            {html_intro}
             {html_herbs}
         '''
-
         html = f'''
             <!DOCTYPE html>
             <html lang="en">
@@ -1541,9 +1806,487 @@ def page_herbs_gen():
             </body>
             </html>
         '''
-
         with open(html_filepath, 'w') as f: f.write(html)
+    sitemaps_gen()
+    # quit()
 
+def page_herbs_top_gen():
+    url_slug = f'herbs/top'
+    ###
+    json_article_filepath = f'''{g.DATABASE_FOLDERPATH}/json/{url_slug}.json'''
+    json_article = io.json_read(json_article_filepath, create=True)
+    json_article['url'] = url_slug
+    io.json_write(json_article_filepath, json_article)
+    ### json intro
+    regen = False
+    dispel = False
+    key = 'intro'
+    if key not in json_article: json_article[key] = ''
+    if regen: json_article[key] = ''
+    if dispel: 
+        json_article[key] = ''
+        io.json_write(json_article_filepath, json_article)
+    if not dispel:
+        if json_article[key] == '':
+            prompt = f'''
+                Write a detailed paragraph in 5 sentences for a page in my website.
+                This page is about listing the top 10 medicinal herbs.
+                Include "top 10".
+                Don't mention the herb names.
+                Start with the following words: This page .
+            '''
+            prompt += f'/no_think'
+            reply = llm.reply(prompt).strip()
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            json_article[key] = reply
+            io.json_write(json_article_filepath, json_article)
+    ###
+    groups = groups_gen(herbs_top, 15)
+    for group_i, group in enumerate(groups):
+        ### page url
+        if group_i == 0:
+            html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
+        else:
+            try: os.makedirs(f'''{g.website_folderpath}/{url_slug}/page''')
+            except: pass
+            html_filepath = f'''{g.website_folderpath}/{url_slug}/page/{group_i+1}.html'''
+        ###
+        html_main = f''
+        html_title = f'''
+            <section class="container-xl" style="margin-bottom: 6.4rem;">
+                {sections.breadcrumbs(url_slug)}
+                <h1 style="margin-top: 4.8rem;">Top 10 Medicinal Herbs</h1>
+            </section>
+        '''
+        intro_paragraphs = [f'{line}.'.replace('..', '.') for line in json_article['intro'].strip().split('. ')]
+        intro_paragraphs_html = ''
+        for intro_paragraph in intro_paragraphs:
+            intro_paragraphs_html += f'''
+                <p style="max-width: 76.8rem; margin: 0 auto; 
+                    color: #ffffff; font-size: 1.8rem; line-height: 2.7rem;
+                    padding-left: 3.2rem;
+                    padding-right: 3.2rem;
+                    margin-bottom: 1.6rem;
+                ">
+                    {intro_paragraph}
+                </p>
+            '''
+        html_intro = f'''
+            <section style="margin-bottom: 9.6rem; padding: 8.0rem 5%; background-color: #222222;">
+                <div class="">
+                    <div style="display: flex;">
+                        <div style="flex: 1;">
+                            <img style="
+                                    display: block; height: 60rem; object-fit: cover;
+                                    padding-right: 3.2rem; border-right: 1px solid #444444;
+                                " 
+                                src="/images/herbs/primary/adiantum-capillus-veneris.jpg">
+                        </div>
+                        <div style="flex: 1; display: flex; flex-direction: column; justify-content: center;">
+                            {intro_paragraphs_html}
+                        </div>
+                    </div>
+                </div>
+            </section>
+        '''
+        ###
+        html_cards = ''
+        for i in range(len(group)):
+            herb = group[i]
+            herb_name_scientific = herb['herb_name_scientific']
+            herb_slug = polish.sluggify(herb_name_scientific)
+            ###
+            json_entity_filepath = f'''{g.DATABASE_FOLDERPATH}/ssot/herbs/herbs-primary/{herb_slug}.json'''
+            json_entity = io.json_read(json_entity_filepath)
+            herb_names_common = [name['answer'].title() for name in json_entity['herb_names_common']]
+            herb_name_common = herb_names_common[0]
+            ###
+            card_img_src = f'/images/herbs/primary/{herb_slug}.jpg'
+            card_title = herb_name_scientific.capitalize()
+            card_subtitle = herb_name_common.title().replace("'S", "'s")
+            ###
+            json_article = io.json_read(f'{g.DATABASE_FOLDERPATH}/json/herbs/{herb_slug}.json')
+            print(json_article)
+            card_article_preview = json_article['intro']
+            card_desc = ' '.join(card_article_preview.split(' ')[:16]) + '...'
+            ###
+            html_card = card_primary_gen(i, card_img_src, herb_slug, card_title, card_desc, card_subtitle)
+            html_cards += html_card
+        ###
+        html_sidebar = sidebar_gen()
+        ###
+        meta_title = f'''Herbs'''
+        meta_description = f''''''
+        pagination_html = pagination_gen(group_i, groups, url_slug)
+        ###
+        ### HERBS
+        ########################################
+        html_herbs = f'''
+            <section style="max-width: 175rem; margin: 0 auto; padding-left: 1.6rem; padding-right: 1.6rem;">
+                <div style="display: flex;">
+                    <div style="flex: 1;">
+                        {html_sidebar}
+                    </div>
+                    <div style="flex: 3; 
+                            padding-left: 4.8rem; border-left: 1px solid #e7e7e7; 
+                        ">
+                        {categories_html}
+                        <div style="padding-top: 3.2rem; border-top: 1px solid #e7e7e7;">
+                            <div class="grid-3">
+                                {html_cards}
+                            </div>
+                        </div>
+                        <div style="display: flex; justify-content: center; gap: 0.8rem;">
+                            {pagination_html}
+                        </div>
+                    </div>
+                </div>
+            </section>
+        '''
+        html_main += f'''
+            {html_title}
+            {html_intro}
+            {html_herbs}
+        '''
+        html = f'''
+            <!DOCTYPE html>
+            <html lang="en">
+            {components.html_head(meta_title, meta_description)}
+            <body>
+                {sections.header()}
+                <main>
+                    {html_main}
+                </main>
+                <div class="spacer"></div>
+                {sections.footer()}
+            </body>
+            </html>
+        '''
+        with open(html_filepath, 'w') as f: f.write(html)
+    sitemaps_gen()
+    # quit()
+
+def page_herbs_popular_gen():
+    url_slug = f'herbs/popular'
+    ###
+    json_article_filepath = f'''{g.DATABASE_FOLDERPATH}/json/{url_slug}.json'''
+    json_article = io.json_read(json_article_filepath, create=True)
+    json_article['url'] = url_slug
+    io.json_write(json_article_filepath, json_article)
+    ### json intro
+    regen = False
+    dispel = False
+    key = 'intro'
+    if key not in json_article: json_article[key] = ''
+    if regen: json_article[key] = ''
+    if dispel: 
+        json_article[key] = ''
+        io.json_write(json_article_filepath, json_article)
+    if not dispel:
+        if json_article[key] == '':
+            prompt = f'''
+                Write a detailed paragraph in 5 sentences for a page in my website.
+                This page is about listing the popular 100 medicinal herbs.
+                Include "popular 100".
+                Don't mention the herb names.
+                Start with the following words: This page .
+            '''
+            prompt += f'/no_think'
+            reply = llm.reply(prompt).strip()
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            json_article[key] = reply
+            io.json_write(json_article_filepath, json_article)
+    ###
+    groups = groups_gen(herbs_popular, 15)
+    for group_i, group in enumerate(groups):
+        ### page url
+        if group_i == 0:
+            html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
+        else:
+            try: os.makedirs(f'''{g.website_folderpath}/{url_slug}/page''')
+            except: pass
+            html_filepath = f'''{g.website_folderpath}/{url_slug}/page/{group_i+1}.html'''
+        ###
+        html_main = f''
+        html_title = f'''
+            <section class="container-xl" style="margin-bottom: 6.4rem;">
+                {sections.breadcrumbs(url_slug)}
+                <h1 style="margin-top: 4.8rem;">Popular 100 Medicinal Herbs</h1>
+            </section>
+        '''
+        intro_paragraphs = [f'{line}.'.replace('..', '.') for line in json_article['intro'].strip().split('. ')]
+        intro_paragraphs_html = ''
+        for intro_paragraph in intro_paragraphs:
+            intro_paragraphs_html += f'''
+                <p style="max-width: 76.8rem; margin: 0 auto; 
+                    color: #ffffff; font-size: 1.8rem; line-height: 2.7rem;
+                    padding-left: 3.2rem;
+                    padding-right: 3.2rem;
+                    margin-bottom: 1.6rem;
+                ">
+                    {intro_paragraph}
+                </p>
+            '''
+        html_intro = f'''
+            <section style="margin-bottom: 9.6rem; padding: 8.0rem 5%; background-color: #222222;">
+                <div class="">
+                    <div style="display: flex;">
+                        <div style="flex: 1;">
+                            <img style="
+                                    display: block; height: 60rem; object-fit: cover;
+                                    padding-right: 3.2rem; border-right: 1px solid #444444;
+                                " 
+                                src="/images/herbs/primary/adiantum-capillus-veneris.jpg">
+                        </div>
+                        <div style="flex: 1; display: flex; flex-direction: column; justify-content: center;">
+                            {intro_paragraphs_html}
+                        </div>
+                    </div>
+                </div>
+            </section>
+        '''
+        ###
+        html_cards = ''
+        for i in range(len(group)):
+            herb = group[i]
+            herb_name_scientific = herb['herb_name_scientific']
+            herb_slug = polish.sluggify(herb_name_scientific)
+            ###
+            json_entity_filepath = f'''{g.DATABASE_FOLDERPATH}/ssot/herbs/herbs-primary/{herb_slug}.json'''
+            json_entity = io.json_read(json_entity_filepath)
+            herb_names_common = [name['answer'].title() for name in json_entity['herb_names_common']]
+            herb_name_common = herb_names_common[0]
+            ###
+            card_img_src = f'/images/herbs/primary/{herb_slug}.jpg'
+            card_title = herb_name_scientific.capitalize()
+            card_subtitle = herb_name_common.title().replace("'S", "'s")
+            ###
+            json_herb = io.json_read(f'{g.DATABASE_FOLDERPATH}/json/herbs/{herb_slug}.json')
+            print(json_herb)
+            card_article_preview = json_herb['intro']
+            card_desc = ' '.join(card_article_preview.split(' ')[:16]) + '...'
+            ###
+            html_card = card_primary_gen(i, card_img_src, herb_slug, card_title, card_desc, card_subtitle)
+            html_cards += html_card
+        ###
+        html_sidebar = sidebar_gen()
+        ###
+        meta_title = f'''Herbs'''
+        meta_description = f''''''
+        pagination_html = pagination_gen(group_i, groups, url_slug)
+        ###
+        ### HERBS
+        ########################################
+        html_herbs = f'''
+            <section style="max-width: 175rem; margin: 0 auto; padding-left: 1.6rem; padding-right: 1.6rem;">
+                <div style="display: flex;">
+                    <div style="flex: 1;">
+                        {html_sidebar}
+                    </div>
+                    <div style="flex: 3; 
+                            padding-left: 4.8rem; border-left: 1px solid #e7e7e7; 
+                        ">
+                        {categories_html}
+                        <div style="padding-top: 3.2rem; border-top: 1px solid #e7e7e7;">
+                            <div class="grid-3">
+                                {html_cards}
+                            </div>
+                        </div>
+                        <div style="display: flex; justify-content: center; gap: 0.8rem;">
+                            {pagination_html}
+                        </div>
+                    </div>
+                </div>
+            </section>
+        '''
+        html_main += f'''
+            {html_title}
+            {html_intro}
+            {html_herbs}
+        '''
+        html = f'''
+            <!DOCTYPE html>
+            <html lang="en">
+            {components.html_head(meta_title, meta_description)}
+            <body>
+                {sections.header()}
+                <main>
+                    {html_main}
+                </main>
+                <div class="spacer"></div>
+                {sections.footer()}
+            </body>
+            </html>
+        '''
+        with open(html_filepath, 'w') as f: f.write(html)
+    sitemaps_gen()
+    # quit()
+
+def page_herbs_unverified_gen():
+    herbs_herbs_wcvp_medicinal = data.herbs_wcvp_medicinal_get()
+    print(len(herbs_herbs_wcvp_medicinal))
+    ###
+    url_slug = f'herbs/unverified'
+    ###
+    json_article_filepath = f'''{g.DATABASE_FOLDERPATH}/json/{url_slug}.json'''
+    json_article = io.json_read(json_article_filepath, create=True)
+    json_article['url'] = url_slug
+    io.json_write(json_article_filepath, json_article)
+    ### json intro
+    regen = False
+    dispel = False
+    key = 'intro'
+    if key not in json_article: json_article[key] = ''
+    if regen: json_article[key] = ''
+    if dispel: 
+        json_article[key] = ''
+        io.json_write(json_article_filepath, json_article)
+    if not dispel:
+        if json_article[key] == '':
+            prompt = f'''
+                Write a detailed paragraph in 5 sentences for a page in my website.
+                This page is about a massive listing of more than 130.000 medicinal herbs.
+                Include "more than 130.000" somewhere at the start.
+                Stress the fact that this list a curation of all the info we could find around the web about less known herbs, but most of these info are neither verified by known folk practice nor modern scientific studies, so usage is highly discouraged and more investigation is required.
+                Start with the following words: This page .
+            '''
+            prompt += f'/no_think'
+            reply = llm.reply(prompt).strip()
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            json_article[key] = reply
+            io.json_write(json_article_filepath, json_article)
+    ###
+    groups = groups_gen(herbs_herbs_wcvp_medicinal, 15)
+    for group_i, group in enumerate(groups):
+        print(f'{group_i}/{len(groups)}')
+        ### page url
+        if group_i == 0:
+            html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
+        else:
+            try: os.makedirs(f'''{g.website_folderpath}/{url_slug}/page''')
+            except: pass
+            html_filepath = f'''{g.website_folderpath}/{url_slug}/page/{group_i+1}.html'''
+        ###
+        html_main = f''
+        html_title = f'''
+            <section class="container-xl" style="margin-bottom: 6.4rem;">
+                {sections.breadcrumbs(url_slug)}
+                <h1 style="margin-top: 4.8rem;">130.000+ Unverified Medicinal Herbs</h1>
+            </section>
+        '''
+        intro_paragraphs = [f'{line}.'.replace('..', '.') for line in json_article['intro'].strip().split('. ')]
+        intro_paragraphs_html = ''
+        for intro_paragraph in intro_paragraphs:
+            intro_paragraphs_html += f'''
+                <p style="max-width: 76.8rem; margin: 0 auto; 
+                    color: #ffffff; font-size: 1.8rem; line-height: 2.7rem;
+                    padding-left: 3.2rem;
+                    padding-right: 3.2rem;
+                    margin-bottom: 1.6rem;
+                ">
+                    {intro_paragraph}
+                </p>
+            '''
+        html_intro = f'''
+            <section style="margin-bottom: 9.6rem; padding: 8.0rem 5%; background-color: #222222;">
+                <div class="">
+                    <div style="display: flex;">
+                        <div style="flex: 1;">
+                            <img style="
+                                    display: block; height: 60rem; object-fit: cover;
+                                    padding-right: 3.2rem; border-right: 1px solid #444444;
+                                " 
+                                src="/images/herbs/primary/adiantum-capillus-veneris.jpg">
+                        </div>
+                        <div style="flex: 1; display: flex; flex-direction: column; justify-content: center;">
+                            {intro_paragraphs_html}
+                        </div>
+                    </div>
+                </div>
+            </section>
+        '''
+        ###
+        html_cards = ''
+        for i in range(len(group)):
+            herb = group[i]
+            herb_name_scientific = herb['herb_name_scientific']
+            herb_slug = polish.sluggify(herb_name_scientific)
+            ###
+            json_entity_filepath = f'''{g.DATABASE_FOLDERPATH}/ssot/herbs/herbs-wcvp/medicinal/{herb_slug}.json'''
+            json_entity = io.json_read(json_entity_filepath)
+            herb_names_common = [name['answer'].title() for name in json_entity['herb_names_common']]
+            herb_name_common = herb_names_common[0]
+            ###
+            card_img_src = f'/images/herbs/primary/{herb_slug}.jpg'
+            card_img_src = f'/images/no-image.jpg'
+            card_title = herb_name_scientific.capitalize()
+            card_subtitle = herb_name_common.title().replace("'S", "'s")
+            ###
+            json_article_plant = io.json_read(f'{g.DATABASE_FOLDERPATH}/json/herbs/{herb_slug}.json')
+            card_article_preview = ''
+            try: card_article_preview = json_article_plant['intro']
+            except: pass
+            card_desc = ' '.join(card_article_preview.split(' ')[:16]) + '...'
+            ###
+            html_card = card_primary_gen(i, card_img_src, herb_slug, card_title, card_desc, card_subtitle)
+            html_cards += html_card
+        ###
+        html_sidebar = sidebar_gen()
+        ###
+        meta_title = f'''Herbs'''
+        meta_description = f''''''
+        pagination_html = pagination_gen(group_i, groups, url_slug)
+        ###
+        ### HERBS
+        ########################################
+        html_herbs = f'''
+            <section style="max-width: 175rem; margin: 0 auto; padding-left: 1.6rem; padding-right: 1.6rem;">
+                <div style="display: flex;">
+                    <div style="flex: 1;">
+                        {html_sidebar}
+                    </div>
+                    <div style="flex: 3; 
+                            padding-left: 4.8rem; border-left: 1px solid #e7e7e7; 
+                        ">
+                        {categories_html}
+                        <div style="padding-top: 3.2rem; border-top: 1px solid #e7e7e7;">
+                            <div class="grid-3">
+                                {html_cards}
+                            </div>
+                        </div>
+                        <div style="display: flex; justify-content: center; gap: 0.8rem;">
+                            {pagination_html}
+                        </div>
+                    </div>
+                </div>
+            </section>
+        '''
+        html_main += f'''
+            {html_title}
+            {html_intro}
+            {html_herbs}
+        '''
+        html = f'''
+            <!DOCTYPE html>
+            <html lang="en">
+            {components.html_head(meta_title, meta_description)}
+            <body>
+                {sections.header()}
+                <main>
+                    {html_main}
+                </main>
+                <div class="spacer"></div>
+                {sections.footer()}
+            </body>
+            </html>
+        '''
+        with open(html_filepath, 'w') as f: f.write(html)
     sitemaps_gen()
     # quit()
 
@@ -1555,8 +2298,12 @@ def main():
     # category_herbs_popular_gen()
     # category_herbs_actions_gen()
     ### articles
-    # article_herbs_herb_primary_gen()
+    herbs_herb_primary_gen()
     # article_herbs_herb_wcvp_gen()
 
-    page_herbs_gen()
+    # page_herbs_top_gen()
+    # page_herbs_popular_gen()
+    # page_herbs_unverified_gen()
+
+    # page_herbs_gen()
 

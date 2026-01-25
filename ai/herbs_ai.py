@@ -337,7 +337,7 @@ def herb_names_common_gen(entity_herb_filepath, regen=False, clear=False):
 def herb_family_ai(entity_herb_filepath, regen=False, clear=False):
     entity_herb = io.json_read(entity_herb_filepath)
     herb_name_scientific = entity_herb['herb_name_scientific']
-    key = 'family'
+    key = 'herb_family'
     if key not in entity_herb: entity_herb[key] = ''
     if regen: entity_herb[key] = ''
     if clear: 
@@ -387,6 +387,38 @@ def herb_family_ai(entity_herb_filepath, regen=False, clear=False):
         entity_herb[key] = outputs
         print(entity_herb_filepath)
         io.json_write(entity_herb_filepath, entity_herb)
+
+herbs_wcvp = None
+def herb_family_wcvp(herb_filepath, regen=False, clear=False):
+    global herbs_wcvp
+    herb = io.json_read(herb_filepath)
+    herb_name_scientific = herb['herb_name_scientific']
+    herb_slug = herb['herb_slug']
+    key = 'herb_family'
+    if key not in herb: herb[key] = ''
+    if regen: herb[key] = ''
+    if clear: 
+        herb[key] = ''
+        io.json_write(herb_filepath, herb)
+        return
+    if herb[key] == '':
+        if not herbs_wcvp:
+            herbs_wcvp = [
+                io.json_read(f'{g.PLANT_MEDICINE_FOLDERPATH}/{filename}')
+                for filename in os.listdir(f'{g.PLANT_MEDICINE_FOLDERPATH}')
+            ][:herbs_num]
+        herb_family = ''
+        for herb_wcvp_i, herb_wcvp in enumerate(herbs_wcvp):
+            # print(herb_wcvp)
+            # print('####################################')
+            # print(f'{herb_wcvp_i}/{len(herbs_wcvp)} - {herb_wcvp}')
+            # print('####################################')
+            herb_wcvp_slug = herb_wcvp['herb_slug']
+            if herb_slug == herb_wcvp_slug:
+                herb_family = herb_wcvp['herb_family']
+                break
+        herb[key] = herb_family
+        io.json_write(herb_filepath, herb)
 
 def herb_native_regions_ai(entity_herb_filepath, regen=False, clear=False):
     entity_herb = io.json_read(entity_herb_filepath)
@@ -507,6 +539,52 @@ def herb_origin_continents_gen(entity_herb_filepath, regen=False, clear=False):
         # print(entity_herb)
         # quit()
 
+def herb_traditional_medicinal_uses_gen(entity_herb_filepath, regen=False, clear=False):
+    entity_herb = io.json_read(entity_herb_filepath)
+    herb_name_scientific = entity_herb['herb_name_scientific']
+    key = 'herb_traditional_uses'
+    if key not in entity_herb: entity_herb[key] = ''
+    if regen: entity_herb[key] = ''
+    if clear: 
+        entity_herb[key] = ''
+        io.json_write(entity_herb_filepath, entity_herb)
+        return
+    if entity_herb[key] == '' or entity_herb[key] == []:
+        outputs = []
+        for i in range(1):
+            print(f'{i} - {herb_name_scientific}')
+            prompt = f'''
+                Tell me primary traditional uses of the following medicinal herb with scientific name: {herb_name_scientific}.
+                In specific, write a confidence score from 1 to 10, indicating how sure you are about your answer.
+                Reply using the following JSON format:
+                [
+                    {{"answer": "write the traditional use 1 here", "score": "write score 1 here"}},
+                    {{"answer": "write the traditional use 2 here", "score": "write score 2 here"}},
+                    {{"answer": "write the traditional use 3 here", "score": "write score 3 here"}}
+                ]
+                Reply only with the JSON.
+                Reply in as few words as possible.
+            '''
+            prompt += f'/no_think'
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            json_data = {}
+            try: json_data = json.loads(reply)
+            except: pass 
+            if json_data != {}:
+                _objs = answer_score_extract(json_data)
+                for _obj in _objs:
+                    outputs.append({
+                        'answer': _obj['answer'], 
+                        'mentions': 1, 
+                        'confidence_score': int(_obj['score']), 
+                    })
+        outputs = total_score_calc(outputs)
+        entity_herb[key] = outputs
+        io.json_write(entity_herb_filepath, entity_herb)
+        print(entity_herb_filepath)
+
 def json_gen(herb):
     entities_herbs_folderpath = f'{g.DATABASE_FOLDERPATH}/entities/herbs'
     try: os.mkdir(entities_herbs_folderpath)
@@ -574,22 +652,21 @@ def herbs_primary_json(herb):
     except: pass
     ###
     herb_name_scientific = herb['herb_name_scientific']
-    try: herb_slug = herb['herb_slug']
-    except: herb_slug = polish.sluggify(herb_name_scientific)
-    try: herb_family = herb['herb_family']
-    except: herb_family = ''
+    herb_slug = polish.sluggify(herb_name_scientific)
     ###
     herb_filepath = f'''{herbs_folderpath}/{herb_slug}.json'''
     herb_data = io.json_read(herb_filepath, create=True)
     herb_data['herb_slug'] = herb_slug
     herb_data['herb_name_scientific'] = herb_name_scientific
-    herb_data['herb_family'] = herb_family
     io.json_write(herb_filepath, herb_data)
     ###
     herb_names_common_gen(herb_filepath, regen=False, clear=False)
     herb_origin_continents_gen(herb_filepath, regen=False, clear=False)
     herb_medicine_or_poison_gen(herb_filepath, regen=False, clear=False)
-    # herb_family_ai(entity_herb_filepath, regen=False, clear=False)
+    ###
+    herb_traditional_medicinal_uses_gen(herb_filepath, regen=False, clear=False)
+    herb_family_ai(herb_filepath, regen=False, clear=False)
+    # herb_family_wcvp(herb_filepath, regen=False, clear=False)
     # herb_native_regions_ai(entity_herb_filepath, regen=False, clear=False)
     # herb_benefits_ai(entity_herb_filepath, regen=False, clear=False)
     # herb_therapeutic_actions_ai(entity_herb_filepath, regen=False, clear=False)
@@ -600,8 +677,8 @@ def herbs_primary_gen():
     for herb_i, herb in enumerate(herbs):
         print('####################################')
         print(f'{herb_i}/{len(herbs)} - {herb}')
-        herbs_primary_json(herb)
         print('####################################')
+        herbs_primary_json(herb)
         print()
         print()
         print()
@@ -611,14 +688,15 @@ def herbs_popular_gen():
     for herb_i, herb in enumerate(herbs):
         print('####################################')
         print(f'{herb_i}/{len(herbs)} - {herb}')
-        herbs_primary_json(herb)
         print('####################################')
+        herbs_primary_json(herb)
         print()
         print()
         print()
 
 def main():
     herbs_primary_gen()
-    herbs_wcvp_medicinal_gen()
-
     herbs_popular_gen()
+
+    # herbs_wcvp_medicinal_gen()
+

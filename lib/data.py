@@ -1,3 +1,5 @@
+import os
+
 from lib import g
 from lib import io
 from lib import polish
@@ -5,7 +7,11 @@ from lib import polish
 def is_herb_in_list(herb_tmp, herbs):
     found = False
     for herb in herbs:
-        if herb['herb_name_scientific'] == herb_tmp['herb_name_scientific']:
+        herb_a_name_scientific = herb['herb_name_scientific']
+        herb_b_name_scientific = herb_tmp['herb_name_scientific']
+        herb_a_name_scientific = herb_a_name_scientific.lower().strip().replace(' ', '-')
+        herb_b_name_scientific = herb_b_name_scientific.lower().strip().replace(' ', '-')
+        if  herb_a_name_scientific == herb_b_name_scientific:
             found = True
             break
     return found
@@ -131,7 +137,7 @@ def herbs_popular_get(preparation_slug, herbs_num):
             json_article_preparations = json_article['preparations']
             for json_article_preparation in json_article_preparations:
                 herb_name_scientific = json_article_preparation['herb_name_scientific']
-                # herb_name_scientific = herb_name_scientific.replace('mentha piperita', 'mentha x piperita')
+                herb_name_scientific = herb_name_scientific.replace('mentha piperita', 'mentha x piperita')
                 found = False
                 for herb in herbs:
                     if herb['herb_name_scientific'] == herb_name_scientific:
@@ -149,7 +155,13 @@ def herbs_popular_get(preparation_slug, herbs_num):
         print(herb)
     print(len(herbs))
     herbs = herbs[:herbs_num]
+    return herbs
 
+def herbs_wcvp_medicinal_get():
+    herbs = [
+        io.json_read(f'{g.PLANT_MEDICINE_FOLDERPATH}/{filename}')
+        for filename in os.listdir(f'{g.PLANT_MEDICINE_FOLDERPATH}')
+    ]
     return herbs
 
 def herb_name_common_get(herb_slug):
