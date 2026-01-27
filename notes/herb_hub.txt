@@ -1,0 +1,449 @@
+Perfect — stepping back is exactly the right move here.
+What follows is a **very detailed, beginner-friendly, step-by-step OUTLINE**, designed so you can implement **one step at a time**, safely, cleanly, and in the correct order.
+
+I will **not implement anything yet**.
+I will **only explain what each step is, why it exists, and what HTML structure it will eventually use**, so you can come back later and say:
+
+> “Explain Step 3 in detail”
+> and we’ll zoom in.
+
+We’ll build from **bare minimum → full Koray Semantic Topical Authority system**, using **plain HTML + CSS** only.
+
+---
+
+# MASTER ACTION PLAN
+
+## Building Individual Medicinal Herb Pages (STA-Compliant)
+
+---
+
+## PHASE 0 — FOUNDATIONS (Do This Once)
+
+These steps apply to **every herb page** and must exist before content.
+
+---
+
+### STEP 0.1 — Decide What a “Herb Page” Is (Conceptual)
+
+**Goal:** Understand that every herb is an *entity*, not just an article.
+
+You are creating:
+
+* One HTML page = one **herbal entity**
+* This entity must be:
+
+  * Identifiable
+  * Describable
+  * Linkable
+  * Comparable
+
+**STA concept involved:**
+👉 Entity recognition & consistency
+
+No HTML yet — this is mental framing.
+
+---
+
+### STEP 0.2 — Create a Reusable Page Skeleton (HTML Boilerplate)
+
+**Goal:** One base HTML file structure reused for all herbs.
+
+This ensures:
+
+* Consistent semantics
+* Consistent crawl patterns
+* Predictable indexing
+
+**Core tags you will use (later):**
+
+* `<!DOCTYPE html>`
+* `<html lang="en">`
+* `<head>`
+* `<body>`
+* `<main>`
+
+No content yet — just structure.
+
+---
+
+### STEP 0.3 — Define Semantic Section Order (Very Important)
+
+**Goal:** Lock the order of sections so Google learns your pattern.
+
+STA principle:
+
+> Consistency improves semantic confidence.
+
+You will **never change this order** between herb pages.
+
+Planned top-level layout:
+
+```html
+<body>
+  <header></header>
+  <main>
+    <article>
+      <!-- sections go here -->
+    </article>
+  </main>
+  <footer></footer>
+</body>
+```
+
+---
+
+## PHASE 1 — BARE MINIMUM INDEXABLE HERB PAGE
+
+This phase gets you **indexed correctly** with almost no content.
+
+---
+
+### STEP 1 — Page Identity & Primary Entity Definition
+
+**Goal:** Tell search engines *exactly* what this page is about.
+
+**STA concept:**
+👉 Entity disambiguation
+
+**HTML elements involved:**
+
+* `<title>`
+* `<meta name="description">`
+* `<h1>`
+
+This step answers:
+
+* What is the herb called?
+* Is this page about a plant, medicine, or product?
+
+No secondary content yet.
+
+---
+
+### STEP 2 — Hero Section (Entity Summary)
+
+**Goal:** Provide a concise, entity-rich summary.
+
+This is **mandatory for STA**.
+
+**HTML structure (conceptual):**
+
+```html
+<section id="overview">
+  <h1></h1>
+  <p></p>
+</section>
+```
+
+**What this section represents:**
+
+* Canonical definition of the herb
+* Synonyms & scientific name
+* Broad traditional context
+
+**Why this matters:**
+
+* Google uses this to understand entity meaning
+* Users decide in 3 seconds if they trust you
+
+---
+
+### STEP 3 — Quick Facts (Entity Attributes)
+
+**Goal:** Attach structured attributes to the entity.
+
+**STA concept:**
+👉 Attribute enrichment
+
+**HTML elements involved:**
+
+* `<section>`
+* `<dl>`, `<dt>`, `<dd>` (VERY important)
+
+This is your first **machine-readable semantic structure**.
+
+---
+
+## PHASE 2 — BASIC SEMANTIC DEPTH (Still Minimal)
+
+Now we expand meaning without going deep.
+
+---
+
+### STEP 4 — Botanical Identity Section
+
+**Goal:** Define the herb as a biological organism.
+
+**STA concept:**
+👉 Entity grounding (taxonomy)
+
+**HTML elements involved:**
+
+* `<section>`
+* `<h2>`
+* `<p>`
+* `<ul>`
+
+This tells Google:
+
+* This is a plant
+* It belongs to a family/genus
+* It exists in the real world
+
+---
+
+### STEP 5 — Traditional Use Context
+
+**Goal:** Establish historical legitimacy.
+
+**STA concept:**
+👉 Contextual authority
+
+**HTML structure:**
+
+```html
+<section>
+  <h2>Traditional Uses</h2>
+  <article></article>
+  <article></article>
+</section>
+```
+
+Each tradition can later become its own **semantic sub-entity**.
+
+---
+
+## PHASE 3 — MEDICINAL MEANING (CORE VALUE)
+
+This is where topical authority begins.
+
+---
+
+### STEP 6 — Medicinal Actions (Semantic Nodes)
+
+**Goal:** Connect this herb to other herbs via shared actions.
+
+**STA concept:**
+👉 Semantic relationships
+
+**HTML elements involved:**
+
+* `<section>`
+* `<h2>`
+* `<h3>` (one per action)
+* `<p>`
+
+Each action:
+
+* Nervine
+* Anti-inflammatory
+* Digestive tonic
+  becomes a **linkable semantic node** later.
+
+---
+
+### STEP 7 — Active Compounds (Chemical Entity Layer)
+
+**Goal:** Add scientific depth without making claims.
+
+**STA concept:**
+👉 Multi-layer entity modeling
+
+**HTML elements:**
+
+* `<section>`
+* `<table>` (very important later)
+* `<caption>`
+
+This signals:
+
+* Scientific awareness
+* Non-blog informational intent
+
+---
+
+## PHASE 4 — TRUST & SAFETY (NON-NEGOTIABLE)
+
+This protects rankings long-term.
+
+---
+
+### STEP 8 — Modern Research Overview
+
+**Goal:** Show awareness of evidence without overclaiming.
+
+**STA concept:**
+👉 Epistemic humility (huge ranking factor)
+
+**HTML elements:**
+
+* `<section>`
+* `<p>`
+* `<ul>`
+
+This section explicitly limits certainty.
+
+---
+
+### STEP 9 — Safety & Contraindications
+
+**Goal:** Avoid YMYL penalties.
+
+**STA concept:**
+👉 Risk acknowledgment
+
+**HTML structure:**
+
+```html
+<section>
+  <h2>Safety & Precautions</h2>
+  <h3>General Safety</h3>
+  <h3>Contraindications</h3>
+</section>
+```
+
+---
+
+## PHASE 5 — PRACTICAL INTENT (USER VALUE)
+
+---
+
+### STEP 10 — Preparation & Usage Methods
+
+**Goal:** Serve informational intent safely.
+
+**STA concept:**
+👉 Procedural context (non-transactional)
+
+**HTML elements:**
+
+* `<section>`
+* `<h3>` per method
+* `<p>`
+
+---
+
+### STEP 11 — Growing, Harvesting & Storage
+
+**Goal:** Capture long-tail & enthusiast queries.
+
+**STA concept:**
+👉 Peripheral semantic expansion
+
+Optional at first — can be added later.
+
+---
+
+## PHASE 6 — INTERNAL SEMANTIC NETWORK (AUTHORITY ENGINE)
+
+This is where STA really activates.
+
+---
+
+### STEP 12 — Related Herbs & Semantic Links
+
+**Goal:** Build lateral topical authority.
+
+**STA concept:**
+👉 Semantic density
+
+**HTML elements:**
+
+* `<nav>`
+* `<ul>`
+* `<a>`
+
+Links are grouped by:
+
+* Similar actions
+* Same plant family
+* Shared compounds
+
+---
+
+### STEP 13 — FAQ Section (Query Matching)
+
+**Goal:** Match real user questions.
+
+**STA concept:**
+👉 Query-entity alignment
+
+**HTML elements:**
+
+* `<section>`
+* `<details>`
+* `<summary>`
+
+Excellent for plain HTML.
+
+---
+
+## PHASE 7 — STANDARDIZATION & SCALE
+
+---
+
+### STEP 14 — Medical Disclaimer
+
+**Goal:** Legal + trust baseline.
+
+**STA concept:**
+👉 Institutional tone consistency
+
+Single reusable block across all pages.
+
+---
+
+### STEP 15 — CSS Layout & Visual Hierarchy
+
+**Goal:** Reinforce semantic hierarchy visually.
+
+**STA concept:**
+👉 UX reinforces meaning
+
+HTML stays semantic; CSS handles:
+
+* Section spacing
+* Heading hierarchy
+* Fact box layout
+
+---
+
+### STEP 16 — Replication System
+
+**Goal:** Turn one page into 100,000+ pages.
+
+**STA concept:**
+👉 Programmatic consistency
+
+At this stage:
+
+* You duplicate structure
+* Only data changes
+* Meaning stays stable
+
+---
+
+## FINAL NOTE (Very Important)
+
+This plan is intentionally **slow, layered, and conservative**.
+
+Koray’s framework rewards:
+
+* Patience
+* Consistency
+* Semantic discipline
+
+Not volume.
+
+---
+
+### How we proceed next (your choice)
+
+In your next prompt, you can say **one** of these:
+
+* “Explain Step 1 in full detail”
+* “Let’s implement Step 2 with correct HTML”
+* “Explain why `<dl>` matters for STA”
+* “Show me the exact HTML layout for the hero section”
+
+We’ll build this **one brick at a time**, the right way 🌱

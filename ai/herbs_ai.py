@@ -388,6 +388,86 @@ def herb_family_ai(entity_herb_filepath, regen=False, clear=False):
         print(entity_herb_filepath)
         io.json_write(entity_herb_filepath, entity_herb)
 
+def herb_parts_gen(entity_herb_filepath, regen=False, clear=False):
+    entity_herb = io.json_read(entity_herb_filepath)
+    herb_name_scientific = entity_herb['herb_name_scientific']
+    key = 'herb_parts'
+    if key not in entity_herb: entity_herb[key] = ''
+    if regen: entity_herb[key] = ''
+    if clear: 
+        entity_herb[key] = ''
+        io.json_write(entity_herb_filepath, entity_herb)
+        return
+    if entity_herb[key] == '' or entity_herb[key] == []:
+        outputs = []
+        for i in range(10):
+            print(f'{i} - {herb_name_scientific}')
+            prompt = f'''
+                Tell me the medicinal plant parts used of the following plant with scientific name: {herb_name_scientific}.
+                In specific, write a confidence score from 1 to 10, indicating how sure you are about your answer.
+                The possible plant parts used are the following:
+                    Leaves
+                    Stems
+                    Shoots
+                    Roots
+                    Rhizomes
+                    Tubers
+                    Bulbs
+                    Corms
+                    Flowers
+                    Seeds
+                    Fruits
+                    Cones
+                    Bark
+                    Wood
+                    Resin
+                    Oleoresin
+                    Gum
+                    Balsam
+                    Latex
+                    Sap
+                    Pollen
+                    Spores
+                Reply using the following JSON format:
+                [
+                    {{"answer": "write plant part name 1 here", "score": "write score 1 here"}},
+                    {{"answer": "write plant part name 2 here", "score": "write score 2 here"}},
+                    {{"answer": "write plant part name 3 here", "score": "write score 3 here"}}
+                ]
+                Reply only with the JSON.
+            '''
+            prompt += f'/no_think'
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            json_data = {}
+            try: json_data = json.loads(reply)
+            except: pass 
+            if json_data != {}:
+                _objs = answer_score_extract(json_data)
+                for _obj in _objs:
+                    answer = _obj['answer'].strip().lower()
+                    score = int(_obj['score'])
+                    found = False
+                    for output in outputs:
+                        if answer in output['answer']: 
+                            output['mentions'] += 1
+                            output['confidence_score'] += int(score)
+                            found = True
+                            break
+                    if not found:
+                        outputs.append({
+                            'answer': answer, 
+                            'mentions': 1, 
+                            'confidence_score': int(score), 
+                        })
+        outputs = total_score_calc(outputs)
+        entity_herb[key] = outputs
+        print(entity_herb_filepath)
+        io.json_write(entity_herb_filepath, entity_herb)
+        # print(entity_herb)
+        # quit()
+
 herbs_wcvp = None
 def herb_family_wcvp(herb_filepath, regen=False, clear=False):
     global herbs_wcvp
@@ -666,6 +746,7 @@ def herbs_primary_json(herb):
     ###
     herb_traditional_medicinal_uses_gen(herb_filepath, regen=False, clear=False)
     herb_family_ai(herb_filepath, regen=False, clear=False)
+    herb_parts_gen(herb_filepath, regen=False, clear=False)
     # herb_family_wcvp(herb_filepath, regen=False, clear=False)
     # herb_native_regions_ai(entity_herb_filepath, regen=False, clear=False)
     # herb_benefits_ai(entity_herb_filepath, regen=False, clear=False)

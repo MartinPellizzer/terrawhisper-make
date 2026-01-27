@@ -296,7 +296,7 @@ def herbs_herb_primary_gen():
     ###
     for herb_i, herb in enumerate(herbs):
         herb_name_scientific = herb['herb_name_scientific']
-        herb_name_scientific = polish.sanitize(herb_name_scientific)
+        herb_name_scientific = polish.sanitize(herb_name_scientific).capitalize()
         herb_slug = polish.sluggify(herb_name_scientific)
         url_slug = f'herbs/{herb_slug}'
         print(f'HERB: {herb_i}/{len(herbs)} - {herb_slug}')
@@ -309,6 +309,8 @@ def herbs_herb_primary_gen():
         print(herb_name_common)
         # if herb_i == 15: quit()
         herb_family = json_entity['herb_family'][0]['answer'].title()
+        herb_parts = json_entity['herb_parts']
+        herb_parts_string = ', '.join([part['answer'] for part in herb_parts[:3]]).capitalize()
         # herb_native_regions = [item['answer'].title() for item in json_entity['native_regions']]
         ########################################
         # json
@@ -588,7 +590,7 @@ def herbs_herb_primary_gen():
                 </p>
             </div>
         '''
-        src = f'''/images/herbs/primary/{herb_slug}.jpg'''
+        src = f'''/images/herbs/{herb_slug}.jpg'''
         alt = f'''herbal {herb_name_common}'''
         html_article += f'''<img src="{src}" alt="{alt}">\n'''
         html_article += p2s(json_article['intro'])
@@ -701,8 +703,11 @@ def herbs_herb_primary_gen():
                 json_article[key] = reply
                 io.json_write(json_article_filepath, json_article)
 
-        ### json intro 
         import textwrap
+        #############################################################
+        ### SECTION OVERVIEW
+        #############################################################
+        ### json intro 
         regen = False
         dispel = False
         key = 'intro'
@@ -743,6 +748,60 @@ def herbs_herb_primary_gen():
         ###
         meta_description = json_article['meta_description']
         html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
+
+        overview_quick_facts_html = textwrap.dedent(f'''
+            <dl>
+                <dt>Common Name:</dt>
+                <dd class="common-name"><strong>{herb_name_common}</strong></dd>
+                <dt>Scientific Name:</dt>
+                <dd class="scientific-name"><strong>{herb_name_scientific.capitalize()}</strong></dd>
+                <dt>Family:</dt>
+                <dd class="family"><strong>{herb_family.capitalize()}</strong></dd>
+                <dt>Plant Parts Used</dt>
+                <dd>{herb_parts_string}</dd>
+            </dl>
+        ''').strip()
+        # TODO
+        '''
+        <dt>Traditional Use / Region:</dt>
+        <dd>European and Ayurvedic herbal medicine</dd>
+             data-synonyms="Chamomile, German Chamomile"
+        '''
+        ###
+        overview_html = textwrap.dedent(f'''
+            <section id="overview">
+                <h1>{herb_name_common} ({herb_name_scientific.capitalize()})</h1>
+                <p>{json_article['intro']}</p>
+                {overview_quick_facts_html}
+                <figure>
+                  <img src="/images/herbs/{herb_slug}.jpg" 
+                       alt="{herb_name_common} ({herb_name_scientific.capitalize()}) dried pieces of the herb arranged on a wooden table for reference" 
+                       width="400">
+                  <figcaption>{herb_name_common} ({herb_name_scientific.capitalize()}) dried pieces of the herb arranged together on a wooden table for reference, used in teas and remedies.</figcaption>
+                </figure>
+            </section>
+        ''').strip()
+        ###
+        quick_facts_html = textwrap.dedent(f'''
+            <aside id="quick-facts aria-labelledby="quick-facts-title"">
+              <h2 id="quick-facts-title">Quick Facts</h2>
+              <dl>
+                <dt>Common Name</dt>
+                <dd class="quick-common-name"><strong>{herb_name_common}</strong></dd>
+                <dt>Scientific Name</dt>
+                <dd class="quick-scientific-name"><strong>{herb_name_scientific}</strong></dd>
+                <dt>Plant Family</dt>
+                <dd class="quick-family-name"><strong>{herb_family}</strong></dd>
+                <dt>Plant Parts Used</dt>
+                <dd class="quick-plant-parts-name"><strong>{herb_parts_string}</strong></dd>
+              </dl>
+            </aside>
+        ''').strip()
+        '''
+                <dt>Traditional Systems</dt>
+                <dd>European, Ayurvedic</dd>
+        '''
+
         import textwrap
         site_name = 'Terra Whisper'
         html = textwrap.dedent(f''' 
@@ -758,7 +817,7 @@ def herbs_herb_primary_gen():
                 <meta property="og:description" content="{meta_description}">
                 <meta property="og:type" content="article">
                 <meta property="og:url" content="https://terrawhisper.com/herbs/{herb_slug}.html">
-                <meta property="og:image" content="https://terrawhisper.com/images/herbs/primary/{herb_slug}.jpg">
+                <meta property="og:image" content="https://terrawhisper.com/images/herbs/{herb_slug}.jpg">
                 <meta property="og:site_name" content="{site_name}">
                 <meta property="og:locale" content="en_US">
             </head>
@@ -766,12 +825,8 @@ def herbs_herb_primary_gen():
               <header></header>
               <main>
                 <article>
-                  <section id="overview">
-                    <h1>{herb_name_common} ({herb_name_scientific.capitalize()})</h1>
-                    <p>{json_article['intro']}</p>
-                  </section>
-                  <section id="quick-facts">
-                  </section>
+                    {overview_html}
+                    {quick_facts_html}
                   <section id="botanical-description">
                   </section>
                   <section id="traditional-uses">
@@ -1382,7 +1437,7 @@ def sidebar_gen():
         card_title = herb_name_scientific.capitalize()
         # card_desc = ' '.join(lorem.paragraph().split(' ')[:8])
         card_desc = 'Leen Randell is a herbalist, apothecary, and journalist, who loves to report insights on medicinal herbs and herbal preparations.'
-        card_img_src = f'/images/herbs/primary/{herb_slug}.jpg'
+        card_img_src = f'/images/herbs/{herb_slug}.jpg'
         html_card = f'''
             <div style="display: flex; gap: 2.4rem; margin-bottom: 2.4rem; padding-bottom: 1.6rem; border-bottom: 1px solid #e7e7e7;">
                 <div style="flex: 1;">
@@ -1428,7 +1483,7 @@ def page_herbs_gen_old():
             herb_name_scientific = herb['herb_name_scientific']
             json_article = io.json_read(f'{g.DATABASE_FOLDERPATH}/entities/herbs/{herb_slug}.json')
             herb_name_common = json_article['herb_name_common'][0]['answer']
-            src = f'''/images/herbs/primary/{herb_slug}.jpg'''
+            src = f'''/images/herbs/{herb_slug}.jpg'''
             alt = f'''{herb_name_scientific}'''
             html_herbs += f'''
                 <div class="card-default">
@@ -1450,7 +1505,7 @@ def page_herbs_gen_old():
             try: json_article = io.json_read(json_filepath)
             except: print(herb_slug)
             herb_name_common = json_article['herb_name_common'][0]['answer']
-            src = f'''/images/herbs/primary/{herb_slug}.jpg'''
+            src = f'''/images/herbs/{herb_slug}.jpg'''
             alt = f'''{herb_name_scientific}'''
             html_herbs_popular_grid += f'''
                 <div class="card-default">
@@ -1488,7 +1543,7 @@ def page_herbs_gen_old():
             try: json_article = io.json_read(json_filepath)
             except: print(herb_slug)
             herb_name_common = json_article['herb_name_common'][0]['answer']
-            herb_image_src = f'''/images/herbs/primary/{herb_slug}.jpg'''
+            herb_image_src = f'''/images/herbs/{herb_slug}.jpg'''
             herb_image_alt = f'''{herb_name_scientific}'''
             html_herbs_grid += f'''
                 <div class="card-default">
@@ -1722,7 +1777,7 @@ def page_herbs_gen():
                                     display: block; height: 60rem; object-fit: cover;
                                     padding-right: 3.2rem; border-right: 1px solid #444444;
                                 " 
-                                src="/images/herbs/primary/adiantum-capillus-veneris.jpg">
+                                src="/images/herbs/adiantum-capillus-veneris.jpg">
                         </div>
                         <div style="flex: 1; display: flex; flex-direction: column; justify-content: center;">
                             {intro_paragraphs_html}
@@ -1743,7 +1798,7 @@ def page_herbs_gen():
             herb_names_common = [name['answer'].title() for name in json_entity['herb_names_common']]
             herb_name_common = herb_names_common[0]
             ###
-            card_img_src = f'/images/herbs/primary/{herb_slug}.jpg'
+            card_img_src = f'/images/herbs/{herb_slug}.jpg'
             card_title = herb_name_scientific.capitalize()
             # card_title = herb_name_common.title().replace("'S", "'s")
             card_subtitle = herb_name_common.title().replace("'S", "'s")
@@ -1882,7 +1937,7 @@ def page_herbs_top_gen():
                                     display: block; height: 60rem; object-fit: cover;
                                     padding-right: 3.2rem; border-right: 1px solid #444444;
                                 " 
-                                src="/images/herbs/primary/adiantum-capillus-veneris.jpg">
+                                src="/images/herbs/adiantum-capillus-veneris.jpg">
                         </div>
                         <div style="flex: 1; display: flex; flex-direction: column; justify-content: center;">
                             {intro_paragraphs_html}
@@ -1903,7 +1958,7 @@ def page_herbs_top_gen():
             herb_names_common = [name['answer'].title() for name in json_entity['herb_names_common']]
             herb_name_common = herb_names_common[0]
             ###
-            card_img_src = f'/images/herbs/primary/{herb_slug}.jpg'
+            card_img_src = f'/images/herbs/{herb_slug}.jpg'
             card_title = herb_name_scientific.capitalize()
             card_subtitle = herb_name_common.title().replace("'S", "'s")
             ###
@@ -2040,7 +2095,7 @@ def page_herbs_popular_gen():
                                     display: block; height: 60rem; object-fit: cover;
                                     padding-right: 3.2rem; border-right: 1px solid #444444;
                                 " 
-                                src="/images/herbs/primary/adiantum-capillus-veneris.jpg">
+                                src="/images/herbs/adiantum-capillus-veneris.jpg">
                         </div>
                         <div style="flex: 1; display: flex; flex-direction: column; justify-content: center;">
                             {intro_paragraphs_html}
@@ -2061,7 +2116,7 @@ def page_herbs_popular_gen():
             herb_names_common = [name['answer'].title() for name in json_entity['herb_names_common']]
             herb_name_common = herb_names_common[0]
             ###
-            card_img_src = f'/images/herbs/primary/{herb_slug}.jpg'
+            card_img_src = f'/images/herbs/{herb_slug}.jpg'
             card_title = herb_name_scientific.capitalize()
             card_subtitle = herb_name_common.title().replace("'S", "'s")
             ###
@@ -2202,7 +2257,7 @@ def page_herbs_unverified_gen():
                                     display: block; height: 60rem; object-fit: cover;
                                     padding-right: 3.2rem; border-right: 1px solid #444444;
                                 " 
-                                src="/images/herbs/primary/adiantum-capillus-veneris.jpg">
+                                src="/images/herbs/adiantum-capillus-veneris.jpg">
                         </div>
                         <div style="flex: 1; display: flex; flex-direction: column; justify-content: center;">
                             {intro_paragraphs_html}
@@ -2223,7 +2278,7 @@ def page_herbs_unverified_gen():
             herb_names_common = [name['answer'].title() for name in json_entity['herb_names_common']]
             herb_name_common = herb_names_common[0]
             ###
-            card_img_src = f'/images/herbs/primary/{herb_slug}.jpg'
+            card_img_src = f'/images/herbs/{herb_slug}.jpg'
             card_img_src = f'/images/no-image.jpg'
             card_title = herb_name_scientific.capitalize()
             card_subtitle = herb_name_common.title().replace("'S", "'s")
