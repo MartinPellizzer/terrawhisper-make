@@ -8,6 +8,8 @@ from lib import llm
 from lib import data
 from lib import polish
 
+herbs_wcvp = None
+
 herbs_num = 140000
 
 def medicine_poison_inert_get(tmp_filepath):
@@ -468,7 +470,255 @@ def herb_parts_gen(entity_herb_filepath, regen=False, clear=False):
         # print(entity_herb)
         # quit()
 
-herbs_wcvp = None
+def herb_traditional_systems_gen(herb_filepath, regen=False, clear=False):
+    entity_herb = io.json_read(herb_filepath)
+    herb_name_scientific = entity_herb['herb_name_scientific']
+    key = 'herb_traditional_systems'
+    if key not in entity_herb: entity_herb[key] = ''
+    if regen: entity_herb[key] = ''
+    if clear: 
+        entity_herb[key] = ''
+        io.json_write(herb_filepath, entity_herb)
+        return
+    if entity_herb[key] == '' or entity_herb[key] == []:
+        main_list_text = f'''
+                European Herbal Medicine
+                Ayurvedic Medicine
+                Traditional Chinese Medicine
+                Unani Medicine
+                Native American Herbal Medicine
+                African Traditional Medicine
+                Japanese Kampo Medicine
+                Tibetan Medicine
+                Mediterranean Herbal Traditions
+                Korean Traditional Medicine
+            '''.strip()
+        outputs = []
+        for i in range(10):
+            print(f'{i} - {herb_name_scientific}')
+            import textwrap
+            main_list_prompt = [e.strip() for e in main_list_text.split('\n') if e.strip() != '']
+            random.shuffle(main_list_prompt)
+            main_list_prompt = '\n'.join(main_list_prompt)
+            prompt = textwrap.dedent(f''' 
+                Tell me the traditional systems that used the following plant with scientific name: {herb_name_scientific}.
+                In specific, write a confidence score from 1 to 10, indicating how sure you are about your answer.
+                The possible traditional systems are the following:
+                {main_list_prompt}
+                Reply using the following JSON format:
+                [
+                    {{"answer": "write traditional system name 1 here", "score": "write score 1 here"}},
+                    {{"answer": "write traditional system name 2 here", "score": "write score 2 here"}},
+                    {{"answer": "write traditional system name 3 here", "score": "write score 3 here"}},
+                    {{"answer": "write traditional system name 4 here", "score": "write score 4 here"}},
+                    {{"answer": "write traditional system name 5 here", "score": "write score 5 here"}},
+                    {{"answer": "write traditional system name 6 here", "score": "write score 6 here"}},
+                    {{"answer": "write traditional system name 7 here", "score": "write score 7 here"}},
+                    {{"answer": "write traditional system name 8 here", "score": "write score 8 here"}},
+                    {{"answer": "write traditional system name 9 here", "score": "write score 9 here"}},
+                    {{"answer": "write traditional system name 10 here", "score": "write score 10 here"}}
+                ]
+                Reply only with the JSON.
+            ''').strip()
+            prompt += f'\n/no_think'
+            print(prompt)
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            json_data = {}
+            try: json_data = json.loads(reply)
+            except: pass 
+            if json_data != {}:
+                _objs = answer_score_extract(json_data)
+                for _obj in _objs:
+                    answer = _obj['answer'].strip().lower()
+                    score = int(_obj['score'])
+                    found = False
+                    for output in outputs:
+                        if answer in output['answer']: 
+                            output['mentions'] += 1
+                            output['confidence_score'] += int(score)
+                            found = True
+                            break
+                    if not found:
+                        outputs.append({
+                            'answer': answer, 
+                            'mentions': 1, 
+                            'confidence_score': int(score), 
+                        })
+        outputs = total_score_calc(outputs)
+        entity_herb[key] = outputs
+        print(herb_filepath)
+        io.json_write(herb_filepath, entity_herb)
+        # print(entity_herb)
+        # quit()
+
+def herb_historical_preparations_gen(herb_filepath, regen=False, clear=False):
+    entity_herb = io.json_read(herb_filepath)
+    herb_name_scientific = entity_herb['herb_name_scientific']
+    key = 'herb_historical_preparations'
+    if key not in entity_herb: entity_herb[key] = ''
+    if regen: entity_herb[key] = ''
+    if clear: 
+        entity_herb[key] = ''
+        io.json_write(herb_filepath, entity_herb)
+        return
+    if entity_herb[key] == '' or entity_herb[key] == []:
+        main_list_text = f'''
+                Infusion
+                Decoction
+                Tincture
+                Poultice
+                Oil infusion
+                Ointment
+                Syrup
+                Powder
+                Herbal bath
+                Culinary use
+            '''.strip()
+        outputs = []
+        for i in range(10):
+            print(f'{i} - {herb_name_scientific}')
+            import textwrap
+            main_list_prompt = [e.strip() for e in main_list_text.split('\n') if e.strip() != '']
+            random.shuffle(main_list_prompt)
+            main_list_prompt = '\n'.join(main_list_prompt)
+            prompt = textwrap.dedent(f''' 
+                Tell me the most used historical preparation methods of the following plant with scientific name: {herb_name_scientific}.
+                In specific, write a confidence score from 1 to 10, indicating how sure you are about your answer.
+                The possible historical preparation methods are the following:
+                {main_list_prompt}
+                Reply using the following JSON format:
+                [
+                    {{"answer": "write historical preparation method name 1 here", "score": "write score 1 here"}},
+                    {{"answer": "write historical preparation method name 2 here", "score": "write score 2 here"}},
+                    {{"answer": "write historical preparation method name 3 here", "score": "write score 3 here"}},
+                    {{"answer": "write historical preparation method name 4 here", "score": "write score 4 here"}},
+                    {{"answer": "write historical preparation method name 5 here", "score": "write score 5 here"}},
+                    {{"answer": "write historical preparation method name 6 here", "score": "write score 6 here"}},
+                    {{"answer": "write historical preparation method name 7 here", "score": "write score 7 here"}},
+                    {{"answer": "write historical preparation method name 8 here", "score": "write score 8 here"}},
+                    {{"answer": "write historical preparation method name 9 here", "score": "write score 9 here"}},
+                    {{"answer": "write historical preparation method name 10 here", "score": "write score 10 here"}}
+                ]
+                Reply only with the JSON.
+            ''').strip()
+            prompt += f'\n/no_think'
+            print(prompt)
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            json_data = {}
+            try: json_data = json.loads(reply)
+            except: pass 
+            if json_data != {}:
+                _objs = answer_score_extract(json_data)
+                for _obj in _objs:
+                    answer = _obj['answer'].strip().lower()
+                    score = int(_obj['score'])
+                    found = False
+                    for output in outputs:
+                        if answer in output['answer']: 
+                            output['mentions'] += 1
+                            output['confidence_score'] += int(score)
+                            found = True
+                            break
+                    if not found:
+                        outputs.append({
+                            'answer': answer, 
+                            'mentions': 1, 
+                            'confidence_score': int(score), 
+                        })
+        outputs = total_score_calc(outputs)
+        entity_herb[key] = outputs
+        print(herb_filepath)
+        io.json_write(herb_filepath, entity_herb)
+        # print(entity_herb)
+        # quit()
+
+def herb_medicinal_actions_gen(herb_filepath, regen=False, clear=False):
+    entity_herb = io.json_read(herb_filepath)
+    herb_name_scientific = entity_herb['herb_name_scientific']
+    key = 'herb_medicinal_actions'
+    if key not in entity_herb: entity_herb[key] = ''
+    if regen: entity_herb[key] = ''
+    if clear: 
+        entity_herb[key] = ''
+        io.json_write(herb_filepath, entity_herb)
+        return
+    if entity_herb[key] == '' or entity_herb[key] == []:
+        main_list_text = f'''
+            Carminative
+            Sedative
+            Anti-inflammatory
+            Antispasmodic
+            Astringent
+            Diuretic
+            Stimulant
+            Expectorant
+            Tonic
+            Bitter
+        '''.strip()
+        outputs = []
+        for i in range(10):
+            print(f'{i} - {herb_name_scientific}')
+            import textwrap
+            main_list_prompt = [e.strip() for e in main_list_text.split('\n') if e.strip() != '']
+            random.shuffle(main_list_prompt)
+            main_list_prompt = '\n'.join(main_list_prompt)
+            prompt = textwrap.dedent(f''' 
+                Tell me the medicinal actions of the following plant with scientific name: {herb_name_scientific}.
+                In specific, write a confidence score from 1 to 10, indicating how sure you are about your answer.
+                The possible medicinal actions are the following:
+                {main_list_prompt}
+                Reply using the following JSON format:
+                [
+                    {{"answer": "write medicinal action name 1 here", "score": "write score 1 here"}},
+                    {{"answer": "write medicinal action name 2 here", "score": "write score 2 here"}},
+                    {{"answer": "write medicinal action name 3 here", "score": "write score 3 here"}},
+                    {{"answer": "write medicinal action name 4 here", "score": "write score 4 here"}},
+                    {{"answer": "write medicinal action name 5 here", "score": "write score 5 here"}},
+                    {{"answer": "write medicinal action name 6 here", "score": "write score 6 here"}},
+                    {{"answer": "write medicinal action name 7 here", "score": "write score 7 here"}},
+                    {{"answer": "write medicinal action name 8 here", "score": "write score 8 here"}},
+                    {{"answer": "write medicinal action name 9 here", "score": "write score 9 here"}},
+                    {{"answer": "write medicinal action name 10 here", "score": "write score 10 here"}}
+                ]
+                Reply only with the JSON.
+            ''').strip()
+            prompt += f'\n/no_think'
+            print(prompt)
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            json_data = {}
+            try: json_data = json.loads(reply)
+            except: pass 
+            if json_data != {}:
+                _objs = answer_score_extract(json_data)
+                for _obj in _objs:
+                    answer = _obj['answer'].strip().lower()
+                    score = int(_obj['score'])
+                    found = False
+                    for output in outputs:
+                        if answer in output['answer']: 
+                            output['mentions'] += 1
+                            output['confidence_score'] += int(score)
+                            found = True
+                            break
+                    if not found:
+                        outputs.append({
+                            'answer': answer, 
+                            'mentions': 1, 
+                            'confidence_score': int(score), 
+                        })
+        outputs = total_score_calc(outputs)
+        entity_herb[key] = outputs
+        print(herb_filepath)
+        io.json_write(herb_filepath, entity_herb)
+        # print(entity_herb)
+        # quit()
+
 def herb_family_wcvp(herb_filepath, regen=False, clear=False):
     global herbs_wcvp
     herb = io.json_read(herb_filepath)
@@ -747,6 +997,9 @@ def herbs_primary_json(herb):
     herb_traditional_medicinal_uses_gen(herb_filepath, regen=False, clear=False)
     herb_family_ai(herb_filepath, regen=False, clear=False)
     herb_parts_gen(herb_filepath, regen=False, clear=False)
+    herb_traditional_systems_gen(herb_filepath, regen=False, clear=False)
+    herb_historical_preparations_gen(herb_filepath, regen=False, clear=False)
+    herb_medicinal_actions_gen(herb_filepath, regen=False, clear=False)
     # herb_family_wcvp(herb_filepath, regen=False, clear=False)
     # herb_native_regions_ai(entity_herb_filepath, regen=False, clear=False)
     # herb_benefits_ai(entity_herb_filepath, regen=False, clear=False)
