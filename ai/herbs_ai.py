@@ -719,6 +719,1131 @@ def herb_medicinal_actions_gen(herb_filepath, regen=False, clear=False):
         # print(entity_herb)
         # quit()
 
+def herb_active_compounds_gen(herb_filepath, regen=False, clear=False):
+    entity_herb = io.json_read(herb_filepath)
+    herb_name_scientific = entity_herb['herb_name_scientific']
+    key = 'herb_active_compounds'
+    if key not in entity_herb: entity_herb[key] = ''
+    if regen: entity_herb[key] = ''
+    if clear: 
+        entity_herb[key] = ''
+        io.json_write(herb_filepath, entity_herb)
+        return
+    if entity_herb[key] == '' or entity_herb[key] == []:
+        main_list_text = f'''
+            Flavonoid
+            Phenolic acid
+            Tannin
+            Terpenoid
+            Alkaloid
+            Saponin
+            Essential oil
+            Coumarin
+            Anthocyanin
+            Glycoside
+        '''.strip()
+        outputs = []
+        for i in range(10):
+            print(f'{i} - {herb_name_scientific}')
+            import textwrap
+            main_list_prompt = [e.strip() for e in main_list_text.split('\n') if e.strip() != '']
+            random.shuffle(main_list_prompt)
+            main_list_prompt = '\n'.join(main_list_prompt)
+            prompt = textwrap.dedent(f''' 
+                Tell me the medicinal actions of the following plant with scientific name: {herb_name_scientific}.
+                In specific, write a confidence score from 1 to 10, indicating how sure you are about your answer.
+                The possible medicinal actions are the following:
+                {main_list_prompt}
+                Reply using the following JSON format:
+                [
+                    {{"answer": "write medicinal action name 1 here", "score": "write score 1 here"}},
+                    {{"answer": "write medicinal action name 2 here", "score": "write score 2 here"}},
+                    {{"answer": "write medicinal action name 3 here", "score": "write score 3 here"}},
+                    {{"answer": "write medicinal action name 4 here", "score": "write score 4 here"}},
+                    {{"answer": "write medicinal action name 5 here", "score": "write score 5 here"}},
+                    {{"answer": "write medicinal action name 6 here", "score": "write score 6 here"}},
+                    {{"answer": "write medicinal action name 7 here", "score": "write score 7 here"}},
+                    {{"answer": "write medicinal action name 8 here", "score": "write score 8 here"}},
+                    {{"answer": "write medicinal action name 9 here", "score": "write score 9 here"}},
+                    {{"answer": "write medicinal action name 10 here", "score": "write score 10 here"}}
+                ]
+                Reply only with the JSON.
+            ''').strip()
+            prompt += f'\n/no_think'
+            print(prompt)
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            json_data = {}
+            try: json_data = json.loads(reply)
+            except: pass 
+            if json_data != {}:
+                _objs = answer_score_extract(json_data)
+                for _obj in _objs:
+                    answer = _obj['answer'].strip().lower()
+                    score = int(_obj['score'])
+                    found = False
+                    for output in outputs:
+                        if answer in output['answer']: 
+                            output['mentions'] += 1
+                            output['confidence_score'] += int(score)
+                            found = True
+                            break
+                    if not found:
+                        outputs.append({
+                            'answer': answer, 
+                            'mentions': 1, 
+                            'confidence_score': int(score), 
+                        })
+        outputs = total_score_calc(outputs)
+        entity_herb[key] = outputs
+        print(herb_filepath)
+        io.json_write(herb_filepath, entity_herb)
+        # print(entity_herb)
+        # quit()
+
+def herb_drugs_interaction_gen(herb_filepath, regen=False, clear=False):
+    entity_herb = io.json_read(herb_filepath)
+    herb_name_scientific = entity_herb['herb_name_scientific']
+    key = 'herb_drugs_interaction'
+    if key not in entity_herb: entity_herb[key] = ''
+    if regen: entity_herb[key] = ''
+    if clear: 
+        entity_herb[key] = ''
+        io.json_write(herb_filepath, entity_herb)
+        return
+    if entity_herb[key] == '' or entity_herb[key] == []:
+        outputs = []
+        for i in range(10):
+            print(f'{i} - {herb_name_scientific}')
+            import textwrap
+            prompt = textwrap.dedent(f''' 
+                Tell me if the following plant with scientific name {herb_name_scientific} has known drug interactions.
+                In specific, write a confidence score from 1 to 10, indicating how sure you are about your answer.
+                The answers names are the following and I want the score for each:
+                Yes
+                No
+                Unknown
+                Reply using the following JSON format:
+                [
+                    {{"answer": "write answer name 1 here", "score": "write score 1 here"}},
+                    {{"answer": "write answer name 2 here", "score": "write score 2 here"}},
+                    {{"answer": "write answer name 3 here", "score": "write score 3 here"}}
+                ]
+                Reply only with the JSON.
+                Reply only with one word.
+            ''').strip()
+            prompt += f'\n/no_think'
+            print(prompt)
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            json_data = {}
+            try: json_data = json.loads(reply)
+            except: pass 
+            if json_data != {}:
+                _objs = answer_score_extract(json_data)
+                for _obj in _objs:
+                    answer = _obj['answer'].strip().lower()
+                    score = int(_obj['score'])
+                    found = False
+                    for output in outputs:
+                        if answer in output['answer']: 
+                            output['mentions'] += 1
+                            output['confidence_score'] += int(score)
+                            found = True
+                            break
+                    if not found:
+                        outputs.append({
+                            'answer': answer, 
+                            'mentions': 1, 
+                            'confidence_score': int(score), 
+                        })
+        outputs = total_score_calc(outputs)
+        entity_herb[key] = outputs
+        print(herb_filepath)
+        io.json_write(herb_filepath, entity_herb)
+        # print(entity_herb)
+        # quit()
+
+def herb_allergies_gen(herb_filepath, regen=False, clear=False):
+    entity_herb = io.json_read(herb_filepath)
+    herb_name_scientific = entity_herb['herb_name_scientific']
+    key = 'herb_allergies'
+    if key not in entity_herb: entity_herb[key] = ''
+    if regen: entity_herb[key] = ''
+    if clear: 
+        entity_herb[key] = ''
+        io.json_write(herb_filepath, entity_herb)
+        return
+    if entity_herb[key] == '' or entity_herb[key] == []:
+        outputs = []
+        for i in range(10):
+            print(f'{i} - {herb_name_scientific}')
+            import textwrap
+            prompt = textwrap.dedent(f''' 
+                Tell me if the following plant with scientific name {herb_name_scientific} has known allergies.
+                In specific, write a confidence score from 1 to 10, indicating how sure you are about your answer.
+                The answers names are the following and I want the score for each:
+                Yes
+                No
+                Unknown
+                Reply using the following JSON format:
+                [
+                    {{"answer": "write answer name 1 here", "score": "write score 1 here"}},
+                    {{"answer": "write answer name 2 here", "score": "write score 2 here"}},
+                    {{"answer": "write answer name 3 here", "score": "write score 3 here"}}
+                ]
+                Reply only with the JSON.
+                Reply only with one word.
+            ''').strip()
+            prompt += f'\n/no_think'
+            print(prompt)
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            json_data = {}
+            try: json_data = json.loads(reply)
+            except: pass 
+            if json_data != {}:
+                _objs = answer_score_extract(json_data)
+                for _obj in _objs:
+                    answer = _obj['answer'].strip().lower()
+                    score = int(_obj['score'])
+                    found = False
+                    for output in outputs:
+                        if answer in output['answer']: 
+                            output['mentions'] += 1
+                            output['confidence_score'] += int(score)
+                            found = True
+                            break
+                    if not found:
+                        outputs.append({
+                            'answer': answer, 
+                            'mentions': 1, 
+                            'confidence_score': int(score), 
+                        })
+        outputs = total_score_calc(outputs)
+        entity_herb[key] = outputs
+        print(herb_filepath)
+        io.json_write(herb_filepath, entity_herb)
+        # print(entity_herb)
+        # quit()
+
+def herb_toxicity_gen(herb_filepath, regen=False, clear=False):
+    entity_herb = io.json_read(herb_filepath)
+    herb_name_scientific = entity_herb['herb_name_scientific']
+    key = 'herb_toxicity'
+    if key not in entity_herb: entity_herb[key] = ''
+    if regen: entity_herb[key] = ''
+    if clear: 
+        entity_herb[key] = ''
+        io.json_write(herb_filepath, entity_herb)
+        return
+    if entity_herb[key] == '' or entity_herb[key] == []:
+        outputs = []
+        for i in range(10):
+            print(f'{i} - {herb_name_scientific}')
+            import textwrap
+            prompt = textwrap.dedent(f''' 
+                Tell me if the following plant with scientific name {herb_name_scientific} has known toxicity.
+                In specific, write a confidence score from 1 to 10, indicating how sure you are about your answer.
+                The answers names are the following and I want the score for each:
+                Yes
+                No
+                Unknown
+                Reply using the following JSON format:
+                [
+                    {{"answer": "write answer name 1 here", "score": "write score 1 here"}},
+                    {{"answer": "write answer name 2 here", "score": "write score 2 here"}},
+                    {{"answer": "write answer name 3 here", "score": "write score 3 here"}}
+                ]
+                Reply only with the JSON.
+                Reply only with one word.
+            ''').strip()
+            prompt += f'\n/no_think'
+            print(prompt)
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            json_data = {}
+            try: json_data = json.loads(reply)
+            except: pass 
+            if json_data != {}:
+                _objs = answer_score_extract(json_data)
+                for _obj in _objs:
+                    answer = _obj['answer'].strip().lower()
+                    score = int(_obj['score'])
+                    found = False
+                    for output in outputs:
+                        if answer in output['answer']: 
+                            output['mentions'] += 1
+                            output['confidence_score'] += int(score)
+                            found = True
+                            break
+                    if not found:
+                        outputs.append({
+                            'answer': answer, 
+                            'mentions': 1, 
+                            'confidence_score': int(score), 
+                        })
+        outputs = total_score_calc(outputs)
+        entity_herb[key] = outputs
+        print(herb_filepath)
+        io.json_write(herb_filepath, entity_herb)
+        # print(entity_herb)
+        # quit()
+
+def herb_contraindications_gen(herb_filepath, regen=False, clear=False):
+    entity_herb = io.json_read(herb_filepath)
+    herb_name_scientific = entity_herb['herb_name_scientific']
+    key = 'herb_contraindications'
+    if key not in entity_herb: entity_herb[key] = ''
+    if regen: entity_herb[key] = ''
+    if clear: 
+        entity_herb[key] = ''
+        io.json_write(herb_filepath, entity_herb)
+        return
+    if entity_herb[key] == '' or entity_herb[key] == []:
+        outputs = []
+        for i in range(10):
+            print(f'{i} - {herb_name_scientific}')
+            import textwrap
+            prompt = textwrap.dedent(f''' 
+                Tell me if the following plant with scientific name {herb_name_scientific} has known contraindications.
+                In specific, write a confidence score from 1 to 10, indicating how sure you are about your answer.
+                The answers names are the following and I want the score for each:
+                Yes
+                No
+                Unknown
+                Reply using the following JSON format:
+                [
+                    {{"answer": "write answer name 1 here", "score": "write score 1 here"}},
+                    {{"answer": "write answer name 2 here", "score": "write score 2 here"}},
+                    {{"answer": "write answer name 3 here", "score": "write score 3 here"}}
+                ]
+                Reply only with the JSON.
+                Reply only with one word.
+            ''').strip()
+            prompt += f'\n/no_think'
+            print(prompt)
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            json_data = {}
+            try: json_data = json.loads(reply)
+            except: pass 
+            if json_data != {}:
+                _objs = answer_score_extract(json_data)
+                for _obj in _objs:
+                    answer = _obj['answer'].strip().lower()
+                    score = int(_obj['score'])
+                    found = False
+                    for output in outputs:
+                        if answer in output['answer']: 
+                            output['mentions'] += 1
+                            output['confidence_score'] += int(score)
+                            found = True
+                            break
+                    if not found:
+                        outputs.append({
+                            'answer': answer, 
+                            'mentions': 1, 
+                            'confidence_score': int(score), 
+                        })
+        outputs = total_score_calc(outputs)
+        entity_herb[key] = outputs
+        print(herb_filepath)
+        io.json_write(herb_filepath, entity_herb)
+        # print(entity_herb)
+        # quit()
+
+
+def herb_pregnancy_and_breastfeeding_gen(herb_filepath, regen=False, clear=False):
+    entity_herb = io.json_read(herb_filepath)
+    herb_name_scientific = entity_herb['herb_name_scientific']
+    key = 'herb_pregnancy_and_breastfeeding'
+    if key not in entity_herb: entity_herb[key] = ''
+    if regen: entity_herb[key] = ''
+    if clear: 
+        entity_herb[key] = ''
+        io.json_write(herb_filepath, entity_herb)
+        return
+    if entity_herb[key] == '' or entity_herb[key] == []:
+        outputs = []
+        for i in range(10):
+            print(f'{i} - {herb_name_scientific}')
+            import textwrap
+            prompt = textwrap.dedent(f''' 
+                Tell me if the following plant with scientific name {herb_name_scientific} has known pregnancy and breastfeeding safety issues.
+                In specific, write a confidence score from 1 to 10, indicating how sure you are about your answer.
+                The answers names are the following and I want the score for each:
+                Yes
+                No
+                Unknown
+                Reply using the following JSON format:
+                [
+                    {{"answer": "write answer name 1 here", "score": "write score 1 here"}},
+                    {{"answer": "write answer name 2 here", "score": "write score 2 here"}},
+                    {{"answer": "write answer name 3 here", "score": "write score 3 here"}}
+                ]
+                Reply only with the JSON.
+                Reply only with one word.
+            ''').strip()
+            prompt += f'\n/no_think'
+            print(prompt)
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            json_data = {}
+            try: json_data = json.loads(reply)
+            except: pass 
+            if json_data != {}:
+                _objs = answer_score_extract(json_data)
+                for _obj in _objs:
+                    answer = _obj['answer'].strip().lower()
+                    score = int(_obj['score'])
+                    found = False
+                    for output in outputs:
+                        if answer in output['answer']: 
+                            output['mentions'] += 1
+                            output['confidence_score'] += int(score)
+                            found = True
+                            break
+                    if not found:
+                        outputs.append({
+                            'answer': answer, 
+                            'mentions': 1, 
+                            'confidence_score': int(score), 
+                        })
+        outputs = total_score_calc(outputs)
+        entity_herb[key] = outputs
+        print(herb_filepath)
+        io.json_write(herb_filepath, entity_herb)
+        # print(entity_herb)
+        # quit()
+
+def herb_generally_safe_gen(herb_filepath, regen=False, clear=False):
+    entity_herb = io.json_read(herb_filepath)
+    herb_name_scientific = entity_herb['herb_name_scientific']
+    key = 'herb_generally_safe'
+    if key not in entity_herb: entity_herb[key] = ''
+    if regen: entity_herb[key] = ''
+    if clear: 
+        entity_herb[key] = ''
+        io.json_write(herb_filepath, entity_herb)
+        return
+    if entity_herb[key] == '' or entity_herb[key] == []:
+        outputs = []
+        for i in range(10):
+            print(f'{i} - {herb_name_scientific}')
+            import textwrap
+            prompt = textwrap.dedent(f''' 
+                Tell me if the following plant with scientific name {herb_name_scientific} is considered generally safe for medicinal use and preparations.
+                In specific, write a confidence score from 1 to 10, indicating how sure you are about your answer.
+                The answers names are the following and I want the score for each:
+                Yes
+                No
+                Unknown
+                Reply using the following JSON format:
+                [
+                    {{"answer": "write answer name 1 here", "score": "write score 1 here"}},
+                    {{"answer": "write answer name 2 here", "score": "write score 2 here"}},
+                    {{"answer": "write answer name 3 here", "score": "write score 3 here"}}
+                ]
+                Reply only with the JSON.
+                Reply only with one word.
+            ''').strip()
+            prompt += f'\n/no_think'
+            print(prompt)
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            json_data = {}
+            try: json_data = json.loads(reply)
+            except: pass 
+            if json_data != {}:
+                _objs = answer_score_extract(json_data)
+                for _obj in _objs:
+                    answer = _obj['answer'].strip().lower()
+                    score = int(_obj['score'])
+                    found = False
+                    for output in outputs:
+                        if answer in output['answer']: 
+                            output['mentions'] += 1
+                            output['confidence_score'] += int(score)
+                            found = True
+                            break
+                    if not found:
+                        outputs.append({
+                            'answer': answer, 
+                            'mentions': 1, 
+                            'confidence_score': int(score), 
+                        })
+        outputs = total_score_calc(outputs)
+        entity_herb[key] = outputs
+        print(herb_filepath)
+        io.json_write(herb_filepath, entity_herb)
+        # print(entity_herb)
+        # quit()
+
+def herb_preparations_gen(herb_filepath, regen=False, clear=False):
+    entity_herb = io.json_read(herb_filepath)
+    herb_name_scientific = entity_herb['herb_name_scientific']
+    key = 'herb_preparations'
+    if key not in entity_herb: entity_herb[key] = ''
+    if regen: entity_herb[key] = ''
+    if clear: 
+        entity_herb[key] = ''
+        io.json_write(herb_filepath, entity_herb)
+        return
+    if entity_herb[key] == '' or entity_herb[key] == []:
+        main_list_text = f'''
+            Infusion
+            Decoction
+            Tincture
+            Poultice
+            Powder
+            Capsule
+            Essential Oil
+            Extract
+            Oil Infusion
+            Culinary Use
+            '''.strip()
+        outputs = []
+        for i in range(10):
+            print(f'{i} - {herb_name_scientific}')
+            import textwrap
+            main_list_prompt = [e.strip() for e in main_list_text.split('\n') if e.strip() != '']
+            random.shuffle(main_list_prompt)
+            main_list_prompt = '\n'.join(main_list_prompt)
+            prompt = textwrap.dedent(f''' 
+                Tell me the most used preparation methods of the following plant with scientific name: {herb_name_scientific}.
+                In specific, write a confidence score from 1 to 10, indicating how sure you are about your answer.
+                The possible historical preparation methods are the following:
+                {main_list_prompt}
+                Reply using the following JSON format:
+                [
+                    {{"answer": "write historical preparation method name 1 here", "score": "write score 1 here"}},
+                    {{"answer": "write historical preparation method name 2 here", "score": "write score 2 here"}},
+                    {{"answer": "write historical preparation method name 3 here", "score": "write score 3 here"}},
+                    {{"answer": "write historical preparation method name 4 here", "score": "write score 4 here"}},
+                    {{"answer": "write historical preparation method name 5 here", "score": "write score 5 here"}},
+                    {{"answer": "write historical preparation method name 6 here", "score": "write score 6 here"}},
+                    {{"answer": "write historical preparation method name 7 here", "score": "write score 7 here"}},
+                    {{"answer": "write historical preparation method name 8 here", "score": "write score 8 here"}},
+                    {{"answer": "write historical preparation method name 9 here", "score": "write score 9 here"}},
+                    {{"answer": "write historical preparation method name 10 here", "score": "write score 10 here"}}
+                ]
+                Reply only with the JSON.
+            ''').strip()
+            prompt += f'\n/no_think'
+            print(prompt)
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            json_data = {}
+            try: json_data = json.loads(reply)
+            except: pass 
+            if json_data != {}:
+                _objs = answer_score_extract(json_data)
+                for _obj in _objs:
+                    answer = _obj['answer'].strip().lower()
+                    score = int(_obj['score'])
+                    found = False
+                    for output in outputs:
+                        if answer in output['answer']: 
+                            output['mentions'] += 1
+                            output['confidence_score'] += int(score)
+                            found = True
+                            break
+                    if not found:
+                        outputs.append({
+                            'answer': answer, 
+                            'mentions': 1, 
+                            'confidence_score': int(score), 
+                        })
+        outputs = total_score_calc(outputs)
+        entity_herb[key] = outputs
+        print(herb_filepath)
+        io.json_write(herb_filepath, entity_herb)
+        # print(entity_herb)
+        # quit()
+
+def herb_growing_soil_gen(herb_filepath, regen=False, clear=False):
+    entity_herb = io.json_read(herb_filepath)
+    herb_name_scientific = entity_herb['herb_name_scientific']
+    key = 'herb_growing_soil'
+    if key not in entity_herb: entity_herb[key] = ''
+    if regen: entity_herb[key] = ''
+    if clear: 
+        entity_herb[key] = ''
+        io.json_write(herb_filepath, entity_herb)
+        return
+    if entity_herb[key] == '' or entity_herb[key] == []:
+        main_list_text = f'''
+            Sandy soil
+            Silty soil
+            Clay soil
+            Loamy soil
+            Sandy loam
+            Silty loam
+            Clay loam
+            Rocky soil
+            Gravelly soil
+            Chalky soil
+            Humus-rich soil
+            Peaty soil
+            Compact soil
+            Light soil
+            Heavy soil
+        '''.strip()
+        outputs = []
+        for i in range(10):
+            print(f'{i} - {herb_name_scientific}')
+            import textwrap
+            main_list_prompt = [e.strip() for e in main_list_text.split('\n') if e.strip() != '']
+            random.shuffle(main_list_prompt)
+            main_list_prompt = '\n'.join(main_list_prompt)
+            prompt = textwrap.dedent(f''' 
+                Tell me the best type of soil to grow the following plant with scientific name: {herb_name_scientific}.
+                In specific, write a confidence score from 1 to 10, indicating how sure you are about your answer.
+                The possible types of soil for you to pick from are the following:
+                {main_list_prompt}
+                Reply using the following JSON format:
+                [
+                    {{"answer": "write the type of soil name here", "score": "write score here"}}
+                ]
+                Reply only with the JSON.
+            ''').strip()
+            prompt += f'\n/no_think'
+            print(prompt)
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            json_data = {}
+            try: json_data = json.loads(reply)
+            except: pass 
+            if json_data != {}:
+                _objs = answer_score_extract(json_data)
+                for _obj in _objs:
+                    answer = _obj['answer'].strip().lower()
+                    score = int(_obj['score'])
+                    found = False
+                    for output in outputs:
+                        if answer in output['answer']: 
+                            output['mentions'] += 1
+                            output['confidence_score'] += int(score)
+                            found = True
+                            break
+                    if not found:
+                        outputs.append({
+                            'answer': answer, 
+                            'mentions': 1, 
+                            'confidence_score': int(score), 
+                        })
+        outputs = total_score_calc(outputs)
+        entity_herb[key] = outputs
+        print(herb_filepath)
+        io.json_write(herb_filepath, entity_herb)
+        # print(entity_herb)
+        # quit()
+
+def herb_growing_soil_drainage_gen(herb_filepath, regen=False, clear=False):
+    entity_herb = io.json_read(herb_filepath)
+    herb_name_scientific = entity_herb['herb_name_scientific']
+    key = 'herb_growing_soil_drainage'
+    if key not in entity_herb: entity_herb[key] = ''
+    if regen: entity_herb[key] = ''
+    if clear: 
+        entity_herb[key] = ''
+        io.json_write(herb_filepath, entity_herb)
+        return
+    if entity_herb[key] == '' or entity_herb[key] == []:
+        main_list_text = f'''
+            Well-drained conditions
+            Moderately well-drained conditions
+            Moderate drainage
+            Poor drainage
+            Freely draining soil
+            Moist but well-drained soil
+            Slow-draining soil
+            Rapidly draining soil
+        '''.strip()
+        outputs = []
+        for i in range(10):
+            print(f'{i} - {herb_name_scientific}')
+            import textwrap
+            main_list_prompt = [e.strip() for e in main_list_text.split('\n') if e.strip() != '']
+            random.shuffle(main_list_prompt)
+            main_list_prompt = '\n'.join(main_list_prompt)
+            prompt = textwrap.dedent(f''' 
+                Tell me the best type of soil drainage to grow the following plant with scientific name: {herb_name_scientific}.
+                In specific, write a confidence score from 1 to 10, indicating how sure you are about your answer.
+                The possible types of soil drainage for you to pick from are the following:
+                {main_list_prompt}
+                Reply using the following JSON format:
+                [
+                    {{"answer": "write the type of soil drainage name here", "score": "write score here"}}
+                ]
+                Reply only with the JSON.
+            ''').strip()
+            prompt += f'\n/no_think'
+            print(prompt)
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            json_data = {}
+            try: json_data = json.loads(reply)
+            except: pass 
+            if json_data != {}:
+                _objs = answer_score_extract(json_data)
+                for _obj in _objs:
+                    answer = _obj['answer'].strip().lower()
+                    score = int(_obj['score'])
+                    found = False
+                    for output in outputs:
+                        if answer in output['answer']: 
+                            output['mentions'] += 1
+                            output['confidence_score'] += int(score)
+                            found = True
+                            break
+                    if not found:
+                        outputs.append({
+                            'answer': answer, 
+                            'mentions': 1, 
+                            'confidence_score': int(score), 
+                        })
+        outputs = total_score_calc(outputs)
+        entity_herb[key] = outputs
+        print(herb_filepath)
+        io.json_write(herb_filepath, entity_herb)
+        # print(entity_herb)
+        # quit()
+
+def herb_growing_soil_fertility_gen(herb_filepath, regen=False, clear=False):
+    entity_herb = io.json_read(herb_filepath)
+    herb_name_scientific = entity_herb['herb_name_scientific']
+    key = 'herb_growing_soil_fertility'
+    if key not in entity_herb: entity_herb[key] = ''
+    if regen: entity_herb[key] = ''
+    if clear: 
+        entity_herb[key] = ''
+        io.json_write(herb_filepath, entity_herb)
+        return
+    if entity_herb[key] == '' or entity_herb[key] == []:
+        main_list_text = f'''
+            Low fertility soils
+            Moderate fertility soils
+            Nutrient-rich soils
+            Organically rich soils
+            Average nutrient levels
+            Poor nutrient soils
+            High organic matter soils
+        '''.strip()
+        outputs = []
+        for i in range(10):
+            print(f'{i} - {herb_name_scientific}')
+            import textwrap
+            main_list_prompt = [e.strip() for e in main_list_text.split('\n') if e.strip() != '']
+            random.shuffle(main_list_prompt)
+            main_list_prompt = '\n'.join(main_list_prompt)
+            prompt = textwrap.dedent(f''' 
+                Tell me the best type of soil fertility to grow the following plant with scientific name: {herb_name_scientific}.
+                In specific, write a confidence score from 1 to 10, indicating how sure you are about your answer.
+                The possible types of soil fertility for you to pick from are the following:
+                {main_list_prompt}
+                Reply using the following JSON format:
+                [
+                    {{"answer": "write the type of soil fertility name here", "score": "write score here"}}
+                ]
+                Reply only with the JSON.
+            ''').strip()
+            prompt += f'\n/no_think'
+            print(prompt)
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            json_data = {}
+            try: json_data = json.loads(reply)
+            except: pass 
+            if json_data != {}:
+                _objs = answer_score_extract(json_data)
+                for _obj in _objs:
+                    answer = _obj['answer'].strip().lower()
+                    score = int(_obj['score'])
+                    found = False
+                    for output in outputs:
+                        if answer in output['answer']: 
+                            output['mentions'] += 1
+                            output['confidence_score'] += int(score)
+                            found = True
+                            break
+                    if not found:
+                        outputs.append({
+                            'answer': answer, 
+                            'mentions': 1, 
+                            'confidence_score': int(score), 
+                        })
+        outputs = total_score_calc(outputs)
+        entity_herb[key] = outputs
+        print(herb_filepath)
+        io.json_write(herb_filepath, entity_herb)
+        # print(entity_herb)
+        # quit()
+
+def herb_growing_soil_ph_gen(herb_filepath, regen=False, clear=False):
+    entity_herb = io.json_read(herb_filepath)
+    herb_name_scientific = entity_herb['herb_name_scientific']
+    key = 'herb_growing_soil_ph'
+    if key not in entity_herb: entity_herb[key] = ''
+    if regen: entity_herb[key] = ''
+    if clear: 
+        entity_herb[key] = ''
+        io.json_write(herb_filepath, entity_herb)
+        return
+    if entity_herb[key] == '' or entity_herb[key] == []:
+        main_list_text = f'''
+            Acidic soils
+            Slightly acidic soils
+            Neutral soils
+            Slightly alkaline soils
+            Alkaline soils
+            Acidic to neutral soils
+            Neutral to slightly alkaline soils
+        '''.strip()
+        outputs = []
+        for i in range(10):
+            print(f'{i} - {herb_name_scientific}')
+            import textwrap
+            main_list_prompt = [e.strip() for e in main_list_text.split('\n') if e.strip() != '']
+            random.shuffle(main_list_prompt)
+            main_list_prompt = '\n'.join(main_list_prompt)
+            prompt = textwrap.dedent(f''' 
+                Tell me the best type of soil ph to grow the following plant with scientific name: {herb_name_scientific}.
+                In specific, write a confidence score from 1 to 10, indicating how sure you are about your answer.
+                The possible types of soil ph for you to pick from are the following:
+                {main_list_prompt}
+                Reply using the following JSON format:
+                [
+                    {{"answer": "write the type of soil ph name here", "score": "write score here"}}
+                ]
+                Reply only with the JSON.
+            ''').strip()
+            prompt += f'\n/no_think'
+            print(prompt)
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            json_data = {}
+            try: json_data = json.loads(reply)
+            except: pass 
+            if json_data != {}:
+                _objs = answer_score_extract(json_data)
+                for _obj in _objs:
+                    answer = _obj['answer'].strip().lower()
+                    score = int(_obj['score'])
+                    found = False
+                    for output in outputs:
+                        if answer in output['answer']: 
+                            output['mentions'] += 1
+                            output['confidence_score'] += int(score)
+                            found = True
+                            break
+                    if not found:
+                        outputs.append({
+                            'answer': answer, 
+                            'mentions': 1, 
+                            'confidence_score': int(score), 
+                        })
+        outputs = total_score_calc(outputs)
+        entity_herb[key] = outputs
+        print(herb_filepath)
+        io.json_write(herb_filepath, entity_herb)
+        # print(entity_herb)
+        # quit()
+
+def herb_growing_sunlight_type_gen(herb_filepath, regen=False, clear=False):
+    entity_herb = io.json_read(herb_filepath)
+    herb_name_scientific = entity_herb['herb_name_scientific']
+    key = 'herb_growing_sunlight_type'
+    if key not in entity_herb: entity_herb[key] = ''
+    if regen: entity_herb[key] = ''
+    if clear: 
+        entity_herb[key] = ''
+        io.json_write(herb_filepath, entity_herb)
+        return
+    if entity_herb[key] == '' or entity_herb[key] == []:
+        main_list_text = f'''
+            Full sun
+            Partial sun
+            Partial shade
+            Full shade
+            Dappled shade
+            Open sunlight
+            Filtered sunlight
+        '''.strip()
+        outputs = []
+        for i in range(10):
+            print(f'{i} - {herb_name_scientific}')
+            import textwrap
+            main_list_prompt = [e.strip() for e in main_list_text.split('\n') if e.strip() != '']
+            random.shuffle(main_list_prompt)
+            main_list_prompt = '\n'.join(main_list_prompt)
+            prompt = textwrap.dedent(f''' 
+                Tell me the best sunlight type to grow the following plant with scientific name: {herb_name_scientific}.
+                In specific, write a confidence score from 1 to 10, indicating how sure you are about your answer.
+                The possible sunlight types for you to pick from are the following:
+                {main_list_prompt}
+                Reply using the following JSON format:
+                [
+                    {{"answer": "write the sunlight type name here", "score": "write score here"}}
+                ]
+                Reply only with the JSON.
+            ''').strip()
+            prompt += f'\n/no_think'
+            print(prompt)
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            json_data = {}
+            try: json_data = json.loads(reply)
+            except: pass 
+            if json_data != {}:
+                _objs = answer_score_extract(json_data)
+                for _obj in _objs:
+                    answer = _obj['answer'].strip().lower()
+                    score = int(_obj['score'])
+                    found = False
+                    for output in outputs:
+                        if answer in output['answer']: 
+                            output['mentions'] += 1
+                            output['confidence_score'] += int(score)
+                            found = True
+                            break
+                    if not found:
+                        outputs.append({
+                            'answer': answer, 
+                            'mentions': 1, 
+                            'confidence_score': int(score), 
+                        })
+        outputs = total_score_calc(outputs)
+        entity_herb[key] = outputs
+        print(herb_filepath)
+        io.json_write(herb_filepath, entity_herb)
+        # print(entity_herb)
+        # quit()
+
+def herb_growing_sunlight_tolerance_gen(herb_filepath, regen=False, clear=False):
+    entity_herb = io.json_read(herb_filepath)
+    herb_name_scientific = entity_herb['herb_name_scientific']
+    key = 'herb_growing_sunlight_tolerance'
+    if key not in entity_herb: entity_herb[key] = ''
+    if regen: entity_herb[key] = ''
+    if clear: 
+        entity_herb[key] = ''
+        io.json_write(herb_filepath, entity_herb)
+        return
+    if entity_herb[key] == '' or entity_herb[key] == []:
+        main_list_text = f'''
+            A wide range of light conditions
+            Both sun and partial shade
+            Partial shade to full shade
+            Full sun to partial shade
+            Low-light conditions
+            Variable light exposure
+        '''.strip()
+        outputs = []
+        for i in range(10):
+            print(f'{i} - {herb_name_scientific}')
+            import textwrap
+            main_list_prompt = [e.strip() for e in main_list_text.split('\n') if e.strip() != '']
+            random.shuffle(main_list_prompt)
+            main_list_prompt = '\n'.join(main_list_prompt)
+            prompt = textwrap.dedent(f''' 
+                Tell me the sunlight tolerance to grow the following plant with scientific name: {herb_name_scientific}.
+                In specific, write a confidence score from 1 to 10, indicating how sure you are about your answer.
+                The possible sunlight tolerances for you to pick from are the following:
+                {main_list_prompt}
+                Reply using the following JSON format:
+                [
+                    {{"answer": "write the sunlight tolerance name here", "score": "write score here"}}
+                ]
+                Reply only with the JSON.
+            ''').strip()
+            prompt += f'\n/no_think'
+            print(prompt)
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            json_data = {}
+            try: json_data = json.loads(reply)
+            except: pass 
+            if json_data != {}:
+                _objs = answer_score_extract(json_data)
+                for _obj in _objs:
+                    answer = _obj['answer'].strip().lower()
+                    score = int(_obj['score'])
+                    found = False
+                    for output in outputs:
+                        if answer in output['answer']: 
+                            output['mentions'] += 1
+                            output['confidence_score'] += int(score)
+                            found = True
+                            break
+                    if not found:
+                        outputs.append({
+                            'answer': answer, 
+                            'mentions': 1, 
+                            'confidence_score': int(score), 
+                        })
+        outputs = total_score_calc(outputs)
+        entity_herb[key] = outputs
+        print(herb_filepath)
+        io.json_write(herb_filepath, entity_herb)
+        # print(entity_herb)
+        # quit()
+
+def herb_growing_watering_type_gen(herb_filepath, regen=False, clear=False):
+    entity_herb = io.json_read(herb_filepath)
+    herb_name_scientific = entity_herb['herb_name_scientific']
+    key = 'herb_growing_watering_type'
+    if key not in entity_herb: entity_herb[key] = ''
+    if regen: entity_herb[key] = ''
+    if clear: 
+        entity_herb[key] = ''
+        io.json_write(herb_filepath, entity_herb)
+        return
+    if entity_herb[key] == '' or entity_herb[key] == []:
+        main_list_text = f'''
+            Dry soils
+            Moderately moist soils
+            Moist soils
+            Consistently moist soils
+            Seasonally moist soils
+            Well-balanced moisture levels
+        '''.strip()
+        outputs = []
+        for i in range(10):
+            print(f'{i} - {herb_name_scientific}')
+            import textwrap
+            main_list_prompt = [e.strip() for e in main_list_text.split('\n') if e.strip() != '']
+            random.shuffle(main_list_prompt)
+            main_list_prompt = '\n'.join(main_list_prompt)
+            prompt = textwrap.dedent(f''' 
+                Tell me the best watering type to grow the following plant with scientific name: {herb_name_scientific}.
+                In specific, write a confidence score from 1 to 10, indicating how sure you are about your answer.
+                The possible watering types for you to pick from are the following:
+                {main_list_prompt}
+                Reply using the following JSON format:
+                [
+                    {{"answer": "write the watering type name here", "score": "write score here"}}
+                ]
+                Reply only with the JSON.
+            ''').strip()
+            prompt += f'\n/no_think'
+            print(prompt)
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            json_data = {}
+            try: json_data = json.loads(reply)
+            except: pass 
+            if json_data != {}:
+                _objs = answer_score_extract(json_data)
+                for _obj in _objs:
+                    answer = _obj['answer'].strip().lower()
+                    score = int(_obj['score'])
+                    found = False
+                    for output in outputs:
+                        if answer in output['answer']: 
+                            output['mentions'] += 1
+                            output['confidence_score'] += int(score)
+                            found = True
+                            break
+                    if not found:
+                        outputs.append({
+                            'answer': answer, 
+                            'mentions': 1, 
+                            'confidence_score': int(score), 
+                        })
+        outputs = total_score_calc(outputs)
+        entity_herb[key] = outputs
+        print(herb_filepath)
+        io.json_write(herb_filepath, entity_herb)
+        # print(entity_herb)
+        # quit()
+
+def herb_growing_watering_tolerance_gen(herb_filepath, regen=False, clear=False):
+    entity_herb = io.json_read(herb_filepath)
+    herb_name_scientific = entity_herb['herb_name_scientific']
+    key = 'herb_growing_watering_tolerance'
+    if key not in entity_herb: entity_herb[key] = ''
+    if regen: entity_herb[key] = ''
+    if clear: 
+        entity_herb[key] = ''
+        io.json_write(herb_filepath, entity_herb)
+        return
+    if entity_herb[key] == '' or entity_herb[key] == []:
+        main_list_text = f'''
+            Periodic dry conditions
+            Occasional drought
+            Short periods of dryness
+            Variable moisture levels
+            Moderate moisture fluctuations
+            Both dry and moist conditions
+        '''.strip()
+        outputs = []
+        for i in range(10):
+            print(f'{i} - {herb_name_scientific}')
+            import textwrap
+            main_list_prompt = [e.strip() for e in main_list_text.split('\n') if e.strip() != '']
+            random.shuffle(main_list_prompt)
+            main_list_prompt = '\n'.join(main_list_prompt)
+            prompt = textwrap.dedent(f''' 
+                Tell me the watering tolerance to grow the following plant with scientific name: {herb_name_scientific}.
+                In specific, write a confidence score from 1 to 10, indicating how sure you are about your answer.
+                The possible watering tolerances for you to pick from are the following:
+                {main_list_prompt}
+                Reply using the following JSON format:
+                [
+                    {{"answer": "write the watering tolerance name here", "score": "write score here"}}
+                ]
+                Reply only with the JSON.
+            ''').strip()
+            prompt += f'\n/no_think'
+            print(prompt)
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            json_data = {}
+            try: json_data = json.loads(reply)
+            except: pass 
+            if json_data != {}:
+                _objs = answer_score_extract(json_data)
+                for _obj in _objs:
+                    answer = _obj['answer'].strip().lower()
+                    score = int(_obj['score'])
+                    found = False
+                    for output in outputs:
+                        if answer in output['answer']: 
+                            output['mentions'] += 1
+                            output['confidence_score'] += int(score)
+                            found = True
+                            break
+                    if not found:
+                        outputs.append({
+                            'answer': answer, 
+                            'mentions': 1, 
+                            'confidence_score': int(score), 
+                        })
+        outputs = total_score_calc(outputs)
+        entity_herb[key] = outputs
+        print(herb_filepath)
+        io.json_write(herb_filepath, entity_herb)
+        # print(entity_herb)
+        # quit()
+
 def herb_family_wcvp(herb_filepath, regen=False, clear=False):
     global herbs_wcvp
     herb = io.json_read(herb_filepath)
@@ -999,7 +2124,28 @@ def herbs_primary_json(herb):
     herb_parts_gen(herb_filepath, regen=False, clear=False)
     herb_traditional_systems_gen(herb_filepath, regen=False, clear=False)
     herb_historical_preparations_gen(herb_filepath, regen=False, clear=False)
+    ###
     herb_medicinal_actions_gen(herb_filepath, regen=False, clear=False)
+    ###
+    herb_active_compounds_gen(herb_filepath, regen=False, clear=False)
+    ### safety
+    herb_drugs_interaction_gen(herb_filepath, regen=False, clear=False)
+    herb_allergies_gen(herb_filepath, regen=False, clear=False)
+    herb_toxicity_gen(herb_filepath, regen=False, clear=False)
+    herb_contraindications_gen(herb_filepath, regen=False, clear=False)
+    herb_pregnancy_and_breastfeeding_gen(herb_filepath, regen=False, clear=False)
+    herb_generally_safe_gen(herb_filepath, regen=False, clear=False)
+    ### preparations
+    herb_preparations_gen(herb_filepath, regen=False, clear=False)
+    ### growing...
+    herb_growing_soil_gen(herb_filepath, regen=False, clear=False)
+    herb_growing_soil_drainage_gen(herb_filepath, regen=False, clear=False)
+    herb_growing_soil_fertility_gen(herb_filepath, regen=False, clear=False)
+    herb_growing_soil_ph_gen(herb_filepath, regen=False, clear=False)
+    herb_growing_sunlight_type_gen(herb_filepath, regen=False, clear=False)
+    herb_growing_sunlight_tolerance_gen(herb_filepath, regen=False, clear=False)
+    herb_growing_watering_type_gen(herb_filepath, regen=False, clear=False)
+    herb_growing_watering_tolerance_gen(herb_filepath, regen=False, clear=False)
     # herb_family_wcvp(herb_filepath, regen=False, clear=False)
     # herb_native_regions_ai(entity_herb_filepath, regen=False, clear=False)
     # herb_benefits_ai(entity_herb_filepath, regen=False, clear=False)
@@ -1028,9 +2174,66 @@ def herbs_popular_gen():
         print()
         print()
 
+def herbs_primary_report():
+    herbs = data.herbs_primary_get()
+    herb_drugs_interaction_total_yes = 0
+    herb_drugs_interaction_total_no = 0
+    herb_drugs_interaction_total_unknown = 0
+    herb_drugs_interaction_leading_yes = 0
+    herb_drugs_interaction_leading_no = 0
+    herb_drugs_interaction_leading_unknown = 0
+    for herb_i, herb in enumerate(herbs):
+        print('####################################')
+        print(f'{herb_i}/{len(herbs)} - {herb}')
+        print('####################################')
+        herbs_folderpath = f'{g.SSOT_FOLDERPATH}/herbs/herbs-primary'
+        ###
+        herb_name_scientific = herb['herb_name_scientific']
+        herb_slug = polish.sluggify(herb_name_scientific)
+        ###
+        herb_filepath = f'''{herbs_folderpath}/{herb_slug}.json'''
+        herb_data = io.json_read(herb_filepath, create=True)
+        ###
+        herb_drugs_interaction = herb_data['herb_drugs_interaction']
+        total_score_yes = 0
+        total_score_no = 0
+        total_score_unknown = 0
+        for item in herb_drugs_interaction:
+            print(item)
+            if item['answer'] == 'yes':
+                herb_drugs_interaction_total_yes += 1
+                total_score_yes = item['total_score'] 
+            if item['answer'] == 'no':
+                herb_drugs_interaction_total_no += 1
+                total_score_no = item['total_score'] 
+            if item['answer'] == 'unknown':
+                herb_drugs_interaction_total_unknown += 1
+                total_score_unknown = item['total_score'] 
+        if total_score_yes > total_score_no and total_score_yes > total_score_unknown: 
+            herb_drugs_interaction_leading_yes += 1
+        elif total_score_no > total_score_yes and total_score_no > total_score_unknown: 
+            herb_drugs_interaction_leading_no += 1
+        elif total_score_unknown > total_score_yes and total_score_unknown > total_score_no: 
+            herb_drugs_interaction_leading_unknown += 1
+        else:
+            herb_drugs_interaction_leading_unknown += 1
+    print('herb_drugs_interaction_total_yes:', herb_drugs_interaction_total_yes)
+    print('herb_drugs_interaction_total_no:', herb_drugs_interaction_total_no)
+    print('herb_drugs_interaction_total_unknown:', herb_drugs_interaction_total_unknown)
+    print('herb_drugs_interaction_leading_yes:', herb_drugs_interaction_leading_yes)
+    print('herb_drugs_interaction_leading_no:', herb_drugs_interaction_leading_no)
+    print('herb_drugs_interaction_leading_unknown :', herb_drugs_interaction_leading_unknown)
+    quit()
+
+    print()
+    print()
+    print()
+
 def main():
     herbs_primary_gen()
     herbs_popular_gen()
+
+    # herbs_primary_report()
 
     # herbs_wcvp_medicinal_gen()
 

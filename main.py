@@ -162,7 +162,7 @@ if 0:
 if 0:
     from ai import herbs_ai
     herbs_ai.main()
-    quit()
+    # quit()
 
 if 0:
     if 1:

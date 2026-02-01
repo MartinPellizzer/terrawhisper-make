@@ -281,7 +281,1527 @@ def p2s(paragraph):
     html += f'''<p>{chunk_2}</p>\n'''
     html += f'''<p>{chunk_3}</p>\n'''
     return html
-    
+
+def herbs_herb_primary_gen_overview(herb):
+    import textwrap
+    herb_name_scientific = herb['herb_name_scientific']
+    herb_name_scientific = polish.sanitize(herb_name_scientific).capitalize()
+    herb_slug = polish.sluggify(herb_name_scientific)
+    url_slug = f'herbs/{herb_slug}'
+    json_entity_filepath = f'''{g.DATABASE_FOLDERPATH}/ssot/herbs/herbs-primary/{herb_slug}.json'''
+    json_entity = io.json_read(json_entity_filepath)
+    herb_names_common = [name['answer'].title() for name in json_entity['herb_names_common']]
+    herb_names_common_alt = ', '.join([name['answer'].title() for name in json_entity['herb_names_common'][1:4]])
+    herb_name_common = herb_names_common[0]
+    print(json_entity)
+    herb_traditional_uses = json_entity['herb_traditional_uses']
+    print(herb_name_common)
+    # if herb_i == 15: quit()
+    herb_family = json_entity['herb_family'][0]['answer'].title()
+    herb_genus = herb_name_scientific.split(' ')[0].strip()
+    herb_parts = json_entity['herb_parts']
+    herb_parts_string = ', '.join([part['answer'] for part in herb_parts[:3]]).capitalize()
+    # herb_native_regions = [item['answer'].title() for item in json_entity['native_regions']]
+    ########################################
+    # json
+    ########################################
+    ### json init
+    json_article_filepath = f'''{g.DATABASE_FOLDERPATH}/json/{url_slug}.json'''
+    json_article = io.json_read(json_article_filepath, create=True)
+    ### json intro 
+    regen = False
+    dispel = False
+    key = 'intro'
+    if key not in json_article: json_article[key] = ''
+    if regen: json_article[key] = ''
+    if dispel: 
+        json_article[key] = ''
+        io.json_write(json_article_filepath, json_article)
+    if not dispel:
+        if json_article[key] == '':
+            prompt = textwrap.dedent(f'''
+                You are an expert herbalist and content writer. 
+                Generate a **neutral, factual, 2–3 sentence introduction paragraph** for a medicinal herb page. 
+                Follow these rules:
+                1. Start with the **common name** followed by the **scientific name in parentheses**.
+                2. Mention the herb’s **primary traditional uses**, but do NOT make any health claims.
+                3. Include the **plant family** and optionally the **cultural or regional use** if available.
+                4. Include **plant parts used** (e.g., flowers, leaves, roots) if relevant.
+                5. Keep the paragraph **informational and neutral**, suitable for search engines and human readers.
+                6. Do not use promotional or persuasive language.
+                Here is the data for the herb:
+                - Common Name: {herb_name_common}  
+                - Scientific Name: {herb_name_scientific}  
+                - Family: {herb_family}  
+                - Primary Traditional Uses: {herb_traditional_uses}  
+                Generate the paragraph **only**, do not add titles, headings, or explanations.
+            ''').strip()
+                # - Plant Parts Used: {plant_parts}  
+                # - Cultural/Regional Origin: {cultural_origin}  
+            prompt += f'/no_think'
+            reply = llm.reply(prompt).strip()
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            json_article[key] = reply
+            io.json_write(json_article_filepath, json_article)
+    overview_quick_facts_html = textwrap.dedent(f'''
+        <dl>
+            <dt>Common Name:</dt>
+            <dd class="common-name"><strong>{herb_name_common}</strong></dd>
+            <dt>Scientific Name:</dt>
+            <dd class="scientific-name"><strong>{herb_name_scientific.capitalize()}</strong></dd>
+            <dt>Family:</dt>
+            <dd class="family"><strong>{herb_family.capitalize()}</strong></dd>
+            <dt>Plant Parts Used</dt>
+            <dd>{herb_parts_string}</dd>
+        </dl>
+    ''').strip()
+    # TODO
+    '''
+    <dt>Traditional Use / Region:</dt>
+    <dd>European and Ayurvedic herbal medicine</dd>
+         data-synonyms="Chamomile, German Chamomile"
+    '''
+    ###
+    overview_html = f'''
+        <section id="overview">
+            <h1>{herb_name_common} ({herb_name_scientific.capitalize()})</h1>
+            <p>{json_article['intro']}</p>
+            {overview_quick_facts_html}
+            <figure>
+              <img src="/images/herbs/{herb_slug}.jpg" 
+                   alt="{herb_name_common} ({herb_name_scientific.capitalize()}) dried pieces of the herb arranged on a wooden table for reference" 
+                   width="400">
+              <figcaption>{herb_name_common} ({herb_name_scientific.capitalize()}) dried pieces of the herb arranged together on a wooden table for reference, used in teas and remedies.</figcaption>
+            </figure>
+        </section>
+    '''
+    return overview_html
+
+def herbs_herb_primary_gen_quick_facts(json_entity, herb_name_common, herb_name_scientific, herb_family, herb_parts_string):
+    quick_facts_html = f'''
+        <aside id="quick-facts aria-labelledby="quick-facts-title"">
+          <h2 id="quick-facts-title">Quick Facts</h2>
+          <dl>
+            <dt>Common Name</dt>
+            <dd class="quick-common-name"><strong>{herb_name_common}</strong></dd>
+            <dt>Scientific Name</dt>
+            <dd class="quick-scientific-name"><strong>{herb_name_scientific}</strong></dd>
+            <dt>Plant Family</dt>
+            <dd class="quick-family-name"><strong>{herb_family}</strong></dd>
+            <dt>Plant Parts Used</dt>
+            <dd class="quick-plant-parts-name"><strong>{herb_parts_string}</strong></dd>
+          </dl>
+        </aside>
+    '''
+    '''
+            <dt>Traditional Systems</dt>
+            <dd>European, Ayurvedic</dd>
+    '''
+    return quick_facts_html 
+
+
+def herbs_herb_primary_gen_botany(herb):
+    herb_name_scientific = herb['herb_name_scientific']
+    herb_name_scientific = polish.sanitize(herb_name_scientific).capitalize()
+    herb_slug = polish.sluggify(herb_name_scientific)
+    url_slug = f'herbs/{herb_slug}'
+    json_entity_filepath = f'''{g.DATABASE_FOLDERPATH}/ssot/herbs/herbs-primary/{herb_slug}.json'''
+    json_entity = io.json_read(json_entity_filepath)
+    herb_names_common = [name['answer'].title() for name in json_entity['herb_names_common']]
+    herb_names_common_alt = ', '.join([name['answer'].title() for name in json_entity['herb_names_common'][1:4]])
+    herb_name_common = herb_names_common[0]
+    print(json_entity)
+    herb_traditional_uses = json_entity['herb_traditional_uses']
+    print(herb_name_common)
+    # if herb_i == 15: quit()
+    herb_family = json_entity['herb_family'][0]['answer'].title()
+    herb_genus = herb_name_scientific.split(' ')[0].strip()
+    herb_parts = json_entity['herb_parts']
+    herb_parts_string = ', '.join([part['answer'] for part in herb_parts[:3]]).capitalize()
+    # herb_native_regions = [item['answer'].title() for item in json_entity['native_regions']]
+    ########################################
+    # json
+    ########################################
+    ### json init
+    json_article_filepath = f'''{g.DATABASE_FOLDERPATH}/json/{url_slug}.json'''
+    json_article = io.json_read(json_article_filepath, create=True)
+    ###
+    regen = False
+    dispel = False
+    key = 'botany_growth_habit'
+    if key not in json_article: json_article[key] = ''
+    if regen: json_article[key] = ''
+    if dispel: 
+        json_article[key] = ''
+        io.json_write(json_article_filepath, json_article)
+    if not dispel:
+        if json_article[key] == '':
+            prompt = textwrap.dedent(f'''
+                You are a botanist and semantic SEO content specialist.
+                Generate ONE concise sentence describing ONLY the **growth habit** of the herb listed below.
+                This sentence will be used inside a <dd> element under the label “Growth Habit”.
+                STRICT RULES (do not break these):
+                1. Mention ONLY:
+                   - life cycle classification (annual, biennial, perennial)
+                   - plant type (herbaceous, woody, shrub, tree, vine)
+                2. Choose ONE life cycle classification only.
+                3. Do NOT mention:
+                   - leaves, flowers, stems, height, or appearance
+                   - flowering time or developmental stages
+                   - habitat, origin, or distribution
+                   - medicinal, culinary, or traditional uses
+                4. Do NOT combine or qualify life cycle terms (e.g., no “perennial with biennial cycle”).
+                5. Use neutral, factual, encyclopedic language.
+                6. Output ONE sentence only.
+                Herb name:
+                {herb_name_scientific}
+                Return ONLY the sentence. No explanations, no formatting, no extra text.
+            ''').strip()
+            prompt += f'/no_think'
+            reply = llm.reply(prompt).strip()
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            json_article[key] = reply
+            io.json_write(json_article_filepath, json_article)
+    ###
+    regen = False
+    dispel = False
+    key = 'botany_height'
+    if key not in json_article: json_article[key] = ''
+    if regen: json_article[key] = ''
+    if dispel: 
+        json_article[key] = ''
+        io.json_write(json_article_filepath, json_article)
+    if not dispel:
+        if json_article[key] == '':
+            prompt = textwrap.dedent(f'''
+                You are a botanist and scientific content writer.
+                Determine the plant type of "{herb_name_scientific}" (herb, shrub, tree, vine, or grass).
+                Then write ONE concise, neutral sentence describing ONLY its typical height.
+                Rules:
+                - The sentence must describe height only (no plant type, no uses, no benefits).
+                - Use a biologically realistic height range for the plant type.
+                - Use meters for trees and shrubs; centimeters for herbs and grasses.
+                - Do NOT mention the plant name.
+                - Do NOT mention that it is a tree, herb, or shrub.
+                - Do NOT include cultivation, habitat, or medicinal information.
+                - Use factual, objective language.
+                - Write a single complete sentence suitable for a <dd> element.
+                - Return ONLY the sentence, with no formatting, no italics, and no extra text.
+            ''').strip()
+            prompt += f'/no_think'
+            reply = llm.reply(prompt).strip()
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            json_article[key] = reply
+            io.json_write(json_article_filepath, json_article)
+    ###
+    regen = False
+    dispel = False
+    key = 'botany_leaves_present'
+    if key not in json_article: json_article[key] = ''
+    if regen: json_article[key] = ''
+    if dispel: 
+        json_article[key] = ''
+        io.json_write(json_article_filepath, json_article)
+    if not dispel:
+        if json_article[key] == '':
+            prompt = textwrap.dedent(f'''
+                You are a bot that provides accurate botanical information based on verified plant sources. 
+                Question: Does the plant with the scientific name "{herb_name_scientific}" have leaves?
+                Instructions:
+                - Answer **only** with "yes" or "no".
+                - Do not provide any explanation, commentary, or extra text.
+                - Base your answer only on documented botanical knowledge.
+                - If the plant part does not exist for this species, respond with "no".
+                - Do not guess; answer strictly according to botanical facts.
+                Example:
+                - Question: Does "Matricaria chamomilla" have flowers?
+                - Answer: yes
+                - Question: Does "Sphagnum palustre" have flowers?
+                - Answer: no
+                Now answer the following:
+                Does "{herb_name_scientific}" have leaves?
+            ''').strip()
+            prompt += f'/no_think'
+            reply = llm.reply(prompt).strip()
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            json_article[key] = reply
+            io.json_write(json_article_filepath, json_article)
+    ###
+    if json_article['botany_leaves_present'].lower().strip() == 'yes':
+        regen = False
+        dispel = False
+        key = 'botany_leaves_description'
+        if key not in json_article: json_article[key] = ''
+        if regen: json_article[key] = ''
+        if dispel: 
+            json_article[key] = ''
+            io.json_write(json_article_filepath, json_article)
+        if not dispel:
+            if json_article[key] == '':
+                prompt = textwrap.dedent(f'''
+                    You are a botanist and scientific content writer.
+                    Write a concise botanical description of the LEAVES of the following plant species.
+                    STRICT RULES (MANDATORY):
+                    - Do NOT start the sentence with “The leaves of…”
+                    - Do NOT mention the plant name in any form.
+                    - Write in noun-phrase style, not full sentences.
+                    - Describe ONLY high-certainty, universally accepted traits.
+                    - Include ONLY:
+                        - leaf type (needle-like, broad, etc.) if certain
+                        - upper and lower surface color if known
+                        - universally recognized features (e.g., stomatal bands)
+                    - Do NOT include:
+                        - shape adjectives that are redundant with leaf type
+                        - phyllotaxy (alternate, opposite, spiral) unless certain
+                        - subjective descriptors (simple, papery, soft, fuzzy, long, short)
+                        - measurements, size, or numeric ranges
+                        - invented traits
+                        - medicinal uses, benefits, effects
+                    - Write exactly ONE sentence.
+                    - Use neutral, objective scientific language.
+                    Focus on:
+                    - conveying the leaf’s observable category and color
+                    - universally recognized diagnostic features only
+                    Plant:
+                    - Common Name: {herb_name_common}
+                    - Scientific Name: {herb_name_scientific}
+                    Output ONLY the sentence that belongs inside the <dd> element.
+                    Do not add explanations, headings, or extra text.
+                ''').strip()
+                prompt += f'/no_think'
+                reply = llm.reply(prompt).strip()
+                if '</think>' in reply:
+                    reply = reply.split('</think>')[1].strip()
+                reply = polish.vanilla(reply)
+                json_article[key] = reply
+                io.json_write(json_article_filepath, json_article)
+    ###
+    regen = False
+    dispel = False
+    key = 'botany_flowers_present'
+    if key not in json_article: json_article[key] = ''
+    if regen: json_article[key] = ''
+    if dispel: 
+        json_article[key] = ''
+        io.json_write(json_article_filepath, json_article)
+    if not dispel:
+        if json_article[key] == '':
+            prompt = textwrap.dedent(f'''
+                You are a bot that provides accurate botanical information based on verified plant sources. 
+                Question: Does the plant with the scientific name "[Scientific Name]" have flowers?
+                Instructions:
+                - Answer **only** with "yes" or "no".
+                - Do not provide any explanation, commentary, or extra text.
+                - Base your answer only on documented botanical knowledge.
+                - If the plant does not produce flowers, respond with "no".
+                - Do not guess; answer strictly according to botanical facts.
+                Examples:
+                - Question: Does "Matricaria chamomilla" have flowers?
+                - Answer: yes
+                - Question: Does "Sphagnum palustre" have flowers?
+                - Answer: no
+                Now answer the following:
+                Does "{herb_name_scientific}" have flowers?
+            ''').strip()
+            prompt += f'/no_think'
+            reply = llm.reply(prompt).strip()
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            json_article[key] = reply
+            io.json_write(json_article_filepath, json_article)
+    ###
+    if json_article['botany_flowers_present'].lower().strip() == 'yes':
+        regen = False
+        dispel = False
+        key = 'botany_flowers_description'
+        if key not in json_article: json_article[key] = ''
+        if regen: json_article[key] = ''
+        if dispel: 
+            json_article[key] = ''
+            io.json_write(json_article_filepath, json_article)
+        if not dispel:
+            if json_article[key] == '':
+                prompt = textwrap.dedent(f'''
+                    You are a botanist and scientific content writer.
+                    Write a concise botanical description of the FLOWERS of the following plant species.
+                    STRICT RULES (MANDATORY):
+                    - Do NOT start the sentence with “The flowers of…”
+                    - Do NOT mention the plant name in any form.
+                    - Write in noun-phrase style, not full sentences.
+                    - Describe ONLY high-certainty, universally accepted traits.
+                    - Include ONLY:
+                        - flower color(s) if known
+                        - flower arrangement if universally recognized (e.g., solitary, clustered, spike, raceme)
+                        - basic symmetry (actinomorphic / zygomorphic) if certain
+                        - universally recognized diagnostic features (e.g., number of petals, unique markings) if reliably documented
+                    - Do NOT include:
+                        - subjective descriptors (beautiful, showy, fragrant)
+                        - inferred or uncertain traits
+                        - measurements, sizes, or numeric ranges
+                        - invented features
+                        - medicinal uses, benefits, effects
+                    - Write exactly ONE sentence.
+                    - Use neutral, objective scientific language.
+                    Focus on:
+                    - conveying observable floral traits only
+                    - universally recognized diagnostic features
+                    Plant:
+                    - Common Name: {herb_name_common}
+                    - Scientific Name: {herb_name_scientific}
+                    Output ONLY the sentence that belongs inside the <dd> element.
+                    Do not add explanations, headings, or extra text.
+                ''').strip()
+                prompt += f'/no_think'
+                reply = llm.reply(prompt).strip()
+                if '</think>' in reply:
+                    reply = reply.split('</think>')[1].strip()
+                reply = polish.vanilla(reply)
+                json_article[key] = reply
+                io.json_write(json_article_filepath, json_article)
+    ###
+    regen = False
+    dispel = False
+    key = 'botany_stems_present'
+    if key not in json_article: json_article[key] = ''
+    if regen: json_article[key] = ''
+    if dispel: 
+        json_article[key] = ''
+        io.json_write(json_article_filepath, json_article)
+    if not dispel:
+        if json_article[key] == '':
+            prompt = textwrap.dedent(f'''
+                You are a bot that provides accurate botanical information based on verified plant sources. 
+                Question: Does the plant with the scientific name "[Scientific Name]" have stems?
+                Instructions:
+                - Answer **only** with "yes" or "no".
+                - Do not provide any explanation, commentary, or extra text.
+                - Base your answer only on documented botanical knowledge.
+                - If the plant does not have stems, respond with "no".
+                - Do not guess; answer strictly according to botanical facts.
+                Examples:
+                - Question: Does "Matricaria chamomilla" have stems?
+                - Answer: yes
+                - Question: Does "Sphagnum palustre" have stems?
+                - Answer: no
+                Now answer the following:
+                Does "{herb_name_scientific}" have stems?
+            ''').strip()
+            prompt += f'/no_think'
+            reply = llm.reply(prompt).strip()
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            json_article[key] = reply
+            io.json_write(json_article_filepath, json_article)
+    if json_article['botany_stems_present'].lower().strip() == 'yes':
+        regen = False
+        dispel = False
+        key = 'botany_stems_description'
+        if key not in json_article: json_article[key] = ''
+        if regen: json_article[key] = ''
+        if dispel: 
+            json_article[key] = ''
+            io.json_write(json_article_filepath, json_article)
+        if not dispel:
+            if json_article[key] == '':
+                prompt = textwrap.dedent(f'''
+                    You are a botanist and scientific content writer.
+                    Write a concise botanical description of the STEMS of the following plant species.
+                    STRICT RULES (MANDATORY):
+                    - Do NOT start the sentence with “The stems of…”
+                    - Do NOT mention the plant name in any form.
+                    - Write in noun-phrase style, not full sentences.
+                    - Describe ONLY high-certainty, universally accepted traits.
+                    - Include ONLY:
+                        - growth habit (e.g., erect, creeping, climbing) if universally documented
+                        - branching pattern if certain (e.g., simple, dichotomous, opposite, alternate)
+                        - surface characteristics if reliably documented (e.g., glabrous, hairy, woody, succulent)
+                        - universally recognized diagnostic features if documented
+                    - Do NOT include:
+                        - subjective descriptors (slender, strong, flexible, ornamental)
+                        - inferred or uncertain traits
+                        - measurements, sizes, or numeric ranges
+                        - invented features
+                        - medicinal uses, benefits, effects
+                    - Write exactly ONE sentence.
+                    - Use neutral, objective scientific language.
+                    Focus on:
+                    - conveying observable stem traits only
+                    - universally recognized diagnostic features
+                    Plant:
+                    - Common Name: {herb_name_common}
+                    - Scientific Name: {herb_name_scientific}
+                    Output ONLY the sentence that belongs inside the <dd> element.
+                    Do not add explanations, headings, or extra text.
+                ''').strip()
+                prompt += f'/no_think'
+                reply = llm.reply(prompt).strip()
+                if '</think>' in reply:
+                    reply = reply.split('</think>')[1].strip()
+                reply = polish.vanilla(reply)
+                json_article[key] = reply
+                io.json_write(json_article_filepath, json_article)
+    leaves_description_html = ''
+    if json_article['botany_leaves_present'].lower().strip() == 'yes':
+        leaves_description_html = f'''
+            <dt>Leaves</dt>
+            <dd>{json_article['botany_leaves_description'].capitalize()}</dd>
+        '''
+    flowers_description_html = ''
+    if json_article['botany_flowers_present'].lower().strip() == 'yes':
+        flowers_description_html = f'''
+            <dt>Flowers</dt>
+            <dd>{json_article['botany_flowers_description'].capitalize()}</dd>
+        '''
+    stems_description_html = ''
+    if json_article['botany_stems_present'].lower().strip() == 'yes':
+        stems_description_html = f'''
+            <dt>Stems</dt>
+            <dd>{json_article['botany_stems_description'].capitalize()}</dd>
+        '''
+    botany_html = f'''
+        <section id="botanical-identity">
+          <h2>Botanical Identity</h2>
+          <dl>
+            <dt>Scientific Name</dt>
+            <dd class="quick-scientific-name"><strong>{herb_name_scientific}</strong></dd>
+            <dt>Common Name</dt>
+            <dd class="quick-common-name"><strong>{herb_name_common}</strong></dd>
+            <dt>Synonyms / Alternative Names</dt>
+            <dd class="quick-synonyms"><strong>{herb_names_common_alt}</strong></dd>
+            <dt>Plant Family</dt>
+            <dd class="quick-family-name"><strong>{herb_family}</strong></dd>
+            <dt>Genus</dt>
+            <dd class="quick-genus"><strong>{herb_genus}</strong></dd>
+          </dl>
+        <h3>Botanical Description</h3>
+          <dl>
+            <dt>Growth Habit</dt>
+            <dd>{json_article['botany_growth_habit']}</dd>
+            <dt>Height</dt>
+            <dd>{json_article['botany_height']}</dd>
+            {leaves_description_html}
+            {flowers_description_html}
+            {stems_description_html}
+          </dl>
+        </section>
+    '''
+    # TODO
+    '''
+            <dt>Botanical Description</dt>
+            <dd>A small, daisy-like flowering plant with feathery leaves and white petals surrounding a yellow central disc.</dd>
+    '''
+    return botany_html 
+
+
+def herbs_herb_primary_gen_traditional_uses(json_entity):
+    herb_traditional_systems = '\n'.join([
+        f'''<li>{item['answer'].title()}</li>''' 
+        for item in json_entity['herb_traditional_systems']
+        if item['total_score'] >= 600
+    ][:4])
+    herb_historical_preparations = '\n'.join([
+        f'''<li>{item['answer'].title()}</li>''' 
+        for item in json_entity['herb_historical_preparations']
+        if item['total_score'] >= 600
+    ][:4])
+    traditional_uses_html = f'''
+        <section id="traditional-uses">
+          <h2>Traditional Uses / Historical Use</h2>
+          <h3>Traditional Systems</h3>
+          <ul>
+            {herb_traditional_systems}
+          </ul>
+          <h3>Historical Preparation Methods</h3>
+          <ul>
+            {herb_historical_preparations}
+          </ul>
+        </section>
+    '''
+    '''
+          <p>Chamomile (Matricaria chamomilla) has been historically used in European and Western Asian herbal traditions. It has been prepared as infusions, teas, and poultices, and referenced in folk medicine texts for its calming properties and culinary applications.</p>
+    '''
+    return traditional_uses_html
+
+def herbs_herb_primary_gen_medicinal_actions(json_entity):
+    herb_medicinal_actions = [
+        item['answer']
+        for item in json_entity['herb_medicinal_actions']
+        if item['total_score'] >= 600
+    ][:4]
+    herb_medicinal_actions_html = ''
+    template_intros = [
+            line.strip() for line in 
+            '''
+                Traditionally described as a
+                Historically regarded as a
+                In herbal texts, considered a
+                As described in traditional systems, a
+                Commonly referenced as a
+                In herbal literature, noted as a
+            '''.split('\n')
+            if line.strip() != ''
+        ]
+    random.shuffle(template_intros)
+    template_adjectives = [
+            line.strip() for line in 
+            '''
+                gentle
+                mild
+                moderate
+                soothing
+                calming
+                warming
+                cooling
+            '''.split('\n')
+            if line.strip() != ''
+        ]
+    random.shuffle(template_adjectives)
+    for herb_medicinal_action in herb_medicinal_actions:
+        # action dt
+        if herb_medicinal_action == 'carminative':
+            herb_medicinal_actions_html += '<dt>Carminative</dt>\n'
+        elif herb_medicinal_action == 'sedative':
+            herb_medicinal_actions_html += '<dt>Sedative</dt>\n'
+        elif herb_medicinal_action == 'anti-inflammatory':
+            herb_medicinal_actions_html += '<dt>Anti-inflammatory</dt>\n'
+        elif herb_medicinal_action == 'antispasmodic':
+            herb_medicinal_actions_html += '<dt>Antispasmodic</dt>\n'
+        elif herb_medicinal_action == 'astringent':
+            herb_medicinal_actions_html += '<dt>Astringent</dt>\n'
+        elif herb_medicinal_action == 'diuretic':
+            herb_medicinal_actions_html += '<dt>Diuretic</dt>\n'
+        elif herb_medicinal_action == 'stimulant':
+            herb_medicinal_actions_html += '<dt>Stimulant</dt>\n'
+        elif herb_medicinal_action == 'expectorant':
+            herb_medicinal_actions_html += '<dt>Expectorant</dt>\n'
+        elif herb_medicinal_action == 'tonic':
+            herb_medicinal_actions_html += '<dt>Tonic</dt>\n'
+        elif herb_medicinal_action == 'bitter':
+            herb_medicinal_actions_html += '<dt>Bitter</dt>\n'
+        # action dd (general)
+        template_intro = template_intros.pop(0)
+        template_adjective = template_adjectives.pop(0)
+        herb_medicinal_actions_html += '<dd>\n'
+        herb_medicinal_actions_html += template_intro
+        herb_medicinal_actions_html += ' ' + template_adjective
+        herb_medicinal_actions_html += ' ' + herb_medicinal_action + ','
+        # action dd (specific)
+        if herb_medicinal_action == 'carminative':
+            herb_medicinal_actions_html += ' ' + random.choice([
+                line.strip() for line in 
+                '''
+                    within digestive system contexts
+                    in relation to gastrointestinal comfort
+                    for digestive process support
+                    in digestion-focused applications
+                    in stomach-related herbal uses
+                '''.split('\n')
+                if line.strip() != ''
+            ])
+        elif herb_medicinal_action == 'sedative':
+            herb_medicinal_actions_html += ' ' + random.choice([
+                line.strip() for line in 
+                '''
+                    in nervous system–related contexts
+                    for relaxation-oriented uses
+                    in calming-focused applications
+                    in rest-related herbal contexts
+                    in stress-related herbal practices
+                '''.split('\n')
+                if line.strip() != ''
+            ])
+        elif herb_medicinal_action == 'anti-inflammatory':
+            herb_medicinal_actions_html += ' ' + random.choice([
+                line.strip() for line in 
+                '''
+                    in tissue-soothing contexts
+                    for irritation-related applications
+                    in inflammation-focused discussions
+                    in topical or internal use contexts
+                    for general calming applications
+                '''.split('\n')
+                if line.strip() != ''
+            ])
+        elif herb_medicinal_action == 'antispasmodic':
+            herb_medicinal_actions_html += ' ' + random.choice([
+                line.strip() for line in 
+                '''
+                    in muscle-related contexts
+                    for tension-related applications
+                    in smooth muscle contexts
+                    for cramp-focused discussions
+                    in spasm-related situations
+                '''.split('\n')
+                if line.strip() != ''
+            ])
+        elif herb_medicinal_action == 'astringent':
+            herb_medicinal_actions_html += ' ' + random.choice([
+                line.strip() for line in 
+                '''
+                    in tissue-toning contexts
+                    for skin-related applications
+                    in drying-focused uses
+                    for surface-level applications
+                    in structural-support contexts
+                '''.split('\n')
+                if line.strip() != ''
+            ])
+        elif herb_medicinal_action == 'diuretic':
+            herb_medicinal_actions_html += ' ' + random.choice([
+                line.strip() for line in 
+                '''
+                    in fluid-regulation contexts
+                    for elimination-focused applications
+                    in urinary system discussions
+                    for moisture-related balance
+                    in cleansing-oriented uses
+                '''.split('\n')
+                if line.strip() != ''
+            ])
+        elif herb_medicinal_action == 'stimulant':
+            herb_medicinal_actions_html += ' ' + random.choice([
+                line.strip() for line in 
+                '''
+                    in energy-related contexts
+                    for alertness-focused applications
+                    in activation-oriented uses
+                    for vitality-related discussions
+                    in wakefulness-related contexts
+                '''.split('\n')
+                if line.strip() != ''
+            ])
+        elif herb_medicinal_action == 'expectorant':
+            herb_medicinal_actions_html += ' ' + random.choice([
+                line.strip() for line in 
+                '''
+                    in respiratory system contexts
+                    for airway-related applications
+                    in mucus-related discussions
+                    for breathing-focused uses
+                    in chest-related herbal contexts
+                '''.split('\n')
+                if line.strip() != ''
+            ])
+        elif herb_medicinal_action == 'tonic':
+            herb_medicinal_actions_html += ' ' + random.choice([
+                line.strip() for line in 
+                '''
+                    for long-term use contexts
+                    in whole-system applications
+                    for foundational support
+                    in general wellness contexts
+                    for broad-use formulations
+                '''.split('\n')
+                if line.strip() != ''
+            ])
+        elif herb_medicinal_action == 'bitter':
+            herb_medicinal_actions_html += ' ' + random.choice([
+                line.strip() for line in 
+                '''
+                    in taste-driven classifications
+                    for digestion-related formulations
+                    in appetite-focused contexts
+                    for flavor-based applications
+                    in bitter herb groupings
+                '''.split('\n')
+                if line.strip() != ''
+            ])
+        herb_medicinal_actions_html += '.'
+        herb_medicinal_actions_html += '</dd>\n'
+    ###
+    # TODO: generate intro paragraph based on herb_medicinal_actions
+    '''
+          <p>
+            In traditional herbal systems, chamomile (Matricaria chamomilla) has been
+            described using a set of standardized medicinal actions. These terms are
+            used to characterize how the plant has been traditionally understood to
+            interact with the body.
+          </p>
+    '''
+    medicinal_actions_html = f'''
+        <section id="medicinal-actions">
+          <h2>Medicinal Actions</h2>
+          <dl>
+            {herb_medicinal_actions_html}
+          </dl>
+        </section>
+    '''
+    return medicinal_actions_html
+
+def herbs_herb_primary_gen_active_compounds(json_entity):
+    flavonoid_line = random.choice([
+        line.strip() for line in 
+        '''
+            A widely occurring class of plant polyphenols found in leaves, flowers, and fruits.
+            A group of naturally occurring compounds commonly present in many flowering plants.
+            Plant-based polyphenolic compounds frequently distributed throughout aerial plant parts.
+            A chemical class commonly identified in plant tissues, especially flowers and leaves.
+            Naturally occurring polyphenols that contribute to pigmentation and structural chemistry.
+        '''.split('\n')
+        if line.strip() != ''
+    ])
+    phenolic_acid_line = random.choice([
+        line.strip() for line in 
+        '''
+            A class of aromatic plant compounds commonly found in leaves, seeds, and stems.
+            Naturally occurring phenolic compounds present in many plant species.
+            Simple phenolic molecules widely distributed across plant tissues.
+            A group of plant-derived compounds frequently identified in herbal material.
+            Organic acids commonly occurring as part of plant secondary metabolism.
+        '''.split('\n')
+        if line.strip() != ''
+    ])
+    tannin_line = random.choice([
+        line.strip() for line in 
+        '''
+            A class of polyphenolic compounds commonly found in bark, leaves, and seeds.
+            Plant-derived compounds known for their ability to bind proteins.
+            Naturally occurring polyphenols widely distributed in woody and leafy plant parts.
+            A group of compounds frequently present in plant tissues exposed to herbivory.
+            High-molecular-weight phenolic compounds found in many plant species.
+        '''.split('\n')
+        if line.strip() != ''
+    ])
+    terpenoid_line = random.choice([
+        line.strip() for line in 
+        '''
+            A large class of naturally occurring compounds derived from isoprene units.
+            Plant-produced compounds commonly found in essential oils and resins.
+            A diverse group of organic compounds present in many aromatic plants.
+            Naturally occurring metabolites widely distributed in leaves, flowers, and roots.
+            A chemical class commonly associated with volatile plant constituents.
+        '''.split('\n')
+        if line.strip() != ''
+    ])
+    alkaloid_line = random.choice([
+        line.strip() for line in 
+        '''
+            A class of nitrogen-containing compounds produced by many plant species.
+            Naturally occurring organic compounds commonly involved in plant defense.
+            Plant-derived nitrogenous compounds found in various tissues.
+            A diverse group of secondary metabolites present in numerous plants.
+            Organic compounds biosynthesized by plants as part of secondary metabolism.
+        '''.split('\n')
+        if line.strip() != ''
+    ])
+    saponin_line = random.choice([
+        line.strip() for line in 
+        '''
+            A group of glycosidic compounds commonly found in roots, leaves, and seeds.
+            Plant-derived compounds characterized by their soap-like properties.
+            Naturally occurring metabolites distributed across many plant families.
+            A chemical class frequently identified in herbaceous and woody plants.
+            Secondary plant compounds composed of sugar-linked aglycones.
+        '''.split('\n')
+        if line.strip() != ''
+    ])
+    essential_oil_line = random.choice([
+        line.strip() for line in 
+        '''
+            A complex mixture of volatile compounds produced by aromatic plant tissues.
+            Naturally occurring plant oils composed primarily of volatile constituents.
+            A collective term for aromatic compounds extracted from plant material.
+            Volatile plant-derived substances commonly present in leaves and flowers.
+            A mixture of naturally occurring compounds responsible for plant aroma.
+        '''.split('\n')
+        if line.strip() != ''
+    ])
+    coumarin_line = random.choice([
+        line.strip() for line in 
+        '''
+            A class of aromatic organic compounds found in many plant species.
+            Naturally occurring lactone compounds distributed across various plant tissues.
+            Plant-derived compounds often associated with fragrance-related chemistry.
+            A group of secondary metabolites present in seeds, roots, and leaves.
+            Organic compounds biosynthesized as part of plant secondary metabolism.
+        '''.split('\n')
+        if line.strip() != ''
+    ])
+    anthocyanin_line = random.choice([
+        line.strip() for line in 
+        '''
+            A class of water-soluble pigments responsible for red, purple, and blue coloration.
+            Plant-derived flavonoid pigments commonly found in flowers and fruits.
+            Naturally occurring compounds contributing to plant pigmentation.
+            Pigment molecules widely distributed in colored plant tissues.
+            A subgroup of flavonoids associated with visual coloration in plants.
+        '''.split('\n')
+        if line.strip() != ''
+    ])
+    glycoside_line = random.choice([
+        line.strip() for line in 
+        '''
+            A broad class of compounds composed of a sugar bound to a non-sugar component.
+            Plant-produced compounds commonly stored in inactive glycosylated forms.
+            Naturally occurring metabolites distributed across many plant species.
+            A chemical class frequently found in roots, leaves, and seeds.
+            Secondary metabolites formed through glycosylation processes in plants.
+        '''.split('\n')
+        if line.strip() != ''
+    ])
+    ###
+    herb_active_compounds = [
+        item['answer']
+        for item in json_entity['herb_active_compounds']
+        if item['total_score'] >= 600
+    ][:4]
+    herb_active_compounds_dl = ''
+    for compound in herb_active_compounds:
+        herb_active_compounds_dl += f'<dt>{compound.title()}</dt>\n'
+        if compound.lower() == 'flavonoid':
+            herb_active_compounds_dl += f'<dd>{flavonoid_line}</dd>\n'
+        if compound.lower() == 'phenolic acid':
+            herb_active_compounds_dl += f'<dd>{phenolic_acid_line}</dd>\n'
+        if compound.lower() == 'tannin':
+            herb_active_compounds_dl += f'<dd>{tannin_line}</dd>\n'
+        if compound.lower() == 'terpenoid':
+            herb_active_compounds_dl += f'<dd>{terpenoid_line}</dd>\n'
+        if compound.lower() == 'alkaloid':
+            herb_active_compounds_dl += f'<dd>{alkaloid_line}</dd>\n'
+        if compound.lower() == 'saponin':
+            herb_active_compounds_dl += f'<dd>{saponin_line}</dd>\n'
+        if compound.lower() == 'essential oil':
+            herb_active_compounds_dl += f'<dd>{essential_oil_line}</dd>\n'
+        if compound.lower() == 'coumarin':
+            herb_active_compounds_dl += f'<dd>{coumarin_line}</dd>\n'
+        if compound.lower() == 'anthocyanin':
+            herb_active_compounds_dl += f'<dd>{anthocyanin_line}</dd>\n'
+        if compound.lower() == 'glycoside':
+            herb_active_compounds_dl += f'<dd>{glycoside_line}</dd>\n'
+    herb_active_compounds_html = f'''
+        <section id="active-compounds">
+          <h2>Active Compounds</h2>
+          <dl>
+            {herb_active_compounds_dl}
+          </dl>
+        </section>
+    '''
+    # TODO
+    '''
+          <p>
+            Chamomile (Matricaria chamomilla) contains several bioactive compounds, which have been
+            identified in the flowers, leaves, and stems. These compounds are listed below with
+            their chemical classification.
+          </p>
+    '''
+    return herb_active_compounds_html
+
+def herbs_herb_primary_gen_modern_research(json_entity):
+    modern_research_placeholder = random.choice([
+        '''
+            Scientific research related to this plant is ongoing. This section will be
+            expanded in the future to include summaries of phytochemical studies,
+            laboratory research, and other relevant scientific literature as it becomes
+            available.
+        ''',
+        '''
+            Contemporary research on this plant includes areas such as chemical
+            analysis, laboratory-based studies, and observational research. Detailed
+            summaries of published findings are not included at this stage and will be
+            added during future content updates.
+        ''',
+        '''
+            Modern scientific investigation of this plant has focused on identifying
+            its chemical constituents and examining their properties in controlled
+            research settings. Comprehensive study summaries will be incorporated into
+            this section as additional sources are reviewed.
+        ''',
+        '''
+            This section is reserved for future summaries of scientific research related
+            to this plant. As additional verified sources are reviewed, relevant study
+            information will be added here.
+        ''',
+        '''
+            Scientific literature concerning this plant spans multiple areas, including
+            phytochemistry and laboratory research. Detailed analysis of published
+            studies is not included at this time and will be added as part of future
+            editorial expansion.
+        ''',
+    ])
+    section_modern_research_html = f'''
+        <section id="modern-research">
+          <h2>Modern Research Overview</h2>
+          <p>
+              {modern_research_placeholder}
+          </p>
+        </section>
+    '''
+    return section_modern_research_html 
+
+def herbs_herb_primary_gen_safety_precautions(json_entity):
+    herb_drugs_interaction_lines_yes = random.choice([
+        line.strip() for line in 
+        '''
+            Potential interactions with prescription medications have been reported in available sources.
+            This herb has been associated with interactions when used alongside certain pharmaceutical medications.
+            Reports suggest that this herb may interact with prescription drugs in some contexts.
+            Interactions between this herb and prescription medications have been noted in traditional use and literature.
+            The use of this herb alongside pharmaceutical medications may result in potential interactions.
+        '''.split('\n')
+        if line.strip() != ''
+    ])
+    herb_drugs_interaction_lines_unknown = random.choice([
+        line.strip() for line in 
+        '''
+            Interactions with prescription medications have not been well documented.
+            Available information regarding interactions with pharmaceutical drugs is limited.
+            The potential for interactions with prescription medications has not been extensively studied.
+            There is insufficient evidence to determine whether this herb interacts with pharmaceutical drugs.
+            Interactions between this herb and prescription medications are not clearly established.
+        '''.split('\n')
+        if line.strip() != ''
+    ])
+    total_score_yes = 0
+    total_score_unknown = 0
+    herb_drugs_interaction = json_entity['herb_drugs_interaction']
+    for item in herb_drugs_interaction:
+        if item['answer'] == 'yes':
+            total_score_yes = int(item['total_score'])
+        if item['answer'] == 'unknown':
+            total_score_unknown = int(item['total_score'])
+    if total_score_yes > total_score_unknown: 
+        herb_drugs_interaction_line = herb_drugs_interaction_lines_yes 
+    else:
+        herb_drugs_interaction_line = herb_drugs_interaction_lines_unknown 
+    ### ALLERGIES
+    herb_allergies_lines_yes = random.choice([
+        line.strip() for line in 
+        '''
+            Allergic reactions have been reported, particularly in individuals sensitive to related plant families.
+            This herb may cause allergic responses in some individuals, especially those with known plant sensitivities.
+            Sensitivity reactions have been noted in certain individuals following exposure to this herb.
+            Reports indicate that this herb can trigger allergic reactions in susceptible individuals.
+            Individuals with sensitivities to botanically related plants may experience allergic reactions.
+        '''.split('\n')
+        if line.strip() != ''
+    ])
+    herb_allergies_lines_unknown = random.choice([
+        line.strip() for line in 
+        '''
+            Allergic reactions associated with this herb have not been well documented.
+            Information regarding allergic responses to this herb is limited.
+            There is insufficient evidence to determine whether this herb commonly causes allergic reactions.
+            Sensitivity or allergy-related effects have not been clearly established.
+            Reports of allergic reactions to this herb are not well documented in available sources.
+        '''.split('\n')
+        if line.strip() != ''
+    ])
+    total_score_yes = 0
+    total_score_unknown = 0
+    herb_allergies = json_entity['herb_allergies']
+    for item in herb_allergies:
+        if item['answer'] == 'yes':
+            total_score_yes = int(item['total_score'])
+        if item['answer'] == 'unknown':
+            total_score_unknown = int(item['total_score'])
+    if total_score_yes > total_score_unknown: 
+        herb_allergies_line = herb_allergies_lines_yes 
+    else:
+        herb_allergies_line = herb_allergies_lines_unknown 
+    ### TOXICITY
+    herb_toxicity_lines_yes = random.choice([
+        line.strip() for line in 
+        '''
+            Toxic effects have been reported in association with the use of this herb.
+            This herb has been associated with toxic effects under certain conditions.
+            Reports indicate that this herb may exhibit toxic properties in some contexts.
+            Toxicity related to this herb has been documented in available sources.
+            The use of this herb has been linked to reported toxic effects.
+        '''.split('\n')
+        if line.strip() != ''
+    ])
+    herb_toxicity_lines_unknown = random.choice([
+        line.strip() for line in 
+        '''
+            Toxic effects associated with this herb have not been well documented.
+            Available information regarding the toxicity of this herb is limited.
+            There is insufficient evidence to determine the toxic potential of this herb.
+            The toxicity profile of this herb has not been clearly established.
+            Reports of toxicity related to this herb are not well documented in available literature.
+        '''.split('\n')
+        if line.strip() != ''
+    ])
+    total_score_yes = 0
+    total_score_unknown = 0
+    herb_toxicity = json_entity['herb_toxicity']
+    for item in herb_toxicity:
+        if item['answer'] == 'yes':
+            total_score_yes = int(item['total_score'])
+        if item['answer'] == 'unknown':
+            total_score_unknown = int(item['total_score'])
+    if total_score_yes > total_score_unknown: 
+        herb_toxicity_line = herb_toxicity_lines_yes 
+    else:
+        herb_toxicity_line = herb_toxicity_lines_unknown 
+    ### GENERAL PRECAUTIONS
+    herb_generally_safe_lines_yes = random.choice([
+        line.strip() for line in 
+        '''
+            General precautions have been noted regarding the use of this herb.
+            Caution is advised in certain contexts based on traditional use and available information.
+            Some general precautions have been associated with the use of this herb.
+            The use of this herb may warrant general caution in certain situations.
+            Precautionary considerations have been reported in relation to this herb.
+        '''.split('\n')
+        if line.strip() != ''
+    ])
+    herb_generally_safe_lines_unknown = random.choice([
+        line.strip() for line in 
+        '''
+            Specific general precautions associated with this herb have not been well documented.
+            Available information does not clearly establish general precautionary concerns for this herb.
+            There is limited information regarding general precautions related to the use of this herb.
+            General precautionary guidance for this herb is not clearly established in available sources.
+            Reports outlining specific general precautions for this herb are limited.
+        '''.split('\n')
+        if line.strip() != ''
+    ])
+    total_score_yes = 0
+    total_score_unknown = 0
+    herb_generally_safe = json_entity['herb_generally_safe']
+    for item in herb_generally_safe:
+        if item['answer'] == 'yes':
+            total_score_yes = int(item['total_score'])
+        if item['answer'] == 'unknown':
+            total_score_unknown = int(item['total_score'])
+    if total_score_yes > total_score_unknown: 
+        herb_generally_safe_line = herb_generally_safe_lines_yes 
+    else:
+        herb_generally_safe_line = herb_generally_safe_lines_unknown 
+    ### CONTRAINDICATIONS
+    herb_contraindications_lines_yes = random.choice([
+        line.strip() for line in 
+        '''
+            Certain contraindications have been reported in relation to the use of this herb.
+            The use of this herb has been associated with reported contraindications in some situations.
+            Contraindications related to this herb have been noted in traditional use and available sources.
+            Some conditions have been cited as contraindications for the use of this herb.
+            Reported information suggests that this herb may be contraindicated in specific circumstances.
+        '''.split('\n')
+        if line.strip() != ''
+    ])
+    herb_contraindications_lines_unknown = random.choice([
+        line.strip() for line in 
+        '''
+            Specific contraindications associated with this herb have not been well documented.
+            Available information does not clearly establish contraindications for the use of this herb.
+            There is insufficient evidence to determine specific contraindications related to this herb.
+            Contraindications for this herb are not clearly established in available sources.
+            Reports outlining specific contraindications for this herb are limited.
+        '''.split('\n')
+        if line.strip() != ''
+    ])
+    total_score_yes = 0
+    total_score_unknown = 0
+    herb_contraindications = json_entity['herb_contraindications']
+    for item in herb_contraindications:
+        if item['answer'] == 'yes':
+            total_score_yes = int(item['total_score'])
+        if item['answer'] == 'unknown':
+            total_score_unknown = int(item['total_score'])
+    if total_score_yes > total_score_unknown: 
+        herb_contraindications_line = herb_contraindications_lines_yes 
+    else:
+        herb_contraindications_line = herb_contraindications_lines_unknown 
+    ### PREGNANCY AND BREASTFEEDING
+    herb_pregnancy_and_breastfeeding_lines_yes = random.choice([
+        line.strip() for line in 
+        '''
+            Considerations regarding use during pregnancy or breastfeeding have been reported.
+            The use of this herb during pregnancy or breastfeeding has been noted as a consideration in available sources.
+            Pregnancy and breastfeeding-related considerations have been associated with the use of this herb.
+            Reports suggest that use during pregnancy or breastfeeding may require special consideration.
+            The use of this herb in pregnancy or breastfeeding contexts has been discussed in available information.
+        '''.split('\n')
+        if line.strip() != ''
+    ])
+    herb_pregnancy_and_breastfeeding_lines_unknown = random.choice([
+        line.strip() for line in 
+        '''
+            Safety during pregnancy and breastfeeding has not been well documented.
+            Available information regarding use during pregnancy or breastfeeding is limited.
+            There is insufficient evidence to determine the safety of this herb during pregnancy or breastfeeding.
+            Use during pregnancy or breastfeeding has not been clearly established in available sources.
+            Information addressing pregnancy and breastfeeding-related safety for this herb is limited.
+        '''.split('\n')
+        if line.strip() != ''
+    ])
+    total_score_yes = 0
+    total_score_unknown = 0
+    herb_pregnancy_and_breastfeeding = json_entity['herb_pregnancy_and_breastfeeding']
+    for item in herb_pregnancy_and_breastfeeding:
+        if item['answer'] == 'yes':
+            total_score_yes = int(item['total_score'])
+        if item['answer'] == 'unknown':
+            total_score_unknown = int(item['total_score'])
+    if total_score_yes > total_score_unknown: 
+        herb_pregnancy_and_breastfeeding_line = herb_pregnancy_and_breastfeeding_lines_yes 
+    else:
+        herb_pregnancy_and_breastfeeding_line = herb_pregnancy_and_breastfeeding_lines_unknown 
+    ###
+    section_safety_precautions_html = f'''
+        <section id="safety-precautions">
+          <h2>Safety & Contraindications</h2>
+          <dl>
+            <dt>General Precautions</dt>
+            <dd>{herb_generally_safe_line}</dd>
+            <dt>Contraindications</dt>
+            <dd>{herb_contraindications_line}</dd>
+            <dt>Allergies</dt>
+            <dd>{herb_allergies_line}</dd>
+            <dt>Drug Interactions</dt>
+            <dd>{herb_drugs_interaction_line}</dd>
+            <dt>Toxicity</dt>
+            <dd>{herb_toxicity_line}</dd>
+            <dt>Pregnancy & Breastfeeding</dt>
+            <dd>{herb_pregnancy_and_breastfeeding_line}</dd>
+          </dl>
+        </section>
+    '''
+    return section_safety_precautions_html 
+
+def herbs_herb_primary_gen_preparation_usage(json_entity):
+    infusion = random.choice([
+        line.strip() for line in 
+        '''
+            Plant material is steeped in hot water to extract water-soluble compounds.
+            Dried or fresh plant parts are infused in hot water and consumed as a beverage.
+            A preparation method involving steeping plant material in heated water for a short period.
+            Water is poured over plant material and allowed to steep before straining.
+            Infusions are commonly prepared using hot water to release aromatic and soluble components.
+        '''.split('\n')
+        if line.strip() != ''
+    ])
+    decoction = random.choice([
+        line.strip() for line in 
+        '''
+            Plant material is simmered in water to extract compounds from tougher parts.
+            A preparation method involving prolonged boiling of roots, bark, or dense plant material.
+            Plant parts are gently boiled in water to release soluble constituents.
+            Decoctions are made by heating plant material in water for an extended time.
+            This method uses sustained heat to extract compounds from firm plant structures.
+        '''.split('\n')
+        if line.strip() != ''
+    ])
+    tincture = random.choice([
+        line.strip() for line in 
+        '''
+            Plant material is macerated in alcohol to create a concentrated liquid extract.
+            A preparation involving soaking plant parts in alcohol for extended extraction.
+            Alcohol is used as a solvent to extract plant constituents over time.
+            Tinctures are liquid extracts produced through alcoholic maceration.
+            This method preserves plant compounds using an alcohol-based solution.
+        '''.split('\n')
+        if line.strip() != ''
+    ])
+    poultice = random.choice([
+        line.strip() for line in 
+        '''
+Fresh or dried plant material is applied externally to the skin.
+Plant parts are crushed or moistened and placed directly on the body.
+A topical preparation made by applying softened plant material externally.
+Poultices involve external application of prepared plant matter.
+This method uses direct contact between plant material and the skin.
+        '''.split('\n')
+        if line.strip() != ''
+    ])
+    powder = random.choice([
+        line.strip() for line in 
+        '''
+Dried plant material is ground into a fine powder.
+Plant parts are dried and mechanically reduced to a powdered form.
+A preparation created by pulverizing dried plant material.
+Powdered preparations use finely milled plant parts.
+This method converts dried plant material into a uniform powder.
+        '''.split('\n')
+        if line.strip() != ''
+    ])
+    capsule = random.choice([
+        line.strip() for line in 
+        '''
+Powdered plant material is enclosed in a capsule for oral consumption.
+Capsules contain measured amounts of dried, ground plant material.
+A preparation format using encapsulated plant powders.
+Plant material is processed into powder and sealed in capsules.
+Capsules provide a standardized way to consume powdered plant material.
+        '''.split('\n')
+        if line.strip() != ''
+    ])
+    essential_oil = random.choice([
+        line.strip() for line in 
+        '''
+Volatile compounds are extracted from plant material through distillation.
+Essential oils are obtained by separating aromatic components from the plant.
+A concentrated aromatic extract produced through steam distillation.
+This method captures volatile plant compounds in oil form.
+Essential oils consist of aromatic substances isolated from plant material.
+        '''.split('\n')
+        if line.strip() != ''
+    ])
+    extract = random.choice([
+        line.strip() for line in 
+        '''
+Plant compounds are extracted using water, glycerin, or other solvents.
+A preparation involving the separation of plant constituents without alcohol.
+Extracts are created by dissolving plant material in a suitable non-alcoholic medium.
+This method isolates plant compounds using alternative solvents.
+Non-alcoholic extracts provide a liquid form of plant constituents.
+        '''.split('\n')
+        if line.strip() != ''
+    ])
+    oil_infusion = random.choice([
+        line.strip() for line in 
+        '''
+Plant material is steeped in oil to transfer fat-soluble compounds.
+Oils are infused with plant material over time to absorb constituents.
+A preparation created by soaking plant parts in carrier oils.
+Oil infusions capture plant compounds using lipid-based solvents.
+This method allows plant material to release constituents into oil.
+        '''.split('\n')
+        if line.strip() != ''
+    ])
+    culinary_use = random.choice([
+        line.strip() for line in 
+        '''
+Plant material is incorporated into food or beverages for flavor or aroma.
+Leaves, flowers, or roots are used as ingredients in culinary preparations.
+A preparation involving the use of plant parts in cooking or food production.
+Culinary use includes adding plant material to recipes or beverages.
+This method integrates plant material into edible preparations.
+        '''.split('\n')
+        if line.strip() != ''
+    ])
+    ###
+    herb_preparations = json_entity['herb_preparations']
+    herb_preparations_core = ['infusion',  'decoction', 'poultice']
+    herb_preparations_extra = []
+    for item in herb_preparations:
+        herb_preparation_name = item['answer']
+        if herb_preparation_name.lower().strip() not in herb_preparations_core:
+            herb_preparations_extra.append(item)
+    ###
+    herb_preparations_selected = []
+    for prep in herb_preparations_core:
+        herb_preparations_selected.append(prep)
+    i = 0
+    max_i = 2
+    for item in herb_preparations_extra:
+        if item['total_score'] >= 600:
+            herb_preparations_selected.append(item['answer'])
+            i += 1
+            if i >= max_i: break
+    ###
+    herb_preparations_html = ''
+    for val in herb_preparations_selected:
+        if val == 'infusion':
+            herb_preparations_html += f'''<dt>Infusion</dt>\n'''
+            herb_preparations_html += f'''<dd>{infusion}</dd>\n'''
+        if val == 'decoction':
+            herb_preparations_html += f'''<dt>Decoction</dt>\n'''
+            herb_preparations_html += f'''<dd>{decoction}</dd>\n'''
+        if val == 'poultice':
+            herb_preparations_html += f'''<dt>Poultice</dt>\n'''
+            herb_preparations_html += f'''<dd>{poultice}</dd>\n'''
+        if val == 'tincture':
+            herb_preparations_html += f'''<dt>Tincture</dt>\n'''
+            herb_preparations_html += f'''<dd>{tincture}</dd>\n'''
+        if val == 'powder':
+            herb_preparations_html += f'''<dt>Powder</dt>\n'''
+            herb_preparations_html += f'''<dd>{powder}</dd>\n'''
+        if val == 'capsule':
+            herb_preparations_html += f'''<dt>Capsule</dt>\n'''
+            herb_preparations_html += f'''<dd>{capsule}</dd>\n'''
+        if val == 'essential oil':
+            herb_preparations_html += f'''<dt>Capsule</dt>\n'''
+            herb_preparations_html += f'''<dd>{capsule}</dd>\n'''
+        if val == 'extract':
+            herb_preparations_html += f'''<dt>Extract</dt>\n'''
+            herb_preparations_html += f'''<dd>{extract}</dd>\n'''
+        if val == 'oil infusion':
+            herb_preparations_html += f'''<dt>Infused Oil</dt>\n'''
+            herb_preparations_html += f'''<dd>{oil_infusion}</dd>\n'''
+        if val == 'culinary use':
+            herb_preparations_html += f'''<dt>Culinary Use</dt>\n'''
+            herb_preparations_html += f'''<dd>{culinary_use}</dd>\n'''
+    section_preparation_usage_html = f'''
+        <section id="preparation-usage">
+          <h2>Preparation & Usage Methods</h2>
+          <dl>
+            {herb_preparations_html}
+          </dl>
+        </section>
+    '''
+    # TODO
+    '''
+          <p>
+            Chamomile (Matricaria chamomilla) has been traditionally prepared in various forms.
+            The most common methods include infusions, decoctions, poultices, and culinary uses.
+          </p>
+    '''
+    return section_preparation_usage_html 
+
+def herbs_herb_primary_gen_growing_harvesting_storage(json_entity):
+
+    soil_type = json_entity['herb_growing_soil'][0]['answer']
+    soil_drainage = json_entity['herb_growing_soil_drainage'][0]['answer']
+    soil_fertility = json_entity['herb_growing_soil_fertility'][0]['answer']
+    soil_ph = json_entity['herb_growing_soil_ph'][0]['answer']
+    sunlight_type = json_entity['herb_growing_sunlight_type'][0]['answer']
+    sunlight_tolerance = json_entity['herb_growing_sunlight_tolerance'][0]['answer']
+    watering_type = json_entity['herb_growing_watering_type'][0]['answer']
+    watering_tolerance = json_entity['herb_growing_watering_tolerance'][0]['answer']
+
+    section_growing_harvesting_storage_html = f'''
+        <section id="growing-harvesting-storage">
+          <h2>Growing, Harvesting & Storage</h2>
+          <h3>Growing / Cultivation</h3>
+          <dl>
+            <dt>Soil</dt>
+            <dd>
+                Prefers {soil_type} with {soil_drainage}.
+                Typically grows best in {soil_fertility}.
+            </dd>
+            <dt>Sunlight</dt>
+            <dd>
+                Thrives in {sunlight_type}.
+                Tolerates {sunlight_tolerance}.
+            </dd>
+            <dt>Watering</dt>
+            <dd>
+                Prefers {watering_type}.
+                Tolerates {watering_tolerance}.
+            </dd>
+    '''
+    # TODO
+    '''
+            <dt>Climate</dt>
+            <dd>Temperate climates; tolerates mild frost.</dd>
+          </dl>
+          <h3>Harvesting</h3>
+          <dl>
+            <dt>Plant Parts</dt>
+            <dd>Flowers are primarily harvested for traditional use.</dd>
+            <dt>Optimal Timing</dt>
+            <dd>Harvest when flowers are fully open, usually in late spring to early summer.</dd>
+          </dl>
+          <h3>Storage</h3>
+          <dl>
+            <dt>Drying</dt>
+            <dd>Air-dry in a shaded, well-ventilated area to preserve color and aroma.</dd>
+            <dt>Storage Conditions</dt>
+            <dd>Store dried plant material in airtight containers away from light and moisture.</dd>
+            <dt>Shelf Life</dt>
+            <dd>Dried flowers can be stored for up to 1–2 years under optimal conditions.</dd>
+          </dl>
+        </section>
+    '''
+    return section_growing_harvesting_storage_html 
+
+def herbs_herb_primary_gen_related_herbs(json_entity):
+    herb_medicinal_actions = [
+        item['answer']
+        for item in json_entity['herb_medicinal_actions']
+        # if item['total_score'] >= 600
+    ][:4]
+    ###
+    herbs = []
+    if 1:
+        for herb in herbs_primary_medicinal: 
+            herbs.append({'herb_name_scientific': herb['herb_name_scientific']})
+    if 1:
+        for herb in herbs_popular: 
+            herbs.append({'herb_name_scientific': herb['herb_name_scientific']})
+    ###
+    related_herbs = []
+    related_herbs_i = 0
+    for herb_i, herb in enumerate(herbs):
+        herb_name_scientific = herb['herb_name_scientific']
+        herb_name_scientific = polish.sanitize(herb_name_scientific).capitalize()
+        herb_slug = polish.sluggify(herb_name_scientific)
+        url_slug = f'herbs/{herb_slug}'
+        json_entity_filepath = f'''{g.DATABASE_FOLDERPATH}/ssot/herbs/herbs-primary/{herb_slug}.json'''
+        _json_entity = io.json_read(json_entity_filepath)
+        # match by medicinal actions
+        _herb_medicinal_actions = [
+            item['answer']
+            for item in _json_entity['herb_medicinal_actions']
+            # if item['total_score'] >= 600
+        ]
+        # skip comparing herb with itself
+        if json_entity['herb_name_scientific'].lower().strip() == herb_name_scientific.lower().strip():
+            continue
+        # add herb with matching top action
+        if _herb_medicinal_actions[0].lower().strip() == herb_medicinal_actions[0].lower().strip():
+            related_herbs.append(herb)
+            related_herbs_i += 1
+            if related_herbs_i >= 2:
+                break
+    ###
+    herbs_medicinal_actions_dd = []
+    for related_herb in related_herbs:
+        herb_name_scientific = related_herb['herb_name_scientific']
+        herb_name_scientific = polish.sanitize(herb_name_scientific).capitalize()
+        herb_slug = polish.sluggify(herb_name_scientific)
+        url_slug = f'herbs/{herb_slug}'
+        json_entity_filepath = f'''{g.DATABASE_FOLDERPATH}/ssot/herbs/herbs-primary/{herb_slug}.json'''
+        json_entity = io.json_read(json_entity_filepath)
+        herb_names_common = [name['answer'].title() for name in json_entity['herb_names_common']]
+        herb_name_common = herb_names_common[0]
+        herbs_medicinal_actions_dd.append(f'''<a href="/{url_slug}.html">{herb_name_common}</a>''')
+    herbs_medicinal_actions_dd = ', '.join(herbs_medicinal_actions_dd)
+
+    section_related_herbs_html = f'''
+        <section id="related-herbs">
+          <h2>Related Herbs & Semantic Links</h2>
+          <dl>
+            <dt>Shared Medicinal Actions</dt>
+            <dd>
+                {herbs_medicinal_actions_dd}
+            </dd>
+            <dt>Shared Compounds</dt>
+            <dd>
+              <a href="/herbs/lemon-balm">Lemon Balm</a>, <a href="/herbs/fennel">Fennel</a>
+            </dd>
+            <dt>Shared Traditional Use Systems</dt>
+            <dd>
+              <a href="/herbs/fennel">Fennel</a>, <a href="/herbs/mint">Mint</a>
+            </dd>
+            <dt>Shared Preparation Methods</dt>
+            <dd>
+              <a href="/herbs/mint">Mint</a>, <a href="/herbs/lavender">Lavender</a>
+            </dd>
+          </dl>
+        </section>
+    '''
+    return section_related_herbs_html
+
+def herbs_herb_primary_gen_faq(json_entity):
+    section_faq_html = f'''
+    '''
+    return section_faq_html
+
+def herbs_herb_primary_gen_medical_disclaimer(json_entity):
+    section_medical_disclaimer_html = f'''
+        <section id="medical-disclaimer">
+          <h2>Medical Disclaimer</h2>
+          <p>
+            The information provided on this page about Chamomile (Matricaria chamomilla) is for educational and informational purposes only.
+            It is not intended to diagnose, treat, cure, or prevent any medical condition. 
+            Always consult a qualified healthcare professional before using any herb for medicinal purposes.
+          </p>
+        </section>
+    '''
+    return section_medical_disclaimer_html
 
 def herbs_herb_primary_gen():
     herbs = []
@@ -705,999 +2225,27 @@ def herbs_herb_primary_gen():
                 json_article[key] = reply
                 io.json_write(json_article_filepath, json_article)
 
-        import textwrap
-        #############################################################
-        ### SECTION OVERVIEW
-        #############################################################
-        ### json intro 
-        regen = False
-        dispel = False
-        key = 'intro'
-        if key not in json_article: json_article[key] = ''
-        if regen: json_article[key] = ''
-        if dispel: 
-            json_article[key] = ''
-            io.json_write(json_article_filepath, json_article)
-        if not dispel:
-            if json_article[key] == '':
-                prompt = textwrap.dedent(f'''
-                    You are an expert herbalist and content writer. 
-                    Generate a **neutral, factual, 2–3 sentence introduction paragraph** for a medicinal herb page. 
-                    Follow these rules:
-                    1. Start with the **common name** followed by the **scientific name in parentheses**.
-                    2. Mention the herb’s **primary traditional uses**, but do NOT make any health claims.
-                    3. Include the **plant family** and optionally the **cultural or regional use** if available.
-                    4. Include **plant parts used** (e.g., flowers, leaves, roots) if relevant.
-                    5. Keep the paragraph **informational and neutral**, suitable for search engines and human readers.
-                    6. Do not use promotional or persuasive language.
-                    Here is the data for the herb:
-                    - Common Name: {herb_name_common}  
-                    - Scientific Name: {herb_name_scientific}  
-                    - Family: {herb_family}  
-                    - Primary Traditional Uses: {herb_traditional_uses}  
-                    Generate the paragraph **only**, do not add titles, headings, or explanations.
-                ''').strip()
-                    # - Plant Parts Used: {plant_parts}  
-                    # - Cultural/Regional Origin: {cultural_origin}  
-                prompt += f'/no_think'
-                reply = llm.reply(prompt).strip()
-                if '</think>' in reply:
-                    reply = reply.split('</think>')[1].strip()
-                reply = polish.vanilla(reply)
-                json_article[key] = reply
-                io.json_write(json_article_filepath, json_article)
+
+        section_overview_html = herbs_herb_primary_gen_overview(herb)
+        section_quick_facts_html = herbs_herb_primary_gen_quick_facts(json_entity, herb_name_common, herb_name_scientific, herb_family, herb_parts_string)
+        section_botany_html = herbs_herb_primary_gen_botany(herb)
+        section_traditional_uses_html = herbs_herb_primary_gen_traditional_uses(json_entity)
+
+        section_medicinal_actions_html = herbs_herb_primary_gen_medicinal_actions(json_entity)
+        section_active_compounds_html = herbs_herb_primary_gen_active_compounds(json_entity)
+        section_modern_research_html = herbs_herb_primary_gen_modern_research(json_entity)
+        section_safety_precautions_html = herbs_herb_primary_gen_safety_precautions(json_entity)
+        section_preparation_usage_html = herbs_herb_primary_gen_preparation_usage(json_entity)
+        section_growing_harvesting_storage_html = herbs_herb_primary_gen_growing_harvesting_storage(json_entity)
+
+        # TODO
+        section_related_herbs_html = herbs_herb_primary_gen_related_herbs(json_entity)
+        section_faq_html = herbs_herb_primary_gen_faq(json_entity)
+        section_medical_disclaimer_html = herbs_herb_primary_gen_medical_disclaimer(json_entity)
 
         ###
         meta_description = json_article['meta_description']
         html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
-
-        overview_quick_facts_html = textwrap.dedent(f'''
-            <dl>
-                <dt>Common Name:</dt>
-                <dd class="common-name"><strong>{herb_name_common}</strong></dd>
-                <dt>Scientific Name:</dt>
-                <dd class="scientific-name"><strong>{herb_name_scientific.capitalize()}</strong></dd>
-                <dt>Family:</dt>
-                <dd class="family"><strong>{herb_family.capitalize()}</strong></dd>
-                <dt>Plant Parts Used</dt>
-                <dd>{herb_parts_string}</dd>
-            </dl>
-        ''').strip()
-        # TODO
-        '''
-        <dt>Traditional Use / Region:</dt>
-        <dd>European and Ayurvedic herbal medicine</dd>
-             data-synonyms="Chamomile, German Chamomile"
-        '''
-        ###
-        overview_html = textwrap.dedent(f'''
-            <section id="overview">
-                <h1>{herb_name_common} ({herb_name_scientific.capitalize()})</h1>
-                <p>{json_article['intro']}</p>
-                {overview_quick_facts_html}
-                <figure>
-                  <img src="/images/herbs/{herb_slug}.jpg" 
-                       alt="{herb_name_common} ({herb_name_scientific.capitalize()}) dried pieces of the herb arranged on a wooden table for reference" 
-                       width="400">
-                  <figcaption>{herb_name_common} ({herb_name_scientific.capitalize()}) dried pieces of the herb arranged together on a wooden table for reference, used in teas and remedies.</figcaption>
-                </figure>
-            </section>
-        ''').strip()
-        ###
-        quick_facts_html = textwrap.dedent(f'''
-            <aside id="quick-facts aria-labelledby="quick-facts-title"">
-              <h2 id="quick-facts-title">Quick Facts</h2>
-              <dl>
-                <dt>Common Name</dt>
-                <dd class="quick-common-name"><strong>{herb_name_common}</strong></dd>
-                <dt>Scientific Name</dt>
-                <dd class="quick-scientific-name"><strong>{herb_name_scientific}</strong></dd>
-                <dt>Plant Family</dt>
-                <dd class="quick-family-name"><strong>{herb_family}</strong></dd>
-                <dt>Plant Parts Used</dt>
-                <dd class="quick-plant-parts-name"><strong>{herb_parts_string}</strong></dd>
-              </dl>
-            </aside>
-        ''').strip()
-        '''
-                <dt>Traditional Systems</dt>
-                <dd>European, Ayurvedic</dd>
-        '''
-
-        #############################################################
-        ### SECTION BOTANY
-        #############################################################
-        regen = False
-        dispel = False
-        key = 'botany_growth_habit'
-        if key not in json_article: json_article[key] = ''
-        if regen: json_article[key] = ''
-        if dispel: 
-            json_article[key] = ''
-            io.json_write(json_article_filepath, json_article)
-        if not dispel:
-            if json_article[key] == '':
-                prompt = textwrap.dedent(f'''
-                    You are a botanist and semantic SEO content specialist.
-                    Generate ONE concise sentence describing ONLY the **growth habit** of the herb listed below.
-                    This sentence will be used inside a <dd> element under the label “Growth Habit”.
-                    STRICT RULES (do not break these):
-                    1. Mention ONLY:
-                       - life cycle classification (annual, biennial, perennial)
-                       - plant type (herbaceous, woody, shrub, tree, vine)
-                    2. Choose ONE life cycle classification only.
-                    3. Do NOT mention:
-                       - leaves, flowers, stems, height, or appearance
-                       - flowering time or developmental stages
-                       - habitat, origin, or distribution
-                       - medicinal, culinary, or traditional uses
-                    4. Do NOT combine or qualify life cycle terms (e.g., no “perennial with biennial cycle”).
-                    5. Use neutral, factual, encyclopedic language.
-                    6. Output ONE sentence only.
-                    Herb name:
-                    {herb_name_scientific}
-                    Return ONLY the sentence. No explanations, no formatting, no extra text.
-                ''').strip()
-                prompt += f'/no_think'
-                reply = llm.reply(prompt).strip()
-                if '</think>' in reply:
-                    reply = reply.split('</think>')[1].strip()
-                reply = polish.vanilla(reply)
-                json_article[key] = reply
-                io.json_write(json_article_filepath, json_article)
-
-        ###
-        regen = False
-        dispel = False
-        key = 'botany_height'
-        if key not in json_article: json_article[key] = ''
-        if regen: json_article[key] = ''
-        if dispel: 
-            json_article[key] = ''
-            io.json_write(json_article_filepath, json_article)
-        if not dispel:
-            if json_article[key] == '':
-                prompt = textwrap.dedent(f'''
-                    You are a botanist and scientific content writer.
-                    Determine the plant type of "{herb_name_scientific}" (herb, shrub, tree, vine, or grass).
-                    Then write ONE concise, neutral sentence describing ONLY its typical height.
-                    Rules:
-                    - The sentence must describe height only (no plant type, no uses, no benefits).
-                    - Use a biologically realistic height range for the plant type.
-                    - Use meters for trees and shrubs; centimeters for herbs and grasses.
-                    - Do NOT mention the plant name.
-                    - Do NOT mention that it is a tree, herb, or shrub.
-                    - Do NOT include cultivation, habitat, or medicinal information.
-                    - Use factual, objective language.
-                    - Write a single complete sentence suitable for a <dd> element.
-                    - Return ONLY the sentence, with no formatting, no italics, and no extra text.
-                ''').strip()
-                prompt += f'/no_think'
-                reply = llm.reply(prompt).strip()
-                if '</think>' in reply:
-                    reply = reply.split('</think>')[1].strip()
-                reply = polish.vanilla(reply)
-                json_article[key] = reply
-                io.json_write(json_article_filepath, json_article)
-
-        ###
-        regen = False
-        dispel = False
-        key = 'botany_leaves_present'
-        if key not in json_article: json_article[key] = ''
-        if regen: json_article[key] = ''
-        if dispel: 
-            json_article[key] = ''
-            io.json_write(json_article_filepath, json_article)
-        if not dispel:
-            if json_article[key] == '':
-                prompt = textwrap.dedent(f'''
-                    You are a bot that provides accurate botanical information based on verified plant sources. 
-                    Question: Does the plant with the scientific name "{herb_name_scientific}" have leaves?
-                    Instructions:
-                    - Answer **only** with "yes" or "no".
-                    - Do not provide any explanation, commentary, or extra text.
-                    - Base your answer only on documented botanical knowledge.
-                    - If the plant part does not exist for this species, respond with "no".
-                    - Do not guess; answer strictly according to botanical facts.
-                    Example:
-                    - Question: Does "Matricaria chamomilla" have flowers?
-                    - Answer: yes
-                    - Question: Does "Sphagnum palustre" have flowers?
-                    - Answer: no
-                    Now answer the following:
-                    Does "{herb_name_scientific}" have leaves?
-                ''').strip()
-                prompt += f'/no_think'
-                reply = llm.reply(prompt).strip()
-                if '</think>' in reply:
-                    reply = reply.split('</think>')[1].strip()
-                reply = polish.vanilla(reply)
-                json_article[key] = reply
-                io.json_write(json_article_filepath, json_article)
-
-        ###
-        if json_article['botany_leaves_present'].lower().strip() == 'yes':
-            regen = False
-            dispel = False
-            key = 'botany_leaves_description'
-            if key not in json_article: json_article[key] = ''
-            if regen: json_article[key] = ''
-            if dispel: 
-                json_article[key] = ''
-                io.json_write(json_article_filepath, json_article)
-            if not dispel:
-                if json_article[key] == '':
-                    prompt = textwrap.dedent(f'''
-                        You are a botanist and scientific content writer.
-                        Write a concise botanical description of the LEAVES of the following plant species.
-                        STRICT RULES (MANDATORY):
-                        - Do NOT start the sentence with “The leaves of…”
-                        - Do NOT mention the plant name in any form.
-                        - Write in noun-phrase style, not full sentences.
-                        - Describe ONLY high-certainty, universally accepted traits.
-                        - Include ONLY:
-                            - leaf type (needle-like, broad, etc.) if certain
-                            - upper and lower surface color if known
-                            - universally recognized features (e.g., stomatal bands)
-                        - Do NOT include:
-                            - shape adjectives that are redundant with leaf type
-                            - phyllotaxy (alternate, opposite, spiral) unless certain
-                            - subjective descriptors (simple, papery, soft, fuzzy, long, short)
-                            - measurements, size, or numeric ranges
-                            - invented traits
-                            - medicinal uses, benefits, effects
-                        - Write exactly ONE sentence.
-                        - Use neutral, objective scientific language.
-                        Focus on:
-                        - conveying the leaf’s observable category and color
-                        - universally recognized diagnostic features only
-                        Plant:
-                        - Common Name: {herb_name_common}
-                        - Scientific Name: {herb_name_scientific}
-                        Output ONLY the sentence that belongs inside the <dd> element.
-                        Do not add explanations, headings, or extra text.
-                    ''').strip()
-                    prompt += f'/no_think'
-                    reply = llm.reply(prompt).strip()
-                    if '</think>' in reply:
-                        reply = reply.split('</think>')[1].strip()
-                    reply = polish.vanilla(reply)
-                    json_article[key] = reply
-                    io.json_write(json_article_filepath, json_article)
-
-        ###
-        regen = False
-        dispel = False
-        key = 'botany_flowers_present'
-        if key not in json_article: json_article[key] = ''
-        if regen: json_article[key] = ''
-        if dispel: 
-            json_article[key] = ''
-            io.json_write(json_article_filepath, json_article)
-        if not dispel:
-            if json_article[key] == '':
-                prompt = textwrap.dedent(f'''
-                    You are a bot that provides accurate botanical information based on verified plant sources. 
-                    Question: Does the plant with the scientific name "[Scientific Name]" have flowers?
-                    Instructions:
-                    - Answer **only** with "yes" or "no".
-                    - Do not provide any explanation, commentary, or extra text.
-                    - Base your answer only on documented botanical knowledge.
-                    - If the plant does not produce flowers, respond with "no".
-                    - Do not guess; answer strictly according to botanical facts.
-                    Examples:
-                    - Question: Does "Matricaria chamomilla" have flowers?
-                    - Answer: yes
-                    - Question: Does "Sphagnum palustre" have flowers?
-                    - Answer: no
-                    Now answer the following:
-                    Does "{herb_name_scientific}" have flowers?
-                ''').strip()
-                prompt += f'/no_think'
-                reply = llm.reply(prompt).strip()
-                if '</think>' in reply:
-                    reply = reply.split('</think>')[1].strip()
-                reply = polish.vanilla(reply)
-                json_article[key] = reply
-                io.json_write(json_article_filepath, json_article)
-
-        ###
-        if json_article['botany_flowers_present'].lower().strip() == 'yes':
-            regen = False
-            dispel = False
-            key = 'botany_flowers_description'
-            if key not in json_article: json_article[key] = ''
-            if regen: json_article[key] = ''
-            if dispel: 
-                json_article[key] = ''
-                io.json_write(json_article_filepath, json_article)
-            if not dispel:
-                if json_article[key] == '':
-                    prompt = textwrap.dedent(f'''
-                        You are a botanist and scientific content writer.
-                        Write a concise botanical description of the FLOWERS of the following plant species.
-                        STRICT RULES (MANDATORY):
-                        - Do NOT start the sentence with “The flowers of…”
-                        - Do NOT mention the plant name in any form.
-                        - Write in noun-phrase style, not full sentences.
-                        - Describe ONLY high-certainty, universally accepted traits.
-                        - Include ONLY:
-                            - flower color(s) if known
-                            - flower arrangement if universally recognized (e.g., solitary, clustered, spike, raceme)
-                            - basic symmetry (actinomorphic / zygomorphic) if certain
-                            - universally recognized diagnostic features (e.g., number of petals, unique markings) if reliably documented
-                        - Do NOT include:
-                            - subjective descriptors (beautiful, showy, fragrant)
-                            - inferred or uncertain traits
-                            - measurements, sizes, or numeric ranges
-                            - invented features
-                            - medicinal uses, benefits, effects
-                        - Write exactly ONE sentence.
-                        - Use neutral, objective scientific language.
-                        Focus on:
-                        - conveying observable floral traits only
-                        - universally recognized diagnostic features
-                        Plant:
-                        - Common Name: {herb_name_common}
-                        - Scientific Name: {herb_name_scientific}
-                        Output ONLY the sentence that belongs inside the <dd> element.
-                        Do not add explanations, headings, or extra text.
-                    ''').strip()
-                    prompt += f'/no_think'
-                    reply = llm.reply(prompt).strip()
-                    if '</think>' in reply:
-                        reply = reply.split('</think>')[1].strip()
-                    reply = polish.vanilla(reply)
-                    json_article[key] = reply
-                    io.json_write(json_article_filepath, json_article)
-
-        ###
-        regen = False
-        dispel = False
-        key = 'botany_stems_present'
-        if key not in json_article: json_article[key] = ''
-        if regen: json_article[key] = ''
-        if dispel: 
-            json_article[key] = ''
-            io.json_write(json_article_filepath, json_article)
-        if not dispel:
-            if json_article[key] == '':
-                prompt = textwrap.dedent(f'''
-                    You are a bot that provides accurate botanical information based on verified plant sources. 
-                    Question: Does the plant with the scientific name "[Scientific Name]" have stems?
-                    Instructions:
-                    - Answer **only** with "yes" or "no".
-                    - Do not provide any explanation, commentary, or extra text.
-                    - Base your answer only on documented botanical knowledge.
-                    - If the plant does not have stems, respond with "no".
-                    - Do not guess; answer strictly according to botanical facts.
-                    Examples:
-                    - Question: Does "Matricaria chamomilla" have stems?
-                    - Answer: yes
-                    - Question: Does "Sphagnum palustre" have stems?
-                    - Answer: no
-                    Now answer the following:
-                    Does "{herb_name_scientific}" have stems?
-                ''').strip()
-                prompt += f'/no_think'
-                reply = llm.reply(prompt).strip()
-                if '</think>' in reply:
-                    reply = reply.split('</think>')[1].strip()
-                reply = polish.vanilla(reply)
-                json_article[key] = reply
-                io.json_write(json_article_filepath, json_article)
-
-        if json_article['botany_stems_present'].lower().strip() == 'yes':
-            regen = False
-            dispel = False
-            key = 'botany_stems_description'
-            if key not in json_article: json_article[key] = ''
-            if regen: json_article[key] = ''
-            if dispel: 
-                json_article[key] = ''
-                io.json_write(json_article_filepath, json_article)
-            if not dispel:
-                if json_article[key] == '':
-                    prompt = textwrap.dedent(f'''
-                        You are a botanist and scientific content writer.
-                        Write a concise botanical description of the STEMS of the following plant species.
-                        STRICT RULES (MANDATORY):
-                        - Do NOT start the sentence with “The stems of…”
-                        - Do NOT mention the plant name in any form.
-                        - Write in noun-phrase style, not full sentences.
-                        - Describe ONLY high-certainty, universally accepted traits.
-                        - Include ONLY:
-                            - growth habit (e.g., erect, creeping, climbing) if universally documented
-                            - branching pattern if certain (e.g., simple, dichotomous, opposite, alternate)
-                            - surface characteristics if reliably documented (e.g., glabrous, hairy, woody, succulent)
-                            - universally recognized diagnostic features if documented
-                        - Do NOT include:
-                            - subjective descriptors (slender, strong, flexible, ornamental)
-                            - inferred or uncertain traits
-                            - measurements, sizes, or numeric ranges
-                            - invented features
-                            - medicinal uses, benefits, effects
-                        - Write exactly ONE sentence.
-                        - Use neutral, objective scientific language.
-                        Focus on:
-                        - conveying observable stem traits only
-                        - universally recognized diagnostic features
-                        Plant:
-                        - Common Name: {herb_name_common}
-                        - Scientific Name: {herb_name_scientific}
-                        Output ONLY the sentence that belongs inside the <dd> element.
-                        Do not add explanations, headings, or extra text.
-                    ''').strip()
-                    prompt += f'/no_think'
-                    reply = llm.reply(prompt).strip()
-                    if '</think>' in reply:
-                        reply = reply.split('</think>')[1].strip()
-                    reply = polish.vanilla(reply)
-                    json_article[key] = reply
-                    io.json_write(json_article_filepath, json_article)
-
-        leaves_description_html = ''
-        if json_article['botany_leaves_present'].lower().strip() == 'yes':
-            leaves_description_html = f'''
-                <dt>Leaves</dt>
-                <dd>{json_article['botany_leaves_description'].capitalize()}</dd>
-            '''
-
-        flowers_description_html = ''
-        if json_article['botany_flowers_present'].lower().strip() == 'yes':
-            flowers_description_html = f'''
-                <dt>Flowers</dt>
-                <dd>{json_article['botany_flowers_description'].capitalize()}</dd>
-            '''
-
-        stems_description_html = ''
-        if json_article['botany_stems_present'].lower().strip() == 'yes':
-            stems_description_html = f'''
-                <dt>Stems</dt>
-                <dd>{json_article['botany_stems_description'].capitalize()}</dd>
-            '''
-
-        botany_html = textwrap.dedent(f'''
-            <section id="botanical-identity">
-              <h2>Botanical Identity</h2>
-              <dl>
-                <dt>Scientific Name</dt>
-                <dd class="quick-scientific-name"><strong>{herb_name_scientific}</strong></dd>
-                <dt>Common Name</dt>
-                <dd class="quick-common-name"><strong>{herb_name_common}</strong></dd>
-                <dt>Synonyms / Alternative Names</dt>
-                <dd class="quick-synonyms"><strong>{herb_names_common_alt}</strong></dd>
-                <dt>Plant Family</dt>
-                <dd class="quick-family-name"><strong>{herb_family}</strong></dd>
-                <dt>Genus</dt>
-                <dd class="quick-genus"><strong>{herb_genus}</strong></dd>
-              </dl>
-            <h3>Botanical Description</h3>
-              <dl>
-                <dt>Growth Habit</dt>
-                <dd>{json_article['botany_growth_habit']}</dd>
-                <dt>Height</dt>
-                <dd>{json_article['botany_height']}</dd>
-                {leaves_description_html}
-                {flowers_description_html}
-                {stems_description_html}
-              </dl>
-            </section>
-        ''').strip()
-        # TODO
-        '''
-                <dt>Botanical Description</dt>
-                <dd>A small, daisy-like flowering plant with feathery leaves and white petals surrounding a yellow central disc.</dd>
-        '''
-
-        ###
-        herb_traditional_systems = '\n'.join([
-            f'''<li>{item['answer'].title()}</li>''' 
-            for item in json_entity['herb_traditional_systems']
-            if item['total_score'] >= 600
-        ][:3])
-        herb_historical_preparations = '\n'.join([
-            f'''<li>{item['answer'].title()}</li>''' 
-            for item in json_entity['herb_historical_preparations']
-            if item['total_score'] >= 600
-        ][:4])
-        traditional_uses_html = textwrap.dedent(f'''
-            <section id="traditional-uses">
-              <h2>Traditional Uses / Historical Use</h2>
-              <p>Chamomile (Matricaria chamomilla) has been historically used in European and Western Asian herbal traditions. It has been prepared as infusions, teas, and poultices, and referenced in folk medicine texts for its calming properties and culinary applications.</p>
-              <h3>Traditional Systems</h3>
-              <ul>
-                {herb_traditional_systems}
-              </ul>
-              <h3>Historical Preparation Methods</h3>
-              <ul>
-                {herb_historical_preparations}
-              </ul>
-            </section>
-        ''').strip()
-
-        ###
-        '''
-        1. Carminative — IntroPhrases
-
-        2. Sedative — IntroPhrases
-        Traditionally described as a
-        Historically regarded as a
-        In traditional herbal systems, a
-        As described in herbal literature, a
-        Commonly characterized as a
-        Historically noted as a
-
-        3. Anti-inflammatory — IntroPhrases
-        Traditionally described as an
-        Historically regarded as an
-        In herbal texts, considered an
-        As described in traditional medicine, an
-        Commonly referenced as an
-        Historically classified as an
-        (Note the “an” — important for automation)
-
-        4. Antispasmodic — IntroPhrases
-        Traditionally described as an
-        Historically regarded as an
-        In herbal literature, considered an
-        As described in traditional systems, an
-        Commonly referenced as an
-        Historically classified as an
-
-        5. Astringent — IntroPhrases
-        Traditionally described as an
-        Historically regarded as an
-        In herbal texts, considered an
-        As described in traditional preparations, an
-        Commonly referenced as an
-        Historically noted as an
-
-        6. Diuretic — IntroPhrases
-        Traditionally described as a
-        Historically regarded as a
-        In herbal texts, considered a
-        As described in traditional medicine, a
-        Commonly referenced as a
-        Historically classified as a
-
-        7. Stimulant — IntroPhrases
-        Traditionally described as a
-        Historically regarded as a
-        In herbal literature, considered a
-        As described in traditional systems, a
-        Commonly referenced as a
-        Historically noted as a
-
-        8. Expectorant — IntroPhrases
-        Traditionally described as an
-        Historically regarded as an
-        In herbal texts, considered an
-        As described in traditional medicine, an
-        Commonly referenced as an
-        Historically classified as an
-
-        9. Tonic — IntroPhrases
-
-        Traditionally described as a
-        Historically regarded as a
-        In herbal texts, considered a
-        As described in traditional systems, a
-        Commonly referenced as a
-        Historically noted as a
-
-        10. Bitter — IntroPhrases
-
-        Traditionally described as a
-        Historically regarded as a
-        In herbal texts, considered a
-        As described in traditional herbalism, a
-        Commonly referenced as a
-        Historically classified as a
-        '''
-
-
-        '''
-        1. Carminative — Adjectives
-
-        ✔ Examples:
-        Traditionally described as a gentle carminative
-        Historically regarded as a warming carminative
-
-        2. Sedative — Adjectives
-        mild
-        gentle
-        calming
-        soothing
-        moderate
-        ✔ Examples:
-
-        Historically regarded as a calming sedative
-        Traditionally described as a mild sedative
-
-        3. Anti-inflammatory — Adjectives
-        mild
-        gentle
-        soothing
-        moderate
-
-        ✔ Examples:
-
-        In herbal texts, considered a soothing anti-inflammatory
-        Historically regarded as a mild anti-inflammatory
-        4. Antispasmodic — Adjectives
-        mild
-        gentle
-        moderate
-        soothing
-
-        ✔ Examples:
-        Traditionally described as a gentle antispasmodic
-        Historically regarded as a moderate antispasmodic
-
-        5. Astringent — Adjectives
-        mild
-        gentle
-        moderate
-
-        ✔ Examples:
-        Historically regarded as a mild astringent
-        In herbal texts, considered a gentle astringent
-
-        6. Diuretic — Adjectives
-        mild
-        gentle
-        moderate
-
-        ✔ Examples:
-        Traditionally described as a mild diuretic
-        Historically regarded as a gentle diuretic
-
-        7. Stimulant — Adjectives
-
-        mild
-        gentle
-        moderate
-
-        ✔ Examples:
-
-        Historically regarded as a mild stimulant
-        Traditionally described as a moderate stimulant
-        (Avoid “strong” or “powerful” — too clinical / risky)
-
-        8. Expectorant — Adjectives
-
-        mild
-        gentle
-        soothing
-
-        ✔ Examples:
-
-        In herbal texts, considered a gentle expectorant
-        Historically regarded as a soothing expectorant
-
-        9. Tonic — Adjectives
-
-        mild
-        gentle
-        general
-        traditional
-
-        ✔ Examples:
-
-        Traditionally described as a general tonic
-        Historically regarded as a gentle tonic
-
-        10. Bitter — Adjectives
-
-        mild
-        gentle
-        pronounced
-        moderate
-
-        ✔ Examples:
-
-        In herbal texts, considered a mild bitter
-        Historically regarded as a pronounced bitter
-        '''
-        '''
-        1. Carminative — Contextual Notes
-
-        2. Sedative — Contextual Notes
-        often associated with calming qualities
-        historically linked to soothing traditions
-        commonly referenced in nervous system contexts
-        traditionally noted for calming associations
-        frequently mentioned in relaxation-related traditions
-
-        3. Anti-inflammatory — Contextual Notes
-        historically associated with soothing irritated tissues
-        commonly referenced in traditional topical contexts
-        often linked to calming tissue responses
-        traditionally mentioned in inflammation-related discussions
-        frequently cited in soothing applications
-
-        4. Antispasmodic — Contextual Notes
-        often associated with easing muscular tension
-        historically linked to relaxation of smooth tissues
-        commonly referenced in tension-related contexts
-        traditionally mentioned in muscle-relaxation traditions
-        frequently associated with spasmodic conditions
-
-        5. Astringent — Contextual Notes
-        traditionally associated with tissue toning
-        historically linked to tightening properties
-        commonly referenced in skin-related preparations
-        often mentioned in tissue-conditioning contexts
-        frequently cited in traditional external uses
-
-        6. Diuretic — Contextual Notes
-        traditionally associated with fluid balance
-        historically linked to urinary processes
-        commonly referenced in elimination-related contexts
-        often mentioned in traditional cleansing practices
-        frequently cited in fluid-regulation traditions
-
-        7. Stimulant — Contextual Notes
-        traditionally associated with invigorating qualities
-        historically linked to energizing effects
-        commonly referenced in vitality-related contexts
-        often mentioned in traditional energizing practices
-        frequently cited in stimulation-related traditions
-
-        8. Expectorant — Contextual Notes
-        traditionally associated with respiratory comfort
-        historically linked to mucus-clearing traditions
-        commonly referenced in respiratory contexts
-        often mentioned in airway-related preparations
-        frequently cited in breathing-related traditions
-
-        9. Tonic — Contextual Notes
-
-        traditionally associated with overall vitality
-        historically linked to general strengthening traditions
-        commonly referenced in long-term use contexts
-        often mentioned in foundational herbal practices
-        frequently cited in whole-body support traditions
-
-        10. Bitter — Contextual Notes
-
-        traditionally associated with digestive processes
-        historically linked to bitter-tasting preparations
-        commonly referenced in appetite-related contexts
-        often mentioned in digestion-focused traditions
-        frequently cited in bitter herb classifications
-
-        1. Carminative — Contextual Notes
-
-
-        2. Sedative — Contextual Notes
-
-        3. Anti-inflammatory — Contextual Notes
-
-        4. Antispasmodic — Contextual Notes
-
-        5. Astringent — Contextual Notes
-
-        6. Diuretic — Contextual Notes
-
-        7. Stimulant — Contextual Notes
-
-        8. Expectorant — Contextual Notes
-
-        9. Tonic — Contextual Notes
-
-        10. Bitter — Contextual Notes
-        '''
-
-        herb_medicinal_actions = [
-            item['answer']
-            for item in json_entity['herb_medicinal_actions']
-            if item['total_score'] >= 600
-        ][:4]
-        herb_medicinal_actions_html = ''
-        template_intros = [
-                line.strip() for line in 
-                '''
-                    Traditionally described as a
-                    Historically regarded as a
-                    In herbal texts, considered a
-                    As described in traditional systems, a
-                    Commonly referenced as a
-                    In herbal literature, noted as a
-                '''.split('\n')
-                if line.strip() != ''
-            ]
-        random.shuffle(template_intros)
-        template_adjectives = [
-                line.strip() for line in 
-                '''
-                    gentle
-                    mild
-                    moderate
-                    soothing
-                    calming
-                    warming
-                    cooling
-                '''.split('\n')
-                if line.strip() != ''
-            ]
-        random.shuffle(template_adjectives)
-        for herb_medicinal_action in herb_medicinal_actions:
-            # action dt
-            if herb_medicinal_action == 'carminative':
-                herb_medicinal_actions_html += '<dt>Carminative</dt>\n'
-            elif herb_medicinal_action == 'sedative':
-                herb_medicinal_actions_html += '<dt>Sedative</dt>\n'
-            elif herb_medicinal_action == 'anti-inflammatory':
-                herb_medicinal_actions_html += '<dt>Anti-inflammatory</dt>\n'
-            elif herb_medicinal_action == 'antispasmodic':
-                herb_medicinal_actions_html += '<dt>Antispasmodic</dt>\n'
-            elif herb_medicinal_action == 'astringent':
-                herb_medicinal_actions_html += '<dt>Astringent</dt>\n'
-            elif herb_medicinal_action == 'diuretic':
-                herb_medicinal_actions_html += '<dt>Diuretic</dt>\n'
-            elif herb_medicinal_action == 'stimulant':
-                herb_medicinal_actions_html += '<dt>Stimulant</dt>\n'
-            elif herb_medicinal_action == 'expectorant':
-                herb_medicinal_actions_html += '<dt>Expectorant</dt>\n'
-            elif herb_medicinal_action == 'tonic':
-                herb_medicinal_actions_html += '<dt>Tonic</dt>\n'
-            elif herb_medicinal_action == 'bitter':
-                herb_medicinal_actions_html += '<dt>Bitter</dt>\n'
-
-            # action dd (general)
-            template_intro = template_intros.pop(0)
-            template_adjective = template_adjectives.pop(0)
-            herb_medicinal_actions_html += '<dd>\n'
-            herb_medicinal_actions_html += template_intro
-            herb_medicinal_actions_html += ' ' + template_adjective
-            herb_medicinal_actions_html += ' ' + herb_medicinal_action + ','
-            # action dd (specific)
-            if herb_medicinal_action == 'carminative':
-                herb_medicinal_actions_html += ' ' + random.choice([
-                    line.strip() for line in 
-                    '''
-                        within digestive system contexts
-                        in relation to gastrointestinal comfort
-                        for digestive process support
-                        in digestion-focused applications
-                        in stomach-related herbal uses
-                    '''.split('\n')
-                    if line.strip() != ''
-                ])
-            elif herb_medicinal_action == 'sedative':
-                herb_medicinal_actions_html += ' ' + random.choice([
-                    line.strip() for line in 
-                    '''
-                        in nervous system–related contexts
-                        for relaxation-oriented uses
-                        in calming-focused applications
-                        in rest-related herbal contexts
-                        in stress-related herbal practices
-                    '''.split('\n')
-                    if line.strip() != ''
-                ])
-            elif herb_medicinal_action == 'anti-inflammatory':
-                herb_medicinal_actions_html += ' ' + random.choice([
-                    line.strip() for line in 
-                    '''
-                        in tissue-soothing contexts
-                        for irritation-related applications
-                        in inflammation-focused discussions
-                        in topical or internal use contexts
-                        for general calming applications
-                    '''.split('\n')
-                    if line.strip() != ''
-                ])
-            elif herb_medicinal_action == 'antispasmodic':
-                herb_medicinal_actions_html += ' ' + random.choice([
-                    line.strip() for line in 
-                    '''
-                        in muscle-related contexts
-                        for tension-related applications
-                        in smooth muscle contexts
-                        for cramp-focused discussions
-                        in spasm-related situations
-                    '''.split('\n')
-                    if line.strip() != ''
-                ])
-            elif herb_medicinal_action == 'astringent':
-                herb_medicinal_actions_html += ' ' + random.choice([
-                    line.strip() for line in 
-                    '''
-                        in tissue-toning contexts
-                        for skin-related applications
-                        in drying-focused uses
-                        for surface-level applications
-                        in structural-support contexts
-                    '''.split('\n')
-                    if line.strip() != ''
-                ])
-            elif herb_medicinal_action == 'diuretic':
-                herb_medicinal_actions_html += ' ' + random.choice([
-                    line.strip() for line in 
-                    '''
-                        in fluid-regulation contexts
-                        for elimination-focused applications
-                        in urinary system discussions
-                        for moisture-related balance
-                        in cleansing-oriented uses
-                    '''.split('\n')
-                    if line.strip() != ''
-                ])
-            elif herb_medicinal_action == 'stimulant':
-                herb_medicinal_actions_html += ' ' + random.choice([
-                    line.strip() for line in 
-                    '''
-                        in energy-related contexts
-                        for alertness-focused applications
-                        in activation-oriented uses
-                        for vitality-related discussions
-                        in wakefulness-related contexts
-                    '''.split('\n')
-                    if line.strip() != ''
-                ])
-            elif herb_medicinal_action == 'expectorant':
-                herb_medicinal_actions_html += ' ' + random.choice([
-                    line.strip() for line in 
-                    '''
-                        in respiratory system contexts
-                        for airway-related applications
-                        in mucus-related discussions
-                        for breathing-focused uses
-                        in chest-related herbal contexts
-                    '''.split('\n')
-                    if line.strip() != ''
-                ])
-            elif herb_medicinal_action == 'tonic':
-                herb_medicinal_actions_html += ' ' + random.choice([
-                    line.strip() for line in 
-                    '''
-                        for long-term use contexts
-                        in whole-system applications
-                        for foundational support
-                        in general wellness contexts
-                        for broad-use formulations
-                    '''.split('\n')
-                    if line.strip() != ''
-                ])
-            elif herb_medicinal_action == 'bitter':
-                herb_medicinal_actions_html += ' ' + random.choice([
-                    line.strip() for line in 
-                    '''
-                        in taste-driven classifications
-                        for digestion-related formulations
-                        in appetite-focused contexts
-                        for flavor-based applications
-                        in bitter herb groupings
-                    '''.split('\n')
-                    if line.strip() != ''
-                ])
-
-            herb_medicinal_actions_html += '.'
-            herb_medicinal_actions_html += '</dd>\n'
-        ###
-        # TODO: generate intro paragraph based on herb_medicinal_actions
-        '''
-              <p>
-                In traditional herbal systems, chamomile (Matricaria chamomilla) has been
-                described using a set of standardized medicinal actions. These terms are
-                used to characterize how the plant has been traditionally understood to
-                interact with the body.
-              </p>
-        '''
-        traditional_uses_html = textwrap.dedent(f'''
-            <section id="medicinal-actions">
-              <h2>Medicinal Actions</h2>
-              <dl>
-                {herb_medicinal_actions_html}
-              </dl>
-            </section>
-        ''').strip()
-
-
         import textwrap
         site_name = 'Terra Whisper'
         html = textwrap.dedent(f''' 
@@ -1721,28 +2269,19 @@ def herbs_herb_primary_gen():
               <header></header>
               <main>
                 <article>
-                    {overview_html}
-                    {quick_facts_html}
-                    {botany_html}
-                    {traditional_uses_html}
-                  <section id="medicinal-actions">
-                  </section>
-                  <section id="active-compounds">
-                  </section>
-                  <section id="research">
-                  </section>
-                  <section id="safety">
-                  </section>
-                  <section id="preparation">
-                  </section>
-                  <section id="cultivation">
-                  </section>
-                  <section id="related-herbs">
-                  </section>
-                  <section id="faq">
-                  </section>
-                  <section id="disclaimer">
-                  </section>
+                    {section_overview_html}
+                    {section_quick_facts_html}
+                    {section_botany_html}
+                    {section_traditional_uses_html}
+                    {section_medicinal_actions_html}
+                    {section_active_compounds_html}
+                    {section_modern_research_html} 
+                    {section_safety_precautions_html}
+                    {section_preparation_usage_html}
+                    {section_growing_harvesting_storage_html}
+                    {section_related_herbs_html}
+                    {section_faq_html}
+                    {section_medical_disclaimer_html}
                 </article>
               </main>
               <footer></footer>
