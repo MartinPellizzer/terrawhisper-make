@@ -2,13 +2,17 @@ import random
 
 from lib import g
 
-def html_head(meta_title, meta_description, form_head=''):
+def html_head(meta_title, meta_description, form_head='', css='/style.css', canonical=''):
     with open(g.GOOGLE_ADSENSE_SCRIPT) as f: google_adsense_script = f.read()
     with open(g.GOOGLE_ANALYTICS_SCRIPT) as f: google_analytics_script = f.read()
     html = f'''
         <head>
+            <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, inital-scale=1">
-            <link rel="stylesheet" href="/style.css">
+            <link rel="stylesheet" href="{css}">
+            <title>{meta_title}</title>
+            <meta name="description" content="{meta_description}">
+            {canonical}
             {google_adsense_script}
             {google_analytics_script}
             {form_head}

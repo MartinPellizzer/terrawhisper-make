@@ -301,7 +301,41 @@ def herbs_herb_primary_gen_overview(herb):
     herb_genus = herb_name_scientific.split(' ')[0].strip()
     herb_parts = json_entity['herb_parts']
     herb_parts_string = ', '.join([part['answer'] for part in herb_parts[:3]]).capitalize()
-    # herb_native_regions = [item['answer'].title() for item in json_entity['native_regions']]
+    herb_native_regions = ', and'.join(', '.join([
+        item['answer'].title() 
+        for item in json_entity['herb_native_regions'] 
+        if item['total_score'] >= 7
+    ][:3]).rsplit(',', 1))
+    herb_parts_list = ', '.join(', '.join([
+        item['answer'].title() 
+        for item in json_entity['herb_parts'] 
+        if item['total_score'] >= 7
+    ][:3]).rsplit(',', 1))
+    herb_parts = ', and'.join(', '.join([
+        item['answer'].lower() 
+        for item in json_entity['herb_parts'] 
+        if item['total_score'] >= 7
+    ][:3]).rsplit(',', 1))
+    herb_historical_preparations = ', and'.join(', '.join([
+        item['answer'].lower() + 's'
+        for item in json_entity['herb_historical_preparations'] 
+        if item['total_score'] >= 7
+    ][:3]).rsplit(',', 1))
+    herb_medicinal_actions = ', and'.join(', '.join([
+        item['answer'].lower() 
+        for item in json_entity['herb_medicinal_actions'] 
+        if item['total_score'] >= 7
+    ][:3]).rsplit(',', 1))
+    herb_medicinal_actions_list = ', '.join(', '.join([
+        item['answer'].title() 
+        for item in json_entity['herb_medicinal_actions'] 
+        if item['total_score'] >= 7
+    ][:3]).rsplit(',', 1))
+    herb_traditional_systems = ', and'.join(', '.join([
+        item['answer'].lower() 
+        for item in json_entity['herb_traditional_systems'] 
+        if item['total_score'] >= 7
+    ][:3]).rsplit(',', 1))
     ########################################
     # json
     ########################################
@@ -347,14 +381,14 @@ def herbs_herb_primary_gen_overview(herb):
             io.json_write(json_article_filepath, json_article)
     overview_quick_facts_html = textwrap.dedent(f'''
         <dl>
-            <dt>Common Name:</dt>
+            <dt>Common Name</dt>
             <dd class="common-name"><strong>{herb_name_common}</strong></dd>
-            <dt>Scientific Name:</dt>
+            <dt>Scientific Name</dt>
             <dd class="scientific-name"><strong>{herb_name_scientific.capitalize()}</strong></dd>
-            <dt>Family:</dt>
+            <dt>Family</dt>
             <dd class="family"><strong>{herb_family.capitalize()}</strong></dd>
             <dt>Plant Parts Used</dt>
-            <dd>{herb_parts_string}</dd>
+            <dd class="herb-parts"><strong>{herb_parts_string}</strong></dd>
         </dl>
     ''').strip()
     # TODO
@@ -369,19 +403,45 @@ def herbs_herb_primary_gen_overview(herb):
             <h1>{herb_name_common} ({herb_name_scientific.capitalize()})</h1>
             <p>{json_article['intro']}</p>
             {overview_quick_facts_html}
+        </section>
+    '''
+
+    overview_html = f'''
+        <section>
+          <h1 style="margin-bottom: 1.6rem;">{herb_name_common.title()} ({herb_name_scientific.capitalize()})</h1>
+            <p>
+                <!-- Short botanical summary: native region, family, key uses -->
+                <strong>{herb_name_common} ({herb_name_scientific})</strong> is a member of the {herb_family} family, native to {herb_native_regions}. 
+                Traditionally, its {herb_parts} have been used for {herb_historical_preparations}.
+            </p>
+            <p>
+                This herb is particularly valued for its {herb_medicinal_actions} actions, and has a long history of use in {herb_traditional_systems}.
+            </p>
             <figure>
               <img src="/images/herbs/{herb_slug}.jpg" 
                    alt="{herb_name_common} ({herb_name_scientific.capitalize()}) dried pieces of the herb arranged on a wooden table for reference" 
                    width="400">
               <figcaption>{herb_name_common} ({herb_name_scientific.capitalize()}) dried pieces of the herb arranged together on a wooden table for reference, used in teas and remedies.</figcaption>
             </figure>
+
         </section>
+    '''
+    ## not here? structured data in next section (quick facts)?
+    '''
+          <!-- Optional: Quick bullet points -->
+          <ul style="margin-top: 1rem;">
+            <li><strong>Common Name:</strong> {herb_name_common}</li>
+            <li><strong>Scientific Name:</strong> {herb_name_scientific}</li>
+            <li><strong>Family:</strong> {herb_family}</li>
+            <li><strong>Plant Parts Used:</strong> {herb_parts_list}</li>
+            <li><strong>Primary Medicinal Uses:</strong> {herb_medicinal_actions_list}</li>
+          </ul>
     '''
     return overview_html
 
-def herbs_herb_primary_gen_quick_facts(json_entity, herb_name_common, herb_name_scientific, herb_family, herb_parts_string):
+def herbs_herb_primary_gen_quick_facts_old(json_entity, herb_name_common, herb_name_scientific, herb_family, herb_parts_string):
     quick_facts_html = f'''
-        <aside id="quick-facts aria-labelledby="quick-facts-title"">
+        <aside id="quick-facts" aria-labelledby="quick-facts-title">
           <h2 id="quick-facts-title">Quick Facts</h2>
           <dl>
             <dt>Common Name</dt>
@@ -401,6 +461,121 @@ def herbs_herb_primary_gen_quick_facts(json_entity, herb_name_common, herb_name_
     '''
     return quick_facts_html 
 
+def herbs_herb_primary_gen_quick_facts(herb):
+    import textwrap
+    herb_name_scientific = herb['herb_name_scientific']
+    herb_name_scientific = polish.sanitize(herb_name_scientific).capitalize()
+    herb_slug = polish.sluggify(herb_name_scientific)
+    url_slug = f'herbs/{herb_slug}'
+    json_entity_filepath = f'''{g.DATABASE_FOLDERPATH}/ssot/herbs/herbs-primary/{herb_slug}.json'''
+    json_entity = io.json_read(json_entity_filepath)
+    herb_names_common = [name['answer'].title() for name in json_entity['herb_names_common']]
+    herb_names_common_alt = ', '.join([name['answer'].title() for name in json_entity['herb_names_common'][1:4]])
+    herb_name_common = herb_names_common[0]
+    print(json_entity)
+    herb_traditional_uses = json_entity['herb_traditional_uses']
+    print(herb_name_common)
+    # if herb_i == 15: quit()
+    herb_family = json_entity['herb_family'][0]['answer'].title()
+    herb_genus = herb_name_scientific.split(' ')[0].strip()
+    herb_species = herb_name_scientific.split(' ')[1].strip()
+    herb_parts = json_entity['herb_parts']
+    herb_parts_string = ', '.join([part['answer'] for part in herb_parts[:3]]).capitalize()
+    herb_native_regions = ', '.join(', '.join([
+        item['answer'].title() 
+        for item in json_entity['herb_native_regions'] 
+        if item['total_score'] >= 7
+    ][:3]).rsplit(',', 1))
+    herb_parts = ', '.join(', '.join([
+        item['answer'].title() 
+        for item in json_entity['herb_parts'] 
+        if item['total_score'] >= 7
+    ][:3]).rsplit(',', 1))
+    herb_historical_preparations = ', '.join(', '.join([
+        item['answer'].title()
+        for item in json_entity['herb_historical_preparations'] 
+        if item['total_score'] >= 7
+    ][:3]).rsplit(',', 1))
+    herb_medicinal_actions = ', '.join(', '.join([
+        item['answer'].title() 
+        for item in json_entity['herb_medicinal_actions'] 
+        if item['total_score'] >= 7
+    ][:3]).rsplit(',', 1))
+    herb_traditional_systems = ', '.join(', '.join([
+        item['answer'].title() 
+        for item in json_entity['herb_traditional_systems'] 
+        if item['total_score'] >= 7
+    ][:3]).rsplit(',', 1))
+    herb_historical_preparations = ', '.join(', '.join([
+        item['answer'].title() 
+        for item in json_entity['herb_historical_preparations'] 
+        if item['total_score'] >= 7
+    ][:3]).rsplit(',', 1))
+    quick_facts_html = f'''
+        <section id="quick-facts" aria-labelledby="quick-facts-title">
+        <h2 id="quick-facts-title">Quick Facts / Key Information</h2>
+        <!-- Structured, scan-friendly fact table -->
+        <table>
+            <tbody>
+              <tr>
+                <th scope="row">Common Name</th>
+                <td>{herb_name_common}</td>
+              </tr>
+              <tr>
+                <th scope="row">Scientific Name</th>
+                <td><em>{herb_name_scientific}</em></td>
+              </tr>
+              <tr>
+                <th scope="row">Plant Family</th>
+                <td>{herb_family}</td>
+              </tr>
+              <tr>
+                <th scope="row">Genus</th>
+                <td>{herb_genus}</td>
+              </tr>
+              <tr>
+                <th scope="row">Species</th>
+                <td>{herb_species}</td>
+              </tr>
+              <tr>
+                <th scope="row">Native Range</th>
+                <td>{herb_native_regions}</td>
+              </tr>
+              <tr>
+                <th scope="row">Plant Parts Used</th>
+                <td>{herb_parts}</td>
+              </tr>
+              <tr>
+                <th scope="row">Primary Medicinal Actions</th>
+                <td>{herb_medicinal_actions}</td>
+              </tr>
+              <tr>
+                <th scope="row">Primary Traditional Systems</th>
+                <td>{herb_traditional_systems}</td>
+              </tr>
+              <tr>
+                <th scope="row">Historical Preparation Methods</th>
+                <td>{herb_historical_preparations}</td>
+              </tr>
+            </tbody>
+        </table>
+    '''
+    # TODO
+    '''
+          <tr>
+            <th scope="row">Plant Type / Habit</th>
+            <td>{{Plant Type / Growth Habit}}</td>
+          </tr>
+          <tr>
+            <th scope="row">Taste / Energetics (if applicable)</th>
+            <td>{{Taste / Energetics}}</td>
+          </tr>
+          <tr>
+            <th scope="row">Safety Rating</th>
+            <td>{{General Safety Level}}</td>
+          </tr>
+    '''
+    return quick_facts_html 
 
 def herbs_herb_primary_gen_botany(herb):
     herb_name_scientific = herb['herb_name_scientific']
@@ -1791,11 +1966,22 @@ def herbs_herb_primary_gen_faq(json_entity):
     return section_faq_html
 
 def herbs_herb_primary_gen_medical_disclaimer(json_entity):
+    if 0:
+        section_medical_disclaimer_html = f'''
+            <section id="medical-disclaimer">
+              <h2>Medical Disclaimer</h2>
+              <p>
+                The information provided on this page about Chamomile (Matricaria chamomilla) is for educational and informational purposes only.
+                It is not intended to diagnose, treat, cure, or prevent any medical condition. 
+                Always consult a qualified healthcare professional before using any herb for medicinal purposes.
+              </p>
+            </section>
+        '''
     section_medical_disclaimer_html = f'''
-        <section id="medical-disclaimer">
+        <section class="medical-disclaimer">
           <h2>Medical Disclaimer</h2>
           <p>
-            The information provided on this page about Chamomile (Matricaria chamomilla) is for educational and informational purposes only.
+            The information provided on this page is for educational and informational purposes only.
             It is not intended to diagnose, treat, cure, or prevent any medical condition. 
             Always consult a qualified healthcare professional before using any herb for medicinal purposes.
           </p>
@@ -2227,7 +2413,7 @@ def herbs_herb_primary_gen():
 
 
         section_overview_html = herbs_herb_primary_gen_overview(herb)
-        section_quick_facts_html = herbs_herb_primary_gen_quick_facts(json_entity, herb_name_common, herb_name_scientific, herb_family, herb_parts_string)
+        section_quick_facts_html = herbs_herb_primary_gen_quick_facts(herb)
         section_botany_html = herbs_herb_primary_gen_botany(herb)
         section_traditional_uses_html = herbs_herb_primary_gen_traditional_uses(json_entity)
 
@@ -2254,6 +2440,7 @@ def herbs_herb_primary_gen():
             <head>
                 <meta charset="UTF-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <link rel="stylesheet" href="/styles-herb.css">
                 <title>{meta_title}</title>
                 <meta name="description" content="{meta_description}">
                 <link rel="canonical" href="https://terrawhisper.com/herbs/{herb_slug}.html">
@@ -2268,7 +2455,7 @@ def herbs_herb_primary_gen():
             <body>
               <header></header>
               <main>
-                <article>
+                <article class="container-md">
                     {section_overview_html}
                     {section_quick_facts_html}
                     {section_botany_html}
@@ -2289,7 +2476,6 @@ def herbs_herb_primary_gen():
             </html>
         ''').strip()
         with open(html_filepath, 'w') as f: f.write(html)
-        # quit()
 
 def article_herbs_herb_wcvp_gen():
     herbs_folderpath = f'{g.SSOT_FOLDERPATH}/herbs/herbs-wcvp/medicinal'

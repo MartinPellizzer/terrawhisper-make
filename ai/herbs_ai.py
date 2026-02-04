@@ -2040,6 +2040,140 @@ def herb_traditional_medicinal_uses_gen(entity_herb_filepath, regen=False, clear
         io.json_write(entity_herb_filepath, entity_herb)
         print(entity_herb_filepath)
 
+def herb_native_regions_gen(entity_herb_filepath, regen=False, clear=False):
+    entity_herb = io.json_read(entity_herb_filepath)
+    herb_name_scientific = entity_herb['herb_name_scientific']
+    key = 'herb_native_regions'
+    if key not in entity_herb: entity_herb[key] = ''
+    if regen: entity_herb[key] = ''
+    if clear: 
+        entity_herb[key] = ''
+        io.json_write(entity_herb_filepath, entity_herb)
+        return
+    if entity_herb[key] == '' or entity_herb[key] == []:
+        outputs = []
+        for i in range(1):
+            print(f'{i} - {herb_name_scientific}')
+            prompt = f'''
+                Tell me native regions of the following medicinal herb with scientific name: {herb_name_scientific}.
+                In specific, write a confidence score from 1 to 10, indicating how sure you are about your answer.
+                Reply using the following JSON format:
+                [
+                    {{"answer": "write native region 1 here", "score": "write score 1 here"}},
+                    {{"answer": "write native region 2 here", "score": "write score 2 here"}},
+                    {{"answer": "write native region 3 here", "score": "write score 3 here"}}
+                ]
+                Reply only with the JSON.
+                Reply in as few words as possible.
+            '''
+            prompt += f'/no_think'
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            json_data = {}
+            try: json_data = json.loads(reply)
+            except: pass 
+            if json_data != {}:
+                _objs = answer_score_extract(json_data)
+                for _obj in _objs:
+                    outputs.append({
+                        'answer': _obj['answer'], 
+                        'mentions': 1, 
+                        'confidence_score': int(_obj['score']), 
+                    })
+        outputs = total_score_calc(outputs)
+        entity_herb[key] = outputs
+        io.json_write(entity_herb_filepath, entity_herb)
+        print(entity_herb_filepath)
+
+def herb_taxonomy_gen(entity_herb_filepath, regen=False, clear=False):
+    entity_herb = io.json_read(entity_herb_filepath)
+    herb_name_scientific = entity_herb['herb_name_scientific']
+    key = 'herb_taxonomy'
+    if key not in entity_herb: entity_herb[key] = ''
+    if regen: entity_herb[key] = ''
+    if clear: 
+        entity_herb[key] = ''
+        io.json_write(entity_herb_filepath, entity_herb)
+        return
+    if entity_herb[key] == '' or entity_herb[key] == []:
+        outputs = []
+        for i in range(1):
+            print(f'{i} - {herb_name_scientific}')
+            prompt = f'''
+                Tell me the taxonomical classification of the Order of the following medicinal herb with scientific name: {herb_name_scientific}.
+                In specific, write a confidence score from 1 to 10, indicating how sure you are about your answer.
+                Reply using the following JSON format:
+                [
+                    {{"answer": "write order name 1 here", "score": "write score 1 here"}}
+                ]
+                Reply only with the JSON.
+                Reply in as few words as possible.
+            '''
+            prompt += f'/no_think'
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            json_data = {}
+            try: json_data = json.loads(reply)
+            except: pass 
+            if json_data != {}:
+                _objs = answer_score_extract(json_data)
+                for _obj in _objs:
+                    outputs.append({
+                        'answer': _obj['answer'], 
+                        'mentions': 1, 
+                        'confidence_score': int(_obj['score']), 
+                    })
+        outputs = total_score_calc(outputs)
+        entity_herb[key] = outputs
+        io.json_write(entity_herb_filepath, entity_herb)
+        print(entity_herb_filepath)
+
+def herb_kingdom_gen(entity_herb_filepath, regen=False, clear=False):
+    entity_herb = io.json_read(entity_herb_filepath)
+    herb_name_scientific = entity_herb['herb_name_scientific']
+    key = 'herb_kingdom'
+    if key not in entity_herb: entity_herb[key] = ''
+    if regen: entity_herb[key] = ''
+    if clear: 
+        entity_herb[key] = ''
+        io.json_write(entity_herb_filepath, entity_herb)
+        return
+    if entity_herb[key] == '' or entity_herb[key] == []:
+        outputs = []
+        for i in range(1):
+            print(f'{i} - {herb_name_scientific}')
+            prompt = f'''
+                Tell me the taxonomical classification of the Kingdom of the following medicinal herb with scientific name: {herb_name_scientific}.
+                In specific, write a confidence score from 1 to 10, indicating how sure you are about your answer.
+                Reply using the following JSON format:
+                [
+                    {{"answer": "write kingdom name 1 here", "score": "write score 1 here"}}
+                ]
+                Reply only with the JSON.
+                Reply in as few words as possible.
+            '''
+            prompt += f'/no_think'
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            json_data = {}
+            try: json_data = json.loads(reply)
+            except: pass 
+            if json_data != {}:
+                _objs = answer_score_extract(json_data)
+                for _obj in _objs:
+                    outputs.append({
+                        'answer': _obj['answer'], 
+                        'mentions': 1, 
+                        'confidence_score': int(_obj['score']), 
+                    })
+        outputs = total_score_calc(outputs)
+        entity_herb[key] = outputs
+        io.json_write(entity_herb_filepath, entity_herb)
+        print(entity_herb_filepath)
+
 def json_gen(herb):
     entities_herbs_folderpath = f'{g.DATABASE_FOLDERPATH}/entities/herbs'
     try: os.mkdir(entities_herbs_folderpath)
@@ -2118,9 +2252,13 @@ def herbs_primary_json(herb):
     herb_names_common_gen(herb_filepath, regen=False, clear=False)
     herb_origin_continents_gen(herb_filepath, regen=False, clear=False)
     herb_medicine_or_poison_gen(herb_filepath, regen=False, clear=False)
+    ### botany
+    herb_native_regions_gen(herb_filepath, regen=False, clear=False)
+    herb_taxonomy_gen(herb_filepath, regen=False, clear=False)
+    herb_kingdom_gen(herb_filepath, regen=False, clear=False)
+    herb_family_ai(herb_filepath, regen=False, clear=False)
     ###
     herb_traditional_medicinal_uses_gen(herb_filepath, regen=False, clear=False)
-    herb_family_ai(herb_filepath, regen=False, clear=False)
     herb_parts_gen(herb_filepath, regen=False, clear=False)
     herb_traditional_systems_gen(herb_filepath, regen=False, clear=False)
     herb_historical_preparations_gen(herb_filepath, regen=False, clear=False)

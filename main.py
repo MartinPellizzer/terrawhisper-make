@@ -3,6 +3,7 @@ import shutil
 from lib import g
 
 shutil.copy2('style.css', f'{g.website_folderpath}/style.css')
+shutil.copy2('styles-herb.css', f'{g.website_folderpath}/styles-herb.css')
 shutil.copy2('styles-tmp.css', f'{g.website_folderpath}/styles-tmp.css')
 
 # HERBS..........................[HRB]
@@ -172,6 +173,10 @@ if 0:
 
 if 1:
     if 1:
+        # topic hub
+        from hub import herbs_hub
+        herbs_hub.main()
+    if 0:
         from hub import herb_hub
         herb_hub.main()
     if 0:
