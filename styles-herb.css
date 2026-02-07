@@ -1,3 +1,8 @@
+:root {
+    --color-carbon-powder: #101211;
+    --color-whisper-white: #f7f6f2;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -6,6 +11,13 @@
 
 html {
     font-size: 62.5%;
+}
+
+.container-xl {
+    max-width: 128.0rem;
+    margin: 0 auto;
+    padding-left: 2.4rem;
+    padding-right: 2.4rem;
 }
 
 .container-md {
@@ -19,6 +31,11 @@ body {
     font-size: 1.6rem;
     line-height: 1.6;
     font-family: sans-serif;
+}
+
+main {
+    padding-top: 6.4rem;
+    padding-bottom: 6.4rem;
 }
 
 section {
@@ -95,3 +112,51 @@ table, th, td {
     text-align: left;
     padding: 0.8rem 1.6rem;
 }
+
+/*********************************************/
+/* header..............................[hdr] */
+/*********************************************/
+header {
+    background-color: var(--color-carbon-powder);
+    padding-top: 2.4rem;
+    padding-bottom: 2.4rem;
+}
+
+header nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header nav a {
+    color: white;
+    text-decoration: none;
+}
+
+header nav ul {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2.4rem;
+    list-style-type: none;
+}
+
+@media screen and (max-width: 768px) {
+    header nav {
+        flex-direction: column;
+    }
+}
+
+/*********************************************/
+/* footer..............................[ftr] */
+/*********************************************/
+footer {
+    background-color: var(--color-carbon-powder);
+    padding-top: 2.4rem;
+    padding-bottom: 2.4rem;
+}
+
+footer span {
+    color: white;
+}
+
