@@ -1,0 +1,47 @@
+========================================
+SEMANTIC TOPICAL AUTHORITY
+========================================
+
+Teach the search engine everything about a topic, in the way it expects to learn it
+
+========================================
+METHODOLOGY
+========================================
+Step 0: Lock the Core Entity
+Step 1: Define the Entity Like a Machine Would
+Step 2: Extract Entity Attributes
+Step 3: Identify Functional Relationships
+Step 4: Map Comparisons & Alternatives
+Step 5: Add Problems, Limitations & Risks
+Step 6: Layer Search Intent Vertically
+Step 7: Organize the Hierarchy
+Step 8: Validate with SERPs
+Step 9: Content Creation Order
+Step 10: Prune Before You Publish
+
+
+========================================
+AI
+========================================
+
+GOLDEN RULE: Humans design the knowledge system. AI fills it.
+
+If AI decides what to write, you've already broken the methodology.
+
+PHASE 1: Human-designed topical framework
+1. Define the core entity precisely
+2. Build a semantic topical map
+
+PHASE 2: Page-level intent locking
+
+PHASE 3: Controlled AI drafting
+1. Enforce consistent entity language
+2. Control verbosity and uncertainty
+
+PHASE 4: Internal linking done after content exists
+
+PHASE 5: AI-assissted semantic audits
+1. Detect overlap and cannibalization
+2. Identify missing subtopics
+
+

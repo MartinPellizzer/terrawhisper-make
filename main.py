@@ -177,6 +177,10 @@ if 1:
         from hub import herbs_hub
         herbs_hub.main()
     if 0:
+        # herb index
+        from hub import herbs_index
+        herbs_index.main()
+    if 0:
         from hub import herb_hub
         herb_hub.main()
     if 0:

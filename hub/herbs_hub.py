@@ -2,606 +2,68 @@ from lib import g
 from lib import components
 from lib import sections
 
-def main():
+def herbs_hub_gen():
     url_slug = f'herbs'
     meta_title = 'Herbs – Complete Guide to Medicinal, Culinary & Healing Herbs'
     meta_description = 'Explore over 100,000 herbs, their benefits, uses, preparations, and related herbalism topics. Find herbs for stress, digestion, immunity, and more.'
     canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/herbs.html">'''
     import textwrap
     head_html = components.html_head(meta_title, meta_description, css='/styles-herb.css', canonical=canonical_html)
-
-    intro_html = '''
-<section id="intro">
-  <h1 style="margin-bottom: 1.6rem;">Herbs: Medicinal Plants and Herbal Remedies</h1>
-  <p>
-    Herbs (<em>plants valued for therapeutic, culinary, and aromatic uses</em>) are plants or plant parts 
-    that support wellness, flavor meals, and provide natural remedies. Unlike spices, which are often derived 
-    from seeds, bark, or roots, herbs typically come from leaves, stems, or flowers. Herbs have been used for 
-    thousands of years across traditional systems such as <a href="/herbalism.html">Ayurveda</a> 
-    (e.g., <a href="/herbs/ashwagandha.html">Ashwagandha</a> / <em>Withania somnifera</em>), 
-    <a href="/herbalism.html#tcm">Traditional Chinese Medicine</a> (e.g., <a href="/herbs/licorice.html">Licorice</a> / <em>Glycyrrhiza glabra</em>), 
-    and European herbalism.
-  </p>
-  <p>
-    This hub page serves as your comprehensive starting point to explore herbs for culinary, medicinal, 
-    aromatic, and wellness purposes. You will find detailed <a href="#categories">herb categories</a>, 
-    <a href="#featured-herbs">featured herbs</a>, and a full alphabetical index of herbs in our 
-    <a href="/herbs/all.html">herb directory</a>. Each herb page contains information about its uses, 
-    preparation methods, active compounds, and safety considerations.
-  </p>
-  <p>
-    Whether you are a beginner seeking easy-to-use herbs like <a href="/herbs/chamomile.html">Chamomile</a> 
-    or an experienced herbalist exploring adaptogens such as <a href="/herbs/rhodiola.html">Rhodiola</a>, 
-    this page will guide you through the world of herbalism, linking to detailed category hubs, preparation 
-    guides, and safety resources.
-  </p>
-</section>
-    '''
-
-    history_html = f'''
-<section id="history">
-  <h2>History & Cultural Significance of Herbs</h2>
-  <p>
-    Herbs have been used for thousands of years across cultures for medicine, food, and spiritual practices. 
-    In <a href="/herbalism.html#ayurveda">Ayurveda</a>, herbs such as <a href="/herbs/ashwagandha.html">Ashwagandha</a> 
-    (<em>Withania somnifera</em>) and <a href="/herbs/turmeric.html">Turmeric</a> (<em>Curcuma longa</em>) 
-    have long been valued for vitality, immunity, and balance. Traditional Chinese Medicine (TCM) emphasizes herbs 
-    like <a href="/herbs/licorice.html">Licorice</a> (<em>Glycyrrhiza glabra</em>) and <a href="/herbs/ginseng.html">Ginseng</a> 
-    (<em>Panax ginseng</em>) to harmonize the body’s energy and treat specific conditions. European herbalism 
-    historically focused on local herbs for healing, culinary use, and aromatic remedies.
-  </p>
-  <p>
-    Key historical texts, such as <em>De Materia Medica</em> by Dioscorides, medieval herbals, and ancient manuscripts, 
-    preserved generations of herbal knowledge. These works influenced modern herbal medicine and continue to 
-    inform research into plant-based therapies.
-  </p>
-  <p>
-    Across cultures, herbs were not only medicinal but also symbolic, used in rituals, culinary traditions, 
-    and daily life. Understanding this historical and cultural context helps modern herbalists appreciate 
-    the significance of herbs beyond their therapeutic effects, providing insight into how they are used 
-    safely and effectively today.
-  </p>
-  <p>
-    For more on the principles of herbalism and modern applications, see our 
-    <a href="/herbalism.html">Overview of Herbalism</a> page.
-  </p>
-</section>
-    '''
-
-    taxonomy_html = f'''
-<section id="taxonomy">
-  <h2>How Herbs Are Classified</h2>
-  <p>
-    Herbs can be classified in multiple ways depending on their primary use, therapeutic effects, preparation methods, 
-    or botanical family. Understanding these classifications helps herbalists, enthusiasts, and beginners explore herbs 
-    effectively for culinary, medicinal, aromatic, and wellness purposes.
-  </p>
-  <article>
-    <h3>Classification by Use</h3>
-    <p>
-      Herbs are often grouped by their main applications:
-    </p>
-    <ul>
-      <li><strong>Culinary herbs:</strong> Enhance flavor in food and beverages, e.g., <a href="/herbs/basil.html">Basil</a> (<em>Ocimum basilicum</em>), <a href="/herbs/thyme.html">Thyme</a> (<em>Thymus vulgaris</em>).</li>
-      <li><strong>Medicinal herbs:</strong> Support health, immunity, and digestion, e.g., <a href="/herbs/ginger.html">Ginger</a> (<em>Zingiber officinale</em>), <a href="/herbs/echinacea.html">Echinacea</a> (<em>Echinacea purpurea</em>).</li>
-      <li><strong>Aromatic herbs:</strong> Used in teas, essential oils, or perfumes, e.g., <a href="/herbs/lavender.html">Lavender</a> (<em>Lavandula angustifolia</em>).</li>
-    </ul>
-  </article>
-  <article>
-    <h3>Classification by Effect</h3>
-    <p>
-      Herbs can also be categorized by their physiological or therapeutic effects, allowing targeted use for wellness or treatment:
-    </p>
-    <ul>
-      <li><a href="/herbs/adaptogenic-herbs.html">Adaptogens</a> – help the body manage stress and promote energy balance.</li>
-      <li><a href="/herbs/digestive-herbs.html">Digestive herbs</a> – support gastrointestinal health, soothe discomfort, and aid nutrient absorption.</li>
-      <li><a href="/herbs/nervine-herbs.html">Nervine herbs</a> – calm the nervous system and improve sleep quality.</li>
-      <li><a href="/herbs/immune-herbs.html">Immune-supporting herbs</a> – enhance defense mechanisms and recovery.</li>
-    </ul>
-  </article>
-  <article>
-    <h3>Classification by Preparation</h3>
-    <p>
-      The way herbs are prepared affects their potency and applications. Common preparation methods include:
-    </p>
-    <ul>
-      <li><strong>Teas & Infusions:</strong> Water-based extractions, gentle and easy to prepare.</li>
-      <li><strong>Tinctures:</strong> Alcohol-based extracts for concentrated active compounds.</li>
-      <li><strong>Oils & Salves:</strong> Infused oils or topical applications for skin or joint support.</li>
-      <li><strong>Powders & Capsules:</strong> Dried herbs in convenient, standardized forms for ingestion.</li>
-    </ul>
-    <p>
-      Each method extracts different compounds, making some herbs more effective in specific forms. 
-      For more details, visit our <a href="/preparations.html">Herbal Preparations</a> hub.
-    </p>
-  </article>
-  <article>
-    <h3>Classification by Botanical Family</h3>
-    <p>
-      Herbs can also be grouped by botanical families, which share growth patterns, chemical compounds, and therapeutic properties:
-    </p>
-    <ul>
-      <li><strong>Mint family (Lamiaceae):</strong> Aromatic culinary herbs like <a href="/herbs/peppermint.html">Peppermint</a> (<em>Mentha × piperita</em>) and <a href="/herbs/thyme.html">Thyme</a>.</li>
-      <li><strong>Ginger family (Zingiberaceae):</strong> Digestive and medicinal herbs like <a href="/herbs/ginger.html">Ginger</a>.</li>
-      <li><strong>Sunflower family (Asteraceae):</strong> Includes herbs like <a href="/herbs/echinacea.html">Echinacea</a> and <a href="/herbs/chamomile.html">Chamomile</a>.</li>
-    </ul>
-    <p>
-      Recognizing botanical families helps predict potential benefits, understand herb relationships, and identify interactions.
-      For a complete guide, see our <a href="/botanical-families.html">Botanical Families of Herbs</a> page.
-    </p>
-  </article>
-</section>
-    '''
-
-    categories_html = f'''
-<section id="categories">
-  <h2>Explore Herb Categories</h2>
-  <p>
-    Herbs are organized into categories based on their primary effects, uses, and traditional applications. 
-    Each category represents a focused area of herbal knowledge. Click a category to visit its dedicated hub 
-    for a complete list of herbs and detailed profiles.
-  </p>
-  <article>
-    <h3>Adaptogenic Herbs</h3>
-    <p>
-      Adaptogens help the body adapt to physical, mental, and emotional stress, supporting energy, resilience, 
-      and overall balance. Common adaptogens include <a href="/herbs/ashwagandha.html">Ashwagandha</a> 
-      (<em>Withania somnifera</em>) and <a href="/herbs/rhodiola.html">Rhodiola</a> (<em>Rhodiola rosea</em>).
-    </p>
-    <a href="/herbs/adaptogenic-herbs.html">Explore all adaptogenic herbs →</a>
-  </article>
-  <article>
-    <h3>Digestive Herbs</h3>
-    <p>
-      Digestive herbs support gastrointestinal health, soothe discomfort, and aid nutrient absorption. 
-      Popular examples include <a href="/herbs/ginger.html">Ginger</a> (<em>Zingiber officinale</em>) 
-      and <a href="/herbs/peppermint.html">Peppermint</a> (<em>Mentha × piperita</em>).
-    </p>
-    <a href="/herbs/digestive-herbs.html">Explore all digestive herbs →</a>
-  </article>
-  <article>
-    <h3>Culinary Herbs</h3>
-    <p>
-      Culinary herbs enhance flavor and provide nutritional benefits. Examples include <a href="/herbs/basil.html">Basil</a> 
-      (<em>Ocimum basilicum</em>) and <a href="/herbs/thyme.html">Thyme</a> (<em>Thymus vulgaris</em>).
-    </p>
-    <a href="/herbs/culinary-herbs.html">Explore all culinary herbs →</a>
-  </article>
-  <article>
-    <h3>Nervine Herbs</h3>
-    <p>
-      Nervine herbs promote relaxation, support nervous system health, and improve sleep quality. 
-      Common nervines include <a href="/herbs/chamomile.html">Chamomile</a> (<em>Matricaria chamomilla</em>) 
-      and <a href="/herbs/lavender.html">Lavender</a> (<em>Lavandula angustifolia</em>).
-    </p>
-    <a href="/herbs/nervine-herbs.html">Explore all nervine herbs →</a>
-  </article>
-  <article>
-    <h3>Immune-Supporting Herbs</h3>
-    <p>
-      Herbs that strengthen the immune system help the body defend against infections and maintain wellness. 
-      Examples include <a href="/herbs/echinacea.html">Echinacea</a> (<em>Echinacea purpurea</em>) 
-      and <a href="/herbs/elderberry.html">Elderberry</a> (<em>Sambucus nigra</em>).
-    </p>
-    <a href="/herbs/immune-herbs.html">Explore all immune-supporting herbs →</a>
-  </article>
-<article>
-  <h3>Anti-inflammatory Herbs</h3>
-  <p>
-    Anti-inflammatory herbs help reduce inflammation in the body, support joint and tissue health, 
-    and may aid in recovery from physical stress. Common examples include 
-    <a href="/herbs/turmeric.html">Turmeric</a> (<em>Curcuma longa</em>) and 
-    <a href="/herbs/ginger.html">Ginger</a> (<em>Zingiber officinale</em>).
-  </p>
-  <a href="/herbs/anti-inflammatory-herbs.html">Explore all anti-inflammatory herbs →</a>
-</article>
-<article>
-  <h3>Detoxifying Herbs</h3>
-  <p>
-    Detoxifying herbs support the body’s natural elimination of toxins, promote liver and kidney function, 
-    and enhance overall wellness. Common examples include 
-    <a href="/herbs/dandelion.html">Dandelion</a> (<em>Taraxacum officinale</em>) and 
-    <a href="/herbs/milk-thistle.html">Milk Thistle</a> (<em>Silybum marianum</em>).
-  </p>
-  <a href="/herbs/detoxifying-herbs.html">Explore all detoxifying herbs →</a>
-</article>
-</section>
-    '''
-
-    mechanisms_html = f'''
-<section id="mechanisms">
-  <h2>How Herbs Work: Active Compounds & Mechanisms</h2>
-  <p>
-    Herbs contain active compounds such as alkaloids, flavonoids, terpenes, glycosides, and essential oils that influence 
-    the body in diverse ways. These compounds contribute to herbs’ medicinal, aromatic, and culinary properties, 
-    supporting health across multiple systems.
-  </p>
-  <article>
-    <h3>Physiological Effects</h3>
-    <p>
-      Different herbs affect the body through specific physiological actions:
-    </p>
-    <ul>
-      <li><a href="/herbs/adaptogenic-herbs.html">Adaptogens</a> (e.g., <a href="/herbs/ashwagandha.html">Ashwagandha</a>) – modulate stress response and support adrenal function.</li>
-      <li><a href="/herbs/nervine-herbs.html">Nervines</a> (e.g., <a href="/herbs/chamomile.html">Chamomile</a>) – calm the nervous system and improve sleep quality.</li>
-      <li><a href="/herbs/immune-herbs.html">Immune-supporting herbs</a> (e.g., <a href="/herbs/echinacea.html">Echinacea</a>) – enhance defense mechanisms and recovery.</li>
-    </ul>
-  </article>
-  <article>
-    <h3>Active Compounds and Examples</h3>
-    <p>Here are representative herbs with their key active compounds and primary effects:</p>
-    <ul>
-      <li><strong>Ashwagandha (<em>Withania somnifera</em>):</strong> Withanolides – support stress adaptation, vitality, and energy balance.</li>
-      <li><strong>Ginger (<em>Zingiber officinale</em>):</strong> Gingerols – support digestion, reduce inflammation, and promote circulation.</li>
-      <li><strong>Chamomile (<em>Matricaria chamomilla</em>):</strong> Apigenin – promotes relaxation, calmness, and sleep quality.</li>
-      <li><strong>Turmeric (<em>Curcuma longa</em>):</strong> Curcumin – anti-inflammatory and antioxidant effects, supports joint and systemic health.</li>
-      <li><strong>Rhodiola (<em>Rhodiola rosea</em>):</strong> Rosavins and salidroside – enhance resilience to fatigue and stress, improve mental clarity.</li>
-    </ul>
-  </article>
-  <article>
-    <h3>Mechanisms of Action</h3>
-    <p>
-      Herbs influence the body through various mechanisms, including:
-    </p>
-    <ul>
-      <li>Modulation of stress hormones and adrenal function</li>
-      <li>Support for digestive enzyme activity and gut health</li>
-      <li>Activation and regulation of the immune system</li>
-      <li>Anti-inflammatory and antioxidant pathways</li>
-      <li>Neurotransmitter modulation for relaxation and mental clarity</li>
-    </ul>
-    <p>
-      Understanding these mechanisms helps practitioners and herbal enthusiasts select herbs for specific wellness goals.
-    </p>
-  </article>
-  <p>
-    For practical guidance on using herbs, see our <a href="/preparations.html">Herbal Preparations</a> section, 
-    which covers teas, tinctures, oils, powders, and salves. You can also explore herbs by category for targeted benefits 
-    in the <a href="#categories">Herb Categories</a> section.
-  </p>
-</section>
-    '''
-
-    preparations_html = f'''
-<section id="preparations">
-  <h2>How Herbs Are Prepared</h2>
-  <p>
-    The method of preparing herbs affects their potency, flavor, and therapeutic effect. Different preparations 
-    extract specific compounds and suit different applications, from culinary use to medicinal treatments. 
-    Understanding these methods helps you make the most of each herb.
-  </p>
-  <article>
-    <h3>Teas & Infusions</h3>
-    <p>
-      Teas and infusions are water-based extractions, often made from leaves, flowers, or stems. They are gentle, 
-      easy to prepare, and commonly used for daily wellness. Examples include <a href="/herbs/chamomile.html">Chamomile tea</a> 
-      and <a href="/herbs/peppermint.html">Peppermint infusion</a>.
-    </p>
-  </article>
-  <article>
-    <h3>Tinctures</h3>
-    <p>
-      Tinctures are alcohol-based extracts that concentrate the active compounds of herbs. They are ideal for 
-      adaptogens, nervines, or herbs that require precise dosing. Examples include <a href="/herbs/ashwagandha.html">Ashwagandha tincture</a> 
-      and <a href="/herbs/rhodiola.html">Rhodiola tincture</a>. See our <a href="/preparations.html">Herbal Preparations</a> hub for step-by-step instructions.
-    </p>
-  </article>
-  <article>
-    <h3>Oils & Salves</h3>
-    <p>
-      Infused oils and salves are used for topical applications to support skin, joints, and localized wellness. 
-      Common examples include <a href="/herbs/lavender.html">Lavender oil</a> and <a href="/herbs/calendula.html">Calendula salve</a>. 
-      These preparations extract lipophilic compounds that water-based methods cannot.
-    </p>
-  </article>
-  <article>
-    <h3>Powders & Capsules</h3>
-    <p>
-      Dried herbs can be ground into powders and encapsulated for convenient ingestion. This method preserves 
-      active compounds and allows for standardized dosing. Examples include <a href="/herbs/turmeric.html">Turmeric powder</a> 
-      and <a href="/herbs/ginger.html">Ginger capsules</a>.
-    </p>
-  </article>
-  <p>
-    Proper preparation ensures maximum benefits and safe use. For detailed instructions, recipes, and dosage 
-    guidelines, see our <a href="/preparations.html">Herbal Preparations</a> hub, which covers teas, tinctures, oils, 
-    powders, salves, and more.
-  </p>
-</section>
-    '''
-
-    synergy_html = f'''
-<section id="synergy">
-  <h2>Combining Herbs: Synergy & Blends</h2>
-  <p>
-    Herbs often work more effectively when combined, creating synergistic effects that enhance their therapeutic 
-    or culinary benefits. Understanding common combinations helps you maximize wellness outcomes and create 
-    balanced herbal blends.
-  </p>
-  <article>
-    <h3>Stress and Adaptation Blends</h3>
-    <p>
-      Combining adaptogens can enhance stress resilience and energy balance. Examples include:
-    </p>
-    <ul>
-      <li><a href="/herbs/ashwagandha.html">Ashwagandha</a> + <a href="/herbs/rhodiola.html">Rhodiola</a> – supports mental clarity, stress adaptation, and stamina.</li>
-      <li><a href="/herbs/licorice.html">Licorice</a> + <a href="/herbs/eleuthero.html">Eleuthero</a> – supports adrenal function and energy.</li>
-    </ul>
-  </article>
-  <article>
-    <h3>Digestive Comfort Blends</h3>
-    <p>
-      Herbs can be combined to soothe digestion and improve nutrient absorption:
-    </p>
-    <ul>
-      <li><a href="/herbs/ginger.html">Ginger</a> + <a href="/herbs/peppermint.html">Peppermint</a> – reduces bloating and nausea.</li>
-      <li><a href="/herbs/fennel.html">Fennel</a> + <a href="/herbs/chamomile.html">Chamomile</a> – promotes calm digestion and gut comfort.</li>
-    </ul>
-  </article>
-  <article>
-    <h3>Immune Support Blends</h3>
-    <p>
-      Combining immune-supporting herbs may strengthen the body’s defense mechanisms:
-    </p>
-    <ul>
-      <li><a href="/herbs/echinacea.html">Echinacea</a> + <a href="/herbs/elderberry.html">Elderberry</a> – supports immune response and reduces the duration of infections.</li>
-      <li><a href="/herbs/ginger.html">Ginger</a> + <a href="/herbs/turmeric.html">Turmeric</a> – provides anti-inflammatory and antioxidant support.</li>
-    </ul>
-  </article>
-  <p>
-    For more detailed recipes, preparation tips, and recommended dosages, explore our 
-    <a href="/preparations.html">Herbal Preparations</a> hub. Combining herbs responsibly ensures safety, 
-    maximizes benefits, and enhances the effectiveness of your herbal blends.
-  </p>
-</section>
-    '''
-
-    featured_html = f'''
-<section id="featured-herbs">
-  <h2>Featured Herbs</h2>
-  <p>
-    While there are hundreds of herbs with unique properties, some herbs are particularly significant due to 
-    their widespread use, historical importance, or scientifically recognized benefits. Below are featured herbs 
-    from different categories of herbalism.
-  </p>
-  <article>
-    <h3>Ashwagandha (<em>Withania somnifera</em>)</h3>
-    <p>
-      An adaptogenic herb renowned for supporting stress management, energy, and overall vitality. 
-      Commonly used in teas, powders, and tinctures.
-    </p>
-    <a href="/herbs/ashwagandha.html">Read more →</a>
-  </article>
-  <article>
-    <h3>Rhodiola (<em>Rhodiola rosea</em>)</h3>
-    <p>
-      An adaptogen that enhances resilience to stress and fatigue, supporting mental clarity and physical stamina.
-    </p>
-    <a href="/herbs/rhodiola.html">Read more →</a>
-  </article>
-  <article>
-    <h3>Ginger (<em>Zingiber officinale</em>)</h3>
-    <p>
-      A digestive and immune-supporting herb used to relieve nausea, improve digestion, and reduce inflammation.
-    </p>
-    <a href="/herbs/ginger.html">Read more →</a>
-  </article>
-  <article>
-    <h3>Chamomile (<em>Matricaria chamomilla</em>)</h3>
-    <p>
-      A calming nervine herb traditionally used to support relaxation, sleep, and digestive comfort.
-    </p>
-    <a href="/herbs/chamomile.html">Read more →</a>
-  </article>
-  <article>
-    <h3>Turmeric (<em>Curcuma longa</em>)</h3>
-    <p>
-      Valued for its anti-inflammatory and antioxidant properties. Supports joint, liver, and overall systemic health.
-    </p>
-    <a href="/herbs/turmeric.html">Read more →</a>
-  </article>
-  <article>
-    <h3>Peppermint (<em>Mentha × piperita</em>)</h3>
-    <p>
-      A digestive herb with aromatic properties. Supports gastrointestinal comfort and adds flavor to teas and dishes.
-    </p>
-    <a href="/herbs/peppermint.html">Read more →</a>
-  </article>
-  <article>
-    <h3>Lavender (<em>Lavandula angustifolia</em>)</h3>
-    <p>
-      A nervine and aromatic herb used for relaxation, stress relief, and calming aromatherapy preparations.
-    </p>
-    <a href="/herbs/lavender.html">Read more →</a>
-  </article>
-  <article>
-    <h3>Echinacea (<em>Echinacea purpurea</em>)</h3>
-    <p>
-      An immune-supporting herb commonly used to enhance the body's defense mechanisms and reduce the duration 
-      of infections.
-    </p>
-    <a href="/herbs/echinacea.html">Read more →</a>
-  </article>
-</section>
-    '''
-
-    all_html = '''
-<section id="all-herbs-preview">
-  <h2>Complete List of Herbs</h2>
-  <p>
-    Explore our comprehensive directory of herbs. Below is a preview of some popular herbs, each linked to 
-    its detailed page. You can browse the full alphabetical index to discover hundreds more, including their 
-    uses, preparations, and health benefits.
-  </p>
-  <ul>
-    <li><a href="/herbs/all.html#ashwagandha">Ashwagandha (<em>Withania somnifera</em>)</a></li>
-    <li><a href="/herbs/all.html#ginger">Ginger (<em>Zingiber officinale</em>)</a></li>
-    <li><a href="/herbs/all.html#rhodiola">Rhodiola (<em>Rhodiola rosea</em>)</a></li>
-    <li><a href="/herbs/all.html#chamomile">Chamomile (<em>Matricaria chamomilla</em>)</a></li>
-    <li><a href="/herbs/all.html#turmeric">Turmeric (<em>Curcuma longa</em>)</a></li>
-    <li><a href="/herbs/all.html#eucalyptus">Eucalyptus (<em>Eucalyptus globulus</em>)</a></li>
-    <li><a href="/herbs/all.html#peppermint">Peppermint (<em>Mentha × piperita</em>)</a></li>
-    <li><a href="/herbs/all.html#lavender">Lavender (<em>Lavandula angustifolia</em>)</a></li>
-    <li><a href="/herbs/all.html#licorice">Licorice (<em>Glycyrrhiza glabra</em>)</a></li>
-    <li><a href="/herbs/all.html#lemon-balm">Lemon Balm (<em>Melissa officinalis</em>)</a></li>
-  </ul>
-  <p>
-    <a href="/herbs/all.html">See the full herb index →</a>
-  </p>
-</section>
-    '''
-
-    faq_html = f'''
-<section id="faq">
-  <h2>Frequently Asked Questions About Herbs</h2>
-  <article>
-    <h3>What are herbs?</h3>
-    <p>
-      Herbs are plants or plant parts valued for their medicinal, culinary, aromatic, and therapeutic properties. 
-      They differ from spices and supplements and are used across traditional and modern <a href="/herbalism.html">herbalism</a>. 
-      For a complete list, see our <a href="/herbs/all.html">full herb index</a>.
-    </p>
-  </article>
-  <article>
-    <h3>How are herbs used in herbalism?</h3>
-    <p>
-      Herbs can be used in teas, tinctures, powders, oils, and salves. Their usage depends on the herb’s properties, 
-      desired effect, and traditional practices. Learn more in our <a href="/preparations.html">Herbal Preparations</a> section.
-    </p>
-  </article>
-  <article>
-    <h3>Are herbs safe to use?</h3>
-    <p>
-      Most herbs are safe when used appropriately, but potency, interactions, and individual sensitivities matter. 
-      Consult reliable sources or qualified herbalists for medicinal use. Some herbs are categorized by effects in hubs like 
-      <a href="/herbs/adaptogenic-herbs.html">adaptogens</a> or <a href="/herbs/nervine-herbs.html">nervine herbs</a>.
-    </p>
-  </article>
-  <article>
-    <h3>How are herbs classified?</h3>
-    <p>
-      Herbs can be classified by use, effect, preparation, and botanical family. Understanding these classifications 
-      helps select the right herb for culinary, medicinal, or aromatic purposes. See our <a href="#taxonomy">Classification section</a> for details.
-    </p>
-  </article>
-  <article>
-    <h3>Which herbs are best for beginners?</h3>
-    <p>
-      Beginner-friendly herbs are typically safe, easy to prepare, and widely used, such as <a href="/herbs/chamomile.html">Chamomile</a>, 
-      <a href="/herbs/peppermint.html">Peppermint</a>, and <a href="/herbs/basil.html">Basil</a>. Starting with these allows you to explore herbal benefits safely.
-    </p>
-  </article>
-  <article>
-    <h3>How should herbs be stored?</h3>
-    <p>
-      Store herbs in cool, dry, and dark places to preserve potency. Dried herbs should be kept in airtight containers, 
-      and fresh herbs can be refrigerated or frozen depending on the type. Proper storage ensures maximum benefits.
-    </p>
-  </article>
-  <article>
-    <h3>Where can I find a complete list of herbs?</h3>
-    <p>
-      Our full herb directory is available in the <a href="/herbs/all.html">complete herb index</a>, organized alphabetically 
-      and by categories such as adaptogenic, digestive, and culinary herbs.
-    </p>
-  </article>
-</section>
-    '''
-
-    related_html = f'''
-<section id="related-hubs">
-  <h2>Explore Related Topics</h2>
-  <p>
-    Herbs are part of a broader herbalism ecosystem. These related hubs provide additional information on 
-    how herbs are prepared, applied, and integrated into wellness practices.
-  </p>
-  <ul>
-    <li>
-      <a href="/preparations.html">Herbal Preparations</a> – Learn about teas, tinctures, oils, salves, and other methods 
-      of preparing herbs for maximum therapeutic or culinary benefit.
-    </li>
-    <li>
-      <a href="/ailments.html">Herbs for Specific Conditions</a> – Discover which herbs are traditionally used for 
-      digestive health, stress management, immunity, and more.
-    </li>
-    <li>
-      <a href="/herbalism.html">Overview of Herbalism</a> – Explore the principles, history, and science behind herbal practices.
-    </li>
-    <li>
-      <a href="/safety.html">Herb Safety and Guidelines</a> – Understand precautions, interactions, and proper usage 
-      for safe herbal practices.
-    </li>
-    <li>
-      <a href="/botanical-families.html">Botanical Families of Herbs</a> – Learn how herbs are grouped and the shared 
-      characteristics within plant families.
-    </li>
-  </ul>
-</section>
-    '''
-
-    safety_html = f'''
-        <section id="safety">
-          <h2>Herb Safety & Contraindications</h2>
-          <p>
-            While herbs offer many benefits, some can interact with medications, affect certain health conditions, 
-            or be unsafe in high doses. Understanding precautions ensures safe and effective use.
-          </p>
-          <article>
-            <h3>General Safety Guidelines</h3>
-            <ul>
-              <li>Consult a healthcare professional or qualified herbalist before using herbs for medicinal purposes.</li>
-              <li>Start with small doses to assess tolerance and response.</li>
-              <li>Follow recommended preparation and storage instructions to preserve potency.</li>
-              <li>Avoid herbs known to cause allergies or adverse reactions if you have sensitivities.</li>
-            </ul>
-          </article>
-          <article>
-            <h3>Interactions with Medications</h3>
-            <p>
-              Some herbs can interact with prescription or over-the-counter medications, affecting their effectiveness 
-              or causing side effects. Examples:
-            </p>
-            <ul>
-              <li><a href="/herbs/ginger.html">Ginger</a> – may affect blood-thinning medications.</li>
-              <li><a href="/herbs/ginseng.html">Ginseng</a> – can interact with diabetes or blood pressure medications.</li>
-              <li><a href="/herbs/licorice.html">Licorice</a> – may influence blood pressure and potassium levels.</li>
-            </ul>
-          </article>
-          <article>
-            <h3>Special Populations</h3>
-            <p>
-              Certain herbs should be used with caution or avoided in specific populations:
-            </p>
-            <ul>
-              <li>Pregnant or breastfeeding women – consult a professional before use.</li>
-              <li>Children and elderly individuals – start with minimal doses and monitor effects.</li>
-              <li>Individuals with chronic health conditions – some herbs may exacerbate symptoms or interact with treatments.</li>
-            </ul>
-          </article>
-          <p>
-            For more detailed guidelines, see our <a href="/safety.html">Herb Safety and Guidelines</a> hub, which provides 
-            extensive information on safe usage, contraindications, and potential interactions.
-          </p>
-        </section>
-    '''
-
-    toc_html = '''
-<nav id="table-of-contents" style="margin-bottom: 2rem;">
+    toc_html = f'''
+<!-- Table of Contents -->
+<nav aria-label="Table of Contents" id="table-of-contents">
   <h2>Contents</h2>
   <ul>
     <li><a href="#intro">Introduction</a></li>
-    <li><a href="#history">History & Cultural Significance</a></li>
-    <li><a href="#taxonomy">How Herbs Are Classified</a></li>
-    <li><a href="#categories">Explore Herb Categories</a></li>
-    <li><a href="#mechanisms">How Herbs Work</a></li>
-    <li><a href="#featured-herbs">Featured Herbs</a></li>
-    <li><a href="#all-herbs-preview">Complete List of Herbs</a></li>
-    <li><a href="#faq">Frequently Asked Questions</a></li>
-    <li><a href="#related-hubs">Explore Related Topics</a></li>
+    <li><a href="#what-are-herbs">What Are Medicinal Herbs?</a>
+      <ul>
+        <li><a href="#botanical-classification">Botanical Classification</a></li>
+        <li><a href="#core-attributes">Core Attributes of Medicinal Herbs</a></li>
+      </ul>
+    </li>
+    <li><a href="#mechanisms">Mechanisms and Active Compounds</a>
+      <ul>
+        <li><a href="#active-compounds">Active Compounds</a></li>
+        <li><a href="#mechanism-of-action">Mechanism of Action</a></li>
+      </ul>
+    </li>
+    <li><a href="#therapeutic-applications">Uses of Medicinal Herbs</a>
+      <ul>
+        <li><a href="#common-ailments">Common Ailments Treated</a></li>
+        <li><a href="#targeted-herbs">Targeted Herbs per Condition</a></li>
+      </ul>
+    </li>
+    <li><a href="#preparations">How to Use Medicinal Herbs</a>
+      <ul>
+        <li><a href="#traditional-preparations">Traditional Preparations</a></li>
+        <li><a href="#modern-preparations">Modern Preparations</a></li>
+        <li><a href="#dosage-tips">Dosage and Administration Tips</a></li>
+      </ul>
+    </li>
+    <li><a href="#safety">Safety Considerations</a>
+      <ul>
+        <li><a href="#side-effects">Side Effects and Toxicity</a></li>
+        <li><a href="#drug-interactions">Drug Interactions</a></li>
+        <li><a href="#special-populations">Special Populations</a></li>
+      </ul>
+    </li>
+    <li><a href="#evidence">Scientific Research on Medicinal Herbs</a>
+      <ul>
+        <li><a href="#clinical-studies">Clinical Studies</a></li>
+        <li><a href="#traditional-vs-modern">Traditional vs Modern Evidence</a></li>
+      </ul>
+    </li>
+    <li><a href="#further-exploration">Further Exploration</a>
+      <ul>
+        <li><a href="#comparisons">Herb Comparisons and Alternatives</a></li>
+        <li><a href="#formulas">Herbal Combinations and Formulas</a></li>
+        <li><a href="#additional-resources">Additional Resources</a></li>
+      </ul>
+    </li>
+    <li><a href="#summary">Summary</a></li>
   </ul>
 </nav>
     '''
-
 
     html = textwrap.dedent(f''' 
         <!DOCTYPE html>
@@ -610,19 +72,182 @@ def main():
         <body>
           {sections.header()}
           <main class="container-md">
-            {intro_html}
-            {toc_html}
-            {history_html}
-            {taxonomy_html}
-            {categories_html}
-            {mechanisms_html}
-            {preparations_html}
-            {synergy_html}
-            {featured_html}
-            {all_html}
-            {safety_html}
-            {faq_html}
-            {related_html}
+<section id="intro">
+    <!-- Hero / Introduction Section -->
+    <h1>Medicinal Herbs: Comprehensive Guide</h1>
+    <p>
+    Medicinal herbs are plants that have been used for centuries to support human health, promote well-being, and complement traditional and modern healing practices. 
+    They encompass a diverse range of species, each with unique properties, historical uses, and roles in natural medicine systems around the world. 
+    From ancient traditions like Ayurveda and Traditional Chinese Medicine to contemporary herbal research, medicinal herbs continue to be a cornerstone of holistic health knowledge.
+    </p>
+    <p>
+    This guide introduces the essential concepts of medicinal herbs, their classification, botanical attributes, and the scientific frameworks used to study their effects. 
+    By exploring the fundamental principles behind these plants, you can develop a deeper understanding of their role in natural health, laying the foundation for further learning about specific herbs, their applications, and evidence-based practices.
+    </p>
+</section>
+<section id="what-are-herbs">
+    <!-- Section 1: Introduction to Medicinal Herbs -->
+    <h2>What Are Medicinal Herbs?</h2>
+    <p>
+    Medicinal herbs are plants recognized for their natural properties that contribute to human health and wellness. 
+    They represent a wide variety of species, each with distinct characteristics, growth patterns, and traditional applications in healing practices. 
+    Understanding what constitutes a medicinal herb requires looking beyond common or culinary uses, focusing instead on plants with documented therapeutic roles throughout history and across cultures.
+    </p>
+    <h3>Botanical Classification</h3>
+    <p>
+    Medicinal herbs can be classified according to plant families, structural types, and the specific parts used for therapeutic purposes. 
+    For example, herbs may include flowering plants, leaves, roots, seeds, or barks, each offering unique bioactive components. 
+    This classification provides a framework for identifying, studying, and organizing herbs within natural medicine systems, making it easier to connect specific plants to their functional uses.
+    </p>
+    <h3>Core Attributes of Medicinal Herbs</h3>
+    <p>
+    Each medicinal herb is identified by multiple attributes that distinguish it from other plants. 
+    These include its scientific (Latin) name, commonly used vernacular names, and geographic origin. 
+    Additional attributes such as growth environment, seasonal availability, and morphological features help define the herb as a distinct entity in botanical and medical contexts. 
+    Together, these core characteristics form the foundation for understanding, categorizing, and exploring the broader landscape of medicinal herbs.
+    </p>
+</section>
+<section id="mechanisms">
+    <!-- Section 2: How Medicinal Herbs Work -->
+    <h2>Mechanisms and Active Compounds</h2>
+    <p>
+    Medicinal herbs exert their effects through naturally occurring chemical compounds that interact with biological systems. 
+    These interactions influence physiological processes, contributing to the herbs’ overall therapeutic properties. 
+    While each herb contains a unique combination of compounds, common patterns exist across plant families, helping researchers and practitioners categorize and understand their functional roles.
+    </p>
+    <h3>Active Compounds</h3>
+    <p>
+    The therapeutic properties of medicinal herbs are largely derived from bioactive substances such as alkaloids, flavonoids, terpenes, glycosides, and phenolic acids. 
+    Each class of compound contributes specific effects—for example, some support immune function, others act as antioxidants or mild anti-inflammatories. 
+    Understanding these compounds provides a foundation for exploring how herbs influence human health and interact with other biological systems.
+    </p>
+    <h3>Mechanism of Action</h3>
+    <p>
+    Mechanisms of action describe how the active compounds in medicinal herbs interact with the body at cellular and molecular levels. 
+    These mechanisms can include modulation of enzyme activity, receptor binding, antioxidant activity, and other biochemical processes. 
+    </p>
+</section>
+<section id="uses">
+    <!-- Section 3: Therapeutic Applications -->
+    <h2>Uses of Medicinal Herbs</h2>
+    <p>
+    Medicinal herbs are utilized to support a wide range of health functions and overall well-being. 
+    Their applications extend across multiple physiological systems, reflecting centuries of traditional knowledge combined with modern observations. 
+    By understanding the potential roles of these plants, users can explore their relevance to different aspects of human health without focusing on specific preparation methods or dosing at this stage.
+    </p>
+    <h3>Common Ailments Treated</h3>
+    <p>
+    Herbs are often associated with supporting digestive health, enhancing immune function, promoting restful sleep, alleviating pain, maintaining skin health, supporting cardiovascular function, balancing hormonal activity, and supporting cognitive performance. 
+    </p>
+<p>
+Dedicated pages provide detailed information on individual herbs and their applications in different <a href="/ailments.html">ailments and conditions</a>, 
+allowing for targeted exploration of therapeutic uses.
+</p>
+    <h3>Targeted Herbs per Condition</h3>
+    <p>
+    Each therapeutic category includes multiple herbs that may be particularly effective for that condition. 
+    For example, certain plants are historically noted for digestive support, while others are associated with calming or anti-inflammatory properties. 
+    </p>
+</section>
+<section id="preparations">
+    <!-- Section 4: Preparations and Administration -->
+    <h2>How to Use Medicinal Herbs</h2>
+    <p>
+    Medicinal herbs can be administered in a variety of ways, reflecting both historical practices and modern innovations. 
+    The choice of preparation affects the delivery of bioactive compounds and influences how herbs interact with the body. 
+    This section provides an overview of common methods, helping users understand the forms in which herbs are typically used without delving into specific dosages or recipes.
+    </p>
+    <h3>Traditional Preparations</h3>
+    <p>
+    Historically, herbs have been prepared using techniques such as teas, decoctions, infusions, and tinctures. 
+    These methods extract active compounds in ways that have been refined through centuries of practice in traditional medicine systems. 
+    </p>
+    <h3>Modern Preparations</h3>
+    <p>
+    Contemporary herbal use includes formats such as capsules, powders, ointments, and essential oils. 
+    These forms provide convenient and standardized ways to consume or apply herbs, often facilitating integration into daily health routines. 
+    </p>
+    <h3>Dosage and Administration Tips</h3>
+    <p>
+    Understanding general principles of dosage and administration is important for safe and effective use of medicinal herbs. 
+    While specific instructions vary by herb, preparation method, and individual needs, high-level guidelines emphasize moderation, proper selection of form, and consulting reliable sources. 
+    </p>
+<p>
+For detailed guidance on preparation methods and administration, see the <a href="/preparations.html">Preparations hub</a>, which provides comprehensive instructions for each herb.
+</p>
+</section>
+<section id="safety">
+    <!-- Section 5: Safety and Contraindications -->
+    <h2>Safety Considerations</h2>
+    <p>
+    While medicinal herbs offer many potential benefits, safe use requires awareness of general precautions and potential risks. 
+    Understanding safety considerations helps ensure that herbs are incorporated responsibly into health routines and supports informed exploration of their therapeutic properties.
+    </p>
+    <h3>Side Effects and Toxicity</h3>
+    <p>
+    Herbs may produce side effects ranging from mild digestive discomfort to more serious toxic reactions, depending on the plant, preparation, and individual sensitivity. 
+    High-level awareness of potentially toxic species and common adverse reactions lays the groundwork for safe herb selection and proper handling. 
+    </p>
+    <h3>Drug Interactions</h3>
+    <p>
+    Some medicinal herbs can interact with prescription or over-the-counter medications, potentially altering their effects. 
+    Understanding general principles of herb–drug interactions is essential for minimizing risk and ensuring complementary use. 
+    </p>
+    <h3>Special Populations</h3>
+    <p>
+    Certain groups, including pregnant individuals, children, and the elderly, may require additional precautions when using medicinal herbs. 
+    High-level guidance emphasizes the importance of consulting reliable sources and healthcare professionals before introducing herbal remedies. 
+    </p>
+</section>
+<section id="research">
+    <!-- Section 6: Scientific Evidence and Research -->
+    <h2>Scientific Research on Medicinal Herbs</h2>
+    <p>
+    Medicinal herbs have been studied in both traditional and modern contexts, providing insight into their potential therapeutic benefits. 
+    Scientific research ranges from historical observations and traditional medicine records to contemporary clinical studies, offering varying levels of evidence for different plants and applications.
+    </p>
+    <h3>Clinical Studies</h3>
+    <p>
+    Modern research on medicinal herbs includes randomized controlled trials, observational studies, and meta-analyses that examine efficacy, safety, and mechanisms of action. 
+    These studies help validate traditional knowledge and identify which herbs have strong scientific support. 
+    </p>
+    <h3>Traditional vs Modern Evidence</h3>
+    <p>
+    Historical use of medicinal herbs, documented in systems such as Ayurveda, Traditional Chinese Medicine, and European herbalism, provides a foundation for understanding their applications. 
+    Modern scientific methods complement this knowledge by testing efficacy, standardizing preparations, and clarifying mechanisms. 
+    </p>
+</section>
+<section id="evidence">
+    <!-- Section 7: Related Topics and Resources -->
+    <h2>Further Exploration</h2>
+    <p>
+    To fully understand medicinal herbs and their applications, it is valuable to explore related topics and broader contexts. 
+    These areas provide additional perspectives, deepen understanding, and highlight connections between different herbs, traditional practices, and modern herbal research.
+    </p>
+    <h3>Herb Comparisons and Alternatives</h3>
+    <p>
+    Comparing herbs to one another or to pharmaceutical options can clarify differences in effects, potency, and suitability for various conditions. 
+    Such comparisons help users make informed decisions about which herbs may best meet specific health goals. 
+    </p>
+    <h3>Herbal Combinations and Formulas</h3>
+    <p>
+    Many traditional and contemporary practices use multi-herb blends to achieve synergistic effects. 
+    Understanding the principles behind these combinations, as well as their intended applications, allows for safer and more effective use of herbs in holistic remedies. 
+    </p>
+    <h3>Additional Resources</h3>
+    <p>
+    Further exploration includes historical and cultural contexts, cultivation practices, and legal or regulatory considerations for medicinal herbs. 
+    These topics enrich understanding of the broader landscape of herbal medicine and provide guidance for responsible use. 
+    </p>
+</section>
+<section id="summary">
+    <!-- Conclusion -->
+    <h2>Summary</h2>
+    <p>
+    Medicinal herbs represent a rich and interconnected field of natural health knowledge, encompassing diverse plants, botanical characteristics, and traditional and modern applications. 
+    This hub has introduced the foundational concepts, highlighting their classification, functional roles, and broader context within holistic wellness. 
+    </p>
+</section>
           </main>
           {sections.footer()}
         </body>
@@ -630,8 +255,344 @@ def main():
     ''').strip()
     html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
     with open(html_filepath, 'w') as f: f.write(html)
-    print(html)
-    quit()
+
+def herbs_ailment_hub_gen():
+    url_slug = f'ailments'
+    meta_title = ''
+    meta_description = ''
+    canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''
+    head_html = components.html_head(meta_title, meta_description, css='/styles-herb.css', canonical=canonical_html)
+    import textwrap
+    html = textwrap.dedent(f''' 
+        <!DOCTYPE html>
+        <html lang="en">
+        {head_html}
+        <body>
+          {sections.header()}
+          <main class="container-md">
+
+<!-- Introduction to Common Ailments -->
+<h1>Common Ailments and Medicinal Herb Support</h1>
+<p>
+Common ailments are frequently occurring health conditions that can affect daily comfort, energy, and overall quality of life. 
+These conditions include digestive discomfort, mild pain, sleep disturbances, stress, immune challenges, and minor skin issues. 
+For a <a href="/ailments/all.html">complete list of common ailments</a> with detailed descriptions, see our dedicated page.
+</p>
+<p>
+Medicinal herbs have been used for centuries to support the body's natural processes in addressing these ailments. 
+Through bioactive compounds such as flavonoids, terpenes, and alkaloids, herbs can interact with physiological systems to promote balance, reduce discomfort, and enhance resilience. 
+This guide categorizes common ailments by body system and functional effect, providing an overview of herbal support and laying the foundation for exploring specific herbs and their applications in the sections below.
+</p>
+
+<!-- Section 1: Digestive Ailments -->
+<h2>Digestive Ailments</h2>
+<p>
+Digestive ailments encompass a range of common conditions affecting the gastrointestinal system, including bloating, indigestion, nausea, and general discomfort. 
+These issues can impact nutrient absorption, energy levels, and overall well-being. 
+Medicinal herbs have traditionally been used to support digestion, soothe the stomach, and maintain healthy gut function.
+</p>
+<h3>Gastric and Stomach Issues</h3>
+<p>
+Herbs such as ginger, peppermint, fennel, and chamomile have long been applied to relieve nausea, reduce stomach cramps, and calm digestive discomfort. 
+These plants contain natural compounds that support the stomach lining, regulate motility, and provide gentle relief from irritation. 
+For detailed profiles on each herb, including their traditional and modern applications, see the dedicated herb pages linked throughout this section.
+</p>
+<h3>Digestive Enzyme and Gut Support</h3>
+<p>
+Certain herbs promote digestive enzyme activity, improve nutrient absorption, and support a balanced gut microbiome. 
+Examples include papaya, dandelion root, licorice, and slippery elm. 
+Incorporating these herbs into your routine may help optimize digestion, reduce bloating, and support overall gastrointestinal health. 
+Individual herb pages provide in-depth information on recommended use and supporting research.
+</p>
+
+<!-- Section 2: Immune-Related Ailments -->
+<h2>Immune System Challenges</h2>
+<p>
+Immune system challenges refer to conditions where the body's natural defenses are weakened, imbalanced, or overtaxed, increasing susceptibility to infections, seasonal illnesses, and general malaise. 
+Supporting immune function is essential for maintaining overall health and resilience, and medicinal herbs have historically been used to help modulate immune responses.
+</p>
+<h3>Immune-Boosting Herbs</h3>
+<p>
+Certain herbs, including astragalus, turmeric, reishi mushroom, and elderberry, have been traditionally recognized for their ability to strengthen the immune system. 
+These plants contain bioactive compounds that enhance the body's general defenses, support white blood cell function, and promote resilience against common health challenges. 
+Dedicated herb pages provide in-depth information on how each of these herbs can be used to support immunity.
+</p>
+<h3>Antiviral and Antimicrobial Support</h3>
+<p>
+Some medicinal herbs exhibit specific antiviral and antimicrobial properties that can help the body respond to pathogens. 
+Examples include echinacea, garlic, thyme, and elderberry, which have been studied for their effects against bacterial and viral infections. 
+These herbs offer targeted support for immune challenges while complementing overall immune system function. 
+Detailed profiles and evidence for each herb are available on their respective pages.
+</p>
+
+<!-- Section 3: Sleep and Stress-Related Ailments -->
+<h2>Sleep and Stress Disorders</h2>
+<p>
+Sleep and stress disorders encompass conditions that disrupt restful sleep, relaxation, and overall mental balance. 
+Insomnia, difficulty falling asleep, frequent waking, anxiety, and chronic stress can affect energy, mood, and general well-being. 
+Medicinal herbs have long been used to promote calm, support sleep quality, and help the body adapt to stress.
+</p>
+<h3>Sleep Support</h3>
+<p>
+Certain herbs, such as valerian, chamomile, lemon balm, and passionflower, are traditionally recognized for their ability to improve sleep quality and reduce insomnia. 
+These plants contain natural compounds that help relax the nervous system, regulate sleep cycles, and promote a sense of calm. 
+For detailed guidance on each herb and its applications, see the dedicated herb pages linked throughout this section.
+</p>
+<h3>Stress and Anxiety Relief</h3>
+<p>
+Adaptogenic and calming herbs, including ashwagandha, rhodiola, holy basil, and ginseng, help the body respond to physical and mental stressors. 
+These herbs support hormonal balance, modulate cortisol levels, and enhance resilience to anxiety and tension. 
+Individual herb profiles provide more information on traditional use, supporting evidence, and practical applications.
+</p>
+
+<!-- Section 4: Pain and Inflammatory Conditions -->
+<h2>Pain and Inflammation</h2>
+<p>
+Pain and inflammatory conditions include mild to moderate discomfort, swelling, and irritation in muscles, joints, or tissues. 
+These issues can arise from everyday activities, minor injuries, or chronic low-grade inflammation, affecting mobility, comfort, and overall wellness. 
+Medicinal herbs have been traditionally applied to reduce inflammation and relieve pain through natural bioactive compounds.
+</p>
+<h3>Anti-inflammatory Herbs</h3>
+<p>
+Several herbs, such as turmeric, ginger, willow bark, and boswellia, are known for their anti-inflammatory properties. 
+These plants contain compounds that help modulate inflammatory pathways, reduce swelling, and support recovery from minor injuries or chronic inflammation. 
+Individual herb pages provide detailed information on their traditional use, efficacy, and recommended applications.
+</p>
+<h3>Pain-Relieving Herbs</h3>
+<p>
+Pain-relieving herbs, including clove, capsicum, peppermint, and arnica, offer natural analgesic effects for mild discomfort. 
+They may help reduce localized pain, soothe muscle tension, and provide gentle relief without synthetic medications. 
+Dedicated herb profiles offer further insights into their mechanisms, uses, and practical applications.
+</p>
+
+<!-- Section 5: Skin-Related Ailments -->
+<h2>Skin Conditions</h2>
+<p>
+Skin conditions encompass common dermatological issues such as dryness, irritation, minor wounds, rashes, and inflammation. 
+These conditions can affect comfort, appearance, and overall skin health, making supportive care important. 
+Medicinal herbs have been traditionally used both topically and systemically to maintain healthy skin and aid in healing.
+</p>
+<h3>Topical Application Herbs</h3>
+<p>
+Certain herbs, including aloe vera, calendula, comfrey, and tea tree, are applied externally to soothe irritation, promote wound healing, and reduce inflammation. 
+Their natural compounds support skin repair, calm redness, and provide antimicrobial benefits. 
+Detailed profiles of these herbs explain their traditional uses, preparation methods, and applications for various skin concerns.
+</p>
+<h3>Systemic Skin Support</h3>
+<p>
+Other herbs, such as burdock root, chamomile, and gotu kola, are taken internally to support overall skin health. 
+These plants can help balance inflammatory responses, promote detoxification, and nourish the skin from within. 
+Individual herb pages provide guidance on usage, efficacy, and supporting evidence for systemic skin support.
+</p>
+
+<!-- Section 6: Cardiovascular Conditions -->
+<h2>Heart and Circulatory Ailments</h2>
+<p>
+Heart and circulatory ailments include conditions that affect cardiac function, blood flow, and overall vascular health. 
+These issues can manifest as high or low blood pressure, poor circulation, or imbalances in cholesterol levels, potentially impacting energy, endurance, and long-term cardiovascular wellness. 
+Medicinal herbs have traditionally been used to support healthy heart function, maintain vascular tone, and promote balanced circulation.
+</p>
+<h3>Blood Pressure and Circulation</h3>
+<p>
+Certain herbs, such as hawthorn, garlic, and ginkgo, are known to support healthy circulation and maintain optimal blood pressure. 
+These plants can enhance vascular flexibility, improve blood flow, and promote oxygen delivery throughout the body. 
+Individual herb pages provide detailed guidance on traditional applications, observed effects, and evidence supporting cardiovascular support.
+</p>
+<h3>Cholesterol and Heart Function</h3>
+<p>
+Other herbs, including red yeast rice, green tea, and flaxseed, help support healthy cholesterol levels and overall heart function. 
+They contain bioactive compounds that contribute to lipid balance, reduce oxidative stress, and promote long-term cardiovascular health. 
+Dedicated herb profiles offer in-depth information on their uses, mechanisms, and practical applications.
+</p>
+
+
+<!-- Section 7: Hormonal and Endocrine Disorders -->
+<h2>Hormonal Balance Issues</h2>
+<p>
+Hormonal balance issues encompass conditions related to the endocrine system, including menstrual irregularities, reproductive health concerns, menopausal symptoms, low testosterone, and general hormonal dysregulation. 
+These imbalances can affect energy, mood, metabolism, and overall well-being. 
+Medicinal herbs have traditionally been used to support endocrine function, regulate hormones, and promote systemic balance.
+</p>
+<h3>Female Hormonal Support</h3>
+<p>
+Herbs such as vitex (chasteberry), black cohosh, maca, and dong quai have long been applied to support female reproductive and hormonal health. 
+They can assist with menstrual cycle regulation, alleviate menopausal symptoms, and support fertility. 
+Individual herb pages provide detailed insights on traditional use, modern applications, and supporting evidence.
+</p>
+<h3>Male Hormonal Support</h3>
+<p>
+For male hormonal health, herbs like tribulus, ginseng, and saw palmetto are traditionally used to support testosterone levels, fertility, and overall endocrine function. 
+These plants help maintain hormonal balance, support reproductive health, and enhance vitality. 
+Dedicated herb profiles explain their mechanisms, traditional uses, and practical guidance.
+</p>
+
+<!-- Section 8: Cognitive and Neurological Concerns -->
+<h2>Cognitive and Brain Health</h2>
+<p>
+Cognitive and neurological concerns include conditions affecting memory, focus, mental clarity, mood, and overall brain function. 
+These issues can impact learning, productivity, emotional balance, and daily performance. 
+Medicinal herbs have been traditionally used to support cognitive function, protect neural pathways, and promote mental resilience.
+</p>
+<h3>Memory and Concentration Support</h3>
+<p>
+Herbs such as ginkgo, bacopa, rosemary, and gotu kola are known for their ability to enhance memory, attention, and overall cognitive performance. 
+These plants contain bioactive compounds that improve cerebral circulation, support neurotransmitter function, and facilitate mental clarity. 
+Dedicated herb pages provide detailed information on traditional use, modern research, and practical applications for cognitive support.
+</p>
+<h3>Neuroprotective and Mood-Supporting Herbs</h3>
+<p>
+Other herbs, including rhodiola, ashwagandha, sage, and lemon balm, offer neuroprotective effects and help maintain emotional balance. 
+They support the nervous system, reduce stress-related cognitive decline, and promote resilience against mood disturbances. 
+Individual herb profiles provide further insights on mechanisms, applications, and evidence-based benefits.
+</p>
+
+          </main>
+          {sections.footer()}
+        </body>
+        </html>
+    ''').strip()
+    html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
+    with open(html_filepath, 'w') as f: f.write(html)
+
+def herbs_preparations_hub_gen():
+    url_slug = f'preparations'
+    meta_title = ''
+    meta_description = ''
+    canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''
+    head_html = components.html_head(meta_title, meta_description, css='/styles-herb.css', canonical=canonical_html)
+    import textwrap
+    html = textwrap.dedent(f''' 
+        <!DOCTYPE html>
+        <html lang="en">
+        {head_html}
+        <body>
+          {sections.header()}
+          <main class="container-md">
+
+<h1>Herbal Preparations: Methods and Guidelines</h1>
+<p>
+Herbal preparations are the structured methods used to process, extract, and deliver the therapeutic components of <a href="/herbs.html">medicinal herbs</a>. 
+These methods determine how active compounds are released, absorbed, and utilized by the body, which in turn affects the overall efficacy of the herb. 
+Understanding these principles provides the foundation for safe, effective, and targeted use in both traditional and modern contexts.
+For a comprehensive overview of every herbal preparation, see the <a href="/preparations/all.html">complete herbal preparations index</a>.
+</p>
+<p>
+The choice of preparation method impacts potency, bioavailability, and intended effects. 
+Traditional methods, such as teas, decoctions, and tinctures, have been refined over centuries, while modern approaches, including capsules, standardized extracts, and essential oils, emphasize consistency and convenience. 
+Both approaches contribute to the effective use of medicinal herbs and illustrate the evolution of herbal practice.
+</p>
+
+<!-- Section 2: Traditional Methods -->
+<h2>Traditional Methods</h2>
+<p>
+Traditional methods of herbal preparations have been refined over centuries to optimize the extraction and delivery of active compounds from medicinal herbs. 
+These approaches emphasize the relationship between plant parts, preparation technique, and intended therapeutic effect, forming the foundation of classical herbal practice.
+</p>
+<h3>Teas and Infusions</h3>
+<p>
+Teas and infusions involve steeping leaves, flowers, or seeds in hot water to extract water-soluble compounds. 
+They are widely used for gentle, daily support of digestion, relaxation, and general wellness. 
+This method allows for easy consumption and preserves delicate plant constituents.
+</p>
+<h3>Decoctions</h3>
+<p>
+Decoctions are created by boiling tougher plant materials, such as roots, barks, and seeds, in water to release concentrated bioactive compounds. 
+This method is traditionally employed for herbs requiring stronger extraction to achieve therapeutic potency.
+</p>
+<h3>Tinctures</h3>
+<p>
+Tinctures are alcohol-based extracts that preserve and concentrate the active compounds of herbs. 
+They provide a longer shelf life compared with water-based preparations and allow for precise dosing, making them suitable for targeted therapeutic use.
+</p>
+<h3>Salves, Ointments, and Poultices</h3>
+<p>
+Topical preparations, including salves, ointments, and poultices, apply herbal extracts directly to the skin. 
+These methods are used for localized conditions such as inflammation, muscle soreness, or skin irritations, delivering concentrated compounds directly where they are needed.
+</p>
+
+<!-- Section 3: Contemporary Methods -->
+<h2>Contemporary Methods</h2>
+<p>
+Modern herbal preparations have been developed to improve convenience, standardization, and consistent delivery of active compounds from medicinal herbs. 
+These formats are designed to provide reproducible potency, precise dosing, and user-friendly administration while complementing traditional methods.
+</p>
+<h3>Capsules and Tablets</h3>
+<p>
+Capsules and tablets are standardized oral forms that allow for precise dosing and convenient daily use. 
+They are ideal for users seeking consistent potency without the preparation time required for teas or decoctions.
+</p>
+<h3>Powders and Granules</h3>
+<p>
+Powders and granules consist of dried and ground plant material, which can be mixed into liquids, food, or smoothies. 
+This format preserves the integrity of the herb and offers flexible ways to incorporate medicinal herbs into daily routines.
+</p>
+<h3>Essential Oils</h3>
+<p>
+Essential oils are highly concentrated volatile compounds extracted from plant material. 
+They are commonly used in aromatherapy, topical applications, and sometimes in oral use under professional guidance, delivering targeted therapeutic benefits.
+</p>
+<h3>Extracts and Standardized Concentrates</h3>
+<p>
+Extracts and standardized concentrates provide controlled formulations with measured active compounds. 
+These preparations are particularly useful in clinical or research contexts where consistent, reproducible potency is essential for efficacy and safety.
+</p>
+
+<!-- Section 4: Best Practices for Herbal Preparations -->
+<h2>Best Practices for Herbal Preparations</h2>
+<p>
+Effective herbal preparations rely not only on the method but also on consistent practices that preserve potency, quality, and safety. 
+Applying these general principles ensures that medicinal herbs deliver their intended therapeutic benefits across all preparation types, whether traditional or modern.
+</p>
+<h3>Dosage Considerations</h3>
+<p>
+Understanding appropriate dosage is crucial for maximizing the efficacy of herbal preparations. 
+While specific dosing varies by herb and condition, high-level guidance emphasizes moderation, gradual introduction, and attention to individual response. 
+These principles help users achieve therapeutic outcomes safely and consistently.
+</p>
+<h3>Storage and Shelf Life</h3>
+<p>
+Proper storage is essential to maintain the potency and stability of herbal preparations. 
+Factors such as temperature, light, humidity, and container type affect how long preparations retain their active compounds. 
+Following best practices in storage ensures that herbs remain effective and safe for use over time.
+</p>
+<h3>Preparation Tools and Techniques</h3>
+<p>
+Using the right tools and techniques optimizes extraction and quality of herbal preparations. 
+Common considerations include clean and appropriate utensils, precise measurement, and correct handling to preserve active compounds. 
+Adhering to proper methods contributes to consistent, high-quality results across all preparation types.
+</p>
+
+<h2>Choosing the Right Herbal Preparation</h2>
+<p>
+Selecting the appropriate herbal preparation depends on the intended therapeutic outcome and the characteristics of the medicinal herb. 
+Different methods deliver active compounds in varying concentrations, absorption rates, and durations of effect, making the choice of preparation a critical factor in achieving desired benefits.
+</p>
+<h3>Matching Methods to Desired Effects</h3>
+<p>
+Certain preparations are better suited for specific applications. 
+For example, teas and infusions are gentle and ideal for digestive support, while decoctions provide concentrated effects for systemic conditions. 
+Topical salves and ointments deliver compounds directly to affected areas, and tinctures or standardized extracts allow for precise dosing. 
+Understanding these relationships ensures that herbal preparations are used effectively and appropriately.
+</p>
+<h3>Integration with Other Therapies</h3>
+<p>
+Herbal preparations can be combined with multi-herb formulas or complementary treatments to enhance therapeutic outcomes. 
+Selecting methods that harmonize with other interventions, whether traditional remedies or modern approaches, supports holistic wellness. 
+This integration emphasizes the strategic role of preparation choice within the broader context of <a href="/herbs.html">medicinal herbs</a>.
+</p>
+
+          </main>
+          {sections.footer()}
+        </body>
+        </html>
+    ''').strip()
+    html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
+    with open(html_filepath, 'w') as f: f.write(html)
+
+def main():
+    herbs_hub_gen()
+    herbs_ailment_hub_gen()
+    herbs_preparations_hub_gen()
 
 main()
 

@@ -1,0 +1,118 @@
+========================================
+CORE ENTITY
+========================================
+MEDICINAL HERBS
+
+========================================
+CRITICAL SUBTOPICS
+========================================
+1. Preparations (administation)
+2. Ailments (therapeutic applications)
+3. Botany / Taxonomy
+4. Phytochemistry (active compounds)
+5. Contraindication (risk safety)
+6. Mechanism of Action (evidence)
+
+========================================
+RECOMMENDED SUBTOPICS
+========================================
+Comparisons & alternatives
+Cultural / historical context
+Growing / harvesting / sustainability
+Preparation combinations / formulas
+Sensory & practical attributes
+Legal / regulatory attributes
+
+========================================
+ALL
+========================================
+1. Botanical & Taxonomical Attributes
+Scientific name / Latin name
+Common names / regional names
+Plant family
+Plant type (flower, leaf, root, bark, seed)
+Part used medicinally (leaf, root, flower, seed, bark, resin)
+Geographic origin / habitat
+Seasonal availability / harvest time
+
+2. Phytochemistry / Active Compounds
+Alkaloids
+Flavonoids
+Terpenes / essential oils
+Phenolic acids
+Glycosides
+Vitamins / minerals content
+Bioactive compounds and mechanism of action
+
+3. Preparation & Administration (you already have this, but expanded)
+Infusion (tea)
+Decoction
+Tincture / extract
+Powder / capsule / tablet
+Salves / ointments
+Essential oil / aromatherapy
+Dosage forms and strength
+
+4. Therapeutic Applications / Ailments (already partially covered)
+Digestive issues (bloating, nausea)
+Immune system support
+Sleep and anxiety
+Anti-inflammatory / pain relief
+Respiratory issues
+Skin conditions
+Circulatory / cardiovascular support
+Hormonal balance / reproductive health
+Cognitive / neurological support
+
+5. Contraindications / Risks / Safety
+
+Potential side effects
+Toxicity levels
+Drug interactions
+Allergies
+Pregnancy / breastfeeding considerations
+Children / elderly precautions
+
+6. Comparisons & Alternatives
+Herb vs herb (e.g., chamomile vs valerian for sleep)
+Herb vs pharmaceutical drug
+Traditional medicine systems comparison (Ayurvedic, TCM, Western herbal)
+Single herb vs herbal combination formulas
+
+7. Cultural / Historical Context
+Traditional uses (Ayurveda, TCM, European herbalism, Indigenous medicine)
+Historical significance
+Mythology / folklore
+Ritual or ceremonial uses
+
+8. Growing / Harvesting / Sustainability
+Cultivation requirements (soil, sunlight, climate)
+Harvesting best practices (time of year, part used)
+Storage and preservation
+Sustainability / wildcrafting guidelines
+Organic vs conventional
+
+9. Mechanism of Action / Scientific Evidence
+How it works in the body (immune modulation, anti-inflammatory, antioxidant)
+Clinical trials / studies
+Evidence level (anecdotal, observational, RCT)
+Pharmacokinetics (absorption, metabolism)
+
+10. Preparation Combinations / Formulas
+Single herb preparations
+Multi-herb blends / synergistic effects
+Traditional formula names and purposes
+Customizable remedies
+
+11. Sensory & Practical Attributes
+Taste / flavor profile
+Aroma
+Color / appearance
+Shelf life
+Storage conditions
+
+12. Legal / Regulatory Attributes
+Legal status per region (FDA, EMA, etc.)
+Safety regulations
+Approved medicinal claims
+Labeling requirements
