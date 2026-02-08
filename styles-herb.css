@@ -246,7 +246,11 @@ HUB
 }
 
 .hub .nav-global {
-  grid-column: 1;
+  position: sticky;
+  top: 146px;
+}
+
+.hub .nav-page {
   position: sticky;
   top: 146px;
 }

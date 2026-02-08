@@ -20,12 +20,232 @@ def sidebar_hub_gen():
     '''
     return html
 
+def sidebar_page_gen(items): 
+    if not items: return ''
+    ###
+    items_html = f''
+    for item in items:
+        href = item['href']
+        anchor = item['anchor']
+        item_html = f'<li><a href="#{href}">{anchor}</a></li>\n'
+        items_html += item_html
+    html = f'''
+        <aside>
+            <nav class="nav-page">
+                <h2 style="margin-top: 0rem;">Table of Contents</h2>
+                <ul>
+                    {items_html}
+                </ul>
+            <nav>
+        </aside>
+    '''
+    return html
+
 def herbs_hub_gen():
+
+    sections_html_list = []
+
+    sections_html_list.append(f'''
+        <h1>Medicinal Herbs: Comprehensive Guide</h1>
+        <section>
+            <p>
+                Medicinal herbs are plants that have been used for centuries to support human health, promote well-being, and complement traditional and modern healing practices. 
+                They encompass a diverse range of species, each with unique properties, historical uses, and roles in natural medicine systems around the world. 
+                From ancient traditions like Ayurveda and Traditional Chinese Medicine to contemporary herbal research, medicinal herbs continue to be a cornerstone of holistic health knowledge.
+            </p>
+            <p>
+                This guide introduces the essential concepts of medicinal herbs, their classification, botanical attributes, and the scientific frameworks used to study their effects. 
+                By exploring the fundamental principles behind these plants, you can develop a deeper understanding of their role in natural health, laying the foundation for further learning about specific herbs, their applications, and evidence-based practices.
+            </p>
+        </section>
+    ''')
+
+    sections_html_list.append(f'''
+        <section>
+            <h2>What Are Medicinal Herbs?</h2>
+            <p>
+                Medicinal herbs are plants used for their therapeutic properties to support, prevent, or restore human health. 
+                These plants contain bioactive compounds and have documented use in traditional and modern medical systems across different cultures and historical periods.
+            </p>
+            <p>
+                As a botanical entity, a medicinal herb is defined not by culinary use, but by its measurable physiological effects, historical medical application, and recognized role in health-related practices.
+            </p>
+            <h3>How Are Medicinal Herbs Classified Botanically?</h3>
+            <p>
+                Medicinal herbs are classified based on botanical families, plant structures, and the specific parts used for therapeutic purposes. 
+                Commonly used parts include leaves, roots, flowers, seeds, bark, and stems, each associated with distinct chemical constituents.
+            </p>
+            <p>
+                This botanical classification helps organize herbs within natural medicine systems and allows researchers and practitioners to associate specific plant parts with functional health effects.
+            </p>
+            <h3>What Attributes Define a Medicinal Herb?</h3>
+            <p>
+                Each medicinal herb is defined by a set of core attributes that distinguish it from other plants. 
+                These attributes include its scientific (Latin) name, common names, geographic origin, growth conditions, and morphological characteristics.
+            </p>
+            <p>
+                Additional defining attributes such as seasonal availability, cultivation environment, and traditional therapeutic applications help establish the herb as a distinct medicinal entity within botanical and healthcare contexts.
+            </p>
+        </section>
+    ''')
+
+    sections_html_list.append(f'''
+        <section>
+            <h2>How do medicinal herbs work in the human body?</h2>
+            <p>
+                Medicinal herbs work through bioactive chemical compounds that interact with human biological systems at molecular and cellular levels. 
+                These compounds influence enzymes, receptors, and physiological pathways, producing therapeutic effects such as antioxidant, anti-inflammatory, or immune-modulating activity.
+            </p>
+            <h3>What are the active compounds in medicinal herbs?</h3>
+            <p>
+                The primary active compounds in medicinal herbs include alkaloids, flavonoids, terpenes, glycosides, and phenolic acids. 
+                These bioactive substances are responsible for measurable biological effects, such as reducing oxidative stress, modulating inflammation, supporting immune responses, or influencing nervous system signaling.
+            </p>
+            <p>
+                Each compound class has distinct chemical properties that determine how it is absorbed, metabolized, and utilized by the body. 
+                The concentration and combination of these compounds vary by plant species, plant part, and preparation method.
+            </p>
+            <h3>What is the mechanism of action of medicinal herbs?</h3>
+            <p>
+                The mechanism of action of medicinal herbs describes how their active compounds interact with biological targets. 
+                Common mechanisms include enzyme inhibition or activation, receptor binding, antioxidant activity, modulation of gene expression, and effects on cellular signaling pathways.
+            </p>
+            <p>
+                These mechanisms explain how herbal compounds produce consistent physiological outcomes and help researchers classify herbs based on functional effects rather than traditional usage alone.
+            </p>
+        </section>
+    ''')
+
+    sections_html_list.append(f'''
+        <section>
+            <h2>What Are Medicinal Herbs Used For?</h2>
+            <p>
+                Medicinal herbs are used to support human health by influencing physiological systems such as digestion, immunity, sleep regulation, inflammation response, skin function, cardiovascular health, hormonal balance, and cognitive performance. Their uses are based on traditional medicine systems and supported by modern observational research.
+            </p>
+            <p>
+                These applications describe the functional roles of medicinal plants rather than specific preparation methods or dosage guidelines. Understanding herbal uses helps classify plants according to the health outcomes they are commonly associated with.
+            </p>
+            <h3>Common Health Functions Supported by Medicinal Herbs</h3>
+            <p>
+                Medicinal herbs are commonly associated with digestive support, immune system modulation, sleep quality improvement, pain and inflammation management, skin health maintenance, cardiovascular support, hormonal regulation, and cognitive and nervous system support.
+            </p>
+            <p>
+                Each of these health functions represents a therapeutic category in which herbs are traditionally grouped based on observed effects, active compounds, and historical usage patterns.
+            </p>
+            <h3>Medicinal Herbs by Ailments and Conditions</h3>
+            <p>
+                Medicinal herbs are often categorized according to the ailments and conditions they are used to support. This condition-based classification helps users identify herbs relevant to specific health concerns, such as digestive discomfort, immune challenges, sleep disturbances, or inflammatory conditions.
+            </p>
+            <p>
+                Detailed information about individual herbs and their associations with specific <a href="/ailments.html">ailments and conditions</a> is provided on dedicated pages to allow focused and contextual exploration.
+            </p>
+            <h3>Why Different Herbs Are Used for Different Conditions</h3>
+            <p>
+                Different herbs are used for different conditions because each plant contains distinct bioactive compounds that influence specific biological processes. As a result, certain herbs are historically associated with digestive support, while others are linked to calming, anti-inflammatory, or restorative effects.
+            </p>
+        </section>
+    ''')
+
+    sections_html_list.append(f'''
+        <section>
+            <h2>How Are Medicinal Herbs Commonly Used?</h2>
+            <p>
+                Medicinal herbs are commonly used through specific preparation and administration methods that determine how their bioactive compounds are delivered to the body. These methods include traditional liquid extractions and modern standardized formats, each influencing absorption, convenience, and practical use.
+            </p>
+            <h3>Traditional Herbal Preparation Methods</h3>
+            <p>
+                Traditional medicinal systems prepare herbs using techniques designed to extract water- or alcohol-soluble compounds. Common traditional preparations include herbal teas, infusions, decoctions, and tinctures, which differ based on temperature, extraction time, and plant part used.
+            </p>
+            <h3>Modern Forms of Herbal Use</h3>
+            <p>
+                Modern herbal preparations focus on convenience, consistency, and shelf stability. These commonly include capsules, powders, topical ointments, and essential oils, allowing herbs to be consumed or applied in standardized and portable forms.
+            </p>
+            <h3>General Principles of Herbal Administration</h3>
+            <p>
+                Herbal administration depends on factors such as preparation type, intended use, and individual characteristics. General principles emphasize appropriate form selection, responsible use, and reliance on accurate informational sources rather than fixed, universal dosing rules.
+            </p>
+            <p>
+                For detailed explanations of preparation types and administration methods, visit the 
+                <a href="/preparations.html">Preparations hub</a>, which organizes guidance by herb and usage format.
+            </p>
+        </section>
+    ''')
+
+    sections_html_list.append(f'''
+        <section>
+            <h2>What safety considerations are important when using medicinal herbs?</h2>
+            <p>
+                Safety considerations for medicinal herbs include potential side effects, toxicity risks, drug interactions, and population-specific precautions. 
+                Understanding these factors helps ensure herbs are used responsibly, reduces adverse health outcomes, and supports informed evaluation of their therapeutic use.
+            </p>
+            <h3>What side effects and toxicity risks can medicinal herbs cause?</h3>
+            <p>
+                Medicinal herbs may cause side effects ranging from mild digestive upset to severe toxic reactions, depending on the plant species, dosage, preparation method, and individual sensitivity. 
+                Some herbs contain bioactive compounds that can become harmful when misidentified, improperly prepared, or consumed in excessive amounts.
+            </p>
+            <h3>How do medicinal herbs interact with medications?</h3>
+            <p>
+                Medicinal herbs can interact with prescription or over-the-counter drugs by enhancing, reducing, or altering their pharmacological effects. 
+                These interactions may affect drug metabolism, absorption, or efficacy, increasing the risk of side effects or reducing therapeutic effectiveness.
+            </p>
+            <h3>Which populations require extra precautions when using medicinal herbs?</h3>
+            <p>
+                Pregnant individuals, children, older adults, and people with chronic conditions often require additional precautions when using medicinal herbs. 
+                Physiological differences and existing health factors can increase sensitivity to herbal compounds, making professional guidance especially important.
+            </p>
+        </section>
+    ''')
+
+    sections_html_list.append(f'''
+        <section>
+            <!-- Section: Scientific Evidence and Research -->
+            <h2>What does scientific research say about medicinal herbs?</h2>
+            <p>
+                Scientific research on medicinal herbs evaluates their efficacy, safety, and mechanisms of action using clinical trials, observational studies, and laboratory research, helping determine which herbal medicines are supported by evidence and how traditional uses align with modern medical findings.
+            </p>
+            <p>
+                Research on medicinal herbs focuses on the herb as the primary entity, with key attributes including therapeutic effects, active compounds, dosage, safety profile, and clinical relevance. Evidence strength varies depending on study design, population size, and standardization of herbal preparations.
+            </p>
+            <h3>What types of clinical studies are conducted on medicinal herbs?</h3>
+            <p>
+                Clinical studies on medicinal herbs include randomized controlled trials, cohort studies, case reports, and meta-analyses that assess effectiveness, adverse effects, interactions, and biological mechanisms in human and laboratory settings.
+            </p>
+            <p>
+                Randomized controlled trials measure specific outcomes such as symptom reduction or biomarker changes, while observational studies examine real-world usage patterns. Meta-analyses aggregate multiple studies to evaluate overall evidence quality and consistency.
+            </p>
+            <h3>How does traditional herbal evidence differ from modern scientific evidence?</h3>
+            <p>
+                Traditional herbal evidence is based on historical use and empirical observation, whereas modern scientific evidence relies on controlled experimentation, standardized dosing, and reproducible results to confirm efficacy and safety.
+            </p>
+            <p>
+                Systems such as Ayurveda, Traditional Chinese Medicine, and European herbalism document long-term use patterns, while modern research tests these applications through pharmacological analysis, clinical trials, and safety assessments to validate or refine traditional claims.
+            </p>
+        </section>
+    ''')
+
+    items = [
+        {'href': 'intro', 'anchor': 'Introduction'},
+        {'href': 'definition', 'anchor': 'Definition'},
+        {'href': 'mechanisms', 'anchor': 'Mechanisms'},
+        {'href': 'uses', 'anchor': 'Uses'},
+        {'href': 'preparations', 'anchor': 'Preparations'},
+        {'href': 'safety', 'anchor': 'Safety'},
+        {'href': 'research', 'anchor': 'Research'},
+    ]
+
+    sections_html_list_new = []
+    for i, html in enumerate(sections_html_list):
+        html_new = html.replace('<section>', f'''<section id="{items[i]['href']}">''')
+        sections_html_list_new.append(html_new)
+
+
+    content_html = f''.join(sections_html_list_new)
+
     url_slug = f'herbs'
     meta_title = 'Herbs – Complete Guide to Medicinal, Culinary & Healing Herbs'
     meta_description = 'Explore over 100,000 herbs, their benefits, uses, preparations, and related herbalism topics. Find herbs for stress, digestion, immunity, and more.'
     canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/herbs.html">'''
-    import textwrap
+
     head_html = components.html_head(meta_title, meta_description, css='/styles-herb.css', canonical=canonical_html)
     toc_html = f'''
 <!-- Table of Contents -->
@@ -82,181 +302,10 @@ def herbs_hub_gen():
   </ul>
 </nav>
     '''
-    main_html = f'''
-                  <main>
-<section id="intro">
-    <!-- Hero / Introduction Section -->
-    <h1>Medicinal Herbs: Comprehensive Guide</h1>
-    <p>
-    Medicinal herbs are plants that have been used for centuries to support human health, promote well-being, and complement traditional and modern healing practices. 
-    They encompass a diverse range of species, each with unique properties, historical uses, and roles in natural medicine systems around the world. 
-    From ancient traditions like Ayurveda and Traditional Chinese Medicine to contemporary herbal research, medicinal herbs continue to be a cornerstone of holistic health knowledge.
-    </p>
-    <p>
-    This guide introduces the essential concepts of medicinal herbs, their classification, botanical attributes, and the scientific frameworks used to study their effects. 
-    By exploring the fundamental principles behind these plants, you can develop a deeper understanding of their role in natural health, laying the foundation for further learning about specific herbs, their applications, and evidence-based practices.
-    </p>
-</section>
 
-
-<section id="what-are-herbs">
-  <h2>What Are Medicinal Herbs?</h2>
-  <p>
-    Medicinal herbs are plants used for their therapeutic properties to support, prevent, or restore human health. 
-    These plants contain bioactive compounds and have documented use in traditional and modern medical systems across different cultures and historical periods.
-  </p>
-  <p>
-    As a botanical entity, a medicinal herb is defined not by culinary use, but by its measurable physiological effects, historical medical application, and recognized role in health-related practices.
-  </p>
-  <h3>How Are Medicinal Herbs Classified Botanically?</h3>
-  <p>
-    Medicinal herbs are classified based on botanical families, plant structures, and the specific parts used for therapeutic purposes. 
-    Commonly used parts include leaves, roots, flowers, seeds, bark, and stems, each associated with distinct chemical constituents.
-  </p>
-  <p>
-    This botanical classification helps organize herbs within natural medicine systems and allows researchers and practitioners to associate specific plant parts with functional health effects.
-  </p>
-  <h3>What Attributes Define a Medicinal Herb?</h3>
-  <p>
-    Each medicinal herb is defined by a set of core attributes that distinguish it from other plants. 
-    These attributes include its scientific (Latin) name, common names, geographic origin, growth conditions, and morphological characteristics.
-  </p>
-  <p>
-    Additional defining attributes such as seasonal availability, cultivation environment, and traditional therapeutic applications help establish the herb as a distinct medicinal entity within botanical and healthcare contexts.
-  </p>
-</section>
-
-<section id="mechanisms">
-  <!-- Section: How Medicinal Herbs Work -->
-  <h2>How do medicinal herbs work in the human body?</h2>
-  <p>
-    Medicinal herbs work through bioactive chemical compounds that interact with human biological systems at molecular and cellular levels. 
-    These compounds influence enzymes, receptors, and physiological pathways, producing therapeutic effects such as antioxidant, anti-inflammatory, or immune-modulating activity.
-  </p>
-  <h3>What are the active compounds in medicinal herbs?</h3>
-  <p>
-    The primary active compounds in medicinal herbs include alkaloids, flavonoids, terpenes, glycosides, and phenolic acids. 
-    These bioactive substances are responsible for measurable biological effects, such as reducing oxidative stress, modulating inflammation, supporting immune responses, or influencing nervous system signaling.
-  </p>
-  <p>
-    Each compound class has distinct chemical properties that determine how it is absorbed, metabolized, and utilized by the body. 
-    The concentration and combination of these compounds vary by plant species, plant part, and preparation method.
-  </p>
-  <h3>What is the mechanism of action of medicinal herbs?</h3>
-  <p>
-    The mechanism of action of medicinal herbs describes how their active compounds interact with biological targets. 
-    Common mechanisms include enzyme inhibition or activation, receptor binding, antioxidant activity, modulation of gene expression, and effects on cellular signaling pathways.
-  </p>
-  <p>
-    These mechanisms explain how herbal compounds produce consistent physiological outcomes and help researchers classify herbs based on functional effects rather than traditional usage alone.
-  </p>
-</section>
-
-<section id="uses">
-  <h2>What Are Medicinal Herbs Used For?</h2>
-  <p>
-    Medicinal herbs are used to support human health by influencing physiological systems such as digestion, immunity, sleep regulation, inflammation response, skin function, cardiovascular health, hormonal balance, and cognitive performance. Their uses are based on traditional medicine systems and supported by modern observational research.
-  </p>
-  <p>
-    These applications describe the functional roles of medicinal plants rather than specific preparation methods or dosage guidelines. Understanding herbal uses helps classify plants according to the health outcomes they are commonly associated with.
-  </p>
-  <h3>Common Health Functions Supported by Medicinal Herbs</h3>
-  <p>
-    Medicinal herbs are commonly associated with digestive support, immune system modulation, sleep quality improvement, pain and inflammation management, skin health maintenance, cardiovascular support, hormonal regulation, and cognitive and nervous system support.
-  </p>
-  <p>
-    Each of these health functions represents a therapeutic category in which herbs are traditionally grouped based on observed effects, active compounds, and historical usage patterns.
-  </p>
-  <h3>Medicinal Herbs by Ailments and Conditions</h3>
-  <p>
-    Medicinal herbs are often categorized according to the ailments and conditions they are used to support. This condition-based classification helps users identify herbs relevant to specific health concerns, such as digestive discomfort, immune challenges, sleep disturbances, or inflammatory conditions.
-  </p>
-  <p>
-    Detailed information about individual herbs and their associations with specific <a href="/ailments.html">ailments and conditions</a> is provided on dedicated pages to allow focused and contextual exploration.
-  </p>
-  <h3>Why Different Herbs Are Used for Different Conditions</h3>
-  <p>
-    Different herbs are used for different conditions because each plant contains distinct bioactive compounds that influence specific biological processes. As a result, certain herbs are historically associated with digestive support, while others are linked to calming, anti-inflammatory, or restorative effects.
-  </p>
-</section>
-
-<section id="preparations">
-  <!-- Section: Preparations and Administration -->
-  <h2>How Are Medicinal Herbs Commonly Used?</h2>
-  <p>
-    Medicinal herbs are commonly used through specific preparation and administration methods that determine how their bioactive compounds are delivered to the body. These methods include traditional liquid extractions and modern standardized formats, each influencing absorption, convenience, and practical use.
-  </p>
-  <h3>Traditional Herbal Preparation Methods</h3>
-  <p>
-    Traditional medicinal systems prepare herbs using techniques designed to extract water- or alcohol-soluble compounds. Common traditional preparations include herbal teas, infusions, decoctions, and tinctures, which differ based on temperature, extraction time, and plant part used.
-  </p>
-  <h3>Modern Forms of Herbal Use</h3>
-  <p>
-    Modern herbal preparations focus on convenience, consistency, and shelf stability. These commonly include capsules, powders, topical ointments, and essential oils, allowing herbs to be consumed or applied in standardized and portable forms.
-  </p>
-  <h3>General Principles of Herbal Administration</h3>
-  <p>
-    Herbal administration depends on factors such as preparation type, intended use, and individual characteristics. General principles emphasize appropriate form selection, responsible use, and reliance on accurate informational sources rather than fixed, universal dosing rules.
-  </p>
-  <p>
-    For detailed explanations of preparation types and administration methods, visit the 
-    <a href="/preparations.html">Preparations hub</a>, which organizes guidance by herb and usage format.
-  </p>
-</section>
-
-<section id="safety">
-  <h2>What safety considerations are important when using medicinal herbs?</h2>
-  <p>
-    Safety considerations for medicinal herbs include potential side effects, toxicity risks, drug interactions, and population-specific precautions. 
-    Understanding these factors helps ensure herbs are used responsibly, reduces adverse health outcomes, and supports informed evaluation of their therapeutic use.
-  </p>
-  <h3>What side effects and toxicity risks can medicinal herbs cause?</h3>
-  <p>
-    Medicinal herbs may cause side effects ranging from mild digestive upset to severe toxic reactions, depending on the plant species, dosage, preparation method, and individual sensitivity. 
-    Some herbs contain bioactive compounds that can become harmful when misidentified, improperly prepared, or consumed in excessive amounts.
-  </p>
-  <h3>How do medicinal herbs interact with medications?</h3>
-  <p>
-    Medicinal herbs can interact with prescription or over-the-counter drugs by enhancing, reducing, or altering their pharmacological effects. 
-    These interactions may affect drug metabolism, absorption, or efficacy, increasing the risk of side effects or reducing therapeutic effectiveness.
-  </p>
-  <h3>Which populations require extra precautions when using medicinal herbs?</h3>
-  <p>
-    Pregnant individuals, children, older adults, and people with chronic conditions often require additional precautions when using medicinal herbs. 
-    Physiological differences and existing health factors can increase sensitivity to herbal compounds, making professional guidance especially important.
-  </p>
-</section>
-
-<section id="research">
-  <!-- Section: Scientific Evidence and Research -->
-  <h2>What does scientific research say about medicinal herbs?</h2>
-  <p>
-    Scientific research on medicinal herbs evaluates their efficacy, safety, and mechanisms of action using clinical trials, observational studies, and laboratory research, helping determine which herbal medicines are supported by evidence and how traditional uses align with modern medical findings.
-  </p>
-  <p>
-    Research on medicinal herbs focuses on the herb as the primary entity, with key attributes including therapeutic effects, active compounds, dosage, safety profile, and clinical relevance. Evidence strength varies depending on study design, population size, and standardization of herbal preparations.
-  </p>
-  <h3>What types of clinical studies are conducted on medicinal herbs?</h3>
-  <p>
-    Clinical studies on medicinal herbs include randomized controlled trials, cohort studies, case reports, and meta-analyses that assess effectiveness, adverse effects, interactions, and biological mechanisms in human and laboratory settings.
-  </p>
-  <p>
-    Randomized controlled trials measure specific outcomes such as symptom reduction or biomarker changes, while observational studies examine real-world usage patterns. Meta-analyses aggregate multiple studies to evaluate overall evidence quality and consistency.
-  </p>
-  <h3>How does traditional herbal evidence differ from modern scientific evidence?</h3>
-  <p>
-    Traditional herbal evidence is based on historical use and empirical observation, whereas modern scientific evidence relies on controlled experimentation, standardized dosing, and reproducible results to confirm efficacy and safety.
-  </p>
-  <p>
-    Systems such as Ayurveda, Traditional Chinese Medicine, and European herbalism document long-term use patterns, while modern research tests these applications through pharmacological analysis, clinical trials, and safety assessments to validate or refine traditional claims.
-  </p>
-</section>
-
-          </main>
-    '''
-
+    import textwrap
     sidebar_hub_html = sidebar_hub_gen()
-    sidebar_page_html = '<div></div>'
+    sidebar_page_html = sidebar_page_gen(items) 
     html = textwrap.dedent(f''' 
         <!DOCTYPE html>
         <html lang="en">
@@ -265,8 +314,11 @@ def herbs_hub_gen():
             {sections.header_default()}
             <div class="hub">
                 {sidebar_hub_html}
-
-                {main_html}
+                <main>
+                    <article>
+                        {content_html}
+                    </article>
+                </main>
                 {sidebar_page_html}
             </div>
             {sections.footer()}
