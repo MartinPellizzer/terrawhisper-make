@@ -42,8 +42,6 @@ body {
 }
 
 main {
-    padding-top: 6.4rem;
-    padding-bottom: 6.4rem;
 }
 
 section {
@@ -243,15 +241,20 @@ HUB
     display: grid;
     grid-template-columns: 240px minmax(0, 1fr) 200px;
     gap: 4rem;
+    padding-top: var(--space-xl);
+    padding-bottom: var(--space-xl);
 }
 
 .hub .nav-global {
   position: sticky;
-  top: 146px;
+  top: calc(82px + var(--space-xl));
 }
 
 .hub .nav-page {
   position: sticky;
-  top: 146px;
+  top: calc(82px + var(--space-xl));
 }
 
+.hub section {
+  scroll-margin-top: calc(82px + var(--space-xl));
+}
