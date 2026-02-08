@@ -1,3 +1,32 @@
+def header_default():
+    html = f'''
+        <header>
+            <!-- Logo -->
+            <div class="logo">
+                <a href="/index.html" style="color: #333; text-decoration: none;">
+                    Terra Whisper
+                </a>
+            </div>
+            <!-- Hidden checkbox for mobile toggle -->
+            <input type="checkbox" id="nav-toggle" />
+            <!-- Navigation -->
+            <nav class="main-nav" aria-label="Main Navigation">
+                <ul class="nav-links">
+                <li><a href="/herbs.html">Herbs</a></li>
+                <li><a href="/preparations.html">Preparations</a></li>
+                <li><a href="/ailments.html">Ailments</a></li>
+                </ul>
+            </nav>
+            <!-- Hamburger button -->
+            <label for="nav-toggle" class="hamburger" aria-label="Toggle navigation menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </label>
+        </header>
+    '''
+    return html
+
 def header():
     html = f'''
         <header>

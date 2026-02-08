@@ -21,12 +21,12 @@ def gen():
     html_hero = f'''
         <section class="home-hero" style="padding-top: 9.6rem; padding-bottom: 9.6rem;">
             <div class="container-xl">
-                <div style="display: flex; gap: 4.8rem;">
+                <div class="m-flex" style="gap: 4.8rem;">
                     <div style="flex: 3;">
                         {html_atf_h1}
                         {html_atf_tagline}
                         {html_atf_desc}
-                        <div style="display: flex; gap: 1.6rem;">
+                        <div class="m-flex" style="gap: 1.6rem;">
                             <div style="margin-top: 1.6rem;">
                                 <a class="button-default" href="/herbs.html">Start Learning Herbalism</a>
                             </div>
@@ -51,7 +51,7 @@ def gen():
                     Herbalism is the traditional and modern practice of working with <strong>medicinal plants</strong> to create remedies, teas, tinctures, and salves that support everyday health. 
                     It combines plant knowledge, hands-on preparation skills, and an understanding of how herbs have been used historically for digestion, sleep, stress, skin, and immunity.
                 </p>
-                <div style="display: flex; gap: 4.8rem; margin-top: 4.8rem;">
+                <div class="m-flex" style="gap: 4.8rem; margin-top: 4.8rem;">
                     <div style="flex: 1;">
                         <img style="margin-bottom: 1.6rem;" src="/images/home/herbs-medicinal-educational.jpg" alt="Herbs with medicinal properties for educational use in herbalism">
                         <h3>Medicinal Herbs</h3>
@@ -79,7 +79,7 @@ def gen():
         <section style="padding-bottom: 9.6rem;">
             <div class="container-xl">
                 <h2>Medicinal Herbs and Their Uses</h2>
-                <div style="display: flex; justify-content: space-between;">
+                <div class="m-flex" style="justify-content: space-between;">
                     <p style="max-width: 720px;">
                         <strong>Medicinal herbs</strong> are plants that contain natural compounds traditionally used to support health and well-being. 
                         Their properties depend on the plant species, the part used, and the way the herb is prepared.
@@ -88,7 +88,7 @@ def gen():
                         <a class="button-default" href="/herbs.html">View All Herbs</a>
                     </div>
                 </div>
-                <div style="display: flex; gap: 4.8rem; margin-top: 4.8rem;">
+                <div class="m-flex" style="gap: 4.8rem; margin-top: 4.8rem;">
                     <div style="flex: 1;">
                         <h3>What Makes a Plant Medicinal?</h3>
                         <p>
@@ -130,7 +130,7 @@ def gen():
         <section style="padding-bottom: 9.6rem;">
             <div class="container-xl">
                 <h2 style="max-width: 720px;">Herbal Remedies and Preparation Methods</h2>
-                <div style="display: flex; justify-content: space-between;">
+                <div class="m-flex" style="justify-content: space-between;">
                     <p style="max-width: 720px;">
                         <strong>Herbal remedies</strong> are made by preparing medicinal herbs in specific ways to make their beneficial compounds available for use. 
                         Common preparation methods include teas, tinctures, salves, oils, and syrups, each suited to different herbs and purposes.
@@ -139,7 +139,7 @@ def gen():
                         <a class="button-default" href="/herbs.html">Learn All Preparations</a>
                     </div>
                 </div>
-                <div style="display: flex; gap: 4.8rem; margin-top: 4.8rem;">
+                <div class="m-flex" style="gap: 4.8rem; margin-top: 4.8rem;">
                     <div style="flex: 1;">
 <h3>Types of Herbal Preparation Methods</h3>
 <p>
@@ -272,16 +272,13 @@ These methods require minimal equipment and allow new herbalists to learn safely
     html = f'''
         <!DOCTYPE html>
         <html lang="en">
-        {components.html_head(meta_title, meta_description)}
+        {components.html_head(meta_title, meta_description, css='/style.css')}
         <body class="home">
-            {sections.header()}
+            {sections.header_default()}
             {html_hero}
             {html_section_1}
             {html_section_2}
             {html_section_3}
-            {intro_html}
-            {section_2_html}
-            {section_3_html}
             {sections.footer()}
         </body>
         </html>

@@ -2,6 +2,24 @@ from lib import g
 from lib import components
 from lib import sections
 
+def sidebar_hub_gen(): 
+    html = f'''
+        <div>
+        <nav class="nav-global">
+            <h2 style="margin-top: 0rem;">Main Hub</h2>
+            <ul>
+                <li><a href="/herbs.html">Medicinal Herbs</a>
+                    <ul>
+                        <li><a href="/preparations.html">Preparations</a></li>
+                        <li><a href="/ailments.html">Ailments</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        </div>
+    '''
+    return html
+
 def herbs_hub_gen():
     url_slug = f'herbs'
     meta_title = 'Herbs – Complete Guide to Medicinal, Culinary & Healing Herbs'
@@ -64,14 +82,8 @@ def herbs_hub_gen():
   </ul>
 </nav>
     '''
-
-    html = textwrap.dedent(f''' 
-        <!DOCTYPE html>
-        <html lang="en">
-        {head_html}
-        <body>
-          {sections.header()}
-          <main class="container-md">
+    main_html = f'''
+                  <main>
 <section id="intro">
     <!-- Hero / Introduction Section -->
     <h1>Medicinal Herbs: Comprehensive Guide</h1>
@@ -241,7 +253,23 @@ def herbs_hub_gen():
 </section>
 
           </main>
-          {sections.footer()}
+    '''
+
+    sidebar_hub_html = sidebar_hub_gen()
+    sidebar_page_html = '<div></div>'
+    html = textwrap.dedent(f''' 
+        <!DOCTYPE html>
+        <html lang="en">
+        {head_html}
+        <body>
+            {sections.header_default()}
+            <div class="hub">
+                {sidebar_hub_html}
+
+                {main_html}
+                {sidebar_page_html}
+            </div>
+            {sections.footer()}
         </body>
         </html>
     ''').strip()
@@ -254,15 +282,9 @@ def herbs_ailment_hub_gen():
     meta_description = ''
     canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''
     head_html = components.html_head(meta_title, meta_description, css='/styles-herb.css', canonical=canonical_html)
-    import textwrap
-    html = textwrap.dedent(f''' 
-        <!DOCTYPE html>
-        <html lang="en">
-        {head_html}
-        <body>
-          {sections.header()}
-          <main class="container-md">
-
+    main_html = f'''
+<main>
+<article>
 <!-- Introduction to Common Ailments -->
 <h1>Common Ailments and Medicinal Herb Support</h1>
 <p>
@@ -437,9 +459,25 @@ Other herbs, including rhodiola, ashwagandha, sage, and lemon balm, offer neurop
 They support the nervous system, reduce stress-related cognitive decline, and promote resilience against mood disturbances. 
 Individual herb profiles provide further insights on mechanisms, applications, and evidence-based benefits.
 </p>
+</article>
+</main>
+    '''
 
-          </main>
-          {sections.footer()}
+    sidebar_hub_html = sidebar_hub_gen()
+    sidebar_page_html = '<div></div>'
+    import textwrap
+    html = textwrap.dedent(f''' 
+        <!DOCTYPE html>
+        <html lang="en">
+        {head_html}
+        <body>
+            {sections.header_default()}
+            <div class="hub">
+                {sidebar_hub_html}
+                {main_html}
+                {sidebar_page_html}
+            </div>
+            {sections.footer()}
         </body>
         </html>
     ''').strip()
@@ -453,14 +491,9 @@ def herbs_preparations_hub_gen():
     canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''
     head_html = components.html_head(meta_title, meta_description, css='/styles-herb.css', canonical=canonical_html)
     import textwrap
-    html = textwrap.dedent(f''' 
-        <!DOCTYPE html>
-        <html lang="en">
-        {head_html}
-        <body>
-          {sections.header()}
-          <main class="container-md">
-
+    main_html = f'''
+        <main>
+            <article>
 <h1>Herbal Preparations: Methods and Guidelines</h1>
 <p>
 Herbal preparations are the structured methods used to process, extract, and deliver the therapeutic components of <a href="/herbs.html">medicinal herbs</a>. 
@@ -572,9 +605,25 @@ Herbal preparations can be combined with multi-herb formulas or complementary tr
 Selecting methods that harmonize with other interventions, whether traditional remedies or modern approaches, supports holistic wellness. 
 This integration emphasizes the strategic role of preparation choice within the broader context of <a href="/herbs.html">medicinal herbs</a>.
 </p>
+            </article>
+        </main>
+    '''
 
-          </main>
-          {sections.footer()}
+    sidebar_hub_html = sidebar_hub_gen()
+    sidebar_page_html = '<div></div>'
+    import textwrap
+    html = textwrap.dedent(f''' 
+        <!DOCTYPE html>
+        <html lang="en">
+        {head_html}
+        <body>
+            {sections.header_default()}
+            <div class="hub">
+                {sidebar_hub_html}
+                {main_html}
+                {sidebar_page_html}
+            </div>
+            {sections.footer()}
         </body>
         </html>
     ''').strip()
