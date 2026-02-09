@@ -1,0 +1,29 @@
+do you know what the koray semantic topical authority methodology is?
+
+---
+
+my core entity is "medicinal herbs". give me a complete and exhaustive list of subtopics (attribute vectors based on the EAV) i have to write about in this topic hub based on STA.
+
+---
+
+great, now rewrite the headings of the titles in one word each, the one that is the most semantically correct as umbrella term for the cluster of attributes.
+
+---
+
+Convert the umbrella heading in form of questions that are optimized for koray STA. Use as few words as possible while still preserving the semantic meaning.
+
+---
+
+Assign answer length + entity density targets
+
+---
+
+Write perfect first-answer blocks for all 13
+
+---
+
+Rewrite these to exact featured-snippet length tuning
+
+---
+
+Or calculate how many total pages you need to dominate the topic

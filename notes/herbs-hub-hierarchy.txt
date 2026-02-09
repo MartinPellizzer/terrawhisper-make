@@ -1,0 +1,317 @@
+
+Perfect — this is exactly the *right* next question in Koray’s framework 👌
+I’ll be decisive here, not “it depends”.
+
+Below is a **clear page vs section separation**, based on **entity weight, intent isolation, crawl demand, and semantic independence**.
+
+Think in terms of **explainability thresholds**:
+
+* **Sections** = attributes that *define* the entity
+* **Pages** = attributes that *expand* into their own entity clusters
+
+---
+
+# Topic Hub Structure
+
+**Core Page:** `/medicinal-herbs/`
+(Entity definition + attribute overview)
+
+---
+
+## MUST BE **SECTIONS** on the Core Hub Page
+
+These are **foundational attributes**.
+They explain *what medicinal herbs are* but don’t need to rank independently.
+
+### 1. Definition & Identity
+
+* What are medicinal herbs?
+* Medicinal vs culinary herbs
+* Medicinal herbs vs drugs
+* Medicinal herbs vs supplements
+
+Reason:
+
+> These are **entity-identifying attributes**, not destinations.
+
+---
+
+### 2. Origin & Source Overview
+
+* Botanical origin
+* Plant parts used
+* Wild vs cultivated (brief)
+* Geographic origin (high-level)
+
+Reason:
+
+> Source attributes support understanding but don’t require deep isolation *at hub level*.
+
+---
+
+### 3. Classification Overview
+
+* Botanical classification (summary)
+* Therapeutic classification (summary)
+* Traditional system classification (summary)
+
+Reason:
+
+> Classification is necessary **context**, but each classification system becomes pages.
+
+---
+
+### 4. Active Compounds (High-Level)
+
+* What “active compounds” are
+* Why they matter
+* Examples (alkaloids, flavonoids, etc.)
+
+Reason:
+
+> The hub explains *that* they exist — not full chemistry.
+
+---
+
+### 5. Mechanism of Action (Conceptual)
+
+* How herbs interact with the body (overview)
+* Difference vs pharmaceuticals
+
+Reason:
+
+> Mechanism is **explanatory**, not exhaustive here.
+
+---
+
+### 6. Preparation Forms (Overview)
+
+* Teas, tinctures, extracts, etc. (list + short explanations)
+
+Reason:
+
+> This primes users for deeper pages without intent mixing.
+
+---
+
+### 7. General Safety Overview
+
+* “Natural ≠ safe”
+* Importance of dosage
+* High-level risk awareness
+
+Reason:
+
+> Trust signal + dependency setup for safety pages.
+
+---
+
+### 8. Cultural & Historical Context (Brief)
+
+* Historical use
+* Role in traditional medicine
+
+Reason:
+
+> Contextual, not navigational.
+
+---
+
+### 9. Limitations & Misconceptions
+
+* What herbs can’t do
+* Common myths
+
+Reason:
+
+> Boundary-setting belongs on the hub.
+
+---
+
+## MUST BE **SEPARATE PAGES** (Child Hubs / Pillars)
+
+These are **semantically heavy**, intent-rich, and expandable into clusters.
+
+---
+
+## 1. Classification Pages (High Priority)
+
+Each becomes a **taxonomy hub**.
+
+* Medicinal herbs by therapeutic function
+* Medicinal herbs by body system
+* Medicinal herbs by plant family
+* Medicinal herbs in Ayurveda
+* Medicinal herbs in Traditional Chinese Medicine
+* Medicinal herbs in Western herbalism
+
+Why pages:
+
+> Each classification creates **dozens of child entities** (individual herbs).
+
+---
+
+## 2. Preparation & Forms Pages
+
+* Herbal teas and infusions
+* Decoctions
+* Tinctures
+* Extracts
+* Powders
+* Capsules
+* Topical herbal preparations
+* Essential oils vs whole-herb preparations
+
+Why pages:
+
+> Preparation = **procedural + experiential intent**.
+
+---
+
+## 3. Dosage & Administration Page
+
+* Dosage principles
+* Frequency
+* Duration
+* Individualized dosing
+
+Why page:
+
+> High-risk topic + strong informational intent → isolation required.
+
+---
+
+## 4. Therapeutic Uses Page
+
+* Conditions treated with medicinal herbs
+* Preventive vs supportive use
+* Evidence-based applications
+
+Why page:
+
+> This is a **gateway hub** to condition-level clusters.
+
+---
+
+## 5. Safety, Side Effects & Interactions Page
+
+* Side effects
+* Toxic herbs
+* Contraindications
+* Drug interactions
+* Pregnancy & children
+
+Why page:
+
+> Safety deserves **maximum clarity and crawl priority**.
+
+---
+
+## 6. Quality, Purity & Standards Page
+
+* Quality indicators
+* Adulteration
+* Contaminants
+* Testing & certifications
+* Storage & shelf life
+
+Why page:
+
+> Commercial + trust intent lives here.
+
+---
+
+## 7. Evidence & Research Page
+
+* Scientific studies
+* Clinical trials
+* Traditional vs modern evidence
+* Research limitations
+
+Why page:
+
+> Supports **algorithmic trust + human skepticism**.
+
+---
+
+## 8. Legal & Regulatory Page
+
+* Legal status by region
+* FDA / EU regulations
+* Labeling rules
+
+Why page:
+
+> Jurisdictional complexity = standalone entity.
+
+---
+
+## 9. Comparison Pages
+
+(These can be one page or split later)
+
+* Medicinal herbs vs supplements
+* Medicinal herbs vs pharmaceuticals
+* Whole herbs vs isolated compounds
+
+Why pages:
+
+> Comparative intent is **distinct** and shouldn’t dilute the hub.
+
+---
+
+## 10. Future & Research Trends Page
+
+* Innovation
+* Integration with healthcare
+* Sustainability challenges
+
+Why page:
+
+> Forward-looking informational intent + topical freshness.
+
+---
+
+## Visual Summary (Hierarchy)
+
+```
+/medicinal-herbs/
+│
+├── classification/
+│   ├── by-body-system/
+│   ├── by-therapeutic-action/
+│   ├── ayurveda/
+│   ├── tcm/
+│   └── western-herbalism/
+│
+├── preparation-methods/
+│   ├── teas-infusions/
+│   ├── tinctures/
+│   ├── decoctions/
+│   └── topical/
+│
+├── dosage-administration/
+├── therapeutic-uses/
+├── safety-side-effects/
+├── quality-standards/
+├── evidence-research/
+├── legal-regulation/
+├── comparisons/
+└── future-of-medicinal-herbs/
+```
+
+---
+
+## Koray-style rule of thumb (use this forever)
+
+> **If a subtopic can spawn 5+ child entities or satisfy a distinct intent, it must be a page.**
+> **If it explains the core entity itself, it stays a section.**
+
+If you want next, I can:
+
+* Define **internal linking rules** (anchor logic)
+* Help you **write the hub outline**
+* Decide **publishing order**
+* Or design **individual herb page templates**
+
+You’re building this the *right* way 🌿

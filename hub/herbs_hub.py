@@ -303,6 +303,213 @@ def herbs_hub_gen():
 </nav>
     '''
 
+    attribute_cluster_html = f'''
+        Medicinal Herbs</h1>
+
+        Entity Definition & Identity
+        Origin & Source Attributes
+        Classification Attributes
+        Active Components & Chemical Attributes
+        Mechanism of Action
+        Preparation & Form Attributes
+        Dosage & Administration Attributes
+        Therapeutic Uses & Indications
+        Safety & Risk Attributes
+        Quality, Purity & Evaluation Attributes
+        Evidence & Validation Attributes
+        Legal & Regulatory Attributes
+        Cultural & Historical Attributes
+        Comparison & Relationship Attributes
+        Limitations & Misconceptions
+        Future & Research Attributes
+    '''
+
+    '''
+        Definition (concept, meaning, differentiation, scope)
+        Botany (taxonomy, plant parts, species, cultivation types)
+        Phytochemistry (active compounds, chemical classes, bioavailability)
+        Therapeutics (health uses, conditions, systems, outcomes)
+        Traditions (TCM, Ayurveda, Western, indigenous systems, energetics)
+        Preparation (forms, methods, administration routes)
+        Safety (dosage, toxicity, interactions, contraindications)
+        Evidence (research, studies, mechanisms, validation)
+        Regulation (legal status, standards, compliance, quality control)
+        Cultivation (growing, harvesting, storage, sustainability)
+        Selection (comparisons, choice criteria, formats, quality)
+        History (cultural, historical, social context)
+        Commerce (market, supply chains, sourcing, economics)
+    '''
+
+    '''
+        What are medicinal herbs? (Definition)
+        How are medicinal herbs classified botanically? (Botany)
+        What compounds do medicinal herbs contain? (Phytochemistry)
+        What are medicinal herbs used for? (Therapeutics)
+        Which traditions use medicinal herbs? (Traditions)
+        How are medicinal herbs prepared? (Preparation)
+        Are medicinal herbs safe to use? (Safety)
+        What evidence supports medicinal herbs? (Evidence)
+        How are medicinal herbs regulated? (Regulation)
+        How are medicinal herbs grown and harvested? (Cultivation)
+        How do you choose medicinal herbs? (Selection)
+        How have medicinal herbs been used historically? (History)
+        How are medicinal herbs produced and sold? (Commerce)
+    '''
+
+    article_html = f'''
+<h1>Medicinal Herbs</h1>
+
+<section>
+  <h2>What are medicinal herbs?</h2>
+  <p>Medicinal herbs are plants used to support human health through bioactive compounds that produce therapeutic effects. They are applied in traditional medicine and modern herbalism to prevent disease, manage symptoms, and support physiological functions.</p>
+</section>
+
+<section>
+  <h2>How are medicinal herbs classified botanically?</h2>
+  <p>Medicinal herbs are classified botanically by plant family, genus, species, and the plant parts used, including leaves, roots, flowers, seeds, and bark. Botanical classification also distinguishes annual, biennial, and perennial medicinal herbs.</p>
+</section>
+
+<section>
+  <h2>What compounds do medicinal herbs contain?</h2>
+  <p>Medicinal herbs contain bioactive compounds such as alkaloids, flavonoids, terpenes, glycosides, saponins, tannins, and essential oils. These phytochemicals determine the biological activity, potency, and therapeutic properties of medicinal herbs.</p>
+</section>
+
+<section>
+  <h2>What are medicinal herbs used for?</h2>
+  <p>Medicinal herbs are used to support health conditions related to inflammation, digestion, immunity, stress, sleep, pain, and metabolic balance. Their therapeutic uses depend on active compounds, preparation method, dosage, and traditional or clinical application.</p>
+</section>
+
+<section>
+  <h2>Which traditions use medicinal herbs?</h2>
+  <p>Medicinal herbs are used in traditions such as Ayurveda, Traditional Chinese Medicine, Western herbalism, Indigenous medicine, and Unani medicine. Each system applies medicinal herbs according to unique diagnostic models, energetics, and therapeutic principles.</p>
+</section>
+
+<section>
+  <h2>How are medicinal herbs prepared?</h2>
+  <p>Medicinal herbs are prepared as infusions, decoctions, tinctures, extracts, powders, capsules, salves, and syrups. Preparation methods influence compound concentration, bioavailability, absorption, and the overall effectiveness of medicinal herbs.</p>
+</section>
+
+<section>
+  <h2>Are medicinal herbs safe to use?</h2>
+  <p>Medicinal herbs can be safe when used with proper dosage, preparation, and medical context. Safety depends on toxicity, side effects, herb-drug interactions, pregnancy status, chronic conditions, and guidance from qualified healthcare professionals.</p>
+</section>
+
+<section>
+  <h2>What evidence supports medicinal herbs?</h2>
+  <p>Evidence supporting medicinal herbs includes clinical trials, in vitro studies, in vivo research, and identified mechanisms of action. The reliability of evidence varies by herb, formulation, dosage, study design, and consistency of research findings.</p>
+</section>
+
+<section>
+  <h2>How are medicinal herbs regulated?</h2>
+  <p>Medicinal herbs are regulated differently across regions and are commonly classified as dietary supplements or herbal medicines. Oversight may involve authorities such as the FDA, EMA, and WHO, with varying requirements for quality, safety, and labeling.</p>
+</section>
+
+<section>
+  <h2>How are medicinal herbs grown and harvested?</h2>
+  <p>Medicinal herbs are grown through cultivation or wildcrafting and harvested at specific growth stages to maximize potency. Drying, storage, sustainability practices, and post-harvest handling directly affect herbal quality and shelf life.</p>
+</section>
+
+<section>
+  <h2>How do you choose medicinal herbs?</h2>
+  <p>Medicinal herbs are chosen based on quality, authenticity, preparation form, standardized extracts, certifications, and intended health goals. Careful selection improves safety, consistency, and the likelihood of achieving desired therapeutic outcomes.</p>
+</section>
+
+<section>
+  <h2>How have medicinal herbs been used historically?</h2>
+  <p>Medicinal herbs have been used throughout history in ancient civilizations, folk medicine, and early medical systems. Historical use informed the development of herbal pharmacology, therapeutic traditions, and modern approaches to herbal medicine.</p>
+</section>
+
+<section>
+  <h2>How are medicinal herbs produced and sold?</h2>
+  <p>Medicinal herbs are produced through cultivation, harvesting, processing, and quality control before being sold in local and global markets. Production and distribution involve supply chains, ethical sourcing, regulatory compliance, and quality standards.</p>
+</section>
+    '''
+
+    article_html_old = f'''
+        <h1>Medicinal Herbs</h1>
+        <p>Medicinal herbs are plants used for healing, prevention, and overall health. They have active compounds, diverse uses, and specific preparation methods. Understanding their classification, safety, evidence, and cultural context ensures effective and responsible use for health and wellness.</p>
+
+        <section>
+            <h2>What are medicinal herbs?</h2>
+            <p>Medicinal herbs are plants used to prevent, alleviate, or treat health conditions. They contain bioactive compounds that influence the body’s functions. Traditionally and scientifically, they serve therapeutic purposes without being classified as pharmaceutical drugs.</p>
+        </section>
+
+        <section>
+            <h2>Where do medicinal herbs come from?</h2>
+            <p>Medicinal herbs come from specific plants, including leaves, roots, flowers, seeds, and bark. They grow naturally in the wild or are cultivated on farms. Geographic region, climate, and soil conditions directly affect their potency and characteristics.</p>
+        </section>
+
+        <section>
+            <h2>How are medicinal herbs classified?</h2>
+            <p>Medicinal herbs are classified by botanical family, genus, and species, by therapeutic function, and by traditional systems like Ayurveda or Traditional Chinese Medicine. They can also be grouped by body system, effects, or chemical composition for practical use.</p>
+        </section>
+
+        <section>
+            <h2>What are their active components?</h2>
+            <p>Medicinal herbs contain bioactive compounds such as alkaloids, flavonoids, terpenes, glycosides, polyphenols, and essential oils. These components produce therapeutic effects by interacting with the body’s systems, influencing metabolism, inflammation, immunity, and cellular functions.</p>
+        </section>
+
+        <section>
+            <h2>How do medicinal herbs work?</h2>
+            <p>Medicinal herbs work by interacting with the body’s biological systems to produce therapeutic effects. Their active compounds influence processes such as inflammation, immunity, digestion, and nervous system function, supporting health naturally and modulating physiological responses.</p>
+        </section>
+
+        <section>
+            <h2>How are they prepared?</h2>
+            <p>Medicinal herbs are prepared by drying, crushing, or extracting plant parts. Common methods include teas, decoctions, tinctures, powders, capsules, and topical applications. Preparation depends on the herb, intended use, and desired potency.</p>
+        </section>
+
+        <section>
+            <h2>How are they dosed?</h2>
+            <p>Medicinal herbs are dosed according to age, weight, and health condition. Standardized amounts vary by preparation type, such as teas, tinctures, or capsules. Frequency and duration depend on therapeutic goals and individual response to ensure safe, effective use.</p>
+        </section>
+
+        <section>
+            <h2>What are their uses?</h2>
+            <p>Medicinal herbs are used to prevent and treat health conditions, support bodily functions, and promote overall wellness. They can address specific symptoms, strengthen immunity, and complement conventional treatments, offering both therapeutic and preventive benefits for various ailments.</p>
+        </section>
+
+        <section>
+            <h2>Are they safe?</h2>
+            <p>Medicinal herbs can be safe when used correctly, but some may cause side effects, allergic reactions, or interact with medications. Safety depends on dosage, preparation, individual health, and proper guidance from qualified herbal practitioners.</p>
+        </section>
+
+        <section>
+            <h2>How is quality evaluated?</h2>
+            <p>Quality is evaluated by assessing freshness, purity, and active compound concentration. Standards include third-party testing, contamination checks, and proper storage. Adulteration, pesticides, or heavy metals are identified to ensure the herb’s effectiveness and safety for use.</p>
+        </section>
+
+        <section>
+            <h2>What evidence supports them?</h2>
+            <p>Medicinal herbs are supported by both traditional knowledge and modern scientific research. Clinical studies, pharmacological analyses, and systematic reviews provide evidence for their therapeutic effects. Evidence strength varies, with some herbs extensively studied and others primarily supported by historical use.</p>
+        </section>
+
+        <section>
+            <h2>What are the regulations?</h2>
+            <p>Regulations for medicinal herbs vary by country, controlling their sale, labeling, and health claims. Some herbs are classified as supplements, others as medicines. Compliance with national agencies, such as the FDA or EMA, ensures safety, quality, and legal distribution.</p>
+        </section>
+
+        <section>
+            <h2>What is their history?</h2>
+            <p>Medicinal herbs have been used for thousands of years across cultures, including Ayurveda, Traditional Chinese Medicine, and Indigenous practices. Early civilizations documented herbal remedies for health, prevention, and healing, forming the foundation of modern herbal medicine systems worldwide.</p>
+        </section>
+
+        <section>
+            <h2>How do they compare to other remedies?</h2>
+            <p>Medicinal herbs differ from pharmaceuticals, supplements, and functional foods in that they are natural, whole-plant remedies with multiple active compounds. Unlike isolated drugs, their effects are often synergistic and holistic, targeting multiple body systems simultaneously.</p>
+        </section>
+
+        <section>
+            <h2>What are common limitations?</h2>
+            <p>Medicinal herbs cannot replace all conventional treatments and are not effective for every condition. Their potency varies, interactions with drugs are possible, and evidence may be limited. Incorrect use, dosage errors, or poor-quality herbs can reduce effectiveness or cause harm.</p>
+        </section>
+
+        <section>
+            <h2>What is the future of medicinal herbs?</h2>
+            <p>The future of medicinal herbs lies in evidence-based integration with modern medicine, personalized herbal therapies, and sustainable cultivation. Advances in biotechnology and research will enhance safety, efficacy, and accessibility, bridging traditional knowledge with scientific validation.</p>
+        </section>
+    '''
+
     import textwrap
     sidebar_hub_html = sidebar_hub_gen()
     sidebar_page_html = sidebar_page_gen(items) 
@@ -316,7 +523,7 @@ def herbs_hub_gen():
                 {sidebar_hub_html}
                 <main>
                     <article>
-                        {content_html}
+                        {article_html}
                     </article>
                 </main>
                 {sidebar_page_html}

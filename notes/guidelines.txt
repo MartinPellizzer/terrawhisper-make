@@ -45,3 +45,33 @@ PHASE 5: AI-assissted semantic audits
 2. Identify missing subtopics
 
 
+========================================
+HUB PAGE
+========================================
+
+- Covers attribute dimensions (cluster of attributes)
+- Explains why these attributes exists
+- Define possible value ranges
+
+========================================
+CHILD PAGES
+========================================
+
+- Go deep into one attribute dimension or one specific attibute
+
+========================================
+INDIVIDUAL HERB PAGES
+========================================
+
+- Populate attribute values
+- Inherit structure from the hub
+
+========================================
+MENTAL MODEL
+========================================
+
+- Topic = conceptual area
+- Attribute = measurable / describable property
+- Value = state of that property
+- Content = explanation of why the vaule exists
+
