@@ -239,7 +239,7 @@ HUB
     margin: 0 auto;
     padding: 0 1rem;
     display: grid;
-    grid-template-columns: 240px minmax(0, 1fr) 200px;
+    grid-template-columns: 240px minmax(0, 1fr) 240px;
     gap: 4rem;
     padding-top: var(--space-xl);
     padding-bottom: var(--space-xl);
@@ -258,3 +258,4 @@ HUB
 .hub section {
   scroll-margin-top: calc(82px + var(--space-xl));
 }
+

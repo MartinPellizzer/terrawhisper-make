@@ -7,12 +7,12 @@ def sidebar_hub_gen():
         <div>
         <nav class="nav-global">
             <h2 style="margin-top: 0rem;">Main Hub</h2>
-            <ul>
-                <li><a href="/herbs.html">Medicinal Herbs</a>
+            <ul style="font-size: 1.4rem;">
+                <li><a style="text-decoration: none;" href="/herbs.html">Medicinal Herbs</a>
                     <ul>
-                        <li><a href="herbs/botany.html">Botany</a></li>
-                        <li><a href="/preparations.html">Preparations</a></li>
-                        <li><a href="/ailments.html">Ailments</a></li>
+                        <li><a style="text-decoration: none;" href="/herbs/botany.html">Botany</a></li>
+                        <li><a style="text-decoration: none;" href="/herbs/phytochemistry.html">Phytochemistry</a></li>
+                        <li><a style="text-decoration: none;" href="/herbs/therapeutics.html">Therapeutics</a></li>
                     </ul>
                 </li>
             </ul>
@@ -28,12 +28,12 @@ def sidebar_page_gen(items):
     for item in items:
         href = item['href']
         anchor = item['anchor']
-        item_html = f'<li><a href="#{href}">{anchor}</a></li>\n'
+        item_html = f'<li style="font-size: 1.4rem;"><a style="text-decoration: none;" href="#{href}">{anchor}</a></li>\n'
         items_html += item_html
     html = f'''
         <aside>
             <nav class="nav-page">
-                <h2 style="margin-top: 0rem;">Table of Contents</h2>
+                <h2 style="margin-top: 0rem; font-size: 2.4rem;">Table of Contents</h2>
                 <ul>
                     {items_html}
                 </ul>
@@ -511,9 +511,22 @@ def herbs_hub_gen():
         </section>
     '''
 
+    article_with_ids_html = ''
+    toc = []
+    i = 0
+    for line in article_html.split('\n'):
+        line = line.strip()
+        if '<h2>' in line:
+            line_content = line.replace('<h2>', '').replace('</h2>', '')
+            line = line.replace('<h2>', f'<h2 id="{i}">')
+            toc.append({'href': i, 'anchor': line_content})
+            i += 1
+        article_with_ids_html += f'{line}\n'
+    article_html = article_with_ids_html
+    sidebar_page_html = sidebar_page_gen(toc) 
+
     import textwrap
     sidebar_hub_html = sidebar_hub_gen()
-    sidebar_page_html = sidebar_page_gen(items) 
     html = textwrap.dedent(f''' 
         <!DOCTYPE html>
         <html lang="en">
@@ -950,13 +963,257 @@ Understanding the botany of medicinal herbs is essential for identifying, cultiv
 </section>
     '''
 
+    article_with_ids_html = ''
+    toc = []
+    i = 0
+    for line in article_html.split('\n'):
+        line = line.strip()
+        if '<h2>' in line:
+            line_content = line.replace('<h2>', '').replace('</h2>', '')
+            line = line.replace('<h2>', f'<h2 id="{i}">')
+            toc.append({'href': i, 'anchor': line_content})
+            i += 1
+        article_with_ids_html += f'{line}\n'
+    article_html = article_with_ids_html
+    sidebar_page_html = sidebar_page_gen(toc) 
+
     meta_title = 'Botany of Medicinal Herbs: Plant Structures, Growth & Identification'
     meta_description = 'Explore the botany of medicinal herbs, including plant structures, taxonomy, growth cycles, habitats, and identification. Learn how roots, leaves, flowers, and seeds contribute to medicinal properties and sustainable cultivation practices.'
     canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/herbs/botany.html">'''
     head_html = components.html_head(meta_title, meta_description, css='/styles-herb.css', canonical=canonical_html)
     import textwrap
     sidebar_hub_html = sidebar_hub_gen()
-    sidebar_page_html = sidebar_page_gen([]) 
+    html = textwrap.dedent(f''' 
+        <!DOCTYPE html>
+        <html lang="en">
+        {head_html}
+        <body>
+            {sections.header_default()}
+            <div class="hub">
+                {sidebar_hub_html}
+                <main>
+                    <article>
+                        {article_html}
+                    </article>
+                </main>
+                {sidebar_page_html}
+            </div>
+            {sections.footer()}
+        </body>
+        </html>
+    ''').strip()
+    html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
+    with open(html_filepath, 'w') as f: f.write(html)
+
+def herbs_phytochemistry_gen():
+    url_slug = 'herbs/phytochemistry'
+
+    article_html = f'''
+<h1>Phytochemistry: Plant Compounds and Their Biological Roles</h1>
+<p>
+Phytochemistry is the scientific study of chemical compounds produced by plants, with a focus on bioactive substances found in medicinal herbs. It explains how phytochemicals are classified, synthesized, extracted, analyzed, and how they interact with biological systems to influence therapeutic effects, safety, and efficacy in herbal medicine.
+</p>
+
+<section>
+  <h2>What is phytochemistry?</h2>
+  <p>Phytochemistry is the study of chemical compounds produced by medicinal plants, especially bioactive substances that affect biological processes. It explains how plant-derived compounds contribute to therapeutic effects, safety, and efficacy in herbal medicine.</p>
+</section>
+
+<section>
+  <h2>What phytochemical classes exist?</h2>
+  <p>Phytochemical classes include alkaloids, flavonoids, terpenoids, glycosides, phenolic compounds, saponins, and steroids. These groups are defined by chemical structure and account for the diverse biological activities observed in medicinal plants.</p>
+</section>
+
+<section>
+  <h2>What do phytochemicals do?</h2>
+  <p>Phytochemicals perform biological functions such as antioxidant activity, anti-inflammatory effects, antimicrobial action, immunomodulation, and neuroactivity. These actions influence physiological systems and explain how medicinal plants support health and disease management.</p>
+</section>
+
+<section>
+  <h2>What are volatile phytochemicals?</h2>
+  <p>Volatile phytochemicals are aromatic compounds that evaporate easily and are commonly found in essential oils. They include terpenes and other volatile molecules that contribute to fragrance, inhalation effects, antimicrobial activity, and sensory properties of medicinal plants.</p>
+</section>
+
+<section>
+  <h2>How are phytochemicals synthesized?</h2>
+  <p>Phytochemicals are synthesized through plant metabolic pathways that produce secondary metabolites. Major pathways include the shikimate pathway, mevalonate pathway, and MEP pathway, which are regulated by enzymes, cellular processes, and genetic expression.</p>
+</section>
+
+<section>
+  <h2>How do phytochemicals interact?</h2>
+  <p>Phytochemicals interact through synergistic and antagonistic mechanisms that influence overall biological activity. These interactions include the entourage effect, where multiple compounds in whole-plant extracts modify potency, bioavailability, and therapeutic outcomes.</p>
+</section>
+
+<section>
+  <h2>How are phytochemicals absorbed and metabolized?</h2>
+  <p>Phytochemicals are absorbed through the digestive system and processed via metabolism, distribution, and excretion. Bioavailability is influenced by compound structure, gut microbiota, first-pass metabolism, solubility, and pharmacokinetic characteristics of the substance.</p>
+</section>
+
+<section>
+  <h2>How are phytochemicals extracted?</h2>
+  <p>Phytochemicals are extracted by separating chemical compounds from plant material using specific solvents. Common extraction methods include water extraction, alcohol extraction, and supercritical CO₂ extraction, each affecting compound yield, composition, and stability.</p>
+</section>
+
+<section>
+  <h2>How stable are phytochemicals?</h2>
+  <p>Phytochemical stability depends on sensitivity to oxidation, heat, light, and moisture. Degradation processes such as photodegradation and thermal breakdown affect shelf life, potency, and storage requirements of medicinal plant products.</p>
+</section>
+
+<section>
+  <h2>How are phytochemicals standardized?</h2>
+  <p>Phytochemicals are standardized by quantifying marker compounds to ensure consistent potency and quality. Standardization supports batch consistency, quality control, reliable dosing, and reproducible therapeutic effects in herbal extracts and finished products.</p>
+</section>
+
+<section>
+  <h2>How are phytochemicals analyzed?</h2>
+  <p>Phytochemicals are analyzed using analytical techniques such as chromatography, HPLC, GC-MS, LC-MS, and NMR spectroscopy. These methods identify, quantify, and chemically profile compounds present in medicinal plants and herbal preparations.</p>
+</section>
+
+<section>
+  <h2>Why do phytochemical profiles vary?</h2>
+  <p>Phytochemical profiles vary due to genetic differences, chemotypes, soil composition, climate conditions, harvest timing, and plant age. Environmental and biological factors directly influence chemical diversity and compound concentration within medicinal plants.</p>
+</section>
+
+<section>
+  <h2>Are phytochemicals toxic?</h2>
+  <p>Some phytochemicals are toxic at certain doses and follow dose-response relationships. Toxicity may involve narrow therapeutic indices, hepatotoxicity, neurotoxicity, or compound accumulation, depending on exposure level and individual susceptibility.</p>
+</section>
+
+<section>
+  <h2>How do phytochemicals compare to drugs?</h2>
+  <p>Phytochemicals differ from pharmaceutical drugs by acting as multi-compound mixtures rather than isolated substances. Whole-plant extracts often produce broader biological effects, while drugs provide targeted, standardized, and highly specific pharmacological action.</p>
+</section>
+
+<section>
+  <h2>What advances exist in phytochemistry?</h2>
+  <p>Advances in phytochemistry include metabolomics, phytochemical databases, AI-assisted compound discovery, and systems biology approaches. These developments improve compound identification, bioactivity prediction, and understanding of complex plant chemical interactions.</p>
+</section>
+    '''
+
+    article_with_ids_html = ''
+    toc = []
+    i = 0
+    for line in article_html.split('\n'):
+        line = line.strip()
+        if '<h2>' in line:
+            line_content = line.replace('<h2>', '').replace('</h2>', '')
+            line = line.replace('<h2>', f'<h2 id="{i}">')
+            toc.append({'href': i, 'anchor': line_content})
+            i += 1
+        article_with_ids_html += f'{line}\n'
+    article_html = article_with_ids_html
+    sidebar_page_html = sidebar_page_gen(toc) 
+
+    meta_title = 'Phytochemistry Explained: Classes, Functions, Analysis, and Safety'
+    meta_description = 'Phytochemistry studies plant chemical compounds, their classes, functions, extraction, metabolism, analysis, safety, and therapeutic relevance in medicinal plants and herbal medicine.'
+    canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/herbs/phytochemistry.html">'''
+    head_html = components.html_head(meta_title, meta_description, css='/styles-herb.css', canonical=canonical_html)
+    import textwrap
+    sidebar_hub_html = sidebar_hub_gen()
+    html = textwrap.dedent(f''' 
+        <!DOCTYPE html>
+        <html lang="en">
+        {head_html}
+        <body>
+            {sections.header_default()}
+            <div class="hub">
+                {sidebar_hub_html}
+                <main>
+                    <article>
+                        {article_html}
+                    </article>
+                </main>
+                {sidebar_page_html}
+            </div>
+            {sections.footer()}
+        </body>
+        </html>
+    ''').strip()
+    html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
+    with open(html_filepath, 'w') as f: f.write(html)
+
+def herbs_therapeutics_gen():
+    url_slug = 'herbs/therapeutics'
+
+    article_html = f'''
+<h1>
+Therapeutics of Medicinal Herbs
+</h1>
+<p>
+Medicinal herbs provide a wide range of therapeutic effects, supporting digestive, immune, nervous, cardiovascular, and other body systems. They work through anti-inflammatory, antioxidant, adaptogenic, and immunomodulatory actions. This page explores their uses, preparation methods, safety considerations, research evidence, and health benefits, helping you understand how medicinal herbs can support overall wellness naturally.
+</p>
+
+<section>
+  <h2>Which body systems do medicinal herbs support?</h2>
+  <p>Medicinal herbs support digestive, immune, nervous, cardiovascular, respiratory, endocrine, musculoskeletal, reproductive, and skin systems. They improve organ function, reduce inflammation, support physiological balance, enhance circulation, and maintain overall wellness across multiple body systems effectively.</p>
+</section>
+
+<section>
+  <h2>What therapeutic effects do medicinal herbs provide?</h2>
+  <p>Medicinal herbs offer anti-inflammatory, analgesic, immunomodulatory, adaptogenic, sedative, antioxidant, detoxifying, cardioprotective, and cognitive-enhancing effects. These actions help manage symptoms, improve resilience, support organ function, and promote general health naturally and safely.</p>
+</section>
+
+<section>
+  <h2>How do medicinal herbs work in the body?</h2>
+  <p>Medicinal herbs work through enzyme modulation, hormonal regulation, neurotransmitter modulation, antioxidant activity, anti-inflammatory pathways, circulatory support, and digestive enzyme stimulation. These mechanisms produce physiological effects that support organ function, metabolic balance, and overall health.</p>
+</section>
+
+<section>
+  <h2>How are medicinal herbs prepared and administered?</h2>
+  <p>Medicinal herbs are prepared as infusions, decoctions, tinctures, extracts, capsules, salves, syrups, essential oils, and polyherbal formulas. Preparation affects bioactive compound concentration, absorption, therapeutic effectiveness, and suitability for specific health conditions or general wellness support.</p>
+</section>
+
+<section>
+  <h2>What research supports medicinal herb use?</h2>
+  <p>Research supporting medicinal herbs includes clinical trials, observational studies, in vivo and in vitro studies, meta-analyses, and mechanistic research. Evidence demonstrates therapeutic potential for inflammation, immunity, digestion, stress, sleep, cognitive function, and overall health maintenance.</p>
+</section>
+
+<section>
+  <h2>Are medicinal herbs safe for use?</h2>
+  <p>Medicinal herbs are generally safe when used with proper dosage, preparation, and context, considering toxicity, side effects, herb-drug interactions, allergies, pregnancy, pediatric use, and elderly considerations. Safety is maximized under guidance from qualified healthcare professionals.</p>
+</section>
+
+<section>
+  <h2>Which medical traditions use medicinal herbs?</h2>
+  <p>Medicinal herbs are used in Ayurveda, Traditional Chinese Medicine, Western herbalism, Indigenous medicine, and Unani. Each tradition applies herbs according to unique diagnostics, energetics, dosha or Yin-Yang classifications, and therapeutic principles to support health.</p>
+</section>
+
+<section>
+  <h2>How are medicinal herbs combined for therapy?</h2>
+  <p>Medicinal herbs are used singly or in polyherbal formulas, leveraging herb-herb synergy, herb-pharmaceutical interactions, functional foods, and preventive versus therapeutic dosing. Combinations optimize efficacy, target multiple pathways, and enhance therapeutic outcomes safely.</p>
+</section>
+
+<section>
+  <h2>Which populations benefit from medicinal herbs?</h2>
+  <p>Populations benefiting from medicinal herbs include children, adults, elderly, athletes, pregnant or lactating women, and immunocompromised individuals. Herbs provide immune support, cognitive enhancement, stress relief, symptom management, and overall wellness tailored to each group.</p>
+</section>
+
+<section>
+  <h2>What benefits do medicinal herbs produce?</h2>
+  <p>Medicinal herbs produce symptom relief, functional improvement, preventive health support, quality of life enhancement, longevity support, cognitive enhancement, and metabolic regulation. Their multi-target effects maintain wellness and complement conventional medical approaches effectively.</p>
+</section>
+    '''
+
+    article_with_ids_html = ''
+    toc = []
+    i = 0
+    for line in article_html.split('\n'):
+        line = line.strip()
+        if '<h2>' in line:
+            line_content = line.replace('<h2>', '').replace('</h2>', '')
+            line = line.replace('<h2>', f'<h2 id="{i}">')
+            toc.append({'href': i, 'anchor': line_content})
+            i += 1
+        article_with_ids_html += f'{line}\n'
+    article_html = article_with_ids_html
+    sidebar_page_html = sidebar_page_gen(toc) 
+
+    meta_title = 'Therapeutics of Medicinal Herbs: Benefits, Uses & Effects'
+    meta_description = 'Explore the therapeutics of medicinal herbs, including body system support, health benefits, preparation methods, safety, and evidence-based uses for optimal wellness.'
+    canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/herbs/therapeutics.html">'''
+    head_html = components.html_head(meta_title, meta_description, css='/styles-herb.css', canonical=canonical_html)
+    import textwrap
+    sidebar_hub_html = sidebar_hub_gen()
     html = textwrap.dedent(f''' 
         <!DOCTYPE html>
         <html lang="en">
@@ -983,6 +1240,9 @@ Understanding the botany of medicinal herbs is essential for identifying, cultiv
 def main():
     herbs_hub_gen()
     herbs_botany_gen()
+    herbs_phytochemistry_gen()
+    herbs_therapeutics_gen()
+
     herbs_ailment_hub_gen()
     herbs_preparations_hub_gen()
 
