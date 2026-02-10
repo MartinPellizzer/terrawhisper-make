@@ -10,6 +10,7 @@ def sidebar_hub_gen():
             <ul>
                 <li><a href="/herbs.html">Medicinal Herbs</a>
                     <ul>
+                        <li><a href="herbs/botany.html">Botany</a></li>
                         <li><a href="/preparations.html">Preparations</a></li>
                         <li><a href="/ailments.html">Ailments</a></li>
                     </ul>
@@ -889,8 +890,99 @@ This integration emphasizes the strategic role of preparation choice within the 
     html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
     with open(html_filepath, 'w') as f: f.write(html)
 
+def herbs_botany_gen():
+    url_slug = 'herbs/botany'
+
+    article_html = f'''
+<h1>The Complete Botany of Medicinal Herbs</h1>
+<p>
+Understanding the botany of medicinal herbs is essential for identifying, cultivating, and using plants safely and effectively. This guide covers taxonomy, plant structures such as roots, stems, leaves, flowers, fruits, and seeds, growth cycles, habitats, phenology, and conservation practices. By linking morphology, biochemistry, and lifecycle knowledge, you can fully grasp how medicinal plants produce bioactive compounds and adapt to different environments, supporting both traditional and modern herbal medicine.
+</p>
+
+<section>
+  <h2>What is plant taxonomy?</h2>
+  <p>Plant taxonomy organizes plants into kingdom, division, class, order, family, genus, and species. It distinguishes hybrids, annuals, perennials, woody, and herbaceous types, providing a standardized system to identify, classify, and study medicinal plants across traditional and scientific contexts.</p>
+</section>
+
+<section>
+  <h2>What are plant structures?</h2>
+  <p>Plant structures include roots, stems, leaves, flowers, fruits, seeds, bark, bulbs, resins, and latex. Each part has distinct traits, functions, and medicinal relevance, helping identify species and determine which plant parts contain bioactive compounds for therapeutic use.</p>
+</section>
+
+<section>
+  <h2>How do plants grow?</h2>
+  <p>Plants grow through germination, vegetative growth, flowering, reproduction, and dormancy. Lifespan varies from annuals, biennials, to perennials, while propagation occurs via seeds, cuttings, grafting, or layering, affecting medicinal potency and cultivation strategies.</p>
+</section>
+
+<section>
+  <h2>Where do medicinal plants grow?</h2>
+  <p>Medicinal plants grow in habitats defined by climate, soil type, sunlight, water, and altitude. Native and exotic species occupy specific ecosystems, often with companion plants, and adapt to environmental stresses to survive and produce bioactive compounds.</p>
+</section>
+
+<section>
+  <h2>What compounds do plants produce?</h2>
+  <p>Plants produce bioactive compounds including secondary metabolites such as alkaloids, flavonoids, terpenes, essential oils, and toxins. These compounds vary by plant part and growth stage, contribute to defense mechanisms, and determine the plant’s medicinal properties.</p>
+</section>
+
+<section>
+  <h2>How are medicinal plants cultivated?</h2>
+  <p>Medicinal plants are cultivated using soil preparation, fertilization, irrigation, pruning, harvesting, and post-harvest handling. Organic or conventional methods influence growth, bioactive compound concentration, quality, and medicinal efficacy while supporting sustainable cultivation practices.</p>
+</section>
+
+<section>
+  <h2>When do plants change seasonally?</h2>
+  <p>Plants change seasonally through leaf emergence, flowering, fruiting, and dormancy cycles. Seasonal variation affects bioactive compound levels, medicinal potency, harvest timing, and ecological interactions in both wild and cultivated environments.</p>
+</section>
+
+<section>
+  <h2>How are plants identified?</h2>
+  <p>Plants are identified by leaf shape, arrangement, flower structure, stem texture, root type, seed morphology, latex, and surface hairs. Accurate identification ensures correct species selection for medicinal use and prevents confusion with toxic or non-medicinal lookalikes.</p>
+</section>
+
+<section>
+  <h2>How did plants evolve?</h2>
+  <p>Plants evolved through adaptations evident in phylogeny, genetic diversity, and structural traits. Evolution shaped reproduction, secondary metabolite production, and species relationships, while molecular markers provide modern tools for classification and understanding medicinal plant lineage.</p>
+</section>
+
+<section>
+  <h2>How are medicinal plants protected?</h2>
+  <p>Medicinal plants are protected by conserving endangered species, addressing habitat loss, maintaining ex situ collections like seed banks, enforcing in situ protection, practicing sustainable harvesting, and preserving biodiversity to ensure ecological balance and long-term medicinal resources.</p>
+</section>
+    '''
+
+    meta_title = 'Botany of Medicinal Herbs: Plant Structures, Growth & Identification'
+    meta_description = 'Explore the botany of medicinal herbs, including plant structures, taxonomy, growth cycles, habitats, and identification. Learn how roots, leaves, flowers, and seeds contribute to medicinal properties and sustainable cultivation practices.'
+    canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/herbs/botany.html">'''
+    head_html = components.html_head(meta_title, meta_description, css='/styles-herb.css', canonical=canonical_html)
+    import textwrap
+    sidebar_hub_html = sidebar_hub_gen()
+    sidebar_page_html = sidebar_page_gen([]) 
+    html = textwrap.dedent(f''' 
+        <!DOCTYPE html>
+        <html lang="en">
+        {head_html}
+        <body>
+            {sections.header_default()}
+            <div class="hub">
+                {sidebar_hub_html}
+                <main>
+                    <article>
+                        {article_html}
+                    </article>
+                </main>
+                {sidebar_page_html}
+            </div>
+            {sections.footer()}
+        </body>
+        </html>
+    ''').strip()
+    html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
+    with open(html_filepath, 'w') as f: f.write(html)
+
+
 def main():
     herbs_hub_gen()
+    herbs_botany_gen()
     herbs_ailment_hub_gen()
     herbs_preparations_hub_gen()
 
