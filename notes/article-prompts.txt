@@ -1,0 +1,31 @@
+Preparation
+
+ok, i want to move on to the "Preparation" topic now. this topic will be our new core entity (always in the context of medicinal herbs). give me a complete and exhaustive list of subtopics (attribute vectors based on the EAV) i have to write about in this topic hub based on STA. always consider the macro-context of this topic when choosing this vector and don't go off topic.
+
+my core entity is "sistemi ad ozono industriali". give me a complete and exhaustive list of subtopics (attribute vectors based on the EAV) i have to write about in this topic hub based on STA.
+
+ok, i want to move on to the "Traditions" topic now. this topic will be our new core entity (always in the context of sistemi ad ozono industriali). give me a complete and exhaustive list of subtopics (attribute vectors based on the EAV) i have to write about in this topic hub based on STA. always consider the macro-context of this topic when choosing this vector and don't go off topic.
+
+
+
+great, now rewrite these topic headings in one word each, the one that is the most semantically correct as umbrella term for the cluster of attributes.
+
+I want to convert the umbrella heading in form of headings (like the h2 for the page). Based on what makes more sense semantically in the context of this core entity, is it best to make these headings in question or statement form for koray? choose only one form in the end for all the questions.
+ 
+great, so convert the umbrella heading in form of headings (like the h2 for the page) based on your previous suggestion and in a way that are optimized for koray STA and maximum entity density. Use as few words as possible while still preserving the semantic meaning completely.
+
+
+
+great, now convert the umbrella heading in statement form for the headings (h2 of the page) in a way that are optimized for koray STA, for maximum semantic relevance and entity density. avoid to repeat the entity in all headings. Use as few words as possible while still preserving the semantic meaning completely.
+
+
+Assign answer length + entity density targets
+
+
+Write perfect first-answer blocks for all these headers. The answer must be in the context of this macro-context.
+
+Rewrite these to exact featured-snippet length tuning
+
+format the above content in html (title and snippet). use section tag for each block, h2 for the heading and p for the body. don't use other tags, like <strong> etc.
+
+great, now give me the title tag, the description tag, the h1 title, and the intro paragraph that are most optimized for this page based on the content you just written.

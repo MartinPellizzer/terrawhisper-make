@@ -13,6 +13,8 @@ def sidebar_hub_gen():
                         <li><a style="text-decoration: none;" href="/herbs/botany.html">Botany</a></li>
                         <li><a style="text-decoration: none;" href="/herbs/phytochemistry.html">Phytochemistry</a></li>
                         <li><a style="text-decoration: none;" href="/herbs/therapeutics.html">Therapeutics</a></li>
+                        <li><a style="text-decoration: none;" href="/herbs/traditions.html">Traditions</a></li>
+                        <li><a style="text-decoration: none;" href="/herbs/preparation.html">Preparation</a></li>
                     </ul>
                 </li>
             </ul>
@@ -1236,15 +1238,233 @@ Medicinal herbs provide a wide range of therapeutic effects, supporting digestiv
     html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
     with open(html_filepath, 'w') as f: f.write(html)
 
+def herbs_traditions_gen():
+    url_slug = 'herbs/traditions'
+
+    article_html = f'''
+<h1>
+Medicinal Herb Traditions: Systems, Uses, and Philosophy
+</h1>
+<p>
+Herbal traditions guide the use of plants across systems like Ayurveda, Traditional Chinese Medicine, Unani, Western herbalism, and Indigenous practices. These traditions organize therapeutic applications, formulas, energetic classifications, rituals, and practitioner training while emphasizing regional variations, historical development, evidence-based integration, and ethical, sustainable practices.
+</p>
+
+<section>
+  <h2>Systems and lineages</h2>
+  <p>Ayurveda, Traditional Chinese Medicine, Unani, Western herbalism, and Indigenous systems each define herbs according to unique lineages, schools, and diagnostic models. These systems organize therapeutic applications, organ affinities, energetic qualities, and preparation methods to guide practitioners in holistic care.</p>
+</section>
+
+<section>
+  <h2>Origins and evolution</h2>
+  <p>Herbal traditions emerged across ancient civilizations, shaped by historical figures such as Charaka in Ayurveda and Shen Nong in TCM. Over centuries, cross-cultural exchange, codified texts, and evolving practices influenced formulations, preparation methods, and therapeutic frameworks still in use today.</p>
+</section>
+
+<section>
+  <h2>Classification principles</h2>
+  <p>Herbal systems classify plants using energetic frameworks like Doshas, Yin/Yang, humors, and the Five Elements, along with organ associations and therapeutic categories. These principles determine suitability for specific conditions, combination in formulas, and alignment with individual constitutions across different traditions.</p>
+</section>
+
+<section>
+  <h2>Formulas and preparation</h2>
+  <p>Herbal formulas are prepared as decoctions, infusions, tinctures, powders, and salves, using single or compound herbs. Synergy rules guide combinations to enhance efficacy, while preparation techniques reflect system-specific protocols and ensure proper dosage, bioavailability, and therapeutic impact.</p>
+</section>
+
+<section>
+  <h2>Philosophy and energetics</h2>
+  <p>Each tradition applies philosophical and energetic frameworks to explain herb function, including humors, Doshas, Yin/Yang, Five Elements, and cosmological principles. These concepts integrate body-mind balance, environmental influences, and spiritual dimensions to guide formulation and clinical application.</p>
+</section>
+
+<section>
+  <h2>Therapeutic focus</h2>
+  <p>Herbal traditions target specific health systems such as digestive, immune, cardiovascular, reproductive, and nervous systems, while addressing conditions like stress, sleep disturbances, inflammation, and fatigue. Formulations are adapted to balance individual constitutions and achieve holistic health goals.</p>
+</section>
+
+<section>
+  <h2>Rituals and cultural use</h2>
+  <p>Rituals, seasonal ceremonies, folk traditions, and spiritual practices shape the cultural application of herbs. These practices include harvest timing, ceremonial preparation, community-based healing, and symbolic use, reflecting the integration of medicinal, spiritual, and societal dimensions in each tradition.</p>
+</section>
+
+<section>
+  <h2>Training and transmission</h2>
+  <p>Knowledge is transmitted through apprenticeships, formal education, codified texts, and practitioner lineages. Systems like Ayurveda and TCM maintain structured training programs, while Indigenous traditions rely on oral teaching and experiential learning to preserve accuracy, safety, and traditional expertise.</p>
+</section>
+
+<section>
+  <h2>Evidence and integration</h2>
+  <p>Research validation, clinical trials, modern standardization, and regulatory compliance guide integration into contemporary practice. Traditional formulations are assessed for efficacy, safety, and dosage, enabling evidence-informed application and alignment with modern healthcare systems without losing historical principles.</p>
+</section>
+
+<section>
+  <h2>Regional variations</h2>
+  <p>Herbal practices vary geographically based on local flora, climate, cultural customs, and substitution practices. Ayurveda is prominent in India and Sri Lanka, TCM in China and Taiwan, Unani in South Asia, and Indigenous systems across Africa, the Americas, and Australia, reflecting regional adaptation.</p>
+</section>
+
+<section>
+  <h2>Ethics and sustainability</h2>
+  <p>Ethical harvesting, conservation of endangered species, sustainable sourcing, and cultural preservation govern herbal use. Traditions balance ecological responsibility, community rights, and long-term availability while maintaining fidelity to historical practices and protecting biodiversity.</p>
+</section>
+    '''
+
+    article_with_ids_html = ''
+    toc = []
+    i = 0
+    for line in article_html.split('\n'):
+        line = line.strip()
+        if '<h2>' in line:
+            line_content = line.replace('<h2>', '').replace('</h2>', '')
+            line = line.replace('<h2>', f'<h2 id="{i}">')
+            toc.append({'href': i, 'anchor': line_content})
+            i += 1
+        article_with_ids_html += f'{line}\n'
+    article_html = article_with_ids_html
+    sidebar_page_html = sidebar_page_gen(toc) 
+
+    meta_title = 'Traditions of Medicinal Herbs: Systems, Philosophy & Practices'
+    meta_description = 'Explore herbal traditions including Ayurveda, TCM, Unani, and Indigenous systems. Learn classification, formulas, therapeutic uses, rituals, and sustainability practices.'
+    canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/herbs/traditions.html">'''
+    head_html = components.html_head(meta_title, meta_description, css='/styles-herb.css', canonical=canonical_html)
+    import textwrap
+    sidebar_hub_html = sidebar_hub_gen()
+    html = textwrap.dedent(f''' 
+        <!DOCTYPE html>
+        <html lang="en">
+        {head_html}
+        <body>
+            {sections.header_default()}
+            <div class="hub">
+                {sidebar_hub_html}
+                <main>
+                    <article>
+                        {article_html}
+                    </article>
+                </main>
+                {sidebar_page_html}
+            </div>
+            {sections.footer()}
+        </body>
+        </html>
+    ''').strip()
+    html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
+    with open(html_filepath, 'w') as f: f.write(html)
+
+
+def herbs_preparation_gen():
+    url_slug = 'herbs/preparation'
+
+    article_html = f'''
+<h1>
+Preparation of Medicinal Herbs: Methods, Forms, and Safety
+</h1>
+<p>
+Preparing medicinal herbs requires careful attention to methods, forms, dosage, and storage to ensure maximum potency and safety. This guide covers traditional practices, herbal formulas, measurement techniques, and tools, providing a complete overview of effective preparation for therapeutic use.
+</p>
+
+<section>
+  <h2>Methods of preparation</h2>
+  <p>Medicinal herbs can be prepared as infusions, decoctions, tinctures, extracts, powders, syrups, poultices, salves, essential oils, and inhalations. The chosen method affects bioactive compound extraction, potency, absorption, and suitability for internal or external therapeutic use.</p>
+</section>
+
+<section>
+  <h2>Preparation forms</h2>
+  <p>Herbal preparations take multiple forms, including liquids like teas, decoctions, and tinctures; solids such as powders, capsules, and tablets; semi-solids like ointments or salves; and vapors for aromatherapy. Some preparations combine forms or use standardized extracts for consistent potency.</p>
+</section>
+
+<section>
+  <h2>Guiding principles</h2>
+  <p>Effective herbal preparation depends on controlling temperature, solvent choice, duration, herb-to-solvent ratios, freshness, particle size, and extraction efficiency. Following these principles ensures potency preservation, maximizes bioactive compound yield, and maintains safety for therapeutic use.</p>
+</section>
+
+<section>
+  <h2>Intended applications</h2>
+  <p>Herbal preparations are designed for oral consumption, topical application, or inhalation. They may serve preventive or acute purposes and can involve single herbs or multi-herb formulas, selected according to specific therapeutic goals, such as immunity, digestion, stress relief, or inflammation.</p>
+</section>
+
+<section>
+  <h2>Safety considerations</h2>
+  <p>Safety in herbal preparation requires attention to toxicity, side effects, herb-drug interactions, and special populations like children, pregnant individuals, or the elderly. Allergens, contamination, and improper storage can reduce effectiveness or cause adverse effects, so careful handling is essential.</p>
+</section>
+
+<section>
+  <h2>Herb states and quality</h2>
+  <p>The state and quality of herbs affect preparation outcomes. Fresh or dried, whole or chopped, powdered, organic, or wildcrafted herbs all influence potency, extraction efficiency, flavor, and therapeutic effectiveness. Proper grading ensures consistency and safety in herbal use.</p>
+</section>
+
+<section>
+  <h2>Storage and shelf life</h2>
+  <p>Herbal preparations should be stored in appropriate containers, protected from light, moisture, and extreme temperatures. Refrigeration may be required for certain liquids, while dried powders need dry, sealed conditions. Proper storage preserves potency, prevents contamination, and extends shelf life.</p>
+</section>
+
+<section>
+  <h2>Measurement and standardization</h2>
+  <p>Accurate measurement is essential, including weight, volume, dosage, concentration, and number of servings. Standardization ensures each batch delivers consistent potency and bioactive compound levels, while scaling allows small or large preparations to maintain efficacy across different uses.</p>
+</section>
+
+<section>
+  <h2>Traditional practices</h2>
+  <p>Preparation methods vary by tradition, including Ayurveda, Traditional Chinese Medicine, Western herbalism, Indigenous medicine, and folk practices. Seasonal timing, ritual or practical techniques, and traditional combinations influence potency, energetics, and cultural relevance of the herbal preparation.</p>
+</section>
+
+<section>
+  <h2>Herbal formulas</h2>
+  <p>Herbal formulas combine multiple herbs to enhance synergy, balance flavors, and target specific conditions. Formulas follow principles of herb pairing, potency modulation, and sequence of preparation. Multi-herb combinations are adjusted for therapeutic goals, ensuring maximal efficacy and safety.</p>
+</section>
+
+<section>
+  <h2>Preparation tools</h2>
+  <p>Effective herbal preparation relies on proper tools, including mortars and pestles, kettles, distillation equipment, measuring devices, sieves, capsule fillers, jars, and heating setups. Correct use of tools ensures accurate extraction, dosage consistency, and hygienic handling across different preparation methods.</p>
+</section>
+    '''
+
+    article_with_ids_html = ''
+    toc = []
+    i = 0
+    for line in article_html.split('\n'):
+        line = line.strip()
+        if '<h2>' in line:
+            line_content = line.replace('<h2>', '').replace('</h2>', '')
+            line = line.replace('<h2>', f'<h2 id="{i}">')
+            toc.append({'href': i, 'anchor': line_content})
+            i += 1
+        article_with_ids_html += f'{line}\n'
+    article_html = article_with_ids_html
+    sidebar_page_html = sidebar_page_gen(toc) 
+
+    meta_title = 'Medicinal Herbs Preparation: Methods, Forms, Safety & Formulas'
+    meta_description = 'Learn how to prepare medicinal herbs safely and effectively, covering methods, forms, dosage, formulas, storage, and traditional practices for optimal potency and therapeutic benefits.'
+    canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/herbs/preparation.html">'''
+    head_html = components.html_head(meta_title, meta_description, css='/styles-herb.css', canonical=canonical_html)
+    import textwrap
+    sidebar_hub_html = sidebar_hub_gen()
+    html = textwrap.dedent(f''' 
+        <!DOCTYPE html>
+        <html lang="en">
+        {head_html}
+        <body>
+            {sections.header_default()}
+            <div class="hub">
+                {sidebar_hub_html}
+                <main>
+                    <article>
+                        {article_html}
+                    </article>
+                </main>
+                {sidebar_page_html}
+            </div>
+            {sections.footer()}
+        </body>
+        </html>
+    ''').strip()
+    html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
+    with open(html_filepath, 'w') as f: f.write(html)
+
 
 def main():
     herbs_hub_gen()
     herbs_botany_gen()
     herbs_phytochemistry_gen()
     herbs_therapeutics_gen()
-
-    herbs_ailment_hub_gen()
-    herbs_preparations_hub_gen()
+    herbs_traditions_gen()
+    herbs_preparation_gen()
 
 main()
 
