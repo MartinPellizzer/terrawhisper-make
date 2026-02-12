@@ -1,10 +1,25 @@
-Evidence
+Classificazione
+Acque
+Reflui
+Alimentare
+Farmaceutico
+Tessile
+Cartario
+Chimico
+Zootecnico
+Aria
+Natatorio
+Fluidi
+Parametri
+Limitazioni
+Integrazione
+CasiStudio
 
-ok, i want to move on to the "Evidence" topic now. this topic will be our new core entity (always in the context of medicinal herbs). give me a complete and exhaustive list of subtopics (attribute vectors based on the EAV) i have to write about in this topic hub based on STA. always consider the macro-context of this topic when choosing this vector and don't go off topic.
+ok, i want to move on to the "Regulation" topic now. this topic will be our new core entity (always in the context of medicinal herbs). give me a complete and exhaustive list of subtopics (attribute vectors based on the EAV) i have to write about in this topic hub based on STA. always consider the macro-context of this topic when choosing this vector and don't go off topic.
 
 my core entity is "sistemi ad ozono industriali". give me a complete and exhaustive list of subtopics (attribute vectors based on the EAV) i have to write about in this topic hub based on STA.
 
-ok, i want to move on to the "Traditions" topic now. this topic will be our new core entity (always in the context of sistemi ad ozono industriali). give me a complete and exhaustive list of subtopics (attribute vectors based on the EAV) i have to write about in this topic hub based on STA. always consider the macro-context of this topic when choosing this vector and don't go off topic.
+ok, i want to move on to the "Chimico" topic now. this topic will be our new core entity (always in the context of applicazioni sistemi ad ozono industriali). give me a complete and exhaustive list of subtopics (attribute vectors based on the EAV) i have to write about in this topic hub based on STA. always consider the macro-context of this topic when choosing this vector and don't go off topic.
 
 
 
@@ -23,8 +38,10 @@ great, now convert the umbrella heading in statement form for the headings (h2 o
 Assign answer length + entity density targets for each h2. try to make snippet-optimized.
 
 
-Write perfect first-answer blocks for all these headers. The answer must be in the context of this macro-context.
+Write perfect first-answer blocks for all these headers. reply with plain text, titles and answers only. The answer must be in the context of this macro-context.
 
 format the above content in html (title and snippet). use section tag for each block, h2 for the heading and p for the body. don't use other tags, like <strong> etc.
 
 great, now give me the title tag, the description tag, the h1 title, and the intro paragraph that are most optimized for this page based on the content you just written.
+
+give me the best linking strategy from this page and the parent one (the one which is in the context of as described before). give me the link placement for each pages and the anchor texts. give me the exact links in html. give me only one link per page. for the parent, i want the link inside a new short and concise sentence (<p>) you add at the end of the related section. don't write the same thing in the link sentences. make sure the <a> tag is inside the <p> tag. never use the character colon (:).

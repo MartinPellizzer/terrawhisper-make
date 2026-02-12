@@ -47,319 +47,11 @@ def sidebar_page_gen(items):
     return html
 
 def herbs_hub_gen():
-
-    sections_html_list = []
-
-    sections_html_list.append(f'''
-        <h1>Medicinal Herbs: Comprehensive Guide</h1>
-        <section>
-            <p>
-                Medicinal herbs are plants that have been used for centuries to support human health, promote well-being, and complement traditional and modern healing practices. 
-                They encompass a diverse range of species, each with unique properties, historical uses, and roles in natural medicine systems around the world. 
-                From ancient traditions like Ayurveda and Traditional Chinese Medicine to contemporary herbal research, medicinal herbs continue to be a cornerstone of holistic health knowledge.
-            </p>
-            <p>
-                This guide introduces the essential concepts of medicinal herbs, their classification, botanical attributes, and the scientific frameworks used to study their effects. 
-                By exploring the fundamental principles behind these plants, you can develop a deeper understanding of their role in natural health, laying the foundation for further learning about specific herbs, their applications, and evidence-based practices.
-            </p>
-        </section>
-    ''')
-
-    sections_html_list.append(f'''
-        <section>
-            <h2>What Are Medicinal Herbs?</h2>
-            <p>
-                Medicinal herbs are plants used for their therapeutic properties to support, prevent, or restore human health. 
-                These plants contain bioactive compounds and have documented use in traditional and modern medical systems across different cultures and historical periods.
-            </p>
-            <p>
-                As a botanical entity, a medicinal herb is defined not by culinary use, but by its measurable physiological effects, historical medical application, and recognized role in health-related practices.
-            </p>
-            <h3>How Are Medicinal Herbs Classified Botanically?</h3>
-            <p>
-                Medicinal herbs are classified based on botanical families, plant structures, and the specific parts used for therapeutic purposes. 
-                Commonly used parts include leaves, roots, flowers, seeds, bark, and stems, each associated with distinct chemical constituents.
-            </p>
-            <p>
-                This botanical classification helps organize herbs within natural medicine systems and allows researchers and practitioners to associate specific plant parts with functional health effects.
-            </p>
-            <h3>What Attributes Define a Medicinal Herb?</h3>
-            <p>
-                Each medicinal herb is defined by a set of core attributes that distinguish it from other plants. 
-                These attributes include its scientific (Latin) name, common names, geographic origin, growth conditions, and morphological characteristics.
-            </p>
-            <p>
-                Additional defining attributes such as seasonal availability, cultivation environment, and traditional therapeutic applications help establish the herb as a distinct medicinal entity within botanical and healthcare contexts.
-            </p>
-        </section>
-    ''')
-
-    sections_html_list.append(f'''
-        <section>
-            <h2>How do medicinal herbs work in the human body?</h2>
-            <p>
-                Medicinal herbs work through bioactive chemical compounds that interact with human biological systems at molecular and cellular levels. 
-                These compounds influence enzymes, receptors, and physiological pathways, producing therapeutic effects such as antioxidant, anti-inflammatory, or immune-modulating activity.
-            </p>
-            <h3>What are the active compounds in medicinal herbs?</h3>
-            <p>
-                The primary active compounds in medicinal herbs include alkaloids, flavonoids, terpenes, glycosides, and phenolic acids. 
-                These bioactive substances are responsible for measurable biological effects, such as reducing oxidative stress, modulating inflammation, supporting immune responses, or influencing nervous system signaling.
-            </p>
-            <p>
-                Each compound class has distinct chemical properties that determine how it is absorbed, metabolized, and utilized by the body. 
-                The concentration and combination of these compounds vary by plant species, plant part, and preparation method.
-            </p>
-            <h3>What is the mechanism of action of medicinal herbs?</h3>
-            <p>
-                The mechanism of action of medicinal herbs describes how their active compounds interact with biological targets. 
-                Common mechanisms include enzyme inhibition or activation, receptor binding, antioxidant activity, modulation of gene expression, and effects on cellular signaling pathways.
-            </p>
-            <p>
-                These mechanisms explain how herbal compounds produce consistent physiological outcomes and help researchers classify herbs based on functional effects rather than traditional usage alone.
-            </p>
-        </section>
-    ''')
-
-    sections_html_list.append(f'''
-        <section>
-            <h2>What Are Medicinal Herbs Used For?</h2>
-            <p>
-                Medicinal herbs are used to support human health by influencing physiological systems such as digestion, immunity, sleep regulation, inflammation response, skin function, cardiovascular health, hormonal balance, and cognitive performance. Their uses are based on traditional medicine systems and supported by modern observational research.
-            </p>
-            <p>
-                These applications describe the functional roles of medicinal plants rather than specific preparation methods or dosage guidelines. Understanding herbal uses helps classify plants according to the health outcomes they are commonly associated with.
-            </p>
-            <h3>Common Health Functions Supported by Medicinal Herbs</h3>
-            <p>
-                Medicinal herbs are commonly associated with digestive support, immune system modulation, sleep quality improvement, pain and inflammation management, skin health maintenance, cardiovascular support, hormonal regulation, and cognitive and nervous system support.
-            </p>
-            <p>
-                Each of these health functions represents a therapeutic category in which herbs are traditionally grouped based on observed effects, active compounds, and historical usage patterns.
-            </p>
-            <h3>Medicinal Herbs by Ailments and Conditions</h3>
-            <p>
-                Medicinal herbs are often categorized according to the ailments and conditions they are used to support. This condition-based classification helps users identify herbs relevant to specific health concerns, such as digestive discomfort, immune challenges, sleep disturbances, or inflammatory conditions.
-            </p>
-            <p>
-                Detailed information about individual herbs and their associations with specific <a href="/ailments.html">ailments and conditions</a> is provided on dedicated pages to allow focused and contextual exploration.
-            </p>
-            <h3>Why Different Herbs Are Used for Different Conditions</h3>
-            <p>
-                Different herbs are used for different conditions because each plant contains distinct bioactive compounds that influence specific biological processes. As a result, certain herbs are historically associated with digestive support, while others are linked to calming, anti-inflammatory, or restorative effects.
-            </p>
-        </section>
-    ''')
-
-    sections_html_list.append(f'''
-        <section>
-            <h2>How Are Medicinal Herbs Commonly Used?</h2>
-            <p>
-                Medicinal herbs are commonly used through specific preparation and administration methods that determine how their bioactive compounds are delivered to the body. These methods include traditional liquid extractions and modern standardized formats, each influencing absorption, convenience, and practical use.
-            </p>
-            <h3>Traditional Herbal Preparation Methods</h3>
-            <p>
-                Traditional medicinal systems prepare herbs using techniques designed to extract water- or alcohol-soluble compounds. Common traditional preparations include herbal teas, infusions, decoctions, and tinctures, which differ based on temperature, extraction time, and plant part used.
-            </p>
-            <h3>Modern Forms of Herbal Use</h3>
-            <p>
-                Modern herbal preparations focus on convenience, consistency, and shelf stability. These commonly include capsules, powders, topical ointments, and essential oils, allowing herbs to be consumed or applied in standardized and portable forms.
-            </p>
-            <h3>General Principles of Herbal Administration</h3>
-            <p>
-                Herbal administration depends on factors such as preparation type, intended use, and individual characteristics. General principles emphasize appropriate form selection, responsible use, and reliance on accurate informational sources rather than fixed, universal dosing rules.
-            </p>
-            <p>
-                For detailed explanations of preparation types and administration methods, visit the 
-                <a href="/preparations.html">Preparations hub</a>, which organizes guidance by herb and usage format.
-            </p>
-        </section>
-    ''')
-
-    sections_html_list.append(f'''
-        <section>
-            <h2>What safety considerations are important when using medicinal herbs?</h2>
-            <p>
-                Safety considerations for medicinal herbs include potential side effects, toxicity risks, drug interactions, and population-specific precautions. 
-                Understanding these factors helps ensure herbs are used responsibly, reduces adverse health outcomes, and supports informed evaluation of their therapeutic use.
-            </p>
-            <h3>What side effects and toxicity risks can medicinal herbs cause?</h3>
-            <p>
-                Medicinal herbs may cause side effects ranging from mild digestive upset to severe toxic reactions, depending on the plant species, dosage, preparation method, and individual sensitivity. 
-                Some herbs contain bioactive compounds that can become harmful when misidentified, improperly prepared, or consumed in excessive amounts.
-            </p>
-            <h3>How do medicinal herbs interact with medications?</h3>
-            <p>
-                Medicinal herbs can interact with prescription or over-the-counter drugs by enhancing, reducing, or altering their pharmacological effects. 
-                These interactions may affect drug metabolism, absorption, or efficacy, increasing the risk of side effects or reducing therapeutic effectiveness.
-            </p>
-            <h3>Which populations require extra precautions when using medicinal herbs?</h3>
-            <p>
-                Pregnant individuals, children, older adults, and people with chronic conditions often require additional precautions when using medicinal herbs. 
-                Physiological differences and existing health factors can increase sensitivity to herbal compounds, making professional guidance especially important.
-            </p>
-        </section>
-    ''')
-
-    sections_html_list.append(f'''
-        <section>
-            <!-- Section: Scientific Evidence and Research -->
-            <h2>What does scientific research say about medicinal herbs?</h2>
-            <p>
-                Scientific research on medicinal herbs evaluates their efficacy, safety, and mechanisms of action using clinical trials, observational studies, and laboratory research, helping determine which herbal medicines are supported by evidence and how traditional uses align with modern medical findings.
-            </p>
-            <p>
-                Research on medicinal herbs focuses on the herb as the primary entity, with key attributes including therapeutic effects, active compounds, dosage, safety profile, and clinical relevance. Evidence strength varies depending on study design, population size, and standardization of herbal preparations.
-            </p>
-            <h3>What types of clinical studies are conducted on medicinal herbs?</h3>
-            <p>
-                Clinical studies on medicinal herbs include randomized controlled trials, cohort studies, case reports, and meta-analyses that assess effectiveness, adverse effects, interactions, and biological mechanisms in human and laboratory settings.
-            </p>
-            <p>
-                Randomized controlled trials measure specific outcomes such as symptom reduction or biomarker changes, while observational studies examine real-world usage patterns. Meta-analyses aggregate multiple studies to evaluate overall evidence quality and consistency.
-            </p>
-            <h3>How does traditional herbal evidence differ from modern scientific evidence?</h3>
-            <p>
-                Traditional herbal evidence is based on historical use and empirical observation, whereas modern scientific evidence relies on controlled experimentation, standardized dosing, and reproducible results to confirm efficacy and safety.
-            </p>
-            <p>
-                Systems such as Ayurveda, Traditional Chinese Medicine, and European herbalism document long-term use patterns, while modern research tests these applications through pharmacological analysis, clinical trials, and safety assessments to validate or refine traditional claims.
-            </p>
-        </section>
-    ''')
-
-    items = [
-        {'href': 'intro', 'anchor': 'Introduction'},
-        {'href': 'definition', 'anchor': 'Definition'},
-        {'href': 'mechanisms', 'anchor': 'Mechanisms'},
-        {'href': 'uses', 'anchor': 'Uses'},
-        {'href': 'preparations', 'anchor': 'Preparations'},
-        {'href': 'safety', 'anchor': 'Safety'},
-        {'href': 'research', 'anchor': 'Research'},
-    ]
-
-    sections_html_list_new = []
-    for i, html in enumerate(sections_html_list):
-        html_new = html.replace('<section>', f'''<section id="{items[i]['href']}">''')
-        sections_html_list_new.append(html_new)
-
-
-    content_html = f''.join(sections_html_list_new)
-
     url_slug = f'herbs'
     meta_title = 'Herbs – Complete Guide to Medicinal, Culinary & Healing Herbs'
     meta_description = 'Explore over 100,000 herbs, their benefits, uses, preparations, and related herbalism topics. Find herbs for stress, digestion, immunity, and more.'
     canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/herbs.html">'''
-
     head_html = components.html_head(meta_title, meta_description, css='/styles-herb.css', canonical=canonical_html)
-    toc_html = f'''
-<!-- Table of Contents -->
-<nav aria-label="Table of Contents" id="table-of-contents">
-  <h2>Contents</h2>
-  <ul>
-    <li><a href="#intro">Introduction</a></li>
-    <li><a href="#what-are-herbs">What Are Medicinal Herbs?</a>
-      <ul>
-        <li><a href="#botanical-classification">Botanical Classification</a></li>
-        <li><a href="#core-attributes">Core Attributes of Medicinal Herbs</a></li>
-      </ul>
-    </li>
-    <li><a href="#mechanisms">Mechanisms and Active Compounds</a>
-      <ul>
-        <li><a href="#active-compounds">Active Compounds</a></li>
-        <li><a href="#mechanism-of-action">Mechanism of Action</a></li>
-      </ul>
-    </li>
-    <li><a href="#therapeutic-applications">Uses of Medicinal Herbs</a>
-      <ul>
-        <li><a href="#common-ailments">Common Ailments Treated</a></li>
-        <li><a href="#targeted-herbs">Targeted Herbs per Condition</a></li>
-      </ul>
-    </li>
-    <li><a href="#preparations">How to Use Medicinal Herbs</a>
-      <ul>
-        <li><a href="#traditional-preparations">Traditional Preparations</a></li>
-        <li><a href="#modern-preparations">Modern Preparations</a></li>
-        <li><a href="#dosage-tips">Dosage and Administration Tips</a></li>
-      </ul>
-    </li>
-    <li><a href="#safety">Safety Considerations</a>
-      <ul>
-        <li><a href="#side-effects">Side Effects and Toxicity</a></li>
-        <li><a href="#drug-interactions">Drug Interactions</a></li>
-        <li><a href="#special-populations">Special Populations</a></li>
-      </ul>
-    </li>
-    <li><a href="#evidence">Scientific Research on Medicinal Herbs</a>
-      <ul>
-        <li><a href="#clinical-studies">Clinical Studies</a></li>
-        <li><a href="#traditional-vs-modern">Traditional vs Modern Evidence</a></li>
-      </ul>
-    </li>
-    <li><a href="#further-exploration">Further Exploration</a>
-      <ul>
-        <li><a href="#comparisons">Herb Comparisons and Alternatives</a></li>
-        <li><a href="#formulas">Herbal Combinations and Formulas</a></li>
-        <li><a href="#additional-resources">Additional Resources</a></li>
-      </ul>
-    </li>
-    <li><a href="#summary">Summary</a></li>
-  </ul>
-</nav>
-    '''
-
-    attribute_cluster_html = f'''
-        Medicinal Herbs</h1>
-
-        Entity Definition & Identity
-        Origin & Source Attributes
-        Classification Attributes
-        Active Components & Chemical Attributes
-        Mechanism of Action
-        Preparation & Form Attributes
-        Dosage & Administration Attributes
-        Therapeutic Uses & Indications
-        Safety & Risk Attributes
-        Quality, Purity & Evaluation Attributes
-        Evidence & Validation Attributes
-        Legal & Regulatory Attributes
-        Cultural & Historical Attributes
-        Comparison & Relationship Attributes
-        Limitations & Misconceptions
-        Future & Research Attributes
-    '''
-
-    '''
-        Definition (concept, meaning, differentiation, scope)
-        Botany (taxonomy, plant parts, species, cultivation types)
-        Phytochemistry (active compounds, chemical classes, bioavailability)
-        Therapeutics (health uses, conditions, systems, outcomes)
-        Traditions (TCM, Ayurveda, Western, indigenous systems, energetics)
-        Preparation (forms, methods, administration routes)
-        Safety (dosage, toxicity, interactions, contraindications)
-        Evidence (research, studies, mechanisms, validation)
-        Regulation (legal status, standards, compliance, quality control)
-        Cultivation (growing, harvesting, storage, sustainability)
-        Selection (comparisons, choice criteria, formats, quality)
-        History (cultural, historical, social context)
-        Commerce (market, supply chains, sourcing, economics)
-    '''
-
-    '''
-        What are medicinal herbs? (Definition)
-        How are medicinal herbs classified botanically? (Botany)
-        What compounds do medicinal herbs contain? (Phytochemistry)
-        What are medicinal herbs used for? (Therapeutics)
-        Which traditions use medicinal herbs? (Traditions)
-        How are medicinal herbs prepared? (Preparation)
-        Are medicinal herbs safe to use? (Safety)
-        What evidence supports medicinal herbs? (Evidence)
-        How are medicinal herbs regulated? (Regulation)
-        How are medicinal herbs grown and harvested? (Cultivation)
-        How do you choose medicinal herbs? (Selection)
-        How have medicinal herbs been used historically? (History)
-        How are medicinal herbs produced and sold? (Commerce)
-    '''
 
     article_html = f'''
 <h1>Medicinal Herbs</h1>
@@ -407,6 +99,8 @@ def herbs_hub_gen():
 <section>
   <h2>How are medicinal herbs regulated?</h2>
   <p>Medicinal herbs are regulated differently across regions and are commonly classified as dietary supplements or herbal medicines. Oversight may involve authorities such as the FDA, EMA, and WHO, with varying requirements for quality, safety, and labeling.</p>
+
+  <p>Explore detailed rules and compliance guidance in our <a href="/herbs/regulation.html">regulation of medicinal herbs</a> page.</p>
 </section>
 
 <section>
@@ -1468,7 +1162,7 @@ def herbs_evidence_gen():
 Scientific Evidence for Medicinal Herbs
 </h1>
 <p>
-Scientific evidence for medicinal herbs is generated through preclinical research, randomized controlled trials, observational studies, systematic reviews, and meta-analyses that evaluate safety, efficacy, mechanisms of action, and dosage. Evidence strength depends on study design, statistical analysis, bias control, regulatory standards, and reproducibility across diverse botanical preparations.
+Le applicazioni dei sistemi ad ozono industriali comprendono il trattamento di acque, reflui, aria e fluidi di processo in numerosi settori produttivi, tra cui alimentare, farmaceutico, chimico, tessile e cartario. L’ozono è impiegato per disinfezione, ossidazione e deodorizzazione, garantendo riduzione della carica microbica, abbattimento di contaminanti organici e miglioramento della qualità ambientale. L’efficacia del trattamento dipende da parametri operativi come concentrazione, tempo di contatto e integrazione con tecnologie complementari, rendendo l’ozonizzazione una soluzione strategica nei processi industriali avanzati.
 </p>
 
 <section>
@@ -1554,6 +1248,127 @@ Scientific evidence for medicinal herbs is generated through preclinical researc
     meta_title = 'Evidence for Medicinal Herbs: Clinical Trials, Study Design, Safety, and Regulation'
     meta_description = 'Explore the scientific evidence behind medicinal herbs, including clinical trials, study design, bias, statistical analysis, safety evaluation, regulatory standards, and research limitations. Learn how herbal evidence is generated, graded, and applied in practice.'
     canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/herbs/evidence.html">'''
+    head_html = components.html_head(meta_title, meta_description, css='/styles-herb.css', canonical=canonical_html)
+    import textwrap
+    sidebar_hub_html = sidebar_hub_gen()
+    html = textwrap.dedent(f''' 
+        <!DOCTYPE html>
+        <html lang="en">
+        {head_html}
+        <body>
+            {sections.header_default()}
+            <div class="hub">
+                {sidebar_hub_html}
+                <main>
+                    <article>
+                        {article_html}
+                    </article>
+                </main>
+                {sidebar_page_html}
+            </div>
+            {sections.footer()}
+        </body>
+        </html>
+    ''').strip()
+    html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
+    with open(html_filepath, 'w') as f: f.write(html)
+
+def herbs_regulation_gen():
+    url_slug = 'herbs/regulation'
+
+    article_html = f'''
+<h1>
+Regulation of Medicinal Herbs
+</h1>
+<p>
+Medicinal herbs are subject to complex regulations that ensure safety, quality, and legal compliance across the globe. Regulatory frameworks cover authorities, product classification, manufacturing standards, licensing, safety, marketing claims, trade compliance, enforcement, and proper documentation, providing clear guidance for manufacturers, sellers, and consumers.
+</p>
+
+  <p>Learn more about the full range of medicinal herbs and their uses in our <a href="/herbs.html">medicinal herbs hub</a>.</p>
+
+<section>
+  <h2>Global and national regulatory bodies</h2>
+  <p>Global and national regulatory bodies oversee the safety, quality, and compliance of medicinal herbs through laws and guidelines. Key authorities include the FDA, EMA, WHO, national health ministries, and herbal medicine boards, ensuring products meet legal and health standards worldwide.</p>
+</section>
+
+<section>
+  <h2>Product categories and legal status</h2>
+  <p>Medicinal herbs are classified by product category and legal status, including dietary supplements, herbal medicines, pharmaceuticals, OTC, prescription, and traditional medicine. Classification determines regulatory requirements, marketing rules, and permitted therapeutic claims in each jurisdiction.</p>
+</section>
+
+<section>
+  <h2>Manufacturing and labeling requirements</h2>
+  <p>Manufacturing and labeling of medicinal herbs must comply with GMP, ingredient disclosure, safety testing, contaminant limits, batch traceability, and storage regulations. These requirements ensure product consistency, quality, and transparency for consumers and regulatory authorities.</p>
+</section>
+
+<section>
+  <h2>Registration and authorization processes</h2>
+  <p>Registration and authorization processes involve product registration, manufacturer licensing, import/export permits, dossier submission, clinical evidence, and post-market monitoring. Compliance ensures that medicinal herbs meet legal, safety, and quality standards before reaching consumers.</p>
+</section>
+
+<section>
+  <h2>Monographs, pharmacopoeias, and extract specifications</h2>
+  <p>Monographs, pharmacopoeias, and extract specifications define purity, potency, standardization, identity verification, and active compound thresholds. Key references include USP, EP, BP, and WHO herbal monographs, which guide regulatory compliance and product consistency.</p>
+</section>
+
+<section>
+  <h2>Toxicity, warnings, and intake limits</h2>
+  <p>Toxicity, warnings, and intake limits regulate safe use, including maximum daily intake, contraindications, age restrictions, pregnancy, and drug interactions. These safety measures prevent adverse effects and ensure consumer protection under legal frameworks.</p>
+</section>
+
+<section>
+  <h2>Permitted marketing and health statements</h2>
+  <p>Permitted marketing and health statements govern advertising, health claims, prohibited claims, substantiation requirements, social media compliance, and marketing authorization. Regulations ensure that all promotional material for medicinal herbs is truthful, evidence-based, and legally compliant.</p>
+</section>
+
+<section>
+  <h2>Import, export, and international compliance</h2>
+  <p>Import, export, and international compliance cover import licenses, export permits, customs regulations, CITES rules, cross-border labeling, trade documentation, and international treaties. These measures facilitate lawful global trade while maintaining product safety and traceability.</p>
+</section>
+
+<section>
+  <h2>Inspections, penalties, and product recalls</h2>
+  <p>Inspections, penalties, and product recalls enforce regulatory compliance through fines, license suspension, civil and criminal liability, consumer protection measures, and mandatory recalls. Enforcement actions ensure that non-compliant products are corrected or removed from the market.</p>
+</section>
+
+<section>
+  <h2>Country-specific legal frameworks</h2>
+  <p>Country-specific legal frameworks establish rules for medicinal herbs in jurisdictions such as the USA, EU, Canada, Australia, India, China, Japan, Africa, and Latin America. These laws dictate classification, safety standards, registration, and marketing requirements.</p>
+</section>
+
+<section>
+  <h2>E-commerce, online marketplaces, and digital compliance</h2>
+  <p>E-commerce and online marketplaces require compliance with digital regulations, including telehealth, digital labeling, QR codes, blockchain traceability, and platform-specific rules. These ensure safe and legal online distribution of medicinal herbs.</p>
+</section>
+
+<section>
+  <h2>Global standards and international guidelines</h2>
+  <p>Global standards and international guidelines, including Codex Alimentarius, WHO guidance, ICH guidelines, mutual recognition agreements, and harmonization initiatives, provide consistent rules for safety, quality, and efficacy across borders.</p>
+</section>
+
+<section>
+  <h2>Record-keeping and audit readiness</h2>
+  <p>Record-keeping and audit readiness require certificates of analysis, batch records, SOPs, adverse event logs, import/export documentation, and clinical documentation. Maintaining accurate records ensures compliance and facilitates regulatory inspections and audits.</p>
+</section>
+    '''
+
+    article_with_ids_html = ''
+    toc = []
+    i = 0
+    for line in article_html.split('\n'):
+        line = line.strip()
+        if '<h2>' in line:
+            line_content = line.replace('<h2>', '').replace('</h2>', '')
+            line = line.replace('<h2>', f'<h2 id="{i}">')
+            toc.append({'href': i, 'anchor': line_content})
+            i += 1
+        article_with_ids_html += f'{line}\n'
+    article_html = article_with_ids_html
+    sidebar_page_html = sidebar_page_gen(toc) 
+
+    meta_title = 'Regulation of Medicinal Herbs: Global Authorities, Compliance, and Safety Standards'
+    meta_description = 'Explore comprehensive regulations for medicinal herbs, including global authorities, product classification, safety standards, licensing, labeling, import/export compliance, enforcement, and record-keeping to ensure quality and legal compliance.'
+    canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''
     head_html = components.html_head(meta_title, meta_description, css='/styles-herb.css', canonical=canonical_html)
     import textwrap
     sidebar_hub_html = sidebar_hub_gen()
@@ -1708,6 +1523,7 @@ def main():
     herbs_preparation_gen()
     herbs_safety_gen()
     herbs_evidence_gen()
+    herbs_regulation_gen()
 
 main()
 
