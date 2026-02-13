@@ -15,11 +15,11 @@ Limitazioni
 Integrazione
 CasiStudio
 
-ok, i want to move on to the "Regulation" topic now. this topic will be our new core entity (always in the context of medicinal herbs). give me a complete and exhaustive list of subtopics (attribute vectors based on the EAV) i have to write about in this topic hub based on STA. always consider the macro-context of this topic when choosing this vector and don't go off topic.
+ok, i want to move on to the "Commerce" topic now. this topic will be our new core entity (always in the context of medicinal herbs). give me a complete and exhaustive list of subtopics (attribute vectors based on the EAV) i have to write about in this topic hub based on STA. always consider the macro-context of this topic when choosing this vector and don't go off topic.
 
 my core entity is "sistemi ad ozono industriali". give me a complete and exhaustive list of subtopics (attribute vectors based on the EAV) i have to write about in this topic hub based on STA.
 
-ok, i want to move on to the "Chimico" topic now. this topic will be our new core entity (always in the context of applicazioni sistemi ad ozono industriali). give me a complete and exhaustive list of subtopics (attribute vectors based on the EAV) i have to write about in this topic hub based on STA. always consider the macro-context of this topic when choosing this vector and don't go off topic.
+ok, i want to move on to the "Fluidi" topic now. this topic will be our new core entity (always in the context of applicazioni sistemi ad ozono industriali). give me a complete and exhaustive list of subtopics (attribute vectors based on the EAV) i have to write about in this topic hub based on STA. always consider the macro-context of this topic when choosing this vector and don't go off topic.
 
 
 

@@ -20,8 +20,6 @@ def sidebar_hub_gen():
                         <li><a style="text-decoration: none;" href="/herbs/regulation.html">Regulation</a></li>
                         <li><a style="text-decoration: none;" href="/herbs/cultivation.html">Cultivation</a></li>
                         <li><a style="text-decoration: none;" href="/herbs/selection.html">Selection</a></li>
-                        <li><a style="text-decoration: none;" href="/herbs/history.html">History</a></li>
-                        <li><a style="text-decoration: none;" href="/herbs/commerce.html">Commerce</a></li>
                     </ul>
                 </li>
             </ul>
@@ -111,26 +109,23 @@ def herbs_hub_gen():
 <section>
   <h2>How are medicinal herbs grown and harvested?</h2>
   <p>Medicinal herbs are grown through cultivation or wildcrafting and harvested at specific growth stages to maximize potency. Drying, storage, sustainability practices, and post-harvest handling directly affect herbal quality and shelf life.</p>
+
 <p>For detailed guidance on growing and harvesting medicinal herbs visit <a href="/herbs/cultivation.html">Cultivation of medicinal herbs</a>.</p>
 </section>
 
 <section>
   <h2>How do you choose medicinal herbs?</h2>
   <p>Medicinal herbs are chosen based on quality, authenticity, preparation form, standardized extracts, certifications, and intended health goals. Careful selection improves safety, consistency, and the likelihood of achieving desired therapeutic outcomes.</p>
-<p>Learn how to choose the right herbs <a href="/herbs/selection.html">with this comprehensive selection guide</a></p>
 </section>
 
 <section>
   <h2>How have medicinal herbs been used historically?</h2>
   <p>Medicinal herbs have been used throughout history in ancient civilizations, folk medicine, and early medical systems. Historical use informed the development of herbal pharmacology, therapeutic traditions, and modern approaches to herbal medicine.</p>
-<p>Discover the earliest remedies used by different societies at <a href="/herbs/history.html">Ancient Civilizations</a></p>
 </section>
 
 <section>
   <h2>How are medicinal herbs produced and sold?</h2>
   <p>Medicinal herbs are produced through cultivation, harvesting, processing, and quality control before being sold in local and global markets. Production and distribution involve supply chains, ethical sourcing, regulatory compliance, and quality standards.</p>
-
-<p>Discover detailed insights on market trends supply and distribution in our dedicated commerce page <a href="/herbs/commerce.html">Explore medicinal herbs commerce</a></p>
 </section>
     '''
 
@@ -1631,223 +1626,6 @@ Selecting the right medicinal herbs requires careful consideration of quality, s
     html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
     with open(html_filepath, 'w') as f: f.write(html)
 
-def herbs_history_gen():
-    url_slug = 'herbs/history'
-
-    article_html = f'''
-<h1>
-The Complete History of Medicinal Herbs
-</h1>
-<p>
-Medicinal herbs have been used for thousands of years across civilizations including Sumerian, Egyptian, Chinese, and Vedic Indian cultures. From classical texts and medieval gardens to Renaissance exploration and modern scientific study, their preparation, trade, and cultural significance shaped global health practices throughout history.
-</p>
-
-<p>For a complete guide to all plants and their uses visit <a href="/herbs.html">Medicinal Herbs Hub</a></p>
-
-<section>
-  <h2>Origins in Ancient Civilizations</h2>
-  <p>Ancient civilizations like the Sumerians, Egyptians, Chinese, Vedic India, Indigenous Americans, and Africans used plants for healing, rituals, and daily health. Early cultivation, documentation, and observation of plant properties laid the foundation for systematic herbal practices across regions.</p>
-</section>
-
-<section>
-  <h2>Knowledge in Classical Texts</h2>
-  <p>Classical texts such as Papyrus Ebers, De Materia Medica, Charaka Samhita, Sushruta Samhita, the Hippocratic Corpus, Galen’s works, and Li Shizhen’s Compendium recorded detailed information on herbs, preparations, and therapeutic applications, preserving and transmitting botanical knowledge across centuries.</p>
-</section>
-
-<section>
-  <h2>Practices During the Medieval Era</h2>
-  <p>During the medieval era, monastic gardens, Islamic scholars like Avicenna and Al-Razi, Arabic-to-Latin translations, and trade routes such as the Silk Road enabled widespread cultivation, documentation, and dissemination of herbal knowledge across Europe, Asia, and North Africa.</p>
-</section>
-
-<section>
-  <h2>Developments in the Renaissance</h2>
-  <p>In the Renaissance, figures like John Gerard and Nicholas Culpeper documented European herbals, while the printing press, botanical gardens, and introduction of New World plants expanded access, standardization, and scientific observation of plant-based remedies.</p>
-</section>
-
-<section>
-  <h2>Advances in the Scientific Era</h2>
-  <p>The scientific era brought chemical extraction, identification of alkaloids and glycosides, laboratory research, and the establishment of pharmacology schools, transforming traditional herbal knowledge into measurable compounds and integrating ethnobotany into scientific study.</p>
-</section>
-
-<section>
-  <h2>Revival in Modern Medicine</h2>
-  <p>The 20th and 21st centuries saw a revival of herbal practices through CAM movements, WHO guidelines, clinical research, regulatory frameworks, standardization of extracts, and commercialization, re-establishing historical knowledge in contemporary health systems.</p>
-</section>
-
-<section>
-  <h2>Cultural and Folk Traditions</h2>
-  <p>Cultural and folk traditions preserved herbal knowledge through oral transmission, rituals, symbolic use, indigenous practices, ceremonial applications, and generational learning, providing contextual understanding of plant properties and their social significance.</p>
-</section>
-
-<section>
-  <h2>Trade and Global Influence</h2>
-  <p>Trade routes like the Silk Road, Spice Route, colonial exchanges, and Mediterranean networks facilitated global distribution of herbs, influenced economic and cultural practices, and enabled cross-cultural adoption and adaptation of plant-based medicinal knowledge.</p>
-</section>
-
-<section>
-  <h2>Pioneering Historical Figures</h2>
-  <p>Historical figures including Dioscorides, Hippocrates, Galen, Avicenna, Paracelsus, Nicholas Culpeper, and Li Shizhen made seminal contributions by documenting herbal properties, therapeutic applications, and preparation methods, shaping both traditional and early scientific medicine.</p>
-</section>
-
-<section>
-  <h2>Historical Techniques and Preparation</h2>
-  <p>Historical techniques included infusions, decoctions, ointments, preservation methods, measurement units, cultivation in gardens, and systematic preparation practices, enabling consistent application, storage, and study of herbal remedies across generations.</p>
-</section>
-    '''
-
-    article_with_ids_html = ''
-    toc = []
-    i = 0
-    for line in article_html.split('\n'):
-        line = line.strip()
-        if '<h2>' in line:
-            line_content = line.replace('<h2>', '').replace('</h2>', '')
-            line = line.replace('<h2>', f'<h2 id="{i}">')
-            toc.append({'href': i, 'anchor': line_content})
-            i += 1
-        article_with_ids_html += f'{line}\n'
-    article_html = article_with_ids_html
-    sidebar_page_html = sidebar_page_gen(toc) 
-
-    meta_title = 'History of Medicinal Herbs: Ancient Practices, Texts, and Global Influence'
-    meta_description = 'Explore the history of medicinal herbs from ancient civilizations to modern medicine. Learn about classical texts, medieval and Renaissance practices, pioneering figures, cultural traditions, trade routes, and historical preparation techniques.'
-    canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''
-    head_html = components.html_head(meta_title, meta_description, css='/styles-herb.css', canonical=canonical_html)
-    import textwrap
-    sidebar_hub_html = sidebar_hub_gen()
-    html = textwrap.dedent(f''' 
-        <!DOCTYPE html>
-        <html lang="en">
-        {head_html}
-        <body>
-            {sections.header_default()}
-            <div class="hub">
-                {sidebar_hub_html}
-                <main>
-                    <article>
-                        {article_html}
-                    </article>
-                </main>
-                {sidebar_page_html}
-            </div>
-            {sections.footer()}
-        </body>
-        </html>
-    ''').strip()
-    html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
-    with open(html_filepath, 'w') as f: f.write(html)
-
-def herbs_commerce_gen():
-    url_slug = 'herbs/commerce'
-
-    article_html = f'''
-<h1>
-Commerce of Medicinal Herbs: Market, Supply, and Growth
-</h1>
-<p>
-The commerce of medicinal herbs encompasses global market trends, supply chains, pricing strategies, distribution channels, consumer behavior, and regulatory frameworks. Understanding production, quality management, sustainability, innovation, and investment opportunities provides a complete view of the economic ecosystem driving growth and accessibility in the herbal industry.
-</p>
-
-<p>Learn more about the medicinal properties preparation and therapeutic uses in the main hub <a href="/herbs.html">Go to medicinal herbs hub</a></p>
-
-<section>
-  <h2>Market trends and segmentation</h2>
-  <p>The global market for medicinal herbs is expanding rapidly, with regional differences in demand and consumer demographics. Growth is driven by wellness trends, natural remedies, and functional products, while market segmentation spans raw herbs, extracts, capsules, oils, and other value-added formats.</p>
-</section>
-
-<section>
-  <h2>Supply chain and production</h2>
-  <p>Herbal commerce relies on sourcing from cultivation or wildcrafting, followed by harvesting, processing, storage, and logistics. Effective traceability, quality control, and intermediary management ensure consistent supply, while post-harvest handling and processing methods determine potency, shelf life, and commercial value.</p>
-</section>
-
-<section>
-  <h2>Regulatory frameworks and compliance</h2>
-  <p>Regulatory compliance varies by region, including FDA, EMA, and WHO guidelines. Certifications, labeling rules, GMP adherence, and import/export regulations govern safety, quality, and marketing claims, ensuring legal distribution while preventing adulteration, contamination, and fraudulent practices in herbal commerce.</p>
-</section>
-
-<section>
-  <h2>Pricing strategies and economics</h2>
-  <p>Herbal pricing depends on production costs, quality, rarity, and market demand. Margins vary between premium and commodity herbs, while seasonal fluctuations and certifications influence value. Pricing strategies also consider wholesale vs retail, price elasticity, and opportunities for value-added products to maximize profitability.</p>
-</section>
-
-<section>
-  <h2>Distribution channels and sales</h2>
-  <p>Medicinal herbs are sold through retail stores, e-commerce platforms, B2B and B2C channels, and subscription services. Effective distribution requires optimized logistics, integration across channels, export/import coordination, and partnerships, enabling widespread access and consistent availability for diverse consumer segments.</p>
-</section>
-
-<section>
-  <h2>Consumer behavior and demand</h2>
-  <p>Consumers purchase medicinal herbs based on health motivations, awareness, and demographic factors. Buying habits vary between fresh, dried, or extract forms, influenced by seasonal demand, trust in brands or certifications, price sensitivity, and the perceived effectiveness of the products.</p>
-</section>
-
-<section>
-  <h2>Marketing and branding approaches</h2>
-  <p>Successful marketing positions herbal products with clear branding, digital campaigns, content strategy, and influencer engagement. Packaging, storytelling, and differentiation emphasize quality and authenticity, while promotional strategies, online visibility, and educational content drive consumer trust and sales.</p>
-</section>
-
-<section>
-  <h2>Sustainability and ethical sourcing</h2>
-  <p>Ethical sourcing prioritizes fair trade, responsible harvesting, and environmental sustainability. Certifications, CSR initiatives, and avoidance of endangered species ensure compliance with ecological standards while meeting consumer demand for ethically produced and environmentally responsible herbal products.</p>
-</section>
-
-<section>
-  <h2>Quality control and risk management</h2>
-  <p>Quality management addresses adulteration, contamination, and testing of active compounds. Risk mitigation includes monitoring shelf-life, traceability, regulatory compliance, recalls, and certification audits, ensuring product safety, consistency, and consumer trust across the supply chain.</p>
-</section>
-
-<section>
-  <h2>Innovation and future trends</h2>
-  <p>The herbal commerce sector is evolving with new product formats, functional blends, digital tools, and personalized offerings. Emerging markets, research-driven nutraceuticals, and technology integration enhance accessibility, effectiveness, and market differentiation, driving future growth and consumer engagement.</p>
-</section>
-
-<section>
-  <h2>Financial planning and investment</h2>
-  <p>Investment in herbal commerce involves assessing ROI, funding opportunities, profitability, and market valuation. Strategic decisions include venture capital, mergers and acquisitions, expansion planning, and resource allocation, ensuring sustainable growth and long-term financial success in the competitive herbal market.</p>
-</section>
-    '''
-
-    article_with_ids_html = ''
-    toc = []
-    i = 0
-    for line in article_html.split('\n'):
-        line = line.strip()
-        if '<h2>' in line:
-            line_content = line.replace('<h2>', '').replace('</h2>', '')
-            line = line.replace('<h2>', f'<h2 id="{i}">')
-            toc.append({'href': i, 'anchor': line_content})
-            i += 1
-        article_with_ids_html += f'{line}\n'
-    article_html = article_with_ids_html
-    sidebar_page_html = sidebar_page_gen(toc) 
-
-    meta_title = 'Medicinal Herbs Commerce: Market, Supply & Trends'
-    meta_description = 'Explore global market trends, supply chains, pricing, distribution, and investment opportunities shaping the commerce of medicinal herbs worldwide.'
-    canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''
-    head_html = components.html_head(meta_title, meta_description, css='/styles-herb.css', canonical=canonical_html)
-    import textwrap
-    sidebar_hub_html = sidebar_hub_gen()
-    html = textwrap.dedent(f''' 
-        <!DOCTYPE html>
-        <html lang="en">
-        {head_html}
-        <body>
-            {sections.header_default()}
-            <div class="hub">
-                {sidebar_hub_html}
-                <main>
-                    <article>
-                        {article_html}
-                    </article>
-                </main>
-                {sidebar_page_html}
-            </div>
-            {sections.footer()}
-        </body>
-        </html>
-    ''').strip()
-    html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
-    with open(html_filepath, 'w') as f: f.write(html)
-
 def herbs_safety_gen():
     url_slug = 'herbs/safety'
 
@@ -1980,8 +1758,6 @@ def main():
     herbs_regulation_gen()
     herbs_cultivation_gen()
     herbs_selection_gen()
-    herbs_history_gen()
-    herbs_commerce_gen()
 
 main()
 
