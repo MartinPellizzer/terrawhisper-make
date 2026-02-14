@@ -58,80 +58,780 @@ def herbs_hub_gen():
     canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/herbs.html">'''
     head_html = components.html_head(meta_title, meta_description, css='/styles-herb.css', canonical=canonical_html)
 
-    article_html = f'''
-<h1>Medicinal Herbs</h1>
-
+    section_definition_html = f'''
 <section>
   <h2>What are medicinal herbs?</h2>
   <p>Medicinal herbs are plants used to support human health through bioactive compounds that produce therapeutic effects. They are applied in traditional medicine and modern herbalism to prevent disease, manage symptoms, and support physiological functions.</p>
-</section>
+<h3>What qualifies a plant as a medicinal herb?</h3>
+  <p>
+    A plant qualifies as a medicinal herb when a plant species contains bioactive compounds and has documented therapeutic use within a recognized medical tradition or pharmacopeia. Qualification depends on consistent application in herbal practice, recorded relevance to human health, and established identity as plant material used for therapeutic purposes rather than solely nutritional or ornamental value.
+  </p>
 
+  <h3>Are all herbs medicinal?</h3>
+  <p>
+    Not all herbs are medicinal, because plant classification distinguishes culinary herbs, aromatic plants, edible plants, and medicinal plants based on intended purpose. A herb becomes medicinal when it is used for therapeutic purposes in relation to human health, rather than exclusively for flavor, fragrance, or general nutrition.
+  </p>
+
+  <h3>What is the difference between medicinal herbs and herbal medicine?</h3>
+  <p>
+    Medicinal herbs are plant materials with therapeutic properties, whereas herbal medicine is the structured system that applies those plant materials within therapeutic systems and clinical application. Herbal products represent processed forms derived from medicinal herbs, but the core entity remains the plant species recognized for therapeutic use in traditional systems and professional herbal practice.
+  </p>
+
+  <h3>What is the scope of medicinal herbs?</h3>
+  <p>
+    The scope of medicinal herbs includes whole plant species and specific plant parts such as leaves, roots, bark, flowers, and seeds that are identified for therapeutic relevance. Scope also encompasses botanical varieties and distinct plant materials recognized within plant classification as having defined medicinal identity.
+  </p>
+
+  <h3>Are medicinal herbs natural medicines?</h3>
+  <p>
+    Medicinal herbs are considered natural medicines because they originate from whole plant materials and contain plant-derived substances rather than synthetic drugs or isolated pharmaceutical compounds. Unlike laboratory-created chemicals, medicinal herbs maintain their identity as botanical sources used for therapeutic purposes within natural health systems.
+  </p>
+
+  <h3>How are medicinal herbs recognized across cultures?</h3>
+  <p>
+    Medicinal herbs are recognized across cultures through inclusion in traditional systems, herbal traditions, pharmacopeias, written records, and oral traditions that document therapeutic use. Cultural medicine and Indigenous knowledge have preserved plant species identities over generations, establishing cross-cultural recognition of medicinal herbs as therapeutic plant resources.
+  </p>
+</section>
+    '''
+
+    section_botany_html = f'''
 <section>
   <h2>How are medicinal herbs classified botanically?</h2>
-  <p>Medicinal herbs are classified botanically by plant family, genus, species, and the plant parts used, including leaves, roots, flowers, seeds, and bark. Botanical classification also distinguishes annual, biennial, and perennial medicinal herbs.</p>
+  <p>
+    Medicinal herbs are classified botanically by plant family, genus, species, and the plant parts used, including leaves, roots, flowers, seeds, and bark. Botanical classification also distinguishes annual, biennial, and perennial medicinal herbs.
+  </p>
+<p>For a complete breakdown of plant taxonomy, morphology, lifecycle, and identification criteria, see our detailed guide to <a href="/herbs/botany.html">botanical classification and plant structure of herbs</a>.</p>
+  <h3>What is botanical taxonomy?</h3>
+  <p>
+    Botanical taxonomy is the scientific system used to identify, name, and classify plants based on shared morphological and genetic characteristics. It organizes medicinal herbs into hierarchical ranks to ensure accurate identification and differentiation between species.
+  </p>
+  <table>
+    <thead>
+      <tr>
+        <th>Rank</th>
+        <th>Definition</th>
+        <th>Example (Peppermint)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Kingdom</td>
+        <td>Highest plant grouping</td>
+        <td>Plantae</td>
+      </tr>
+      <tr>
+        <td>Family</td>
+        <td>Group of related genera</td>
+        <td>Lamiaceae</td>
+      </tr>
+      <tr>
+        <td>Genus</td>
+        <td>Closely related species</td>
+        <td>Mentha</td>
+      </tr>
+      <tr>
+        <td>Species</td>
+        <td>Unique biological identity</td>
+        <td>Mentha × piperita</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3>Why are scientific names important for medicinal herbs?</h3>
+  <p>
+    Scientific names prevent confusion caused by common names and ensure the correct species is used for medicinal purposes. Different species within the same genus may contain different phytochemical profiles, therapeutic properties, and safety considerations.
+  </p>
+  <h3>How are medicinal herbs classified by plant part used?</h3>
+  <p>
+    Medicinal herbs are further classified according to the anatomical plant part used therapeutically. The concentration of bioactive compounds often varies by plant part, influencing preparation method and therapeutic application.
+  </p>
+  <ul>
+    <li><strong>Roots</strong> – storage organs rich in alkaloids and glycosides</li>
+    <li><strong>Leaves</strong> – common source of flavonoids and volatile compounds</li>
+    <li><strong>Flowers</strong> – often contain aromatic oils and pigments</li>
+    <li><strong>Bark</strong> – may contain tannins and protective compounds</li>
+    <li><strong>Seeds</strong> – concentrated in oils and fatty acids</li>
+  </ul>
+  <h3>How does plant lifecycle affect classification?</h3>
+  <p>
+    Medicinal herbs are categorized by lifecycle as annual, biennial, or perennial species. Lifecycle classification influences cultivation practices, harvesting schedules, and the seasonal concentration of secondary metabolites.
+  </p>
+  <ul>
+    <li><strong>Annual</strong> – completes lifecycle within one growing season</li>
+    <li><strong>Biennial</strong> – vegetative growth in year one, flowering in year two</li>
+    <li><strong>Perennial</strong> – lives and produces growth for multiple years</li>
+  </ul>
+  <h3>How do plant families influence medicinal properties?</h3>
+  <p>
+    Plant families often share structural traits and characteristic phytochemicals. For example, the Lamiaceae family commonly contains aromatic essential oils, while the Asteraceae family frequently includes bitter compounds and sesquiterpene lactones.
+  </p>
+  <h3>What is botanical identification?</h3>
+  <p>
+    Botanical identification involves examining morphological characteristics such as leaf arrangement, flower structure, stem texture, and root morphology to verify species identity. Accurate identification reduces adulteration risk and ensures therapeutic consistency.
+  </p>
+  <figure>
+    <img src="medicinal-herb-morphology-diagram.jpg" alt="Diagram of medicinal herb morphology including roots, stems, leaves, flowers, and seeds">
+    <figcaption>
+      Morphological structures used for botanical identification of medicinal herbs.
+    </figcaption>
+  </figure>
+  <h3>How does botanical classification support herbal safety and efficacy?</h3>
+  <p>
+    Accurate botanical classification ensures correct species selection, appropriate plant part usage, and alignment with established phytochemical profiles. Misidentification may lead to reduced efficacy, unexpected toxicity, or harmful herb substitution.
+  </p>
 </section>
+    '''
 
+    section_phytochemistry_html = f'''
 <section>
-  <h2>What compounds do medicinal herbs contain?</h2>
-  <p>Medicinal herbs contain bioactive compounds such as alkaloids, flavonoids, terpenes, glycosides, saponins, tannins, and essential oils. These phytochemicals determine the biological activity, potency, and therapeutic properties of medicinal herbs.</p>
+<h2>Phytochemistry</h2>
+<p>Medicinal herbs contain bioactive compounds such as alkaloids, flavonoids, terpenes, glycosides, saponins, tannins, and essential oils. These phytochemicals determine the biological activity, potency, and therapeutic properties of medicinal herbs.</p>
+<p>For a complete breakdown of compound classes, biosynthesis, analytical methods, and standardization principles, see the full <a href="/herbs/phytochemistry.html">phytochemistry of herbs guide</a>.</p>
+<h3>What are the main phytochemical classes in herbs?</h3>
+<p>Phytochemicals in herbs are grouped into major chemical classes based on structure and biosynthetic origin. Each class contributes distinct biological activities and therapeutic effects.</p>
+<ul>
+  <li>Alkaloids – nitrogen-containing compounds with strong physiological activity</li>
+  <li>Flavonoids – polyphenols with antioxidant and anti-inflammatory properties</li>
+  <li>Terpenes and terpenoids – aromatic compounds common in essential oils</li>
+  <li>Glycosides – sugar-bound compounds influencing solubility and activity</li>
+  <li>Saponins – amphipathic compounds with membrane-modulating effects</li>
+  <li>Tannins – astringent polyphenols affecting proteins and digestion</li>
+  <li>Phenolic acids – antioxidant compounds involved in plant defense</li>
+</ul>
+<h3>How do phytochemicals affect the body?</h3>
+<p>Phytochemicals influence human physiology through antioxidant activity, enzyme modulation, receptor binding, antimicrobial action, immune regulation, and metabolic signaling. Their effects depend on molecular structure, concentration, and interaction with other compounds within the herbal matrix.</p>
+<table>
+  <thead>
+    <tr>
+      <th>Compound Class</th>
+      <th>Primary Activity</th>
+      <th>Common Physiological Target</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Alkaloids</td>
+      <td>Neuroactive modulation</td>
+      <td>Nervous system receptors</td>
+    </tr>
+    <tr>
+      <td>Flavonoids</td>
+      <td>Antioxidant defense</td>
+      <td>Cellular oxidative pathways</td>
+    </tr>
+    <tr>
+      <td>Terpenes</td>
+      <td>Anti-inflammatory signaling</td>
+      <td>Immune mediators</td>
+    </tr>
+    <tr>
+      <td>Glycosides</td>
+      <td>Cardiovascular modulation</td>
+      <td>Cardiac tissue</td>
+    </tr>
+  </tbody>
+</table>
+<h3>Why does whole-herb phytochemistry matter?</h3>
+<p>Whole herbs contain multiple phytochemicals that interact synergistically. This multi-compound matrix can enhance bioavailability, reduce toxicity, and broaden therapeutic effects compared to isolated compounds. Synergy and matrix effects are central principles in traditional herbal medicine and modern phytochemical research.</p>
+<h3>What influences phytochemical concentration?</h3>
+<p>Phytochemical content varies based on genetics, chemotype, soil composition, climate, altitude, harvest time, plant age, and post-harvest processing. These variables affect potency, stability, and consistency across herbal batches.</p>
+<ul>
+  <li>Genetic variation determines baseline compound production</li>
+  <li>Environmental stress alters secondary metabolite synthesis</li>
+  <li>Harvest timing influences peak compound concentration</li>
+  <li>Drying and storage impact stability and degradation</li>
+</ul>
+<h3>How are phytochemicals measured and standardized?</h3>
+<p>Phytochemicals are identified and quantified using analytical methods such as chromatography, HPLC, GC-MS, and spectroscopy. Standardization ensures consistent levels of marker compounds in herbal extracts, supporting quality control, safety, and reproducibility.</p>
+<p>Together, compound classification, biological activity, synergy, variability, and standardization form the phytochemical foundation that explains how herbs produce therapeutic effects in clinical and traditional contexts.</p>
 </section>
+    '''
 
+    section_therapeutics_html = f'''
 <section>
-  <h2>What are medicinal herbs used for?</h2>
-  <p>Medicinal herbs are used to support health conditions related to inflammation, digestion, immunity, stress, sleep, pain, and metabolic balance. Their therapeutic uses depend on active compounds, preparation method, dosage, and traditional or clinical application.</p>
+<h2>Therapeutics</h2>
+<p>Medicinal herbs are used to support health conditions related to inflammation, digestion, immunity, stress, sleep, pain, and metabolic balance. Their therapeutic uses depend on active compounds, preparation method, dosage, and traditional or clinical application.</p>
+<p>For a complete breakdown of therapeutic classifications, mechanisms, and condition-based applications, see the detailed guide on <a href="/herbs/therapeutics.html">herbal therapeutics</a>.</p>
+<h3>Which body systems do herbs therapeutically support?</h3>
+<p>Herbal therapeutics are commonly categorized by physiological systems. This classification strengthens semantic clarity by aligning herbs with anatomical and functional contexts.</p>
+<table>
+  <thead>
+    <tr>
+      <th>Body System</th>
+      <th>Primary Therapeutic Focus</th>
+      <th>Common Herbal Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Digestive</td>
+      <td>Indigestion, bloating, gut function</td>
+      <td>Carminative, bitter, demulcent</td>
+    </tr>
+    <tr>
+      <td>Nervous</td>
+      <td>Stress, anxiety, sleep</td>
+      <td>Adaptogenic, sedative, nervine</td>
+    </tr>
+    <tr>
+      <td>Immune</td>
+      <td>Resistance, infection support</td>
+      <td>Immunomodulatory, antimicrobial</td>
+    </tr>
+    <tr>
+      <td>Cardiovascular</td>
+      <td>Circulation, blood pressure</td>
+      <td>Vasodilator, cardiotonic</td>
+    </tr>
+    <tr>
+      <td>Respiratory</td>
+      <td>Cough, airway support</td>
+      <td>Expectorant, bronchodilator</td>
+    </tr>
+    <tr>
+      <td>Endocrine</td>
+      <td>Hormonal balance, metabolism</td>
+      <td>Adaptogen, endocrine modulator</td>
+    </tr>
+    <tr>
+      <td>Musculoskeletal</td>
+      <td>Joint pain, inflammation</td>
+      <td>Anti-inflammatory, analgesic</td>
+    </tr>
+    <tr>
+      <td>Integumentary</td>
+      <td>Skin repair, wound healing</td>
+      <td>Vulnerary, antimicrobial</td>
+    </tr>
+  </tbody>
+</table>
+<h3>What therapeutic functions do herbs perform?</h3>
+<p>Beyond body systems, herbs are also categorized by functional therapeutic action. This model strengthens entity-attribute mapping by connecting biological activity to measurable outcomes.</p>
+<ul>
+  <li>Anti-inflammatory</li>
+  <li>Analgesic</li>
+  <li>Antioxidant</li>
+  <li>Adaptogenic</li>
+  <li>Immunomodulatory</li>
+  <li>Antimicrobial</li>
+  <li>Sedative</li>
+  <li>Digestive stimulant</li>
+  <li>Hepatoprotective</li>
+  <li>Cardioprotective</li>
+</ul>
+<h3>How do herbs produce therapeutic effects?</h3>
+<p>Therapeutic effects are driven by phytochemicals interacting with physiological pathways. Mechanisms include modulation of inflammatory mediators, antioxidant activity against reactive oxygen species, neurotransmitter regulation, endocrine signaling influence, and enzyme pathway support in liver detoxification.</p>
+<p>Understanding mechanism strengthens evidence alignment between traditional use and clinical research, supporting structured evaluation of herbal efficacy.</p>
+<h3>Does preparation influence therapeutic outcomes?</h3>
+<p>Preparation method directly affects therapeutic potency and bioavailability. Water-based infusions extract volatile and water-soluble compounds, while decoctions concentrate dense plant materials such as roots and bark. Alcohol-based tinctures enhance extraction of alkaloids and resins, altering pharmacological strength.</p>
+<h3>How are therapeutic outcomes evaluated?</h3>
+<p>Therapeutic outcomes are evaluated through symptom relief, biomarker changes, functional improvement, and quality-of-life measures. Evidence may include clinical trials, in vivo studies, and mechanistic research validating traditional therapeutic claims.</p>
+<p>Together, body-system classification, functional action, mechanism of action, preparation method, and evidence form the complete therapeutic framework for medicinal herbs.</p>
 </section>
+    '''
 
+    section_traditions_html = f'''
 <section>
-  <h2>Which traditions use medicinal herbs?</h2>
-  <p>Medicinal herbs are used in traditions such as Ayurveda, Traditional Chinese Medicine, Western herbalism, Indigenous medicine, and Unani medicine. Each system applies medicinal herbs according to unique diagnostic models, energetics, and therapeutic principles.</p>
+<h2>Traditions</h2>
+<p>Medicinal herbs are used in traditions such as Ayurveda, Traditional Chinese Medicine, Western herbalism, Indigenous medicine, and Unani medicine. Each system applies medicinal herbs according to unique diagnostic models, energetics, and therapeutic principles.</p>
+<p>For a deeper breakdown of classification systems, formulations, and historical evolution, see the complete guide to <a href="/herbs/traditions.html">medicinal herb traditions</a>.</p>
+<h3>How does Ayurveda classify medicinal herbs?</h3>
+<p>Ayurveda classifies medicinal herbs according to Dosha (Vata, Pitta, Kapha), taste (Rasa), potency (Virya), post-digestive effect (Vipaka), and specific action (Prabhava). Herbs are selected to restore constitutional balance and support digestive fire, known as Agni.</p>
+<ul>
+  <li>Dosha influence: Vata, Pitta, Kapha</li>
+  <li>Energetics: heating or cooling</li>
+  <li>Primary focus: digestion, immunity, longevity</li>
+  <li>Common preparations: churnas, decoctions, medicated ghee</li>
+</ul>
+<h3>How does Traditional Chinese Medicine classify medicinal herbs?</h3>
+<p>Traditional Chinese Medicine classifies medicinal herbs by Yin and Yang properties, Five Elements correspondence, temperature, flavor, and meridian affiliation. Herbs are combined into formulas to regulate Qi, Blood, and Organ systems.</p>
+<table>
+  <thead>
+    <tr>
+      <th>Classification Principle</th>
+      <th>Example Attribute</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Energetic Nature</td>
+      <td>Cold, Cool, Warm, Hot</td>
+    </tr>
+    <tr>
+      <td>Flavor</td>
+      <td>Bitter, Sweet, Acrid, Sour, Salty</td>
+    </tr>
+    <tr>
+      <td>Meridian Entry</td>
+      <td>Liver, Lung, Spleen</td>
+    </tr>
+  </tbody>
+</table>
+<h3>How does Unani medicine approach medicinal herbs?</h3>
+<p>Unani medicine categorizes medicinal herbs according to temperament, known as Mizaj, defined by hot, cold, moist, and dry qualities. Treatment focuses on correcting humoral imbalance using single herbs or compound formulations such as majun and safoof.</p>
+<h3>What defines Western herbalism?</h3>
+<p>Western herbalism evolved from European folk medicine and Greco-Roman humoral theory. Modern clinical phytotherapy emphasizes plant constituents, organ affinity, and evidence-based application while preserving traditional energetic descriptions.</p>
+<ul>
+  <li>Historical roots: Greek and medieval European medicine</li>
+  <li>Focus: organ systems and plant chemistry</li>
+  <li>Modern integration: standardized extracts and clinical research</li>
+</ul>
+<h3>How do Indigenous traditions use medicinal herbs?</h3>
+<p>Indigenous medical systems use medicinal herbs within cultural, spiritual, and ecological frameworks. Knowledge is transmitted orally, and plant selection is closely tied to local biodiversity, seasonal cycles, and ceremonial practices.</p>
+<p>Across traditions, medicinal herbs are not selected randomly but within structured diagnostic systems that define classification, synergy, dosage, and preparation methods. Understanding these systems clarifies why the same herb may be used differently across cultures while maintaining therapeutic intent.</p>
 </section>
+    '''
 
+    section_preparation_html = f'''
 <section>
-  <h2>How are medicinal herbs prepared?</h2>
-  <p>Medicinal herbs are prepared as infusions, decoctions, tinctures, extracts, powders, capsules, salves, and syrups. Preparation methods influence compound concentration, bioavailability, absorption, and the overall effectiveness of medicinal herbs.</p>
+<h2>Preparation</h2>
+<p>Medicinal herbs are prepared as infusions, decoctions, tinctures, extracts, powders, capsules, salves, and syrups. Preparation methods influence compound concentration, bioavailability, absorption, and the overall effectiveness of medicinal herbs.</p>
+<p>For a complete breakdown of every preparation method, solvent type, and dosage form, see the detailed guide on <a href="/herbs/preparation.html">medicinal herb preparation methods</a>.</p>
+<h3>What are the main preparation methods?</h3>
+<p>Preparation methods determine how bioactive compounds are extracted from plant material. The choice depends on plant part, chemical composition, and intended use.</p>
+<ul>
+  <li>Infusion – steeping leaves or flowers in hot water</li>
+  <li>Decoction – simmering roots, bark, or seeds</li>
+  <li>Tincture – extracting compounds in alcohol or glycerin</li>
+  <li>Oil maceration – infusing herbs in carrier oils</li>
+  <li>Powder – drying and grinding whole plant material</li>
+  <li>Salve or ointment – combining infused oil with wax for topical use</li>
+</ul>
+<h3>How does solvent selection affect extraction?</h3>
+<p>Solvent selection directly affects which phytochemicals are extracted. Water extracts polysaccharides, tannins, and some flavonoids, while alcohol extracts alkaloids, resins, and essential oils. Oils capture lipophilic compounds, and glycerin provides a non-alcohol alternative for sensitive populations.</p>
+<table>
+  <tr>
+    <th>Solvent</th>
+    <th>Best For</th>
+  </tr>
+  <tr>
+    <td>Water</td>
+    <td>Leaves, flowers, water-soluble compounds</td>
+  </tr>
+  <tr>
+    <td>Alcohol</td>
+    <td>Alkaloids, resins, concentrated extracts</td>
+  </tr>
+  <tr>
+    <td>Oil</td>
+    <td>Topical preparations, lipophilic compounds</td>
+  </tr>
+  <tr>
+    <td>Glycerin</td>
+    <td>Alcohol-free liquid extracts</td>
+  </tr>
+</table>
+<h3>How do plant parts influence preparation?</h3>
+<p>Different plant parts require different preparation techniques because cell structure and compound density vary. Leaves and flowers are suited for infusions, while roots and bark require decoction to release dense compounds. Seeds and resins may require crushing or alcohol extraction for optimal potency.</p>
+<h3>What determines dosage form selection?</h3>
+<p>Dosage form selection depends on therapeutic goal, user preference, stability, and absorption speed. Liquids such as tinctures allow rapid absorption, while capsules offer convenience and standardized dosing. Topical forms such as salves deliver localized effects without systemic exposure.</p>
+<h3>How does preparation affect potency and shelf life?</h3>
+<p>Temperature, duration, herb-to-solvent ratio, and storage conditions determine the final concentration and stability of medicinal herbs. Alcohol-based tinctures can remain stable for years, while water infusions typically last 24 to 48 hours under refrigeration. Proper drying and light protection preserve active compounds.</p>
+<h3>Can multiple herbs be prepared together?</h3>
+<p>Medicinal herbs can be combined to create synergistic formulas. Compatibility depends on chemical composition, extraction requirements, and therapeutic objective. Some formulas require sequential extraction to preserve volatile compounds and maximize overall efficacy.</p>
 </section>
+    '''
 
+    section_safety_html = f'''
 <section>
-  <h2>Are medicinal herbs safe to use?</h2>
-  <p>Medicinal herbs can be safe when used with proper dosage, preparation, and medical context. Safety depends on toxicity, side effects, herb-drug interactions, pregnancy status, chronic conditions, and guidance from qualified healthcare professionals.</p>
+<h2>Safety</h2>
+<p>Medicinal herbs can be safe when used with proper dosage, preparation, and medical context. Safety depends on toxicity, side effects, herb-drug interactions, pregnancy status, chronic conditions, and guidance from qualified healthcare professionals.</p>
+<p>For a comprehensive breakdown of risk factors, dosage limits, interactions, and regulatory standards, see our complete guide to <a href="/herbs/safety.html">medicinal herb safety guidelines</a>.</p>
+<p>Herbal safety is determined by the relationship between the herb’s active compounds, the user’s physiological condition, the preparation method, and concurrent medication use. Even traditionally used herbs may present risks when taken at high doses, for extended periods, or in vulnerable populations.</p>
+<h3>What factors determine herbal safety?</h3>
+<ul>
+  <li>Intrinsic toxicity of the herb</li>
+  <li>Dosage and duration of use</li>
+  <li>Preparation form (infusion, tincture, extract, capsule)</li>
+  <li>User characteristics (age, pregnancy, chronic disease)</li>
+  <li>Concurrent medications or supplements</li>
+  <li>Product quality and contamination risks</li>
+</ul>
+<h3>Which risks are most common with medicinal herbs?</h3>
+<p>Most safety concerns involve mild gastrointestinal upset, allergic reactions, or herb-drug interactions. However, certain medicinal herbs may cause liver toxicity, kidney stress, cardiovascular effects, or neurological reactions when misused or taken in excessive amounts.</p>
+<table>
+  <thead>
+    <tr>
+      <th>Risk Category</th>
+      <th>Examples</th>
+      <th>Severity Range</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Gastrointestinal</td>
+      <td>Nausea, diarrhea, abdominal pain</td>
+      <td>Mild to Moderate</td>
+    </tr>
+    <tr>
+      <td>Allergic</td>
+      <td>Rash, itching, swelling</td>
+      <td>Mild to Severe</td>
+    </tr>
+    <tr>
+      <td>Organ Toxicity</td>
+      <td>Liver enzyme elevation, kidney impairment</td>
+      <td>Moderate to Severe</td>
+    </tr>
+    <tr>
+      <td>Interaction-Based</td>
+      <td>Blood thinning amplification, sedation increase</td>
+      <td>Moderate to Severe</td>
+    </tr>
+  </tbody>
+</table>
+<h3>How does dosage influence safety?</h3>
+<p>Dosage is a primary determinant of safety. A medicinal herb may be well tolerated at therapeutic levels but become harmful when concentrated extracts or prolonged high-dose use increase systemic exposure to active compounds.</p>
+<ul>
+  <li>Follow evidence-based dosage ranges</li>
+  <li>Avoid combining multiple high-potency extracts</li>
+  <li>Adjust doses for children and elderly individuals</li>
+  <li>Discontinue use if adverse symptoms appear</li>
+</ul>
+<h3>Are medicinal herbs safe during pregnancy or chronic illness?</h3>
+<p>Pregnancy, breastfeeding, liver disease, kidney disease, cardiovascular conditions, and autoimmune disorders increase sensitivity to certain herbs. In these cases, medical supervision is recommended to reduce the risk of adverse outcomes.</p>
+<h3>How does product quality affect herbal safety?</h3>
+<p>Safety is influenced by cultivation practices, contamination with heavy metals or pesticides, adulteration, and improper storage. Standardized extracts and certified products reduce variability and improve consistency in dosing and safety monitoring.</p>
+<p>When used responsibly, medicinal herbs can provide therapeutic benefits with manageable risk. Proper identification, correct preparation, appropriate dosage, and professional guidance form the foundation of safe herbal practice.</p>
 </section>
+    '''
 
+    section_evidence_html = f'''
 <section>
-  <h2>What evidence supports medicinal herbs?</h2>
+  <h2>Evidence</h2>
   <p>Evidence supporting medicinal herbs includes clinical trials, in vitro studies, in vivo research, and identified mechanisms of action. The reliability of evidence varies by herb, formulation, dosage, study design, and consistency of research findings.</p>
+<p>For a deeper dive into detailed research types and methodologies, see <a href="/herbs/evidence.html">Evidence Types in Medicinal Herbs</a>.</p>
+  <h3>What types of evidence exist?</h3>
+  <p>Evidence for medicinal herbs can be categorized into preclinical studies, clinical trials, and secondary research such as systematic reviews and meta-analyses. Each type provides unique insights into efficacy, safety, and mechanisms.</p>
+  <ul>
+    <li>Preclinical: In vitro, in vivo, toxicology, pharmacokinetics</li>
+    <li>Clinical: Randomized controlled trials, observational studies, case reports</li>
+    <li>Secondary: Systematic reviews, meta-analyses, clinical guidelines</li>
+  </ul>
+  <h3>How is herbal research designed?</h3>
+  <p>Herbal research relies on rigorous study design to ensure reliability. Key considerations include randomization, blinding, control groups, sample size, endpoint selection, reproducibility, and standardization of herbal extracts. Proper methodology reduces bias and improves confidence in outcomes.</p>
+  <h3>How is the quality of evidence assessed?</h3>
+  <p>Evidence quality is evaluated using risk of bias, internal and external validity, statistical robustness, publication transparency, and adherence to evidence grading systems such as GRADE. Peer-reviewed studies in reputable journals enhance reliability and credibility.</p>
+  <table>
+    <thead>
+      <tr>
+        <th>Factor</th>
+        <th>Importance</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Randomization</td>
+        <td>Reduces selection bias</td>
+      </tr>
+      <tr>
+        <td>Blinding</td>
+        <td>Prevents measurement bias</td>
+      </tr>
+      <tr>
+        <td>Sample size</td>
+        <td>Ensures statistical power</td>
+      </tr>
+      <tr>
+        <td>Standardization of extract</td>
+        <td>Maintains consistency across trials</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3>What challenges are unique to herbal research?</h3>
+  <p>Herbal studies face variability in plant species, chemotypes, harvest timing, multi-compound interactions, polyherbal formulations, and difficulty designing placebo controls. These challenges require careful design to produce valid, reproducible results.</p>
+  <h3>How is mechanistic evidence used?</h3>
+  <p>Mechanistic studies explain how herbs exert effects at molecular and physiological levels. Examples include anti-inflammatory pathways, antioxidant activity, receptor binding, neurotransmitter modulation, enzyme inhibition, and microbiome interactions. Mechanistic evidence strengthens confidence in observed clinical effects.</p>
+  <h3>What evidence exists for safety?</h3>
+  <p>Safety evidence evaluates toxicity, herb-drug interactions, long-term use, pediatric and pregnancy safety, and adverse event reporting. Toxicology studies and post-marketing surveillance are essential for confirming risk profiles and informing clinical guidance.</p>
 </section>
+    '''
 
+    section_regulation_html = f'''
 <section>
-  <h2>How are medicinal herbs regulated?</h2>
-  <p>Medicinal herbs are regulated differently across regions and are commonly classified as dietary supplements or herbal medicines. Oversight may involve authorities such as the FDA, EMA, and WHO, with varying requirements for quality, safety, and labeling.</p>
-
-  <p>Explore detailed rules and compliance guidance in our <a href="/herbs/regulation.html">regulation of medicinal herbs</a> page.</p>
+<h2>Regulation</h2>
+<p>Medicinal herbs are regulated differently across regions and are commonly classified as dietary supplements or herbal medicines. Oversight may involve authorities such as the FDA, EMA, and WHO, with varying requirements for quality, safety, and labeling.</p>
+<p>For a deeper dive into regulatory authorities overseeing medicinal herbs, see <a href="/herbs/regulation.html">regulation</a>.</p>
+<h3>What are the main regulatory authorities?</h3>
+<p>The primary authorities regulating medicinal herbs include the FDA in the USA, the EMA in Europe, WHO for global guidance, national health ministries, and specialized herbal medicine boards. Each authority enforces compliance and safety standards relevant to local markets.</p>
+<h3>How are medicinal herbs classified?</h3>
+<p>Herbs can be classified as dietary supplements, herbal medicines, or pharmaceuticals depending on regional laws. Classification also distinguishes between traditional and modern formulations, over-the-counter or prescription products, and functional foods versus therapeutic products.</p>
+<h3>What are the compliance requirements?</h3>
+<p>Manufacturers and distributors must meet Good Manufacturing Practices, labeling regulations, ingredient disclosure rules, safety documentation, and contaminant testing standards. Adverse event reporting, batch traceability, and proper shelf-life storage are also critical compliance elements.</p>
+<h3>How is licensing and registration handled?</h3>
+<ul>
+  <li>Herbal product registration process</li>
+  <li>Manufacturer and importer/exporter licenses</li>
+  <li>Submission of monographs or dossiers</li>
+  <li>Evidence submission for clinical or safety validation</li>
+  <li>Renewal and post-market monitoring</li>
+</ul>
+<h3>What standards and monographs apply?</h3>
+<p>Pharmacopoeias such as USP, EP, and BP define purity, identity, and potency requirements for medicinal herbs. WHO herbal monographs provide global guidance, while standardized extracts are regulated for specific active compound thresholds. Identity testing ensures botanical verification.</p>
+<h3>How is safety regulated?</h3>
+<table>
+  <thead>
+    <tr>
+      <th>Safety Aspect</th>
+      <th>Regulatory Requirement</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Toxicity</td>
+      <td>Limits established per herb or compound</td>
+    </tr>
+    <tr>
+      <td>Contraindications</td>
+      <td>Mandatory labeling for pregnancy, children, elderly</td>
+    </tr>
+    <tr>
+      <td>Daily intake</td>
+      <td>Maximum recommended dosage documented</td>
+    </tr>
+    <tr>
+      <td>Herb-drug interactions</td>
+      <td>Advisory labels or warnings required</td>
+    </tr>
+    <tr>
+      <td>Recalls</td>
+      <td>Defined processes for non-compliant or unsafe batches</td>
+    </tr>
+  </tbody>
+</table>
+<h3>What rules exist for advertising and claims?</h3>
+<p>Regulations define what health and nutritional claims can be made about medicinal herbs. Therapeutic claims must be substantiated, prohibited claims avoided, and marketing must comply with social media and e-commerce platforms to ensure legal compliance.</p>
+<h3>How is import/export regulated?</h3>
+<p>International trade of medicinal herbs is controlled through import licenses, export permits, customs declarations, and adherence to treaties such as CITES for endangered species. Proper documentation ensures compliance with cross-border labeling and safety requirements.</p>
+<h3>How are violations enforced?</h3>
+<p>Non-compliance can result in fines, license suspension, product recalls, and civil or criminal liability. Regulatory authorities conduct inspections and enforce consumer protection, ensuring herbal products meet legal standards.</p>
+<h3>How do regulations differ by region?</h3>
+<p>Herbal regulations vary between the USA, EU, Canada, Australia, China, India, Japan, Africa, the Middle East, Latin America, and Southeast Asia. Each jurisdiction has distinct licensing, compliance, and classification rules that must be followed for legal sale.</p>
+<h3>What emerging digital regulations exist?</h3>
+<p>Regulation increasingly addresses e-commerce and online marketplaces, telehealth herbal prescriptions, digital labeling, QR compliance, and blockchain traceability. Global trends are updating traditional frameworks to ensure safety and authenticity in digital herbal commerce.</p>
+<h3>What international guidelines exist for harmonization?</h3>
+<p>Guidelines such as Codex Alimentarius, WHO herbal guidelines, and ICH protocols standardize herbal testing, safety, and quality. Mutual recognition agreements and harmonized safety standards facilitate cross-border trade and regulatory compliance.</p>
+<h3>What documentation is required?</h3>
+<ul>
+  <li>Batch records and Certificates of Analysis</li>
+  <li>Adverse event reporting logs</li>
+  <li>Import/export documentation</li>
+  <li>Clinical trial records</li>
+  <li>Standard Operating Procedures for manufacturing</li>
+  <li>Audit readiness documentation</li>
+</ul>
 </section>
+    '''
 
+    section_cultivation_html = f'''
 <section>
-  <h2>How are medicinal herbs grown and harvested?</h2>
-  <p>Medicinal herbs are grown through cultivation or wildcrafting and harvested at specific growth stages to maximize potency. Drying, storage, sustainability practices, and post-harvest handling directly affect herbal quality and shelf life.</p>
-<p>For detailed guidance on growing and harvesting medicinal herbs visit <a href="/herbs/cultivation.html">Cultivation of medicinal herbs</a>.</p>
+<h2>Cultivation</h2>
+<p>Medicinal herbs are grown through careful cultivation practices that consider soil, climate, planting methods, maintenance, and harvesting to maximize potency and yield. Proper cultivation ensures consistent quality, bioactive compound concentration, and sustainable production for both small-scale and commercial operations.</p>
+<p>For a more detailed guide on how to grow medicinal herbs effectively, see <a href="/herbs/cultivation.html">Soil and Substrate Practices for Medicinal Herbs</a>.</p>
+<h3>What soil types are best for medicinal herbs?</h3>
+<p>Medicinal herbs thrive in soils that provide balanced nutrients, good drainage, and appropriate pH levels. Loamy soils are generally ideal, while sandy or clay soils can be amended. Adding organic matter and compost improves fertility and structure, enhancing growth and potency.</p>
+<h3>How does climate affect herb cultivation?</h3>
+<p>Temperature, light, humidity, and rainfall strongly influence herb growth. Most medicinal herbs prefer full sun and moderate humidity, while frost-sensitive species require protection or indoor cultivation. Adjusting irrigation and microclimate conditions helps maintain healthy, high-quality plants.</p>
+<h3>What are the best planting and propagation methods?</h3>
+<p>Seeds, cuttings, layering, and division are common propagation methods. Direct sowing, stratification, and seedling transplantation should be timed according to seasonal conditions. Proper spacing and companion planting reduce competition and promote optimal growth.</p>
+<h3>How should herbs be maintained during growth?</h3>
+<ul>
+  <li>Regular watering according to herb-specific needs</li>
+  <li>Organic or synthetic fertilization schedules</li>
+  <li>Mulching to retain moisture and regulate soil temperature</li>
+  <li>Pruning and pinching to encourage stronger stems and leaves</li>
+  <li>Integrated pest and disease management for sustainable health</li>
+</ul>
+<h3>When and how should herbs be harvested?</h3>
+<p>Harvest timing depends on the plant part: leaves are often collected before flowering, flowers at peak bloom, and roots in autumn. Using the right tools and gentle techniques preserves bioactive compounds and ensures sustainable regrowth.</p>
+<h3>What post-harvest handling is required?</h3>
+<p>After harvesting, herbs must be properly dried, stored, and packaged. Methods like air-drying, oven-drying, or freeze-drying preserve potency, while storage in cool, dark, and dry conditions prevents degradation and maintains quality for medicinal use.</p>
+<h3>How can cultivation be made sustainable and organic?</h3>
+<ul>
+  <li>Using organic fertilizers and compost</li>
+  <li>Conserving water through efficient irrigation</li>
+  <li>Encouraging pollinators and biodiversity</li>
+  <li>Practicing ethical wildcrafting for wild herbs</li>
+  <li>Regenerating soil and reducing chemical inputs</li>
+</ul>
+<h3>How does scaling affect cultivation practices?</h3>
+<p>Scaling from small gardens to commercial farms requires mechanization, yield optimization, and consistent quality control. Market-driven planting decisions, cost analysis, and legal compliance ensure that cultivation remains profitable while maintaining herb quality.</p>
+<h3>What technologies support modern herb cultivation?</h3>
+<p>Hydroponics, controlled-environment agriculture, smart irrigation systems, and AI monitoring help optimize growth, improve yield, and maintain quality. Biostimulants and microbiome management enhance plant health.</p>
 </section>
+    '''
 
+    section_selection_html = f'''
 <section>
-  <h2>How do you choose medicinal herbs?</h2>
-  <p>Medicinal herbs are chosen based on quality, authenticity, preparation form, standardized extracts, certifications, and intended health goals. Careful selection improves safety, consistency, and the likelihood of achieving desired therapeutic outcomes.</p>
-<p>Learn how to choose the right herbs <a href="/herbs/selection.html">with this comprehensive selection guide</a></p>
+<h2>Selection</h2>
+<p>Medicinal herbs are chosen based on quality, authenticity, preparation form, standardized extracts, certifications, and intended health goals. Careful selection improves safety, consistency, and the likelihood of achieving desired therapeutic outcomes. 
+</p>
+<p>
+For a deeper guide on evaluating medicinal herb quality, see <a href="/herbs/selection.html">how to select high-quality medicinal herbs</a>.</p>
+<h3>What indicates herb quality?</h3>
+<p>Quality is determined by freshness, organoleptic properties (color, smell, texture, taste), absence of adulteration, and the specific plant part used. Standardized extracts provide consistent potency, while proper storage preserves bioactive compounds.</p>
+<h3>How do I ensure safety when selecting herbs?</h3>
+<ul>
+  <li>Check for toxicity and side effects specific to the herb.</li>
+  <li>Verify potential herb-drug interactions.</li>
+  <li>Consider contraindications for pregnancy, children, and elderly.</li>
+  <li>Look for certifications and lab testing for contaminants.</li>
+</ul>
+<h3>Which herb forms are best for selection?</h3>
+<p>Herbs can be selected as fresh, dried, powdered, capsules, tinctures, or extracts. The choice depends on bioavailability, preparation method, shelf life, and convenience for the intended therapeutic use.</p>
+<h3>Does the source or origin affect selection?</h3>
+<p>Wildcrafted versus cultivated herbs, organic versus conventional farming, geographic origin, harvest season, and sustainable sourcing all influence potency and quality. Selecting herbs from reputable sources ensures consistency and ethical standards.</p>
+<h3>How do certifications and standardization help?</h3>
+<table>
+  <tr>
+    <th>Certification</th>
+    <th>Purpose</th>
+  </tr>
+  <tr>
+    <td>GMP</td>
+    <td>Ensures manufacturing quality and consistency</td>
+  </tr>
+  <tr>
+    <td>Pharmacopeia</td>
+    <td>Confirms official standards for herbal medicines</td>
+  </tr>
+  <tr>
+    <td>Organic</td>
+    <td>Guarantees pesticide-free and sustainable farming</td>
+  </tr>
+  <tr>
+    <td>ISO</td>
+    <td>Verifies international quality and safety standards</td>
+  </tr>
+</table>
+<h3>What economic factors influence selection?</h3>
+<ul>
+  <li>Price vs quality evaluation.</li>
+  <li>Availability and supply consistency.</li>
+  <li>Shelf life and storage requirements.</li>
+  <li>Dosage convenience and form preference.</li>
+  <li>Cost per effective dose.</li>
+</ul>
+<h3>How to compare herbs for the same condition?</h3>
+<p>Compare potency, preparation form, bioactive content, side effect profiles, and brand reliability. Using comparison tables or scoring systems helps select the most effective herb for a specific therapeutic goal.</p>
+<h3>How do personal factors affect herb selection?</h3>
+<p>Age, health conditions, comorbidities, dietary restrictions, lifestyle factors, and taste preferences all guide personalized herb selection. Tailoring choice to the individual maximizes adherence and therapeutic benefit.</p>
+<h3>Is there a structured method for selecting herbs?</h3>
+<p>Stepwise frameworks, checklists, and risk-benefit assessments ensure safe and effective herb selection. Integrating quality, safety, efficacy, and personal factors into a structured decision-making process strengthens topical authority.</p>
 </section>
+    '''
 
+    section_history_html = f'''
 <section>
-  <h2>How have medicinal herbs been used historically?</h2>
-  <p>Medicinal herbs have been used throughout history in ancient civilizations, folk medicine, and early medical systems. Historical use informed the development of herbal pharmacology, therapeutic traditions, and modern approaches to herbal medicine.</p>
-<p>Discover the earliest remedies used by different societies at <a href="/herbs/history.html">Ancient Civilizations</a></p>
+<h2>History</h2>
+<p>Medicinal herbs have been used throughout history in ancient civilizations, folk medicine, and early medical systems. Historical use informed the development of herbal pharmacology, therapeutic traditions, and modern approaches to herbal medicine.</p>
+<p>For a detailed exploration of medicinal herbs in ancient civilizations, visit the <a href="/herbs/history.html">ancient civilizations page</a>.</p>
+<h3>What were the earliest uses of medicinal herbs?</h3>
+<p>Early civilizations such as the Egyptians, Mesopotamians, Greeks, and Chinese documented the use of medicinal herbs for healing and health maintenance. Ayurveda in Vedic India and pre-Columbian traditions in the Americas also contributed extensive knowledge of plants used for treatment.</p>
+<h3>Which texts documented herbal knowledge?</h3>
+<p>Historical texts captured detailed herbal practices and preparations. Important works include:</p>
+<ul>
+  <li>Papyrus Ebers (Egypt)</li>
+  <li>De Materia Medica by Dioscorides (Greece)</li>
+  <li>Charaka Samhita and Sushruta Samhita (Ayurveda)</li>
+  <li>Compendium of Materia Medica by Li Shizhen (China)</li>
+  <li>Hippocratic Corpus and Galen's writings (Greece/Rome)</li>
+</ul>
+<h3>How did medieval herbalism develop?</h3>
+<p>During the Middle Ages, herbal knowledge expanded through European monastic gardens, Islamic Golden Age scholars, and translation of Greek and Roman texts into Arabic and Latin. Trade routes facilitated the distribution of herbs and cross-cultural exchange.</p>
+<h3>What innovations occurred in the early modern era?</h3>
+<p>The Renaissance and early modern period introduced printed herbals, colonial exchange of New World herbs, and the establishment of botanical gardens as centers of learning. Standardization and cataloging of herbs became more common.</p>
+<h3>How did the industrial and scientific era impact herbal medicine?</h3>
+<p>The 19th and 20th centuries brought chemical extraction of active compounds, discovery of alkaloids and glycosides, and integration of herbal studies into pharmacology. Ethnobotany emerged as a scientific discipline while some traditional practices declined.</p>
+<h3>What is modern herbal medicine?</h3>
+<p>In the 20th and 21st centuries, herbal medicine has experienced a resurgence through complementary and alternative medicine movements. Global organizations like the WHO provide guidelines, and scientific validation of historically used herbs supports contemporary applications.</p>
+<h3>What role does culture and folklore play?</h3>
+<p>Folk traditions, rituals, and symbolic uses of herbs have preserved medicinal knowledge across generations. Oral transmission of practices maintains cultural heritage and informs modern ethnobotanical research.</p>
+<h3>How did trade influence the spread of medicinal herbs?</h3>
+<p>Trade routes such as the Silk Road, Spice Route, and colonial exchanges introduced herbs to new regions, shaping pharmacopoeias and influencing cultural adoption worldwide.</p>
+<h3>Who were historical figures in herbal medicine?</h3>
+<p>Key pioneers include Dioscorides, Hippocrates, Galen, Avicenna, Paracelsus, Nicholas Culpeper, and Li Shizhen. Their contributions in texts, classifications, and remedies form the backbone of historical herbal knowledge.</p>
+<h3>What techniques were used historically?</h3>
+<p>Historical techniques included infusions, decoctions, ointments, and tinctures. Preservation methods like drying, alcohol extraction, and measured dosages ensured potency and reproducibility in various cultures.</p>
 </section>
+    '''
 
+    section_commerce_html = f'''
 <section>
-  <h2>How are medicinal herbs produced and sold?</h2>
-  <p>Medicinal herbs are produced through cultivation, harvesting, processing, and quality control before being sold in local and global markets. Production and distribution involve supply chains, ethical sourcing, regulatory compliance, and quality standards.</p>
-
-<p>Discover detailed insights on market trends supply and distribution in our dedicated commerce page <a href="/herbs/commerce.html">Explore medicinal herbs commerce</a></p>
+<h2>Commerce</h2>
+<p>Medicinal herbs are produced, marketed, and sold through a complex commercial ecosystem involving cultivation, processing, distribution, and retail. This commerce encompasses global and regional markets, pricing strategies, supply chains, consumer behavior, and regulatory compliance.</p>
+<p>For an in-depth analysis of <a href="/herbs/commerce.html">commerce</a> and trends, see our Market Overview page.</p>
+<h3>What is the global market for medicinal herbs?</h3>
+<p>The global medicinal herb market is growing steadily due to increasing demand for natural remedies, wellness trends, and preventive healthcare. Key regions include Asia, Europe, North America, Africa, and South America, each with unique consumer preferences and regulatory frameworks.</p>
+<h3>How are herbs sourced and processed?</h3>
+<p>Herbs are obtained through cultivation or wildcrafting and processed to preserve potency and quality. Post-harvest steps include drying, grinding, extraction, and packaging. Efficient logistics and storage are critical to maintaining freshness and bioactive compound stability.</p>
+<ul>
+  <li>Harvesting techniques: wild vs cultivated</li>
+  <li>Drying and preservation methods</li>
+  <li>Processing into extracts, powders, capsules</li>
+  <li>Packaging and labeling for retail and e-commerce</li>
+</ul>
+<h3>What regulations govern herb commerce?</h3>
+<p>Herbal commerce is regulated globally, with frameworks including the FDA (USA), EMA (Europe), and WHO guidelines. Regulations cover quality, labeling, safety, import/export, and certifications like GMP and organic. Compliance ensures consumer safety and market credibility.</p>
+<h3>How is pricing determined?</h3>
+<p>Herbal prices depend on factors like origin, rarity, processing, certification, and market demand. Wholesale and retail margins, seasonal fluctuations, and value-added products such as extracts and blends also influence pricing strategies.</p>
+<table>
+  <thead>
+    <tr>
+      <th>Factor</th>
+      <th>Impact on Price</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Origin / provenance</td>
+      <td>Higher quality or rare sources command premium prices</td>
+    </tr>
+    <tr>
+      <td>Processing method</td>
+      <td>Extracts and standardized powders increase cost</td>
+    </tr>
+    <tr>
+      <td>Certification</td>
+      <td>Organic, fair-trade, and GMP certifications add value</td>
+    </tr>
+    <tr>
+      <td>Market demand</td>
+      <td>High-demand herbs see price spikes</td>
+    </tr>
+  </tbody>
+</table>
+<h3>Who are the main buyers and distribution channels?</h3>
+<p>Consumers purchase medicinal herbs through traditional markets, pharmacies, health stores, and online platforms. Businesses rely on wholesalers, distributors, and export channels. Distribution strategy affects availability, price, and consumer trust.</p>
+<ul>
+  <li>Retail: specialty shops, pharmacies, supermarkets</li>
+  <li>Online: e-commerce marketplaces, direct-to-consumer websites</li>
+  <li>B2B: wholesalers, distributors, export-import operators</li>
+  <li>Multi-channel strategies integrate offline and online sales</li>
+</ul>
+<h3>What marketing strategies boost herb commerce?</h3>
+<p>Effective marketing combines branding, digital campaigns, social media, content marketing, and educational materials. Storytelling highlighting herb origin, tradition, and sustainability strengthens consumer trust and encourages repeat purchases.</p>
+<h3>How is sustainability integrated into commerce?</h3>
+<p>Ethical sourcing, organic certification, and sustainable harvesting practices are increasingly important. Businesses that prioritize transparency, environmental responsibility, and fair trade practices attract eco-conscious consumers.</p>
 </section>
+    '''
+
+    article_html = f'''
+<h1>Medicinal Herbs</h1>
+
+{section_definition_html}
+{section_botany_html}
+{section_phytochemistry_html}
+{section_therapeutics_html}
+{section_traditions_html}
+{section_preparation_html}
+{section_safety_html}
+{section_evidence_html}
+{section_regulation_html}
+{section_cultivation_html}
+{section_selection_html}
+{section_history_html}
+{section_commerce_html}
+
     '''
 
     article_html_old = f'''

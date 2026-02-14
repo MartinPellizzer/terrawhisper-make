@@ -111,6 +111,7 @@ img {
 
 table {
     border-collapse: collapse;
+    margin-bottom: 1.6rem;
 }
 
 table, th, td {
@@ -259,3 +260,17 @@ HUB
   scroll-margin-top: calc(82px + var(--space-xl));
 }
 
+.hub h1 {
+    font-size: 4.8rem;
+    font-family: serif;
+}
+
+.hub h2 {
+    font-size: 3.2rem;
+    font-family: serif;
+}
+
+.hub h3 {
+    font-size: 1.6rem;
+    font-family: serif;
+}
