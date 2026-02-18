@@ -40,8 +40,93 @@ Assign answer length + entity density targets for each h2. try to make snippet-o
 
 Write perfect first-answer blocks for all these headers. reply with plain text, titles and answers only. The answer must be in the context of this macro-context.
 
-format the above content in html (title and snippet). use section tag for each block, h2 for the heading and p for the body. don't use other tags, like <strong> etc.
+format the above content in html (title and snippet).   use section tag for each block, h2 for the heading and p for the body. don't use other tags, like <strong> etc.
 
 great, now give me the title tag, the description tag, the h1 title, and the intro paragraph that are most optimized for this page based on the content you just written.
 
 give me the best linking strategy from this page and the parent one (the one which is in the context of as described before). give me the link placement for each pages and the anchor texts. give me the exact links in html. give me only one link per page. for the parent, i want the link inside a new short and concise sentence (<p>) you add at the end of the related section. don't write the same thing in the link sentences. make sure the <a> tag is inside the <p> tag. never use the character colon (:).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1. How Medicinal Plants Support Immune System Function
+2. Natural Ways Medicinal Plants May Improve Sleep Quality
+3. Medicinal Plants vs. Pharmaceutical Drugs: What’s the Difference in Treatment Approach?
+4. Herbal Teas or Capsules? Comparing Delivery Forms of Medicinal Plants
+5. Using Medicinal Plants for Stress Management in Daily Life
+6. Medicinal Plants in Home Gardening: Growing Your Own Healing Herbs
+7. When Medicinal Plants Interact with Prescription Medications
+8. Are All Medicinal Plants Safe? Understanding Side Effects and Toxic Varieties
+9. How Active Compounds in Medicinal Plants Affect the Human Body
+10. From Leaf to Remedy: How Medicinal Plants Are Processed and Prepared
+11. How to Choose the Right Medicinal Plant for Specific Health Goals
+12. Should You Consult a Professional Before Using Medicinal Plants?
+
+
+
+AI Role:
+You are an advanced editorial SEO with experience resolving keyword cannibalization through intent disambiguation. Your task is to review a list of working titles and recommend ways to differentiate pages semantically.
+Prompt:
+Here’s my working list of support page titles:
+1. How Industrial Ozone Systems Improve Water Quality in Manufacturing Facilities
+2. Reducing Chemical Costs with Industrial Ozone Treatment: What to Expect
+3. Industrial Ozone vs. UV Disinfection: Which Performs Better at Scale?
+4. Ozone Treatment or Chlorination for Industrial Water? A Side-by-Side Analysis
+5. Using Industrial Ozone Systems in Food Processing Plants
+6. Ozone-Based Air Treatment for Wastewater Facilities
+7. What Are the Safety Risks of Industrial Ozone Exposure?
+8. Common Failure Points in Industrial Ozone Generators and How to Prevent Them
+9. How an Industrial Ozone System Generates and Injects Ozone into Water
+10. The Chemistry Behind Ozone Oxidation in Industrial Applications
+11. How to Choose the Right Industrial Ozone System for Your Facility Size
+12. Key Specifications to Evaluate Before Investing in an Ozone Generator
+Identify any pages that might compete due to similar phrasing or topical overlap
+For each one, suggest an alternative framing or rewrite using a different:
+Query intent
+Audience level
+Perspective (product-focused, outcome-focused, etc.)
+Goal: Ensure every page is semantically distinct and serves a unique retrieval purpose.
+Quality Control:
+Flag any pairs with overlapping searcher intent
+Make at least one recommendation per duplication risk
+"Think critically before suggesting rewrites. Avoid suggesting surface-level changes."
+
+
+
+
+
+
+AI Role:
+You are a semantic structure auditor evaluating an SCN map for gaps in query intent coverage. Your goal is to identify underrepresented angles or missing content that could weaken topical completeness or trust flow.
+Prompt:
+Here’s my current SCN outline for the topic:
+#1	Wastewater system engineering
+#2	Financial ROI modeling
+#3	Performance & scalability comparison
+#4	Chemical residual & regulatory comparison
+#5	Food safety compliance
+#6	Odor control in wastewater air
+#7	Occupational safety
+#8	Maintenance & failure prevention
+#9	Equipment architecture
+#10	Reaction chemistry
+#11	System sizing methodology
+#12	Procurement checklist
+Identify any missing query frames or audience scenarios (e.g., risk not addressed, mechanism not explored)
+Suggest 3–5 additional page ideas to fill those gaps
+Label each idea with its query intent and rationale
+Quality Control:
+Ensure the new ideas add semantic depth, not fluff
+Avoid recommending “too similar” topics
+"Finish only after the structure feels holistically covered across frames."
+
