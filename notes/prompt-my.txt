@@ -1,0 +1,107 @@
+--------------------------------------------------------------------------------
+DATA: SCN + TITLES
+--------------------------------------------------------------------------------
+
+| From Page                                                            | To Page                                                              | Anchor Text                                                   | Link Intent           | Why This Link Exists                                               |
+| -------------------------------------------------------------------- | -------------------------------------------------------------------- | ------------------------------------------------------------- | --------------------- | ------------------------------------------------------------------ |
+| Medicinal Plants: Benefits, Safety, Uses, and Scientific Foundations | The Biochemistry of Medicinal Plants                                 | how bioactive plant compounds influence the human body        | Entity Consolidation  | Directs readers to scientific mechanism depth from entity overview |
+| Medicinal Plants: Benefits, Safety, Uses, and Scientific Foundations | How Much Should You Take? Dosage Guidelines                          | safe dosage principles for medicinal plants                   | Trust Flow Transfer   | Reinforces responsible usage within foundational overview          |
+| Medicinal Plants: Benefits, Safety, Uses, and Scientific Foundations | A Beginner’s Framework for Selecting Medicinal Plants                | a structured approach to choosing herbal remedies             | Navigation Utility    | Connects broad overview to decision-making framework               |
+| Medicinal Plants: Benefits, Safety, Uses, and Scientific Foundations | Are Medicinal Plants Regulated?                                      | regulatory oversight of herbal supplements                    | Trust Flow Transfer   | Strengthens compliance and legal context from the pillar           |
+| The Biochemistry of Medicinal Plants                                 | Herb–Drug Interactions                                               | metabolic pathways that affect medication interactions        | Topical Reinforcement | Explains mechanistic basis of herb–drug conflicts                  |
+| The Biochemistry of Medicinal Plants                                 | How Much Should You Take? Dosage Guidelines                          | compound concentration and therapeutic thresholds             | Query Disambiguation  | Bridges molecular strength with dosage control                     |
+| Which Medicinal Plants Are Studied for Immune Support?               | What Does Scientific Research Say About Medicinal Plants?            | clinical studies evaluating immune-related herbal use         | Trust Flow Transfer   | Grounds outcome claims in research validation                      |
+| Which Medicinal Plants Are Studied for Immune Support?               | How Much Should You Take? Dosage Guidelines                          | recommended intake ranges for immune-support herbs            | Query Disambiguation  | Connects condition use to administration clarity                   |
+| Herbal Teas, Tinctures, or Capsules?                                 | What Does Scientific Research Say About Medicinal Plants?            | preparation methods used in clinical trials                   | Trust Flow Transfer   | Ties delivery format to evidence-based usage                       |
+| Herbal Teas, Tinctures, or Capsules?                                 | Are Medicinal Plants Regulated?                                      | labeling standards for different herbal forms                 | Trust Flow Transfer   | Connects supplement form to regulatory compliance                  |
+| Herb–Drug Interactions                                               | The Biochemistry of Medicinal Plants                                 | enzymatic processes influencing herb metabolism               | Topical Reinforcement | Reinforces interaction explanation with mechanism depth            |
+| Herb–Drug Interactions                                               | How Much Should You Take? Dosage Guidelines                          | dosage adjustments when combining herbs and drugs             | Trust Flow Transfer   | Supports risk mitigation with practical limits                     |
+| Poisonous Look-Alikes and Toxic Medicinal Plants                     | Growing Medicinal Plants at Home                                     | identifying safe species when cultivating herbs               | Query Disambiguation  | Prevents gardening confusion with toxic species                    |
+| Poisonous Look-Alikes and Toxic Medicinal Plants                     | Medicinal Plants: Benefits, Safety, Uses, and Scientific Foundations | safety considerations for herbal plant use                    | Trust Flow Transfer   | Routes toxicity risk back to central safety overview               |
+| How Much Should You Take? Dosage Guidelines                          | Herbal Teas, Tinctures, or Capsules?                                 | how herbal form impacts dosage strength                       | Query Disambiguation  | Clarifies difference between form and quantity                     |
+| How Much Should You Take? Dosage Guidelines                          | Medicinal Plants: Benefits, Safety, Uses, and Scientific Foundations | safe use fundamentals for medicinal plants                    | Entity Consolidation  | Anchors dosage advice within entity context                        |
+| Are Medicinal Plants Regulated?                                      | A Beginner’s Framework for Selecting Medicinal Plants                | choosing compliant and quality-tested herbal products         | Trust Flow Transfer   | Connects consumer decisions with regulatory awareness              |
+| Are Medicinal Plants Regulated?                                      | Growing Medicinal Plants at Home                                     | differences between homegrown and commercial herbal standards | Topical Reinforcement | Expands regulation conversation into cultivation context           |
+| What Does Scientific Research Say About Medicinal Plants?            | The Biochemistry of Medicinal Plants                                 | research on phytochemical activity in humans                  | Topical Reinforcement | Connects academic validation to mechanistic detail                 |
+| What Does Scientific Research Say About Medicinal Plants?            | Which Medicinal Plants Are Studied for Immune Support?               | evidence behind immune-focused herbal claims                  | Trust Flow Transfer   | Strengthens outcome cluster credibility                            |
+| A Beginner’s Framework for Selecting Medicinal Plants                | How Much Should You Take? Dosage Guidelines                          | determining proper amounts after selecting an herb            | Navigation Utility    | Moves decision-making into safe execution                          |
+| A Beginner’s Framework for Selecting Medicinal Plants                | Herb–Drug Interactions                                               | when to seek guidance before combining treatments             | Trust Flow Transfer   | Adds clinical safety checkpoint to self-selection                  |
+| Growing Medicinal Plants at Home                                     | Poisonous Look-Alikes and Toxic Medicinal Plants                     | avoiding toxic plant misidentification in home gardens        | Trust Flow Transfer   | Ensures cultivation advice includes safety verification            |
+| Growing Medicinal Plants at Home                                     | Herbal Teas, Tinctures, or Capsules?                                 | preparing harvested herbs for safe consumption                | Topical Reinforcement | Connects cultivation to preparation lifecycle                      |
+
+Medicinal Plants: Benefits, Safety, Uses, and Scientific Foundations
+The Biochemistry of Medicinal Plants
+Which Medicinal Plants Are Studied for Immune Support?
+Herbal Teas, Tinctures, or Capsules?
+Herb–Drug Interactions
+Poisonous Look-Alikes and Toxic Medicinal Plants
+How Much Should You Take? Dosage Guidelines
+Are Medicinal Plants Regulated?
+What Does Scientific Research Say About Medicinal Plants?
+A Beginner’s Framework for Selecting Medicinal Plants
+Growing Medicinal Plants at Home
+
+--------------------------------------------------------------------------------
+OUTLINE
+- TODO: ask for 5-7 H2? and 1-3 H3 for each H2?
+--------------------------------------------------------------------------------
+
+From now on give me answers based on koray and sergey, and in the context of the above SCN.
+
+Write the outline for the following SCN article: 
+
+"The Biochemistry of Medicinal Plants"
+
+- Give me the perfect, most optimized outline and brief for this article. 
+- Include headings (h1, h2, h3, etc.) 
+- Include entities to mention
+- Include search intent (used to structure the answer / passages)
+- Include only the links proposed in the SCN table in the "To Pages" of this specific article
+- Include a link specific to link back to the parent page (Medicinal Plants: Benefits, Safety, Uses, and Scientific Foundations), with url "/herb.html"
+- Include 2-4 links maximum in the entire article (including the one to the parent page)
+- Never repeate the same link, write each link only once
+- Include a brief for each subordinate text of each heading, because each heading need a paragraph immediately underneath it
+- For reference, the urls must be as short as possible and the pillar url (first article in the SCN) is /herbs.html
+
+--------------------------------------------------------------------------------
+[?] SERGEY - MAYBE USE THIS
+--------------------------------------------------------------------------------
+
+AI Role:
+You are a semantic content auditor reviewing structure and layout quality for passage indexing, topical clarity, and trust segmentation. Your job is to flag layout or hierarchy issues that affect retrievability.
+Prompt:
+Based on the above draft/outline of the page I’m planning to publish,
+Audit the document for:
+Clear sectioning using H2/H3 headings
+Use of semantic HTML-like structure (intro > benefit > evidence > CTA)
+Placement of trust-building sections (bio, reviews, expertise indicators)
+Return a brief audit with flagged issues and actionable fixes.
+Quality Control:
+No vague recommendations
+Point to specific sections or structural problems
+"Finish only after document has clean, layered structure suitable for AI processing."
+
+--------------------------------------------------------------------------------
+SECTION
+--------------------------------------------------------------------------------
+
+Write the final content for the section below.
+
+- Follow the brief, include the entities, and the internal link. 
+- For each heading listed below, write a subordinate text (paragraph) that is ideal for a featured snippet. This paragraph must be 40-60 words, in 2-4 sentences, answering the underling, implicit question asked in the heading in a clear, direct format, without fluff. 
+- Include precise datapoints and add structured content (list, table) when applicable and supportive of the intent. 
+- Never include links that are not listed in the section below. 
+- Reply in html code. 
+- Wrap everything inside a <section> tag.
+
+H1: The Biochemistry of Medicinal Plants
+
+Brief: Introduce the article by explaining why understanding the molecular composition of medicinal plants is critical for safety, efficacy, and clinical use. Highlight that bioactive compounds, such as alkaloids, flavonoids, and terpenes, are responsible for therapeutic effects. Link back to the parent pillar for context.
+
+Entities to mention: alkaloids, flavonoids, terpenes, polyphenols, medicinal plants, phytochemicals
+
+Internal Link: Parent page → [/herbs.html]
+
+Anchor: “overview of medicinal plants and their uses”
+
+

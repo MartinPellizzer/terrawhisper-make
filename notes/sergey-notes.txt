@@ -1,0 +1,8 @@
+structured data: usually JSON-LD
+trust signals:
+    author bio
+    certifications
+    testimonials
+    external citations and mentions
+    brand mentions (in same sentence as bigger competitor)
+knowledge graphs: connect your content to relevant topics and entities
