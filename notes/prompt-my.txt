@@ -41,27 +41,38 @@ What Does Scientific Research Say About Medicinal Plants?
 A Beginner’s Framework for Selecting Medicinal Plants
 Growing Medicinal Plants at Home
 
+Pillar: Medicinal Plants: Benefits, Safety, Uses, and Scientific Foundations	/herbs.html
+The Biochemistry of Medicinal Plants	/herbs/biochemistry
+How Much Should You Take? Dosage Guidelines	/herbs/dosage
+A Beginner’s Framework for Selecting Medicinal Plants	/herbs/selection
+Are Medicinal Plants Regulated?	/herbs/regulations
+Which Medicinal Plants Are Studied for Immune Support?	/herbs/immune-research
+What Does Scientific Research Say About Medicinal Plants?	/herbs/research
+Herbal Teas, Tinctures, or Capsules?	/herbs/forms
+Herb–Drug Interactions	/herbs/interactions
+Poisonous Look-Alikes and Toxic Medicinal Plants	/herbs/toxicity
+Growing Medicinal Plants at Home	/herbs/cultivation
+
 --------------------------------------------------------------------------------
 OUTLINE
-- TODO: ask for 5-7 H2? and 1-3 H3 for each H2?
 --------------------------------------------------------------------------------
 
 From now on give me answers based on koray and sergey, and in the context of the above SCN.
 
 Write the outline for the following SCN article: 
 
-"The Biochemistry of Medicinal Plants"
+"Herbal Teas, Tinctures, or Capsules?"
 
 - Give me the perfect, most optimized outline and brief for this article. 
 - Include headings (h1, h2, h3, etc.) 
+- Include 5-7 h2, and 1-3 h3 for each h2
 - Include entities to mention
-- Include search intent (used to structure the answer / passages)
-- Include only the links proposed in the SCN table in the "To Pages" of this specific article
-- Include a link specific to link back to the parent page (Medicinal Plants: Benefits, Safety, Uses, and Scientific Foundations), with url "/herb.html"
+- Include main search intent and the search intents for each section (used to structure the answer / passages)
+- Include only the links proposed in the SCN table in the "To Pages" of this specific article, and a specific link to link back to the parent page (Guida completa ai sistemi di ozonizzazione industriale), with url "/herbs.html"
 - Include 2-4 links maximum in the entire article (including the one to the parent page)
-- Never repeate the same link, write each link only once
-- Include a brief for each subordinate text of each heading, because each heading need a paragraph immediately underneath it
-- For reference, the urls must be as short as possible and the pillar url (first article in the SCN) is /herbs.html
+- The urls must be as short as possible
+- Never repeat the same link, write each link only once
+- Include a brief for each subordinate text answer of each heading, because each heading need a paragraph immediately underneath it
 
 --------------------------------------------------------------------------------
 [?] SERGEY - MAYBE USE THIS
@@ -104,4 +115,21 @@ Internal Link: Parent page → [/herbs.html]
 
 Anchor: “overview of medicinal plants and their uses”
 
+--------------------------------------------------------------------------------
+WRITE FULL ARTICLE (ONE SHOT)
+--------------------------------------------------------------------------------
+
+Write the final content for the above outline.
+
+- For each passage, follow the brief, include the entities, and the internal link. 
+- For each heading, write a subordinate text (paragraph) that is optimized for a featured snippet, in about 40-60 words, in about 2-4 sentences, answering the underling, implicit question asked in the heading in the most clear, direct, precise format, and without fluff. 
+- Include precise numbers, datapoints, and structured-type content (like list, table) when applicable and supportive of the intent of the specific heading. 
+- Never include links that are not listed in the section below. 
+- Wrap every section inside a <section> tag.
+- Reply in html code. 
+
+also convert the following urls:
+/parametri-ozono/ -> /ozono-industriale/parametri/
+/normative-ozono/ -> /ozono-industriale/normative/
+/sostenibilita-ozono/ -> /ozono-industriale/sostenibilita/
 

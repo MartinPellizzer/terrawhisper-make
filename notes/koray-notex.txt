@@ -1,0 +1,17 @@
+source context
+entities
+topical map
+
+query network:
+    find the most popular entity type in the query networks (ex. country, continents)
+    - ex. local proximiyt
+    lexical relations
+    semantic distance, similarity (comes from user's behaviors)
+
+1. find the most populary entity type that creates your topical map
+2. create a topical border based on this entity attributes
+
+content configuration
+
+entity-attribute pair: candidate for a page
+

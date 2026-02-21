@@ -1,0 +1,32 @@
+/herbs/echinacea/
+/herbs/sambucus-nigra/
+/herbs/astragalus-membranaceus/
+
+Each page structured like:
+    Botanical name
+    Common names
+    Family
+    Active compounds
+    Mechanism
+    Uses
+    Evidence strength
+    Safety
+    Preparations
+    Related herbs
+    Related ailments
+This is where real authority is built.
+
+
+/herbs.html                  ← Overview + hub
+    /herbs/alphabetical.html ← Index for A–Z
+        /herbs/alphabetical/a.html
+        /herbs/alphabetical/b.html
+        ...
+    /herbs/therapeutic.html  ← Index for therapeutic categories
+        /herbs/therapeutic/immune.html
+        /herbs/therapeutic/digestive.html
+        ...
+    /herbs/family.html       ← Index for botanical families
+        /herbs/family/lamiaceae.html
+        /herbs/family/asteraceae.html
+

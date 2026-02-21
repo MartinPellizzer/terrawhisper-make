@@ -6,3 +6,18 @@ trust signals:
     external citations and mentions
     brand mentions (in same sentence as bigger competitor)
 knowledge graphs: connect your content to relevant topics and entities
+
+canonical site entity: herbal medicine
+root entities: primary definitional entities (concepts without which herbal medicine cannot exist)
+fan-outs: expand topic in subtopics for maximum topical coverage, and cover each fan-out in it's own page or passage
+
+GOAL -> raise probability for:
+    relevance
+    clarity
+    trust
+
+SRO:
+    - you **close fan-out gaps**, so your topics cover the same space AI explores
+    - you **structure your pages**, into self-contained passages that can be retireved independently
+    - you **anchor entities**, so your ideas are unmistakable linked to the real things
+    - you **strengthen trust signals**, so your passages feel safer to include

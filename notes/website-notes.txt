@@ -1,0 +1,198 @@
+🏠 What Goes on the Homepage?
+
+Homepage = Identity + Direction + High-Authority Nodes
+
+The homepage should:
+
+Define TerraWhisper
+
+State your scope
+
+Introduce pillars
+
+Link to quality nodes
+
+Homepage Structure Example
+Hero Section
+
+H1: Evidence-Based Herbal Medicine for Modern Wellness
+
+Subordinate text:
+
+TerraWhisper provides research-backed information on medicinal plants, their active compounds, therapeutic applications, preparation methods, and safety considerations.
+
+Notice:
+
+Medicinal plants
+
+Active compounds
+
+Therapeutic applications
+
+Safety
+
+You just defined your entity universe.
+
+Then Feature:
+Core Pillars
+
+Medicinal Plants
+
+Health Conditions
+
+Active Compounds
+
+Preparation Methods
+
+Herbal Safety
+
+These link to Tier 1 pages.
+
+Then Feature:
+
+“Popular Herbal Monographs”
+
+Turmeric
+
+Ashwagandha
+
+Milk Thistle
+
+Chamomile
+
+These are quality nodes.
+
+Then:
+
+“Herbs by Health Goal”
+
+Anxiety Support
+
+Inflammation Support
+
+Digestive Support
+
+Sleep Support
+
+These link to condition hubs.
+
+What the Homepage Should NOT Be
+
+A long definition of herbal medicine
+
+A blog feed
+
+A random article list
+
+The homepage is structural.
+
+🌿 What Goes on /herbal-medicine/
+
+This page defines the domain itself.
+
+Think of it as:
+
+The encyclopedia entry for your entire site.
+
+Recommended Structure for /herbal-medicine/
+H1: What Is Herbal Medicine?
+
+First paragraph (very important):
+
+Herbal medicine is a therapeutic system that uses medicinal plants and plant-derived compounds to prevent, manage, and treat health conditions through biologically active phytochemicals.
+
+Notice:
+
+therapeutic system
+
+medicinal plants
+
+plant-derived compounds
+
+phytochemicals
+
+health conditions
+
+Entity stack complete.
+
+Section 1: Historical Systems
+
+Ayurveda
+
+Traditional Chinese Medicine
+
+Western herbalism
+
+Indigenous plant medicine
+
+Section 2: How Herbal Medicine Works
+
+Phytochemicals
+
+Biological pathways
+
+Anti-inflammatory mechanisms
+
+Neurotransmitter modulation
+
+Adaptogenic response
+
+Section 3: Herbal Medicine vs Conventional Medicine
+
+Whole-plant synergy
+
+Standardized extracts
+
+Regulatory differences
+
+Evidence-based vs traditional evidence
+
+Section 4: Safety & Regulation
+
+FDA supplement regulation
+
+WHO monographs
+
+Contraindications
+
+Herb-drug interactions
+
+Section 5: Link to Your Pillars
+
+Strong contextual bridges:
+
+Explore medicinal plants →
+
+Explore herbal safety →
+
+Explore preparation methods →
+
+🔥 Very Important Strategic Insight
+
+Homepage = “We are TerraWhisper.”
+
+/herbal-medicine/ = “This is what herbal medicine is.”
+
+If you merge both into one page:
+
+You lose clarity.
+
+If you separate:
+
+You strengthen source context definition.
+
+🧬 Internal Link Relationship
+
+Homepage links to:
+
+/herbal-medicine/
+
+All pillars
+
+/herbal-medicine/ links to:
+
+Medicinal plants pillar
+
+Safety pillar
+
+Active compounds pillar
