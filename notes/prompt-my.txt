@@ -133,3 +133,93 @@ also convert the following urls:
 /normative-ozono/ -> /ozono-industriale/normative/
 /sostenibilita-ozono/ -> /ozono-industriale/sostenibilita/
 
+--------------------------------------------------------------------------------
+NEW PROMPTS
+--------------------------------------------------------------------------------
+
+TODO: when you ask for the core entities for a node article, ask to give you a list of sub-entities too and to now repeate sub-entities???
+
+new article:
+    1. root: core entities
+    2. root: core entities - [seed name]
+    3. seed: article brief
+    4. seed: subordinate text LV1
+
+    5. seed: core entities
+    6. seed: entities pick
+    7. seed: section brief
+    8. seed: subordinate text LV1
+
+Preparation & Administration
+
+1. Taxonomy & Identification
+
+These entities define what the plant is and how it is classified:
+
+Botanical name (e.g., Echinacea purpurea)
+
+Common name(s) (e.g., purple coneflower)
+
+Plant family (e.g., Asteraceae)
+
+Species & Genus
+
+2. Parts & Phytochemistry
+
+Entities that describe the plant’s composition and usable parts:
+
+Roots, leaves, stems, flowers, seeds (as relevant plant parts)
+
+Active compounds / phytochemicals (e.g., alkaloids, flavonoids, terpenes)
+
+Essential oils / extracts
+
+3. Medicinal Use & Benefits
+
+Entities covering therapeutic functions:
+
+Ailments / conditions treated (e.g., inflammation, anxiety, digestive issues)
+
+Mechanism of action (e.g., anti-inflammatory, antioxidant)
+
+Dosage forms (e.g., teas, tinctures, capsules, ointments)
+
+4. Preparation & Administration
+
+Entities describing how the plant is used:
+
+Extraction method (e.g., decoction, infusion, maceration)
+
+Application method (oral, topical, inhalation)
+
+Safety / toxicity information
+
+5. Geographical & Ecological Context
+
+Entities for origin, cultivation, and sustainability:
+
+Native region / habitat (e.g., Europe, North America)
+
+Cultivation practices (wild-harvested vs. farmed)
+
+Seasonality & harvesting time
+
+6. Regulatory & Evidence Context
+
+Entities establishing credibility and safety:
+
+Scientific studies / clinical trials
+
+Traditional medicine systems (e.g., Ayurveda, Traditional Chinese Medicine)
+
+Regulatory status / approved uses (FDA, EMA, WHO)
+
+7. Related Entities
+
+Entities that connect medicinal plants to other nodes in your semantic network:
+
+Related herbs / substitutes (e.g., other anti-inflammatory herbs)
+
+Formulations / polyherbal mixtures
+
+Interactions with drugs or other herbs
