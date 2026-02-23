@@ -140,86 +140,308 @@ NEW PROMPTS
 TODO: when you ask for the core entities for a node article, ask to give you a list of sub-entities too and to now repeate sub-entities???
 
 new article:
-    1. root: core entities
-    2. root: core entities - [seed name]
+    1. root: entities
+    2. root: entities - [seed name]
     3. seed: article brief
     4. seed: subordinate text LV1
 
-    5. seed: core entities
+    5. seed: entities
     6. seed: entities pick
     7. seed: section brief
     8. seed: subordinate text LV1
 
-Preparation & Administration
+source context: herbal medicine
+constituents: Active Compounds / Phytochemicals
 
-1. Taxonomy & Identification
 
-These entities define what the plant is and how it is classified:
+Active Compounds / Phytochemicals – Sub-Core Entities
 
-Botanical name (e.g., Echinacea purpurea)
+These are the essential elements that define the entity and give it semantic completeness:
 
-Common name(s) (e.g., purple coneflower)
+1. Types of Active Compounds (Classifications)
 
-Plant family (e.g., Asteraceae)
+Alkaloids – Nitrogen-containing compounds with pharmacological activity.
 
-Species & Genus
+Flavonoids – Polyphenolic compounds with antioxidant and anti-inflammatory properties.
 
-2. Parts & Phytochemistry
+Tannins – Polyphenols with astringent and antimicrobial properties.
 
-Entities that describe the plant’s composition and usable parts:
+Essential Oils – Volatile compounds responsible for aroma, often therapeutic.
 
-Roots, leaves, stems, flowers, seeds (as relevant plant parts)
+Polyphenols – Broad category including flavonoids, tannins, and phenolic acids.
 
-Active compounds / phytochemicals (e.g., alkaloids, flavonoids, terpenes)
+Saponins – Glycosides with foaming properties and medicinal benefits.
 
-Essential oils / extracts
+Terpenoids / Isoprenoids – Plant metabolites with diverse biological activities.
 
-3. Medicinal Use & Benefits
+Glycosides – Compounds where sugar is bound to a non-sugar moiety.
 
-Entities covering therapeutic functions:
+Coumarins – Aromatic compounds with anticoagulant and antimicrobial roles.
 
-Ailments / conditions treated (e.g., inflammation, anxiety, digestive issues)
+Lignans – Polyphenols with antioxidant and hormone-modulating activity.
 
-Mechanism of action (e.g., anti-inflammatory, antioxidant)
+2. Biological or Pharmacological Properties (Attributes)
 
-Dosage forms (e.g., teas, tinctures, capsules, ointments)
+Antioxidant activity
 
-4. Preparation & Administration
+Anti-inflammatory effects
 
-Entities describing how the plant is used:
+Antimicrobial or antifungal activity
 
-Extraction method (e.g., decoction, infusion, maceration)
+Analgesic / pain-relief properties
 
-Application method (oral, topical, inhalation)
+Hormonal modulation / adaptogenic effects
 
-Safety / toxicity information
+Detoxification / liver-protective effects
 
-5. Geographical & Ecological Context
+3. Source & Distribution (Contextual Entity)
 
-Entities for origin, cultivation, and sustainability:
+Plant part producing the compound (leaf, root, bark, flower, seed)
 
-Native region / habitat (e.g., Europe, North America)
+Concentration levels in different species
 
-Cultivation practices (wild-harvested vs. farmed)
+Extraction method (solvent, essential oil distillation, infusion)
 
-Seasonality & harvesting time
+4. Chemical Structure & Molecular Features
 
-6. Regulatory & Evidence Context
+Molecular formula
 
-Entities establishing credibility and safety:
+Functional groups (e.g., hydroxyl, alkyl, glycosidic bonds)
 
-Scientific studies / clinical trials
+Solubility (water-soluble, fat-soluble)
 
-Traditional medicine systems (e.g., Ayurveda, Traditional Chinese Medicine)
+Stability / degradation under heat or light
 
-Regulatory status / approved uses (FDA, EMA, WHO)
+5. Mechanism of Action / Bioactivity
 
-7. Related Entities
+Interaction with enzymes or receptors
 
-Entities that connect medicinal plants to other nodes in your semantic network:
+Pathways of metabolic transformation
 
-Related herbs / substitutes (e.g., other anti-inflammatory herbs)
+Pharmacokinetics (absorption, distribution, metabolism, excretion)
 
-Formulations / polyherbal mixtures
+Synergistic or antagonistic effects with other phytochemicals
 
-Interactions with drugs or other herbs
+6. Examples / Named Compounds
+
+Caffeine, morphine, quinine (Alkaloids)
+
+Quercetin, kaempferol (Flavonoids)
+
+Gallic acid, catechin (Tannins)
+
+Menthol, limonene (Essential Oils)
+
+Resveratrol, curcumin (Polyphenols)
+
+
+
+
+1. Core Herbal Medicine Entities
+
+These are the primary building blocks — the “must-have” entities that define the subject itself:
+
+Herbs and Plant Names
+e.g., Ginseng, Echinacea, Turmeric, Chamomile, Garlic, Peppermint
+
+Active Compounds / Phytochemicals
+e.g., Alkaloids, Flavonoids, Tannins, Essential Oils, Polyphenols
+
+Forms & Preparations
+e.g., Teas, Extracts, Capsules, Tinctures, Ointments, Powders
+
+2. Health & Wellness Entities
+
+Herbal medicine is inherently tied to health:
+
+Target Conditions / Uses
+e.g., Immune support, Digestive health, Stress relief, Anti-inflammatory, Skin conditions
+
+Physiological Systems
+e.g., Nervous system, Digestive system, Circulatory system, Immune system
+
+Dosage & Administration
+e.g., Recommended daily dose, Duration of use, Methods of consumption
+
+3. Knowledge & Evidence Entities
+
+Semantic authority requires entities related to credibility and research:
+
+Scientific Studies / References
+e.g., Clinical trials, Research papers, Meta-analyses
+
+Practitioners / Experts
+e.g., Herbalists, Naturopaths, Phytotherapists
+
+Traditional Medicine Systems
+e.g., Ayurveda, Traditional Chinese Medicine (TCM), Western herbalism
+
+4. Safety & Regulatory Entities
+
+Authority demands trust signals:
+
+Side Effects / Contraindications
+e.g., Allergies, Drug interactions, Pregnancy precautions
+
+Regulatory Bodies
+e.g., FDA, EMA, WHO guidelines, Herbal pharmacopoeias
+
+5. Contextual & Support Entities
+
+These tie the site together semantically and improve internal linking:
+
+Preparation Techniques
+e.g., Infusion, Decoction, Maceration, Fermentation
+
+Herb Sourcing / Geography
+e.g., Organic farms, Wildcrafted, Regional herbs (e.g., Himalayan ginseng, European chamomile)
+
+Usage History & Cultural Context
+e.g., Folk remedies, Historical texts, Traditional practices
+
+
+
+
+
+
+
+Active Compounds / Phytochemicals – Sub-Core Entities
+
+These are the essential elements that define the entity and give it semantic completeness:
+
+1. Types of Active Compounds (Classifications)
+
+Alkaloids – Nitrogen-containing compounds with pharmacological activity.
+
+Flavonoids – Polyphenolic compounds with antioxidant and anti-inflammatory properties.
+
+Tannins – Polyphenols with astringent and antimicrobial properties.
+
+Essential Oils – Volatile compounds responsible for aroma, often therapeutic.
+
+Polyphenols – Broad category including flavonoids, tannins, and phenolic acids.
+
+Saponins – Glycosides with foaming properties and medicinal benefits.
+
+Terpenoids / Isoprenoids – Plant metabolites with diverse biological activities.
+
+Glycosides – Compounds where sugar is bound to a non-sugar moiety.
+
+Coumarins – Aromatic compounds with anticoagulant and antimicrobial roles.
+
+Lignans – Polyphenols with antioxidant and hormone-modulating activity.
+
+2. Biological or Pharmacological Properties (Attributes)
+
+Antioxidant activity
+
+Anti-inflammatory effects
+
+Antimicrobial or antifungal activity
+
+Analgesic / pain-relief properties
+
+Hormonal modulation / adaptogenic effects
+
+Detoxification / liver-protective effects
+
+3. Source & Distribution (Contextual Entity)
+
+Plant part producing the compound (leaf, root, bark, flower, seed)
+
+Concentration levels in different species
+
+Extraction method (solvent, essential oil distillation, infusion)
+
+4. Chemical Structure & Molecular Features
+
+Molecular formula
+
+Functional groups (e.g., hydroxyl, alkyl, glycosidic bonds)
+
+Solubility (water-soluble, fat-soluble)
+
+Stability / degradation under heat or light
+
+5. Mechanism of Action / Bioactivity
+
+Interaction with enzymes or receptors
+
+Pathways of metabolic transformation
+
+Pharmacokinetics (absorption, distribution, metabolism, excretion)
+
+Synergistic or antagonistic effects with other phytochemicals
+
+the subordinate text must be the content of a <p> tag.
+
+
+Biological Property of a Phytochemical
+
+i have the core entity "Active Compounds / Phytochemicals", in the contenxt of "herbal medicine" (site-wise source context).
+this core entity has the following sub-core entity i want to focus on: 
+
+#### **1. Types of Active Compounds (Classifications)**
+
+* **Alkaloids** – Nitrogen-containing compounds with pharmacological activity.
+* **Flavonoids** – Polyphenolic compounds with antioxidant and anti-inflammatory properties.
+* **Tannins** – Polyphenols with astringent and antimicrobial properties.
+* **Essential Oils** – Volatile compounds responsible for aroma, often therapeutic.
+* **Polyphenols** – Broad category including flavonoids, tannins, and phenolic acids.
+* **Saponins** – Glycosides with foaming properties and medicinal benefits.
+* **Terpenoids / Isoprenoids** – Plant metabolites with diverse biological activities.
+* **Glycosides** – Compounds where sugar is bound to a non-sugar moiety.
+* **Coumarins** – Aromatic compounds with anticoagulant and antimicrobial roles.
+* **Lignans** – Polyphenols with antioxidant and hormone-modulating activity.
+
+
+give me a list of the core entities for this specific sub-core entity, meaning the entities that must be present to describe this one, otherwise it will not stand by its own. don't include core entities that will be covered in the other sub-core entities listed below:
+
+#### **2. Biological or Pharmacological Properties (Attributes)**
+
+* Antioxidant activity
+* Anti-inflammatory effects
+* Antimicrobial or antifungal activity
+* Analgesic / pain-relief properties
+* Hormonal modulation / adaptogenic effects
+* Detoxification / liver-protective effects
+
+#### **3. Source & Distribution (Contextual Entity)**
+
+* Plant part producing the compound (leaf, root, bark, flower, seed)
+* Concentration levels in different species
+* Extraction method (solvent, essential oil distillation, infusion)
+
+#### **4. Chemical Structure & Molecular Features**
+
+* Molecular formula
+* Functional groups (e.g., hydroxyl, alkyl, glycosidic bonds)
+* Solubility (water-soluble, fat-soluble)
+* Stability / degradation under heat or light
+
+#### **5. Mechanism of Action / Bioactivity**
+
+* Interaction with enzymes or receptors
+* Pathways of metabolic transformation
+* Pharmacokinetics (absorption, distribution, metabolism, excretion)
+* Synergistic or antagonistic effects with other phytochemicals
+
+#### **6. Examples / Named Compounds**
+
+* Caffeine, morphine, quinine (Alkaloids)
+* Quercetin, kaempferol (Flavonoids)
+* Gallic acid, catechin (Tannins)
+* Menthol, limonene (Essential Oils)
+* Resveratrol, curcumin (Polyphenols)
+
+---
+
+💡 **Semantic SEO Note:**
+For this entity to be **self-standing in a content network**, at least the following must be explicitly present in your content:
+
+1. **Classification of compounds** (Alkaloids, Flavonoids, etc.)
+2. **Key attributes** (biological or pharmacological properties)
+3. **Source/context** (plant part, species, extraction)
+4. **Representative examples** (specific compounds with known effects)
+
+Optional but strong: chemical structure, mechanism of action, and interactions—these enrich **microsemantics** and increase retrieval relevance.
