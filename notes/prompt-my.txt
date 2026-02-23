@@ -375,8 +375,7 @@ Synergistic or antagonistic effects with other phytochemicals
 
 the subordinate text must be the content of a <p> tag.
 
-
-Biological Property of a Phytochemical
+Mechanism of Action / Bioactivity
 
 i have the core entity "Active Compounds / Phytochemicals", in the contenxt of "herbal medicine" (site-wise source context).
 this core entity has the following sub-core entity i want to focus on: 
