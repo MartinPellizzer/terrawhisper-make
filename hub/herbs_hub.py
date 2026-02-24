@@ -2948,12 +2948,250 @@ def active_compounds__gen():
     html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
     with open(html_filepath, 'w') as f: f.write(html)
 
+def preparations__gen():
+    url_slug = f'preparations'
+    meta_title = 'Preparation Methods'
+    meta_description = ''
+    canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''
+    ###
+    article_html = f'''
+
+<h1>Forms & Preparations in Herbal Medicine</h1>
+<p>Forms and Preparations in <a href="/herbal-medicine.html">herbal medicine</a> refer to the preparation methods used to transform a medicinal plant into usable therapeutic formats, such as teas, tinctures, extracts, capsules, and topical applications. These forms depend on plant material, solvent or extraction medium, dosage and administration, stability, bioavailability, potency, and safety. This guide explains how raw herbs become clinically usable forms through structured preparation and delivery.</p>
+
+<section>
+
+<h2>Raw Material in Herbal Medicine</h2>
+<p>A raw herbal material is defined by its medicinal plant identity, botanical classification, anatomical plant source, and physical morphology, alongside ecological origin and intrinsic phytochemistry. These identity-level attributes establish the material’s pre-extraction state, ensuring it is a recognizable medicinal substance rather than a vague botanical reference. Without this defined profile, the plant part cannot reliably serve therapeutic purposes.</p>
+
+<h3>Medicinal Plant Identity</h3>
+<p>Every herbal raw material should be precisely identified using its botanical name (binomial nomenclature) and taxonomic hierarchy, including genus, species, and plant family, as common names like "ginseng" can refer to multiple species. Species-level distinction and chemotype variations, such as between Panax ginseng and Panax quinquefolius or among Valeriana officinalis chemotypes, clarify biological source and active compound profiles, while botanical synonyms prevent misidentification.</p>
+
+<h3>Plant Part Used</h3>
+<p>Different anatomical parts of a plant exhibit distinct phytochemical distributions, influencing their medicinal properties. Roots and rhizomes often concentrate sedative or tonic compounds, while leaves and flowers may carry antioxidants or volatile oils. For example, Valeriana officinalis root is used for calming effects, whereas Cinnamomum verum bark provides digestive benefits, illustrating how anatomical differentiation guides herbal preparation and therapeutic application.</p>
+
+<h3>Morphological State</h3>
+<p>Raw herbal materials exist in various morphological states, including whole herb, cut herb, crushed herb, and powdered plant material, each preserving the physical integrity of the plant prior to extraction. The particle size and surface area of these forms influence drying efficiency, storage stability, and handling characteristics. Minimal post-harvest processing ensures optimal preservation while preparing herbs for future use.</p>
+
+<h3>Harvesting Context</h3>
+<p>The phytochemical composition of herbs shifts with the harvest season, growth stage, flowering stage, and overall plant maturity, directly shaping the biological identity of the raw material. Wildcrafted plants often present higher variability compared with cultivated specimens, while agricultural practices and post-harvest handling further influence consistency. These factors determine the herb’s inherent chemical profile, independent of any preparation method applied later.</p>
+
+<h3>Geographic Origin</h3>
+<p>The region and country of origin shape the ecological profile of herbal materials through climate, soil composition, altitude, and environmental stress factors, which drive ecotype differentiation and chemotype variation. For example, lavender grown in the high-altitude soils of Provence develops a distinct essential oil profile, while chamomile from cooler German regions exhibits unique flavonoid concentrations. These terroir-driven variations directly influence medicinal potency and consistency.</p>
+
+<h3>Intrinsic Phytochemical Composition</h3>
+<p>The raw plant material contains diverse phytochemicals including alkaloids, flavonoids, terpenes, glycosides, saponins, tannins, phenolic compounds, and essential oils, each contributing to its medicinal character. Marker compounds act as descriptive identifiers of these chemical classes. This intrinsic chemical profile defines the plant’s potential therapeutic properties, independent of preparation-level standardization or extraction methods.</p>
+
+</section>
+
+<section>
+
+<h2>Preparation Methods in Herbal Medicine</h2>
+<p>In herbal medicine, preparation methods directly influence therapeutic efficacy by altering herbs’ chemical properties, stability, and absorption. Techniques such as decoction, infusion, tincture, and powdering optimize specific compounds, enhancing potency and safety. Understanding these forms and preparations ensures that herbal remedies deliver predictable and effective outcomes for diverse health applications.</p>
+
+<h3>Preparation Techniques</h3>
+<p>Herbs are transformed into medicinal forms using specific techniques that target the extraction of active compounds. Decoction involves boiling dense roots or barks, ideal for resilient compounds, while infusion uses hot water for delicate leaves and flowers. Tinctures and extracts employ alcohol or solvents to preserve potent constituents, powders and maceration provide versatile oral or topical applications, and poultices are applied directly for localized effects, ensuring each herbal formulation delivers its intended therapeutic action.</p>
+
+<h3>Process Parameters</h3>
+<p>Temperature, time, solvent type, filtration, pH, concentration, and extraction rate are critical variables that directly influence potency, stability, and safety in herbal preparations. Minor deviations in duration or temperature can reduce bioactive compound concentration or compromise stability. Optimal ranges, such as gentle heating for decoctions or precise solvent ratios for tinctures, ensure consistent extraction efficiency and maintain therapeutic efficacy.</p>
+
+<h3>Processing Equipment / Tools</h3>
+<p>Essential tools for herbal preparations include mortar & pestle for manual grinding, grinders for consistent particle size, and sieves or strainers to separate coarse material. Scales ensure precise measurements, while extraction vessels, distillation apparatus, and heating equipment facilitate effective compound isolation. Proper storage containers preserve potency, and equipment selection directly impacts quality, efficiency, and reproducibility of herbal formulations.</p>
+
+<h3>Form Transformation Attributes</h3>
+<p>Herbs undergo solid-to-liquid transformation during preparation, which alters infusion strength, texture, consistency, color, and aroma. These physical and chemical changes concentrate active compounds, enhancing bioavailability and stabilizing their efficacy. Adjusting preparation methods influences absorption rates and overall potency, ensuring the herb's therapeutic properties are optimized for specific applications.</p>
+
+<h3>Preparation Environment / Conditions</h3>
+<p>Maintaining sterility, controlled humidity, and consistent temperature is essential for preserving herbal efficacy and preventing contamination. Proper air quality and minimized light exposure reduce oxidation and microbial growth, while regular environmental monitoring ensures storage conditions remain optimal. Cleanliness protocols, contamination prevention, and careful environmental control collectively safeguard herbal preparations from degradation and potency loss.</p>
+
+</section>
+
+<section>
+
+<h2>Solvent & Extraction Medium in Herbal Preparations</h2>
+<p>In herbal medicine, a solvent or extraction medium is a substance used to dissolve and draw out bioactive compounds from plant materials. The choice of solvent—water, alcohol, oil, or glycerin—depends on its chemical properties, including polarity, viscosity, and preservative capability, as well as the target compounds' solubility and stability. Extraction parameters such as temperature, duration, and solvent-to-herb ratio directly influence the yield and interaction with active compounds, setting the foundation for effective, stable, and bioavailable herbal preparations.</p>
+
+<h3>Solvent Type / Medium</h3>
+<p>Herbal extractions rely on selecting the right solvent to target specific compounds. Water is ideal for teas and infusions, extracting hydrophilic compounds like flavonoids. Ethanol captures alkaloids and resins in tinctures, while glycerin offers a gentle, alcohol-free alternative for long-term storage. Oils extract fat-soluble constituents, CO₂ enables precise supercritical and subcritical extractions, and honey or vinegar provide natural preservation and flavor enhancement for syrups and herbal macerates.</p>
+
+<h3>Solvent Properties</h3>
+<p>Solvent polarity determines which phytochemicals are extracted, with polar solvents favoring alkaloids and glycosides, while nonpolar solvents target terpenes and lipids. Viscosity and hygroscopicity affect diffusion and moisture absorption, impacting stability, whereas pH and solubility dictate ionizable compound extraction. Volatility and oxidation susceptibility influence the shelf-life and safety of herbal preparations, guiding selection for decoctions, tinctures, or essential oil isolations.</p>
+
+<h3>Extraction Parameters Specific to Medium</h3>
+<p>Temperature, solvent concentration, saturation limits, and the solvent-to-material ratio critically shape herbal extraction outcomes. Higher temperatures accelerate solute diffusion but may degrade heat-sensitive compounds, while optimal solvent concentration balances polarity for selective extraction. Saturation limits define maximum solubility, and adjusting the solvent-to-material ratio ensures sufficient contact; for example, ethanol tinctures typically extract efficiently at 20–40 °C, whereas water decoctions require 90–100 °C to maximize yield.</p>
+
+<h3>Interaction with Active Compounds</h3>
+<p>Solvent selectivity dictates which phytochemicals are efficiently extracted, with water favoring hydrophilic compounds like flavonoids, while ethanol better solubilizes alkaloids and terpenes. Compound stability and extraction rate depend on solvent polarity and temperature, as harsh solvents can degrade sensitive constituents. Co-extraction potential also varies, influencing purity and synergy, for example, water extracts more sugars, whereas ethanol preserves essential oils, altering the herbal preparation’s potency and profile.</p>
+
+<h3>Preservation / Storage Impact</h3>
+<p>The choice of solvent directly affects microbial control and shelf-life, with higher-alcohol or viscous carriers limiting microbial growth and slowing degradation of active compounds. Light- and heat-sensitive phytochemicals are better protected in opaque, cooler storage conditions, while solvent viscosity-based protection can reduce oxidation and evaporation, preserving potency in tinctures, oils, and extracts for extended periods. Regularly sealing containers and minimizing exposure further maintains stability and efficacy.</p>
+
+</section>
+
+<section>
+
+<h2>Dosage & Administration of Herbal Preparations</h2>
+<p>Proper dosage and administration are essential in herbal medicine to ensure therapeutic outcomes while minimizing risks. Accurate dosing considers the specific herbal preparation, patient characteristics, and treatment goals, supporting both safety and efficacy. This section addresses all factors influencing dosage, timing, and methods of use, guiding individualized treatment within regulatory standards for optimal results.</p>
+
+<h3>Dosage Measurement</h3>
+<p>Herbal dosages are quantified using grams for powders, milliliters for tinctures, teaspoons for infusions, and standardized capsules for dry herbs, ensuring each preparation type delivers a precise therapeutic dose. Accurate measurement and standardization practices are critical, as deviations can reduce efficacy or compromise safety, making consistency essential across teas, powders, tinctures, and capsules.</p>
+
+<h3>Frequency</h3>
+<p>Herbal preparations are administered according to daily dosing or multiple doses schedules to maintain therapeutic potency and remain within the optimal therapeutic window. Repeated administration aligns with the half-life of active compounds, ensuring consistent blood levels and treatment efficacy. Adhering to a structured treatment schedule supports regimen adherence and overall consistency in herbal therapy outcomes.</p>
+
+<h3>Route of Administration</h3>
+<p>Herbal preparations can be administered orally, topically, via inhalation, or sublingually, each affecting absorption and bioavailability differently. Oral intake allows systemic distribution but may reduce potency due to digestion, while sublingual and inhalation routes offer faster absorption. Topical applications target localized effects, and choosing the method depends on patient compliance, herbal form compatibility, and desired therapeutic outcomes.</p>
+
+<h3>Duration of Use</h3>
+<p>Short-term use of herbal preparations typically spans days to a few weeks, suitable for acute conditions requiring immediate support. Long-term use may extend months, often necessary for chronic conditions, but requires careful monitoring to prevent toxicity or diminished efficacy. Cycling herbs or gradual tapering enhances safety, ensuring therapy duration aligns with condition severity while minimizing risks associated with prolonged administration.</p>
+
+<h3>Special Population Considerations</h3>
+<p>Children, the elderly, pregnant or breastfeeding individuals, and patients with comorbidities often require tailored dosing of herbal preparations due to metabolic differences and heightened sensitivity. Adjustments in dosage, form, and administration help ensure safety while minimizing adverse effects. Careful monitoring and individualized modifications are essential to maintain therapeutic benefits without compromising health.</p>
+
+<h3>Timing Relative to Meals or Activities</h3>
+<p>Herbs taken before meals may be absorbed more rapidly, enhancing bioavailability, while taking them with meals can moderate effects and reduce gastrointestinal irritation. Post-meal intake is often recommended for digestive support or slower absorption. Aligning herbal intake with daily routines, physical activity, and circadian rhythms can optimize absorption and therapeutic outcomes by synchronizing with natural metabolic peaks.</p>
+
+<h3>Monitoring and Adjustment</h3>
+<p>To ensure safe and effective herbal therapy, monitor therapeutic effects regularly and track patient response using logs or charts. Watch for signs of underdosing, such as minimal improvement, or overdosing, including adverse reactions, and adjust dosage gradually following safety protocols. Document all changes and observations to maintain a clear record for ongoing patient monitoring and dosage adjustment decisions.</p>
+
+</section>
+
+<section>
+
+<h2>Stability & Preservation in Herbal Preparations</h2>
+<p>Maintaining herbal medicine stability is essential to preserve potency retention and therapeutic efficacy. Herbal preparations are sensitive to chemical degradation, microbial growth, and environmental factors such as temperature, humidity, and light. Implementing preservation techniques that safeguard formulation integrity ensures prolonged shelf life while maintaining the bioactive properties critical for effective treatment.</p>
+
+<h3>Shelf Life</h3>
+<p>Shelf life of herbal preparations is determined through stability testing that evaluates potency retention over time across different formulation types such as tinctures, powders, capsules, and decoctions. Factors like storage conditions, moisture, light exposure, and natural degradation rates influence expiration dating. Accurate shelf life ensures safe usage, guides labeling, and supports quality assurance for both traditional and modern herbal products.</p>
+
+<h3>Storage Conditions</h3>
+<p>Herbal preparations maintain potency when stored in cool, stable temperatures, ideally between 15–25°C for ambient storage, with controlled environments extending shelf life. Low humidity and airtight, opaque containers protect against moisture, light, and environmental stressors that accelerate degradation. Selecting glass or high-quality plastic packaging and avoiding extreme temperatures ensures efficacy and preserves active compounds.</p>
+
+<h3>Light Sensitivity</h3>
+<p>Flavonoids and essential oils in herbs such as St. John’s Wort and Echinacea are highly susceptible to photodegradation, leading to loss of potency and altered chemical stability. UV sensitivity accelerates these reactions, so storing preparations in light-resistant packaging and in dark, cool areas minimizes chemical breakdown. Consistent protection from direct light preserves both efficacy and shelf life.</p>
+
+<h3>Oxidation</h3>
+<p>Oxidative degradation in herbal preparations occurs when free radicals interact with sensitive compounds, leading to color fading, aroma loss, and reduced efficacy. Both spontaneous oxidation and environmental factors, such as heat, light, or oxygen exposure, accelerate this process. Preventative measures include using antioxidant stabilizers, employing vacuum or inert gas packaging, and selecting herbs with lower susceptibility to oxidative stress to preserve their therapeutic properties.</p>
+
+<h3>Preservatives</h3>
+<p>Herbal preparations use natural preservatives like honey, alcohol, and vitamin E, alongside synthetic options such as parabens and benzoates, to inhibit microbial growth, oxidation, and chemical degradation. These agents act as antimicrobial and chemical stabilizers, extending shelf life while balancing efficacy, safety, and consumer preferences. Regulatory guidelines further influence which preservatives are suitable for different formulations, ensuring compliance and product integrity.</p>
+
+<h3>Refrigeration</h3>
+<p>Cold-chain storage preserves thermolabile herbs and delicate formulations by slowing enzymatic activity and microbial growth. Short-term refrigeration (2–8°C) is suitable for immediate-use tinctures and fresh leaves, while long-term storage (-18°C or lower) protects powders and extracts for months. Proper containers, such as airtight, opaque vessels, are essential to maintain efficacy and prevent moisture or light degradation.</p>
+
+</section>
+
+<section>
+
+<h2>Bioavailability & Potency in Herbal Preparations</h2>
+<p>The effectiveness of herbal medicines depends on the bioavailability and potency of their active compounds, which vary by preparation type. Teas, tinctures, extracts, and capsules influence the absorption rate, solubility, and metabolism of phytochemicals, while standardized marker compounds and concentration levels determine therapeutic consistency. Optimizing these factors ensures predictable efficacy, safe dosing, and maximal clinical benefit.</p>
+
+<h3>Active Compounds / Phytochemicals</h3>
+<p>Herbal preparations contain phytochemicals such as alkaloids, flavonoids, terpenes, glycosides, and polyphenols, each contributing to therapeutic activity by modulating biological pathways. Understanding these herbal constituents is crucial for assessing efficacy and anticipating bioavailability variations. For example, alkaloids in cinchona regulate fever, flavonoids in chamomile provide anti-inflammatory effects, and terpenes in peppermint support digestion.</p>
+
+<h3>Concentration of Active Compounds</h3>
+<p>The potency of herbal preparations varies with method: infusions generally yield moderate concentrations, decoctions concentrate water-soluble compounds through prolonged boiling, and extracts allow precise control over extract strength. Concentration variability directly impacts dosage, requiring quantitative analysis to ensure therapeutic efficacy and adherence to standard dosing guidelines. Consistent measurement and adjustment are essential for reproducibility and predictable clinical outcomes.</p>
+
+<h3>Standardization / Marker Compounds</h3>
+<p>Marker compounds are used to quantify and ensure the consistency of herbal extracts, supporting extract standardization and batch consistency. Analytical methods such as chromatography measure these markers to maintain predictable bioactivity, enabling reliable efficacy across preparations. Quality control protocols incorporating marker analysis are essential for regulatory compliance and reproducible research outcomes in herbal medicine.</p>
+
+<h3>Absorption Rate / Pharmacokinetics</h3>
+<p>Herbal compounds undergo absorption, distribution, metabolism, and excretion (ADME), determining their half-life and peak plasma concentration. Preparations like teas or tinctures can enable fast absorption, while capsules may slow systemic availability, affecting the onset and duration of therapeutic effects. Optimizing these kinetics ensures the active constituents remain within the therapeutic window for effective treatment.</p>
+
+<h3>Bioavailability</h3>
+<p>Bioavailability measures the fraction of active compounds from herbal preparations that reach systemic circulation. Oral bioavailability is often reduced by the first-pass effect, while topical and sublingual forms can bypass metabolism for higher comparative bioavailability. Factors like solubility, extraction method, and formulation—such as raw herbs, concentrated extracts, alcohol-based tinctures, or encapsulated powders—directly influence therapeutic efficacy and effective dose.</p>
+
+<h3>Compound Solubility / Chemical Nature</h3>
+<p>The solubility of herbal phytochemicals is determined by their lipophilicity, polarity, and molecular structure, which directly influence extraction efficiency. Polar, small molecules dissolve readily in water, favoring teas or decoctions, while lipophilic compounds extract better in alcohol or oils. Selecting the appropriate preparation enhances bioavailability, ensuring active compounds are absorbed efficiently by the body.</p>
+
+<h3>Metabolism & Biotransformation Considerations</h3>
+<p>Active compounds in herbs undergo enzymatic transformation, where first-pass metabolism in the liver can reduce or modify their potency before reaching systemic circulation. Individual differences in enzyme activity, known as inter-individual variability, affect metabolite formation and bioavailability, while herb-drug interactions can further alter effective concentrations, enhancing or diminishing therapeutic effects.</p>
+
+</section>
+
+<section>
+
+<h2>Safety & Contraindications in Herbal Forms & Preparations</h2>
+<p>Ensuring safety in herbal medicine requires understanding the potential risks associated with different herbal forms and preparations. Awareness of side effects, toxicity, drug interactions, allergies, and contraindications is essential to protect patient safety. Following established herbal medicine guidelines allows practitioners and consumers to conduct effective risk assessment and implement precautions that minimize harm while maximizing therapeutic benefits.</p>
+
+<h3>Side Effects</h3>
+<p>Herbal preparations can cause a range of adverse reactions, varying in severity from mild (e.g., headache, gastrointestinal upset) to severe (allergic responses). Onset timing may be immediate or delayed, and frequency ranges from common to rare, with most effects being reversible. Careful monitoring of symptoms and reporting unexpected reactions is essential, especially when herbs contain potent active constituents.</p>
+
+<h3>Toxicity</h3>
+<p>Herbal preparations can exhibit toxic dose effects that vary by herb, affecting target organs like the liver, kidneys, or heart. Acute toxicity often presents rapidly with high-dose exposure, whereas chronic toxicity and cumulative exposure result from repeated sub-toxic doses over time. Risk assessment is essential, especially for herbs with narrow therapeutic windows, as proper dosing and preparation methods minimize dose-dependent adverse effects and organ-specific harm.</p>
+
+<h3>Herb-Drug Interactions</h3>
+<p>Herbal preparations can affect multiple drug classes, including anticoagulants, antidepressants, and immunosuppressants, through pharmacokinetic mechanisms like enzyme induction or inhibition and pharmacodynamic mechanisms that alter drug effects. Interaction severity ranges from mild to life-threatening, with strategies including dose adjustments, monitoring, and patient education. Clinically significant examples include St. John’s Wort reducing antidepressant efficacy and garlic enhancing anticoagulant effects, requiring careful management in polypharmacy contexts.</p>
+
+<h3>Allergic Reactions</h3>
+<p>Herbal preparations can trigger immune-mediated responses such as anaphylaxis, urticaria, or contact dermatitis due to allergenic compounds like sesquiterpene lactones and alkaloids. Individuals with prior sensitization, children, and those with pre-existing allergies are at higher risk. Preventive measures include patch testing, careful ingredient review, and ongoing monitoring for early symptoms to minimize adverse reactions.</p>
+
+<h3>Contraindications</h3>
+<p>Herbal preparations should be avoided or used with caution in individuals with specific physiological statuses, including pregnancy, pediatric, and geriatric populations, as well as those with liver, kidney, or other disease conditions. Co-morbidities and lifestyle factors such as medication use, alcohol consumption, or chronic illness can amplify risks. Evidence-based guidance and consultation with healthcare professionals ensure safe, tailored use of herbs, accounting for herbal-specific contraindications.</p>
+
+<h3>Warnings & Precautions</h3>
+<p>Users should implement consistent usage monitoring, tracking duration limits and observing for signs of overuse or toxicity, such as unusual reactions or cumulative effects. Special populations, including children, elderly, and immunocompromised individuals, require tailored guidance and closer supervision. Clear labeling and consumer education reinforce preventive guidance, ensuring awareness of safe use, contraindications, and the importance of adherence to recommended practices.</p>
+
+</section>
+
+<section>
+
+<h2>Specific Preparation Types in Herbal Medicine</h2>
+<p>In herbal medicine, preparation types define how plants are processed into usable forms, affecting dosage, absorption, and intended use. Each form—such as teas, tinctures, capsules, or ointments—is designed with specific form attributes, handling notes, and use contexts to optimize efficacy. Understanding these preparation types ensures that practitioners and users select the most appropriate form for therapeutic outcomes.</p>
+
+<h3>Form Name / Type</h3>
+<p>Herbal preparations vary in form, each designed for specific therapeutic use. Decoctions involve boiling roots or bark to extract potent compounds, while infusions steep leaves or flowers in hot water for milder effects. Tinctures are alcohol-based extracts concentrating active constituents, syrups combine extracts with sweeteners for palatability, and capsules or powders provide convenient oral dosing. Ointments deliver topical benefits, and concentrated herbal extracts offer versatile applications across internal and external use.</p>
+
+<h3>Dosage Form Category</h3>
+<p>Herbal preparations are categorized by administration route, affecting absorption and context of use. Oral forms, such as teas, capsules, and tinctures, are taken internally for systemic effects. Topical forms, including creams, ointments, and poultices, are applied externally for localized action. Aromatic forms, like inhalations or essential oil diffusions, engage sublingual or inhalation pathways, influencing bioavailability and therapeutic onset differently than internal or external applications.</p>
+
+<h3>Form-Specific Preparation Attributes</h3>
+<p>Each herbal preparation form is defined by its concentration, viscosity, solubility, and delivery mechanism, which collectively determine potency, absorption, and user experience. Tinctures offer high concentration and rapid absorption due to their liquid extraction method, while capsules provide standardized dosing with slower release. Variations in extraction method and solubility directly influence both therapeutic effectiveness and ease of use.</p>
+
+<h3>Use Context / Typical Application</h3>
+<p>Herbal preparations are selected based on their therapeutic use and functional purpose, with internal applications like teas or tinctures supporting digestion, immunity, or chronic inflammation, while external applications such as poultices and salves target acute injuries, skin conditions, or localized inflammation. Each form aligns with disease or condition relevance, ensuring acute uses provide rapid relief and chronic applications promote long-term wellness. For example, chamomile tea soothes digestive discomfort internally, whereas calendula salve addresses external skin irritation.</p>
+
+<h3>Special Handling / Sensory Notes</h3>
+<p>Herbal forms vary in shelf life and stability, with dried herbs lasting longer under cool, dry, and dark storage, while tinctures require airtight containers and moderate temperatures. Powders and extracts often need reconstitution or dilution, and some fresh or refrigerated preparations demand strict temperature control. Sensory attributes like aroma, taste, and texture directly reflect quality, influencing both efficacy and user experience.</p>
+
+</section>
+
+    '''
+
+    ###
+    sidebar_hub_html = '<div></div>'
+    sidebar_page_html = sidebar_page_gen([]) 
+    head_html = components.html_head(meta_title, meta_description, css='/styles-herb.css', canonical=canonical_html)
+    import textwrap
+    html = textwrap.dedent(f''' 
+        <!DOCTYPE html>
+        <html lang="en">
+        {head_html}
+        <body>
+            {sections.header_default()}
+            <div class="hub">
+                {sidebar_hub_html}
+                <main>
+                    <article>
+                        {article_html}
+                    </article>
+                </main>
+                {sidebar_page_html}
+            </div>
+            {sections.footer()}
+        </body>
+        </html>
+    ''').strip()
+    html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
+    with open(html_filepath, 'w') as f: f.write(html)
+
 
 def main():
     herbal_medicine__gen()
 
     medicinal_plants__gen()
     active_compounds__gen()
+    preparations__gen()
 
     # herbs_hub_gen()
     # herbs__biochemistry__gen()

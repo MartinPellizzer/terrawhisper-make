@@ -1,4 +1,4 @@
-source context
+source context: who you are? how you make money? what is your brand identity?
 entities
 topical map
 
@@ -15,3 +15,12 @@ content configuration
 
 entity-attribute pair: candidate for a page
 
+
+outher section of topical map:
+core section of topical map: central entity + source context
+
+
+Forms & Preparations
+e.g., Teas, Extracts, Capsules, Tinctures, Ointments, Powders
+
+Specific Preparation Types
