@@ -196,3 +196,119 @@ Medicinal plants pillar
 Safety pillar
 
 Active compounds pillar
+
+
+
+
+
+
+
+
+
+## h3: contraindications (exclusion boundaries)
+
+**purpose:**
+to define clinical and regulatory boundaries where herbal use is inappropriate or unsafe.
+
+**subordinate text brief:**
+explain absolute vs relative contraindications in herbal medicine. cover pregnancy, lactation, autoimmune disorders, bleeding disorders, hepatic impairment, pediatric populations. emphasize risk stratification rather than generalized fear framing.
+
+clarify that contraindications are formal safety boundaries embedded in labeling and clinical guidance.
+
+**core entities to include:**
+
+* contraindication
+* absolute contraindication
+* relative contraindication
+* pregnancy safety
+* lactation risk
+* pre-existing conditions
+* risk stratification
+* clinical exclusion criteria
+
+---
+
+## h3: herb–drug interactions
+
+**purpose:**
+to integrate herbal medicine into mainstream pharmacological safety through interaction modeling.
+
+**subordinate text brief:**
+explain pharmacokinetic and pharmacodynamic interactions. cover cyp450 enzyme modulation, anticoagulant interactions (e.g., warfarin), serotonin syndrome risk, immunosuppressant interference. emphasize that interaction potential increases with polypharmacy.
+
+frame this as a core legitimacy marker in modern herbal regulation.
+
+**core entities to include:**
+
+* herb–drug interaction
+* pharmacokinetic interaction
+* pharmacodynamic interaction
+* cytochrome p450 (cyp450)
+* enzyme inhibition/induction
+* anticoagulants
+* polypharmacy
+* interaction risk assessment
+
+---
+
+## h3: risk incidence & prevalence
+
+**purpose:**
+to contextualize harm probability and prevent disproportionate fear framing.
+
+**subordinate text brief:**
+define incidence rate, prevalence rate, and absolute vs relative risk in herbal safety. compare mild vs severe event frequency. emphasize the importance of population-level data and denominator awareness (number of users vs number of reported cases).
+
+position probabilistic framing as necessary for balanced regulatory judgment.
+
+**core entities to include:**
+
+* risk incidence
+* prevalence
+* absolute risk
+* relative risk
+* frequency distribution
+* epidemiological data
+* population-level safety data
+* risk communication
+
+---
+
+## h3: mechanism of harm (biological plausibility)
+
+**purpose:**
+to elevate the section from descriptive reporting to scientific causation modeling.
+
+**subordinate text brief:**
+explain molecular and physiological mechanisms underlying herbal harm. cover receptor binding, enzyme inhibition, oxidative stress pathways, hepatocellular injury mechanisms, immune hypersensitivity. connect mechanisms to observed adverse events.
+
+establish that biological plausibility increases regulatory credibility and ai retrieval confidence.
+
+**core entities to include:**
+
+* mechanism of harm
+* biological plausibility
+* molecular pathways
+* receptor interaction
+* enzyme inhibition
+* oxidative stress
+* hepatocellular injury
+* immunological response
+
+---
+
+# strategic macrosemantic note
+
+this structure ensures:
+
+* entity coverage depth
+* causal explanation hierarchy
+* probabilistic framing
+* regulatory alignment
+* clinical legitimacy
+* ai retrieval bias toward scientific authority
+
+if you'd like, i can next:
+
+* optimize the **first paragraph for retrieval salience**, or
+* create **represented queries + sequential query paths** for this section to strengthen query network coverage.

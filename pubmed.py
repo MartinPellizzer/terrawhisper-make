@@ -9,7 +9,9 @@ from Bio import Entrez
 from lib import io
 
 proj = 'terrawhisper'
+proj = 'ozonogroup'
 query = 'medicinal plant'
+query = 'ozone'
 
 query = query.strip().lower()
 query_slug = query.replace(' ', '-')

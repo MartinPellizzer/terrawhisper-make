@@ -5,6 +5,7 @@ from lib import g
 shutil.copy2('style.css', f'{g.website_folderpath}/style.css')
 shutil.copy2('styles-herb.css', f'{g.website_folderpath}/styles-herb.css')
 shutil.copy2('styles-tmp.css', f'{g.website_folderpath}/styles-tmp.css')
+shutil.copy2('styles.css', f'{g.website_folderpath}/styles.css')
 
 # HERBS..........................[HRB]
 # PREPARATIONS...................[PRP]

@@ -116,3 +116,290 @@ Legal status per region (FDA, EMA, etc.)
 Safety regulations
 Approved medicinal claims
 Labeling requirements
+
+
+========================================
+CONCEPTUAL HIERARCHY
+========================================
+SOURCE CONTEXT
+    - Central Entity 1
+        - Attribute 1
+        - Attribute 2
+        - Attribute 3
+    - Central Entity 2
+    - Central Entity 3
+
+
+========================================
+GLOBAL
+========================================
+Source Context: 
+herbal medicine
+
+Central Entity: 
+herbal medicine
+
+Central Search Intent: 
+health improvement
+natural wellness
+preventive medicine
+self-care
+
+========================================
+CENTRAL ENTITIES
+========================================
+/herbs/
+/ailments/
+/preparations/
+/culture/
+/safety/
+/studies/
+/education/
+
+
+### 🔹 **1. Herbs and Botanicals**
+- **Herb**: A plant or part of a plant used for medicinal purposes.
+- **Botanicals**: Natural substances derived from plants, including roots, leaves, flowers, seeds, etc.
+- **Plant Species**: Specific plants used in herbal medicine (e.g., *Echinacea*, *Ginseng*, *Turmeric*).
+- **Active Compounds**: Chemical constituents in herbs that contribute to their medicinal effects (e.g., curcumin, alkaloids).
+
+---
+
+### 🔹 **2. Medicinal Uses and Applications**
+- **Traditional Uses**: How herbs have been used historically in different cultures.
+- **Modern Applications**: Current uses in alternative or complementary medicine.
+- **Diseases/Conditions Treated**: Specific illnesses or health conditions associated with herbal treatments (e.g., inflammation, digestive issues, anxiety).
+- **Therapeutic Effects**: Healing properties attributed to herbs (e.g., anti-inflammatory, antimicrobial, analgesic).
+
+---
+
+### 🔹 **3. Cultural and Regional Contexts**
+- **Traditional Systems**: Systems of medicine like **Ayurveda**, **Traditional Chinese Medicine (TCM)**, or **Native American Healing**.
+- **Geographical Origins**: Regions where specific herbs originate or are commonly used (e.g., Mediterranean, East Asian, African).
+- **Cultural Practices**: Rituals, ceremonies, or practices associated with herbal use in different cultures.
+
+---
+
+### 🔹 **4. Safety and Regulation**
+- **Safety Profile**: Information on potential side effects, toxicity, or interactions.
+- **Drug Interactions**: How herbs interact with prescription or over-the-counter medications.
+- **Regulatory Standards**: Guidelines from health authorities (e.g., FDA, WHO, EMA) on herbal products.
+- **Standardization**: Processes to ensure quality, potency, and consistency in herbal products.
+
+---
+
+### 🔹 **5. Preparation and Administration**
+- **Forms of Administration**: Methods of using herbs (e.g., teas, tinctures, capsules, ointments).
+- **Dosage and Usage**: Recommended dosages and usage instructions.
+- **Preparation Techniques**: Methods of preparing herbal remedies (e.g., decoctions, infusions, macerations).
+
+---
+
+### 🔹 **6. Scientific Research and Evidence**
+- **Clinical Studies**: Research on the efficacy and safety of herbal treatments.
+- **Pharmacological Studies**: Scientific analysis of how herbs work at the molecular level.
+- **Meta-Analyses and Reviews**: Comprehensive evaluations of herbal therapies in medical literature.
+
+---
+
+### 🔹 **7. Sustainability and Ethical Sourcing**
+- **Sustainability**: Environmental impact of harvesting herbs and methods to ensure sustainability.
+- **Ethical Sourcing**: Ethical practices in harvesting, cultivation, and trade of herbs.
+- **Conservation**: Protection of rare or endangered plant species used in herbal medicine.
+
+---
+
+### 🔹 **8. Education and Information Resources**
+- **Herbal Education**: Resources for learning about herbs, their uses, and safety.
+- **User Guides**: How-to guides for preparing and using herbal remedies.
+- **Reference Materials**: Databases, encyclopedias, and textbooks on herbal medicine.
+
+---
+
+### 🔹 **9. Community and Practice**
+- **Herbal Practitioners**: Herbalists, naturopaths, and traditional healers.
+- **Community Practices**: Local knowledge, family traditions, and community-based herbal practices.
+- **Herbalism Schools**: Educational institutions or programs for learning herbal medicine.
+
+---
+
+### 🔹 **10. Historical and Philosophical Background**
+- **Historical Use**: The history of herbal medicine across different civilizations.
+- **Philosophical Foundations**: Beliefs and worldviews that underpin the use of herbal medicine in various cultures.
+- **Mythology and Symbolism**: Cultural stories, myths, or symbolic meanings attached to certain herbs.
+
+---
+
+========================================
+1. ATTRIBUTES: MEDICINAL PLANTS
+========================================
+/herbs/
+
+## 🌿 **Core Attributes of Medicinal Plants** (Clustered)
+
+### 1. **Botanical Information**
+- Scientific name (genus and species)
+- Common name (local/national name)
+- Family classification (e.g., Lamiaceae, Asteraceae)
+- Physical description (leaf shape, flower color, stem type, etc.)
+- Habitat and geographic origin
+- Growth habits (perennial, annual, shrub, herb, etc.)
+- Cultivation requirements (soil type, climate, light, etc.)
+
+---
+
+### 2. **Chemical Composition**
+- Active compounds (e.g., alkaloids, flavonoids, terpenoids, essential oils)
+- Phytochemical profile (e.g., saponins, polyphenols, tannins)
+- Bioactive components (e.g., antioxidants, anti-inflammatory agents)
+- Presence of medicinal or therapeutic alkaloids or terpenoids
+- Known chemical markers or fingerprinting
+
+---
+
+### 3. **Medicinal Uses**
+- Traditional use (in various cultures or regions)
+- Modern pharmacological use (e.g., in herbal remedies, pharmaceuticals)
+- Part used (leaves, roots, flowers, bark, seeds, etc.)
+- Preparation method (tea, tincture, capsule, ointment, etc.)
+- Therapeutic applications (e.g., anti-inflammatory, analgesic, antiseptic, etc.)
+- Disease conditions it's used for (e.g., colds, digestive issues, pain)
+
+---
+
+### 4. **Safety and Toxicity**
+- Known side effects or adverse reactions
+- Toxicological profile (poisonous, harmful in high doses)
+- Interactions with other herbs or pharmaceuticals
+- Contraindications (pregnancy, allergies, chronic conditions, etc.)
+- Dosage guidelines (safe range, recommended use)
+
+---
+
+### 5. **Cultural and Historical Context**
+- Traditional knowledge origins (e.g., Ayurveda, Chinese medicine, indigenous use)
+- Historical use in herbal medicine systems
+- Role in folklore or cultural practices
+- Historical documentation or references in ancient texts
+
+---
+
+### 6. **Scientific Research and Validation**
+- Peer-reviewed studies supporting its efficacy
+- Clinical trials or experimental data
+- Standardization of extract or preparation
+- Evidence-based claims (e.g., in pharmacognosy, ethnopharmacology)
+- Regulatory status (approved for use, banned, under study)
+
+---
+
+### 7. **Sustainability and Conservation**
+- Status in the wild (endangered, threatened, common)
+- Conservation status (IUCN Red List, CITES)
+- Harvesting practices (sustainable vs. overharvested)
+- Role in biodiversity and ecosystem
+- Ethical considerations (fair trade, indigenous rights)
+
+---
+
+### 8. **Economic and Commercial Use**
+- Market availability (raw, processed, commercial products)
+- Value in herbal trade or pharmaceutical industry
+- Role in local economies (e.g., small-scale farmers, herbalists)
+- Price and availability variations (region, season, quality)
+
+---
+
+### 9. **Identification and Authentication**
+- Key distinguishing features for identification
+- Morphological and anatomical characteristics
+- Methods of identification (microscopy, chromatography, spectroscopy)
+- Authentication techniques (DNA barcoding, chemical profiling)
+- Verification of authenticity (to prevent counterfeit or adulterated products)
+
+
+
+========================================
+1. ATTRIBUTES: MEDICINAL PLANTS
+========================================
+
+
+### ✅ **1. Botanical Classification and Taxonomy**
+- **Scientific names** of the plants
+- **Family, genus, and species** classification
+- **Common names** (local and scientific)
+- **Geographical origin** (native regions)
+- **Plant morphology** (structure, leaves, flowers, roots, etc.)
+
+---
+
+### ✅ **2. Active Compounds and Chemical Constituents**
+- **Primary bioactive compounds** (e.g., alkaloids, flavonoids, terpenoids)
+- **Phytochemical composition**
+- **Presence of essential oils, resins, or glycosides**
+- **Chemical structure diagrams (if applicable)**
+
+---
+
+### ✅ **3. Therapeutic Uses and Medical Applications**
+- **Traditional and modern uses** in herbal medicine
+- **Indications and conditions treated** (e.g., inflammation, infections, digestive issues)
+- **Dosage forms** (tea, tincture, capsule, ointment, etc.)
+- **Efficacy and evidence-based support** (clinical trials, pharmacological studies)
+- **Historical use in different cultures** (e.g., Ayurveda, Traditional Chinese Medicine)
+
+---
+
+### ✅ **4. Cultivation and Harvesting**
+- **Growth conditions** (soil, climate, light)
+- **Cultivation techniques** (organic vs. conventional)
+- **Harvesting times and methods**
+- **Storage and preservation techniques**
+
+---
+
+### ✅ **5. Safety, Toxicology, and Side Effects**
+- **Potential side effects** and contraindications
+- **Allergies or toxic reactions** (known or suspected)
+- **Drug interactions** with conventional medications
+- **Toxicological studies** (acute and chronic effects)
+
+---
+
+### ✅ **6. Legal and Regulatory Status**
+- **Regulatory status in different countries**
+- **Approved uses and licensing**
+- **Standardization and quality control** (e.g., pharmacopeia standards)
+- **Legal restrictions or bans in certain regions**
+
+---
+
+### ✅ **7. Sustainability and Conservation**
+- **Status of wild populations**
+- **Threats to biodiversity** (overharvesting, habitat loss)
+- **Sustainable harvesting practices**
+- **Efforts in conservation and cultivation**
+
+---
+
+### ✅ **8. Cultural and Ethnobotanical Significance**
+- **Role in traditional medicine systems**
+- **Cultural symbolism or spiritual significance**
+- **Use in rituals or ceremonies**
+- **Knowledge transmission through oral traditions**
+
+---
+
+### ✅ **9. Research and Development**
+- **Current research trends**
+- **Ongoing studies and clinical trials**
+- **Potential for new drug development**
+- **Interdisciplinary research (e.g., pharmacology, ecology, anthropology)**
+
+---
+
+### ✅ **10. Comparative Analysis with Synthetic Drugs**
+- **Comparison with synthetic alternatives**
+- **Cost-effectiveness and accessibility**
+- **Environmental impact of cultivation vs. pharmaceutical production**
+- **Patient preference and acceptance**

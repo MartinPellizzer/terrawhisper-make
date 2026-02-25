@@ -16,11 +16,41 @@ content configuration
 entity-attribute pair: candidate for a page
 
 
-outher section of topical map:
-core section of topical map: central entity + source context
+outher section of topical map: central entity + predicates (ex. know, go) (mainly linking to core section ex. Visa)
+core section of topical map: central entity + source context (focus on the monetization part)
 
+create central search intent:
+ex Taking Visa -> Visiting, Knowing, Learning, Traveling, Living in/to/for/around Germany -> Know/Go + Germany
+(where Germany is the central entity)
 
-Forms & Preparations
-e.g., Teas, Extracts, Capsules, Tinctures, Ointments, Powders
+---
 
-Specific Preparation Types
+central entity
+central search intent
+quality nodes on the homepage (usually from the core section of topical map)
+outer section (central entity + central search intent - but not source context)
+core section (for monetization - central entity + source context)
+
+source context: selling diet programs
+cental entity: wellness
+central search intent: personal development, lifestyle improvement
+
+source context: designing/selling industrial ozone solutions
+cental entity: indutrial ozone solutions
+central search intent: primary commercial investigation / purchase intent, secondary informational (applications, etc.)
+
+Source Context: herbal medicine
+Central Entity: herbal medicine
+Central Search Intent: health improvement, natural wellness, preventive medicine, self-care
+
+outer section (central entity + attribute)
+attribute hierarchy (most important attributes at the top to create higher relevance)
+
+one page should have only one macrocontext (one main focus)
+
+---
+
+title tag
+- verbalize raw nodes
+- conjective words? (and)
+- in the core section, repeat most important words (ex. visa, application, apply, get)
