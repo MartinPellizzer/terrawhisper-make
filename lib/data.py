@@ -164,6 +164,13 @@ def herbs_wcvp_medicinal_get():
     ]
     return herbs
 
+def herbs_wcvp_get():
+    herbs = io.csv_to_dict(
+        f'{g.WCVP_FOLDERPATH}/wcvp_names.csv', 
+        delimiter='|'
+    )
+    return herbs
+
 def herb_name_common_get(herb_slug):
     herb_name_common = ''
     try:

@@ -6,6 +6,7 @@ shutil.copy2('style.css', f'{g.website_folderpath}/style.css')
 shutil.copy2('styles-herb.css', f'{g.website_folderpath}/styles-herb.css')
 shutil.copy2('styles-tmp.css', f'{g.website_folderpath}/styles-tmp.css')
 shutil.copy2('styles.css', f'{g.website_folderpath}/styles.css')
+shutil.copy2('styles-herb-monograph.css', f'{g.website_folderpath}/styles-herb-monograph.css')
 
 # HERBS..........................[HRB]
 # PREPARATIONS...................[PRP]
@@ -161,6 +162,12 @@ if 0:
 ########################################
 # HERBS..........................[HRB]
 ########################################
+### RUN ONLY WHEN NEW WCVP FILE
+if 0:
+    from data import herbs_data
+    herbs_data.main()
+    quit()
+
 if 0:
     from ai import herbs_ai
     herbs_ai.main()
@@ -200,11 +207,18 @@ if 1:
         from lib import art_herbs
         art_herbs.gen()
 
+########################################
+# TAXONOMY.........................[TXN]
+########################################
+if 0:
+    if 1:
+        from ai import taxonomy_ai
+        taxonomy_ai.main()
 
 ########################################
 # HOME...........................[HOM]
 ########################################
-if 1:
+if 0:
     if 0:
         ### OLD
         from lib import pag_home

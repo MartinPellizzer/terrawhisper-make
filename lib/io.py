@@ -83,13 +83,16 @@ def json_read_old(filepath, create=False):
         data = json.load(f)
     return data
 
-def json_read(filepath, create=False):
+def json_read(filepath, create=False, l=False):
     if create:
         folder_create_from_filepath(filepath)
         if not os.path.exists(filepath):
             file_append(filepath, '')
         if file_read(filepath).strip() == '':
-            file_append(filepath, '{}')
+            if l == True:
+                file_append(filepath, '[]')
+            else:
+                file_append(filepath, '{}')
     with open(filepath, 'r', encoding='utf-8') as f:
         data = json.load(f)
     return data

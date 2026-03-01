@@ -1,3 +1,5 @@
+import json
+
 from lib import llm
 
 if 0:
@@ -99,6 +101,58 @@ def attribute_clusters(source_context, central_entity):
         reply = reply.split('</think>')[1].strip()
     return reply
 
+def attribute_clusters_format(source_context, central_entity, data):
+    import textwrap
+    prompt = textwrap.dedent(f'''
+        I have the central entity "{central_entity}", in the context of "{source_context}" (site-wise source context).
+        This central entity has the following attribute clusters, that you can find below.
+        I want you to give me a JSON with these attribute clusters.
+        Format the JSON like this:
+        [
+            {{"cluster_name": "insert cluster name here"}},
+            {{"cluster_name": "insert cluster name here"}},
+            {{"cluster_name": "insert cluster name here"}}
+        ]
+        Reply only with the JSON.
+        The list of attribute clusters is this:
+        {data}
+        /no_think
+    ''').strip()
+    reply = llm.reply(prompt)
+    if '</think>' in reply:
+        reply = reply.split('</think>')[1].strip()
+    json_data = json.loads(reply)
+    return json_data
+
+def seed_attribute_cluster_attribute(source_context, central_entity, data):
+    import textwrap
+    prompt = textwrap.dedent(f'''
+        I have the central entity "{central_entity}", in the context of "{source_context}" (site-wise source context). 
+        This central entity has the following attribute cluster I want to focus on:
+        {data}
+        Give me a list of the core attributes for this specific attribute cluster, meaning the attributes that must be present to describe this cluster, otherwise the cluster will not stand by its own.
+        /no_think
+    ''').strip()
+    reply = llm.reply(prompt)
+    if '</think>' in reply:
+        reply = reply.split('</think>')[1].strip()
+    return reply
+
+def seed_attribute_cluster_sub_topics(source_context, central_entity, data):
+    import textwrap
+    prompt = textwrap.dedent(f'''
+        I have the central entity "{central_entity}", in the context of "{source_context}" (site-wise source context). 
+        This central entity has the following attribute cluster I want to focus on:
+        {data}
+        Give me a list of the core sub-topics for this specific attribute cluster, meaning the sub-topics that must be present to describe this cluster, otherwise the cluster will not stand by its own.
+        /no_think
+    ''').strip()
+    reply = llm.reply(prompt)
+    if '</think>' in reply:
+        reply = reply.split('</think>')[1].strip()
+    return reply
+
+
 def central_entities_pick(source_context, central_entity, central_entities):
     import textwrap
     prompt = textwrap.dedent(f'''
@@ -114,10 +168,119 @@ def central_entities_pick(source_context, central_entity, central_entities):
     if '</think>' in reply:
         reply = reply.split('</think>')[1].strip()
 
+def central_entities_pick(source_context, central_entity, central_entities):
+    import textwrap
+    prompt = textwrap.dedent(f'''
+            i have the core entity "Safety & Regulatory Framework", in the context of "herbal medicine" (site-wise source context). this core entity has the following sub-core entity i want to focus on:
+
+            give me a list of the core entities for this specific sub-core entity, meaning the entities that must be present to describe this one, otherwise it will not stand by its own. don't include core entities that will be covered in the other sub-core entities listed below:
+        /no_think
+    ''').strip()
+    reply = llm.reply(prompt)
+    if '</think>' in reply:
+        reply = reply.split('</think>')[1].strip()
+
 if 1:
     res = attribute_clusters(
         source_context='herbal medicine', 
         central_entity='medicinal plants',
+    )
+    data = attribute_clusters_format(
+        source_context='herbal medicine', 
+        central_entity='medicinal plants',
+        data=res
+    )
+    '''
+    seed_attribute_cluster_attribute(
+        source_context='herbal medicine', 
+        central_entity='garlic',
+        data=data[0]['cluster_name'],
+    )
+    seed_attribute_cluster_sub_topics(
+        source_context='herbal medicine', 
+        central_entity='garlic',
+        data=data[0]['cluster_name'],
+    )
+    seed_attribute_cluster_sub_topics(
+        source_context='herbal medicine', 
+        central_entity='medicinal plant',
+        data=data[0]['cluster_name'],
+    )
+    seed_attribute_cluster_attribute(
+        source_context='herbal medicine', 
+        central_entity='garlic',
+        data=data[1]['cluster_name'],
+    )
+    seed_attribute_cluster_sub_topics(
+        source_context='herbal medicine', 
+        central_entity='garlic',
+        data=data[1]['cluster_name'],
+    )
+    seed_attribute_cluster_sub_topics(
+        source_context='herbal medicine', 
+        central_entity='medicinal plant',
+        data=data[1]['cluster_name'],
+    )
+    seed_attribute_cluster_attribute(
+        source_context='herbal medicine', 
+        central_entity='garlic',
+        data=data[2]['cluster_name'],
+    )
+    seed_attribute_cluster_sub_topics(
+        source_context='herbal medicine', 
+        central_entity='garlic',
+        data=data[2]['cluster_name'],
+    )
+    seed_attribute_cluster_attribute(
+        source_context='herbal medicine', 
+        central_entity='medicinal plant',
+        data=data[2]['cluster_name'],
+    )
+    seed_attribute_cluster_sub_topics(
+        source_context='herbal medicine', 
+        central_entity='medicinal plant',
+        data=data[2]['cluster_name'],
+    )
+    seed_attribute_cluster_attribute(
+        source_context='herbal medicine', 
+        central_entity='garlic',
+        data=data[3]['cluster_name'],
+    )
+    seed_attribute_cluster_sub_topics(
+        source_context='herbal medicine', 
+        central_entity='garlic',
+        data=data[3]['cluster_name'],
+    )
+    seed_attribute_cluster_attribute(
+        source_context='herbal medicine', 
+        central_entity='medicinal plant',
+        data=data[3]['cluster_name'],
+    )
+    seed_attribute_cluster_sub_topics(
+        source_context='herbal medicine', 
+        central_entity='medicinal plant',
+        data=data[3]['cluster_name'],
+    )
+    '''
+    seed_attribute_cluster_attribute(
+        source_context='herbal medicine', 
+        central_entity='garlic',
+        data=data[4]['cluster_name'],
+    )
+    seed_attribute_cluster_sub_topics(
+        source_context='herbal medicine', 
+        central_entity='garlic',
+        data=data[4]['cluster_name'],
+    )
+    seed_attribute_cluster_attribute(
+        source_context='herbal medicine', 
+        central_entity='medicinal plant',
+        data=data[4]['cluster_name'],
+    )
+    seed_attribute_cluster_sub_topics(
+        source_context='herbal medicine', 
+        central_entity='medicinal plant',
+        data=data[4]['cluster_name'],
     )
 
 if 0:
@@ -126,4 +289,9 @@ if 0:
         central_entity='medicinal plants',
         central_entities=res
     )
+
+# source context
+# entities
+# attribute clusters
+# attributes
 
