@@ -45,7 +45,7 @@ def header():
 def footer():
     html = f'''
         <footer>
-            <div class="container-xl">
+            <div>
                 <span>Copyright TerraWhisper | All rights reserved</span>
             </div>
         </footer>

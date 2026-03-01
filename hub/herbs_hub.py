@@ -4333,7 +4333,7 @@ def herb__gen(herb):
         </ul>
     '''
     hero_html = f'''
-        <section class="container-lg grid-2" style="gap: 6.4rem;">
+        <section class="container-lg grid-2" style="gap: 6.4rem; margin-top: 8.0rem;">
             <div>
                 <h1>{herb_name_common}</h1>
                 <p style="color: #888; font-size: 2.4rem;">{herb_name_scientific}</p>
@@ -4356,7 +4356,7 @@ def herb__gen(herb):
     '''
 
     botany_html = f'''
-        <section class="container-lg" style="margin-top: 4.8rem;">
+        <section class="container-lg" style="margin-top: 4.8rem; border-bottom: 1px solid #e2e8f0; padding-bottom: 3.2rem;">
             <h2>Botanical Identification</h2>
             <p>Withania somnifera is an evergreen shrub that grows 35 to 150 cm tall. It features dull green leaves and bell-shaped flowers that are greenish-yellow in color. The fruit is a small, smooth orange-red berry enclosed in a papery calyx.
             </p>
@@ -4367,7 +4367,7 @@ def herb__gen(herb):
     '''
 
     chemistry_html = f'''
-        <section class="container-lg" style="margin-top: 4.8rem;">
+        <section class="container-lg" style="margin-top: 4.8rem; border-bottom: 1px solid #e2e8f0; padding-bottom: 3.2rem;">
             <h2>
 Active Compounds
             </h2>
@@ -4383,7 +4383,7 @@ The pharmacological activity of Ashwagandha is attributed to a group of steroida
     '''
 
     medicine_html = f'''
-        <section class="container-lg" style="margin-top: 4.8rem;">
+        <section class="container-lg" style="margin-top: 4.8rem; border-bottom: 1px solid #e2e8f0; padding-bottom: 3.2rem;">
             <h2>
                 Therapeutic Indications 
             </h2>
@@ -4418,24 +4418,84 @@ The pharmacological activity of Ashwagandha is attributed to a group of steroida
         </section>
     '''
 
+    preparations_html = f'''
+        <section class="container-lg" style="margin-top: 4.8rem; border-bottom: 1px solid #e2e8f0; padding-bottom: 3.2rem;">
+            <h2>
+                Dosage & Administration
+            </h2>
+            <p>
+<strong>Infusion (Tea):</strong> Pour 150 ml boiling water over 2–3 g of dried flowers. Cover and steep for 10–15 minutes. Drink 3–4 times daily between meals.
+            </p>
+            <p>
+<strong>Tincture (1:5, 45% ethanol):</strong> 1–4 ml, three times daily.
+            </p>
+            <p>
+<strong>Topical Application:</strong> Use as a compress or wash for skin inflammation. Ointments containing 3–10% extract are common.
+            </p>
+        </section>
+    '''
+
+            # <div style="background-color: #9b2c2c;">
+    safety_html = f'''
+        <section class="container-lg" style="margin-top: 4.8rem; border-bottom: 1px solid #e2e8f0; padding-bottom: 3.2rem;">
+            <h2>
+                Safety Profile
+            </h2>
+            <p style="margin-bottom: 2.4rem;">
+Generally Recognized As Safe (GRAS) by the FDA. However, specific precautions apply.
+            </p>
+
+            <div style="background-color: #fff5f5; padding: 2.4rem; border-left: 4px solid #9b2c2c;">
+                <h3 style="color: #9b2c2c; font-size: 1.6rem; text-transform: uppercase; margin-bottom: 1.6rem;">
+                    Contraindications & Warnings
+                </h3>
+                <ul>
+                    <li>
+<strong>Hypersensitivity:</strong> Individuals allergic to plants in the Asteraceae/Compositae family (ragweed, chrysanthemums, marigolds) may experience cross-reactive allergic reactions.
+                    </li>
+                    <li>
+<strong>Pregnancy:</strong> While culinary amounts are safe, therapeutic doses should be avoided due to potential emmenagogue effects (though clinical evidence is weak).
+                    </li>
+                    <li>
+<strong>Drug Interactions:</strong> May potentiate the effects of sedatives or anticoagulants (due to coumarin content), though risk is generally low.
+                    </li>
+
+                </ul>
+            </div>
+
+        </section>
+    '''
+
+    references_html = f'''
+        <section class="container-lg" style="margin-top: 4.8rem; border-bottom: 1px solid #e2e8f0; padding-bottom: 3.2rem;">
+            <h2>
+                References
+            </h2>
+            <ol style="padding-left: 1.5rem; font-size: 1.4rem;">
+                <li>
+European Medicines Agency (EMA). Assessment report on Matricariae flos. 2012.
+                </li>
+                <li>
+Blumenthal, M., et al. The Complete German Commission E Monographs. American Botanical Council, 1998.
+                </li>
+                <li>
+Srivastava, J.K., et al. "Chamomile: A herbal medicine of the past with bright future." Molecular Medicine Reports, vol. 3, no. 6, 2010, pp. 895–901.
+                </li>
+            </ol>
+
+        </section>
+    '''
+
+
     ###
     article_html = f'''
         {hero_html}
         {botany_html}
         {chemistry_html}
         {medicine_html}
-        {section_taxonomy}
-        {section_chemistry}
-        {section_medicine}
-        {section_cultivation}
-        {section_toxicology}
-    '''
-    '''
-        {section_regulation}
-        {section_sustainability}
-        {section_culture}
-        {section_research}
-        {section_comparison}
+        {preparations_html}
+        {safety_html}
+        {references_html}
     '''
 
     ###

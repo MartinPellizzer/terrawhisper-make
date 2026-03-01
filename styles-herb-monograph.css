@@ -1,3 +1,8 @@
+:root {
+    --color-carbon-powder: #101211;
+    --color-whisper-white: #f7f6f2;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -13,6 +18,13 @@ body {
     line-height: 1.6;
     font-family: sans-serif;
     color: #333;
+}
+
+.container-xl {
+    max-width: 128.0rem;
+    margin: 0 auto;
+    padding-left: 1.6rem;
+    padding-right: 1.6rem;
 }
 
 .container-lg {
@@ -111,5 +123,124 @@ td {
     .grid-2 {
         grid-template-columns: 1fr;
     }
+}
+
+/*********************************************/
+/* header..............................[hdr] */
+/*********************************************/
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 24px;
+    background-color: #ffffff;
+    /* clean white */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+header .logo img {
+    height: 50px;
+    width: auto;
+    display: block;
+}
+
+header ul {
+    margin: 0;
+}
+
+header li {
+    margin-bottom: 0;
+}
+
+.main-nav .nav-links {
+    display: flex;
+    gap: 24px;
+    list-style: none;
+}
+
+.main-nav .nav-links li a {
+    font-weight: 500;
+    font-size: 16px;
+    color: var(--color-neutral-dark);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.main-nav .nav-links li a:hover,
+.main-nav .nav-links li a:focus {
+    color: var(--color-primary);
+    outline: none;
+}
+
+#nav-toggle {
+    display: none;
+    /* hidden checkbox */
+}
+
+.hamburger {
+    display: none;
+    /* hidden on desktop */
+    flex-direction: column;
+    justify-content: space-between;
+    width: 25px;
+    height: 20px;
+    cursor: pointer;
+    padding: 0;
+}
+
+.hamburger span {
+    display: block;
+    height: 3px;
+    width: 100%;
+    background-color: #333;
+    border-radius: 2px;
+    transition: 0.3s;
+}
+
+@media (max-width: 1024px) {
+
+    .hamburger {
+        display: flex;
+        cursor: pointer;
+    }
+
+    .main-nav .nav-links {
+        display: none;
+        /* hidden by default */
+        position: absolute;
+        top: 100%;
+        /* below header */
+        right: 0;
+        width: 100%;
+        background-color: #ffffff;
+        flex-direction: column;
+        padding: 16px 24px;
+        gap: 16px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Use general sibling combinator ~ instead of + */
+    #nav-toggle:checked~.main-nav .nav-links {
+        display: flex;
+    }
+}
+
+/*********************************************/
+/* footer..............................[ftr] */
+/*********************************************/
+footer {
+    background-color: var(--color-carbon-powder);
+    margin: 0 auto;
+    padding-top: 2.4rem;
+    padding-bottom: 2.4rem;
+    padding-left: 1.6rem;
+    padding-right: 1.6rem;
+}
+
+footer span {
+    color: white;
 }
 
