@@ -8,7 +8,6 @@ from lib import sections
 
 '''
 herb_classification__gen()
-herb_chemistry__gen()?
 herb_medicine__gen()?
 herb_toxicology__gen()
 
@@ -3316,11 +3315,11 @@ def safety__gen():
     html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
     with open(html_filepath, 'w') as f: f.write(html)
 
-def herb_classification__gen(json_article_filepath, taxonomy_list_html, regen, dispel):
+def herb_botany__gen(json_article_filepath, regen, dispel):
     json_article = io.json_read(json_article_filepath, create=True)
     herb_name_all = json_article['herb_name_all']
     ###
-    key = 'taxonomy'
+    key = 'botany'
     if key not in json_article: json_article[key] = ''
     if regen: json_article[key] = ''
     if dispel: 
@@ -3329,117 +3328,24 @@ def herb_classification__gen(json_article_filepath, taxonomy_list_html, regen, d
     if not dispel:
         if json_article[key] == '':
             brief = f'''
-                H2 Botanical Classification and Taxonomy
-                - Taxonomic hierarchy
-                - Geographical distribution
-                - Plant morphology
+                Botanical Identity & Taxonomy
+                Purpose: Establish entity disambiguation and scientific legitimacy.
+                Scientific name (binomial)
+                Family
+                Common names (regional variants)
+                Plant type (perennial/annual)
+                Native habitat
+                Morphological description (root, leaf, flower)
+                Synonyms in herbal literature
             '''
             import textwrap
             prompt = textwrap.dedent(f'''
                 I'm writing an article about the core entity "{herb_name_all}", which is for a website where the source context is "herbal medicine". 
                 Below I will give you a brief for a section I have to write, and I want you to write the subordinate text. 
                 The subordinate text is the paragraph that must be written immediately after the headline. 
-                The subordinate text must answer the implicit question an intent of the heading in the most direct, clear, detailed way possible without fluff, in about 40-60 words and 2-3 sentences. 
+                The subordinate text must answer in the most direct, clear, detailed way possible without fluff, in about 40-60 words and 2-3 sentences. 
                 Don't give me bold or italicized text. 
-                Reply in HTML code, include only the heading and the subordinate text.
-                The subordinate text must be inside <p></p> tags.
-                {brief}
-                /no_think
-            ''').strip()
-            reply = llm.reply(prompt)
-            if '</think>' in reply:
-                reply = reply.split('</think>')[1].strip()
-            reply = polish.vanilla(reply)
-            json_article[key] = reply
-            io.json_write(json_article_filepath, json_article)
-    ###
-    key = 'taxonomy_hierarchy'
-    if key not in json_article: json_article[key] = ''
-    if regen: json_article[key] = ''
-    if dispel: 
-        json_article[key] = ''
-        io.json_write(json_article_filepath, json_article)
-    if not dispel:
-        if json_article[key] == '':
-            brief = f'''
-                H3 Taxonomic Hierarchy
-                   - Kingdom, Division, Class, Order, Family, Genus, Species  
-            '''
-            import textwrap
-            prompt = textwrap.dedent(f'''
-                I'm writing an article about the core entity "{herb_name_all}", which is for a website where the source context is "herbal medicine". 
-                Below I will give you a brief for a section I have to write, and I want you to write the subordinate text. 
-                The subordinate text is the paragraph that must be written immediately after the headline. 
-                The subordinate text must answer the implicit question an intent of the heading in the most direct, clear, detailed way possible without fluff, in about 40-60 words and 2-3 sentences. 
-                Don't give me bold or italicized text. 
-                Reply in HTML code, include only the heading and the subordinate text.
-                The subordinate text must be inside <p></p> tags.
-                {brief}
-                Also, use the following data for the taxonomy:
-                {taxonomy_list_html}
-                /no_think
-            ''').strip()
-            print(prompt)
-            reply = llm.reply(prompt)
-            if '</think>' in reply:
-                reply = reply.split('</think>')[1].strip()
-            reply = polish.vanilla(reply)
-            json_article[key] = reply
-            io.json_write(json_article_filepath, json_article)
-    ###
-    key = 'taxonomy_geography'
-    if key not in json_article: json_article[key] = ''
-    if regen: json_article[key] = ''
-    if dispel: 
-        json_article[key] = ''
-        io.json_write(json_article_filepath, json_article)
-    if not dispel:
-        if json_article[key] == '':
-            brief = f'''
-                H3 Geographic Distribution
-                   - Native and introduced regions of the medicinal plant  
-                   - Relationship between geographic origin and traditional use
-            '''
-            import textwrap
-            prompt = textwrap.dedent(f'''
-                I'm writing an article about the core entity "{herb_name_all}", which is for a website where the source context is "herbal medicine". 
-                Below I will give you a brief for a section I have to write, and I want you to write the subordinate text. 
-                The subordinate text is the paragraph that must be written immediately after the headline. 
-                The subordinate text must answer the implicit question an intent of the heading in the most direct, clear, detailed way possible without fluff, in about 40-60 words and 2-3 sentences. 
-                Don't give me bold or italicized text. 
-                Reply in HTML code, include only the heading and the subordinate text.
-                The subordinate text must be inside <p></p> tags.
-                {brief}
-                /no_think
-            ''').strip()
-            reply = llm.reply(prompt)
-            if '</think>' in reply:
-                reply = reply.split('</think>')[1].strip()
-            reply = polish.vanilla(reply)
-            json_article[key] = reply
-            io.json_write(json_article_filepath, json_article)
-    ###
-    key = 'taxonomy_morphology'
-    if key not in json_article: json_article[key] = ''
-    if regen: json_article[key] = ''
-    if dispel: 
-        json_article[key] = ''
-        io.json_write(json_article_filepath, json_article)
-    if not dispel:
-        if json_article[key] == '':
-            brief = f'''
-                H3 Morphological Characteristics
-                    - Morphological and anatomical characteristics
-            '''
-            import textwrap
-            prompt = textwrap.dedent(f'''
-                I'm writing an article about the core entity "{herb_name_all}", which is for a website where the source context is "herbal medicine". 
-                Below I will give you a brief for a section I have to write, and I want you to write the subordinate text. 
-                The subordinate text is the paragraph that must be written immediately after the headline. 
-                The subordinate text must answer the implicit question an intent of the heading in the most direct, clear, detailed way possible without fluff, in about 40-60 words and 2-3 sentences. 
-                Don't give me bold or italicized text. 
-                Reply in HTML code, include only the heading and the subordinate text.
-                The subordinate text must be inside <p></p> tags.
+                Reply only with the subordinate text.
                 {brief}
                 /no_think
             ''').strip()
@@ -3450,7 +3356,7 @@ def herb_classification__gen(json_article_filepath, taxonomy_list_html, regen, d
             json_article[key] = reply
             io.json_write(json_article_filepath, json_article)
 
-def herb_chemistry__gen(json_article_filepath, regen, dispel):
+def herb_chemistry__gen(json_article_filepath, herb_active_compounds, regen, dispel):
     json_article = io.json_read(json_article_filepath, create=True)
     herb_name_all = json_article['herb_name_all']
     ###
@@ -3463,87 +3369,31 @@ def herb_chemistry__gen(json_article_filepath, regen, dispel):
     if not dispel:
         if json_article[key] == '':
             brief = f'''
-                H2 Active Compounds and Chemical Constituents
-                - Primary active compounds
-                - Pharmacological actions
+                Active Compounds & Phytochemistry
+                Purpose: Increase expertise signals and semantic richness
+                Main bioactive compounds
+                Mechanism of action (simplified)
+                Synergistic compounds
+            '''
+            data = ', '.join(herb_active_compounds)
+            data = f'''
+                The main acitve compounds of this herb are {data}.
             '''
             import textwrap
             prompt = textwrap.dedent(f'''
                 I'm writing an article about the core entity "{herb_name_all}", which is for a website where the source context is "herbal medicine". 
-                Below I will give you a brief for a section I have to write, and I want you to write the subordinate text. 
+                Below I will give you a BRIEF and DATA for a section I have to write, and I want you to write the subordinate text. 
                 The subordinate text is the paragraph that must be written immediately after the headline. 
-                The subordinate text must answer the implicit question an intent of the heading in the most direct, clear, detailed way possible without fluff, in about 40-60 words and 2-3 sentences. 
+                The subordinate text must answer in the most direct, clear, detailed way possible without fluff, in about 40-60 words and 2-3 sentences. 
                 Don't give me bold or italicized text. 
-                Reply in HTML code, include only the heading and the subordinate text.
-                The subordinate text must be inside <p></p> tags.
+                Reply only with the subordinate text.
+                BRIEF:
                 {brief}
+                DATA:
+                {data}
                 /no_think
             ''').strip()
-            reply = llm.reply(prompt)
-            if '</think>' in reply:
-                reply = reply.split('</think>')[1].strip()
-            reply = polish.vanilla(reply)
-            json_article[key] = reply
-            io.json_write(json_article_filepath, json_article)
-    ###
-    key = 'chemistry_compounds'
-    if key not in json_article: json_article[key] = ''
-    if regen: json_article[key] = ''
-    if dispel: 
-        json_article[key] = ''
-        io.json_write(json_article_filepath, json_article)
-    if not dispel:
-        if json_article[key] == '':
-            brief = f'''
-                H3 Identification of Key Active Compounds
-                   - List of specific chemical substances
-                   - List of organizational grouping of compounds
-            '''
-            import textwrap
-            prompt = textwrap.dedent(f'''
-                I'm writing an article about the core entity "{herb_name_all}", which is for a website where the source context is "herbal medicine". 
-                Below I will give you a brief for a section I have to write, and I want you to write the subordinate text. 
-                The subordinate text is the paragraph that must be written immediately after the headline. 
-                The subordinate text must answer the implicit question an intent of the heading in the most direct, clear, detailed way possible without fluff, in about 40-60 words and 2-3 sentences. 
-                Don't give me bold or italicized text. 
-                Reply in HTML code, include only the heading and the subordinate text.
-                The subordinate text must be inside <p></p> tags.
-                {brief}
-                /no_think
-            ''').strip()
-            reply = llm.reply(prompt)
-            if '</think>' in reply:
-                reply = reply.split('</think>')[1].strip()
-            reply = polish.vanilla(reply)
-            json_article[key] = reply
-            io.json_write(json_article_filepath, json_article)
-    ###
-    key = 'chemistry_actions'
-    if key not in json_article: json_article[key] = ''
-    if regen: json_article[key] = ''
-    if dispel: 
-        json_article[key] = ''
-        io.json_write(json_article_filepath, json_article)
-    if not dispel:
-        if json_article[key] == '':
-            brief = f'''
-                H3 Pharmacological Actions and Mechanisms
-                   - Biological activities of the compounds
-                   - Mode of action at the cellular or molecular level  
-                   - Interaction with biological targets
-            '''
-            import textwrap
-            prompt = textwrap.dedent(f'''
-                I'm writing an article about the core entity "{herb_name_all}", which is for a website where the source context is "herbal medicine". 
-                Below I will give you a brief for a section I have to write, and I want you to write the subordinate text. 
-                The subordinate text is the paragraph that must be written immediately after the headline. 
-                The subordinate text must answer the implicit question an intent of the heading in the most direct, clear, detailed way possible without fluff, in about 40-60 words and 2-3 sentences. 
-                Don't give me bold or italicized text. 
-                Reply in HTML code, include only the heading and the subordinate text.
-                The subordinate text must be inside <p></p> tags.
-                {brief}
-                /no_think
-            ''').strip()
+            print(prompt)
             reply = llm.reply(prompt)
             if '</think>' in reply:
                 reply = reply.split('</think>')[1].strip()
@@ -4046,8 +3896,15 @@ def herb__gen(herb):
             Species: {herb['taxon_name']}
     '''
 
-    herb_classification__gen(json_article_filepath, taxonomy_list_text, regen=False, dispel=False)
-    herb_chemistry__gen(json_article_filepath, regen=False, dispel=False)
+    herb_active_compounds = [
+        item['answer'] 
+        for item in herb_data['herb_active_compounds']
+        if int(item['total_score']) > 600
+    ][:3]
+
+    herb_botany__gen(json_article_filepath, regen=False, dispel=False)
+    herb_chemistry__gen(json_article_filepath, herb_active_compounds, regen=False, dispel=False)
+
     herb_medicine__gen(json_article_filepath, regen=False, dispel=False)
     herb_cultivation__gen(json_article_filepath, regen=False, dispel=False)
     herb_toxicology__gen(json_article_filepath, regen=False, dispel=False)
@@ -4358,27 +4215,29 @@ def herb__gen(herb):
     botany_html = f'''
         <section class="container-lg" style="margin-top: 4.8rem; border-bottom: 1px solid #e2e8f0; padding-bottom: 3.2rem;">
             <h2>Botanical Identification</h2>
-            <p>Withania somnifera is an evergreen shrub that grows 35 to 150 cm tall. It features dull green leaves and bell-shaped flowers that are greenish-yellow in color. The fruit is a small, smooth orange-red berry enclosed in a papery calyx.
-            </p>
             <p>
-            The plant is native to dry regions of India, Northern Africa, and the Middle East. It thrives in sandy loam or shallow black soils with a pH between 7.5 and 8.0.
+            {json_article['botany']}
             </p>
         </section>
     '''
 
+    chemistry_list_items_html = ''
+    for compound in herb_active_compounds:
+        chemistry_list_items_html += f'<li><strong>{compound.capitalize()}</strong></li>\n'
+    chemistry_list_html = f'''
+        <ul>
+            {chemistry_list_items_html}
+        </ul>
+    '''
     chemistry_html = f'''
         <section class="container-lg" style="margin-top: 4.8rem; border-bottom: 1px solid #e2e8f0; padding-bottom: 3.2rem;">
             <h2>
 Active Compounds
             </h2>
             <p>
-The pharmacological activity of Ashwagandha is attributed to a group of steroidal lactones known as withanolides. Over 40 withanolides have been isolated from the plant.
+                {json_article['chemistry']}
             </p>
-            <ul>
-                <li><strong>Essential Oil</strong>: Chamazulene (formed during distillation from matricin), α-bisabolol, bisabolol oxides A & B.</li>
-                <li><strong>Flavonoids</strong>: Apigenin, luteolin, quercetin, and their glycosides.</li>
-                <li><strong>Coumarins</strong>: Herniarin, umbelliferone.</li>
-            </ul>
+            {chemistry_list_html}
         </section>
     '''
 

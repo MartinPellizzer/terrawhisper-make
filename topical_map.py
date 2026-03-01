@@ -152,7 +152,6 @@ def seed_attribute_cluster_sub_topics(source_context, central_entity, data):
         reply = reply.split('</think>')[1].strip()
     return reply
 
-
 def central_entities_pick(source_context, central_entity, central_entities):
     import textwrap
     prompt = textwrap.dedent(f'''
@@ -261,27 +260,27 @@ if 1:
         central_entity='medicinal plant',
         data=data[3]['cluster_name'],
     )
+    seed_attribute_cluster_attribute(
+        source_context='herbal medicine', 
+        central_entity='garlic',
+        data=data[4]['cluster_name'],
+    )
+    seed_attribute_cluster_sub_topics(
+        source_context='herbal medicine', 
+        central_entity='garlic',
+        data=data[4]['cluster_name'],
+    )
+    seed_attribute_cluster_attribute(
+        source_context='herbal medicine', 
+        central_entity='medicinal plant',
+        data=data[4]['cluster_name'],
+    )
+    seed_attribute_cluster_sub_topics(
+        source_context='herbal medicine', 
+        central_entity='medicinal plant',
+        data=data[4]['cluster_name'],
+    )
     '''
-    seed_attribute_cluster_attribute(
-        source_context='herbal medicine', 
-        central_entity='garlic',
-        data=data[4]['cluster_name'],
-    )
-    seed_attribute_cluster_sub_topics(
-        source_context='herbal medicine', 
-        central_entity='garlic',
-        data=data[4]['cluster_name'],
-    )
-    seed_attribute_cluster_attribute(
-        source_context='herbal medicine', 
-        central_entity='medicinal plant',
-        data=data[4]['cluster_name'],
-    )
-    seed_attribute_cluster_sub_topics(
-        source_context='herbal medicine', 
-        central_entity='medicinal plant',
-        data=data[4]['cluster_name'],
-    )
 
 if 0:
     central_entities_pick(
