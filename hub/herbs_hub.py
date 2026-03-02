@@ -1,3 +1,5 @@
+import random
+
 from lib import g
 from lib import io
 from lib import llm
@@ -3902,6 +3904,38 @@ def herb__gen(herb):
         if int(item['total_score']) > 600
     ][:3]
 
+    ###
+
+    '''
+    herb_medicine_conditions_filtered = [
+        item['answer'] 
+        for item in herb_data['herb_medicine_conditions']
+    ][:10]
+    '''
+
+    herb_medicine_conditions_groups = []
+    for item in herb_data['herb_medicine_conditions']:
+        system = item['system'] 
+        ailment = item['answer'] 
+        action = item['action'] 
+        found = False
+        for _item in herb_medicine_conditions_groups:
+            if _item['system'] == system:
+                if ailment not in _item['ailments']:
+                    _item['ailments'].append(ailment)
+                if action not in _item['actions']:
+                    _item['actions'].append(action)
+                found = True
+        if not found:
+            _obj = {
+                'system': system,
+                'ailments': [ailment],
+                'actions': [action],
+                
+            }
+            herb_medicine_conditions_groups.append(_obj)
+
+
     herb_botany__gen(json_article_filepath, regen=False, dispel=False)
     herb_chemistry__gen(json_article_filepath, herb_active_compounds, regen=False, dispel=False)
 
@@ -4241,6 +4275,18 @@ Active Compounds
         </section>
     '''
 
+    tr_rows_html = ''
+    for item in herb_medicine_conditions_groups:
+        system = item['system'].capitalize()
+        rnd = random.randint(3, 5)
+        ailments = ', '.join(item['ailments'][:rnd]).capitalize()
+        rnd = random.randint(3, 5)
+        actions = ', '.join(item['actions'][:rnd]).capitalize()
+        tr_rows_html += f'''<tr>\n'''
+        tr_rows_html += f'''<td>{system}</td>\n'''
+        tr_rows_html += f'''<td>{ailments}</td>\n'''
+        tr_rows_html += f'''<td>{actions}</td>\n'''
+        tr_rows_html += f'''</tr>\n'''
     medicine_html = f'''
         <section class="container-lg" style="margin-top: 4.8rem; border-bottom: 1px solid #e2e8f0; padding-bottom: 3.2rem;">
             <h2>
@@ -4251,26 +4297,12 @@ Active Compounds
                     <thead>
                         <tr>
                             <th width="30%">System</th>
-                            <th>Indication</th>
-                            <th>Mechanism</th>
+                            <th>Condidtion</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td><strong>Dermatological</strong></td>
-                            <td>Eczema, minor wounds, burns, hemorrhoids.</td>
-                            <td>Anti-inflammatory, antimicrobial, and spasmolytic effects on smooth muscle.</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Gastrointestinal</strong></td>
-                            <td>Dyspepsia, gastritis, colic, IBS.</td>
-                            <td>Bitter principles stimulate gastric juice; flavonoids reduce inflammation.</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Nervous System</strong></td>
-                            <td>Mild anxiety, insomnia, restlessness.</td>
-                            <td>Apigenin binds to benzodiazepine receptors (mild sedative effect).</td>
-                        </tr>
+                        {tr_rows_html}
                     </tbody>
                 </table>
             </section>
@@ -4412,7 +4444,7 @@ def main():
     for herb_i, herb in enumerate(herbs):
         herb__gen(herb)
         # herb__botany__gen(herb)
-        # break
+        break
     # quit()
 
     # herbs_hub_gen()

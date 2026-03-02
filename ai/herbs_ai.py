@@ -636,6 +636,115 @@ def herb_historical_preparations_gen(herb_filepath, regen=False, clear=False):
         # print(entity_herb)
         # quit()
 
+def herb_medicine_conditions_gen(herb_filepath, regen=False, clear=False):
+    entity_herb = io.json_read(herb_filepath)
+    herb_name_scientific = entity_herb['herb_name_scientific']
+    key = 'herb_medicine_conditions'
+    if key not in entity_herb: entity_herb[key] = ''
+    if regen: entity_herb[key] = ''
+    if clear: 
+        entity_herb[key] = ''
+        io.json_write(herb_filepath, entity_herb)
+        return
+    if entity_herb[key] == '' or entity_herb[key] == []:
+        outputs = []
+        for i in range(10):
+            print(f'{i} - {herb_name_scientific}')
+            import textwrap
+            prompt = textwrap.dedent(f''' 
+                Tell me the common ailments, with their respective body systems and primary therapeutic actions, you can improve using the following plant with scientific name: 
+                {herb_name_scientific}.
+                Examples of body systems are: respiratory, integumentary, immune, etc.
+                Never give me "general" body system, always write a specific body system.
+                Examples of therapeutic actions are: anti-inflammatory, expectorant, antimicrobial, etc.
+                Also, write a confidence score from 1 to 10, indicating how sure you are about your answer.
+                Reply using the following JSON format:
+                [
+                    {{"ailment": "write common ailment name 1 here", "system": "write name of body system for ailment 1 here", "action": "write primary therapeutic action for ailment 1 here", "score": "write score 1 here"}},
+                    {{"ailment": "write common ailment name 2 here", "system": "write name of body system for ailment 2 here", "action": "write primary therapeutic action for ailment 2 here", "score": "write score 2 here"}},
+                    {{"ailment": "write common ailment name 3 here", "system": "write name of body system for ailment 3 here", "action": "write primary therapeutic action for ailment 3 here", "score": "write score 3 here"}},
+                    {{"ailment": "write common ailment name 4 here", "system": "write name of body system for ailment 4 here", "action": "write primary therapeutic action for ailment 4 here", "score": "write score 4 here"}},
+                    {{"ailment": "write common ailment name 5 here", "system": "write name of body system for ailment 5 here", "action": "write primary therapeutic action for ailment 5 here", "score": "write score 5 here"}},
+                    {{"ailment": "write common ailment name 6 here", "system": "write name of body system for ailment 6 here", "action": "write primary therapeutic action for ailment 6 here", "score": "write score 6 here"}},
+                    {{"ailment": "write common ailment name 7 here", "system": "write name of body system for ailment 7 here", "action": "write primary therapeutic action for ailment 7 here", "score": "write score 7 here"}},
+                    {{"ailment": "write common ailment name 8 here", "system": "write name of body system for ailment 8 here", "action": "write primary therapeutic action for ailment 8 here", "score": "write score 8 here"}},
+                    {{"ailment": "write common ailment name 9 here", "system": "write name of body system for ailment 9 here", "action": "write primary therapeutic action for ailment 9 here", "score": "write score 9 here"}},
+                    {{"ailment": "write common ailment name 10 here", "system": "write name of body system for ailment 10 here", "action": "write primary therapeutic action for ailment 10 here", "score": "write score 10 here"}}
+                ]
+                Reply only with the JSON.
+                Reply in as few words as possible.
+            ''').strip()
+            prompt += f'\n/no_think'
+            print(prompt)
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            json_data = {}
+            try: json_data = json.loads(reply)
+            except: pass 
+            if json_data != {}:
+                _objs = []
+                for item in json_data:
+                    try: answer = item['ailment']
+                    except: continue
+                    try: system = item['system']
+                    except: continue
+                    try: action = item['action']
+                    except: continue
+                    try: score = item['score']
+                    except: continue
+                    _objs.append({
+                        "answer": answer, 
+                        "system": system, 
+                        "action": action, 
+                        "score": score,
+                    })
+                for _obj in _objs:
+                    answer = _obj['answer'].strip().lower()
+                    system = _obj['system'].strip().lower()
+                    action = _obj['action'].strip().lower()
+                    score = int(_obj['score'])
+                    found = False
+                    for output in outputs:
+                        if answer in output['answer']: 
+                            output['mentions'] += 1
+                            output['confidence_score'] += int(score)
+                            found = True
+                            break
+                    if not found:
+                        outputs.append({
+                            'answer': answer, 
+                            'system': system, 
+                            'action': action, 
+                            'mentions': 1, 
+                            'confidence_score': int(score), 
+                        })
+        outputs_final = []
+        for output in outputs:
+            outputs_final.append({
+                'answer': output['answer'],
+                'system': output['system'],
+                'action': output['action'],
+                'mentions': int(output['mentions']),
+                'confidence_score': int(output['confidence_score']),
+                'total_score': int(output['mentions']) * int(output['confidence_score']),
+            })
+        outputs_final = sorted(outputs_final, key=lambda x: x['total_score'], reverse=True)
+        print('***********************')
+        print('***********************')
+        print('***********************')
+        for output in outputs_final:
+            print(output)
+        print('***********************')
+        print('***********************')
+        print('***********************')
+        entity_herb[key] = outputs
+        print(herb_filepath)
+        io.json_write(herb_filepath, entity_herb)
+        # print(entity_herb)
+        # quit()
+
+
 def herb_medicinal_actions_gen(herb_filepath, regen=False, clear=False):
     entity_herb = io.json_read(herb_filepath)
     herb_name_scientific = entity_herb['herb_name_scientific']
@@ -2249,6 +2358,8 @@ def herbs_primary_json(herb):
     herb_data['herb_name_scientific'] = herb_name_scientific
     io.json_write(herb_filepath, herb_data)
     ###
+    return
+    ###
     herb_names_common_gen(herb_filepath, regen=False, clear=False)
     herb_origin_continents_gen(herb_filepath, regen=False, clear=False)
     herb_medicine_or_poison_gen(herb_filepath, regen=False, clear=False)
@@ -2367,9 +2478,39 @@ def herbs_primary_report():
     print()
     print()
 
+def herbs_medicinal_validated_json(herb):
+    herbs_folderpath = f'{g.SSOT_FOLDERPATH}/herbs/herbs-primary'
+    try: os.mkdir(herbs_folderpath)
+    except: pass
+    ###
+    herb_name_scientific = herb['taxon_name']
+    herb_slug = polish.sluggify(herb_name_scientific)
+    ###
+    herb_filepath = f'''{herbs_folderpath}/{herb_slug}.json'''
+    herb_data = io.json_read(herb_filepath, create=True)
+    herb_data['herb_slug'] = herb_slug
+    herb_data['herb_name_scientific'] = herb_name_scientific
+    io.json_write(herb_filepath, herb_data)
+    ###
+    herb_medicine_conditions_gen(herb_filepath, regen=False, clear=False)
+
+def herbs_medicinal_validated_gen():
+    herbs_folderpath = f'{g.SSOT_FOLDERPATH}/herbs'
+    herbs_filepath = f'{herbs_folderpath}/herbs-medicinal-validated.json'
+    herbs = io.json_read(herbs_filepath)
+    for herb_i, herb in enumerate(herbs):
+        print('####################################')
+        print(f'{herb_i}/{len(herbs)} - {herb}')
+        print('####################################')
+        herbs_medicinal_validated_json(herb)
+        print()
+        print()
+        print()
+
 def main():
-    herbs_primary_gen()
-    herbs_popular_gen()
+    herbs_medicinal_validated_gen()
+    # herbs_primary_gen()
+    # herbs_popular_gen()
 
     # herbs_primary_report()
 
