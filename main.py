@@ -168,7 +168,7 @@ if 0:
     herbs_data.main()
     quit()
 
-if 1:
+if 0:
     from ai import herbs_ai
     herbs_ai.main()
     quit()

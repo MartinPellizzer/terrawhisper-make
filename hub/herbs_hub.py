@@ -3403,6 +3403,41 @@ def herb_chemistry__gen(json_article_filepath, herb_active_compounds, regen, dis
             json_article[key] = reply
             io.json_write(json_article_filepath, json_article)
 
+def herb_safety__gen(json_article_filepath, regen, dispel):
+    json_article = io.json_read(json_article_filepath, create=True)
+    herb_name_all = json_article['herb_name_all']
+    ###
+    key = 'safety'
+    if key not in json_article: json_article[key] = ''
+    if regen: json_article[key] = ''
+    if dispel: 
+        json_article[key] = ''
+        io.json_write(json_article_filepath, json_article)
+    if not dispel:
+        if json_article[key] == '':
+            brief = f'''
+                Safety Profile
+                Contraindication
+                Warning
+            '''
+            import textwrap
+            prompt = textwrap.dedent(f'''
+                I'm writing an article about the core entity "{herb_name_all}", which is for a website where the source context is "herbal medicine". 
+                Below I will give you a brief for a section I have to write, and I want you to write the subordinate text. 
+                The subordinate text is the paragraph that must be written immediately after the headline. 
+                The subordinate text must answer in the most direct, clear, detailed way possible without fluff, in about 40-60 words and 2-3 sentences. 
+                Don't give me bold or italicized text. 
+                Reply only with the subordinate text.
+                {brief}
+                /no_think
+            ''').strip()
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            json_article[key] = reply
+            io.json_write(json_article_filepath, json_article)
+
 def herb_medicine__gen(json_article_filepath, regen, dispel):
     json_article = io.json_read(json_article_filepath)
     herb_name_all = json_article['herb_name_all']
@@ -3938,231 +3973,11 @@ def herb__gen(herb):
 
     herb_botany__gen(json_article_filepath, regen=False, dispel=False)
     herb_chemistry__gen(json_article_filepath, herb_active_compounds, regen=False, dispel=False)
+    herb_safety__gen(json_article_filepath, regen=True, dispel=False)
 
     herb_medicine__gen(json_article_filepath, regen=False, dispel=False)
     herb_cultivation__gen(json_article_filepath, regen=False, dispel=False)
     herb_toxicology__gen(json_article_filepath, regen=False, dispel=False)
-
-    ### regulation
-    key = 'regulation'
-    if key not in json_article: json_article[key] = ''
-    if regen: json_article[key] = ''
-    if dispel: 
-        json_article[key] = ''
-        io.json_write(json_article_filepath, json_article)
-    if not dispel:
-        if json_article[key] == '':
-            brief = f'''
-                H2 Legal and Regulatory Status**
-                - **Regulatory status in different countries**
-                - **Approved uses and licensing**
-                - **Standardization and quality control** (e.g., pharmacopeia standards)
-                - **Legal restrictions or bans in certain regions**
-            '''
-            import textwrap
-            prompt = textwrap.dedent(f'''
-                I'm writing an article about the core entity "{herb_name_all}", which is for a website where the source context is "herbal medicine". 
-                Below I will give you a brief for a section I have to write, and I want you to write the subordinate text. 
-                The subordinate text is the paragraph that must be written immediately after the headline. 
-                The subordinate text must answer the implicit question an intent of the heading in the most direct, clear, detailed way possible without fluff, in about 40-60 words and 2-3 sentences. 
-                Don't give me bold or italicized text. 
-                Reply in HTML code, include only the heading and the subordinate text.
-                The subordinate text must be inside <p></p> tags.
-                {brief}
-                /no_think
-            ''').strip()
-            reply = llm.reply(prompt)
-            if '</think>' in reply:
-                reply = reply.split('</think>')[1].strip()
-            reply = polish.vanilla(reply)
-            json_article[key] = reply
-            io.json_write(json_article_filepath, json_article)
-
-    ### sustainability
-    key = 'sustainability'
-    if key not in json_article: json_article[key] = ''
-    if regen: json_article[key] = ''
-    if dispel: 
-        json_article[key] = ''
-        io.json_write(json_article_filepath, json_article)
-    if not dispel:
-        if json_article[key] == '':
-            brief = f'''
-                H2 Sustainability and Conservation**
-                - **Status of wild populations**
-                - **Threats to biodiversity** (overharvesting, habitat loss)
-                - **Sustainable harvesting practices**
-                - **Efforts in conservation and cultivation**
-            '''
-            import textwrap
-            prompt = textwrap.dedent(f'''
-                I'm writing an article about the core entity "{herb_name_all}", which is for a website where the source context is "herbal medicine". 
-                Below I will give you a brief for a section I have to write, and I want you to write the subordinate text. 
-                The subordinate text is the paragraph that must be written immediately after the headline. 
-                The subordinate text must answer the implicit question an intent of the heading in the most direct, clear, detailed way possible without fluff, in about 40-60 words and 2-3 sentences. 
-                Don't give me bold or italicized text. 
-                Reply in HTML code, include only the heading and the subordinate text.
-                The subordinate text must be inside <p></p> tags.
-                {brief}
-                /no_think
-            ''').strip()
-            reply = llm.reply(prompt)
-            if '</think>' in reply:
-                reply = reply.split('</think>')[1].strip()
-            reply = polish.vanilla(reply)
-            json_article[key] = reply
-            io.json_write(json_article_filepath, json_article)
-
-    ### culture
-    key = 'culture'
-    if key not in json_article: json_article[key] = ''
-    if regen: json_article[key] = ''
-    if dispel: 
-        json_article[key] = ''
-        io.json_write(json_article_filepath, json_article)
-    if not dispel:
-        if json_article[key] == '':
-            brief = f'''
-                H2 Cultural and Ethnobotanical Significance**
-                - **Role in traditional medicine systems**
-                - **Cultural symbolism or spiritual significance**
-                - **Use in rituals or ceremonies**
-                - **Knowledge transmission through oral traditions**
-            '''
-            import textwrap
-            prompt = textwrap.dedent(f'''
-                I'm writing an article about the core entity "{herb_name_all}", which is for a website where the source context is "herbal medicine". 
-                Below I will give you a brief for a section I have to write, and I want you to write the subordinate text. 
-                The subordinate text is the paragraph that must be written immediately after the headline. 
-                The subordinate text must answer the implicit question an intent of the heading in the most direct, clear, detailed way possible without fluff, in about 40-60 words and 2-3 sentences. 
-                Don't give me bold or italicized text. 
-                Reply in HTML code, include only the heading and the subordinate text.
-                The subordinate text must be inside <p></p> tags.
-                {brief}
-                /no_think
-            ''').strip()
-            reply = llm.reply(prompt)
-            if '</think>' in reply:
-                reply = reply.split('</think>')[1].strip()
-            reply = polish.vanilla(reply)
-            json_article[key] = reply
-            io.json_write(json_article_filepath, json_article)
-
-    ### research
-    key = 'research'
-    if key not in json_article: json_article[key] = ''
-    if regen: json_article[key] = ''
-    if dispel: 
-        json_article[key] = ''
-        io.json_write(json_article_filepath, json_article)
-    if not dispel:
-        if json_article[key] == '':
-            brief = f'''
-                H2 Research and Development**
-                - **Current research trends**
-                - **Ongoing studies and clinical trials**
-                - **Potential for new drug development**
-                - **Interdisciplinary research (e.g., pharmacology, ecology, anthropology)**
-            '''
-            import textwrap
-            prompt = textwrap.dedent(f'''
-                I'm writing an article about the core entity "{herb_name_all}", which is for a website where the source context is "herbal medicine". 
-                Below I will give you a brief for a section I have to write, and I want you to write the subordinate text. 
-                The subordinate text is the paragraph that must be written immediately after the headline. 
-                The subordinate text must answer the implicit question an intent of the heading in the most direct, clear, detailed way possible without fluff, in about 40-60 words and 2-3 sentences. 
-                Don't give me bold or italicized text. 
-                Reply in HTML code, include only the heading and the subordinate text.
-                The subordinate text must be inside <p></p> tags.
-                {brief}
-                /no_think
-            ''').strip()
-            reply = llm.reply(prompt)
-            if '</think>' in reply:
-                reply = reply.split('</think>')[1].strip()
-            reply = polish.vanilla(reply)
-            json_article[key] = reply
-            io.json_write(json_article_filepath, json_article)
-
-    ### comparison
-    key = 'comparison'
-    if key not in json_article: json_article[key] = ''
-    if regen: json_article[key] = ''
-    if dispel: 
-        json_article[key] = ''
-        io.json_write(json_article_filepath, json_article)
-    if not dispel:
-        if json_article[key] == '':
-            brief = f'''
-                H2. Comparative Analysis with Synthetic Drugs**
-                - **Comparison with synthetic alternatives**
-                - **Cost-effectiveness and accessibility**
-                - **Environmental impact of cultivation vs. pharmaceutical production**
-                - **Patient preference and acceptance**
-            '''
-            import textwrap
-            prompt = textwrap.dedent(f'''
-                I'm writing an article about the core entity "{herb_name_all}", which is for a website where the source context is "herbal medicine". 
-                Below I will give you a brief for a section I have to write, and I want you to write the subordinate text. 
-                The subordinate text is the paragraph that must be written immediately after the headline. 
-                The subordinate text must answer the implicit question an intent of the heading in the most direct, clear, detailed way possible without fluff, in about 40-60 words and 2-3 sentences. 
-                Don't give me bold or italicized text. 
-                Reply in HTML code, include only the heading and the subordinate text.
-                The subordinate text must be inside <p></p> tags.
-                {brief}
-                /no_think
-            ''').strip()
-            reply = llm.reply(prompt)
-            if '</think>' in reply:
-                reply = reply.split('</think>')[1].strip()
-            reply = polish.vanilla(reply)
-            json_article[key] = reply
-            io.json_write(json_article_filepath, json_article)
-    ###
-    section_taxonomy = f'''
-        {json_article['taxonomy']}
-        {json_article['taxonomy_hierarchy']}
-        {taxonomy_list_html}
-        {json_article['taxonomy_geography']}
-        {json_article['taxonomy_morphology']}
-    '''
-    section_chemistry = f'''
-        {json_article['chemistry']}
-        {json_article['chemistry_compounds']}
-        {json_article['chemistry_actions']}
-    '''
-    section_medicine = f'''
-        {json_article['medicine']}
-        {json_article['medicine_tradition']}
-        {json_article['medicine_ailments']}
-        {json_article['medicine_preparations']}
-    '''
-    section_cultivation = f'''
-        {json_article['cultivation']}
-        {json_article['cultivation-methods']}
-        {json_article['cultivation-conditions']}
-        {json_article['cultivation-harvesting']}
-    '''
-    section_toxicology = f'''
-        {json_article['toxicology']}
-        {json_article['toxicology-safety']}
-        {json_article['toxicology-side-effects']}
-        {json_article['toxicology-compounds']}
-    '''
-    section_regulation = f'''
-        {json_article['regulation']}
-    '''
-    section_sustainability = f'''
-        {json_article['sustainability']}
-    '''
-    section_culture = f'''
-        {json_article['culture']}
-    '''
-    section_research = f'''
-        {json_article['research']}
-    '''
-    section_comparison = f'''
-        {json_article['comparison']}
-    '''
 
     ### intro
     regen = False
@@ -4276,7 +4091,7 @@ Active Compounds
     '''
 
     tr_rows_html = ''
-    for item in herb_medicine_conditions_groups:
+    for item in herb_medicine_conditions_groups[:3]:
         system = item['system'].capitalize()
         rnd = random.randint(3, 5)
         ailments = ', '.join(item['ailments'][:rnd]).capitalize()
@@ -4309,25 +4124,22 @@ Active Compounds
         </section>
     '''
 
+    paragraphs_html = f''
+    for item in herb_data['herb_preparations_monograph'][:3]:
+        preparation_name = item['answer'].capitalize()
+        preparation_desc = item['description'].capitalize()
+        paragraphs_html += f'''<p><strong>{preparation_name}:</strong> {preparation_desc}</p>'''
     preparations_html = f'''
         <section class="container-lg" style="margin-top: 4.8rem; border-bottom: 1px solid #e2e8f0; padding-bottom: 3.2rem;">
             <h2>
-                Dosage & Administration
+                Preparation Methods
             </h2>
-            <p>
-<strong>Infusion (Tea):</strong> Pour 150 ml boiling water over 2–3 g of dried flowers. Cover and steep for 10–15 minutes. Drink 3–4 times daily between meals.
-            </p>
-            <p>
-<strong>Tincture (1:5, 45% ethanol):</strong> 1–4 ml, three times daily.
-            </p>
-            <p>
-<strong>Topical Application:</strong> Use as a compress or wash for skin inflammation. Ointments containing 3–10% extract are common.
-            </p>
+            {paragraphs_html}
         </section>
     '''
 
             # <div style="background-color: #9b2c2c;">
-    safety_html = f'''
+    '''
         <section class="container-lg" style="margin-top: 4.8rem; border-bottom: 1px solid #e2e8f0; padding-bottom: 3.2rem;">
             <h2>
                 Safety Profile
@@ -4356,7 +4168,17 @@ Generally Recognized As Safe (GRAS) by the FDA. However, specific precautions ap
 
         </section>
     '''
+    safety_html = f'''
+        <section class="container-lg" style="margin-top: 4.8rem; border-bottom: 1px solid #e2e8f0; padding-bottom: 3.2rem;">
+            <h2>
+                Safety Profile
+            </h2>
 
+            <div style="background-color: #fff5f5; padding: 2.4rem; border-left: 4px solid #9b2c2c;">
+                <p>{json_article['safety']}</p>
+            </div>
+        </section>
+    '''
     references_html = f'''
         <section class="container-lg" style="margin-top: 4.8rem; border-bottom: 1px solid #e2e8f0; padding-bottom: 3.2rem;">
             <h2>
@@ -4386,6 +4208,8 @@ Srivastava, J.K., et al. "Chamomile: A herbal medicine of the past with bright f
         {medicine_html}
         {preparations_html}
         {safety_html}
+    '''
+    '''
         {references_html}
     '''
 
@@ -4416,6 +4240,29 @@ Srivastava, J.K., et al. "Chamomile: A herbal medicine of the past with bright f
     html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
     with open(html_filepath, 'w') as f: f.write(html)
 
+def herb__identity__gen(herb):
+    '''
+        Include: 
+        ---
+        Latin binomial, scientific name, botaical name
+        Identification and classification
+        - Alphabetical
+        - Taxonomic
+        - Morphologic 
+        - Therapeutic
+            - Action-based
+            - Body system or organ affinity
+            - Medical system
+            - Biochemical
+            - Biogenetic
+            - Geographical
+        The International Code of Botanical Nomenclature (ICBN)
+        Nomenclature Section of an International Botanical Congress.
+        International Commission for the Nomenclature of Cultivated Plants (ICNCP)
+    '''
+    # print('here')
+    # quit()
+
 def main():
     # herbal_medicine__gen()
 
@@ -4443,8 +4290,9 @@ def main():
     herbs = io.json_read(herbs_filepath)
     for herb_i, herb in enumerate(herbs):
         herb__gen(herb)
+        herb__identity__gen(herb)
         # herb__botany__gen(herb)
-        break
+        # break
     # quit()
 
     # herbs_hub_gen()
