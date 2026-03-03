@@ -1,3 +1,4 @@
+import os
 import random
 
 from lib import g
@@ -3973,7 +3974,7 @@ def herb__gen(herb):
 
     herb_botany__gen(json_article_filepath, regen=False, dispel=False)
     herb_chemistry__gen(json_article_filepath, herb_active_compounds, regen=False, dispel=False)
-    herb_safety__gen(json_article_filepath, regen=True, dispel=False)
+    herb_safety__gen(json_article_filepath, regen=False, dispel=False)
 
     herb_medicine__gen(json_article_filepath, regen=False, dispel=False)
     herb_cultivation__gen(json_article_filepath, regen=False, dispel=False)
@@ -4240,7 +4241,7 @@ Srivastava, J.K., et al. "Chamomile: A herbal medicine of the past with bright f
     html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
     with open(html_filepath, 'w') as f: f.write(html)
 
-def herb__identity__gen(herb):
+def herb__botanical_identification__gen(herb):
     '''
         Include: 
         ---
@@ -4260,6 +4261,51 @@ def herb__identity__gen(herb):
         Nomenclature Section of an International Botanical Congress.
         International Commission for the Nomenclature of Cultivated Plants (ICNCP)
     '''
+
+    herb_name_scientific = herb['taxon_name']
+    herb_slug = polish.sluggify(herb_name_scientific)
+    ###
+    herb_filepath = f'''{g.SSOT_FOLDERPATH}/herbs/herbs-primary/{herb_slug}.json'''
+    herb_data = io.json_read(herb_filepath)
+    herb_names_common = herb_data['herb_names_common']
+    herb_name_common = herb_names_common[0]['answer']
+    herb_name_all = f'{herb_name_common.title()} ({herb_name_scientific.capitalize()})'
+    herb_name_all = herb_name_all.replace("'S", "'s")
+    herb_family = herb_data['herb_family'][0]['answer']
+    ###
+    url_slug = f'herbs/{herb_slug}/botanical-identification'
+    meta_title = f'{herb_name_common.title()} ({herb_name_scientific.capitalize()}) botanical identification'
+    meta_description = ''
+    canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''
+
+    article_html = f''
+    head_html = components.html_head(meta_title, meta_description, css='/styles-herb-monograph.css', canonical=canonical_html)
+    sidebar_hub_html = '<div></div>'
+    sidebar_page_html = sidebar_page_gen([]) 
+    import textwrap
+    html = textwrap.dedent(f''' 
+        <!DOCTYPE html>
+        <html lang="en">
+        {head_html}
+        <body>
+            {sections.header_default()}
+            <div class="hub">
+                {sidebar_hub_html}
+                <main>
+                    <article>
+                        {article_html}
+                    </article>
+                </main>
+                {sidebar_page_html}
+            </div>
+            {sections.footer()}
+        </body>
+        </html>
+    ''').strip()
+    html_folderpath = f'''{g.website_folderpath}/herbs/{herb_slug}'''
+    os.makedirs(html_folderpath, exist_ok=True)
+    html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
+    with open(html_filepath, 'w') as f: f.write(html)
     # print('here')
     # quit()
 
@@ -4290,7 +4336,7 @@ def main():
     herbs = io.json_read(herbs_filepath)
     for herb_i, herb in enumerate(herbs):
         herb__gen(herb)
-        herb__identity__gen(herb)
+        herb__botanical_identification__gen(herb)
         # herb__botany__gen(herb)
         # break
     # quit()
