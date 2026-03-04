@@ -4273,15 +4273,272 @@ def herb__botanical_identification__gen(herb):
     herb_name_all = herb_name_all.replace("'S", "'s")
     herb_family = herb_data['herb_family'][0]['answer']
     ###
-    url_slug = f'herbs/{herb_slug}/botanical-identification'
+    url_slug = f'herbs/{herb_slug}/identification'
     meta_title = f'{herb_name_common.title()} ({herb_name_scientific.capitalize()}) botanical identification'
     meta_description = ''
     canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''
 
-    article_html = f''
-    head_html = components.html_head(meta_title, meta_description, css='/styles-herb-monograph.css', canonical=canonical_html)
-    sidebar_hub_html = '<div></div>'
-    sidebar_page_html = sidebar_page_gen([]) 
+    ########################################
+    # JSON
+    ########################################
+    ### json init
+    json_article_filepath = f'''{g.DATABASE_FOLDERPATH}/json/{url_slug}.json'''
+    json_article = io.json_read(json_article_filepath, create=True)
+    json_article['url'] = url_slug
+    json_article['herb_slug'] = herb_slug
+    json_article['herb_name_scientific'] = f'{herb_name_scientific}'
+    json_article['herb_name_all'] = f'{herb_name_all}'
+    json_article['title'] = herb_name_all
+    io.json_write(json_article_filepath, json_article)
+
+    ########################################
+    # - HERO
+    ########################################
+    json_article = io.json_read(json_article_filepath)
+    herb_name_all = json_article['herb_name_all']
+
+    hero_html = f'''
+        <h1>
+            Botanical Identification of {herb_name_all}
+        </h1>
+        <p>
+            To identify {herb_name_all} accurately, examine its morphological characteristics, taxonomic classification, and diagnostic features.
+        </p>
+    '''
+
+    ########################################
+    # - CLASSIFICATION
+    ########################################
+    regen = False
+    dispel = False
+
+    ###
+    taxonomy_folderpath = f'{g.SSOT_FOLDERPATH}/taxonomy'
+    taxonomy_filepath = f'''{taxonomy_folderpath}/families.json'''
+    taxonomy_data = io.json_read(taxonomy_filepath)
+    _family = herb_family
+    _order = '' 
+    _kingdom = '' 
+    for item in taxonomy_data:
+        if item['family'] != [] and item['family'].lower().strip() == herb_family.lower().strip():
+            _order = item['order'][0]['answer']
+            break
+    ###
+    taxonomy_filepath = f'''{taxonomy_folderpath}/orders.json'''
+    taxonomy_data = io.json_read(taxonomy_filepath)
+    _subclass = '' 
+    for item in taxonomy_data:
+        if item['order'] != [] and item['order'].lower().strip() == _order.lower().strip():
+            _subclass = item['subclass'][0]['answer']
+            break
+    ###
+    taxonomy_filepath = f'''{taxonomy_folderpath}/subclasses.json'''
+    taxonomy_data = io.json_read(taxonomy_filepath)
+    _class = '' 
+    for item in taxonomy_data:
+        if item['subclass'] != [] and item['subclass'].lower().strip() == _subclass.lower().strip():
+            _class = item['class'][0]['answer']
+            break
+    ###
+    taxonomy_filepath = f'{taxonomy_folderpath}/classes.json'
+    taxonomy_data = io.json_read(taxonomy_filepath)
+    _division = '' 
+    for item in taxonomy_data:
+        if item['class'] != [] and item['class'].lower().strip() == _class.lower().strip():
+            _division = item['division'][0]['answer']
+            break
+    taxonomy_list_html = f'''
+        <p>The following list summarize the taxonomy of plant:</p>
+        <ul>
+            <li>Kingdom: Plantae</li>
+            <li>Division: {_division.capitalize()}</li>
+            <li>Class: {_class.capitalize()}</li>
+            <li>Order: {_order.capitalize()}</li>
+            <li>Family: {_family}</li>
+            <li>Genus: {herb['genus']}</li>
+            <li>Species: {herb['taxon_name']}</li>
+        </ul>
+    '''
+    taxonomy_table_html = f'''
+        <p>The following table shows the full taxonomy of this plant.</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>
+                        Rank
+                    </th>
+                    <th>
+                        Name
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        Kingdom
+                    </td>
+                    <td>
+                        <strong>Plantae</strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Division
+                    </td>
+                    <td>
+                        <strong>{_division.capitalize()}</strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Class
+                    </td>
+                    <td>
+                        <strong>{_class.capitalize()}</strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Order
+                    </td>
+                    <td>
+                        <strong>{_order.capitalize()}</strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Family
+                    </td>
+                    <td>
+                        <strong>{_family.capitalize()}</strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Genus
+                    </td>
+                    <td>
+                        <strong>{herb['genus'].capitalize()}</strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Species
+                    </td>
+                    <td>
+                        <strong>{herb['taxon_name'].capitalize()}</strong>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    '''
+    taxonomy_list_text = f'''
+            Kingdom: Plantae
+            Division: {_division.capitalize()}
+            Class: {_class.capitalize()}
+            Order: {_order.capitalize()}
+            Family: {_family}
+            Genus: {herb['genus']}
+            Species: {herb['taxon_name']}
+    '''
+
+    ###
+    json_article = io.json_read(json_article_filepath)
+    herb_name_all = json_article['herb_name_all']
+    ###
+    key = 'classification'
+    if key not in json_article: json_article[key] = ''
+    if regen: json_article[key] = ''
+    if dispel: 
+        json_article[key] = ''
+        io.json_write(json_article_filepath, json_article)
+    if not dispel:
+        if json_article[key] == '':
+            brief = f'''
+                Use the following data and describe each of these classifications.
+                Kingdom
+                Division
+                Class
+                Order
+                Family
+                Genus
+                Species
+            '''
+            data = f'''
+                {taxonomy_list_text}
+            '''
+            import textwrap
+            prompt = textwrap.dedent(f'''
+                I'm writing an article about the core entity "botanical identification of {herb_name_all}", which is for a website where the source context is "teaching herbal medicine". 
+                Below I will give you a brief and the data for a section I have to write, and I want you to write the subordinate text. 
+                The subordinate text is the paragraph that must be written immediately after the headline. 
+                The subordinate text must answer in the most direct, clear, detailed way possible without fluff, in about 40-60 words and 2-4 sentences. 
+                Don't give me bold or italicized text. 
+                Reply only with the subordinate text.
+                BRIEF:
+                {brief}
+                DATA:
+                {data}
+                /no_think
+            ''').strip()
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            json_article[key] = reply
+            io.json_write(json_article_filepath, json_article)
+
+    section_classification = f'''
+        <h2>
+            Scientific Classification
+        </h2>
+        <p>
+            {json_article['classification']}
+        </p>
+        {taxonomy_table_html}
+    '''
+    section_names = f'''
+        <h2>
+            Botanical Nomenclature and Synonyms
+        </h2>
+    '''
+    section_morphology = f'''
+        <h2>
+            Morphological Characteristics
+        </h2>
+    '''
+    section_diagnosy = f'''
+        <h2>
+            Diagnostic Identification Features
+        </h2>
+    '''
+    section_habitat = f'''
+        <h2>
+            Natural Habitat and Geographic Distribution
+        </h2>
+    '''
+    section_growth = f'''
+        <h2>
+            Phenology and Growth Cycle
+        </h2>
+    '''
+    section_relationships = f'''
+        <h2>
+            Phylogenetic Relationships
+        </h2>
+    '''
+    ###
+    article_html = f'''
+        {hero_html}
+        {section_classification}
+        {section_names}
+        {section_morphology}
+        {section_diagnosy}
+        {section_habitat}
+        {section_growth}
+        {section_relationships}
+    '''
+    head_html = components.html_head(meta_title, meta_description, css='/styles.css', canonical=canonical_html)
     import textwrap
     html = textwrap.dedent(f''' 
         <!DOCTYPE html>
@@ -4289,15 +4546,11 @@ def herb__botanical_identification__gen(herb):
         {head_html}
         <body>
             {sections.header_default()}
-            <div class="hub">
-                {sidebar_hub_html}
-                <main>
-                    <article>
-                        {article_html}
-                    </article>
-                </main>
-                {sidebar_page_html}
-            </div>
+            <main>
+                <article class="article">
+                    {article_html}
+                </article>
+            </main>
             {sections.footer()}
         </body>
         </html>
@@ -4335,10 +4588,10 @@ def main():
     herbs_filepath = f'{herbs_folderpath}/herbs-medicinal-validated.json'
     herbs = io.json_read(herbs_filepath)
     for herb_i, herb in enumerate(herbs):
-        herb__gen(herb)
+        # herb__gen(herb)
         herb__botanical_identification__gen(herb)
         # herb__botany__gen(herb)
-        # break
+        break
     # quit()
 
     # herbs_hub_gen()
