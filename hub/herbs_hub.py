@@ -4291,6 +4291,9 @@ def herb__botanical_identification__gen(herb):
     json_article['title'] = herb_name_all
     io.json_write(json_article_filepath, json_article)
 
+    regen_global = True
+    dispel_global = False
+
     ########################################
     # - HERO
     ########################################
@@ -4309,9 +4312,8 @@ def herb__botanical_identification__gen(herb):
     ########################################
     # - CLASSIFICATION
     ########################################
-    regen = False
-    dispel = False
-
+    regen = regen_global
+    dispel = dispel_global
     ###
     taxonomy_folderpath = f'{g.SSOT_FOLDERPATH}/taxonomy'
     taxonomy_filepath = f'''{taxonomy_folderpath}/families.json'''
@@ -4441,8 +4443,8 @@ def herb__botanical_identification__gen(herb):
             Genus: {herb['genus']}
             Species: {herb['taxon_name']}
     '''
-
     ###
+
     json_article = io.json_read(json_article_filepath)
     herb_name_all = json_article['herb_name_all']
     ###
@@ -4497,36 +4499,350 @@ def herb__botanical_identification__gen(herb):
         </p>
         {taxonomy_table_html}
     '''
+
+    ########################################
+    # - NOMENCLATURE
+    ########################################
+    regen = regen_global
+    dispel = dispel_global
+    ###
+
+    json_article = io.json_read(json_article_filepath)
+    herb_name_all = json_article['herb_name_all']
+    ###
+    key = 'nomenclature'
+    if key not in json_article: json_article[key] = ''
+    if regen: json_article[key] = ''
+    if dispel: 
+        json_article[key] = ''
+        io.json_write(json_article_filepath, json_article)
+    if not dispel:
+        if json_article[key] == '':
+            brief = f'''
+                H2 Botanical Nomenclature and Synonyms 
+                Scientific name
+                Author citation
+                Synonyms
+                Common names
+                Regional names
+                Historical names
+            '''
+            data = f'''
+                Scientific name: {herb_name_scientific}
+            '''
+            import textwrap
+            prompt = textwrap.dedent(f'''
+                I'm writing an article about the core entity "botanical identification of {herb_name_all}", which is for a website where the source context is "teaching herbal medicine". 
+                Below I will give you a brief and the data for a section I have to write, and I want you to write the subordinate text. 
+                The subordinate text is the paragraph that must be written immediately after the headline. 
+                The subordinate text must answer in the most direct, clear, detailed way possible without fluff, in about 40-60 words and 2-4 sentences. 
+                Don't give me bold or italicized text. 
+                Reply only with the subordinate text.
+                BRIEF:
+                {brief}
+                DATA:
+                {data}
+                /no_think
+            ''').strip()
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            json_article[key] = reply
+            io.json_write(json_article_filepath, json_article)
+
     section_names = f'''
         <h2>
             Botanical Nomenclature and Synonyms
         </h2>
+        <p>
+            {json_article['nomenclature']}
+        </p>
     '''
+
+    ########################################
+    # - MORPHOLOGY
+    ########################################
+    regen = regen_global
+    dispel = dispel_global
+    ###
+
+    json_article = io.json_read(json_article_filepath)
+    herb_name_all = json_article['herb_name_all']
+    ###
+    key = 'morphology'
+    if key not in json_article: json_article[key] = ''
+    if regen: json_article[key] = ''
+    if dispel: 
+        json_article[key] = ''
+        io.json_write(json_article_filepath, json_article)
+    if not dispel:
+        if json_article[key] == '':
+            brief = f'''
+                H2 Morphological Characteristics
+                Growth Habit
+                Root System
+                Stem
+                Leaves
+                Inflorescence
+                Flowers
+                Fruit and Seeds
+            '''
+            data = f'''
+            '''
+            import textwrap
+            prompt = textwrap.dedent(f'''
+                I'm writing an article about the core entity "botanical identification of {herb_name_all}", which is for a website where the source context is "teaching herbal medicine". 
+                Below I will give you a brief and the data for a section I have to write, and I want you to write the subordinate text. 
+                The subordinate text is the paragraph that must be written immediately after the headline. 
+                The subordinate text must answer in the most direct, clear, detailed way possible without fluff, in about 40-60 words and 2-4 sentences. 
+                Don't give me bold or italicized text. 
+                Reply only with the subordinate text.
+                BRIEF:
+                {brief}
+                DATA:
+                {data}
+                /no_think
+            ''').strip()
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            json_article[key] = reply
+            io.json_write(json_article_filepath, json_article)
+
     section_morphology = f'''
         <h2>
             Morphological Characteristics
         </h2>
+        <p>
+            {json_article['morphology']}
+        </p>
     '''
+
+    ########################################
+    # - DIAGNOSYS
+    ########################################
+    regen = regen_global
+    dispel = dispel_global
+    ###
+
+    json_article = io.json_read(json_article_filepath)
+    herb_name_all = json_article['herb_name_all']
+    ###
+    key = 'diagnosys'
+    if key not in json_article: json_article[key] = ''
+    if regen: json_article[key] = ''
+    if dispel: 
+        json_article[key] = ''
+        io.json_write(json_article_filepath, json_article)
+    if not dispel:
+        if json_article[key] == '':
+            brief = f'''
+                H2 Diagnostic Identification Features
+                How can this plant be distinguished from similar species
+            '''
+            data = f'''
+            '''
+            import textwrap
+            prompt = textwrap.dedent(f'''
+                I'm writing an article about the core entity "botanical identification of {herb_name_all}", which is for a website where the source context is "teaching herbal medicine". 
+                Below I will give you a brief and the data for a section I have to write, and I want you to write the subordinate text. 
+                The subordinate text is the paragraph that must be written immediately after the headline. 
+                The subordinate text must answer in the most direct, clear, detailed way possible without fluff, in about 40-60 words and 2-4 sentences. 
+                Don't give me bold or italicized text. 
+                Reply only with the subordinate text.
+                BRIEF:
+                {brief}
+                DATA:
+                {data}
+                /no_think
+            ''').strip()
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            json_article[key] = reply
+            io.json_write(json_article_filepath, json_article)
+
     section_diagnosy = f'''
         <h2>
             Diagnostic Identification Features
         </h2>
+        <p>
+            {json_article['diagnosys']}
+        </p>
     '''
+
+    ########################################
+    # - HABITAT
+    ########################################
+    regen = regen_global
+    dispel = dispel_global
+    ###
+
+    json_article = io.json_read(json_article_filepath)
+    herb_name_all = json_article['herb_name_all']
+    ###
+    key = 'habitat'
+    if key not in json_article: json_article[key] = ''
+    if regen: json_article[key] = ''
+    if dispel: 
+        json_article[key] = ''
+        io.json_write(json_article_filepath, json_article)
+    if not dispel:
+        if json_article[key] == '':
+            brief = f'''
+                H2 Natural Habitat and Geographic Distribution
+                Native regions
+                Climate preference
+                Soil type
+                Altitude range
+            '''
+            data = f'''
+            '''
+            import textwrap
+            prompt = textwrap.dedent(f'''
+                I'm writing an article about the core entity "botanical identification of {herb_name_all}", which is for a website where the source context is "teaching herbal medicine". 
+                Below I will give you a brief and the data for a section I have to write, and I want you to write the subordinate text. 
+                The subordinate text is the paragraph that must be written immediately after the headline. 
+                The subordinate text must answer in the most direct, clear, detailed way possible without fluff, in about 40-60 words and 2-4 sentences. 
+                Don't give me bold or italicized text. 
+                Reply only with the subordinate text.
+                BRIEF:
+                {brief}
+                DATA:
+                {data}
+                /no_think
+            ''').strip()
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            json_article[key] = reply
+            io.json_write(json_article_filepath, json_article)
+
     section_habitat = f'''
         <h2>
             Natural Habitat and Geographic Distribution
         </h2>
+        <p>
+            {json_article['habitat']}
+        </p>
     '''
+
+    ########################################
+    # - GROWTH
+    ########################################
+    regen = regen_global
+    dispel = dispel_global
+    ###
+
+    json_article = io.json_read(json_article_filepath)
+    herb_name_all = json_article['herb_name_all']
+    ###
+    key = 'growth'
+    if key not in json_article: json_article[key] = ''
+    if regen: json_article[key] = ''
+    if dispel: 
+        json_article[key] = ''
+        io.json_write(json_article_filepath, json_article)
+    if not dispel:
+        if json_article[key] == '':
+            brief = f'''
+                H2 Phenology and Growth Cycle
+                When does it bloom?
+                When is seed formation?
+                Harvest timing (identification context only)
+            '''
+            data = f'''
+            '''
+            import textwrap
+            prompt = textwrap.dedent(f'''
+                I'm writing an article about the core entity "botanical identification of {herb_name_all}", which is for a website where the source context is "teaching herbal medicine". 
+                Below I will give you a brief and the data for a section I have to write, and I want you to write the subordinate text. 
+                The subordinate text is the paragraph that must be written immediately after the headline. 
+                The subordinate text must answer in the most direct, clear, detailed way possible without fluff, in about 40-60 words and 2-4 sentences. 
+                Don't give me bold or italicized text. 
+                Reply only with the subordinate text.
+                BRIEF:
+                {brief}
+                DATA:
+                {data}
+                /no_think
+            ''').strip()
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            json_article[key] = reply
+            io.json_write(json_article_filepath, json_article)
+
     section_growth = f'''
         <h2>
             Phenology and Growth Cycle
         </h2>
+        <p>
+            {json_article['growth']}
+        </p>
     '''
+
+    ########################################
+    # - RELATIONSHIPS
+    ########################################
+    regen = regen_global
+    dispel = dispel_global
+    ###
+
+    json_article = io.json_read(json_article_filepath)
+    herb_name_all = json_article['herb_name_all']
+    ###
+    key = 'relationships'
+    if key not in json_article: json_article[key] = ''
+    if regen: json_article[key] = ''
+    if dispel: 
+        json_article[key] = ''
+        io.json_write(json_article_filepath, json_article)
+    if not dispel:
+        if json_article[key] == '':
+            brief = f'''
+                H2 Phylogenetic Relationships
+                Closest species
+                Genus relations
+                Family traits
+            '''
+            data = f'''
+            '''
+            import textwrap
+            prompt = textwrap.dedent(f'''
+                I'm writing an article about the core entity "botanical identification of {herb_name_all}", which is for a website where the source context is "teaching herbal medicine". 
+                Below I will give you a brief and the data for a section I have to write, and I want you to write the subordinate text. 
+                The subordinate text is the paragraph that must be written immediately after the headline. 
+                The subordinate text must answer in the most direct, clear, detailed way possible without fluff, in about 40-60 words and 2-4 sentences. 
+                Don't give me bold or italicized text. 
+                Reply only with the subordinate text.
+                BRIEF:
+                {brief}
+                DATA:
+                {data}
+                /no_think
+            ''').strip()
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            json_article[key] = reply
+            io.json_write(json_article_filepath, json_article)
+
     section_relationships = f'''
         <h2>
             Phylogenetic Relationships
         </h2>
+        <p>
+            {json_article['relationships']}
+        </p>
     '''
+
     ###
     article_html = f'''
         {hero_html}
@@ -4591,7 +4907,7 @@ def main():
         # herb__gen(herb)
         herb__botanical_identification__gen(herb)
         # herb__botany__gen(herb)
-        break
+        # break
     # quit()
 
     # herbs_hub_gen()
