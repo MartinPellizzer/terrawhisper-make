@@ -4028,6 +4028,16 @@ def herb__gen(herb):
     img_alt = f'{herb_name_all} dried pieces of the herb arranged on a wooden table for reference'
     img_html = f'<img src="{img_src}" alt="{img_alt}" width="400">'
     # img_html = ''
+    '''
+    <div style="background-color: #f8f9fa; border: 1px solid #e2e8f0; padding: 1.6rem;"> 
+        <p>Family<br>
+        <strong>Solanaceae (Nightshade)</strong></p>
+        <p>Native Region<br>
+        <strong>India, Middle East, Africa</strong></p>
+        <p style="margin-bottom: 0;">Part Used<br>
+        <strong>Root, Leaf, Berry</strong></p>
+    </div> 
+    '''
     lst_html = f'''
                 <p>
                 Primary Indications:
@@ -4045,16 +4055,8 @@ def herb__gen(herb):
                 <h1>{herb_name_common}</h1>
                 <p style="color: #888; font-size: 2.4rem;">{herb_name_scientific}</p>
                 <p>
-                Ashwagandha is a prominent medicinal herb in Ayurvedic medicine, classified as a rasayana (rejuvenator). It is primarily utilized as an adaptogen to help the body manage physical and chemical stress.
+                    {json_article['intro']}
                 </p>
-                <div style="background-color: #f8f9fa; border: 1px solid #e2e8f0; padding: 1.6rem;"> 
-                    <p>Family<br>
-                    <strong>Solanaceae (Nightshade)</strong></p>
-                    <p>Native Region<br>
-                    <strong>India, Middle East, Africa</strong></p>
-                    <p style="margin-bottom: 0;">Part Used<br>
-                    <strong>Root, Leaf, Berry</strong></p>
-                </div> 
             </div>
             <div>
                 {img_html}
@@ -4068,6 +4070,7 @@ def herb__gen(herb):
             <p>
             {json_article['botany']}
             </p>
+            <p><a href="/herbs/{herb_slug}/identification.html">{herb_name_common} Identification</a>.</p>
         </section>
     '''
 
@@ -4088,6 +4091,7 @@ Active Compounds
                 {json_article['chemistry']}
             </p>
             {chemistry_list_html}
+            <p><a href="/herbs/{herb_slug}/compounds.html">{herb_name_common} Compounds</a>.</p>
         </section>
     '''
 
@@ -4109,19 +4113,19 @@ Active Compounds
                 Therapeutic Indications 
             </h2>
 
-                <table class="clinical-table">
-                    <thead>
-                        <tr>
-                            <th width="30%">System</th>
-                            <th>Condidtion</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {tr_rows_html}
-                    </tbody>
-                </table>
-            </section>
+            <table class="clinical-table" style="margin-bottom: 1.6rem;">
+                <thead>
+                    <tr>
+                        <th width="30%">System</th>
+                        <th>Condidtion</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {tr_rows_html}
+                </tbody>
+            </table>
+            <p><a href="/herbs/{herb_slug}/actions.html">{herb_name_common} Actions</a>.</p>
         </section>
     '''
 
@@ -4241,7 +4245,7 @@ Srivastava, J.K., et al. "Chamomile: A herbal medicine of the past with bright f
     html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
     with open(html_filepath, 'w') as f: f.write(html)
 
-def herb__botanical_identification__gen(herb):
+def herb__identification__gen(herb):
     '''
         Include: 
         ---
@@ -4260,6 +4264,11 @@ def herb__botanical_identification__gen(herb):
         The International Code of Botanical Nomenclature (ICBN)
         Nomenclature Section of an International Botanical Congress.
         International Commission for the Nomenclature of Cultivated Plants (ICNCP)
+
+        DERIVATION OF BOTANICAL NAMES
+        - Mythological Names
+        - Geographical or Ecological Names
+        - Etc.
     '''
 
     herb_name_scientific = herb['taxon_name']
@@ -4291,7 +4300,7 @@ def herb__botanical_identification__gen(herb):
     json_article['title'] = herb_name_all
     io.json_write(json_article_filepath, json_article)
 
-    regen_global = True
+    regen_global = False
     dispel_global = False
 
     ########################################
@@ -4307,6 +4316,7 @@ def herb__botanical_identification__gen(herb):
         <p>
             To identify {herb_name_all} accurately, examine its morphological characteristics, taxonomic classification, and diagnostic features.
         </p>
+        <p><a href="/herbs/{herb_slug}.html">{herb_name_common.title()} ({herb_name_scientific.capitalize()}) Monograph</a></p>
     '''
 
     ########################################
@@ -4878,6 +4888,435 @@ def herb__botanical_identification__gen(herb):
     # print('here')
     # quit()
 
+def herb__compounds__gen(herb):
+    '''
+        Include: 
+        ---
+        Phytochemistry
+    '''
+    herb_name_scientific = herb['taxon_name']
+    herb_slug = polish.sluggify(herb_name_scientific)
+    ###
+    herb_filepath = f'''{g.SSOT_FOLDERPATH}/herbs/herbs-primary/{herb_slug}.json'''
+    herb_data = io.json_read(herb_filepath)
+    herb_names_common = herb_data['herb_names_common']
+    herb_name_common = herb_names_common[0]['answer']
+    herb_name_all = f'{herb_name_common.title()} ({herb_name_scientific.capitalize()})'
+    herb_name_all = herb_name_all.replace("'S", "'s")
+    herb_family = herb_data['herb_family'][0]['answer']
+    ###
+    url_slug = f'herbs/{herb_slug}/compounds'
+    meta_title = f'{herb_name_common.title()} ({herb_name_scientific.capitalize()}) Compounds'
+    meta_description = ''
+    canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''
+
+    ########################################
+    # JSON
+    ########################################
+    ### json init
+    json_article_filepath = f'''{g.DATABASE_FOLDERPATH}/json/{url_slug}.json'''
+    json_article = io.json_read(json_article_filepath, create=True)
+    json_article['url'] = url_slug
+    json_article['herb_slug'] = herb_slug
+    json_article['herb_name_scientific'] = f'{herb_name_scientific}'
+    json_article['herb_name_all'] = f'{herb_name_all}'
+    json_article['title'] = herb_name_all
+    io.json_write(json_article_filepath, json_article)
+
+    regen_global = False
+    dispel_global = False
+
+    ########################################
+    # INTRO
+    ########################################
+    regen = regen_global
+    dispel = dispel_global
+    json_article = io.json_read(json_article_filepath)
+    herb_name_all = json_article['herb_name_all']
+    herb_active_compounds = '\n'.join([item['answer'] for item in herb_data['herb_active_compounds']])
+    ###
+    key = 'intro'
+    if key not in json_article: json_article[key] = ''
+    if regen: json_article[key] = ''
+    if dispel: 
+        json_article[key] = ''
+        io.json_write(json_article_filepath, json_article)
+    if not dispel:
+        if json_article[key] == '':
+            brief = f'''
+                List and describe a few of the primary compounds.
+            '''
+            data = f'''
+                {herb_active_compounds}
+            '''
+            import textwrap
+            prompt = textwrap.dedent(f'''
+                I'm writing an article about the core entity "active compounds of {herb_name_all}", which is for a website where the source context is "teaching herbal medicine". 
+                Below I will give you a brief and the data for a section I have to write, and I want you to write the subordinate text. 
+                The subordinate text is the paragraph that must be written immediately after the headline. 
+                The subordinate text must answer in the most direct, clear, detailed way possible without fluff, in about 40-60 words and 2-4 sentences. 
+                Don't give me bold or italicized text. 
+                Reply only with the subordinate text.
+                BRIEF:
+                {brief}
+                DATA:
+                {data}
+                /no_think
+            ''').strip()
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            json_article[key] = reply
+            io.json_write(json_article_filepath, json_article)
+
+    section_intro = f'''
+        <h1>{meta_title}</h1>
+        <p>
+            {json_article['intro']}
+        </p>
+        <p>
+            <a href="/herbs/{herb_slug}.html">
+                {herb_name_common.title()} ({herb_name_scientific.capitalize()}) Monograph
+            </a>
+        </p>
+    '''
+
+    ########################################
+    # MAIN LIST
+    ########################################
+    regen = regen_global
+    dispel = dispel_global
+    json_article = io.json_read(json_article_filepath)
+    herb_name_all = json_article['herb_name_all']
+    ###
+    key = 'main_list'
+    if key not in json_article: json_article[key] = []
+    if regen: json_article[key] = []
+    if dispel: 
+        json_article[key] = []
+        io.json_write(json_article_filepath, json_article)
+    if not dispel:
+        list_items = []
+        if json_article[key] == []:
+            for compound in herb_data['herb_active_compounds']:
+                _obj = {
+                    'title': compound['answer'],
+                    'desc': '',
+                }
+                list_items.append(_obj)
+            json_article[key] = list_items
+            io.json_write(json_article_filepath, json_article)
+        for obj in json_article['main_list']:
+            if obj['desc'] == '':
+                brief = f'''
+                '''
+                data = f'''
+                    {herb_active_compounds}
+                '''
+                import textwrap
+                prompt = textwrap.dedent(f'''
+                    I'm writing an article about the core entity "active compounds of {herb_name_all}", which is for a website where the source context is "teaching herbal medicine". 
+                    In specific, I want to write the subordinate text for a section about this specific compound: {obj['title']}.
+                    The subordinate text is the paragraph that must be written immediately after the headline. 
+                    The subordinate text must answer in the most direct, clear, detailed way possible without fluff, in about 40-60 words and 2-4 sentences. 
+                    Don't give me bold or italicized text. 
+                    Reply only with the subordinate text.
+                    Discuss this compound in the context of this medicinal plant. 
+                    Name both the compound and the medicinal plant name in the first sentence.
+                    /no_think
+                ''').strip()
+                reply = llm.reply(prompt)
+                if '</think>' in reply:
+                    reply = reply.split('</think>')[1].strip()
+                reply = polish.vanilla(reply)
+                obj['desc'] = reply
+                io.json_write(json_article_filepath, json_article)
+
+    
+    section_main_list = f'''
+    '''
+    for item_i, item in enumerate(json_article['main_list']):
+        print(item)
+        section_main_list += f'''
+            <section>
+                <h2>{item_i+1}. {item['title'].capitalize()}</h2>
+                <p>{item['desc']}</p>
+            </section>
+        '''
+
+    ###
+    article_html = f'''
+        {section_intro}
+        {section_main_list}
+    '''
+    head_html = components.html_head(meta_title, meta_description, css='/styles.css', canonical=canonical_html)
+    import textwrap
+    html = textwrap.dedent(f''' 
+        <!DOCTYPE html>
+        <html lang="en">
+        {head_html}
+        <body>
+            {sections.header_default()}
+            <main>
+                <article class="article">
+                    {article_html}
+                </article>
+            </main>
+            {sections.footer()}
+        </body>
+        </html>
+    ''').strip()
+    html_folderpath = f'''{g.website_folderpath}/herbs/{herb_slug}'''
+    os.makedirs(html_folderpath, exist_ok=True)
+    html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
+    with open(html_filepath, 'w') as f: f.write(html)
+
+def herb__actions__gen(herb):
+    herb_name_scientific = herb['taxon_name']
+    herb_slug = polish.sluggify(herb_name_scientific)
+    ###
+    herb_filepath = f'''{g.SSOT_FOLDERPATH}/herbs/herbs-primary/{herb_slug}.json'''
+    herb_data = io.json_read(herb_filepath)
+    herb_names_common = herb_data['herb_names_common']
+    herb_name_common = herb_names_common[0]['answer']
+    herb_name_all = f'{herb_name_common.title()} ({herb_name_scientific.capitalize()})'
+    herb_name_all = herb_name_all.replace("'S", "'s")
+    herb_family = herb_data['herb_family'][0]['answer']
+    ###
+    url_slug = f'herbs/{herb_slug}/actions'
+    meta_title = f'{herb_name_common.title()} ({herb_name_scientific.capitalize()}) Actions'
+    meta_description = ''
+    canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''
+
+    ########################################
+    # JSON
+    ########################################
+    ### json init
+    json_article_filepath = f'''{g.DATABASE_FOLDERPATH}/json/{url_slug}.json'''
+    json_article = io.json_read(json_article_filepath, create=True)
+    json_article['url'] = url_slug
+    json_article['herb_slug'] = herb_slug
+    json_article['herb_name_scientific'] = f'{herb_name_scientific}'
+    json_article['herb_name_all'] = f'{herb_name_all}'
+    json_article['title'] = herb_name_all
+    io.json_write(json_article_filepath, json_article)
+
+    regen_global = False
+    dispel_global = False
+
+    ########################################
+    # INTRO
+    ########################################
+    regen = regen_global
+    dispel = dispel_global
+    json_article = io.json_read(json_article_filepath)
+    herb_name_all = json_article['herb_name_all']
+    herb_medicinal_actions = '\n'.join([item['answer'] for item in herb_data['herb_medicinal_actions']])
+    ###
+    key = 'intro'
+    if key not in json_article: json_article[key] = ''
+    if regen: json_article[key] = ''
+    if dispel: 
+        json_article[key] = ''
+        io.json_write(json_article_filepath, json_article)
+    if not dispel:
+        if json_article[key] == '':
+            brief = f'''
+                List and describe a few of the primary therapeutic actions.
+            '''
+            data = f'''
+                {herb_medicinal_actions}
+            '''
+            import textwrap
+            prompt = textwrap.dedent(f'''
+                I'm writing an article about the core entity "therapeutic actions of {herb_name_all}", which is for a website where the source context is "teaching herbal medicine". 
+                Below I will give you a brief and the data for a section I have to write, and I want you to write the subordinate text. 
+                The subordinate text is the paragraph that must be written immediately after the headline. 
+                The subordinate text must answer in the most direct, clear, detailed way possible without fluff, in about 40-60 words and 2-4 sentences. 
+                Don't give me bold or italicized text. 
+                Reply only with the subordinate text.
+                BRIEF:
+                {brief}
+                DATA:
+                {data}
+                /no_think
+            ''').strip()
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            json_article[key] = reply
+            io.json_write(json_article_filepath, json_article)
+
+    section_intro = f'''
+        <h1>{meta_title}</h1>
+        <p>
+            {json_article['intro']}
+        </p>
+        <p>
+            <a href="/herbs/{herb_slug}.html">
+                {herb_name_common.title()} ({herb_name_scientific.capitalize()}) Monograph
+            </a>
+        </p>
+    '''
+
+    ###
+    article_html = f'''
+        {section_intro}
+    '''
+    ###
+    head_html = components.html_head(meta_title, meta_description, css='/styles.css', canonical=canonical_html)
+    import textwrap
+    html = textwrap.dedent(f''' 
+        <!DOCTYPE html>
+        <html lang="en">
+        {head_html}
+        <body>
+            {sections.header_default()}
+            <main>
+                <article class="article">
+                    {article_html}
+                </article>
+            </main>
+            {sections.footer()}
+        </body>
+        </html>
+    ''').strip()
+    html_folderpath = f'''{g.website_folderpath}/herbs/{herb_slug}'''
+    os.makedirs(html_folderpath, exist_ok=True)
+    html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
+    with open(html_filepath, 'w') as f: f.write(html)
+
+def herb__uses__gen(herb):
+    herb_name_scientific = herb['taxon_name']
+    herb_slug = polish.sluggify(herb_name_scientific)
+    ###
+    herb_filepath = f'''{g.SSOT_FOLDERPATH}/herbs/herbs-primary/{herb_slug}.json'''
+    herb_data = io.json_read(herb_filepath)
+    herb_names_common = herb_data['herb_names_common']
+    herb_name_common = herb_names_common[0]['answer']
+    herb_name_all = f'{herb_name_common.title()} ({herb_name_scientific.capitalize()})'
+    herb_name_all = herb_name_all.replace("'S", "'s")
+    herb_family = herb_data['herb_family'][0]['answer']
+    ###
+    url_slug = f'herbs/{herb_slug}/uses'
+    meta_title = f'{herb_name_common.title()} ({herb_name_scientific.capitalize()}) Uses'
+    meta_description = ''
+    canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''
+    ###
+    article_html = f'''
+        <h1>{meta_title}</h1>
+        <p><a href="/herbs/{herb_slug}.html">{herb_name_common.title()} ({herb_name_scientific.capitalize()}) Monograph</a></p>
+    '''
+    head_html = components.html_head(meta_title, meta_description, css='/styles.css', canonical=canonical_html)
+    import textwrap
+    html = textwrap.dedent(f''' 
+        <!DOCTYPE html>
+        <html lang="en">
+        {head_html}
+        <body>
+            {sections.header_default()}
+            <main>
+                <article class="article">
+                    {article_html}
+                </article>
+            </main>
+            {sections.footer()}
+        </body>
+        </html>
+    ''').strip()
+    html_folderpath = f'''{g.website_folderpath}/herbs/{herb_slug}'''
+    os.makedirs(html_folderpath, exist_ok=True)
+    html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
+    with open(html_filepath, 'w') as f: f.write(html)
+
+def herb__traditions__gen(herb):
+    herb_name_scientific = herb['taxon_name']
+    herb_slug = polish.sluggify(herb_name_scientific)
+    ###
+    herb_filepath = f'''{g.SSOT_FOLDERPATH}/herbs/herbs-primary/{herb_slug}.json'''
+    herb_data = io.json_read(herb_filepath)
+    herb_names_common = herb_data['herb_names_common']
+    herb_name_common = herb_names_common[0]['answer']
+    herb_name_all = f'{herb_name_common.title()} ({herb_name_scientific.capitalize()})'
+    herb_name_all = herb_name_all.replace("'S", "'s")
+    herb_family = herb_data['herb_family'][0]['answer']
+    ###
+    url_slug = f'herbs/{herb_slug}/traditions'
+    meta_title = f'{herb_name_common.title()} ({herb_name_scientific.capitalize()}) Traditions'
+    meta_description = ''
+    canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''
+    ###
+    article_html = f'''
+        <h1>{meta_title}</h1>
+        <p><a href="/herbs/{herb_slug}.html">{herb_name_common.title()} ({herb_name_scientific.capitalize()}) Monograph</a></p>
+    '''
+    head_html = components.html_head(meta_title, meta_description, css='/styles.css', canonical=canonical_html)
+    import textwrap
+    html = textwrap.dedent(f''' 
+        <!DOCTYPE html>
+        <html lang="en">
+        {head_html}
+        <body>
+            {sections.header_default()}
+            <main>
+                <article class="article">
+                    {article_html}
+                </article>
+            </main>
+            {sections.footer()}
+        </body>
+        </html>
+    ''').strip()
+    html_folderpath = f'''{g.website_folderpath}/herbs/{herb_slug}'''
+    os.makedirs(html_folderpath, exist_ok=True)
+    html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
+    with open(html_filepath, 'w') as f: f.write(html)
+
+def herb__preparations__gen(herb):
+    herb_name_scientific = herb['taxon_name']
+    herb_slug = polish.sluggify(herb_name_scientific)
+    ###
+    herb_filepath = f'''{g.SSOT_FOLDERPATH}/herbs/herbs-primary/{herb_slug}.json'''
+    herb_data = io.json_read(herb_filepath)
+    herb_names_common = herb_data['herb_names_common']
+    herb_name_common = herb_names_common[0]['answer']
+    herb_name_all = f'{herb_name_common.title()} ({herb_name_scientific.capitalize()})'
+    herb_name_all = herb_name_all.replace("'S", "'s")
+    herb_family = herb_data['herb_family'][0]['answer']
+    ###
+    url_slug = f'herbs/{herb_slug}/preparations'
+    meta_title = f'{herb_name_common.title()} ({herb_name_scientific.capitalize()}) Preparations'
+    meta_description = ''
+    canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''
+    ###
+    article_html = f'''
+        <h1>{meta_title}</h1>
+        <p><a href="/herbs/{herb_slug}.html">{herb_name_common.title()} ({herb_name_scientific.capitalize()}) Monograph</a></p>
+    '''
+    head_html = components.html_head(meta_title, meta_description, css='/styles.css', canonical=canonical_html)
+    import textwrap
+    html = textwrap.dedent(f''' 
+        <!DOCTYPE html>
+        <html lang="en">
+        {head_html}
+        <body>
+            {sections.header_default()}
+            <main>
+                <article class="article">
+                    {article_html}
+                </article>
+            </main>
+            {sections.footer()}
+        </body>
+        </html>
+    ''').strip()
+    html_folderpath = f'''{g.website_folderpath}/herbs/{herb_slug}'''
+    os.makedirs(html_folderpath, exist_ok=True)
+    html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
+    with open(html_filepath, 'w') as f: f.write(html)
+
 def main():
     # herbal_medicine__gen()
 
@@ -4904,10 +5343,30 @@ def main():
     herbs_filepath = f'{herbs_folderpath}/herbs-medicinal-validated.json'
     herbs = io.json_read(herbs_filepath)
     for herb_i, herb in enumerate(herbs):
-        # herb__gen(herb)
-        herb__botanical_identification__gen(herb)
+        herb__gen(herb)
+        herb__identification__gen(herb)
+        herb__compounds__gen(herb)
+        herb__actions__gen(herb)
+        herb__uses__gen(herb)
+        herb__traditions__gen(herb)
+        herb__preparations__gen(herb)
+
         # herb__botany__gen(herb)
         # break
+
+        '''
+        /herbs/chamomile/habitat
+        /herbs/chamomile/cultivation
+        /herbs/chamomile/dosage
+        /herbs/chamomile/safety
+        /herbs/chamomile/contraindications
+        /herbs/chamomile/interactions
+        /herbs/chamomile/history
+        /herbs/chamomile/research
+        /herbs/chamomile/harvest
+        /herbs/chamomile/processing
+        '''
+
     # quit()
 
     # herbs_hub_gen()
