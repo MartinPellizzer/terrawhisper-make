@@ -3915,18 +3915,18 @@ def herb__gen(herb):
     taxonomy_list_html = f'''
         <p>The following list summarize the taxonomy of plant:</p>
         <ul>
-            <li>Kingdom: Plantae</li>
-            <li>Division: {_division.capitalize()}</li>
-            <li>Class: {_class.capitalize()}</li>
-            <li>Order: {_order.capitalize()}</li>
-            <li>Family: {_family}</li>
-            <li>Genus: {herb['genus']}</li>
-            <li>Species: {herb['taxon_name']}</li>
+            <li>Kingdom: <strong>Plantae</strong></li>
+            <li>Division: <strong>{_division.capitalize()}</strong></li>
+            <li>Class: <strong>{_class.capitalize()}</strong></li>
+            <li>Order: <strong>{_order.capitalize()}</strong></li>
+            <li>Family: <strong>{_family}</strong></li>
+            <li>Genus: <strong>{herb['genus']}</strong></li>
+            <li>Species: <strong>{herb['taxon_name']}</strong></li>
         </ul>
     '''
     taxonomy_list_text = f'''
             Kingdom: Plantae
-            Division: {_division.capitalize()}
+            Division: <strong>{_division.capitalize()}
             Class: {_class.capitalize()}
             Order: {_order.capitalize()}
             Family: {_family}
@@ -3994,16 +3994,9 @@ def herb__gen(herb):
             brief = f'''
                 <h1>{herb_name_all}</h1>
                 Introduce the following:
-                - Botanical Classification and Taxonomy**
-                - Active Compounds and Chemical Constituents**
-                - Therapeutic Uses and Medical Applications**
-                - Cultivation and Harvesting**
-                - Safety, Toxicology, and Side Effects**
-                - Legal and Regulatory Status**
-                - Sustainability and Conservation**
-                - Cultural and Ethnobotanical Significance**
-                - Research and Development**
-                - Comparative Analysis with Synthetic Drugs**
+                - Botanical Classification and Taxonomy
+                - Active Compounds and Chemical Constituents
+                - Therapeutic Uses and Medical Applications
             '''
             import textwrap
             prompt = textwrap.dedent(f'''
@@ -4015,6 +4008,17 @@ def herb__gen(herb):
                 Reply in HTML code, include only the subordinate text.
                 The subordinate text must be inside <p></p> tags.
                 {brief}
+                /no_think
+            ''').strip()
+            prompt = textwrap.dedent(f'''
+                I'm writing an article about the following medicinal plant: "{herb_name_all}".
+                Write the subordinate text for the first section.
+                For context, the subordinate text is the sentence that must be written immediately after the headline. 
+                Don't give me bold or italicized text. 
+                This subordinate text must cover the following:
+                    - What is this plant
+                    - What is its primary medicinal uses (mention condition it improves)
+                Follow this template: {herb_name_all} is 
                 /no_think
             ''').strip()
             reply = llm.reply(prompt)
@@ -4070,6 +4074,7 @@ def herb__gen(herb):
             <p>
             {json_article['botany']}
             </p>
+            {taxonomy_list_html}
             <p><a href="/herbs/{herb_slug}/identification.html">{herb_name_common} Identification</a>.</p>
         </section>
     '''
@@ -4893,7 +4898,80 @@ def herb__compounds__gen(herb):
         Include: 
         ---
         Phytochemistry
+        Chemical
+        Constituents
+        Active ingredients
+        Pharmacologial research
+        1. Normalizers
+        2. Effectors
+        Illnesses
+        Mechanisms of action
+        Active chemicals
+        Focus: mold normalizers and gentle effectors
+        Potent effectors are the focus of pharmacological medicine (not herbalism)
+        Phytotherapist
+        CONSTITUENTS GROUPS
+        - Carbohydrates
+        - Glycosides
+        - Lipids
+        - Terpenes
+        - Phenolics
+        - Alkaloids
+        Primary and secondary plant metabolites
+        - Terpenes
+        - Polyphenols
+        - Alkaloids
+        ---
+        CARBOHYDRATES
+        primary metabolites universally present
+        first product of photosynthesis
+        starting point for all phytochemicals (biochemicals)
+        Classification:
+        - Monosaccharides
+        - Oligosaccharides
+            - Prebiotics
+        - Disaccharides
+            - Lactose
+            - Maltose
+            - Sucrose
+        - Polysaccharides (glycans)
+        - Homopolysaccharides
+            - Glucans
+            - B-D-glucans
+            - Starches (amylose and amylopectin)
+            - Glycogen
+            - Cellulose
+            - Dextrans
+            - Fructans
+            - Galacturonans
+            - Insulins
+        - Heteropolysaccharides
+            - Arabinogalactans
+            - Glucomannans
+            - Galactomannans
+            - Pectins
+            - Xyloglucans
+            - Glycosaminoglycans
+            - Glycoproteins
+            - Mycopolysaccharides
+        - Polysaccharides from fungi (mycopolysaccharides)
+        - Polysaccharides from algae
+        - Glycosides
+            - Glucosinolates
+            - Cyanogenic glycosides
+            - Flavonoid glycosides
+            - Anthraquinone glycosides
+            - Cardiac glycosides
+            - Saponin glycosides
+        ---
+        MONOSACCHARIDES
+            - Tetroses (C4 H8 O4)
+            - Pentoses (C5 H10 O5)
+            - Hexoses (C6 H12 O6)
+            - Deoxysugars
+            - Amino Sugars
     '''
+
     herb_name_scientific = herb['taxon_name']
     herb_slug = polish.sluggify(herb_name_scientific)
     ###
@@ -5161,9 +5239,68 @@ def herb__actions__gen(herb):
         </p>
     '''
 
+    ########################################
+    # MAIN LIST
+    ########################################
+    regen = regen_global
+    dispel = dispel_global
+    json_article = io.json_read(json_article_filepath)
+    herb_name_all = json_article['herb_name_all']
+    ###
+    key = 'main_list'
+    if key not in json_article: json_article[key] = []
+    if regen: json_article[key] = []
+    if dispel: 
+        json_article[key] = []
+        io.json_write(json_article_filepath, json_article)
+    if not dispel:
+        list_items = []
+        if json_article[key] == []:
+            for item in herb_data['herb_medicinal_actions']:
+                _obj = {
+                    'title': item['answer'],
+                    'desc': '',
+                }
+                list_items.append(_obj)
+            json_article[key] = list_items
+            io.json_write(json_article_filepath, json_article)
+        for obj in json_article['main_list']:
+            if obj['desc'] == '':
+                import textwrap
+                prompt = textwrap.dedent(f'''
+                    I'm writing an article about the core entity "therapeutic actions of {herb_name_all}", which is for a website where the source context is "teaching herbal medicine". 
+                    In specific, I want to write the subordinate text for a section about this specific therapeutic action: 
+                    {obj['title']}.
+                    The subordinate text is the paragraph that must be written immediately after the headline. 
+                    The subordinate text must answer in the most direct, clear, detailed way possible without fluff, in about 40-60 words and 2-4 sentences. 
+                    Don't give me bold or italicized text. 
+                    Reply only with the subordinate text.
+                    Start with the following words: {herb_name_common} has [a/an] {obj['title']} action, 
+                    /no_think
+                ''').strip()
+                reply = llm.reply(prompt)
+                if '</think>' in reply:
+                    reply = reply.split('</think>')[1].strip()
+                reply = polish.vanilla(reply)
+                obj['desc'] = reply
+                io.json_write(json_article_filepath, json_article)
+
+    
+    section_main_list = f'''
+    '''
+    for item_i, item in enumerate(json_article['main_list']):
+        print(item)
+        section_main_list += f'''
+            <section>
+                <h2>{item_i+1}. {item['title'].capitalize()}</h2>
+                <p>{item['desc']}</p>
+            </section>
+        '''
+
     ###
     article_html = f'''
         {section_intro}
+        {section_main_list}
     '''
     ###
     head_html = components.html_head(meta_title, meta_description, css='/styles.css', canonical=canonical_html)
