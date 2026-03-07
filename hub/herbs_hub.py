@@ -5341,10 +5341,168 @@ def herb__uses__gen(herb):
     meta_title = f'{herb_name_common.title()} ({herb_name_scientific.capitalize()}) Uses'
     meta_description = ''
     canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''
+
+    herb_medicine_conditions_groups = []
+    for item in herb_data['herb_medicine_conditions']:
+        system = item['system'] 
+        ailment = item['answer'] 
+        action = item['action'] 
+        found = False
+        for _item in herb_medicine_conditions_groups:
+            if _item['system'] == system:
+                if ailment not in _item['ailments']:
+                    _item['ailments'].append(ailment)
+                if action not in _item['actions']:
+                    _item['actions'].append(action)
+                found = True
+        if not found:
+            _obj = {
+                'system': system,
+                'ailments': [ailment],
+                'actions': [action],
+                
+            }
+            herb_medicine_conditions_groups.append(_obj)
+    conditions = []
+    for item in herb_medicine_conditions_groups:
+        for ailment in item['ailments']:
+            conditions.append(ailment)
+
+    ########################################
+    # JSON
+    ########################################
+    ### json init
+    json_article_filepath = f'''{g.DATABASE_FOLDERPATH}/json/{url_slug}.json'''
+    json_article = io.json_read(json_article_filepath, create=True)
+    json_article['url'] = url_slug
+    json_article['herb_slug'] = herb_slug
+    json_article['herb_name_scientific'] = f'{herb_name_scientific}'
+    json_article['herb_name_all'] = f'{herb_name_all}'
+    json_article['title'] = herb_name_all
+    io.json_write(json_article_filepath, json_article)
+
+    regen_global = False
+    dispel_global = False
+
+    ########################################
+    # INTRO
+    ########################################
+    regen = True
+    regen = regen_global
+    dispel = dispel_global
+    json_article = io.json_read(json_article_filepath)
+    herb_name_all = json_article['herb_name_all']
+    herb_conditions = '\n'.join(conditions[:10])
     ###
-    article_html = f'''
+    key = 'intro'
+    if key not in json_article: json_article[key] = ''
+    if regen: json_article[key] = ''
+    if dispel: 
+        json_article[key] = ''
+        io.json_write(json_article_filepath, json_article)
+    if not dispel:
+        if json_article[key] == '':
+            brief = f'''
+                List and describe a few of the primary medicinal uses.
+            '''
+            data = f'''
+                {herb_conditions}
+            '''
+            import textwrap
+            prompt = textwrap.dedent(f'''
+                I'm writing an article about the core entity "medicinal uses of {herb_name_all}", which is for a website where the source context is "teaching herbal medicine". 
+                By "medicinal uses" I mean conditions it treats.
+                Below I will give you a brief and the data for a section I have to write, and I want you to write the subordinate text. 
+                The subordinate text is the paragraph that must be written immediately after the headline. 
+                The subordinate text must answer in the most direct, clear, detailed way possible without fluff, in about 40-60 words and 2-4 sentences. 
+                Don't give me bold or italicized text. 
+                Reply only with the subordinate text.
+                BRIEF:
+                {brief}
+                DATA:
+                {data}
+                /no_think
+            ''').strip()
+            print(prompt)
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            json_article[key] = reply
+            io.json_write(json_article_filepath, json_article)
+
+    section_intro = f'''
         <h1>{meta_title}</h1>
-        <p><a href="/herbs/{herb_slug}.html">{herb_name_common.title()} ({herb_name_scientific.capitalize()}) Monograph</a></p>
+        <p>
+            {json_article['intro']}
+        </p>
+        <p>
+            <a href="/herbs/{herb_slug}.html">
+                {herb_name_common.title()} ({herb_name_scientific.capitalize()}) Monograph
+            </a>
+        </p>
+    '''
+
+    ########################################
+    # MAIN LIST
+    ########################################
+    regen = regen_global
+    dispel = dispel_global
+    json_article = io.json_read(json_article_filepath)
+    herb_name_all = json_article['herb_name_all']
+    ###
+    key = 'main_list'
+    if key not in json_article: json_article[key] = []
+    if regen: json_article[key] = []
+    if dispel: 
+        json_article[key] = []
+        io.json_write(json_article_filepath, json_article)
+    if not dispel:
+        list_items = []
+        if json_article[key] == []:
+            for item in conditions[:10]:
+                _obj = {
+                    'title': item,
+                    'desc': '',
+                }
+                list_items.append(_obj)
+            json_article[key] = list_items
+            io.json_write(json_article_filepath, json_article)
+        for obj in json_article['main_list']:
+            if obj['desc'] == '':
+                import textwrap
+                prompt = textwrap.dedent(f'''
+                    I'm writing an article about the core entity "medicinal uses of {herb_name_all}", which is for a website where the source context is "teaching herbal medicine". 
+                    In specific, I want to write the subordinate text for a section about this specific medicinal use: 
+                    {obj['title']}.
+                    The subordinate text is the paragraph that must be written immediately after the headline. 
+                    The subordinate text must answer in the most direct, clear, detailed way possible without fluff, in about 40-60 words and 2-4 sentences. 
+                    Don't give me bold or italicized text. 
+                    Reply only with the subordinate text.
+                    /no_think
+                ''').strip()
+                reply = llm.reply(prompt)
+                if '</think>' in reply:
+                    reply = reply.split('</think>')[1].strip()
+                reply = polish.vanilla(reply)
+                obj['desc'] = reply
+                io.json_write(json_article_filepath, json_article)
+
+    
+    section_main_list = f'''
+    '''
+    for item_i, item in enumerate(json_article['main_list']):
+        print(item)
+        section_main_list += f'''
+            <section>
+                <h2>{item_i+1}. {item['title'].capitalize()}</h2>
+                <p>{item['desc']}</p>
+            </section>
+        '''
+
+    article_html = f'''
+        {section_intro}
+        {section_main_list}
     '''
     head_html = components.html_head(meta_title, meta_description, css='/styles.css', canonical=canonical_html)
     import textwrap
