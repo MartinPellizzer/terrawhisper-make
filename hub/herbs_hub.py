@@ -1,5 +1,6 @@
 import os
 import random
+import json
 
 from lib import g
 from lib import io
@@ -8,6 +9,7 @@ from lib import data
 from lib import polish
 from lib import components
 from lib import sections
+from lib import study
 
 '''
 herb_classification__gen()
@@ -4131,6 +4133,7 @@ Active Compounds
                 </tbody>
             </table>
             <p><a href="/herbs/{herb_slug}/actions.html">{herb_name_common} Actions</a>.</p>
+            <p><a href="/herbs/{herb_slug}/uses.html">{herb_name_common} Uses</a>.</p>
         </section>
     '''
 
@@ -4189,6 +4192,7 @@ Generally Recognized As Safe (GRAS) by the FDA. However, specific precautions ap
             </div>
         </section>
     '''
+
     references_html = f'''
         <section class="container-lg" style="margin-top: 4.8rem; border-bottom: 1px solid #e2e8f0; padding-bottom: 3.2rem;">
             <h2>
@@ -4209,6 +4213,43 @@ Srivastava, J.K., et al. "Chamomile: A herbal medicine of the past with bright f
         </section>
     '''
 
+    researches_filtered = study.docs_get(f'{herb_name_scientific}')
+    # researches_filtered = study.docs_get(f'allium sativum')
+    researches_html = f''
+    for research in researches_filtered[:5]:
+        research_filepath = f'''{g.VAULT_FOLDERPATH}/terrawhisper/studies/pubmed/medicinal-plant/json/{research['metadata']['pmid']}.json'''
+        json_research = io.json_read(research_filepath)
+        # j = json.dumps(json_research, indent=4)
+        # print(j)
+        try: author_list_data = json_research['PubmedArticle'][0]['MedlineCitation']['Article']['AuthorList']
+        except: continue
+        author_list = []
+        for item in author_list_data:
+            print(item['LastName'])
+            author_list.append(item['LastName'])
+        author_list_str = ', '.join(author_list)
+        article_title = f'''{json_research['PubmedArticle'][0]['MedlineCitation']['Article']['ArticleTitle']}'''
+        journal_title = f'''{json_research['PubmedArticle'][0]['MedlineCitation']['Article']['Journal']['Title']}'''
+        researches_html += f'''
+            <li>
+                {author_list_str}. "{article_title}" {journal_title}
+            </li>
+        '''
+        
+    # quit()
+    research_html = f''
+    if researches_html != '':
+        research_html = f'''
+            <section class="container-lg" style="margin-top: 4.8rem; border-bottom: 1px solid #e2e8f0; padding-bottom: 3.2rem;">
+                <h2>
+                    References
+                </h2>
+                <ol style="padding-left: 1.5rem; font-size: 1.4rem;">
+                    {researches_html}
+                </ol>
+
+            </section>
+        '''
 
     ###
     article_html = f'''
@@ -4218,6 +4259,7 @@ Srivastava, J.K., et al. "Chamomile: A herbal medicine of the past with bright f
         {medicine_html}
         {preparations_html}
         {safety_html}
+        {research_html}
     '''
     '''
         {references_html}
@@ -5446,6 +5488,7 @@ def herb__uses__gen(herb):
     ########################################
     # MAIN LIST
     ########################################
+    regen = True
     regen = regen_global
     dispel = dispel_global
     json_article = io.json_read(json_article_filepath)
@@ -5639,10 +5682,14 @@ def main():
     herbs = io.json_read(herbs_filepath)
     for herb_i, herb in enumerate(herbs):
         herb__gen(herb)
+
         herb__identification__gen(herb)
         herb__compounds__gen(herb)
         herb__actions__gen(herb)
         herb__uses__gen(herb)
+
+        # herb__research(herb)
+
         herb__traditions__gen(herb)
         herb__preparations__gen(herb)
 
