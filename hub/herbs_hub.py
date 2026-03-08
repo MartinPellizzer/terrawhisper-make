@@ -12,6 +12,401 @@ from lib import sections
 from lib import study
 
 '''
+# Medicinal Plant Monograph Template (Entity-Centered)
+
+## 1. Entity Identity (Definition Layer)
+
+Purpose: Establish the **core identity of the herb** immediately.
+
+**Attributes**
+
+* Scientific name (binomial)
+* Family (taxonomic)
+* Common names
+* Synonyms / alternative botanical names
+* Plant type (tree, shrub, herb, vine)
+* Native range
+* Plant part used medicinally
+* Short definition of the plant and its main use
+
+Example questions to answer:
+
+* What is *Plant X*?
+* What family does it belong to?
+* What parts of the plant are used medicinally?
+
+---
+
+# 2. Taxonomy and Botanical Classification
+
+**Attributes**
+
+* Kingdom
+* Clade(s)
+* Order
+* Family
+* Genus
+* Species
+* Botanical synonyms
+* Related species
+
+Subtopics
+
+* Taxonomic hierarchy
+* Closely related medicinal species
+* Distinguishing taxonomy traits
+
+---
+
+# 3. Botanical Description (Morphology Vector)
+
+**Attributes**
+
+* Growth habit
+* Height
+* Leaves (shape, arrangement)
+* Flowers
+* Fruit/seed
+* Root system
+* Stem characteristics
+* Life cycle (annual/perennial)
+* Seasonal growth patterns
+
+Subtopics
+
+* Detailed morphology
+* Visual identification traits
+* Differences between young vs mature plants
+
+---
+
+# 4. Geographic Distribution & Ecology
+
+**Attributes**
+
+* Native habitat
+* Current global distribution
+* Climate preference
+* Soil preference
+* Altitude range
+* Ecosystem role
+* Cultivation regions
+
+Subtopics
+
+* Wild vs cultivated distribution
+* Ecological associations
+* Naturalization in other regions
+
+---
+
+# 5. Ethnobotanical History
+
+**Attributes**
+
+* Traditional uses
+* Historical records
+* Cultural significance
+* Indigenous knowledge systems
+* Historical medicinal preparations
+
+Subtopics
+
+* Use in different cultures
+* Use in traditional medicine systems
+* Historical trade or ritual use
+
+---
+
+# 6. Traditional Medicine Systems
+
+Vector: **Medical frameworks**
+
+Attributes
+
+* Ayurveda uses
+* Traditional Chinese Medicine uses
+* Unani medicine
+* Western herbalism
+* Indigenous medical systems
+
+Subtopics
+
+* Traditional indications
+* Traditional formulations
+* Traditional dosage forms
+
+---
+
+# 7. Phytochemistry (Chemical Composition)
+
+Attributes
+
+* Primary active compounds
+* Secondary metabolites
+* Essential oils
+* Alkaloids
+* Flavonoids
+* Terpenoids
+* Phenolic compounds
+* Nutritional compounds
+
+Subtopics
+
+* Chemical profile
+* Compound variability
+* Extraction methods
+
+---
+
+# 8. Pharmacological Properties
+
+Attributes
+
+* Anti-inflammatory activity
+* Antioxidant activity
+* Antimicrobial activity
+* Antiviral activity
+* Immunomodulatory effects
+* Neuroprotective activity
+* Metabolic effects
+
+Subtopics
+
+* Mechanisms of action
+* In vitro evidence
+* In vivo evidence
+* Clinical research evidence
+
+---
+
+# 9. Medicinal Uses (Therapeutic Applications)
+
+Attributes
+
+* Conditions treated
+* Body systems affected
+
+Cluster by **body system**:
+
+Example structure
+
+### Digestive system
+
+* Indigestion
+* Ulcers
+* Gut microbiome
+
+### Immune system
+
+* Immune support
+* Infection resistance
+
+### Nervous system
+
+* Anxiety
+* Cognitive support
+
+### Skin
+
+* Wound healing
+* Inflammation
+
+---
+
+# 10. Preparations and Dosage Forms
+
+Attributes
+
+* Herbal tea / infusion
+* Decoction
+* Tincture
+* Extracts
+* Powder
+* Capsules
+* Essential oil
+* Topical preparations
+
+Subtopics
+
+* Preparation methods
+* Typical dosage ranges
+* Extraction solvents
+
+---
+
+# 11. Safety and Toxicology
+
+Attributes
+
+* Side effects
+* Toxic compounds
+* Contraindications
+* Drug interactions
+* Pregnancy safety
+* Pediatric safety
+* Maximum dosage
+
+Subtopics
+
+* Toxicity studies
+* Overdose symptoms
+* Regulatory warnings
+
+---
+
+# 12. Clinical Evidence
+
+Attributes
+
+* Human clinical trials
+* Observational studies
+* Meta-analyses
+* Evidence strength
+
+Subtopics
+
+* Conditions studied
+* Outcomes measured
+* Evidence quality
+
+---
+
+# 13. Cultivation and Harvesting
+
+Attributes
+
+* Propagation methods
+* Growing conditions
+* Soil requirements
+* Water needs
+* Harvest timing
+* Yield factors
+
+Subtopics
+
+* Agricultural practices
+* Wild harvesting
+* Organic cultivation
+
+---
+
+# 14. Processing and Storage
+
+Attributes
+
+* Drying methods
+* Storage conditions
+* Shelf life
+* Quality degradation factors
+
+---
+
+# 15. Quality Control & Identification
+
+Attributes
+
+* Macroscopic identification
+* Microscopic identification
+* Chemical markers
+* Adulterants
+* Authentication techniques
+
+---
+
+# 16. Regulatory Status
+
+Attributes
+
+* FDA status
+* EMA status
+* GRAS status
+* Legal status in different countries
+* Supplement regulations
+
+---
+
+# 17. Sustainability and Conservation
+
+Attributes
+
+* Conservation status
+* Overharvesting risks
+* Cultivation sustainability
+* Environmental impact
+
+---
+
+# 18. Related Species
+
+Attributes
+
+* Similar medicinal plants
+* Confused species
+* Substitutes
+
+---
+
+# 19. Research Gaps
+
+Attributes
+
+* Areas lacking evidence
+* Future research needs
+
+---
+
+# 20. References and Scientific Sources
+
+Attributes
+
+* Peer-reviewed studies
+* Pharmacopoeias
+* Botanical references
+* Traditional medicine texts
+
+---
+
+# Ideal Semantic Structure (SEO Perspective)
+
+Central Entity
+→ Medicinal Plant
+
+Main Attribute Vectors
+
+1. Identity
+2. Taxonomy
+3. Morphology
+4. Ecology
+5. Ethnobotany
+6. Traditional medicine
+7. Phytochemistry
+8. Pharmacology
+9. Medicinal uses
+10. Preparations
+11. Safety
+12. Clinical evidence
+13. Cultivation
+14. Processing
+15. Quality control
+16. Regulation
+17. Sustainability
+18. Related species
+
+This ensures **complete contextual coverage**, which helps a page become a **standalone entity resource** in semantic search systems. 
+
+---
+
+✅ **If you'd like, I can also give you:**
+
+* a **perfect H1–H4 heading structure for a herb monograph**
+* a **semantic attribute checklist used by pharmacopoeias**
+* a **Koray-style topical map for a medicinal plant site (this is extremely powerful for SEO)**.
+'''
+
+
+
+'''
 herb_classification__gen()
 herb_medicine__gen()?
 herb_toxicology__gen()
@@ -3844,6 +4239,518 @@ def herb_toxicology__gen(json_article_filepath, regen, dispel):
             io.json_write(json_article_filepath, json_article)
 
 
+def herb_taxonomy__gen(herb, json_article_filepath, regen=False, dispel=False):
+    herb_name_scientific = herb['taxon_name']
+    herb_slug = polish.sluggify(herb_name_scientific)
+    herb_filepath = f'''{g.SSOT_FOLDERPATH}/herbs/herbs-primary/{herb_slug}.json'''
+    herb_data = io.json_read(herb_filepath)
+    herb_names_common = herb_data['herb_names_common']
+    herb_name_common = herb_names_common[0]['answer']
+    herb_name_all = f'{herb_name_common.title()} ({herb_name_scientific.capitalize()})'
+    herb_name_all = herb_name_all.replace("'S", "'s")
+    herb_family = herb_data['herb_family'][0]['answer']
+    ### data
+    taxonomy_folderpath = f'{g.SSOT_FOLDERPATH}/taxonomy'
+    taxonomy_filepath = f'''{taxonomy_folderpath}/families.json'''
+    taxonomy_data = io.json_read(taxonomy_filepath)
+    _family = herb_family
+    _order = '' 
+    _kingdom = '' 
+    for item in taxonomy_data:
+        if item['family'] != [] and item['family'].lower().strip() == herb_family.lower().strip():
+            _order = item['order'][0]['answer']
+            break
+    taxonomy_filepath = f'''{taxonomy_folderpath}/orders.json'''
+    taxonomy_data = io.json_read(taxonomy_filepath)
+    _subclass = '' 
+    for item in taxonomy_data:
+        if item['order'] != [] and item['order'].lower().strip() == _order.lower().strip():
+            _subclass = item['subclass'][0]['answer']
+            break
+    taxonomy_filepath = f'''{taxonomy_folderpath}/subclasses.json'''
+    taxonomy_data = io.json_read(taxonomy_filepath)
+    _class = '' 
+    for item in taxonomy_data:
+        if item['subclass'] != [] and item['subclass'].lower().strip() == _subclass.lower().strip():
+            _class = item['class'][0]['answer']
+            break
+    taxonomy_filepath = f'{taxonomy_folderpath}/classes.json'
+    taxonomy_data = io.json_read(taxonomy_filepath)
+    _division = '' 
+    for item in taxonomy_data:
+        if item['class'] != [] and item['class'].lower().strip() == _class.lower().strip():
+            _division = item['division'][0]['answer']
+            break
+    taxonomy_list_html = f'''
+        <p>The following list summarize the taxonomy of plant:</p>
+        <ul>
+            <li>Kingdom: <strong>Plantae</strong></li>
+            <li>Division: <strong>{_division.capitalize()}</strong></li>
+            <li>Class: <strong>{_class.capitalize()}</strong></li>
+            <li>Order: <strong>{_order.capitalize()}</strong></li>
+            <li>Family: <strong>{_family}</strong></li>
+            <li>Genus: <strong>{herb['genus']}</strong></li>
+            <li>Species: <strong>{herb['taxon_name']}</strong></li>
+        </ul>
+    '''
+    taxonomy_list_text = f'''
+            Kingdom: Plantae
+            Division: {_division.capitalize()}
+            Class: {_class.capitalize()}
+            Order: {_order.capitalize()}
+            Family: {_family}
+            Genus: {herb['genus']}
+            Species: {herb['taxon_name']}
+    '''
+    taxonomy_table_html = f'''
+        <p>The following table shows the full taxonomy of this plant.</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>
+                        Rank
+                    </th>
+                    <th>
+                        Name
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        Kingdom
+                    </td>
+                    <td>
+                        <strong>Plantae</strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Division
+                    </td>
+                    <td>
+                        <strong>{_division.capitalize()}</strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Class
+                    </td>
+                    <td>
+                        <strong>{_class.capitalize()}</strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Order
+                    </td>
+                    <td>
+                        <strong>{_order.capitalize()}</strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Family
+                    </td>
+                    <td>
+                        <strong>{_family.capitalize()}</strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Genus
+                    </td>
+                    <td>
+                        <strong>{herb['genus'].capitalize()}</strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Species
+                    </td>
+                    <td>
+                        <strong>{herb['taxon_name'].capitalize()}</strong>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    '''
+    ### llm
+    json_article = io.json_read(json_article_filepath, create=True)
+    herb_name_all = json_article['herb_name_all']
+    key = 'taxonomy'
+    if key not in json_article: json_article[key] = ''
+    if regen: json_article[key] = ''
+    if dispel: 
+        json_article[key] = ''
+        io.json_write(json_article_filepath, json_article)
+    if not dispel:
+        if json_article[key] == '':
+            import textwrap
+            prompt = textwrap.dedent(f'''
+                I'm writing an article about the core entity "{herb_name_all}", which is for a website where the source context is "herbal medicine". 
+                I want you to write the subordinate text for the following section: "taxonomy". 
+                The subordinate text is the first sentence that must be written immediately after the headline. 
+                The subordinate text must answer in the most direct, clear, detailed way possible without fluff.
+                Don't give me bold or italicized text. 
+                Reply only with the subordinate text.
+                DATA:
+                {taxonomy_list_text}
+                /no_think
+            ''').strip()
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            json_article[key] = reply
+            io.json_write(json_article_filepath, json_article)
+            print(json_article_filepath)
+    ### html
+    taxonomy_html = f'''
+        <section class="container-lg" style="margin-top: 4.8rem; border-bottom: 1px solid #e2e8f0; padding-bottom: 3.2rem;">
+            <h2>Taxonomy</h2>
+            <p>
+            {json_article['taxonomy']}
+            </p>
+            {taxonomy_table_html}
+        </section>
+    '''
+    return taxonomy_html
+
+def herb_morphology__gen(herb, json_article_filepath, regen=False, dispel=False):
+    herb_name_scientific = herb['taxon_name']
+    herb_slug = polish.sluggify(herb_name_scientific)
+    herb_filepath = f'''{g.SSOT_FOLDERPATH}/herbs/herbs-primary/{herb_slug}.json'''
+    herb_data = io.json_read(herb_filepath)
+    herb_names_common = herb_data['herb_names_common']
+    herb_name_common = herb_names_common[0]['answer']
+    herb_name_all = f'{herb_name_common.title()} ({herb_name_scientific.capitalize()})'
+    herb_name_all = herb_name_all.replace("'S", "'s")
+    ### llm
+    json_article = io.json_read(json_article_filepath, create=True)
+    herb_name_all = json_article['herb_name_all']
+    key = 'morphology'
+    if key not in json_article: json_article[key] = ''
+    if regen: json_article[key] = ''
+    if dispel: 
+        json_article[key] = ''
+        io.json_write(json_article_filepath, json_article)
+    if not dispel:
+        if json_article[key] == '':
+            import textwrap
+            prompt = textwrap.dedent(f'''
+                I'm writing an article about the core entity "{herb_name_all}", which is for a website where the source context is "herbal medicine". 
+                I want you to write the subordinate text for the following section: "morphology". 
+                The subordinate text is the first sentence that must be written immediately after the headline. 
+                The subordinate text must answer in the most direct, clear, detailed way possible without fluff.
+                Don't give me bold or italicized text. 
+                Reply only with the subordinate text.
+                /no_think
+            ''').strip()
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            json_article[key] = reply
+            io.json_write(json_article_filepath, json_article)
+            print(json_article_filepath)
+    ### html
+    morphology_html = f'''
+        <section class="container-lg" style="margin-top: 4.8rem; border-bottom: 1px solid #e2e8f0; padding-bottom: 3.2rem;">
+            <h2>Morphology</h2>
+            <p>
+                {json_article['morphology']}
+            </p>
+        </section>
+    '''
+    return morphology_html
+
+def herb_distribution__gen(herb, json_article_filepath, regen=False, dispel=False):
+    herb_name_scientific = herb['taxon_name']
+    herb_slug = polish.sluggify(herb_name_scientific)
+    herb_filepath = f'''{g.SSOT_FOLDERPATH}/herbs/herbs-primary/{herb_slug}.json'''
+    herb_data = io.json_read(herb_filepath)
+    herb_names_common = herb_data['herb_names_common']
+    herb_name_common = herb_names_common[0]['answer']
+    herb_name_all = f'{herb_name_common.title()} ({herb_name_scientific.capitalize()})'
+    herb_name_all = herb_name_all.replace("'S", "'s")
+    ### llm
+    json_article = io.json_read(json_article_filepath, create=True)
+    herb_name_all = json_article['herb_name_all']
+    key = 'distribution'
+    if key not in json_article: json_article[key] = ''
+    if regen: json_article[key] = ''
+    if dispel: 
+        json_article[key] = ''
+        io.json_write(json_article_filepath, json_article)
+    if not dispel:
+        if json_article[key] == '':
+            import textwrap
+            prompt = textwrap.dedent(f'''
+                I'm writing an article about the core entity "{herb_name_all}", which is for a website where the source context is "herbal medicine". 
+                I want you to write the subordinate text for the following section: "geographic distribution". 
+                The subordinate text is the first sentence that must be written immediately after the headline. 
+                The subordinate text must answer in the most direct, clear, detailed way possible without fluff.
+                Don't give me bold or italicized text. 
+                Reply only with the subordinate text.
+                /no_think
+            ''').strip()
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            json_article[key] = reply
+            io.json_write(json_article_filepath, json_article)
+            print(json_article_filepath)
+    ### html
+    html = f'''
+        <section class="container-lg" style="margin-top: 4.8rem; border-bottom: 1px solid #e2e8f0; padding-bottom: 3.2rem;">
+            <h2>Distribution</h2>
+            <p>
+                {json_article['distribution']}
+            </p>
+        </section>
+    '''
+    return html
+
+def herb_tradition__gen(herb, json_article_filepath, regen=False, dispel=False):
+    herb_name_scientific = herb['taxon_name']
+    herb_slug = polish.sluggify(herb_name_scientific)
+    herb_filepath = f'''{g.SSOT_FOLDERPATH}/herbs/herbs-primary/{herb_slug}.json'''
+    herb_data = io.json_read(herb_filepath)
+    herb_names_common = herb_data['herb_names_common']
+    herb_name_common = herb_names_common[0]['answer']
+    herb_name_all = f'{herb_name_common.title()} ({herb_name_scientific.capitalize()})'
+    herb_name_all = herb_name_all.replace("'S", "'s")
+    ### llm
+    json_article = io.json_read(json_article_filepath, create=True)
+    herb_name_all = json_article['herb_name_all']
+    key = 'tradition'
+    if key not in json_article: json_article[key] = ''
+    if regen: json_article[key] = ''
+    if dispel: 
+        json_article[key] = ''
+        io.json_write(json_article_filepath, json_article)
+    if not dispel:
+        if json_article[key] == '':
+            import textwrap
+            prompt = textwrap.dedent(f'''
+                I'm writing an article about the core entity "{herb_name_all}", which is for a website where the source context is "herbal medicine". 
+                I want you to write the subordinate text for the following section: "traditional uses". 
+                The subordinate text is the first sentence that must be written immediately after the headline. 
+                The subordinate text must answer in the most direct, clear, detailed way possible without fluff.
+                Don't give me bold or italicized text. 
+                Reply only with the subordinate text.
+                /no_think
+            ''').strip()
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            json_article[key] = reply
+            io.json_write(json_article_filepath, json_article)
+            print(json_article_filepath)
+    ### html
+    html = f'''
+        <section class="container-lg" style="margin-top: 4.8rem; border-bottom: 1px solid #e2e8f0; padding-bottom: 3.2rem;">
+            <h2>Traditional Uses</h2>
+            <p>
+                {json_article['tradition']}
+            </p>
+        </section>
+    '''
+    return html
+
+def herb_medicinal_systems__gen(herb, json_article_filepath, regen=False, dispel=False):
+    herb_name_scientific = herb['taxon_name']
+    herb_slug = polish.sluggify(herb_name_scientific)
+    herb_filepath = f'''{g.SSOT_FOLDERPATH}/herbs/herbs-primary/{herb_slug}.json'''
+    herb_data = io.json_read(herb_filepath)
+    herb_names_common = herb_data['herb_names_common']
+    herb_name_common = herb_names_common[0]['answer']
+    herb_name_all = f'{herb_name_common.title()} ({herb_name_scientific.capitalize()})'
+    herb_name_all = herb_name_all.replace("'S", "'s")
+    ### llm
+    json_article = io.json_read(json_article_filepath, create=True)
+    herb_name_all = json_article['herb_name_all']
+    key = 'medicinal_systems'
+    if key not in json_article: json_article[key] = ''
+    if regen: json_article[key] = ''
+    if dispel: 
+        json_article[key] = ''
+        io.json_write(json_article_filepath, json_article)
+    if not dispel:
+        if json_article[key] == '':
+            import textwrap
+            prompt = textwrap.dedent(f'''
+                I'm writing an article about the core entity "{herb_name_all}", which is for a website where the source context is "herbal medicine". 
+                I want you to write the subordinate text for the following section: 
+                "traditional medicinal systems: name popular traditional systems that used this plant medicinally". 
+                The subordinate text is the first sentence that must be written immediately after the headline. 
+                The subordinate text must answer in the most direct, clear, detailed way possible without fluff.
+                Don't give me bold or italicized text. 
+                Reply only with the subordinate text.
+                /no_think
+            ''').strip()
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            json_article[key] = reply
+            io.json_write(json_article_filepath, json_article)
+            print(json_article_filepath)
+    ### html
+    html = f'''
+        <section class="container-lg" style="margin-top: 4.8rem; border-bottom: 1px solid #e2e8f0; padding-bottom: 3.2rem;">
+            <h2>Medicinal Systems</h2>
+            <p>
+                {json_article['medicinal_systems']}
+            </p>
+        </section>
+    '''
+    return html
+
+def herb_phytochemistry__gen(herb, json_article_filepath, regen=False, dispel=False):
+    herb_name_scientific = herb['taxon_name']
+    herb_slug = polish.sluggify(herb_name_scientific)
+    herb_filepath = f'''{g.SSOT_FOLDERPATH}/herbs/herbs-primary/{herb_slug}.json'''
+    herb_data = io.json_read(herb_filepath)
+    herb_names_common = herb_data['herb_names_common']
+    herb_name_common = herb_names_common[0]['answer']
+    herb_name_all = f'{herb_name_common.title()} ({herb_name_scientific.capitalize()})'
+    herb_name_all = herb_name_all.replace("'S", "'s")
+    ### llm
+    json_article = io.json_read(json_article_filepath, create=True)
+    herb_name_all = json_article['herb_name_all']
+    key = 'phytochemistry'
+    if key not in json_article: json_article[key] = ''
+    if regen: json_article[key] = ''
+    if dispel: 
+        json_article[key] = ''
+        io.json_write(json_article_filepath, json_article)
+    if not dispel:
+        if json_article[key] == '':
+            import textwrap
+            prompt = textwrap.dedent(f'''
+                I'm writing an article about the core entity "{herb_name_all}", which is for a website where the source context is "herbal medicine". 
+                I want you to write the subordinate text for the following section: 
+                "phytochemistry". 
+                The subordinate text is the first sentence that must be written immediately after the headline. 
+                The subordinate text must answer in the most direct, clear, detailed way possible without fluff.
+                Don't give me bold or italicized text. 
+                Reply only with the subordinate text.
+                /no_think
+            ''').strip()
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            json_article[key] = reply
+            io.json_write(json_article_filepath, json_article)
+            print(json_article_filepath)
+    ### html
+    html = f'''
+        <section class="container-lg" style="margin-top: 4.8rem; border-bottom: 1px solid #e2e8f0; padding-bottom: 3.2rem;">
+            <h2>Phytochemistry</h2>
+            <p>
+                {json_article['phytochemistry']}
+            </p>
+        </section>
+    '''
+    return html
+
+def herb_pharmacology__gen(herb, json_article_filepath, regen=False, dispel=False):
+    herb_name_scientific = herb['taxon_name']
+    herb_slug = polish.sluggify(herb_name_scientific)
+    herb_filepath = f'''{g.SSOT_FOLDERPATH}/herbs/herbs-primary/{herb_slug}.json'''
+    herb_data = io.json_read(herb_filepath)
+    herb_names_common = herb_data['herb_names_common']
+    herb_name_common = herb_names_common[0]['answer']
+    herb_name_all = f'{herb_name_common.title()} ({herb_name_scientific.capitalize()})'
+    herb_name_all = herb_name_all.replace("'S", "'s")
+    ### llm
+    json_article = io.json_read(json_article_filepath, create=True)
+    herb_name_all = json_article['herb_name_all']
+    key = 'pharmacology'
+    if key not in json_article: json_article[key] = ''
+    if regen: json_article[key] = ''
+    if dispel: 
+        json_article[key] = ''
+        io.json_write(json_article_filepath, json_article)
+    if not dispel:
+        if json_article[key] == '':
+            import textwrap
+            prompt = textwrap.dedent(f'''
+                I'm writing an article about the core entity "{herb_name_all}", which is for a website where the source context is "herbal medicine". 
+                I want you to write the subordinate text for the following section: 
+                "pharmacological properties (therapeutic actions), don't include compounds."
+                The subordinate text is the first sentence that must be written immediately after the headline. 
+                The subordinate text must answer in the most direct, clear, detailed way possible without fluff.
+                Don't give me bold or italicized text. 
+                Reply only with the subordinate text.
+                /no_think
+            ''').strip()
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            json_article[key] = reply
+            io.json_write(json_article_filepath, json_article)
+            print(json_article_filepath)
+    ### html
+    html = f'''
+        <section class="container-lg" style="margin-top: 4.8rem; border-bottom: 1px solid #e2e8f0; padding-bottom: 3.2rem;">
+            <h2>Pharmacology</h2>
+            <p>
+                {json_article['pharmacology']}
+            </p>
+        </section>
+    '''
+    return html
+
+def herb_research__gen():
+    references_html = f'''
+        <section class="container-lg" style="margin-top: 4.8rem; border-bottom: 1px solid #e2e8f0; padding-bottom: 3.2rem;">
+            <h2>
+                References
+            </h2>
+            <ol style="padding-left: 1.5rem; font-size: 1.4rem;">
+                <li>
+European Medicines Agency (EMA). Assessment report on Matricariae flos. 2012.
+                </li>
+                <li>
+Blumenthal, M., et al. The Complete German Commission E Monographs. American Botanical Council, 1998.
+                </li>
+                <li>
+Srivastava, J.K., et al. "Chamomile: A herbal medicine of the past with bright future." Molecular Medicine Reports, vol. 3, no. 6, 2010, pp. 895–901.
+                </li>
+            </ol>
+        </section>
+    '''
+    researches_filtered = study.docs_get(f'{herb_name_scientific}')
+    # researches_filtered = study.docs_get(f'allium sativum')
+    researches_html = f''
+    for research in researches_filtered[:5]:
+        research_filepath = f'''{g.VAULT_FOLDERPATH}/terrawhisper/studies/pubmed/medicinal-plant/json/{research['metadata']['pmid']}.json'''
+        json_research = io.json_read(research_filepath)
+        # j = json.dumps(json_research, indent=4)
+        # print(j)
+        try: author_list_data = json_research['PubmedArticle'][0]['MedlineCitation']['Article']['AuthorList']
+        except: continue
+        author_list = []
+        for item in author_list_data:
+            print(item['LastName'])
+            author_list.append(item['LastName'])
+        author_list_str = ', '.join(author_list)
+        article_title = f'''{json_research['PubmedArticle'][0]['MedlineCitation']['Article']['ArticleTitle']}'''
+        journal_title = f'''{json_research['PubmedArticle'][0]['MedlineCitation']['Article']['Journal']['Title']}'''
+        researches_html += f'''
+            <li>
+                {author_list_str}. "{article_title}" {journal_title}
+            </li>
+        '''
+    return researches_html
+
 def herb__gen(herb):
     herb_name_scientific = herb['taxon_name']
     herb_slug = polish.sluggify(herb_name_scientific)
@@ -3876,66 +4783,6 @@ def herb__gen(herb):
     regen = False
     dispel = False
 
-    ########################################
-    # identity
-    ########################################
-    taxonomy_folderpath = f'{g.SSOT_FOLDERPATH}/taxonomy'
-    ###
-    taxonomy_filepath = f'''{taxonomy_folderpath}/families.json'''
-    taxonomy_data = io.json_read(taxonomy_filepath)
-    _family = herb_family
-    _order = '' 
-    _kingdom = '' 
-    for item in taxonomy_data:
-        if item['family'] != [] and item['family'].lower().strip() == herb_family.lower().strip():
-            _order = item['order'][0]['answer']
-            break
-    ###
-    taxonomy_filepath = f'''{taxonomy_folderpath}/orders.json'''
-    taxonomy_data = io.json_read(taxonomy_filepath)
-    _subclass = '' 
-    for item in taxonomy_data:
-        if item['order'] != [] and item['order'].lower().strip() == _order.lower().strip():
-            _subclass = item['subclass'][0]['answer']
-            break
-    ###
-    taxonomy_filepath = f'''{taxonomy_folderpath}/subclasses.json'''
-    taxonomy_data = io.json_read(taxonomy_filepath)
-    _class = '' 
-    for item in taxonomy_data:
-        if item['subclass'] != [] and item['subclass'].lower().strip() == _subclass.lower().strip():
-            _class = item['class'][0]['answer']
-            break
-    ###
-    taxonomy_filepath = f'{taxonomy_folderpath}/classes.json'
-    taxonomy_data = io.json_read(taxonomy_filepath)
-    _division = '' 
-    for item in taxonomy_data:
-        if item['class'] != [] and item['class'].lower().strip() == _class.lower().strip():
-            _division = item['division'][0]['answer']
-            break
-    taxonomy_list_html = f'''
-        <p>The following list summarize the taxonomy of plant:</p>
-        <ul>
-            <li>Kingdom: <strong>Plantae</strong></li>
-            <li>Division: <strong>{_division.capitalize()}</strong></li>
-            <li>Class: <strong>{_class.capitalize()}</strong></li>
-            <li>Order: <strong>{_order.capitalize()}</strong></li>
-            <li>Family: <strong>{_family}</strong></li>
-            <li>Genus: <strong>{herb['genus']}</strong></li>
-            <li>Species: <strong>{herb['taxon_name']}</strong></li>
-        </ul>
-    '''
-    taxonomy_list_text = f'''
-            Kingdom: Plantae
-            Division: <strong>{_division.capitalize()}
-            Class: {_class.capitalize()}
-            Order: {_order.capitalize()}
-            Family: {_family}
-            Genus: {herb['genus']}
-            Species: {herb['taxon_name']}
-    '''
-
     herb_active_compounds = [
         item['answer'] 
         for item in herb_data['herb_active_compounds']
@@ -3943,13 +4790,6 @@ def herb__gen(herb):
     ][:3]
 
     ###
-
-    '''
-    herb_medicine_conditions_filtered = [
-        item['answer'] 
-        for item in herb_data['herb_medicine_conditions']
-    ][:10]
-    '''
 
     herb_medicine_conditions_groups = []
     for item in herb_data['herb_medicine_conditions']:
@@ -3973,6 +4813,14 @@ def herb__gen(herb):
             }
             herb_medicine_conditions_groups.append(_obj)
 
+
+    taxonomy_html = herb_taxonomy__gen(herb, json_article_filepath, regen=False, dispel=False)
+    morphology_html = herb_morphology__gen(herb, json_article_filepath, regen=False, dispel=False)
+    distribution_html = herb_distribution__gen(herb, json_article_filepath, regen=False, dispel=False)
+    tradition_html = herb_tradition__gen(herb, json_article_filepath, regen=False, dispel=False)
+    medicinal_systems_html = herb_medicinal_systems__gen(herb, json_article_filepath, regen=False, dispel=False)
+    phytochemistry_html = herb_phytochemistry__gen(herb, json_article_filepath, regen=False, dispel=False)
+    pharmacology_html = herb_pharmacology__gen(herb, json_article_filepath, regen=True, dispel=False)
 
     herb_botany__gen(json_article_filepath, regen=False, dispel=False)
     herb_chemistry__gen(json_article_filepath, herb_active_compounds, regen=False, dispel=False)
@@ -4070,13 +4918,13 @@ def herb__gen(herb):
         </section>
     '''
 
+
     botany_html = f'''
         <section class="container-lg" style="margin-top: 4.8rem; border-bottom: 1px solid #e2e8f0; padding-bottom: 3.2rem;">
             <h2>Botanical Identification</h2>
             <p>
             {json_article['botany']}
             </p>
-            {taxonomy_list_html}
             <p><a href="/herbs/{herb_slug}/identification.html">{herb_name_common} Identification</a>.</p>
         </section>
     '''
@@ -4193,6 +5041,9 @@ Generally Recognized As Safe (GRAS) by the FDA. However, specific precautions ap
         </section>
     '''
 
+    researches_html = ''
+    # researches_html = herb_research__gen()
+
     references_html = f'''
         <section class="container-lg" style="margin-top: 4.8rem; border-bottom: 1px solid #e2e8f0; padding-bottom: 3.2rem;">
             <h2>
@@ -4209,10 +5060,8 @@ Blumenthal, M., et al. The Complete German Commission E Monographs. American Bot
 Srivastava, J.K., et al. "Chamomile: A herbal medicine of the past with bright future." Molecular Medicine Reports, vol. 3, no. 6, 2010, pp. 895–901.
                 </li>
             </ol>
-
         </section>
     '''
-
     researches_filtered = study.docs_get(f'{herb_name_scientific}')
     # researches_filtered = study.docs_get(f'allium sativum')
     researches_html = f''
@@ -4236,7 +5085,6 @@ Srivastava, J.K., et al. "Chamomile: A herbal medicine of the past with bright f
             </li>
         '''
         
-    # quit()
     research_html = f''
     if researches_html != '':
         research_html = f'''
@@ -4251,9 +5099,18 @@ Srivastava, J.K., et al. "Chamomile: A herbal medicine of the past with bright f
             </section>
         '''
 
+
     ###
     article_html = f'''
         {hero_html}
+        {taxonomy_html}
+        {morphology_html}
+        {distribution_html}
+        {tradition_html}
+        {medicinal_systems_html}
+        {phytochemistry_html}
+        {pharmacology_html}
+
         {botany_html}
         {chemistry_html}
         {medicine_html}
@@ -4264,6 +5121,7 @@ Srivastava, J.K., et al. "Chamomile: A herbal medicine of the past with bright f
     '''
         {references_html}
     '''
+
 
     ###
     sidebar_hub_html = '<div></div>'
@@ -4419,7 +5277,7 @@ def herb__identification__gen(herb):
         </ul>
     '''
     taxonomy_table_html = f'''
-        <p>The following table shows the full taxonomy of this plant.</p>
+        <p>The following table shows the full taxonomy of this medicinal plant.</p>
         <table>
             <thead>
                 <tr>
@@ -5683,15 +6541,15 @@ def main():
     for herb_i, herb in enumerate(herbs):
         herb__gen(herb)
 
-        herb__identification__gen(herb)
-        herb__compounds__gen(herb)
-        herb__actions__gen(herb)
-        herb__uses__gen(herb)
+        # herb__identification__gen(herb)
+        # herb__compounds__gen(herb)
+        # herb__actions__gen(herb)
+        # herb__uses__gen(herb)
 
         # herb__research(herb)
 
-        herb__traditions__gen(herb)
-        herb__preparations__gen(herb)
+        # herb__traditions__gen(herb)
+        # herb__preparations__gen(herb)
 
         # herb__botany__gen(herb)
         # break
