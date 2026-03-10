@@ -244,3 +244,21 @@ footer span {
     color: white;
 }
 
+/*********************************************/
+/* breadcrumbs */
+/*********************************************/
+
+.breadcrumbs {
+    padding: 16px 24px;
+}
+
+.breadcrumbs a {
+    color: #333;
+    text-decoration: None;
+}
+ 
+.article-section {
+    margin-top: 4.8rem; 
+    /* border-bottom: 1px solid #e2e8f0; */
+    padding-bottom: 3.2rem;
+}

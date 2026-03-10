@@ -79,6 +79,33 @@ def breadcrumbs(url):
     '''
     return html
 
+def breadcrumbs_new(url):
+    breadcrumb_list = url.split('/')
+    breadcrumb_href = f'/'
+    breadcrumb_html = f'<a href="{breadcrumb_href}">Home</a>'
+    for breadcrumb_i, breadcrumb_text in enumerate(breadcrumb_list):
+        breadcrumb_href += '/' + breadcrumb_text
+        breadcrumb_href = breadcrumb_href.replace('//', '/')
+        breadcrumb_text = breadcrumb_text.strip().replace('-', ' ').title()
+        if breadcrumb_i == len(breadcrumb_list)-1:
+            breadcrumb_html += f' > {breadcrumb_text}'
+        else:
+            breadcrumb_html += f' > <a href="{breadcrumb_href}.html">{breadcrumb_text}</a>'
+    if 0:
+        html = f'''
+            <section class="breadcrumbs">
+                <div class="container-xl">
+                    {breadcrumb_html}
+                </div>
+            </section>
+        '''
+    html = f'''
+        <section class="breadcrumbs">
+            {breadcrumb_html}
+        </section>
+    '''
+    return html
+
 def toc(html_article):
     from bs4 import BeautifulSoup
     ### get headers

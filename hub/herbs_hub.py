@@ -4979,6 +4979,55 @@ def herb_related__gen(herb, json_article_filepath, regen=False, dispel=False):
     '''
     return html
 
+def herb_research_gap__gen(herb, json_article_filepath, regen=False, dispel=False):
+    herb_name_scientific = herb['taxon_name']
+    herb_slug = polish.sluggify(herb_name_scientific)
+    herb_filepath = f'''{g.SSOT_FOLDERPATH}/herbs/herbs-primary/{herb_slug}.json'''
+    herb_data = io.json_read(herb_filepath)
+    herb_names_common = herb_data['herb_names_common']
+    herb_name_common = herb_names_common[0]['answer']
+    herb_name_all = f'{herb_name_common.title()} ({herb_name_scientific.capitalize()})'
+    herb_name_all = herb_name_all.replace("'S", "'s")
+    ### llm
+    json_article = io.json_read(json_article_filepath, create=True)
+    herb_name_all = json_article['herb_name_all']
+    key = 'research_gap'
+    if key not in json_article: json_article[key] = ''
+    if regen: json_article[key] = ''
+    if dispel: 
+        json_article[key] = ''
+        io.json_write(json_article_filepath, json_article)
+    if not dispel:
+        if json_article[key] == '':
+            import textwrap
+            prompt = textwrap.dedent(f'''
+                I'm writing an article about the core entity "{herb_name_all}", which is for a website where the source context is "herbal medicine". 
+                I want you to write the subordinate text for the following section: 
+                "research gap"
+                The subordinate text is the first sentence that must be written immediately after the headline. 
+                The subordinate text must answer in the most direct, clear, detailed way possible without fluff.
+                Don't give me bold or italicized text. 
+                Reply only with the subordinate text.
+                /no_think
+            ''').strip()
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            json_article[key] = reply
+            io.json_write(json_article_filepath, json_article)
+            print(json_article_filepath)
+    ### html
+    html = f'''
+        <section class="container-lg" style="margin-top: 4.8rem; border-bottom: 1px solid #e2e8f0; padding-bottom: 3.2rem;">
+            <h2>Research Gap</h2>
+            <p>
+                {json_article['research_gap']}
+            </p>
+        </section>
+    '''
+    return html
+
 def herb_research__gen():
     references_html = f'''
         <section class="container-lg" style="margin-top: 4.8rem; border-bottom: 1px solid #e2e8f0; padding-bottom: 3.2rem;">
@@ -5101,14 +5150,8 @@ def herb__gen(herb):
     identification_html = herb_identification__gen(herb, json_article_filepath, regen=False, dispel=False)
     # 16. Regulatory Status
     sustainability_html = herb_sustainability__gen(herb, json_article_filepath, regen=False, dispel=False)
-    related_html = herb_related__gen(herb, json_article_filepath, regen=True, dispel=False)
-    # Research Gaps
-
-    herb_botany__gen(json_article_filepath, regen=False, dispel=False)
-    herb_chemistry__gen(json_article_filepath, herb_active_compounds, regen=False, dispel=False)
-
-    herb_medicine__gen(json_article_filepath, regen=False, dispel=False)
-    herb_toxicology__gen(json_article_filepath, regen=False, dispel=False)
+    related_html = herb_related__gen(herb, json_article_filepath, regen=False, dispel=False)
+    research_gap_html = herb_research_gap__gen(herb, json_article_filepath, regen=False, dispel=False)
 
     ### intro
     regen = False
@@ -5162,27 +5205,6 @@ def herb__gen(herb):
     img_alt = f'{herb_name_all} dried pieces of the herb arranged on a wooden table for reference'
     img_html = f'<img src="{img_src}" alt="{img_alt}" width="400">'
     # img_html = ''
-    '''
-    <div style="background-color: #f8f9fa; border: 1px solid #e2e8f0; padding: 1.6rem;"> 
-        <p>Family<br>
-        <strong>Solanaceae (Nightshade)</strong></p>
-        <p>Native Region<br>
-        <strong>India, Middle East, Africa</strong></p>
-        <p style="margin-bottom: 0;">Part Used<br>
-        <strong>Root, Leaf, Berry</strong></p>
-    </div> 
-    '''
-    lst_html = f'''
-                <p>
-                Primary Indications:
-                </p>
-        <ul>
-            <li>Chronic Stress & Anxiety</li>
-            <li>Sleep Latency & Quality</li>
-            <li>Male Fertility & Testosterone</li>
-            <li>Cognitive Function</li>
-        </ul>
-    '''
     hero_html = f'''
         <section class="container-lg grid-2" style="gap: 6.4rem; margin-top: 8.0rem;">
             <div>
@@ -5198,74 +5220,6 @@ def herb__gen(herb):
         </section>
     '''
 
-
-    botany_html = f'''
-        <section class="container-lg" style="margin-top: 4.8rem; border-bottom: 1px solid #e2e8f0; padding-bottom: 3.2rem;">
-            <h2>Botanical Identification</h2>
-            <p>
-            {json_article['botany']}
-            </p>
-            <p><a href="/herbs/{herb_slug}/identification.html">{herb_name_common} Identification</a>.</p>
-        </section>
-    '''
-
-    chemistry_list_items_html = ''
-    for compound in herb_active_compounds:
-        chemistry_list_items_html += f'<li><strong>{compound.capitalize()}</strong></li>\n'
-    chemistry_list_html = f'''
-        <ul>
-            {chemistry_list_items_html}
-        </ul>
-    '''
-    chemistry_html = f'''
-        <section class="container-lg" style="margin-top: 4.8rem; border-bottom: 1px solid #e2e8f0; padding-bottom: 3.2rem;">
-            <h2>
-Active Compounds
-            </h2>
-            <p>
-                {json_article['chemistry']}
-            </p>
-            {chemistry_list_html}
-            <p><a href="/herbs/{herb_slug}/compounds.html">{herb_name_common} Compounds</a>.</p>
-        </section>
-    '''
-
-    tr_rows_html = ''
-    for item in herb_medicine_conditions_groups[:3]:
-        system = item['system'].capitalize()
-        rnd = random.randint(3, 5)
-        ailments = ', '.join(item['ailments'][:rnd]).capitalize()
-        rnd = random.randint(3, 5)
-        actions = ', '.join(item['actions'][:rnd]).capitalize()
-        tr_rows_html += f'''<tr>\n'''
-        tr_rows_html += f'''<td>{system}</td>\n'''
-        tr_rows_html += f'''<td>{ailments}</td>\n'''
-        tr_rows_html += f'''<td>{actions}</td>\n'''
-        tr_rows_html += f'''</tr>\n'''
-    medicine_html = f'''
-        <section class="container-lg" style="margin-top: 4.8rem; border-bottom: 1px solid #e2e8f0; padding-bottom: 3.2rem;">
-            <h2>
-                Therapeutic Indications 
-            </h2>
-
-            <table class="clinical-table" style="margin-bottom: 1.6rem;">
-                <thead>
-                    <tr>
-                        <th width="30%">System</th>
-                        <th>Condidtion</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {tr_rows_html}
-                </tbody>
-            </table>
-            <p><a href="/herbs/{herb_slug}/actions.html">{herb_name_common} Actions</a>.</p>
-            <p><a href="/herbs/{herb_slug}/uses.html">{herb_name_common} Uses</a>.</p>
-        </section>
-    '''
-
-    paragraphs_html = f''
 
     researches_html = ''
     # researches_html = herb_research__gen()
@@ -5300,7 +5254,7 @@ Srivastava, J.K., et al. "Chamomile: A herbal medicine of the past with bright f
         except: continue
         author_list = []
         for item in author_list_data:
-            print(item['LastName'])
+            # print(item['LastName'])
             author_list.append(item['LastName'])
         author_list_str = ', '.join(author_list)
         article_title = f'''{json_research['PubmedArticle'][0]['MedlineCitation']['Article']['ArticleTitle']}'''
@@ -5324,6 +5278,7 @@ Srivastava, J.K., et al. "Chamomile: A herbal medicine of the past with bright f
 
             </section>
         '''
+    
 
 
     ###
@@ -5345,17 +5300,9 @@ Srivastava, J.K., et al. "Chamomile: A herbal medicine of the past with bright f
         {identification_html}
         {sustainability_html}
         {related_html}
-
+        {research_gap_html}
         {research_html}
     '''
-    '''
-        {botany_html}
-        {chemistry_html}
-        {medicine_html}
-        {preparations_html}
-        {references_html}
-    '''
-
 
     ###
     sidebar_hub_html = '<div></div>'
@@ -5368,6 +5315,7 @@ Srivastava, J.K., et al. "Chamomile: A herbal medicine of the past with bright f
         {head_html}
         <body>
             {sections.header_default()}
+            {sections.breadcrumbs_new(url_slug)}
             <div class="hub">
                 {sidebar_hub_html}
                 <main>
@@ -6747,7 +6695,317 @@ def herb__preparations__gen(herb):
     html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
     with open(html_filepath, 'w') as f: f.write(html)
 
+def herbs__gen():
+    url_slug = f'herbs'
+    meta_title = f'Medicinal Plants'
+    meta_description = ''
+    canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''
+    ###
+    '''
+    H1: Medicinal Plants: Overview, Uses, and Role in Herbal Medicine
+    1. Definition and Concept
+    2. Historical and Cultural Use
+    3. Botanical Characteristics
+    4. Active Chemical Compounds
+    5. Medicinal Properties
+    6. Therapeutic Applications
+    7. Preparation Methods
+    8. Safety and Toxicity
+    9. Dosage and Administration
+    10. Cultivation and Harvesting
+    11. Processing and Storage
+    12. Identification and Classification
+    13. Modern Scientific Research
+    14. Regulatory and Legal Status
+    15. Sustainability and Conservation
+    16. Role in Herbal Medicine Education
+
+    Definition
+    Classification
+    Plant Morphology
+    Plant Parts Used
+    Habitat
+    Distribution
+    Phytochemicals
+    Pharmacological Effects
+    Medicinal Properties
+    Therapeutic Uses
+    Preparation Methods
+    Administration
+    Dosage
+    Safety
+    Contraindications
+    Drug Interactions
+    Cultivation
+    Harvesting
+    Processing
+    Storage
+    Plant Identification
+    Look-Alike Species
+    Traditional Medicine
+    Clinical Research
+    Regulation
+    Quality Standards
+    Conservation
+    Sustainable Harvesting
+    Herbal Materia Medica
+
+    Medicinal Plants
+    │
+    ├─ Identity
+    ├─ Botanical Characteristics
+    ├─ Chemical Composition
+    ├─ Pharmacological Properties
+    ├─ Therapeutic Uses
+    ├─ Preparation Methods
+    ├─ Dosage
+    ├─ Safety and Toxicity
+    ├─ Cultivation
+    ├─ Harvesting
+    ├─ Processing
+    ├─ Storage
+    ├─ Identification
+    ├─ Historical Use
+    ├─ Scientific Research
+    ├─ Regulation
+    ├─ Sustainability
+    └─ Herbal Medicine Education
+
+    '''
+
+    intro_html = f'''
+        <h1>
+            Medicinal Plants: Overview, Uses, and role in Herbal Medicine
+        </h1>
+        <p>
+            Medicinal plants are plant species used for therapeutic purposes because they contain biologically active compounds such as alkaloids, flavonoids, terpenes, and glycosides that influence human physiology. They form the foundation of herbal medicine systems such as Ayurveda, Traditional Chinese Medicine, and Western herbalism, and are used to prepare remedies including teas, tinctures, extracts, and topical treatments.
+        </p>
+    '''
+    definition_html = f'''
+        <section class="article-section">
+            <h2>Definition</h2>
+        </section>
+    '''
+    tradition_html = f'''
+        <section class="article-section">
+            <h2>Tradition</h2>
+            <p><a href="/herbs/tradition.html">Tradition</a></p>
+        </section>
+    '''
+    classification_html = f'''
+        <section class="article-section">
+            <h2>Classification</h2>
+            <p><a href="/herbs/classification.html">Classification</a></p>
+        </section>
+    '''
+    compounds_html = f'''
+        <section class="article-section">
+            <h2>Compounds</h2>
+            <p><a href="/herbs/compounds.html">Compounds</a></p>
+        </section>
+    '''
+    actions_html = f'''
+        <section class="article-section">
+            <h2>Actions</h2>
+            <p><a href="/herbs/actions.html">Actions</a></p>
+        </section>
+    '''
+    uses_html = f'''
+        <section class="article-section">
+            <h2>Uses</h2>
+            <p><a href="/herbs/uses.html">Uses</a></p>
+        </section>
+    '''
+    preparations_html = f'''
+        <section class="article-section">
+            <h2>Preparations</h2>
+            <p><a href="/herbs/preparations.html">Preparations</a></p>
+        </section>
+    '''
+    safety_html = f'''
+        <section class="article-section">
+            <h2>Safety</h2>
+            <p><a href="/herbs/safety.html">Safety</a></p>
+        </section>
+    '''
+    administration_html = f'''
+        <section class="article-section">
+            <h2>Administration</h2>
+            <p><a href="/herbs/administration.html">Administration</a></p>
+        </section>
+    '''
+    cultivation_html = f'''
+        <section class="article-section">
+            <h2>Cultivation</h2>
+            <p><a href="/herbs/cultivation.html">Cultivation</a></p>
+        </section>
+    '''
+    processing_html = f'''
+        <section class="article-section">
+            <h2>Processing</h2>
+            <p><a href="/herbs/processing.html">Processing</a></p>
+        </section>
+    '''
+    identification_html = f'''
+        <section class="article-section">
+            <h2>Identification</h2>
+            <p><a href="/herbs/identification.html">Identification</a></p>
+        </section>
+    '''
+    research_html = f'''
+        <section class="article-section">
+            <h2>Research</h2>
+            <p><a href="/herbs/research.html">Research</a></p>
+        </section>
+    '''
+
+    article_html = f'''
+        {intro_html}
+        {definition_html}
+        {tradition_html}
+        {classification_html}
+        {compounds_html}
+        {actions_html}
+        {uses_html}
+        {preparations_html}
+        {safety_html}
+        {administration_html}
+        {cultivation_html}
+        {processing_html}
+        {identification_html}
+        {research_html}
+    '''
+    '''
+    H1: Medicinal Plants: Overview, Uses, and Role in Herbal Medicine
+    1. Definition and Concept
+    2. Historical and Cultural Use
+    3. Botanical Characteristics
+    4. Active Chemical Compounds
+    5. Medicinal Properties
+    6. Therapeutic Applications
+    7. Preparation Methods
+    8. Safety and Toxicity
+    9. Dosage and Administration
+    10. Cultivation and Harvesting
+    11. Processing and Storage
+    12. Identification and Classification
+    13. Modern Scientific Research
+    14. Regulatory and Legal Status
+    15. Sustainability and Conservation
+    16. Role in Herbal Medicine Education
+    '''
+
+    ###
+    sidebar_hub_html = '<div></div>'
+    sidebar_page_html = sidebar_page_gen([]) 
+    head_html = components.html_head(
+        meta_title, meta_description, css='/styles-herb-monograph.css', canonical=canonical_html
+    )
+    import textwrap
+    html = textwrap.dedent(f''' 
+        <!DOCTYPE html>
+        <html lang="en">
+        {head_html}
+        <body>
+            {sections.header_default()}
+            {sections.breadcrumbs_new(url_slug)}
+            <div class="hub">
+                {sidebar_hub_html}
+                <main>
+                    <article class="container-md">
+                        {article_html}
+                    </article>
+                </main>
+                {sidebar_page_html}
+            </div>
+            {sections.footer()}
+        </body>
+        </html>
+    ''').strip()
+    html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
+    with open(html_filepath, 'w') as f: f.write(html)
+
+def herbs__classification__gen():
+    url_slug = f'herbs/classification'
+    meta_title = f'Medicinal Plants Classification'
+    meta_description = ''
+    canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''
+    ###
+    '''
+        H1: Classification of Medicinal Plants
+
+        1. Definition of Medicinal Plant Classification
+        2. Purpose of Classification in Herbal Medicine
+        3. Major Classification Systems
+        4. Botanical Classification
+        5. Morphological Classification
+        6. Plant Part-Based Classification
+        7. Chemical Classification (Phytochemical)
+        8. Pharmacological Classification
+        9. Therapeutic Classification
+        10. Traditional Medicine Classifications
+        11. Ecological Classification
+        12. Cultivation-Based Classification
+        13. Life Cycle Classification
+        14. Geographic Classification
+        15. Modern Scientific Classification
+        16. Importance of Classification in Herbal Medicine Education
+    '''
+
+    intro_html = f'''
+        <h1>
+            Classification of Medicinal Plants
+        </h1>
+        <p>
+            Medicinal plant classification is the systematic grouping of medicinal plant species based on characteristics such as botanical taxonomy, plant morphology, chemical constituents, pharmacological effects, therapeutic uses, and traditional medicine frameworks. Classification systems help herbalists, researchers, and students organize medicinal plants according to their biological properties, medicinal actions, and clinical applications in herbal medicine.
+        </p>
+    '''
+    research_html = f'''
+        <section class="article-section">
+            <h2></h2>
+            <p><a href="#"></a></p>
+        </section>
+    '''
+
+    article_html = f'''
+        {intro_html}
+    '''
+
+    ###
+    sidebar_hub_html = '<div></div>'
+    sidebar_page_html = sidebar_page_gen([]) 
+    head_html = components.html_head(
+        meta_title, meta_description, css='/styles-herb-monograph.css', canonical=canonical_html
+    )
+    import textwrap
+    html = textwrap.dedent(f''' 
+        <!DOCTYPE html>
+        <html lang="en">
+        {head_html}
+        <body>
+            {sections.header_default()}
+            {sections.breadcrumbs_new(url_slug)}
+            <div class="hub">
+                {sidebar_hub_html}
+                <main>
+                    <article class="container-md">
+                        {article_html}
+                    </article>
+                </main>
+                {sidebar_page_html}
+            </div>
+            {sections.footer()}
+        </body>
+        </html>
+    ''').strip()
+    html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
+    with open(html_filepath, 'w') as f: f.write(html)
+
 def main():
+    herbs__gen()
+    herbs__classification__gen()
+    quit()
+
     # herbal_medicine__gen()
 
     # medicinal_plants__gen()
@@ -6755,7 +7013,6 @@ def main():
     # preparations__gen()
     # safety__gen()
 
-    # herbs__gen()
     # herbs = data.herbs_primary_get()
     '''
     herbs_primary_medicinal = data.herbs_primary_medicinal_get()
@@ -6799,7 +7056,7 @@ def main():
         /herbs/chamomile/research
         /herbs/chamomile/harvest
         /herbs/chamomile/processing
-        '''
+       '''
 
     # quit()
 
