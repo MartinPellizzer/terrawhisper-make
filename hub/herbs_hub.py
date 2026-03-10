@@ -6831,9 +6831,9 @@ def herbs__gen():
         entity='medicinal herbs', attribute='classification', context='herbal medicine', 
         regen=False, dispel=False
     )
-    compounds_subordinate_html = subordinate__gen(json_article_filepath, 
-        key='compounds', 
-        entity='medicinal herbs', attribute='compounds', context='herbal medicine', 
+    phytochemistry_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='phytochemistry', 
+        entity='medicinal herbs', attribute='phytochemistry', context='herbal medicine', 
         regen=False, dispel=False
     )
     actions_subordinate_html = subordinate__gen(json_article_filepath, 
@@ -6910,11 +6910,11 @@ def herbs__gen():
             <p><a href="/herbs/classification.html">Classification</a></p>
         </section>
     '''
-    compounds_html = f'''
+    phytochemistry_html = f'''
         <section class="article-section">
-            <h2>Compounds</h2>
-            <p>{compounds_subordinate_html}</p>
-            <p><a href="/herbs/compounds.html">Compounds</a></p>
+            <h2>Phytochemistry</h2>
+            <p>{phytochemistry_subordinate_html}</p>
+            <p><a href="/herbs/phytochemistry.html">Phytochemistry</a></p>
         </section>
     '''
     actions_html = f'''
@@ -6986,7 +6986,7 @@ def herbs__gen():
         {definition_html}
         {tradition_html}
         {classification_html}
-        {compounds_html}
+        {phytochemistry_html}
         {actions_html}
         {uses_html}
         {preparations_html}
@@ -7054,6 +7054,386 @@ def herbs__classification__gen():
     canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''
     ###
     '''
+
+You are now creating a **secondary pillar / attribute page** in the SCN:
+
+* **Central entity:** Medicinal Plants
+* **Attribute entity:** Medicinal Plants Classification
+* **Source context:** Teaching Herbal Medicine
+* **URL:** `/herbs/classification.html`
+
+In Koray’s framework, this page must explain **how medicinal plants are categorized across different knowledge systems** so the entity **“medicinal plants classification” becomes a standalone concept in the knowledge base.**
+
+That means covering **all classification dimensions** (attribute vectors) used in herbal medicine.
+
+---
+
+# 1. Macro Page Structure
+
+This is the **high-level template for the page**.
+
+```
+H1: Classification of Medicinal Plants
+
+1. Definition of Medicinal Plant Classification
+2. Purpose of Classification in Herbal Medicine
+3. Major Classification Systems
+4. Botanical Classification
+5. Morphological Classification
+6. Plant Part-Based Classification
+7. Chemical Classification (Phytochemical)
+8. Pharmacological Classification
+9. Therapeutic Classification
+10. Traditional Medicine Classifications
+11. Ecological Classification
+12. Cultivation-Based Classification
+13. Life Cycle Classification
+14. Geographic Classification
+15. Modern Scientific Classification
+16. Importance of Classification in Herbal Medicine Education
+```
+
+This page answers the **core query frame**:
+
+> “How are medicinal plants classified?”
+
+---
+
+# 2. Attribute Clusters for the Entity
+
+### “Medicinal Plants Classification”
+
+These clusters represent the **different classification dimensions** used in herbal medicine.
+
+---
+
+# A. Conceptual Attributes (Identity)
+
+Defines the entity itself.
+
+**Subtopics**
+
+```
+Definition of classification
+Purpose of classification
+Principles of classification
+Importance in herbal medicine
+```
+
+---
+
+# B. Botanical Classification
+
+The **scientific taxonomy** of plants.
+
+**Subtopics**
+
+```
+Plant taxonomy
+Family classification
+Genus classification
+Species classification
+Angiosperms vs Gymnosperms
+```
+
+Example structure:
+
+```
+Kingdom
+Division
+Class
+Order
+Family
+Genus
+Species
+```
+
+---
+
+# C. Morphological Classification
+
+Plants grouped by **structural form**.
+
+**Subtopics**
+
+```
+Herbs
+Shrubs
+Trees
+Climbers
+Creepers
+```
+
+---
+
+# D. Plant-Part Classification
+
+Medicinal plants grouped by **part used in medicine**.
+
+**Subtopics**
+
+```
+Root drugs
+Leaf drugs
+Flower drugs
+Bark drugs
+Seed drugs
+Fruit drugs
+Rhizome drugs
+Whole plant drugs
+```
+
+---
+
+# E. Phytochemical Classification
+
+Plants classified according to **active chemical constituents**.
+
+**Major groups**
+
+```
+Alkaloid-containing plants
+Flavonoid-rich plants
+Terpene-containing plants
+Phenolic plants
+Glycoside-containing plants
+Tannin-rich plants
+Saponin-containing plants
+Essential oil plants
+```
+
+---
+
+# F. Pharmacological Classification
+
+Plants grouped according to **biological effect**.
+
+**Examples**
+
+```
+Anti-inflammatory plants
+Antimicrobial plants
+Analgesic plants
+Sedative plants
+Digestive stimulants
+Immune-modulating plants
+```
+
+---
+
+# G. Therapeutic Classification
+
+Classification by **disease or health condition treated**.
+
+**Examples**
+
+```
+Digestive remedies
+Respiratory remedies
+Skin remedies
+Cardiovascular herbs
+Nervous system herbs
+Endocrine-supporting herbs
+```
+
+---
+
+# H. Traditional Medicine Classification
+
+Different medical systems classify herbs differently.
+
+**Subtopics**
+
+```
+Ayurvedic classification
+Traditional Chinese Medicine classification
+Western herbalism classification
+Unani classification
+Indigenous herbal systems
+```
+
+Examples:
+
+**TCM**
+
+```
+Hot herbs
+Warm herbs
+Neutral herbs
+Cool herbs
+Cold herbs
+```
+
+---
+
+# I. Ecological Classification
+
+Plants grouped by **natural habitat**.
+
+```
+Forest plants
+Desert plants
+Wetland plants
+Mountain plants
+Tropical plants
+Temperate plants
+```
+
+---
+
+# J. Cultivation-Based Classification
+
+Plants grouped by **cultivation status**.
+
+```
+Wild medicinal plants
+Cultivated medicinal plants
+Semi-wild plants
+Domesticated medicinal plants
+```
+
+---
+
+# K. Life Cycle Classification
+
+Plants grouped by **life span**.
+
+```
+Annual plants
+Biennial plants
+Perennial plants
+```
+
+---
+
+# L. Geographic Classification
+
+Plants grouped by **regional origin**.
+
+```
+Tropical medicinal plants
+Subtropical plants
+Temperate plants
+Mediterranean herbs
+Alpine medicinal plants
+```
+
+---
+
+# M. Preparation-Based Classification
+
+Grouped by **how the plant is used medicinally**.
+
+```
+Tea herbs
+Tincture herbs
+Essential oil plants
+Poultice plants
+Powder herbs
+```
+
+---
+
+# N. Safety-Based Classification
+
+Plants grouped by **toxicity level**.
+
+```
+Safe medicinal plants
+Potent medicinal plants
+Toxic medicinal plants
+Restricted medicinal plants
+```
+
+---
+
+# O. Modern Scientific Classification
+
+Modern herbal medicine may classify herbs using:
+
+```
+Pharmacological activity
+Clinical evidence
+Bioactive compounds
+Standardized extracts
+```
+
+---
+
+# P. Educational Classification (Source Context)
+
+Because the site **teaches herbal medicine**, include:
+
+```
+Materia medica categories
+Herbal pharmacology groups
+Clinical herbal classifications
+Teaching frameworks
+```
+
+---
+
+# 3. Clean Attribute Vector Model
+
+This is the **semantic map for the page**.
+
+```
+Medicinal Plants Classification
+│
+├─ Definition
+├─ Purpose
+├─ Botanical Classification
+├─ Morphological Classification
+├─ Plant-Part Classification
+├─ Phytochemical Classification
+├─ Pharmacological Classification
+├─ Therapeutic Classification
+├─ Traditional Medicine Classification
+├─ Ecological Classification
+├─ Cultivation Classification
+├─ Life Cycle Classification
+├─ Geographic Classification
+├─ Preparation-Based Classification
+├─ Safety Classification
+├─ Modern Scientific Classification
+└─ Educational Classification
+```
+
+---
+
+# 4. Microsemantic Opening Paragraph (Important)
+
+Your first paragraph should answer:
+
+**“What is medicinal plants classification?”**
+
+Example:
+
+> Medicinal plant classification is the systematic grouping of medicinal plant species based on characteristics such as botanical taxonomy, plant morphology, chemical constituents, pharmacological effects, therapeutic uses, and traditional medicine frameworks. Classification systems help herbalists, researchers, and students organize medicinal plants according to their biological properties, medicinal actions, and clinical applications in herbal medicine.
+
+---
+
+# 5. Future Cluster Pages This Page Should Support
+
+This page should internally link to deeper nodes like:
+
+```
+/herbs/botanical-classification.html
+/herbs/phytochemical-classification.html
+/herbs/pharmacological-classification.html
+/herbs/therapeutic-classification.html
+/herbs/traditional-herbal-classification.html
+```
+
+This forms the **classification branch of the SCN**.
+
+---
+
+✅ If you want, I can also show you something extremely helpful for this site:
+
+**The full semantic topical map for the entire “herbal medicine” knowledge base (200–300 pages).**
+
+That map reveals the **exact SCN structure used by the strongest medical knowledge sites.** 🌿
         H1: Classification of Medicinal Plants
         1. Definition of Medicinal Plant Classification
         2. Purpose of Classification in Herbal Medicine
@@ -7122,9 +7502,168 @@ def herbs__classification__gen():
     html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
     with open(html_filepath, 'w') as f: f.write(html)
 
+def herbs__tradition__gen():
+    url_slug = f'herbs/tradition'
+    meta_title = f'Medicinal Plants Tradition'
+    meta_description = ''
+    canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''
+    ###
+    '''
+    '''
+
+    intro_html = f'''
+        <h1>
+            Tradition of Medicinal Plants
+        </h1>
+        <p>
+            The tradition of medicinal plants refers to the historical and cultural systems through which communities use plants for healing, prevention, and health maintenance. These traditions form the foundation of herbal medicine and include knowledge systems such as Ayurveda, Traditional Chinese Medicine, European herbalism, and Indigenous plant medicine. They preserve information about plant identification, preparation methods, diagnostic concepts, and therapeutic practices that have been transmitted across generations through oral teaching, written herbals, and apprenticeship.
+        </p>
+    '''
+
+    article_html = f'''
+        {intro_html}
+    '''
+
+    ###
+    sidebar_hub_html = '<div></div>'
+    sidebar_page_html = sidebar_page_gen([]) 
+    head_html = components.html_head(
+        meta_title, meta_description, css='/styles-herb-monograph.css', canonical=canonical_html
+    )
+    import textwrap
+    html = textwrap.dedent(f''' 
+        <!DOCTYPE html>
+        <html lang="en">
+        {head_html}
+        <body>
+            {sections.header_default()}
+            {sections.breadcrumbs_new(url_slug)}
+            <div class="hub">
+                {sidebar_hub_html}
+                <main>
+                    <article class="container-md">
+                        {article_html}
+                    </article>
+                </main>
+                {sidebar_page_html}
+            </div>
+            {sections.footer()}
+        </body>
+        </html>
+    ''').strip()
+    html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
+    with open(html_filepath, 'w') as f: f.write(html)
+
+def herbs__phytochemistry__gen():
+    url_slug = f'herbs/phytochemistry'
+    meta_title = f'Medicinal Plants Phytochemistry'
+    meta_description = ''
+    canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''
+    ###
+    '''
+    '''
+
+    intro_html = f'''
+        <h1>
+            Phytochemistry of Medicinal Plants
+        </h1>
+        <p>
+            The phytochemistry of medicinal plants refers to the study of biologically active chemical compounds produced by plants, including alkaloids, flavonoids, terpenoids, glycosides, and phenolic substances. These phytochemicals are responsible for the therapeutic properties of herbal medicines and influence their pharmacological effects, safety, and clinical applications.
+        </p>
+    '''
+
+    article_html = f'''
+        {intro_html}
+    '''
+
+    ###
+    sidebar_hub_html = '<div></div>'
+    sidebar_page_html = sidebar_page_gen([]) 
+    head_html = components.html_head(
+        meta_title, meta_description, css='/styles-herb-monograph.css', canonical=canonical_html
+    )
+    import textwrap
+    html = textwrap.dedent(f''' 
+        <!DOCTYPE html>
+        <html lang="en">
+        {head_html}
+        <body>
+            {sections.header_default()}
+            {sections.breadcrumbs_new(url_slug)}
+            <div class="hub">
+                {sidebar_hub_html}
+                <main>
+                    <article class="container-md">
+                        {article_html}
+                    </article>
+                </main>
+                {sidebar_page_html}
+            </div>
+            {sections.footer()}
+        </body>
+        </html>
+    ''').strip()
+    html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
+    with open(html_filepath, 'w') as f: f.write(html)
+
+def herbs__actions__gen():
+    url_slug = f'herbs/actions'
+    meta_title = f'Medicinal Plants Actions'
+    meta_description = ''
+    canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''
+    ###
+    '''
+    '''
+
+    intro_html = f'''
+        <h1>
+            Actions of Medicinal Plants
+        </h1>
+        <p>
+            Herbal actions are the physiological and therapeutic effects that medicinal plants exert on the human body. In herbal medicine, actions such as anti-inflammatory, adaptogenic, carminative, and nervine describe how plant compounds interact with biological systems to support healing. Understanding herbal actions allows practitioners to classify medicinal plants, design herbal formulas, and match herbs to specific health conditions.
+        </p>
+    '''
+
+    article_html = f'''
+        {intro_html}
+    '''
+
+    ###
+    sidebar_hub_html = '<div></div>'
+    sidebar_page_html = sidebar_page_gen([]) 
+    head_html = components.html_head(
+        meta_title, meta_description, css='/styles-herb-monograph.css', canonical=canonical_html
+    )
+    import textwrap
+    html = textwrap.dedent(f''' 
+        <!DOCTYPE html>
+        <html lang="en">
+        {head_html}
+        <body>
+            {sections.header_default()}
+            {sections.breadcrumbs_new(url_slug)}
+            <div class="hub">
+                {sidebar_hub_html}
+                <main>
+                    <article class="container-md">
+                        {article_html}
+                    </article>
+                </main>
+                {sidebar_page_html}
+            </div>
+            {sections.footer()}
+        </body>
+        </html>
+    ''').strip()
+    html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
+    with open(html_filepath, 'w') as f: f.write(html)
+
 def main():
     herbs__gen()
     herbs__classification__gen()
+    herbs__tradition__gen()
+    herbs__phytochemistry__gen()
+    herbs__actions__gen()
     quit()
 
     # herbal_medicine__gen()
