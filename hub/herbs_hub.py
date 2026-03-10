@@ -6695,6 +6695,40 @@ def herb__preparations__gen(herb):
     html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
     with open(html_filepath, 'w') as f: f.write(html)
 
+
+def subordinate__gen(json_article_filepath, key, entity, attribute, context='herbal medicine', regen=False, dispel=False):
+    json_article = io.json_read(json_article_filepath, create=True)
+    if key not in json_article: json_article[key] = ''
+    if regen: json_article[key] = ''
+    if dispel: 
+        json_article[key] = ''
+        io.json_write(json_article_filepath, json_article)
+    if not dispel:
+        if json_article[key] == '':
+            import textwrap
+            prompt = textwrap.dedent(f'''
+                I'm writing an article about the core entity "{entity}", which is for a website where the source context is "{context}". 
+                I want you to write the subordinate text for the following section: 
+                "{attribute}"
+                The subordinate text is the first sentence that must be written immediately after the headline. 
+                The subordinate text must answer in the most direct, clear, detailed way possible without fluff.
+                Don't give me bold or italicized text. 
+                Reply only with the subordinate text.
+                /no_think
+            ''').strip()
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            json_article[key] = reply
+            io.json_write(json_article_filepath, json_article)
+            print(json_article_filepath)
+    ### html
+    html = f'''
+        {json_article[key]}
+    '''
+    return html
+
 def herbs__gen():
     url_slug = f'herbs'
     meta_title = f'Medicinal Plants'
@@ -6773,6 +6807,81 @@ def herbs__gen():
 
     '''
 
+    ########################################
+    # json
+    ########################################
+    ### json init
+    json_article_filepath = f'''{g.DATABASE_FOLDERPATH}/json/{url_slug}.json'''
+    json_article = io.json_read(json_article_filepath, create=True)
+    json_article['url'] = url_slug
+    io.json_write(json_article_filepath, json_article)
+
+    definition_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='definition', 
+        entity='medicinal herbs', attribute='definition', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    tradition_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='tradition', 
+        entity='medicinal herbs', attribute='tradition', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    classification_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='classification', 
+        entity='medicinal herbs', attribute='classification', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    compounds_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='compounds', 
+        entity='medicinal herbs', attribute='compounds', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    actions_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='actions', 
+        entity='medicinal herbs', attribute='actions', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    uses_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='uses', 
+        entity='medicinal herbs', attribute='uses', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    preparations_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='preparations', 
+        entity='medicinal herbs', attribute='preparations', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    safety_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='safety', 
+        entity='medicinal herbs', attribute='safety', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    administration_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='administration', 
+        entity='medicinal herbs', attribute='administration', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    cultivation_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='cultivation', 
+        entity='medicinal herbs', attribute='cultivation', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    processing_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='processing', 
+        entity='medicinal herbs', attribute='processing', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    identification_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='identification', 
+        entity='medicinal herbs', attribute='identification', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    research_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='research', 
+        entity='medicinal herbs', attribute='research', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+
     intro_html = f'''
         <h1>
             Medicinal Plants: Overview, Uses, and role in Herbal Medicine
@@ -6784,77 +6893,90 @@ def herbs__gen():
     definition_html = f'''
         <section class="article-section">
             <h2>Definition</h2>
+            <p>{definition_subordinate_html}</p>
         </section>
     '''
     tradition_html = f'''
         <section class="article-section">
             <h2>Tradition</h2>
+            <p>{tradition_subordinate_html}</p>
             <p><a href="/herbs/tradition.html">Tradition</a></p>
         </section>
     '''
     classification_html = f'''
         <section class="article-section">
             <h2>Classification</h2>
+            <p>{classification_subordinate_html}</p>
             <p><a href="/herbs/classification.html">Classification</a></p>
         </section>
     '''
     compounds_html = f'''
         <section class="article-section">
             <h2>Compounds</h2>
+            <p>{compounds_subordinate_html}</p>
             <p><a href="/herbs/compounds.html">Compounds</a></p>
         </section>
     '''
     actions_html = f'''
         <section class="article-section">
             <h2>Actions</h2>
+            <p>{actions_subordinate_html}</p>
             <p><a href="/herbs/actions.html">Actions</a></p>
         </section>
     '''
     uses_html = f'''
         <section class="article-section">
             <h2>Uses</h2>
+            <p>{uses_subordinate_html}</p>
             <p><a href="/herbs/uses.html">Uses</a></p>
         </section>
     '''
     preparations_html = f'''
         <section class="article-section">
             <h2>Preparations</h2>
+            <p>{preparations_subordinate_html}</p>
             <p><a href="/herbs/preparations.html">Preparations</a></p>
         </section>
     '''
     safety_html = f'''
         <section class="article-section">
             <h2>Safety</h2>
+            <p>{safety_subordinate_html}</p>
             <p><a href="/herbs/safety.html">Safety</a></p>
         </section>
     '''
     administration_html = f'''
         <section class="article-section">
             <h2>Administration</h2>
+            <p>{administration_subordinate_html}</p>
             <p><a href="/herbs/administration.html">Administration</a></p>
         </section>
     '''
     cultivation_html = f'''
         <section class="article-section">
             <h2>Cultivation</h2>
+            <p>{cultivation_subordinate_html}</p>
             <p><a href="/herbs/cultivation.html">Cultivation</a></p>
         </section>
     '''
     processing_html = f'''
         <section class="article-section">
             <h2>Processing</h2>
+            <p>{processing_subordinate_html}</p>
             <p><a href="/herbs/processing.html">Processing</a></p>
         </section>
     '''
     identification_html = f'''
         <section class="article-section">
             <h2>Identification</h2>
+            <p>{identification_subordinate_html}</p>
             <p><a href="/herbs/identification.html">Identification</a></p>
         </section>
     '''
     research_html = f'''
         <section class="article-section">
             <h2>Research</h2>
+            <p>{research_subordinate_html}</p>
             <p><a href="/herbs/research.html">Research</a></p>
         </section>
     '''
@@ -6933,7 +7055,6 @@ def herbs__classification__gen():
     ###
     '''
         H1: Classification of Medicinal Plants
-
         1. Definition of Medicinal Plant Classification
         2. Purpose of Classification in Herbal Medicine
         3. Major Classification Systems
