@@ -248,3 +248,10 @@ def systems_get():
         if ailment['system_slug'] not in systems: systems.append(ailment['system_slug'])
     return systems
 
+def phytochemicals_get(top=10):
+    json_folderpath = f'{g.SSOT_FOLDERPATH}/phytochemicals'
+    json_filepath = f'''{json_folderpath}/phytochemicals.json'''
+    json_data = io.json_read(json_filepath)
+    items = [item['answer'] for item in json_data['list'][:top]]
+    return items
+    

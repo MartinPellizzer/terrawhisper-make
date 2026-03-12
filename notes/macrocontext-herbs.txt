@@ -1,0 +1,578 @@
+
+Below is a **Koray-style entity coverage template** for the entity **“Medicinal Plant”** inside the **source context: Herbal Medicine**.
+
+The goal is to make the page function as a **self-contained knowledge node** in your **Semantic Content Network (SCN)**. In Koray’s framework, this is done by covering the **core attributes of the entity type**, expressed as **Entity → Attribute → Value triples** to maximize topical coverage and query responsiveness. 
+
+---
+
+# 1. Macro Structure of the Overview Page
+
+This is the **pillar structure for the entity “Medicinal Plant.”**
+
+```
+H1: Medicinal Plants: Definition, Properties, Uses, and Role in Herbal Medicine
+
+1. Definition of Medicinal Plants
+2. Role of Medicinal Plants in Herbal Medicine
+3. Botanical Characteristics of Medicinal Plants
+4. Plant Parts Used for Medicinal Purposes
+5. Chemical Composition and Phytochemicals
+6. Pharmacological Properties
+7. Therapeutic Uses of Medicinal Plants
+8. Preparation Methods for Medicinal Plants
+9. Dosage and Administration
+10. Safety, Toxicity, and Contraindications
+11. Identification of Medicinal Plants
+12. Cultivation and Growing Conditions
+13. Harvesting Techniques
+14. Processing and Extraction Methods
+15. Storage and Preservation
+16. Scientific Research on Medicinal Plants
+17. Regulation and Quality Control
+18. Sustainability and Conservation
+19. Examples of Important Medicinal Plants
+```
+
+This macro structure ensures the page covers the **major attributes of the entity type “medicinal plant.”**
+
+---
+
+# 2. Attribute Clusters for the Entity “Medicinal Plant”
+
+These clusters represent **semantic attribute vectors** required to establish **entity completeness**.
+
+Example triples:
+
+```
+Medicinal Plant → Contains → Flavonoids
+Medicinal Plant → Used for → Digestive disorders
+Medicinal Plant → Preparation → Decoction
+```
+
+---
+
+# A. Identity Attributes (Entity Definition)
+
+Defines **what a medicinal plant is**.
+
+Subtopics:
+
+* Definition of medicinal plants
+* Difference between medicinal plants and culinary herbs
+* Difference between medicinal plants and pharmaceutical drugs
+* Criteria that make a plant medicinal
+* Global diversity of medicinal plants
+
+Important vectors:
+
+```
+plant species
+botanical medicine
+herbal therapy
+therapeutic plant
+traditional medicine plant
+```
+
+Example triples:
+
+```
+Medicinal Plant → Biological Type → Plant species
+Medicinal Plant → Used in → Herbal medicine
+Medicinal Plant → Contains → Bioactive compounds
+```
+
+---
+
+# B. Botanical Attributes
+
+Medicinal plants are **biological organisms**, so their **botanical properties** must be described.
+
+Subtopics:
+
+* Plant morphology
+* Plant anatomy
+* Taxonomy
+* Growth habits
+* Ecological distribution
+
+Attributes:
+
+```
+scientific classification
+plant family
+genus
+species
+plant morphology
+```
+
+Example triples:
+
+```
+Medicinal Plant → Belongs to → Plant kingdom
+Medicinal Plant → Classified by → Botanical taxonomy
+```
+
+---
+
+# C. Plant Part Attributes
+
+Different plant parts contain **different therapeutic compounds**.
+
+Subtopics:
+
+```
+Roots used in herbal medicine
+Leaves used medicinally
+Flowers used medicinally
+Seeds used medicinally
+Bark used medicinally
+```
+
+Attributes:
+
+```
+root
+leaf
+flower
+seed
+bark
+fruit
+rhizome
+stem
+```
+
+Example:
+
+```
+Medicinal Plant → Medicinal Part → Root
+Medicinal Plant → Medicinal Part → Leaf
+```
+
+---
+
+# D. Phytochemical Attributes
+
+Medicinal plants are defined by **their chemical compounds**.
+
+Subtopics:
+
+* Phytochemistry
+* Secondary metabolites
+* Chemical diversity in plants
+
+Important compounds:
+
+```
+Alkaloids
+Flavonoids
+Terpenoids
+Phenolic compounds
+Glycosides
+Saponins
+Tannins
+Essential oils
+```
+
+Example:
+
+```
+Medicinal Plant → Active Compound → Alkaloids
+Medicinal Plant → Contains → Essential oils
+```
+
+---
+
+# E. Pharmacological Attributes
+
+These describe **biological effects on the body**.
+
+Subtopics:
+
+* Biological activity
+* Mechanisms of action
+* Interaction with human physiology
+
+Attributes:
+
+```
+Anti-inflammatory
+Antimicrobial
+Antioxidant
+Analgesic
+Sedative
+Adaptogenic
+Digestive stimulant
+Immune-modulating
+```
+
+Example triple:
+
+```
+Medicinal Plant → Pharmacological Effect → Anti-inflammatory
+```
+
+---
+
+# F. Therapeutic Application Attributes
+
+These describe **conditions treated with medicinal plants**.
+
+Subtopics:
+
+```
+Digestive disorders
+Respiratory conditions
+Skin conditions
+Inflammatory diseases
+Mental health conditions
+Immune support
+```
+
+Example vectors:
+
+```
+Digestive disorders
+Respiratory infections
+Skin inflammation
+Stress and anxiety
+Sleep disorders
+```
+
+Example triple:
+
+```
+Medicinal Plant → Treats → Respiratory conditions
+```
+
+---
+
+# G. Preparation Attributes
+
+How medicinal plants are **converted into remedies**.
+
+Subtopics:
+
+```
+Herbal teas
+Decoctions
+Tinctures
+Extracts
+Powders
+Capsules
+Topical preparations
+Essential oils
+```
+
+Attributes:
+
+```
+infusion
+decoction
+tincture
+extract
+powder
+ointment
+oil infusion
+```
+
+Example:
+
+```
+Medicinal Plant → Preparation Method → Infusion
+```
+
+---
+
+# H. Dosage Attributes
+
+Defines **how medicinal plants are used therapeutically**.
+
+Subtopics:
+
+```
+Recommended dose
+Herbal extract concentration
+Frequency of use
+Treatment duration
+```
+
+Attributes:
+
+```
+dose amount
+dosage frequency
+standardized extract strength
+treatment duration
+```
+
+---
+
+# I. Safety Attributes
+
+Critical for **medical reliability**.
+
+Subtopics:
+
+```
+Side effects
+Toxicity risks
+Drug interactions
+Contraindications
+Allergic reactions
+```
+
+Attributes:
+
+```
+toxicity level
+safe dosage
+interaction with pharmaceuticals
+pregnancy safety
+```
+
+Example triple:
+
+```
+Medicinal Plant → Safety Risk → Toxicity
+```
+
+---
+
+# J. Identification Attributes
+
+Correct identification prevents **misuse or poisoning**.
+
+Subtopics:
+
+```
+Botanical identification
+Visual characteristics
+Field identification
+Look-alike species
+Misidentification risks
+```
+
+Attributes:
+
+```
+leaf shape
+flower structure
+plant height
+color
+aroma
+```
+
+---
+
+# K. Cultivation Attributes
+
+Medicinal plants can be **wild-harvested or cultivated**.
+
+Subtopics:
+
+```
+Growing medicinal plants
+Soil conditions
+Climate requirements
+Organic cultivation
+```
+
+Attributes:
+
+```
+soil type
+climate zone
+sun exposure
+water requirements
+```
+
+---
+
+# L. Harvesting Attributes
+
+Harvesting affects **chemical potency**.
+
+Subtopics:
+
+```
+Best harvesting time
+Plant maturity
+Harvesting techniques
+Wildcrafting practices
+```
+
+Attributes:
+
+```
+season
+plant age
+harvest method
+```
+
+---
+
+# M. Processing Attributes
+
+After harvesting plants are **processed into usable forms**.
+
+Subtopics:
+
+```
+Drying
+Grinding
+Extraction
+Distillation
+Fermentation
+```
+
+Attributes:
+
+```
+drying method
+extraction solvent
+distillation
+powdering
+```
+
+---
+
+# N. Storage Attributes
+
+Storage preserves **potency and safety**.
+
+Subtopics:
+
+```
+Storage conditions
+Shelf life
+Protection from moisture and light
+Packaging
+```
+
+Attributes:
+
+```
+temperature
+humidity
+light exposure
+shelf life
+```
+
+---
+
+# O. Research Attributes
+
+Modern research validates medicinal plants.
+
+Subtopics:
+
+```
+Clinical research
+Pharmacological studies
+Phytochemical analysis
+Evidence-based herbal medicine
+```
+
+Attributes:
+
+```
+clinical trials
+laboratory studies
+mechanism research
+```
+
+---
+
+# P. Regulation Attributes
+
+Medicinal plants exist within **legal frameworks**.
+
+Subtopics:
+
+```
+Herbal supplement regulations
+Herbal pharmacopeias
+Traditional medicine recognition
+Quality standards
+```
+
+Examples:
+
+```
+WHO herbal guidelines
+European herbal medicine regulation
+FDA dietary supplement rules
+```
+
+---
+
+# Q. Sustainability Attributes
+
+Important due to **overharvesting risks**.
+
+Subtopics:
+
+```
+Endangered medicinal plants
+Sustainable harvesting
+Cultivation for conservation
+Biodiversity protection
+```
+
+Attributes:
+
+```
+conservation status
+harvest pressure
+sustainable supply
+```
+
+---
+
+# 3. Clean Attribute Vector Model
+
+Complete entity attribute coverage:
+
+```
+Medicinal Plant
+│
+├─ Identity
+├─ Botanical Characteristics
+├─ Plant Parts Used
+├─ Phytochemical Composition
+├─ Pharmacological Properties
+├─ Therapeutic Applications
+├─ Preparation Methods
+├─ Dosage
+├─ Safety and Toxicity
+├─ Identification
+├─ Cultivation
+├─ Harvesting
+├─ Processing
+├─ Storage
+├─ Scientific Research
+├─ Regulation
+└─ Sustainability
+```
+
+---
+
+# 4. Microsemantic Tip (Critical)
+
+The **first paragraph must define the entity precisely.**
+
+Example:
+
+> A medicinal plant is a plant species used for therapeutic purposes because it contains biologically active compounds that influence human health. These plants are the primary raw materials of herbal medicine and are used to prepare remedies such as teas, tinctures, extracts, and topical formulations. Medicinal plants have been used for thousands of years across medical systems such as Ayurveda, Traditional Chinese Medicine, and Western herbalism.
+
+This sentence establishes:
+
+* **entity identity**
+* **role in herbal medicine**
+* **core attributes (bioactive compounds, therapeutic use)**
+
+---
+
+✅ If you want, I can also show you the **Koray-level next step** that most people miss:
+
+How to turn **“Medicinal Plants” into a 40-page topical cluster** (including nodes like *plant identification*, *phytochemistry*, *herbal extraction*, etc.) so the page becomes a **true authority node in the herbal medicine SCN**.

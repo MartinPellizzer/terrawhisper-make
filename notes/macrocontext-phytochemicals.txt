@@ -1,0 +1,512 @@
+Below is a **Koray-style entity overview template** for the entity **“Phytochemicals”** within the **source context: Herbal Medicine**.
+
+The goal is to make the page function as a **self-contained entity node in your Semantic Content Network (SCN)**, meaning the page must cover the **primary attributes of the entity type** so search engines can understand the entity through **Entity → Attribute → Value relationships**. 
+
+---
+
+# 1. Macro Structure of the Overview Page
+
+This structure creates a **complete entity definition page** for phytochemicals.
+
+```
+H1: Phytochemicals: Plant Compounds in Herbal Medicine
+
+1. Definition of Phytochemicals
+2. Role of Phytochemicals in Herbal Medicine
+3. Types of Phytochemicals
+4. Biosynthesis of Phytochemicals in Plants
+5. Chemical Classification of Phytochemicals
+6. Biological and Pharmacological Effects
+7. Mechanisms of Action in the Human Body
+8. Therapeutic Functions in Herbal Medicine
+9. Distribution of Phytochemicals in Medicinal Plants
+10. Extraction and Isolation of Phytochemicals
+11. Factors Affecting Phytochemical Content
+12. Bioavailability and Metabolism
+13. Safety and Toxicity
+14. Scientific Research on Phytochemicals
+15. Phytochemicals in Modern Herbal Products
+16. Future Research and Applications
+```
+
+This structure ensures **macrosemantic coverage** of the entity.
+
+---
+
+# 2. Attribute Clusters for the Entity “Phytochemicals”
+
+Think of these as **semantic vectors** that define the entity.
+
+Example triples:
+
+```
+Phytochemicals → Type → Flavonoids
+Phytochemicals → Biological Effect → Antioxidant
+Phytochemicals → Source → Medicinal plants
+```
+
+---
+
+# A. Identity Attributes (What Phytochemicals Are)
+
+Defines the entity itself.
+
+Subtopics:
+
+* Definition of phytochemicals
+* Difference between phytochemicals and nutrients
+* Difference between phytochemicals and pharmaceutical compounds
+* Natural origin of phytochemicals
+* Relationship between phytochemicals and plant metabolism
+
+Important vectors:
+
+```
+plant compounds
+secondary metabolites
+bioactive molecules
+natural plant chemicals
+```
+
+Example triples:
+
+```
+Phytochemicals → Origin → Plants
+Phytochemicals → Type → Secondary metabolites
+```
+
+---
+
+# B. Biological Function in Plants
+
+Phytochemicals exist because they serve **biological roles in plants**.
+
+Subtopics:
+
+```
+Plant defense mechanisms
+Protection against pathogens
+Attraction of pollinators
+UV protection
+Growth regulation
+```
+
+Attributes:
+
+```
+defense compounds
+pigments
+signaling molecules
+protective chemicals
+```
+
+Example:
+
+```
+Phytochemicals → Function in Plants → Defense against herbivores
+```
+
+---
+
+# C. Chemical Classification Attributes
+
+This cluster explains **chemical types of phytochemicals**.
+
+Subtopics:
+
+```
+Major phytochemical groups
+Structural classification
+Functional groups
+```
+
+Core classes:
+
+```
+Alkaloids
+Flavonoids
+Terpenoids
+Phenolic compounds
+Glycosides
+Tannins
+Saponins
+Essential oils
+Lignans
+Coumarins
+```
+
+Example triples:
+
+```
+Phytochemicals → Class → Alkaloids
+Phytochemicals → Class → Flavonoids
+```
+
+---
+
+# D. Biosynthesis Attributes
+
+Explains **how plants produce phytochemicals**.
+
+Subtopics:
+
+```
+Plant metabolic pathways
+Secondary metabolite biosynthesis
+Enzymatic synthesis in plants
+```
+
+Key pathways:
+
+```
+Shikimate pathway
+Mevalonate pathway
+Polyketide pathway
+Phenylpropanoid pathway
+```
+
+Example:
+
+```
+Phytochemicals → Produced by → Plant metabolic pathways
+```
+
+---
+
+# E. Pharmacological Attributes
+
+These describe **how phytochemicals affect human physiology**.
+
+Subtopics:
+
+```
+Biological activity
+Interaction with enzymes
+Cell signaling modulation
+```
+
+Common activities:
+
+```
+Antioxidant
+Anti-inflammatory
+Antimicrobial
+Antiviral
+Anticancer
+Adaptogenic
+Immunomodulatory
+```
+
+Example triples:
+
+```
+Phytochemicals → Biological Activity → Antioxidant
+Phytochemicals → Biological Activity → Anti-inflammatory
+```
+
+---
+
+# F. Therapeutic Attributes
+
+Explains **how phytochemicals contribute to herbal medicine treatments**.
+
+Subtopics:
+
+```
+Disease prevention
+Therapeutic uses
+Supportive health effects
+```
+
+Examples:
+
+```
+Digestive health
+Cardiovascular support
+Immune system support
+Skin health
+Stress management
+Hormonal balance
+```
+
+Example triple:
+
+```
+Phytochemicals → Therapeutic Role → Disease prevention
+```
+
+---
+
+# G. Plant Source Attributes
+
+Phytochemicals come from **specific plant species and plant parts**.
+
+Subtopics:
+
+```
+Medicinal plant sources
+Distribution across plant species
+Concentration in plant tissues
+```
+
+Attributes:
+
+```
+leaf compounds
+root compounds
+bark compounds
+flower pigments
+seed oils
+```
+
+Example:
+
+```
+Phytochemicals → Found in → Medicinal plants
+```
+
+---
+
+# H. Extraction Attributes
+
+How phytochemicals are **obtained from plants**.
+
+Subtopics:
+
+```
+Herbal extraction methods
+Isolation techniques
+Solvent extraction
+```
+
+Methods:
+
+```
+Infusion
+Decoction
+Alcohol extraction
+Steam distillation
+Cold pressing
+Supercritical extraction
+```
+
+Example triple:
+
+```
+Phytochemicals → Extracted by → Solvent extraction
+```
+
+---
+
+# I. Stability and Environmental Attributes
+
+Factors influencing **phytochemical content**.
+
+Subtopics:
+
+```
+Plant genetics
+Soil conditions
+Climate
+Harvest timing
+Post-harvest handling
+```
+
+Attributes:
+
+```
+temperature sensitivity
+light exposure
+oxidation
+storage stability
+```
+
+---
+
+# J. Bioavailability Attributes
+
+Explains how phytochemicals behave **inside the human body**.
+
+Subtopics:
+
+```
+Absorption
+Metabolism
+Distribution
+Excretion
+```
+
+Attributes:
+
+```
+bioavailability
+digestive absorption
+metabolic transformation
+gut microbiome interaction
+```
+
+Example:
+
+```
+Phytochemicals → Absorption → Intestinal uptake
+```
+
+---
+
+# K. Safety Attributes
+
+Some phytochemicals may have **toxic or adverse effects**.
+
+Subtopics:
+
+```
+Toxic phytochemicals
+Side effects
+Drug interactions
+Safe dosage ranges
+```
+
+Attributes:
+
+```
+toxicity
+contraindications
+allergic reactions
+overdose risk
+```
+
+Example:
+
+```
+Phytochemicals → Risk → Toxicity at high doses
+```
+
+---
+
+# L. Research Attributes
+
+Modern science studies phytochemicals extensively.
+
+Subtopics:
+
+```
+Phytochemical analysis
+Pharmacological research
+Clinical trials
+Nutritional research
+```
+
+Methods:
+
+```
+Chromatography
+Mass spectrometry
+Spectroscopy
+Bioassays
+```
+
+Example triple:
+
+```
+Phytochemicals → Studied using → Chromatography
+```
+
+---
+
+# M. Industrial and Product Attributes
+
+Phytochemicals are used in **modern herbal products**.
+
+Subtopics:
+
+```
+Herbal supplements
+Functional foods
+Pharmaceutical development
+Cosmetics
+```
+
+Attributes:
+
+```
+standardized extracts
+nutraceuticals
+botanical medicines
+```
+
+Example:
+
+```
+Phytochemicals → Used in → Herbal supplements
+```
+
+---
+
+# N. Evolutionary and Ecological Attributes
+
+Phytochemicals evolved as **plant survival strategies**.
+
+Subtopics:
+
+```
+Plant evolution
+Chemical ecology
+Plant-insect interactions
+```
+
+Attributes:
+
+```
+defense evolution
+plant signaling
+ecological interactions
+```
+
+---
+
+# 3. Clean Attribute Vector Model
+
+This is the **complete attribute map** for the entity.
+
+```
+Phytochemicals
+│
+├─ Identity
+├─ Biological Function in Plants
+├─ Chemical Classification
+├─ Biosynthesis
+├─ Pharmacological Effects
+├─ Therapeutic Roles
+├─ Plant Sources
+├─ Extraction Methods
+├─ Stability and Environmental Factors
+├─ Bioavailability
+├─ Safety and Toxicity
+├─ Scientific Research
+├─ Industrial Applications
+└─ Ecological and Evolutionary Roles
+```
+
+This gives the entity **full contextual coverage**.
+
+---
+
+# 4. Microsemantic Tip (Critical for Koray)
+
+Your **first paragraph must immediately define the entity**.
+
+Example:
+
+> Phytochemicals are naturally occurring chemical compounds produced by plants, particularly as secondary metabolites involved in defense, signaling, and environmental adaptation. In herbal medicine, phytochemicals such as alkaloids, flavonoids, terpenoids, and phenolic compounds are responsible for many therapeutic effects because they interact with biological systems to produce antioxidant, anti-inflammatory, antimicrobial, and other pharmacological activities.
+
+This:
+
+* defines the **entity**
+* establishes the **source context (herbal medicine)**
+* introduces **major attribute vectors**
+
+---
+
+✅ **If you want, I can also show you something extremely useful for your site architecture:**
+
+The **Koray-style internal link map for this page**, including the **20–30 supporting pages** that typically branch from a **/phytochemicals/** node (this is where topical authority usually starts compounding).

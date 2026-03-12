@@ -46,6 +46,9 @@ def file_write(path, text):
     with open(path, 'w') as f:
         f.write(text)
 
+#######################
+# ;csv
+#######################
 def csv_read(filepath, delimiter='\\'):
     rows = []
     with open(filepath, newline='') as f:
@@ -55,9 +58,6 @@ def csv_read(filepath, delimiter='\\'):
                 rows.append(row)
     return rows
 
-#######################
-# ;csv
-#######################
 def csv_to_dict(filepath, delimiter='\\'):
     rows = csv_read(filepath, delimiter=delimiter)
     row_header = rows[0]

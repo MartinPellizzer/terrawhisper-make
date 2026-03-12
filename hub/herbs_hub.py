@@ -7661,7 +7661,7 @@ def herbs__actions__gen():
 def main():
     herbs__gen()
     herbs__classification__gen()
-    herbs__tradition__gen()
+    herbs__traditions__gen()
     herbs__phytochemistry__gen()
     herbs__actions__gen()
     quit()

@@ -1,0 +1,645 @@
+
+Below is a **Koray-style entity coverage template** for the core entity **“Herbal Medicine.”**
+The goal is to allow the page to **stand alone as an entity definition within the source context “Herbal Medicine.”**
+
+In semantic SEO terms, the overview page should cover the **primary attribute vectors of the entity type** so that the document forms a **mini knowledge base**. This follows the **Entity → Attribute → Value model** used for knowledge representation and topical coverage. 
+
+---
+
+# 1. Macro Structure of the Overview Page
+
+This is the **pillar page structure for the entity “Herbal Medicine.”**
+
+```
+H1: Herbal Medicine: Definition, Principles, Uses, and Safety
+
+1. Definition and Concept of Herbal Medicine
+2. Core Principles of Herbal Medicine
+3. Historical Development of Herbal Medicine
+4. Types of Herbal Medicine Systems
+5. Medicinal Plants Used in Herbal Medicine
+6. Phytochemical Foundations
+7. Mechanisms and Physiological Effects
+8. Therapeutic Applications
+9. Herbal Preparation Methods
+10. Dosage and Administration
+11. Safety, Risks, and Contraindications
+12. Quality Control and Standardization
+13. Cultivation and Sourcing of Medicinal Herbs
+14. Processing and Manufacturing
+15. Scientific Research and Evidence
+16. Regulation and Legal Status
+17. Sustainability and Ethical Harvesting
+18. Modern Role of Herbal Medicine
+19. Education and Training in Herbal Medicine
+```
+
+This **macro coverage** helps create strong **entity identity** by defining:
+
+```
+Herbal Medicine = medical practice using plant-derived preparations for health treatment and prevention.
+```
+
+---
+
+# 2. Attribute Clusters for the Entity “Herbal Medicine”
+
+These clusters represent **semantic vectors** necessary for topical completeness.
+
+Think of them as **knowledge triples**:
+
+```
+Herbal Medicine → Uses → Treatment of digestive disorders
+Herbal Medicine → Preparation → Tincture
+Herbal Medicine → Safety → Drug interactions
+```
+
+---
+
+# A. Identity Attributes (What Herbal Medicine Is)
+
+These attributes define **entity identity and boundaries**.
+
+**Subtopics**
+
+* Definition of herbal medicine
+* What makes a therapy herbal
+* Difference between herbal medicine and modern pharmaceuticals
+* Difference between herbal medicine and dietary supplements
+* Scope of herbal medicine practice
+
+**Important vectors**
+
+```
+medical system
+natural medicine
+plant-based therapy
+botanical medicine
+traditional medicine
+```
+
+**Example triples**
+
+```
+Herbal Medicine → Treatment Basis → Plant-derived substances
+Herbal Medicine → Category → Complementary medicine
+Herbal Medicine → Alternative to → Synthetic pharmaceuticals
+```
+
+---
+
+# B. Conceptual Principles
+
+Herbal medicine is based on **therapeutic philosophy and principles**.
+
+**Subtopics**
+
+* Holistic health approach
+* Balance and homeostasis
+* Synergistic plant compounds
+* Preventive health philosophy
+
+**Attributes**
+
+```
+Holistic treatment
+Synergy of plant compounds
+Individualized treatment
+Preventive care
+Vitality and balance
+```
+
+Example:
+
+```
+Herbal Medicine → Treatment Principle → Holistic healing
+Herbal Medicine → Therapeutic Model → Whole-plant synergy
+```
+
+---
+
+# C. Historical Attributes
+
+Herbal medicine is **deeply historical and cross-cultural**.
+
+**Subtopics**
+
+```
+Ancient herbal medicine traditions
+Evolution of herbal pharmacology
+Transmission of herbal knowledge
+Historical herbal texts
+```
+
+Major traditions:
+
+```
+Traditional Chinese Medicine (TCM)
+Ayurveda
+Western herbalism
+Unani medicine
+Indigenous medicine systems
+```
+
+Example triples:
+
+```
+Herbal Medicine → Origin → Ancient healing traditions
+Herbal Medicine → Documented in → Historical herbals
+```
+
+---
+
+# D. System and Tradition Attributes
+
+Herbal medicine exists across **multiple medical systems**.
+
+**Subtopics**
+
+```
+Traditional Chinese herbal medicine
+Ayurvedic herbal medicine
+Western herbal medicine
+African traditional herbal medicine
+Indigenous herbal healing
+```
+
+Attributes:
+
+```
+diagnostic systems
+herbal formulas
+treatment philosophy
+```
+
+Example:
+
+```
+Herbal Medicine → System → Ayurveda
+Herbal Medicine → System → Traditional Chinese Medicine
+```
+
+---
+
+# E. Botanical Resource Attributes
+
+Herbal medicine depends on **plant resources**.
+
+Subtopics:
+
+```
+Medicinal plant species
+Plant parts used
+Plant families used in herbal medicine
+```
+
+Attributes:
+
+```
+leaf
+root
+flower
+bark
+seed
+fruit
+rhizome
+```
+
+Example triples:
+
+```
+Herbal Medicine → Raw Material → Medicinal plants
+Herbal Medicine → Plant Part Used → Root
+```
+
+---
+
+# F. Chemical and Phytochemical Attributes
+
+Herbal medicine works through **bioactive compounds**.
+
+Subtopics:
+
+```
+Phytochemistry
+Secondary metabolites
+Plant compound diversity
+```
+
+Important chemical groups:
+
+```
+Alkaloids
+Flavonoids
+Terpenoids
+Phenolic compounds
+Tannins
+Saponins
+Glycosides
+Essential oils
+```
+
+Example:
+
+```
+Herbal Medicine → Active Compounds → Flavonoids
+Herbal Medicine → Active Compounds → Alkaloids
+```
+
+---
+
+# G. Pharmacological Attributes
+
+These explain **how herbal medicines affect physiology**.
+
+Subtopics:
+
+```
+Biological activity
+Mechanisms of action
+Physiological interactions
+```
+
+Attributes:
+
+```
+Anti-inflammatory
+Antimicrobial
+Antioxidant
+Adaptogenic
+Sedative
+Digestive stimulant
+Immune-modulating
+```
+
+Example:
+
+```
+Herbal Medicine → Pharmacological Effect → Anti-inflammatory
+```
+
+---
+
+# H. Therapeutic Application Attributes
+
+These represent **conditions treated with herbal medicine**.
+
+Subtopics:
+
+```
+Digestive health
+Respiratory disorders
+Skin conditions
+Mental health
+Hormonal balance
+Immune system support
+```
+
+Example categories:
+
+```
+Digestive disorders
+Respiratory illness
+Inflammatory conditions
+Pain management
+Stress and anxiety
+Sleep disorders
+```
+
+Example triple:
+
+```
+Herbal Medicine → Treats → Digestive disorders
+```
+
+---
+
+# I. Preparation Attributes
+
+How herbal medicine is **prepared and administered**.
+
+Common methods:
+
+```
+Infusion (herbal tea)
+Decoction
+Tincture
+Fluid extract
+Powder
+Capsule
+Topical preparation
+Essential oil
+Herbal syrup
+Poultice
+```
+
+Example triple:
+
+```
+Herbal Medicine → Preparation Method → Tincture
+```
+
+---
+
+# J. Administration Attributes
+
+How remedies are **taken or applied**.
+
+Attributes:
+
+```
+Oral ingestion
+Topical application
+Inhalation
+Bath preparations
+Compresses
+```
+
+Example:
+
+```
+Herbal Medicine → Administration Route → Oral
+```
+
+---
+
+# K. Dosage Attributes
+
+Important for **safe therapeutic use**.
+
+Subtopics:
+
+```
+Standard dosing ranges
+Treatment duration
+Herbal formula dosage
+Concentration levels
+```
+
+Attributes:
+
+```
+dose size
+frequency
+treatment length
+extract strength
+```
+
+---
+
+# L. Safety Attributes
+
+Critical for medical credibility.
+
+Subtopics:
+
+```
+Side effects
+Herb-drug interactions
+Contraindications
+Toxic plants
+Allergic reactions
+```
+
+Attributes:
+
+```
+toxicity
+drug interactions
+pregnancy safety
+child safety
+overdose risks
+```
+
+Example triple:
+
+```
+Herbal Medicine → Safety Concern → Drug interactions
+```
+
+---
+
+# M. Quality and Standardization Attributes
+
+Important in modern herbal practice.
+
+Subtopics:
+
+```
+Herbal extract standardization
+Quality control
+Purity testing
+Contaminant testing
+Active compound measurement
+```
+
+Attributes:
+
+```
+active compound concentration
+purity
+adulteration
+manufacturing standards
+```
+
+---
+
+# N. Cultivation and Sourcing Attributes
+
+Herbal medicine depends on **plant sourcing**.
+
+Subtopics:
+
+```
+Medicinal plant cultivation
+Wild harvesting
+Organic farming
+Geographic sourcing
+```
+
+Attributes:
+
+```
+soil conditions
+climate
+cultivation methods
+harvest location
+```
+
+---
+
+# O. Processing and Manufacturing Attributes
+
+After harvesting herbs must be processed.
+
+Subtopics:
+
+```
+Drying
+Grinding
+Extraction
+Distillation
+Packaging
+```
+
+Attributes:
+
+```
+drying techniques
+extraction methods
+distillation
+formulation
+```
+
+---
+
+# P. Scientific Research Attributes
+
+Modern validation.
+
+Subtopics:
+
+```
+Clinical trials
+Pharmacological studies
+Evidence-based herbal medicine
+Phytochemical research
+```
+
+Attributes:
+
+```
+efficacy studies
+mechanism studies
+safety studies
+clinical trials
+```
+
+---
+
+# Q. Regulatory Attributes
+
+Legal frameworks vary by region.
+
+Subtopics:
+
+```
+Herbal medicine regulation
+Dietary supplement laws
+Traditional medicine approval
+Herbal pharmacopeias
+```
+
+Examples:
+
+```
+FDA herbal supplement regulation
+European Medicines Agency herbal guidelines
+Traditional medicine regulations
+```
+
+---
+
+# R. Sustainability Attributes
+
+Important for ecological impact.
+
+Subtopics:
+
+```
+Endangered medicinal plants
+Sustainable harvesting
+Biodiversity protection
+Ethical sourcing
+```
+
+Attributes:
+
+```
+conservation status
+wild population impact
+ethical supply chains
+```
+
+---
+
+# S. Educational Attributes (Source Context)
+
+Because your **source context is herbal medicine education**, this cluster matters.
+
+Subtopics:
+
+```
+Herbal medicine training
+Herbal pharmacology
+Materia medica
+Plant identification
+Clinical herbal practice
+```
+
+Attributes:
+
+```
+herbalist training
+herbal medicine schools
+clinical herbal practice
+```
+
+---
+
+# 3. Clean Attribute Vector Model
+
+This is the **complete entity coverage map**.
+
+```
+Herbal Medicine
+│
+├─ Identity
+├─ Conceptual Principles
+├─ Historical Development
+├─ Medical Systems and Traditions
+├─ Medicinal Plant Resources
+├─ Phytochemistry
+├─ Pharmacological Effects
+├─ Therapeutic Applications
+├─ Preparation Methods
+├─ Administration Routes
+├─ Dosage
+├─ Safety and Toxicity
+├─ Quality and Standardization
+├─ Cultivation and Sourcing
+├─ Processing and Manufacturing
+├─ Scientific Research
+├─ Regulation
+├─ Sustainability
+└─ Education and Training
+```
+
+---
+
+# 4. Microsemantic Tip (Very Important)
+
+Your **first paragraph must immediately define the entity and its scope**.
+
+Example:
+
+> Herbal medicine is a form of healthcare that uses plant-derived substances such as leaves, roots, flowers, and seeds to prevent, treat, or manage health conditions. It is practiced in medical traditions such as Traditional Chinese Medicine, Ayurveda, and Western herbalism, where medicinal plants are prepared as teas, tinctures, extracts, and topical remedies to influence physiological processes through bioactive compounds.
+
+This type of sentence:
+
+* establishes **entity identity**
+* clarifies **scope**
+* reduces **semantic ambiguity**
+
+—which improves retrieval probability for both **search engines and AI systems**.
+
+---
+
+If you want, I can also show you something **very powerful Koray does next**:
+
+**How to convert this entity overview into a full topical map (50–150 pages) for a Herbal Medicine site**, including:
+
+* pillar pages
+* cluster pages
+* node pages
+* internal link architecture.

@@ -179,8 +179,8 @@ if 0:
         herbs_images.gen()
         quit()
 
-if 1:
-    if 1:
+if 0:
+    if 0:
         # topic hub
         from hub import herbs_hub
         herbs_hub.main()
@@ -214,6 +214,22 @@ if 0:
     if 1:
         from ai import taxonomy_ai
         taxonomy_ai.main()
+
+########################################
+# PHYTOCHEMICALS
+########################################
+if 0:
+    if 1:
+        from ai import phytochemicals_ai
+        phytochemicals_ai.main()
+
+########################################
+# HERBAL MEDICINE
+########################################
+if 1:
+    if 1:
+        from hub import herbal_medicine_hub
+        herbal_medicine_hub.main()
 
 ########################################
 # HOME...........................[HOM]
