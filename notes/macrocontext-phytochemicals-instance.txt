@@ -1,0 +1,606 @@
+
+Below is a **reusable Koray-style template** for **any phytochemical class page** such as:
+
+```
+/phytochemicals/alkaloids.html
+/phytochemicals/flavonoids.html
+/phytochemicals/terpenoids.html
+/phytochemicals/tannins.html
+/phytochemicals/saponins.html
+```
+
+The goal is to make **each phytochemical class stand alone as an entity node** while still being connected to the larger SCN:
+
+```
+Herbal Medicine
+→ Phytochemicals
+→ Classification
+→ Specific Phytochemical Class
+```
+
+The page should therefore cover **all primary attribute vectors of a phytochemical entity type**.
+
+---
+
+# 1. Macro Structure of the Page
+
+This is the **universal structure** you can reuse for any phytochemical class.
+
+```
+H1: [Phytochemical Class] in Herbal Medicine
+
+1. Definition of [Phytochemical Class]
+2. Chemical Characteristics and Structure
+3. Biosynthesis in Plants
+4. Types and Subclasses of [Phytochemical Class]
+5. Natural Sources and Medicinal Plants
+6. Distribution in Plant Parts
+7. Biological Role in Plants
+8. Pharmacological Properties
+9. Mechanisms of Action in the Human Body
+10. Therapeutic Applications in Herbal Medicine
+11. Examples of Important Compounds
+12. Extraction and Isolation Methods
+13. Stability and Environmental Influences
+14. Bioavailability and Metabolism
+15. Safety, Toxicity, and Side Effects
+16. Drug and Herb Interactions
+17. Research and Clinical Evidence
+18. Applications in Herbal Products
+19. Future Research and Emerging Uses
+```
+
+Replace **[Phytochemical Class]** with:
+
+```
+Alkaloids
+Flavonoids
+Terpenoids
+Tannins
+Saponins
+Glycosides
+Phenolic compounds
+Essential oils
+```
+
+---
+
+# 2. Attribute Clusters for a Phytochemical Entity
+
+These clusters define the **semantic identity of any phytochemical class**.
+
+Think in **Entity → Attribute → Value triples**.
+
+Example:
+
+```
+Alkaloids → Source → Medicinal plants
+Alkaloids → Activity → Analgesic
+Alkaloids → Structure → Nitrogen-containing compounds
+```
+
+---
+
+# A. Identity Attributes (Entity Definition)
+
+Defines the entity itself.
+
+Subtopics
+
+* Definition of the phytochemical class
+* Origin of the name
+* Role within phytochemicals
+* Relationship to plant secondary metabolites
+
+Important vectors
+
+```
+plant secondary metabolite
+natural plant compound
+bioactive molecule
+phytochemical class
+```
+
+Example triples
+
+```
+Alkaloids → Type → Phytochemicals
+Flavonoids → Category → Polyphenols
+```
+
+---
+
+# B. Chemical Structure Attributes
+
+Every phytochemical class is defined by **chemical structure**.
+
+Subtopics
+
+* Molecular structure
+* Functional groups
+* Structural backbone
+* Chemical properties
+
+Attributes
+
+```
+molecular structure
+functional groups
+chemical formula patterns
+ring structures
+solubility
+```
+
+Example
+
+```
+Alkaloids → Chemical Feature → Nitrogen atoms
+Flavonoids → Chemical Feature → Polyphenolic structure
+```
+
+---
+
+# C. Biosynthesis Attributes
+
+Explains **how plants produce the compound class**.
+
+Subtopics
+
+```
+plant metabolic pathways
+enzymatic synthesis
+precursor molecules
+```
+
+Attributes
+
+```
+secondary metabolism
+biosynthetic pathways
+enzyme activity
+precursor compounds
+```
+
+Example
+
+```
+Flavonoids → Produced by → Phenylpropanoid pathway
+Terpenoids → Produced by → Mevalonate pathway
+```
+
+---
+
+# D. Subclass Attributes
+
+Many phytochemical classes contain **subcategories**.
+
+Subtopics
+
+Example for flavonoids:
+
+```
+flavones
+flavonols
+flavanones
+anthocyanins
+isoflavones
+```
+
+Example for alkaloids:
+
+```
+indole alkaloids
+tropane alkaloids
+quinoline alkaloids
+isoquinoline alkaloids
+```
+
+Attributes
+
+```
+subclass types
+structural variants
+chemical families
+```
+
+---
+
+# E. Plant Source Attributes
+
+Describes **where the compounds occur in nature**.
+
+Subtopics
+
+```
+medicinal plant species
+plant families
+botanical sources
+```
+
+Attributes
+
+```
+plant species
+plant families
+geographic distribution
+```
+
+Example
+
+```
+Alkaloids → Found in → Papaveraceae plants
+Flavonoids → Found in → Fruits and leaves
+```
+
+---
+
+# F. Plant Part Distribution Attributes
+
+Many phytochemicals are concentrated in **specific plant parts**.
+
+Subtopics
+
+```
+root compounds
+leaf compounds
+bark compounds
+flower pigments
+seed compounds
+```
+
+Attributes
+
+```
+roots
+leaves
+flowers
+bark
+seeds
+fruits
+```
+
+---
+
+# G. Biological Role in Plants
+
+Phytochemicals evolved for **plant survival**.
+
+Subtopics
+
+```
+plant defense
+UV protection
+pollinator attraction
+growth regulation
+```
+
+Attributes
+
+```
+defense compounds
+pigments
+signaling molecules
+protective chemicals
+```
+
+Example
+
+```
+Tannins → Function → Defense against herbivores
+Anthocyanins → Function → Pigment for pollinator attraction
+```
+
+---
+
+# H. Pharmacological Attributes
+
+Explains **biological activity in humans**.
+
+Subtopics
+
+```
+biological activity
+physiological interactions
+cell signaling effects
+```
+
+Attributes
+
+```
+antioxidant
+anti-inflammatory
+antimicrobial
+analgesic
+antiviral
+anticancer
+adaptogenic
+```
+
+Example
+
+```
+Flavonoids → Activity → Antioxidant
+Alkaloids → Activity → Analgesic
+```
+
+---
+
+# I. Mechanism of Action Attributes
+
+Describes **how the compounds affect biological systems**.
+
+Subtopics
+
+```
+enzyme inhibition
+receptor binding
+cell signaling modulation
+oxidative stress reduction
+```
+
+Attributes
+
+```
+enzyme interaction
+receptor interaction
+metabolic regulation
+antioxidant mechanisms
+```
+
+---
+
+# J. Therapeutic Application Attributes
+
+Connects the compound class to **herbal medicine uses**.
+
+Subtopics
+
+```
+disease prevention
+therapeutic effects
+traditional herbal uses
+```
+
+Example categories
+
+```
+digestive health
+cardiovascular support
+immune modulation
+pain management
+skin health
+```
+
+Example triple
+
+```
+Flavonoids → Therapeutic Role → Cardiovascular protection
+```
+
+---
+
+# K. Extraction Attributes
+
+How compounds are obtained from plants.
+
+Subtopics
+
+```
+solvent extraction
+distillation
+maceration
+chromatographic isolation
+```
+
+Attributes
+
+```
+extraction techniques
+purification methods
+isolation processes
+```
+
+---
+
+# L. Stability Attributes
+
+Factors affecting compound stability.
+
+Subtopics
+
+```
+temperature effects
+light sensitivity
+oxidation
+storage stability
+```
+
+Attributes
+
+```
+chemical stability
+degradation
+shelf life
+```
+
+---
+
+# M. Bioavailability Attributes
+
+Explains **absorption and metabolism**.
+
+Subtopics
+
+```
+intestinal absorption
+metabolism in the liver
+distribution in tissues
+excretion
+```
+
+Attributes
+
+```
+bioavailability
+metabolic transformation
+gut microbiome interaction
+```
+
+---
+
+# N. Safety Attributes
+
+Important for medical credibility.
+
+Subtopics
+
+```
+toxicity
+side effects
+contraindications
+dose limits
+```
+
+Attributes
+
+```
+toxic dose
+adverse effects
+safety profile
+```
+
+Example
+
+```
+Alkaloids → Risk → Neurotoxicity at high doses
+```
+
+---
+
+# O. Drug Interaction Attributes
+
+Important in herbal medicine.
+
+Subtopics
+
+```
+herb-drug interactions
+enzyme inhibition
+synergistic effects
+```
+
+Attributes
+
+```
+drug metabolism interaction
+pharmacokinetic interaction
+pharmacodynamic interaction
+```
+
+---
+
+# P. Research Attributes
+
+Modern scientific study.
+
+Subtopics
+
+```
+phytochemical analysis
+pharmacological research
+clinical trials
+nutritional studies
+```
+
+Methods
+
+```
+chromatography
+mass spectrometry
+spectroscopy
+bioassays
+```
+
+---
+
+# Q. Industrial and Product Attributes
+
+Usage in herbal products.
+
+Subtopics
+
+```
+herbal supplements
+nutraceuticals
+pharmaceutical development
+cosmetics
+```
+
+Attributes
+
+```
+standardized extracts
+functional foods
+botanical products
+```
+
+---
+
+# 3. Clean Attribute Vector Model
+
+Reusable semantic map.
+
+```
+[Phytochemical Class]
+│
+├─ Identity
+├─ Chemical Structure
+├─ Biosynthesis
+├─ Subclasses
+├─ Plant Sources
+├─ Plant Part Distribution
+├─ Biological Role in Plants
+├─ Pharmacological Effects
+├─ Mechanisms of Action
+├─ Therapeutic Applications
+├─ Extraction Methods
+├─ Stability Factors
+├─ Bioavailability
+├─ Safety and Toxicity
+├─ Drug Interactions
+├─ Scientific Research
+└─ Industrial Applications
+```
+
+---
+
+# 4. Microsemantic Tip (Critical)
+
+Your **first paragraph should define the compound class immediately**.
+
+Example for **alkaloids**:
+
+> Alkaloids are nitrogen-containing phytochemicals produced by plants as secondary metabolites, many of which have potent biological activity in humans. In herbal medicine, alkaloids are responsible for numerous therapeutic effects such as pain relief, antimicrobial activity, and nervous system modulation, and they occur in medicinal plants such as poppy, belladonna, and goldenseal.
+
+This establishes:
+
+* entity identity
+* chemical class
+* herbal medicine relevance
+
+---
+
+✅ **Important Koray architecture insight**
+
+These pages should internally link like this:
+
+```
+/phytochemicals/
+/phytochemicals/classification/
+/phytochemicals/alkaloids/
+/phytochemicals/flavonoids/
+/phytochemicals/terpenoids/
+/phytochemicals/tannins/
+```
+
+This creates a **clear semantic hierarchy**, which helps search engines interpret the **entity type → subclasses → properties**.

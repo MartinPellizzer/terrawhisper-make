@@ -1049,35 +1049,35 @@ def phytochemicals__classification__gen():
     '''
     alkaloids_html = f'''
         <h3>Alkaloids</h3>
-        <p>{alkaloids_subordinate_html}</p>
+        <p>{alkaloids_subordinate_html.replace('Alkaloids', '<a href="/phytochemicals/alkaloids.html">Alkaloids</a>')}</p>
     '''
     flavonoids_html = f'''
         <h3>Flavonoids</h3>
-        <p>{flavonoids_subordinate_html}</p>
+        <p>{flavonoids_subordinate_html.replace('Flavonoids', '<a href="/phytochemicals/flavonoids.html">Flavonoids</a>')}</p>
     '''
     terpenoids_html = f'''
         <h3>Terpenoids</h3>
-        <p>{terpenoids_subordinate_html}</p>
+        <p>{terpenoids_subordinate_html.replace('Terpenoids', '<a href="/phytochemicals/terpenoids.html">Terpenoids</a>')}</p>
     '''
     phenolic_compounds_html = f'''
         <h3>Phenolic Compounds</h3>
-        <p>{phenolic_compounds_subordinate_html}</p>
+        <p>{phenolic_compounds_subordinate_html.replace('Phenolic compounds', '<a href="/phytochemicals/phenolic-compounds.html">Phenolic compounds</a>')}</p>
     '''
     glycosides_html = f'''
         <h3>Glycosides</h3>
-        <p>{glycosides_subordinate_html}</p>
+        <p>{glycosides_subordinate_html.replace('Glycosides', '<a href="/phytochemicals/glycosides.html">Glycosides</a>')}</p>
     '''
     tannins_html = f'''
         <h3>Tannins</h3>
-        <p>{tannins_subordinate_html}</p>
+        <p>{tannins_subordinate_html.replace('Tannins', '<a href="/phytochemicals/tannins.html">Tannins</a>')}</p>
     '''
     saponins_html = f'''
         <h3>Saponins</h3>
-        <p>{saponins_subordinate_html}</p>
+        <p>{saponins_subordinate_html.replace('Saponins', '<a href="/phytochemicals/saponins.html">Saponins</a>')}</p>
     '''
     essential_oils_html = f'''
         <h3>Essential Oils</h3>
-        <p>{essential_oils_subordinate_html}</p>
+        <p>{essential_oils_subordinate_html.replace('Essential oils', '<a href="/phytochemicals/essential-oils.html">Essential oils</a>')}</p>
     '''
     ###
     structural_classification_html = f'''
@@ -1191,9 +1191,296 @@ Phytochemical Classification
     io.folder_create_from_filepath(html_filepath)
     with open(html_filepath, 'w') as f: f.write(html)
 
+def phytochemicals__phytochemical__gen(phytochemical):
+    phytochemical_slug = phytochemical.replace(' ', '-')
+    url_slug = f'phytochemicals/{phytochemical_slug}'
+    meta_title = f'Phytochemicals {phytochemical.title()}'
+    meta_description = ''
+    canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''
+    
+    ########################################
+    # json
+    ########################################
+    json_article_filepath = f'''{g.DATABASE_FOLDERPATH}/json/{url_slug}.json'''
+    json_article = io.json_read(json_article_filepath, create=True)
+    json_article['url'] = url_slug
+    io.json_write(json_article_filepath, json_article)
+
+    ###
+    intro_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='intro', 
+        attribute='introduction', entity=f'phytochemicals {phytochemical}', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    definition_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='definition', 
+        attribute='definition', entity=f'phytochemicals {phytochemical}', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    chemical_structure_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='chemical_structure', 
+        attribute='chemical structure', entity=f'phytochemicals {phytochemical}', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    biosynthesis_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='biosynthesis', 
+        attribute='biosynthesis', entity=f'phytochemicals {phytochemical}', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    subclasses_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='subclasses', 
+        attribute=f'subclasses of {phytochemical}', entity=f'phytochemicals {phytochemical}', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    plant_sources_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='plant_sources', 
+        attribute='plant sources', entity=f'phytochemicals {phytochemical}', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    plant_part_distribution_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='plant_part_distribution', 
+        attribute='plant part distribution', entity=f'phytochemicals {phytochemical}', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    biological_role_in_plants_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='biological_role_in_plants', 
+        attribute='biological role in plants', entity=f'phytochemicals {phytochemical}', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    pharmacological_effects_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='pharmacological_effects', 
+        attribute='pharmacological effects', entity=f'phytochemicals {phytochemical}', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    mechanisms_of_action_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='mechanisms_of_action', 
+        attribute='mechanisms of action', entity=f'phytochemicals {phytochemical}', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    therapeutic_applications_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='therapeutic_applications', 
+        attribute='therapeutic applications', entity=f'phytochemicals {phytochemical}', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    extraction_methods_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='extraction_methods', 
+        attribute='extraction methods', entity=f'phytochemicals {phytochemical}', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    stability_factors_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='stability_factors', 
+        attribute='stability factors', entity=f'phytochemicals {phytochemical}', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    bioavailability_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='bioavailability', 
+        attribute='bioavailability', entity=f'phytochemicals {phytochemical}', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    safety_and_toxicity_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='safety_and_toxicity', 
+        attribute='safety and toxicity', entity=f'phytochemicals {phytochemical}', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    drug_interactions_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='drug_interactions', 
+        attribute='drug interactions', entity=f'phytochemicals {phytochemical}', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    scientific_research_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='scientific_research', 
+        attribute='scientific_research', entity=f'phytochemicals {phytochemical}', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    industrial_applications_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='industrial_applications', 
+        attribute='industrial applications', entity=f'phytochemicals {phytochemical}', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+
+    ########################################
+    # html
+    ########################################
+    ###
+    intro_html = f'''
+        <h1>
+            {phytochemical.title()} in Herbal Medicine
+        </h1>
+        <p>
+            {intro_subordinate_html}
+        </p>
+        <p>
+            Here you can find a complete <a href="/phytochemicals/classification.html">classification of phytochemicals.</a>
+        </p>
+    '''
+    definition_html = f'''
+        <section class="article-section">
+            <h2>Definition</h2>
+            <p>{definition_subordinate_html}</p>
+        </section>
+    '''
+    chemical_structure_html = f'''
+        <section class="article-section">
+            <h2>Chemical Structure</h2>
+            <p>{chemical_structure_subordinate_html}</p>
+        </section>
+    '''
+    biosynthesis_html = f'''
+        <section class="article-section">
+            <h2>Biosynthesis</h2>
+            <p>{biosynthesis_subordinate_html}</p>
+        </section>
+    '''
+    subclasses_html = f'''
+        <section class="article-section">
+            <h2>Subclasses</h2>
+            <p>{subclasses_subordinate_html}</p>
+        </section>
+    '''
+    plant_sources_html = f'''
+        <section class="article-section">
+            <h2>Plant Sources</h2>
+            <p>{plant_sources_subordinate_html}</p>
+        </section>
+    '''
+    plant_part_distribution_html = f'''
+        <section class="article-section">
+            <h2>Plant Part Distribution</h2>
+            <p>{plant_part_distribution_subordinate_html}</p>
+        </section>
+    '''
+    biological_role_in_plants_html = f'''
+        <section class="article-section">
+            <h2>Biological Role in Plants</h2>
+            <p>{biological_role_in_plants_subordinate_html}</p>
+        </section>
+    '''
+    pharmacological_effects_html = f'''
+        <section class="article-section">
+            <h2>Pharmacological Effects</h2>
+            <p>{pharmacological_effects_subordinate_html}</p>
+        </section>
+    '''
+    mechanisms_of_action_html = f'''
+        <section class="article-section">
+            <h2>Mechanisms of Action</h2>
+            <p>{mechanisms_of_action_subordinate_html}</p>
+        </section>
+    '''
+    therapeutic_applications_html = f'''
+        <section class="article-section">
+            <h2>Therapeutic Applications</h2>
+            <p>{therapeutic_applications_subordinate_html}</p>
+        </section>
+    '''
+    extraction_methods_html = f'''
+        <section class="article-section">
+            <h2>Extraction Methods</h2>
+            <p>{extraction_methods_subordinate_html}</p>
+        </section>
+    '''
+    stability_factors_html = f'''
+        <section class="article-section">
+            <h2>Stability Factors</h2>
+            <p>{stability_factors_subordinate_html}</p>
+        </section>
+    '''
+    bioavailability_html = f'''
+        <section class="article-section">
+            <h2>Bioavailability</h2>
+            <p>{bioavailability_subordinate_html}</p>
+        </section>
+    '''
+    safety_and_toxicity_html = f'''
+        <section class="article-section">
+            <h2>Safety and Toxicity</h2>
+            <p>{safety_and_toxicity_subordinate_html}</p>
+        </section>
+    '''
+    drug_interactions_html = f'''
+        <section class="article-section">
+            <h2>Drug Interactions</h2>
+            <p>{drug_interactions_subordinate_html}</p>
+        </section>
+    '''
+    scientific_research_html = f'''
+        <section class="article-section">
+            <h2>Scientific Research</h2>
+            <p>{scientific_research_subordinate_html}</p>
+        </section>
+    '''
+    industrial_applications_html = f'''
+        <section class="article-section">
+            <h2>Industrial Applications</h2>
+            <p>{industrial_applications_subordinate_html}</p>
+        </section>
+    '''
+
+    article_html = f'''
+        {intro_html}
+        {definition_html}
+        {chemical_structure_html}
+        {biosynthesis_html}
+        {subclasses_html}
+        {plant_sources_html}
+        {plant_part_distribution_html}
+        {biological_role_in_plants_html}
+        {pharmacological_effects_html}
+        {mechanisms_of_action_html}
+        {therapeutic_applications_html}
+        {extraction_methods_html}
+        {stability_factors_html}
+        {bioavailability_html}
+        {safety_and_toxicity_html}
+        {drug_interactions_html}
+        {scientific_research_html}
+        {industrial_applications_html}
+    '''
+    '''
+    '''
+
+    ###
+    head_html = components.html_head(
+        meta_title, meta_description, css='/styles-herb-monograph.css', canonical=canonical_html
+    )
+    import textwrap
+    html = textwrap.dedent(f''' 
+        <!DOCTYPE html>
+        <html lang="en">
+        {head_html}
+        <body>
+            {sections.header_default()}
+            {sections.breadcrumbs_new(url_slug)}
+            <main>
+                <article class="container-md article">
+                    {article_html}
+                </article>
+            </main>
+            {sections.footer()}
+        </body>
+        </html>
+    ''').strip()
+    html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
+    io.folder_create_from_filepath(html_filepath)
+    with open(html_filepath, 'w') as f: f.write(html)
+
 def main():
     herbal_medicine__gen()
     phytochemicals__gen()
     phytochemicals__classification__gen()
+    ###
+    phytochemicals = [
+        'alkaloids', 
+        'flavonoids', 
+        'terpenoids',
+        'phenolic compounds',
+        'glycosides',
+        'tannins',
+        'saponins',
+        'essential oils',
+    ]
+    for phytochemical in phytochemicals:
+        phytochemicals__phytochemical__gen(phytochemical)
+    ###
     herbs__gen()
 
