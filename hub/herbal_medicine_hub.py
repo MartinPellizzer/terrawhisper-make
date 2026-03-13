@@ -913,6 +913,99 @@ def phytochemicals__classification__gen():
             </p>
         '''
 
+    definition_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='definition', 
+        attribute='definition', entity='phytochemicals', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    principles_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='principles', 
+        attribute='principles', entity='phytochemicals classification', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    ###
+    major_classes_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='major_classes', 
+        attribute='major classes', entity='phytochemicals classification', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    alkaloids_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='alkaloids', 
+        attribute='alkaloids', entity='phytochemicals classification', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    flavonoids_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='flavonoids', 
+        attribute='flavonoids', entity='phytochemicals classification', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    terpenoids_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='terpenoids', 
+        attribute='terpenoids', entity='phytochemicals classification', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    phenolic_compounds_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='phenolic_compounds', 
+        attribute='phenolic compounds', entity='phytochemicals classification', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    glycosides_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='glycosides', 
+        attribute='glycosides', entity='phytochemicals classification', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    tannins_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='tannins', 
+        attribute='tannins', entity='phytochemicals classification', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    saponins_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='saponins', 
+        attribute='saponins', entity='phytochemicals classification', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    essential_oils_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='essential_oils', 
+        attribute='essential oils', entity='phytochemicals classification', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    ###
+    structural_classification_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='structural_classification', 
+        attribute='structural classification', entity='phytochemicals classification', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    biosynthetic_classification_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='biosynthetic_classification', 
+        attribute='biosynthetic classification', entity='phytochemicals classification', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    functional_classification_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='functional_classification', 
+        attribute='functional classification', entity='phytochemicals classification', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    plant_distribution_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='plant_distribution', 
+        attribute='plant distribution', entity='phytochemicals classification', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    analytical_methods_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='analytical_methods', 
+        attribute='analytical methods', entity='phytochemicals classification', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    role_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='role', 
+        attribute='role', entity='phytochemicals classification', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    developments_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='developments', 
+        attribute='developments', entity='phytochemicals classification', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+
     ########################################
     # html
     ########################################
@@ -930,13 +1023,146 @@ def phytochemicals__classification__gen():
             <p>{definition_subordinate_html}</p>
         </section>
     '''
+    principles_html = f'''
+        <section class="article-section">
+            <h2>Principles</h2>
+            <p>{principles_subordinate_html}</p>
+        </section>
+    '''
+    ###
+    major_classes_html = f'''
+        <section class="article-section">
+            <h2>Major Classes</h2>
+            <p>{major_classes_subordinate_html}</p>
+            <p>The list below shows some of the most important major phytochemical classes in herbal medicine.</p>
+            <ul>
+                <li>Alkaloids</li>
+                <li>Flavonoids</li>
+                <li>Terpenoids</li>
+                <li>Phenolic Compounds</li>
+                <li>Glycosides</li>
+                <li>Tannins</li>
+                <li>Saponins</li>
+                <li>Essential Oils</li>
+            </ul>
+        </section>
+    '''
+    alkaloids_html = f'''
+        <h3>Alkaloids</h3>
+        <p>{alkaloids_subordinate_html}</p>
+    '''
+    flavonoids_html = f'''
+        <h3>Flavonoids</h3>
+        <p>{flavonoids_subordinate_html}</p>
+    '''
+    terpenoids_html = f'''
+        <h3>Terpenoids</h3>
+        <p>{terpenoids_subordinate_html}</p>
+    '''
+    phenolic_compounds_html = f'''
+        <h3>Phenolic Compounds</h3>
+        <p>{phenolic_compounds_subordinate_html}</p>
+    '''
+    glycosides_html = f'''
+        <h3>Glycosides</h3>
+        <p>{glycosides_subordinate_html}</p>
+    '''
+    tannins_html = f'''
+        <h3>Tannins</h3>
+        <p>{tannins_subordinate_html}</p>
+    '''
+    saponins_html = f'''
+        <h3>Saponins</h3>
+        <p>{saponins_subordinate_html}</p>
+    '''
+    essential_oils_html = f'''
+        <h3>Essential Oils</h3>
+        <p>{essential_oils_subordinate_html}</p>
+    '''
+    ###
+    structural_classification_html = f'''
+        <section class="article-section">
+            <h2>Structural Classification</h2>
+            <p>{structural_classification_subordinate_html}</p>
+        </section>
+    '''
+    biosynthetic_classification_html = f'''
+        <section class="article-section">
+            <h2>Biosynthetic Classification</h2>
+            <p>{biosynthetic_classification_subordinate_html}</p>
+        </section>
+    '''
+    functional_classification_html = f'''
+        <section class="article-section">
+            <h2>Functional Classification</h2>
+            <p>{functional_classification_subordinate_html}</p>
+        </section>
+    '''
+    plant_distribution_html = f'''
+        <section class="article-section">
+            <h2>Plant Distribution</h2>
+            <p>{plant_distribution_subordinate_html}</p>
+        </section>
+    '''
+    analytical_methods_html = f'''
+        <section class="article-section">
+            <h2>Analytical Methods</h2>
+            <p>{analytical_methods_subordinate_html}</p>
+        </section>
+    '''
+    role_html = f'''
+        <section class="article-section">
+            <h2>Role</h2>
+            <p>{role_subordinate_html}</p>
+        </section>
+    '''
+    developments_html = f'''
+        <section class="article-section">
+            <h2>Developments</h2>
+            <p>{developments_subordinate_html}</p>
+        </section>
+    '''
 
     article_html = f'''
         {intro_html}
         {definition_html}
-        {phytochemicals_html}
+        {principles_html}
+        {major_classes_html}
+            {alkaloids_html}
+            {flavonoids_html}
+            {terpenoids_html}
+            {phenolic_compounds_html}
+            {glycosides_html}
+            {tannins_html}
+            {saponins_html}
+            {essential_oils_html}
+        {structural_classification_html}
+        {biosynthetic_classification_html}
+        {functional_classification_html}
+        {plant_distribution_html}
+        {analytical_methods_html}
+        {role_html}
+        {developments_html}
     '''
     '''
+Phytochemical Classification
+│
+├─ Major Phytochemical Classes
+│   ├─ Alkaloids
+│   ├─ Flavonoids
+│   ├─ Terpenoids
+│   ├─ Phenolic Compounds
+│   ├─ Glycosides
+│   ├─ Tannins
+│   ├─ Saponins
+│   └─ Essential Oils
+├─ Structural Classification
+├─ Biosynthetic Classification
+├─ Functional Classification
+├─ Plant Distribution
+├─ Analytical Methods
+├─ Role in Herbal Medicine
+└─ Modern Developments
 
     '''
 

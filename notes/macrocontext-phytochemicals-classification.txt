@@ -1,0 +1,550 @@
+
+Below is a **Koray-style semantic template** for a page about the entity:
+
+```
+Phytochemical Classification
+```
+
+within the **source context: Herbal Medicine**.
+
+This page must stand on its own as an **entity node** inside your Semantic Content Network while remaining connected to:
+
+```
+Herbal Medicine → Phytochemicals → Classification
+```
+
+The goal is to cover the **attribute vectors that define how phytochemicals are categorized**.
+
+---
+
+# 1. Macro Structure of the Page
+
+This is the **ideal structure for a classification page**.
+
+```
+H1: Classification of Phytochemicals in Herbal Medicine
+
+1. Definition of Phytochemical Classification
+2. Importance of Classifying Phytochemicals
+3. Principles of Phytochemical Classification
+4. Major Classes of Phytochemicals
+5. Alkaloids
+6. Flavonoids
+7. Terpenoids
+8. Phenolic Compounds
+9. Glycosides
+10. Tannins
+11. Saponins
+12. Essential Oils
+13. Minor and Specialized Phytochemical Classes
+14. Structural Classification of Phytochemicals
+15. Biosynthetic Classification
+16. Functional and Pharmacological Classification
+17. Distribution of Phytochemical Classes in Medicinal Plants
+18. Analytical Methods for Classifying Phytochemicals
+19. Role of Classification in Herbal Medicine
+20. Modern Developments in Phytochemical Classification
+```
+
+This structure ensures the page **fully defines the classification system itself**, not just the compound groups.
+
+---
+
+# 2. Attribute Clusters for the Entity “Phytochemical Classification”
+
+Think of these as **semantic vectors defining the classification system**.
+
+Example triples:
+
+```
+Phytochemical Classification → Category → Alkaloids
+Phytochemical Classification → Method → Structural grouping
+Phytochemical Classification → Application → Herbal medicine research
+```
+
+---
+
+# A. Identity Attributes (What Phytochemical Classification Is)
+
+Defines the entity.
+
+Subtopics:
+
+* Definition of phytochemical classification
+* Purpose of classification in plant chemistry
+* Relationship between phytochemistry and taxonomy
+* Role of classification in herbal medicine
+
+Important vectors:
+
+```
+chemical categorization
+compound grouping
+plant metabolite classification
+chemical taxonomy
+```
+
+Example triples:
+
+```
+Phytochemical Classification → Purpose → Organize plant compounds
+Phytochemical Classification → Field → Phytochemistry
+```
+
+---
+
+# B. Principles of Classification
+
+Explains **how phytochemicals are categorized**.
+
+Subtopics:
+
+```
+Structural similarities
+Chemical functional groups
+Biosynthetic origin
+Biological activity
+```
+
+Attributes:
+
+```
+molecular structure
+chemical composition
+biosynthetic pathways
+functional properties
+```
+
+Example:
+
+```
+Phytochemical Classification → Based on → Chemical structure
+```
+
+---
+
+# C. Major Phytochemical Classes
+
+The core classification categories.
+
+Subtopics:
+
+```
+Alkaloids
+Flavonoids
+Terpenoids
+Phenolic compounds
+Glycosides
+Tannins
+Saponins
+Essential oils
+```
+
+Each class should include:
+
+```
+chemical structure
+plant sources
+pharmacological properties
+examples
+```
+
+Example triples:
+
+```
+Phytochemical Class → Example → Morphine
+Phytochemical Class → Example → Quercetin
+```
+
+---
+
+# D. Alkaloid Attributes
+
+Important because alkaloids are one of the largest classes.
+
+Subtopics:
+
+```
+Definition of alkaloids
+Chemical structure of alkaloids
+Examples of alkaloids
+Medicinal uses of alkaloids
+```
+
+Attributes:
+
+```
+nitrogen-containing compounds
+basic chemical structure
+pharmacological potency
+```
+
+Example:
+
+```
+Alkaloids → Source → Medicinal plants
+```
+
+---
+
+# E. Flavonoid Attributes
+
+Subtopics:
+
+```
+Definition of flavonoids
+Flavonoid subclasses
+Pigment function in plants
+Therapeutic effects
+```
+
+Attributes:
+
+```
+polyphenolic compounds
+antioxidant activity
+plant pigments
+```
+
+Example:
+
+```
+Flavonoids → Biological Activity → Antioxidant
+```
+
+---
+
+# F. Terpenoid Attributes
+
+Subtopics:
+
+```
+Definition of terpenoids
+Isoprene units
+Classification by carbon number
+```
+
+Attributes:
+
+```
+monoterpenes
+sesquiterpenes
+diterpenes
+triterpenes
+```
+
+Example:
+
+```
+Terpenoids → Found in → Essential oils
+```
+
+---
+
+# G. Phenolic Compound Attributes
+
+Subtopics:
+
+```
+Phenolic acids
+Polyphenols
+Plant defense compounds
+```
+
+Attributes:
+
+```
+hydroxyl groups
+aromatic rings
+antioxidant properties
+```
+
+---
+
+# H. Glycoside Attributes
+
+Subtopics:
+
+```
+Structure of glycosides
+Sugar-bound compounds
+Types of glycosides
+```
+
+Examples:
+
+```
+cardiac glycosides
+anthraquinone glycosides
+cyanogenic glycosides
+```
+
+---
+
+# I. Tannin Attributes
+
+Subtopics:
+
+```
+Hydrolyzable tannins
+Condensed tannins
+Astringent properties
+```
+
+Attributes:
+
+```
+protein binding
+plant defense
+antioxidant effects
+```
+
+---
+
+# J. Saponin Attributes
+
+Subtopics:
+
+```
+Structure of saponins
+Soap-like properties
+Biological effects
+```
+
+Attributes:
+
+```
+foaming properties
+steroidal saponins
+triterpenoid saponins
+```
+
+---
+
+# K. Essential Oil Attributes
+
+Subtopics:
+
+```
+Volatile compounds
+Aromatic plant oils
+Distillation products
+```
+
+Attributes:
+
+```
+terpene content
+volatile molecules
+aromatic compounds
+```
+
+---
+
+# L. Structural Classification Attributes
+
+Explains classification based on **chemical structure**.
+
+Subtopics:
+
+```
+Functional groups
+Molecular skeleton
+Ring structures
+```
+
+Attributes:
+
+```
+phenolic structures
+nitrogen-containing structures
+terpene skeletons
+```
+
+---
+
+# M. Biosynthetic Classification
+
+Classifies compounds based on **plant metabolic pathways**.
+
+Subtopics:
+
+```
+Shikimate pathway compounds
+Mevalonate pathway compounds
+Polyketide pathway compounds
+```
+
+Attributes:
+
+```
+secondary metabolism
+enzyme pathways
+precursor molecules
+```
+
+---
+
+# N. Functional Classification
+
+Grouping based on **biological effects**.
+
+Subtopics:
+
+```
+Antioxidant phytochemicals
+Antimicrobial phytochemicals
+Anti-inflammatory phytochemicals
+```
+
+Attributes:
+
+```
+pharmacological activity
+physiological interaction
+therapeutic potential
+```
+
+---
+
+# O. Plant Distribution Attributes
+
+Shows where classes occur.
+
+Subtopics:
+
+```
+Plant families rich in specific phytochemicals
+Distribution across plant tissues
+```
+
+Attributes:
+
+```
+roots
+leaves
+bark
+flowers
+seeds
+```
+
+---
+
+# P. Analytical Classification Methods
+
+Methods used to identify and categorize phytochemicals.
+
+Subtopics:
+
+```
+Chromatography
+Spectroscopy
+Mass spectrometry
+Phytochemical screening
+```
+
+---
+
+# Q. Role in Herbal Medicine
+
+Connects classification to **clinical herbal practice**.
+
+Subtopics:
+
+```
+Understanding herbal activity
+Standardizing herbal extracts
+Predicting therapeutic effects
+```
+
+Example triple:
+
+```
+Phytochemical Class → Determines → Therapeutic activity
+```
+
+---
+
+# R. Modern Developments
+
+Subtopics:
+
+```
+Computational phytochemistry
+Chemical databases
+Natural product research
+```
+
+Attributes:
+
+```
+chemical profiling
+metabolomics
+plant compound libraries
+```
+
+---
+
+# 3. Clean Attribute Vector Model
+
+The final semantic map for this page.
+
+```
+Phytochemical Classification
+│
+├─ Identity
+├─ Principles of Classification
+├─ Major Phytochemical Classes
+│   ├─ Alkaloids
+│   ├─ Flavonoids
+│   ├─ Terpenoids
+│   ├─ Phenolic Compounds
+│   ├─ Glycosides
+│   ├─ Tannins
+│   ├─ Saponins
+│   └─ Essential Oils
+├─ Structural Classification
+├─ Biosynthetic Classification
+├─ Functional Classification
+├─ Plant Distribution
+├─ Analytical Methods
+├─ Role in Herbal Medicine
+└─ Modern Developments
+```
+
+---
+
+# 4. Microsemantic Tip (Very Important)
+
+Your **first paragraph should define the entity immediately**.
+
+Example:
+
+> Phytochemical classification is the systematic grouping of plant-derived chemical compounds based on their molecular structure, biosynthetic origin, and biological activity. In herbal medicine, phytochemicals are commonly classified into major groups such as alkaloids, flavonoids, terpenoids, phenolic compounds, glycosides, tannins, and saponins, each of which contributes distinct pharmacological properties to medicinal plants.
+
+This helps:
+
+* establish **entity identity**
+* clarify **classification context**
+* connect the page to **herbal medicine relevance**
+
+---
+
+✅ If you'd like, I can also show you something **extremely valuable for your site architecture**:
+
+**The exact cluster structure that usually sits under this page (20–40 supporting pages)** such as:
+
+```
+/alkaloids/
+/flavonoids/
+/terpenoids/
+/phenolic-compounds/
+/glycosides/
+```
+
+This is where **Koray-style topical authority really compounds.**
+
+
+
+
+

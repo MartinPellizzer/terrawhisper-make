@@ -268,4 +268,10 @@ ARTICLE
 
 .article h2 {
     margin-top: 4.8rem;
+    margin-bottom: 1.6rem;
+}
+
+.article h3 {
+    margin-top: 4.8rem;
+    margin-bottom: 1.6rem;
 }
