@@ -1,0 +1,470 @@
+
+Below is a **Koray-style semantic template** for the entity **“Actions”** within the **source context: Herbal Medicine**.
+
+The goal is to make **“Actions” (pharmacological actions / physiological effects)** stand as its own **entity node** inside the **Herbal Medicine Semantic Content Network (SCN)**.
+
+In Koray’s framework, the page must define the **entity type, mechanisms, biological targets, and therapeutic outcomes** so the document becomes a **complete knowledge node** within the topical map.
+
+---
+
+# 1. Macro Structure of the Overview Page
+
+This is the **ideal pillar page structure for the entity “Actions.”**
+
+```
+H1: Pharmacological Actions of Herbal Medicine
+
+1. Definition of Herbal Pharmacological Actions
+2. Role of Herbal Actions in Herbal Medicine
+3. Types of Pharmacological Actions in Herbs
+4. Biological Mechanisms of Herbal Actions
+5. Active Compounds Responsible for Herbal Actions
+6. Physiological Systems Affected by Herbal Actions
+7. Therapeutic Effects of Herbal Actions
+8. Categories of Herbal Pharmacological Actions
+9. Synergistic Actions of Whole Plants
+10. Dose-Response Relationships
+11. Variability of Herbal Actions
+12. Safety and Adverse Effects
+13. Scientific Research on Herbal Actions
+14. Clinical Relevance of Herbal Actions
+15. Comparison With Pharmaceutical Drug Actions
+16. Applications in Herbal Therapeutics
+```
+
+This structure allows **“Actions” to exist as its own entity** rather than just a subheading inside another page.
+
+---
+
+# 2. Attribute Clusters for the Entity “Actions”
+
+These represent the **semantic vectors** needed to fully describe the entity.
+
+Think of them as **entity → attribute → value triples**.
+
+Example:
+
+```
+Herbal Action → Effect → Anti-inflammatory
+Herbal Action → Mechanism → Enzyme inhibition
+Herbal Action → Target System → Immune system
+```
+
+---
+
+# A. Identity Attributes (What Herbal Actions Are)
+
+Defines the **entity itself**.
+
+**Subtopics**
+
+* Definition of pharmacological action
+* What “herbal action” means in herbal medicine
+* Difference between action and therapeutic use
+* Difference between pharmacological effect and mechanism
+* Role of actions in herbal therapeutics
+
+**Important vectors**
+
+```
+pharmacological action
+physiological effect
+biological activity
+therapeutic activity
+```
+
+Example triples:
+
+```
+Herbal Action → Definition → Physiological effect of plant compounds
+Herbal Action → Occurs In → Human biological systems
+```
+
+---
+
+# B. Classification Attributes
+
+Actions can be categorized by **type of biological effect**.
+
+Subtopics:
+
+```
+Categories of herbal actions
+Primary vs secondary actions
+Direct vs indirect actions
+Local vs systemic actions
+```
+
+Attributes:
+
+```
+primary action
+secondary action
+systemic effect
+local effect
+```
+
+Example:
+
+```
+Herbal Action → Type → Primary action
+Herbal Action → Type → Systemic effect
+```
+
+---
+
+# C. Mechanism Attributes
+
+Mechanisms explain **how the action happens biologically**.
+
+Subtopics:
+
+```
+Enzyme inhibition
+Receptor modulation
+Antioxidant mechanisms
+Immune modulation
+Hormonal modulation
+```
+
+Attributes:
+
+```
+enzyme inhibition
+receptor activation
+signal pathway modulation
+free radical scavenging
+microbial inhibition
+```
+
+Example triples:
+
+```
+Herbal Action → Mechanism → Enzyme inhibition
+Herbal Action → Mechanism → Antioxidant activity
+```
+
+---
+
+# D. Phytochemical Attributes
+
+Actions originate from **chemical compounds in herbs**.
+
+Subtopics:
+
+```
+Active phytochemicals
+Compound groups
+Bioavailability
+Compound synergy
+```
+
+Key compound groups:
+
+```
+alkaloids
+flavonoids
+terpenes
+phenolics
+glycosides
+tannins
+essential oils
+```
+
+Example:
+
+```
+Herbal Action → Caused By → Flavonoids
+Herbal Action → Caused By → Terpenoids
+```
+
+---
+
+# E. Physiological Target Attributes
+
+Actions influence **specific body systems**.
+
+Subtopics:
+
+```
+Immune system
+Digestive system
+Nervous system
+Cardiovascular system
+Respiratory system
+Endocrine system
+Skin and integumentary system
+```
+
+Example:
+
+```
+Herbal Action → Target System → Nervous system
+Herbal Action → Target System → Immune system
+```
+
+---
+
+# F. Pharmacological Effect Attributes
+
+These are the **most important vectors**.
+
+Core pharmacological actions in herbal medicine:
+
+```
+Anti-inflammatory
+Antimicrobial
+Antioxidant
+Adaptogenic
+Analgesic
+Antipyretic
+Sedative
+Digestive stimulant
+Carminative
+Diuretic
+Expectorant
+Immunomodulatory
+Antispasmodic
+Hepatoprotective
+Antidiabetic
+Cardiotonic
+Hormonal modulating
+```
+
+Example triples:
+
+```
+Herbal Action → Effect → Anti-inflammatory
+Herbal Action → Effect → Sedative
+```
+
+---
+
+# G. Therapeutic Outcome Attributes
+
+These actions lead to **clinical or health outcomes**.
+
+Subtopics:
+
+```
+Symptom relief
+Disease prevention
+Disease treatment
+Functional health support
+```
+
+Examples:
+
+```
+Herbal Action → Outcome → Pain reduction
+Herbal Action → Outcome → Improved digestion
+Herbal Action → Outcome → Reduced inflammation
+```
+
+---
+
+# H. Synergistic Attributes
+
+A key concept in herbal medicine.
+
+Subtopics:
+
+```
+Whole-plant synergy
+Compound interactions
+Polyherbal formulations
+Multi-target effects
+```
+
+Attributes:
+
+```
+synergistic compounds
+multi-component activity
+polyherbal synergy
+```
+
+Example:
+
+```
+Herbal Action → Interaction → Synergistic compound activity
+```
+
+---
+
+# I. Dose-Response Attributes
+
+Effects depend on **dosage and concentration**.
+
+Subtopics:
+
+```
+Minimum effective dose
+Therapeutic range
+Toxic dose
+Dose-response curve
+```
+
+Attributes:
+
+```
+dose level
+concentration
+exposure duration
+```
+
+Example:
+
+```
+Herbal Action → Influenced By → Dose
+```
+
+---
+
+# J. Variability Attributes
+
+Actions vary depending on **contextual factors**.
+
+Subtopics:
+
+```
+Species variation
+Plant part used
+Extraction method
+Individual physiology
+```
+
+Attributes:
+
+```
+plant species
+plant part
+extraction type
+patient factors
+```
+
+---
+
+# K. Safety Attributes
+
+Actions can also produce **adverse effects**.
+
+Subtopics:
+
+```
+Side effects
+Toxicity
+Allergic reactions
+Drug interactions
+```
+
+Attributes:
+
+```
+toxicity
+contraindications
+adverse reactions
+```
+
+Example:
+
+```
+Herbal Action → Risk → Toxicity
+```
+
+---
+
+# L. Scientific Research Attributes
+
+Modern science studies herbal actions.
+
+Subtopics:
+
+```
+Pharmacological research
+Clinical trials
+Mechanistic studies
+Phytochemical studies
+```
+
+Attributes:
+
+```
+in vitro studies
+in vivo studies
+clinical evidence
+```
+
+Example:
+
+```
+Herbal Action → Evidence → Clinical trials
+```
+
+---
+
+# M. Clinical Application Attributes
+
+How herbal actions are used in **practice**.
+
+Subtopics:
+
+```
+Herbal prescribing
+Therapeutic formulations
+Preventive herbal medicine
+```
+
+Attributes:
+
+```
+clinical indication
+treatment protocols
+therapeutic combinations
+```
+
+---
+
+# 3. Clean Attribute Vector Model
+
+Final entity coverage.
+
+```
+Actions (Herbal Medicine)
+│
+├─ Identity
+├─ Classification of Actions
+├─ Mechanisms of Action
+├─ Phytochemical Basis
+├─ Physiological Targets
+├─ Pharmacological Effects
+├─ Therapeutic Outcomes
+├─ Synergistic Interactions
+├─ Dose-Response Relationships
+├─ Variability Factors
+├─ Safety and Adverse Effects
+├─ Scientific Evidence
+└─ Clinical Applications
+```
+
+---
+
+# 4. Microsemantic Tip (Critical for Retrieval)
+
+The **first paragraph must immediately define the entity.**
+
+Example:
+
+> In herbal medicine, **pharmacological actions** refer to the physiological effects that medicinal plants produce in the body through bioactive compounds such as alkaloids, flavonoids, and terpenes. These actions influence biological systems including the immune, nervous, digestive, and cardiovascular systems, producing effects such as anti-inflammatory, antimicrobial, antioxidant, and sedative activity that contribute to the therapeutic benefits of herbal treatments.
+
+This helps the page:
+
+* establish **entity identity**
+* clarify **context**
+* reduce **semantic ambiguity**
+
+---
+
+✅ If you'd like, I can also show you something **very powerful for this page**:
+
+**The optimal internal structure for the `/actions/` page (Koray-style)** that includes **30–40 pharmacological actions** organized so the page ranks for **hundreds of herbal medicine queries.**

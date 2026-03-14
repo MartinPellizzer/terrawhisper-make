@@ -1,0 +1,493 @@
+
+Below is a **Koray-style entity template** for the page:
+
+**Entity:** *Classification of Herbal Actions*
+**Context:** *Herbal Medicine → Actions → Classification*
+
+This page explains **how herbal pharmacological actions are categorized**, so it must define the **taxonomy of herbal effects** rather than the effects themselves.
+
+In semantic terms:
+
+```
+Herbal Actions → Attribute → Classification
+```
+
+Your goal is to turn **classification** into a **standalone knowledge node** that explains **how herbal effects are grouped, organized, and interpreted**.
+
+---
+
+# 1. Macro Structure of the Overview Page
+
+This is the **ideal structure for the page.**
+
+```
+H1: Classification of Pharmacological Actions in Herbal Medicine
+
+1. Definition of Herbal Action Classification
+2. Purpose of Classifying Herbal Actions
+3. Major Categories of Herbal Pharmacological Actions
+4. Classification by Therapeutic Function
+5. Classification by Physiological Target System
+6. Classification by Mechanism of Action
+7. Classification by Biological Activity
+8. Primary and Secondary Herbal Actions
+9. Local vs Systemic Herbal Actions
+10. Direct vs Indirect Herbal Actions
+11. Acute vs Long-Term Herbal Actions
+12. Single vs Multi-Target Herbal Actions
+13. Synergistic and Polyherbal Action Categories
+14. Comparison with Pharmaceutical Action Classification
+15. Role of Classification in Herbal Therapeutics
+16. Scientific and Pharmacological Research Approaches
+```
+
+This structure ensures the page explains **how actions are categorized**, not just listing them.
+
+---
+
+# 2. Attribute Clusters for the Entity
+
+# “Classification of Herbal Actions”
+
+These clusters describe **how herbal pharmacological effects are organized.**
+
+Example triples:
+
+```
+Herbal Action Classification → Method → Physiological system
+Herbal Action Classification → Category → Anti-inflammatory
+Herbal Action Classification → Type → Local action
+```
+
+---
+
+# A. Identity Attributes (What Action Classification Is)
+
+Defines the entity itself.
+
+**Subtopics**
+
+* Definition of pharmacological action classification
+* Why herbal actions are categorized
+* Differences between action and classification
+* Role of classification in herbal pharmacology
+
+Important vectors:
+
+```
+taxonomy
+categorization
+classification system
+action grouping
+```
+
+Example triples:
+
+```
+Herbal Action Classification → Purpose → Organizing pharmacological effects
+Herbal Action Classification → Used In → Herbal pharmacology
+```
+
+---
+
+# B. Functional Classification Attributes
+
+Classifies actions by **therapeutic function**.
+
+Subtopics:
+
+```
+Actions based on therapeutic outcomes
+Symptom-relieving actions
+Preventive actions
+Restorative actions
+```
+
+Common functional categories:
+
+```
+Anti-inflammatory
+Antimicrobial
+Antioxidant
+Analgesic
+Sedative
+Digestive stimulant
+Diuretic
+Expectorant
+Antispasmodic
+Adaptogenic
+```
+
+Example triple:
+
+```
+Herbal Action Classification → Functional Category → Anti-inflammatory
+```
+
+---
+
+# C. Physiological System Classification
+
+Groups actions by **body system affected**.
+
+Subtopics:
+
+```
+Digestive system actions
+Nervous system actions
+Respiratory system actions
+Cardiovascular system actions
+Endocrine system actions
+Immune system actions
+Skin and integumentary system actions
+```
+
+Attributes:
+
+```
+target organ
+target system
+physiological pathway
+```
+
+Example:
+
+```
+Herbal Action Classification → Target System → Digestive system
+```
+
+---
+
+# D. Mechanism-Based Classification
+
+Groups actions by **biological mechanism**.
+
+Subtopics:
+
+```
+Enzyme inhibition
+Receptor activation
+Antioxidant pathways
+Hormonal modulation
+Antimicrobial mechanisms
+```
+
+Attributes:
+
+```
+enzyme inhibition
+receptor interaction
+signal pathway modulation
+free radical scavenging
+microbial inhibition
+```
+
+Example triple:
+
+```
+Herbal Action Classification → Mechanism Category → Enzyme inhibition
+```
+
+---
+
+# E. Biological Activity Classification
+
+Classifies by **type of biochemical or physiological activity**.
+
+Subtopics:
+
+```
+Metabolic activity
+Immune-modulating activity
+Neuroactive activity
+Cardioactive activity
+Anti-pathogenic activity
+```
+
+Attributes:
+
+```
+metabolic regulation
+immune modulation
+neurotransmitter interaction
+circulatory regulation
+```
+
+Example:
+
+```
+Herbal Action Classification → Biological Activity → Immune modulation
+```
+
+---
+
+# F. Primary vs Secondary Action Classification
+
+Important in herbal medicine.
+
+Subtopics:
+
+```
+Primary therapeutic action
+Secondary supportive actions
+Indirect physiological effects
+```
+
+Attributes:
+
+```
+primary action
+secondary action
+supportive effect
+```
+
+Example triple:
+
+```
+Herbal Action Classification → Type → Primary action
+```
+
+---
+
+# G. Local vs Systemic Classification
+
+Groups actions by **scope of effect**.
+
+Subtopics:
+
+```
+Local effects
+Systemic effects
+Target organ effects
+```
+
+Attributes:
+
+```
+local action
+systemic action
+organ-specific action
+```
+
+Example:
+
+```
+Herbal Action Classification → Scope → Systemic action
+```
+
+---
+
+# H. Direct vs Indirect Action Classification
+
+Subtopics:
+
+```
+Direct biochemical action
+Indirect physiological response
+Host-mediated effects
+```
+
+Attributes:
+
+```
+direct effect
+indirect effect
+mediated response
+```
+
+Example triple:
+
+```
+Herbal Action Classification → Type → Direct action
+```
+
+---
+
+# I. Temporal Classification Attributes
+
+Actions can be categorized by **time scale**.
+
+Subtopics:
+
+```
+Immediate pharmacological actions
+Short-term actions
+Long-term actions
+Cumulative effects
+```
+
+Attributes:
+
+```
+acute effect
+chronic effect
+long-term regulation
+```
+
+Example:
+
+```
+Herbal Action Classification → Duration → Acute effect
+```
+
+---
+
+# J. Multi-Target Action Classification
+
+Unique to herbal medicine.
+
+Subtopics:
+
+```
+Single-target actions
+Multi-target actions
+System-wide effects
+Polypharmacology
+```
+
+Attributes:
+
+```
+single-target action
+multi-target action
+polypharmacological action
+```
+
+Example:
+
+```
+Herbal Action Classification → Target Type → Multi-target
+```
+
+---
+
+# K. Synergistic Classification Attributes
+
+Herbal medicine frequently uses **synergistic action categories**.
+
+Subtopics:
+
+```
+Compound synergy
+Whole-plant synergy
+Polyherbal synergy
+Additive effects
+```
+
+Attributes:
+
+```
+synergistic action
+additive effect
+potentiating interaction
+```
+
+Example:
+
+```
+Herbal Action Classification → Interaction → Synergistic action
+```
+
+---
+
+# L. Clinical Application Classification
+
+Used in herbal practice.
+
+Subtopics:
+
+```
+Actions used for symptom management
+Actions used for disease prevention
+Actions used for system regulation
+```
+
+Attributes:
+
+```
+clinical indication
+therapeutic application
+treatment goal
+```
+
+Example:
+
+```
+Herbal Action Classification → Clinical Use → Digestive support
+```
+
+---
+
+# M. Scientific Research Classification
+
+Used in modern pharmacology research.
+
+Subtopics:
+
+```
+Pharmacological classification frameworks
+Phytochemical research classification
+Clinical trial classifications
+```
+
+Attributes:
+
+```
+experimental classification
+clinical classification
+research-based taxonomy
+```
+
+Example:
+
+```
+Herbal Action Classification → Research Type → Pharmacological taxonomy
+```
+
+---
+
+# 3. Clean Attribute Vector Model
+
+Final knowledge map:
+
+```
+Classification of Herbal Actions
+│
+├─ Identity
+├─ Functional Classification
+├─ Physiological System Classification
+├─ Mechanism-Based Classification
+├─ Biological Activity Classification
+├─ Primary vs Secondary Actions
+├─ Local vs Systemic Actions
+├─ Direct vs Indirect Actions
+├─ Temporal Classification
+├─ Multi-Target Action Classification
+├─ Synergistic Action Classification
+├─ Clinical Application Classification
+└─ Scientific Research Classification
+```
+
+---
+
+# 4. Microsemantic Tip (Very Important)
+
+Your first paragraph should define the entity clearly.
+
+Example:
+
+> In herbal medicine, **classification of pharmacological actions** refers to the systematic organization of the physiological effects produced by medicinal plants. Herbal actions are categorized based on therapeutic function, biological mechanisms, target body systems, and clinical outcomes, allowing practitioners and researchers to understand how herbal compounds influence human physiology.
+
+This establishes:
+
+```
+Entity → Classification of Herbal Actions
+Context → Herbal Medicine
+Purpose → Organizing pharmacological effects
+```
+
+---
+
+✅ If you want, I can also show you a **very powerful Koray optimization** for this specific page:
+
+**How to structure the classification page so it internally links to 30–40 action pages** (anti-inflammatory herbs, adaptogenic herbs, digestive herbs, etc.), which dramatically strengthens the **semantic content network for the entire herbal medicine site.**

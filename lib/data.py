@@ -255,3 +255,24 @@ def phytochemicals_get(top=10):
     items = [item['answer'] for item in json_data['list'][:top]]
     return items
     
+def actions_get(top=0):
+    l = [
+        'Anti-inflammatory',
+        'Antimicrobial',
+        'Antioxidant',
+        'Adaptogenic',
+        'Analgesic',
+        'Antipyretic',
+        'Sedative',
+        'Carminative',
+        'Diuretic',
+        'Expectorant',
+        'Immunomodulatory',
+        'Antispasmodic',
+        'Hepatoprotective',
+        'Antidiabetic',
+        'Cardiotonic',
+    ]
+    if top != 0:
+        l = l[:top]
+    return l

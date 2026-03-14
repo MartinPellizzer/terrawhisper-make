@@ -1808,66 +1808,6 @@ def actions__classification__gen():
         attribute='major categories', entity='classification of pharmacological actions', context='herbal medicine', 
         regen=False, dispel=False
     )
-    functional_classification_subordinate_html = subordinate__gen(json_article_filepath, 
-        key='functional_classification', 
-        attribute='Classification by Therapeutic Function', entity='classification of pharmacological actions', context='herbal medicine', 
-        regen=False, dispel=False
-    )
-    physiological_system_classification_subordinate_html = subordinate__gen(json_article_filepath, 
-        key='physiological_system_classification', 
-        attribute='Classification by Physiological Target System', entity='classification of pharmacological actions', context='herbal medicine', 
-        regen=False, dispel=False
-    )
-    mechanism_based_classification_subordinate_html = subordinate__gen(json_article_filepath, 
-        key='mechanism_based_classification', 
-        attribute='Classification by Mechanism of Action', entity='classification of pharmacological actions', context='herbal medicine', 
-        regen=False, dispel=False
-    )
-    biological_activity_classification_subordinate_html = subordinate__gen(json_article_filepath, 
-        key='biological_activity_classification', 
-        attribute='Classification by Biological Activity', entity='classification of pharmacological actions', context='herbal medicine', 
-        regen=False, dispel=False
-    )
-    primary_vs_secondary_actions_subordinate_html = subordinate__gen(json_article_filepath, 
-        key='primary_vs_secondary_actions', 
-        attribute='Primary and Secondary Herbal Actions', entity='classification of pharmacological actions', context='herbal medicine', 
-        regen=False, dispel=False
-    )
-    local_vs_systemic_actions_subordinate_html = subordinate__gen(json_article_filepath, 
-        key='local_vs_systemic_actions', 
-        attribute='Local vs Systemic Herbal Actions', entity='classification of pharmacological actions', context='herbal medicine', 
-        regen=False, dispel=False
-    )
-    direct_vs_indirect_actions_subordinate_html = subordinate__gen(json_article_filepath, 
-        key='direct_vs_indirect_actions', 
-        attribute='Direct vs Indirect Herbal Actions', entity='classification of pharmacological actions', context='herbal medicine', 
-        regen=False, dispel=False
-    )
-    temporal_classification_subordinate_html = subordinate__gen(json_article_filepath, 
-        key='temporal_classification', 
-        attribute='Acute vs Long-Term Herbal Actions', entity='classification of pharmacological actions', context='herbal medicine', 
-        regen=False, dispel=False
-    )
-    multi_target_action_classification_subordinate_html = subordinate__gen(json_article_filepath, 
-        key='multi_target_action_classification', 
-        attribute='Single vs Multi-Target Herbal Actions', entity='classification of pharmacological actions', context='herbal medicine', 
-        regen=False, dispel=False
-    )
-    synergistic_action_classification_subordinate_html = subordinate__gen(json_article_filepath, 
-        key='synergistic_action_classification', 
-        attribute='Synergistic and Polyherbal Action Categories', entity='classification of pharmacological actions', context='herbal medicine', 
-        regen=False, dispel=False
-    )
-    clinical_application_classification_subordinate_html = subordinate__gen(json_article_filepath, 
-        key='clinical_application_classification', 
-        attribute='Comparison with Pharmaceutical Action Classification', entity='classification of pharmacological actions', context='herbal medicine', 
-        regen=False, dispel=False
-    )
-    scientific_research_classification_subordinate_html = subordinate__gen(json_article_filepath, 
-        key='scientific_research_classification', 
-        attribute='Scientific and Pharmacological Research Approaches', entity='classification of pharmacological actions', context='herbal medicine', 
-        regen=False, dispel=False
-    )
 
     ########################################
     # html
@@ -1882,13 +1822,13 @@ def actions__classification__gen():
     '''
     definition_html = f'''
         <section class="article-section">
-            <h2>Definition of Herbal Action Classification</h2>
+            <h2>Definition</h2>
             <p>{definition_subordinate_html}</p>
         </section>
     '''
     purpose_of_classification_html = f'''
         <section class="article-section">
-            <h2>Purpose of Classifying Herbal Actions</h2>
+            <h2>Purpose of classifying Herbal Actions</h2>
             <p>{purpose_of_classification_subordinate_html}</p>
         </section>
     '''
@@ -1915,96 +1855,12 @@ def actions__classification__gen():
             {subsections_html}
         </section>
     '''
-    functional_classification_html = f'''
-        <section class="article-section">
-            <h2>Classification by Therapeutic Function</h2>
-            <p>{functional_classification_subordinate_html}</p>
-        </section>
-    '''
-    physiological_system_classification_html = f'''
-        <section class="article-section">
-            <h2>Classification by Physiological Target System</h2>
-            <p>{physiological_system_classification_subordinate_html}</p>
-        </section>
-    '''
-    mechanism_based_classification_html = f'''
-        <section class="article-section">
-            <h2>Classification by Mechanism of Action</h2>
-            <p>{mechanism_based_classification_subordinate_html}</p>
-        </section>
-    '''
-    biological_activity_classification_html = f'''
-        <section class="article-section">
-            <h2>Classification by Biological Activity</h2>
-            <p>{biological_activity_classification_subordinate_html}</p>
-        </section>
-    '''
-    primary_vs_secondary_actions_html = f'''
-        <section class="article-section">
-            <h2>Primary and Secondary Herbal Actions</h2>
-            <p>{primary_vs_secondary_actions_subordinate_html}</p>
-        </section>
-    '''
-    local_vs_systemic_actions_html = f'''
-        <section class="article-section">
-            <h2>Local vs Systemic Herbal Actions</h2>
-            <p>{local_vs_systemic_actions_subordinate_html}</p>
-        </section>
-    '''
-    direct_vs_indirect_actions_html = f'''
-        <section class="article-section">
-            <h2>Direct vs Indirect Herbal Actions</h2>
-            <p>{direct_vs_indirect_actions_subordinate_html}</p>
-        </section>
-    '''
-    temporal_classification_html = f'''
-        <section class="article-section">
-            <h2>Acute vs Long-Term Herbal Actions</h2>
-            <p>{temporal_classification_subordinate_html}</p>
-        </section>
-    '''
-    multi_target_action_classification_html = f'''
-        <section class="article-section">
-            <h2>Single vs Multi-Target Herbal Actions</h2>
-            <p>{multi_target_action_classification_subordinate_html}</p>
-        </section>
-    '''
-    synergistic_action_classification_html = f'''
-        <section class="article-section">
-            <h2>Synergistic and Polyherbal Action Categories</h2>
-            <p>{synergistic_action_classification_subordinate_html}</p>
-        </section>
-    '''
-    clinical_application_classification_html = f'''
-        <section class="article-section">
-            <h2>Comparison with Pharmaceutical Action Classification</h2>
-            <p>{clinical_application_classification_subordinate_html}</p>
-        </section>
-    '''
-    scientific_research_classification_html = f'''
-        <section class="article-section">
-            <h2>Scientific and Pharmacological Research Approaches</h2>
-            <p>{scientific_research_classification_subordinate_html}</p>
-        </section>
-    '''
 
     article_html = f'''
         {intro_html}
         {definition_html}
         {purpose_of_classification_html}
         {major_categories_html}
-        {functional_classification_html}
-        {physiological_system_classification_html}
-        {mechanism_based_classification_html}
-        {biological_activity_classification_html}
-        {primary_vs_secondary_actions_html}
-        {local_vs_systemic_actions_html}
-        {direct_vs_indirect_actions_html}
-        {temporal_classification_html}
-        {multi_target_action_classification_html}
-        {synergistic_action_classification_html}
-        {clinical_application_classification_html}
-        {scientific_research_classification_html}
     '''
 
     ###

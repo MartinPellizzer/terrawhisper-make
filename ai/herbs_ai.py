@@ -732,16 +732,14 @@ def herb_active_compounds_gen(herb_filepath, regen=False, clear=False):
         return
     if entity_herb[key] == '' or entity_herb[key] == []:
         main_list_text = f'''
-            Flavonoid
-            Phenolic acid
-            Tannin
-            Terpenoid
-            Alkaloid
-            Saponin
-            Essential oil
-            Coumarin
-            Anthocyanin
-            Glycoside
+            alkaloids 
+            flavonoids 
+            terpenoids
+            phenolic compounds
+            glycosides
+            tannins
+            saponin
+            essential oils
         '''.strip()
         outputs = []
         for i in range(10):
@@ -764,9 +762,7 @@ def herb_active_compounds_gen(herb_filepath, regen=False, clear=False):
                     {{"answer": "write medicinal action name 5 here", "score": "write score 5 here"}},
                     {{"answer": "write medicinal action name 6 here", "score": "write score 6 here"}},
                     {{"answer": "write medicinal action name 7 here", "score": "write score 7 here"}},
-                    {{"answer": "write medicinal action name 8 here", "score": "write score 8 here"}},
-                    {{"answer": "write medicinal action name 9 here", "score": "write score 9 here"}},
-                    {{"answer": "write medicinal action name 10 here", "score": "write score 10 here"}}
+                    {{"answer": "write medicinal action name 8 here", "score": "write score 8 here"}}
                 ]
                 Reply only with the JSON.
             ''').strip()
@@ -2609,7 +2605,8 @@ def herbs_medicinal_validated_json(herb):
     io.json_write(herb_filepath, herb_data)
     ###
     herb_medicine_conditions_gen(herb_filepath, regen=False, clear=False)
-    herb_preparations_monograph_gen(herb_filepath, regen=True, clear=False)
+    herb_preparations_monograph_gen(herb_filepath, regen=False, clear=False)
+    herb_active_compounds_gen(herb_filepath, regen=False, clear=False)
 
 def herbs_medicinal_validated_gen():
     herbs_folderpath = f'{g.SSOT_FOLDERPATH}/herbs'
