@@ -1,0 +1,538 @@
+
+Below is a **Koray-style entity overview template** for the entity **“Herbal Preparations”** within the **source context: Herbal Medicine**.
+
+The goal of this page is to **define the entity and cover all major attribute clusters** so the page can **stand on its own as a knowledge node** inside your semantic content network (SCN).
+
+According to the framework, entities should be explained through **Entity → Attribute → Value triples**, and topical coverage should include **all major contextual vectors** of the entity type. 
+
+---
+
+# 1. Macro Structure of the Overview Page
+
+This is the **ideal pillar structure for the entity “Herbal Preparations.”**
+
+```
+H1: Herbal Preparations: Methods, Forms, and Uses in Herbal Medicine
+
+1. Definition of Herbal Preparations
+2. Purpose of Herbal Preparations in Herbal Medicine
+3. Principles of Herbal Preparation
+4. Types of Herbal Preparations
+5. Preparation Methods
+6. Plant Materials Used in Preparations
+7. Solvents and Extraction Media
+8. Chemical Extraction and Phytochemistry
+9. Dosage Forms and Administration
+10. Potency and Concentration
+11. Quality and Standardization
+12. Safety and Stability
+13. Storage and Shelf Life
+14. Manufacturing and Production
+15. Traditional Preparation Systems
+16. Modern Herbal Extraction Techniques
+17. Scientific Research on Herbal Preparations
+18. Regulatory and Legal Aspects
+```
+
+This structure ensures the entity **“Herbal Preparations”** has full contextual coverage.
+
+---
+
+# 2. Attribute Clusters for the Entity “Herbal Preparations”
+
+These clusters represent the **core semantic vectors** of the entity.
+
+Think of them as **knowledge triples**:
+
+```
+Herbal Preparation → Preparation Method → Infusion
+Herbal Preparation → Solvent → Alcohol
+Herbal Preparation → Dosage Form → Capsule
+Herbal Preparation → Administration → Oral
+```
+
+---
+
+# A. Identity Attributes (What Herbal Preparations Are)
+
+Defines the entity itself.
+
+**Subtopics**
+
+* Definition of herbal preparations
+* Difference between herbs and herbal preparations
+* Difference between herbal preparations and pharmaceutical drugs
+* Role of preparations in herbal medicine
+
+**Important vectors**
+
+```
+plant-based remedies
+processed medicinal plants
+herbal formulations
+botanical extracts
+```
+
+Example triples:
+
+```
+Herbal Preparation → Source → Medicinal plants
+Herbal Preparation → Purpose → Deliver therapeutic compounds
+```
+
+---
+
+# B. Functional Attributes (Why Preparations Exist)
+
+Herbal preparations exist to **extract, preserve, and deliver plant compounds**.
+
+**Subtopics**
+
+* Extraction of active compounds
+* Preservation of plant material
+* Improving bioavailability
+* Dosage standardization
+
+Attributes:
+
+```
+extraction
+preservation
+delivery of compounds
+bioavailability enhancement
+```
+
+---
+
+# C. Preparation Method Attributes
+
+These represent **the core preparation processes**.
+
+**Subtopics**
+
+```
+Infusion
+Decoction
+Tincture
+Fluid extract
+Maceration
+Percolation
+Distillation
+Fermentation
+Powdering
+Encapsulation
+```
+
+Example triples:
+
+```
+Herbal Preparation → Method → Infusion
+Herbal Preparation → Method → Tincture
+```
+
+---
+
+# D. Dosage Form Attributes
+
+Herbal preparations exist in **different dosage forms**.
+
+Subtopics:
+
+```
+Herbal teas
+Liquid extracts
+Capsules
+Tablets
+Powders
+Ointments
+Creams
+Salves
+Syrups
+Essential oils
+```
+
+Attributes:
+
+```
+liquid
+solid
+semi-solid
+topical
+oral
+```
+
+Example:
+
+```
+Herbal Preparation → Dosage Form → Capsule
+```
+
+---
+
+# E. Plant Material Attributes
+
+Preparations depend on **plant materials used**.
+
+Subtopics:
+
+```
+Fresh herbs
+Dried herbs
+Powdered plant material
+Plant parts used
+```
+
+Attributes:
+
+```
+leaf
+root
+flower
+seed
+bark
+rhizome
+```
+
+Example triple:
+
+```
+Herbal Preparation → Plant Part → Root
+```
+
+---
+
+# F. Solvent and Extraction Attributes
+
+Extraction depends on **solvents and mediums**.
+
+Subtopics:
+
+```
+Water extraction
+Alcohol extraction
+Oil extraction
+Glycerin extraction
+Vinegar extraction
+```
+
+Attributes:
+
+```
+water
+ethanol
+oil
+glycerin
+vinegar
+```
+
+Example triple:
+
+```
+Herbal Preparation → Solvent → Alcohol
+```
+
+---
+
+# G. Phytochemical Extraction Attributes
+
+Preparations determine **which compounds are extracted**.
+
+Subtopics:
+
+```
+Water-soluble compounds
+Alcohol-soluble compounds
+Volatile oils
+Fat-soluble compounds
+```
+
+Important compound types:
+
+```
+Alkaloids
+Flavonoids
+Terpenes
+Tannins
+Saponins
+Essential oils
+```
+
+Example:
+
+```
+Herbal Preparation → Extracted Compound → Flavonoids
+```
+
+---
+
+# H. Administration Attributes
+
+How preparations are used.
+
+Subtopics:
+
+```
+Oral administration
+Topical application
+Inhalation
+Bath preparations
+Compresses
+```
+
+Example triple:
+
+```
+Herbal Preparation → Administration → Oral
+```
+
+---
+
+# I. Dosage Attributes
+
+Dosage considerations for herbal preparations.
+
+Subtopics:
+
+```
+Standard dosage
+Frequency of use
+Extract concentration
+Treatment duration
+```
+
+Attributes:
+
+```
+dose size
+extract strength
+daily intake
+treatment length
+```
+
+---
+
+# J. Potency Attributes
+
+Different preparations have **different strengths**.
+
+Subtopics:
+
+```
+Herbal concentration
+Standardized extracts
+Herb-to-solvent ratio
+Extraction efficiency
+```
+
+Attributes:
+
+```
+potency
+concentration
+strength
+standardization
+```
+
+---
+
+# K. Quality Attributes
+
+Quality determines safety and effectiveness.
+
+Subtopics:
+
+```
+Raw material quality
+Purity testing
+Contamination control
+Adulteration detection
+```
+
+Attributes:
+
+```
+purity
+authenticity
+active compound levels
+```
+
+---
+
+# L. Stability and Storage Attributes
+
+Preparations must be stored properly.
+
+Subtopics:
+
+```
+Storage conditions
+Shelf life
+Protection from light
+Protection from moisture
+```
+
+Attributes:
+
+```
+temperature
+light exposure
+air exposure
+humidity
+```
+
+---
+
+# M. Manufacturing Attributes
+
+Production processes for herbal preparations.
+
+Subtopics:
+
+```
+Small-scale herbal preparation
+Industrial herbal manufacturing
+Good manufacturing practices (GMP)
+Quality control systems
+```
+
+Attributes:
+
+```
+processing equipment
+manufacturing standards
+batch production
+```
+
+---
+
+# N. Traditional Preparation Attributes
+
+Different medical traditions use different preparation methods.
+
+Subtopics:
+
+```
+Traditional Chinese herbal preparations
+Ayurvedic preparations
+Western herbal preparations
+Indigenous herbal medicine preparations
+```
+
+---
+
+# O. Modern Extraction Attributes
+
+Modern techniques used in herbal preparations.
+
+Subtopics:
+
+```
+Supercritical extraction
+Standardized extracts
+Pharmaceutical-grade extracts
+Modern phytochemical extraction
+```
+
+---
+
+# P. Scientific Research Attributes
+
+Evidence and validation.
+
+Subtopics:
+
+```
+Clinical trials on herbal extracts
+Pharmacological studies
+Bioavailability research
+Extraction efficiency studies
+```
+
+---
+
+# Q. Regulatory Attributes
+
+Legal classification of herbal preparations.
+
+Subtopics:
+
+```
+Herbal supplement regulations
+Traditional medicine regulations
+Pharmacopoeia standards
+Herbal product labeling laws
+```
+
+---
+
+# 3. Clean Attribute Vector Model
+
+This is the **complete semantic coverage map**.
+
+```
+Herbal Preparations
+│
+├─ Identity
+├─ Functional Purpose
+├─ Preparation Methods
+├─ Dosage Forms
+├─ Plant Materials
+├─ Solvents and Extraction Media
+├─ Phytochemical Extraction
+├─ Administration Routes
+├─ Dosage
+├─ Potency
+├─ Quality Control
+├─ Stability and Storage
+├─ Manufacturing
+├─ Traditional Preparation Systems
+├─ Modern Extraction Technologies
+├─ Scientific Research
+└─ Regulation
+```
+
+---
+
+# 4. Microsemantic Tip (Important for Retrieval)
+
+Your **first paragraph should define the entity immediately**.
+
+Example:
+
+> Herbal preparations are medicinal products made by processing plant materials such as leaves, roots, flowers, and seeds to extract their therapeutic compounds. In herbal medicine, preparations are created using methods like infusion, decoction, tincture extraction, and oil infusion to deliver plant-based remedies in forms such as teas, powders, capsules, and topical treatments.
+
+This sentence:
+
+* establishes **entity identity**
+* defines **scope**
+* introduces **major attributes**
+
+which improves **entity recognition and retrieval probability**.
+
+---
+
+✅ **Strategic note**
+
+Your **semantic hierarchy should look like this**:
+
+```
+Herbal Medicine
+   ├── Herbs
+   ├── Preparations
+   │     ├── Infusion
+   │     ├── Decoction
+   │     ├── Tincture
+   │     ├── Powder
+   │     ├── Extract
+   │     ├── Syrup
+   │     ├── Oil
+   │     └── Poultice
+   ├── Actions
+   └── Phytochemicals
+```
+
+This structure creates a **clear semantic content network**, which improves topical authority by connecting entities and their attributes across the site. 
+
+---
+
+If you'd like, I can also show you the **12–18 specific herbal preparation types you should include** so the `/preparations` page becomes **topically complete for the herbal medicine domain**.

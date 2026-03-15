@@ -219,6 +219,7 @@ def herbal_medicine__gen():
         <section class="article-section">
             <h2>Preparations</h2>
             <p>{preparations_subordinate_html}</p>
+            <p><a href="/preparations.html">Preparations</a></p>
         </section>
     '''
     administration_html = f'''
@@ -2320,6 +2321,277 @@ def actions_action__gen(action):
     io.folder_create_from_filepath(html_filepath)
     with open(html_filepath, 'w') as f: f.write(html)
 
+def preparations__gen():
+    url_slug = f'preparations'
+    meta_title = f'Herbal Medicine Preparation Methods'
+    meta_description = ''
+    canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''
+
+    ########################################
+    # json
+    ########################################
+    json_article_filepath = f'''{g.DATABASE_FOLDERPATH}/json/{url_slug}.json'''
+    json_article = io.json_read(json_article_filepath, create=True)
+    json_article['url'] = url_slug
+    io.json_write(json_article_filepath, json_article)
+
+    definition_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='definition', 
+        attribute='definition', entity='preparation methods', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    purpose_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='purpose', 
+        attribute='purpose of herbal preparations in herbal medicine', entity='preparation methods', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    principles_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='principles', 
+        attribute='principles of herbal preparation', entity='preparation methods', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    types_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='types', 
+        attribute='types of herbal preparations', entity='preparation methods', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    preparation_methods_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='preparation_methods', 
+        attribute='preparation methods', entity='preparation methods', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    plant_materials_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='plant_materials', 
+        attribute='Plant Materials Used in Preparations', entity='preparation methods', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    solvents_and_extraction_media_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='solvents_and_extraction_media', 
+        attribute='Solvents and Extraction Media', entity='preparation methods', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    chemical_extraction_and_phytochemistry_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='chemical_extraction_and_phytochemistry', 
+        attribute='Chemical Extraction and Phytochemistry', entity='preparation methods', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    dosage_forms_and_administration_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='dosage_forms_and_administration', 
+        attribute='Dosage Forms and Administration', entity='preparation methods', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    potency_and_concentration_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='potency_and_concentration', 
+        attribute='Potency and Concentration', entity='preparation methods', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    quality_and_standardization_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='quality_and_standardization', 
+        attribute='Quality and Standardization', entity='preparation methods', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    safety_and_stability_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='safety_and_stability', 
+        attribute='Safety and Stability', entity='preparation methods', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    storage_and_shelf_life_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='storage_and_shelf_life', 
+        attribute='Storage and Shelf Life', entity='preparation methods', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    manufacturing_and_production_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='manufacturing_and_production', 
+        attribute='Manufacturing and Production', entity='preparation methods', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    traditional_preparation_systems_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='traditional_preparation_systems', 
+        attribute='Traditional Preparation Systems', entity='preparation methods', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    modern_herbal_extraction_techniques_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='modern_herbal_extraction_techniques', 
+        attribute='Modern Herbal Extraction Techniques', entity='preparation methods', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    scientific_research_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='scientific_research', 
+        attribute='Scientific Research on Herbal Preparations', entity='preparation methods', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    regulatory_and_legal_aspects_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='regulatory_and_legal_aspects', 
+        attribute='Regulatory and Legal Aspects', entity='preparation methods', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+
+    ########################################
+    # html
+    ########################################
+    intro_html = f'''
+        <h1>
+            Herbal Preparations: Methods, Forms, and Uses in Herbal Medicine
+        </h1>
+        <p>
+            Herbal preparations are medicinal products made by processing plant materials such as leaves, roots, flowers, and seeds to extract their therapeutic compounds. In <a href="/herbal-medicine.html">herbal medicine</a>, preparations are created using methods like infusion, decoction, tincture extraction, and oil infusion to deliver plant-based remedies in forms such as teas, powders, capsules, and topical treatments.
+        </p>
+    '''
+    definition_html = f'''
+        <section class="article-section">
+            <h2>Definition of Herbal Preparations</h2>
+            <p>{definition_subordinate_html}</p>
+        </section>
+    '''
+    purpose_html = f'''
+        <section class="article-section">
+            <h2>Purpose of Herbal Preparations in Herbal Medicine</h2>
+            <p>{purpose_subordinate_html}</p>
+        </section>
+    '''
+    principles_html = f'''
+        <section class="article-section">
+            <h2>Principles of Herbal Preparation</h2>
+            <p>{principles_subordinate_html}</p>
+        </section>
+    '''
+    types_html = f'''
+        <section class="article-section">
+            <h2>Types of Herbal Preparations</h2>
+            <p>{types_subordinate_html}</p>
+        </section>
+    '''
+    preparation_methods_html = f'''
+        <section class="article-section">
+            <h2>Preparation Methods</h2>
+            <p>{preparation_methods_subordinate_html}</p>
+        </section>
+    '''
+    plant_materials_html = f'''
+        <section class="article-section">
+            <h2>Plant Materials Used in Preparations</h2>
+            <p>{plant_materials_subordinate_html}</p>
+        </section>
+    '''
+    solvents_and_extraction_media_html = f'''
+        <section class="article-section">
+            <h2>Solvents and Extraction Media</h2>
+            <p>{solvents_and_extraction_media_subordinate_html}</p>
+        </section>
+    '''
+    chemical_extraction_and_phytochemistry_html = f'''
+        <section class="article-section">
+            <h2>Chemical Extraction and Phytochemistry</h2>
+            <p>{chemical_extraction_and_phytochemistry_subordinate_html}</p>
+        </section>
+    '''
+    dosage_forms_and_administration_html = f'''
+        <section class="article-section">
+            <h2>Dosage Forms and Administration</h2>
+            <p>{dosage_forms_and_administration_subordinate_html}</p>
+        </section>
+    '''
+    potency_and_concentration_html = f'''
+        <section class="article-section">
+            <h2>Potency and Concentration</h2>
+            <p>{potency_and_concentration_subordinate_html}</p>
+        </section>
+    '''
+    quality_and_standardization_html = f'''
+        <section class="article-section">
+            <h2>Quality and Standardization</h2>
+            <p>{quality_and_standardization_subordinate_html}</p>
+        </section>
+    '''
+    safety_and_stability_html = f'''
+        <section class="article-section">
+            <h2>Safety and Stability</h2>
+            <p>{safety_and_stability_subordinate_html}</p>
+        </section>
+    '''
+    storage_and_shelf_life_html = f'''
+        <section class="article-section">
+            <h2>Storage and Shelf Life</h2>
+            <p>{storage_and_shelf_life_subordinate_html}</p>
+        </section>
+    '''
+    manufacturing_and_production_html = f'''
+        <section class="article-section">
+            <h2>Manufacturing and Production</h2>
+            <p>{manufacturing_and_production_subordinate_html}</p>
+        </section>
+    '''
+    traditional_preparation_systems_html = f'''
+        <section class="article-section">
+            <h2>Traditional Preparation Systems</h2>
+            <p>{traditional_preparation_systems_subordinate_html}</p>
+        </section>
+    '''
+    modern_herbal_extraction_techniques_html = f'''
+        <section class="article-section">
+            <h2>Modern Herbal Extraction Techniques</h2>
+            <p>{modern_herbal_extraction_techniques_subordinate_html}</p>
+        </section>
+    '''
+    scientific_research_html = f'''
+        <section class="article-section">
+            <h2>Scientific Research on Herbal Preparations</h2>
+            <p>{scientific_research_subordinate_html}</p>
+        </section>
+    '''
+    regulatory_and_legal_aspects_html = f'''
+        <section class="article-section">
+            <h2>Regulatory and Legal Aspects</h2>
+            <p>{regulatory_and_legal_aspects_subordinate_html}</p>
+        </section>
+    '''
+
+    article_html = f'''
+        {intro_html}
+        {definition_html}
+        {purpose_html}
+        {principles_html}
+        {types_html}
+        {preparation_methods_html}
+        {plant_materials_html}
+        {dosage_forms_and_administration_html}
+        {solvents_and_extraction_media_html}
+        {chemical_extraction_and_phytochemistry_html}
+        {dosage_forms_and_administration_html}
+        {potency_and_concentration_html}
+        {quality_and_standardization_html}
+        {safety_and_stability_html}
+        {manufacturing_and_production_html}
+        {traditional_preparation_systems_html}
+        {modern_herbal_extraction_techniques_html}
+        {scientific_research_html}
+        {regulatory_and_legal_aspects_html}
+    '''
+
+    ###
+    head_html = components.html_head(
+        meta_title, meta_description, css='/styles-herb-monograph.css', canonical=canonical_html
+    )
+    import textwrap
+    html = textwrap.dedent(f''' 
+        <!DOCTYPE html>
+        <html lang="en">
+        {head_html}
+        <body>
+            {sections.header_default()}
+            {sections.breadcrumbs_new(url_slug)}
+            <main>
+                <article class="container-md article">
+                    {article_html}
+                </article>
+            </main>
+            {sections.footer()}
+        </body>
+        </html>
+    ''').strip()
+    html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
+    with open(html_filepath, 'w') as f: f.write(html)
+
 def main():
     herbal_medicine__gen()
     ###
@@ -2345,4 +2617,6 @@ def main():
     for action in data.actions_get(10):
         actions_action__gen(action)
         # break
+    ###
+    preparations__gen()
 
