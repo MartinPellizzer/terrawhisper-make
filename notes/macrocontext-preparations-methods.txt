@@ -1,0 +1,509 @@
+
+Below is a **Koray-style entity template** for the page **“Preparation Methods”** within the context:
+
+```
+Source Context → Herbal Medicine
+Parent Entity → Herbal Preparations
+Target Entity → Preparation Methods
+```
+
+The goal is to make **“Preparation Methods”** stand on its own as an **entity-type concept** that explains **how herbs are processed to create medicinal preparations**.
+
+Following Koray’s framework, the page should cover **all major attribute clusters** of the entity using **Entity → Attribute → Value triples**, forming a **complete contextual vector** for the topic.
+
+---
+
+# 1. Macro Structure of the Overview Page
+
+This is the **ideal pillar structure** for the page.
+
+```
+H1: Herbal Preparation Methods: Techniques for Making Herbal Remedies
+
+1. Definition of Herbal Preparation Methods
+2. Purpose of Preparation Methods in Herbal Medicine
+3. Principles of Herbal Extraction
+4. Major Types of Herbal Preparation Methods
+5. Water-Based Extraction Methods
+6. Alcohol-Based Extraction Methods
+7. Oil-Based Extraction Methods
+8. Mechanical Processing Methods
+9. Fermentation and Biotransformation Methods
+10. Distillation and Volatile Oil Extraction
+11. Selection of Preparation Methods
+12. Phytochemical Extraction Differences
+13. Equipment Used in Herbal Preparation
+14. Dosage Form Outcomes
+15. Quality and Efficiency of Extraction
+16. Safety and Contamination Risks
+17. Traditional vs Modern Preparation Techniques
+18. Scientific Research on Extraction Methods
+```
+
+This structure ensures the **entity is fully defined and contextualized**.
+
+---
+
+# 2. Attribute Clusters for the Entity “Preparation Methods”
+
+Think of these as **semantic vectors** necessary for entity completeness.
+
+Example triples:
+
+```
+Preparation Method → Technique → Infusion
+Preparation Method → Solvent → Water
+Preparation Method → Extracts → Flavonoids
+Preparation Method → Output → Herbal tea
+```
+
+---
+
+# A. Identity Attributes (What Preparation Methods Are)
+
+Defines the entity itself.
+
+### Subtopics
+
+* Definition of herbal preparation methods
+* Difference between preparation methods and herbal preparations
+* Role of preparation methods in herbal medicine
+* Relationship between herbs and extraction methods
+
+### Important vectors
+
+```
+extraction technique
+processing method
+herbal remedy preparation
+plant compound extraction
+```
+
+Example triples:
+
+```
+Preparation Method → Purpose → Extract plant compounds
+Preparation Method → Input → Raw plant material
+Preparation Method → Output → Herbal preparation
+```
+
+---
+
+# B. Functional Attributes (Why Preparation Methods Exist)
+
+Preparation methods are designed to **extract and deliver medicinal compounds**.
+
+### Subtopics
+
+* Extracting bioactive compounds
+* Preserving plant materials
+* Increasing bioavailability
+* Improving therapeutic delivery
+
+### Attributes
+
+```
+compound extraction
+bioavailability improvement
+compound preservation
+concentration control
+```
+
+---
+
+# C. Method Type Attributes (Core Methods)
+
+These are the **core entity nodes** that belong to this cluster.
+
+### Major methods
+
+```
+Infusion
+Decoction
+Maceration
+Tincture extraction
+Percolation
+Distillation
+Oil infusion
+Fermentation
+Powdering
+Juicing
+```
+
+Example triples:
+
+```
+Preparation Method → Method → Infusion
+Preparation Method → Method → Distillation
+```
+
+---
+
+# D. Extraction Medium Attributes
+
+Methods depend on **extraction solvents**.
+
+### Subtopics
+
+```
+Water extraction
+Alcohol extraction
+Oil extraction
+Glycerin extraction
+Vinegar extraction
+```
+
+Attributes:
+
+```
+solvent type
+polarity
+extraction efficiency
+```
+
+Example triples:
+
+```
+Preparation Method → Solvent → Water
+Preparation Method → Solvent → Ethanol
+```
+
+---
+
+# E. Temperature and Processing Attributes
+
+Preparation methods differ based on **heat and processing intensity**.
+
+### Subtopics
+
+```
+Hot extraction methods
+Cold extraction methods
+Mechanical extraction
+Heat-sensitive extractions
+```
+
+Attributes:
+
+```
+temperature
+extraction time
+heat exposure
+processing intensity
+```
+
+Example:
+
+```
+Preparation Method → Temperature → Hot extraction
+```
+
+---
+
+# F. Phytochemical Extraction Attributes
+
+Different methods extract **different chemical compounds**.
+
+### Subtopics
+
+```
+Water-soluble compounds
+Alcohol-soluble compounds
+Fat-soluble compounds
+Volatile compounds
+```
+
+Important phytochemical groups:
+
+```
+Alkaloids
+Flavonoids
+Tannins
+Terpenes
+Essential oils
+Saponins
+```
+
+Example triple:
+
+```
+Preparation Method → Extracts → Alkaloids
+```
+
+---
+
+# G. Plant Material Attributes
+
+Preparation methods depend on **plant materials used**.
+
+### Subtopics
+
+```
+Fresh plant material
+Dried plant material
+Powdered plant material
+Plant part selection
+```
+
+Attributes:
+
+```
+leaf
+root
+flower
+seed
+bark
+rhizome
+```
+
+Example:
+
+```
+Preparation Method → Plant Material → Dried herbs
+```
+
+---
+
+# H. Equipment Attributes
+
+Preparation methods require **specific tools and equipment**.
+
+### Subtopics
+
+```
+Traditional herbal equipment
+Modern extraction equipment
+Laboratory extraction tools
+```
+
+Attributes:
+
+```
+mortar and pestle
+grinder
+distillation apparatus
+percolator
+extraction vessels
+```
+
+---
+
+# I. Output Attributes (Resulting Preparations)
+
+Preparation methods produce **different herbal preparations**.
+
+### Subtopics
+
+```
+Herbal teas
+Tinctures
+Extracts
+Essential oils
+Powders
+Herbal oils
+```
+
+Example triples:
+
+```
+Preparation Method → Produces → Tincture
+Preparation Method → Produces → Herbal tea
+```
+
+---
+
+# J. Efficiency Attributes
+
+Different methods vary in **extraction efficiency**.
+
+### Subtopics
+
+```
+Extraction yield
+Compound concentration
+Extraction time
+Compound stability
+```
+
+Attributes:
+
+```
+efficiency
+yield
+compound retention
+concentration
+```
+
+---
+
+# K. Safety Attributes
+
+Some methods involve **risks or safety considerations**.
+
+### Subtopics
+
+```
+Microbial contamination
+Solvent toxicity
+Heat degradation
+Improper extraction risks
+```
+
+Attributes:
+
+```
+contamination risk
+toxic solvent exposure
+compound degradation
+```
+
+---
+
+# L. Quality Attributes
+
+Preparation methods influence **quality of herbal medicine**.
+
+### Subtopics
+
+```
+Standardized extraction
+Consistency of preparations
+Purity and contamination control
+```
+
+Attributes:
+
+```
+purity
+consistency
+standardization
+```
+
+---
+
+# M. Traditional Method Attributes
+
+Different traditions use **distinct preparation techniques**.
+
+### Subtopics
+
+```
+Traditional Chinese herbal preparation
+Ayurvedic preparation methods
+Western herbal preparation methods
+Indigenous preparation techniques
+```
+
+---
+
+# N. Modern Extraction Attributes
+
+Modern herbal medicine also uses **advanced extraction technologies**.
+
+### Subtopics
+
+```
+Supercritical extraction
+Pharmaceutical-grade extraction
+Industrial herbal extraction
+Standardized extracts
+```
+
+---
+
+# O. Scientific Research Attributes
+
+Scientific validation of preparation methods.
+
+### Subtopics
+
+```
+Extraction efficiency research
+Bioavailability studies
+Phytochemical extraction studies
+Clinical research on extracts
+```
+
+---
+
+# P. Regulatory Attributes
+
+Preparation methods can be regulated.
+
+### Subtopics
+
+```
+Herbal manufacturing regulations
+Extraction standards
+Good Manufacturing Practices (GMP)
+Pharmacopoeia standards
+```
+
+---
+
+# 3. Clean Attribute Vector Model
+
+Final semantic map:
+
+```
+Preparation Methods
+│
+├─ Identity
+├─ Functional Purpose
+├─ Method Types
+├─ Extraction Media
+├─ Temperature and Processing
+├─ Phytochemical Extraction
+├─ Plant Materials
+├─ Equipment
+├─ Resulting Preparations
+├─ Efficiency
+├─ Safety
+├─ Quality Control
+├─ Traditional Methods
+├─ Modern Extraction Techniques
+├─ Scientific Research
+└─ Regulation
+```
+
+---
+
+# 4. Microsemantic Tip (Important)
+
+Your **first paragraph must clearly define the entity**.
+
+Example:
+
+> Herbal preparation methods are techniques used to process medicinal plants in order to extract and preserve their therapeutic compounds. In herbal medicine, methods such as infusion, decoction, tincture extraction, oil infusion, and distillation transform raw plant materials into remedies like teas, extracts, powders, and essential oils.
+
+This sentence:
+
+* defines **entity identity**
+* introduces **core attributes**
+* connects the page to **herbal preparations and herbal medicine**
+
+This improves **entity disambiguation and retrieval probability**.
+
+---
+
+✅ **Your hierarchy now becomes**
+
+```
+Herbal Medicine
+   ├── Herbs
+   ├── Preparations
+   │       ├── Preparation Methods
+   │       │        ├── Infusion
+   │       │        ├── Decoction
+   │       │        ├── Maceration
+   │       │        ├── Tincture Extraction
+   │       │        ├── Distillation
+   │       │        └── Oil Infusion
+   │       └── Dosage Forms
+   ├── Actions
+   └── Phytochemicals
+```
+
+---
+
+💡 If you'd like, I can also show you the **exact 12–14 preparation methods you should include** so the **Preparation Methods page becomes topically complete for the herbal medicine domain** (most herbal sites only cover ~6 and miss half the semantic coverage).

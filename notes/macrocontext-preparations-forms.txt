@@ -1,0 +1,575 @@
+
+Below is a **Koray-style entity template** for the page:
+
+```
+Entity: Herbal Preparation Forms
+Context: Herbal Preparations → Herbal Medicine
+```
+
+This page defines the **attribute cluster “Forms” of the entity “Herbal Preparations.”**
+
+In semantic SEO terms, the page explains **how herbal preparations are delivered structurally** (liquid, solid, semi-solid, topical, inhaled, etc.).
+Your goal is to make **“Herbal Preparation Forms” stand alone as an entity node** in the knowledge base.
+
+The entity relationship is:
+
+```
+Herbal Medicine
+   → Herbal Preparations
+        → Forms
+```
+
+---
+
+# 1. Macro Structure of the Overview Page
+
+This is the **ideal Koray-style pillar structure**.
+
+```
+H1: Herbal Preparation Forms: Types, Uses, and Dosage Forms in Herbal Medicine
+
+1. Definition of Herbal Preparation Forms
+2. Purpose of Herbal Dosage Forms
+3. Classification of Herbal Preparation Forms
+4. Liquid Herbal Forms
+5. Solid Herbal Forms
+6. Semi-Solid Herbal Forms
+7. Oil-Based Herbal Forms
+8. Topical Herbal Forms
+9. Inhalation and Aromatic Forms
+10. Internal vs External Herbal Forms
+11. Selection of the Appropriate Form
+12. Stability and Shelf Life
+13. Dosage and Administration
+14. Quality and Standardization
+15. Safety Considerations
+16. Traditional Herbal Form Systems
+17. Modern Pharmaceutical Herbal Forms
+```
+
+This ensures the **entity “Herbal Preparation Forms” is completely explained**.
+
+---
+
+# 2. Attribute Clusters for the Entity “Herbal Preparation Forms”
+
+These clusters represent the **semantic attribute vectors**.
+
+Example triples:
+
+```
+Herbal Preparation Form → Type → Liquid
+Herbal Preparation Form → Dosage Form → Capsule
+Herbal Preparation Form → Administration → Oral
+Herbal Preparation Form → Consistency → Semi-solid
+```
+
+---
+
+# A. Identity Attributes (What Herbal Preparation Forms Are)
+
+Defines the entity.
+
+**Subtopics**
+
+* Definition of herbal preparation forms
+* Difference between preparation methods and forms
+* Difference between herbal forms and pharmaceutical dosage forms
+* Role of forms in herbal medicine delivery
+
+**Important vectors**
+
+```
+dosage forms
+herbal formulations
+delivery forms
+medicinal formats
+```
+
+Example triples:
+
+```
+Herbal Preparation Form → Purpose → Deliver herbal remedies
+Herbal Preparation Form → Category → Dosage form
+```
+
+---
+
+# B. Functional Attributes (Why Forms Exist)
+
+Forms exist to **deliver plant compounds effectively**.
+
+Subtopics:
+
+* Delivery of active compounds
+* Improving bioavailability
+* Patient usability
+* Stability of plant compounds
+
+Attributes:
+
+```
+bioavailability
+absorption
+ease of administration
+compound stability
+```
+
+Example:
+
+```
+Herbal Preparation Form → Function → Deliver active compounds
+```
+
+---
+
+# C. Physical State Attributes
+
+Forms are categorized by **physical consistency**.
+
+Subtopics:
+
+```
+Liquid preparations
+Solid preparations
+Semi-solid preparations
+Oil-based preparations
+```
+
+Attributes:
+
+```
+liquid
+solid
+semi-solid
+oily
+powdered
+```
+
+Example:
+
+```
+Herbal Preparation Form → Physical State → Liquid
+```
+
+---
+
+# D. Liquid Form Attributes
+
+Common liquid herbal forms.
+
+Subtopics:
+
+```
+Herbal teas
+Infusions
+Decoctions
+Tinctures
+Fluid extracts
+Herbal syrups
+Glycerites
+Herbal vinegars
+```
+
+Attributes:
+
+```
+water-based
+alcohol-based
+glycerin-based
+syrup-based
+```
+
+Example triple:
+
+```
+Herbal Preparation Form → Liquid Form → Tincture
+```
+
+---
+
+# E. Solid Form Attributes
+
+Common solid herbal forms.
+
+Subtopics:
+
+```
+Capsules
+Tablets
+Powders
+Granules
+Dried herbs
+Herbal pills
+```
+
+Attributes:
+
+```
+encapsulated
+compressed
+powdered
+granulated
+```
+
+Example:
+
+```
+Herbal Preparation Form → Solid Form → Capsule
+```
+
+---
+
+# F. Semi-Solid Form Attributes
+
+Semi-solid preparations.
+
+Subtopics:
+
+```
+Salves
+Ointments
+Creams
+Balms
+Herbal pastes
+```
+
+Attributes:
+
+```
+topical application
+semi-solid consistency
+oil/wax base
+```
+
+Example:
+
+```
+Herbal Preparation Form → Semi-solid Form → Salve
+```
+
+---
+
+# G. Oil-Based Form Attributes
+
+Oil-based preparations extract **lipophilic compounds**.
+
+Subtopics:
+
+```
+Infused herbal oils
+Medicinal oils
+Essential oils
+Herbal oil extracts
+```
+
+Attributes:
+
+```
+lipid-soluble compounds
+oil extraction
+fat-based preparation
+```
+
+Example:
+
+```
+Herbal Preparation Form → Oil Form → Infused oil
+```
+
+---
+
+# H. Topical Form Attributes
+
+Forms applied externally.
+
+Subtopics:
+
+```
+Salves
+Ointments
+Creams
+Poultices
+Compresses
+Herbal baths
+```
+
+Attributes:
+
+```
+skin application
+local treatment
+external use
+```
+
+Example:
+
+```
+Herbal Preparation Form → Application → Topical
+```
+
+---
+
+# I. Inhalation and Aromatic Forms
+
+Forms delivered through the **respiratory system**.
+
+Subtopics:
+
+```
+Steam inhalations
+Essential oil aromatherapy
+Herbal smokes
+Vapors
+```
+
+Attributes:
+
+```
+volatile compounds
+aromatic oils
+respiratory absorption
+```
+
+Example:
+
+```
+Herbal Preparation Form → Delivery → Inhalation
+```
+
+---
+
+# J. Administration Attributes
+
+Routes of use.
+
+Subtopics:
+
+```
+Oral administration
+Topical application
+Inhalation
+Bath preparations
+Compress therapy
+```
+
+Attributes:
+
+```
+oral
+dermal
+respiratory
+external
+```
+
+Example:
+
+```
+Herbal Preparation Form → Administration Route → Oral
+```
+
+---
+
+# K. Dosage Attributes
+
+Forms influence dosage.
+
+Subtopics:
+
+```
+Dose measurement
+Concentration differences
+Frequency of administration
+Extract strength
+```
+
+Attributes:
+
+```
+dose size
+strength
+concentration
+frequency
+```
+
+---
+
+# L. Stability and Shelf-Life Attributes
+
+Different forms have **different stability profiles**.
+
+Subtopics:
+
+```
+Shelf life of liquid extracts
+Stability of powders
+Storage of oils
+Preservation methods
+```
+
+Attributes:
+
+```
+oxidation risk
+microbial growth
+light sensitivity
+temperature sensitivity
+```
+
+---
+
+# M. Quality and Standardization Attributes
+
+Quality depends on **manufacturing and formulation**.
+
+Subtopics:
+
+```
+Standardized extracts
+Dosage consistency
+Purity of ingredients
+Manufacturing practices
+```
+
+Attributes:
+
+```
+standardization
+purity
+consistency
+manufacturing quality
+```
+
+---
+
+# N. Safety Attributes
+
+Different forms have different risks.
+
+Subtopics:
+
+```
+Overdose risk
+Alcohol content
+Allergic reactions
+Topical sensitivity
+```
+
+Attributes:
+
+```
+toxicity risk
+drug interactions
+skin irritation
+```
+
+---
+
+# O. Traditional Herbal Form Systems
+
+Forms vary across traditions.
+
+Subtopics:
+
+```
+Traditional Chinese herbal forms
+Ayurvedic dosage forms
+Western herbal dosage forms
+Indigenous herbal preparations
+```
+
+Examples:
+
+```
+Ayurvedic churnas
+Chinese herbal pills
+Traditional decoctions
+```
+
+---
+
+# P. Modern Pharmaceutical Herbal Forms
+
+Modern industry adapts herbal medicine.
+
+Subtopics:
+
+```
+Standardized capsules
+Pharmaceutical herbal extracts
+Herbal nutraceuticals
+Herbal supplements
+```
+
+---
+
+# 3. Clean Attribute Vector Model
+
+The **final semantic coverage map**.
+
+```
+Herbal Preparation Forms
+│
+├─ Identity
+├─ Functional Purpose
+├─ Physical States
+├─ Liquid Forms
+├─ Solid Forms
+├─ Semi-Solid Forms
+├─ Oil-Based Forms
+├─ Topical Forms
+├─ Inhalation Forms
+├─ Administration Routes
+├─ Dosage
+├─ Stability and Shelf Life
+├─ Quality and Standardization
+├─ Safety
+├─ Traditional Herbal Forms
+└─ Modern Herbal Forms
+```
+
+---
+
+# 4. Microsemantic Tip (Very Important)
+
+Your **first paragraph should immediately define the entity**.
+
+Example:
+
+> Herbal preparation forms refer to the physical formats in which herbal remedies are delivered, such as teas, tinctures, capsules, powders, oils, creams, and salves. In herbal medicine, these forms determine how medicinal plant compounds are administered, absorbed, and preserved, influencing dosage accuracy, stability, and therapeutic effectiveness.
+
+This sentence:
+
+• defines the entity
+• explains its function
+• introduces key attributes
+
+which improves **entity disambiguation and retrieval**.
+
+---
+
+✅ **Recommended internal structure for your site**
+
+```
+/preparations
+      ├── /forms
+      │      ├── tinctures
+      │      ├── teas
+      │      ├── capsules
+      │      ├── powders
+      │      ├── oils
+      │      ├── salves
+      │      └── syrups
+      │
+      ├── /methods
+      ├── /solvents
+      └── /dosage
+```
+
+This creates a **clear attribute expansion**, which is exactly how Koray recommends building **semantic content networks** for topical authority.
+
+---
+
+If you'd like, I can also show you something extremely useful for this specific page:
+
+**the 18–22 herbal dosage forms that actually complete topical coverage** for the entity **“herbal preparation forms”** (most herbal sites only cover about 8–10 and leave large semantic gaps).

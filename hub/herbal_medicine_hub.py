@@ -2323,7 +2323,7 @@ def actions_action__gen(action):
 
 def preparations__gen():
     url_slug = f'preparations'
-    meta_title = f'Herbal Medicine Preparation Methods'
+    meta_title = f'Herbal Medicine Preparations'
     meta_description = ''
     canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''
 
@@ -2459,6 +2459,7 @@ def preparations__gen():
         <section class="article-section">
             <h2>Types of Herbal Preparations</h2>
             <p>{types_subordinate_html}</p>
+            <p><a href="/preparations/forms.html">Preparation Forms</a></p>
         </section>
     '''
     preparation_methods_html = f'''
@@ -2592,6 +2593,337 @@ def preparations__gen():
     html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
     with open(html_filepath, 'w') as f: f.write(html)
 
+def preparations__forms__gen():
+    url_slug = f'preparations/forms'
+    meta_title = f'Herbal Preparation Forms: Types, Uses, and Dosage Forms in Herbal Medicine'
+    meta_description = ''
+    canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''
+    
+    ########################################
+    # json
+    ########################################
+    json_article_filepath = f'''{g.DATABASE_FOLDERPATH}/json/{url_slug}.json'''
+    json_article = io.json_read(json_article_filepath, create=True)
+    json_article['url'] = url_slug
+    io.json_write(json_article_filepath, json_article)
+
+    ###
+    definition_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='definition', 
+        attribute='definition', entity='preparation forms', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    purpose_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='purpose', 
+        attribute='Purpose of Herbal Dosage Forms', entity='preparation forms', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    classification_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='classification', 
+        attribute='Classification of Herbal Preparation Forms', entity='preparation forms', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    liquid_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='liquid', 
+        attribute='Liquid Herbal Forms', entity='preparation forms', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    solid_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='solid', 
+        attribute='Solid Herbal Forms', entity='preparation forms', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    semi_solid_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='semi_solid', 
+        attribute='Semi-Solid Herbal Forms', entity='preparation forms', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    oil_based_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='oil_based', 
+        attribute='Oil-Based Herbal Forms', entity='preparation forms', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    topical_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='topical', 
+        attribute='Topical Herbal Forms', entity='preparation forms', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    inhalation_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='inhalation', 
+        attribute='Inhalation and Aromatic Forms', entity='preparation forms', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    internal_vs_external_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='internal_vs_external', 
+        attribute='Internal vs External Herbal Forms', entity='preparation forms', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    selection_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='selection', 
+        attribute='Selection of the Appropriate Form', entity='preparation forms', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    stability_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='stability', 
+        attribute='Stability and Shelf Life', entity='preparation forms', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    dosage_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='dosage', 
+        attribute='Dosage and Administration', entity='preparation forms', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    quality_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='quality', 
+        attribute='Quality and Standardization', entity='preparation forms', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    safety_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='safety', 
+        attribute='Safety Considerations', entity='preparation forms', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    traditional_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='traditional', 
+        attribute='Traditional Herbal Form Systems', entity='preparation forms', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    modern_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='modern', 
+        attribute='Modern Pharmaceutical Herbal Forms', entity='preparation forms', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+
+    ########################################
+    # html
+    ########################################
+    intro_html = f'''
+        <h1>
+            Herbal Preparation Forms: Types, Uses, and Dosage Forms in Herbal Medicine
+        </h1>
+        <p>
+            Herbal preparation forms refer to the physical formats in which herbal remedies are delivered, such as teas, tinctures, capsules, powders, oils, creams, and salves. In herbal medicine, these <a href="/preparations.html">preparations</a> determine how medicinal plant compounds are administered, absorbed, and preserved, influencing dosage accuracy, stability, and therapeutic effectiveness.
+        </p>
+    '''
+    definition_html = f'''
+        <section class="article-section">
+            <h2>Definition of Herbal Preparation Forms</h2>
+            <p>{definition_subordinate_html}</p>
+        </section>
+    '''
+    purpose_html = f'''
+        <section class="article-section">
+            <h2>Purpose of Herbal Dosage Forms</h2>
+            <p>{purpose_subordinate_html}</p>
+        </section>
+    '''
+    classification_html = f'''
+        <section class="article-section">
+            <h2>Classification of Herbal Preparation Forms</h2>
+            <p>{classification_subordinate_html}</p>
+        </section>
+    '''
+    liquid_html = f'''
+        <section class="article-section">
+            <h2>Liquid Herbal Forms</h2>
+            <p>{liquid_subordinate_html}</p>
+        </section>
+    '''
+    solid_html = f'''
+        <section class="article-section">
+            <h2>Solid Herbal Forms</h2>
+            <p>{solid_subordinate_html}</p>
+        </section>
+    '''
+    semi_solid_html = f'''
+        <section class="article-section">
+            <h2>Semi-Solid Herbal Forms</h2>
+            <p>{semi_solid_subordinate_html}</p>
+        </section>
+    '''
+    oil_based_html = f'''
+        <section class="article-section">
+            <h2>Oil-Based Herbal Forms</h2>
+            <p>{oil_based_subordinate_html}</p>
+        </section>
+    '''
+    topical_html = f'''
+        <section class="article-section">
+            <h2>Topical Herbal Forms</h2>
+            <p>{topical_subordinate_html}</p>
+        </section>
+    '''
+    inhalation_html = f'''
+        <section class="article-section">
+            <h2>Inhalation and Aromatic Forms</h2>
+            <p>{inhalation_subordinate_html}</p>
+        </section>
+    '''
+    internal_vs_external_html = f'''
+        <section class="article-section">
+            <h2>Internal vs External Herbal Forms</h2>
+            <p>{internal_vs_external_subordinate_html}</p>
+        </section>
+    '''
+    selection_html = f'''
+        <section class="article-section">
+            <h2>Selection of the Appropriate Form</h2>
+            <p>{selection_subordinate_html}</p>
+        </section>
+    '''
+    stability_html = f'''
+        <section class="article-section">
+            <h2>Stability and Shelf Life</h2>
+            <p>{stability_subordinate_html}</p>
+        </section>
+    '''
+    dosage_html = f'''
+        <section class="article-section">
+            <h2>Dosage and Administration</h2>
+            <p>{dosage_subordinate_html}</p>
+        </section>
+    '''
+    quality_html = f'''
+        <section class="article-section">
+            <h2>Quality and Standardization</h2>
+            <p>{quality_subordinate_html}</p>
+        </section>
+    '''
+    safety_html = f'''
+        <section class="article-section">
+            <h2>Safety Considerations</h2>
+            <p>{safety_subordinate_html}</p>
+        </section>
+    '''
+    traditional_html = f'''
+        <section class="article-section">
+            <h2>Traditional Herbal Form Systems</h2>
+            <p>{traditional_subordinate_html}</p>
+        </section>
+    '''
+    modern_html = f'''
+        <section class="article-section">
+            <h2>Modern Pharmaceutical Herbal Forms</h2>
+            <p>{modern_subordinate_html}</p>
+        </section>
+    '''
+
+    article_html = f'''
+        {intro_html}
+        {definition_html}
+        {purpose_html}
+        {classification_html}
+        {classification_html}
+        {liquid_html}
+        {solid_html}
+        {semi_solid_html}
+        {oil_based_html}
+        {topical_html}
+        {inhalation_html}
+        {internal_vs_external_html}
+        {selection_html}
+        {stability_html}
+        {dosage_html}
+        {quality_html}
+        {safety_html}
+        {traditional_html}
+        {modern_html}
+    '''
+
+    ###
+    head_html = components.html_head(
+        meta_title, meta_description, css='/styles-herb-monograph.css', canonical=canonical_html
+    )
+    import textwrap
+    html = textwrap.dedent(f''' 
+        <!DOCTYPE html>
+        <html lang="en">
+        {head_html}
+        <body>
+            {sections.header_default()}
+            {sections.breadcrumbs_new(url_slug)}
+            <main>
+                <article class="container-md article">
+                    {article_html}
+                </article>
+            </main>
+            {sections.footer()}
+        </body>
+        </html>
+    ''').strip()
+    html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
+    io.folder_create_from_filepath(html_filepath)
+    with open(html_filepath, 'w') as f: f.write(html)
+
+def preparations__methods__gen():
+    url_slug = f'preparations/methods'
+    meta_title = f'Herbal Preparation Methods: Techniques for Making Herbal Remedies'
+    meta_description = ''
+    canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''
+    
+    ########################################
+    # json
+    ########################################
+    json_article_filepath = f'''{g.DATABASE_FOLDERPATH}/json/{url_slug}.json'''
+    json_article = io.json_read(json_article_filepath, create=True)
+    json_article['url'] = url_slug
+    io.json_write(json_article_filepath, json_article)
+
+    ###
+    definition_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='definition', 
+        attribute='definition', entity='classification of pharmacological actions', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+
+    ########################################
+    # html
+    ########################################
+    intro_html = f'''
+        <h1>
+            Herbal Preparation Methods: Techniques for Making Herbal Remedies
+        </h1>
+        <p>
+            Herbal preparation methods are techniques used to process medicinal plants in order to extract and preserve their therapeutic compounds. In herbal medicine, methods such as infusion, decoction, tincture extraction, oil infusion, and distillation transform raw plant materials into remedies like teas, extracts, powders, and essential oils.
+        </p>
+    '''
+    definition_html = f'''
+        <section class="article-section">
+            <h2>Definition of Herbal Action Classification</h2>
+            <p>{definition_subordinate_html}</p>
+        </section>
+    '''
+
+    article_html = f'''
+        {intro_html}
+        {definition_html}
+    '''
+
+    ###
+    head_html = components.html_head(
+        meta_title, meta_description, css='/styles-herb-monograph.css', canonical=canonical_html
+    )
+    import textwrap
+    html = textwrap.dedent(f''' 
+        <!DOCTYPE html>
+        <html lang="en">
+        {head_html}
+        <body>
+            {sections.header_default()}
+            {sections.breadcrumbs_new(url_slug)}
+            <main>
+                <article class="container-md article">
+                    {article_html}
+                </article>
+            </main>
+            {sections.footer()}
+        </body>
+        </html>
+    ''').strip()
+    html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
+    io.folder_create_from_filepath(html_filepath)
+    with open(html_filepath, 'w') as f: f.write(html)
+
 def main():
     herbal_medicine__gen()
     ###
@@ -2619,4 +2951,6 @@ def main():
         # break
     ###
     preparations__gen()
+    preparations__forms__gen()
+    # preparations__methods__gen()
 
