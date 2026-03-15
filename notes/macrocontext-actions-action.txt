@@ -1,0 +1,538 @@
+
+Below is a **reusable Koray-style entity template** for every page like:
+
+```
+/actions/anti-inflammatory.html
+/actions/antimicrobial.html
+/actions/antioxidant.html
+/actions/adaptogenic.html
+/actions/sedative.html
+```
+
+Entity example:
+
+```
+Anti-inflammatory Action
+Context: Herbal Medicine
+Entity Type: Pharmacological Action
+```
+
+The goal is that **each action page stands alone as a knowledge node**, meaning it defines:
+
+* what the action is
+* how it works
+* what causes it
+* where it acts
+* what it treats
+* which herbs provide it
+* safety and research context
+
+This creates a **complete Entity → Attribute → Value structure**, which is how search engines organize knowledge graphs. 
+
+---
+
+# 1. Macro Structure for Every Action Page
+
+This is the **universal page structure you can reuse for every pharmacological action**.
+
+```
+H1: Anti-Inflammatory Action in Herbal Medicine
+
+1. Definition of the Action
+2. Role of the Action in Herbal Medicine
+3. Biological Mechanisms of the Action
+4. Phytochemical Compounds Responsible
+5. Physiological Systems Affected
+6. Therapeutic Effects and Health Benefits
+7. Conditions Treated by the Action
+8. Medicinal Herbs With This Action
+9. Preparation Methods for Herbs With This Action
+10. Dosage and Administration Considerations
+11. Synergistic Herbal Combinations
+12. Safety and Possible Side Effects
+13. Contraindications and Drug Interactions
+14. Scientific Research and Evidence
+15. Clinical Applications in Herbal Medicine
+16. Comparison With Pharmaceutical Drugs
+17. Related Herbal Actions
+```
+
+You simply replace **“Anti-inflammatory”** with the target action.
+
+---
+
+# 2. Core Attribute Clusters for Each Action Entity
+
+Each action page must describe the **full knowledge graph of the action**.
+
+Example triples:
+
+```
+Anti-inflammatory Action → Mechanism → Cytokine inhibition
+Anti-inflammatory Action → Compound → Flavonoids
+Anti-inflammatory Action → Herb → Turmeric
+```
+
+---
+
+# A. Identity Attributes (What the Action Is)
+
+Defines the **entity itself**.
+
+Subtopics:
+
+* Definition of the action
+* Biological meaning of the action
+* Difference between action and therapeutic use
+* Role of the action in herbal medicine
+
+Vectors:
+
+```
+pharmacological action
+physiological effect
+biological activity
+therapeutic activity
+```
+
+Example:
+
+```
+Anti-inflammatory Action → Definition → Reduction of inflammatory processes
+```
+
+---
+
+# B. Biological Mechanism Attributes
+
+Explains **how the action works biologically**.
+
+Subtopics:
+
+```
+Molecular mechanisms
+Cellular processes
+Biochemical pathways
+Immune responses
+```
+
+Attributes:
+
+```
+enzyme inhibition
+receptor modulation
+cytokine regulation
+antioxidant pathways
+signal pathway modulation
+```
+
+Example:
+
+```
+Anti-inflammatory Action → Mechanism → Cytokine inhibition
+```
+
+---
+
+# C. Phytochemical Attributes
+
+Actions occur because of **plant compounds**.
+
+Subtopics:
+
+```
+Active phytochemicals
+Compound classes
+Compound bioavailability
+```
+
+Attributes:
+
+```
+alkaloids
+flavonoids
+terpenoids
+phenolic compounds
+tannins
+glycosides
+essential oils
+```
+
+Example:
+
+```
+Anti-inflammatory Action → Active Compound → Curcuminoids
+```
+
+---
+
+# D. Physiological Target Attributes
+
+Which **body systems** the action influences.
+
+Subtopics:
+
+```
+Immune system
+Digestive system
+Nervous system
+Cardiovascular system
+Respiratory system
+Skin
+Endocrine system
+```
+
+Example:
+
+```
+Anti-inflammatory Action → Target System → Immune system
+```
+
+---
+
+# E. Therapeutic Effect Attributes
+
+These are the **health outcomes** of the action.
+
+Subtopics:
+
+```
+Symptom relief
+Disease prevention
+Functional health improvement
+```
+
+Examples:
+
+```
+Pain reduction
+Reduced inflammation
+Improved immune response
+Improved digestion
+```
+
+Example triple:
+
+```
+Anti-inflammatory Action → Outcome → Reduced inflammation
+```
+
+---
+
+# F. Disease / Condition Attributes
+
+Conditions where the action is useful.
+
+Subtopics:
+
+```
+Inflammatory diseases
+Digestive disorders
+Skin conditions
+Respiratory diseases
+Autoimmune disorders
+```
+
+Example:
+
+```
+Anti-inflammatory Action → Treats → Arthritis
+```
+
+---
+
+# G. Herbal Source Attributes
+
+Herbs that produce the action.
+
+Subtopics:
+
+```
+Medicinal plants with this action
+Common herbal examples
+Traditional uses
+```
+
+Attributes:
+
+```
+turmeric
+ginger
+chamomile
+echinacea
+ginseng
+licorice
+peppermint
+```
+
+Example triple:
+
+```
+Anti-inflammatory Action → Found In → Turmeric
+```
+
+---
+
+# H. Preparation Attributes
+
+How herbs with this action are prepared.
+
+Subtopics:
+
+```
+Herbal tea
+Decoction
+Tincture
+Extract
+Powder
+Topical preparation
+Essential oil
+```
+
+Example:
+
+```
+Anti-inflammatory Action → Preparation → Herbal infusion
+```
+
+---
+
+# I. Dosage Attributes
+
+How the action is delivered safely.
+
+Subtopics:
+
+```
+Standard dosage ranges
+Treatment duration
+Concentration
+Frequency of use
+```
+
+Attributes:
+
+```
+dose
+concentration
+frequency
+treatment duration
+```
+
+---
+
+# J. Synergy Attributes
+
+Very important in herbal medicine.
+
+Subtopics:
+
+```
+Compound synergy
+Whole-plant synergy
+Polyherbal formulations
+Complementary actions
+```
+
+Example:
+
+```
+Anti-inflammatory Action → Synergy → Antioxidant activity
+```
+
+---
+
+# K. Safety Attributes
+
+Important for medical credibility.
+
+Subtopics:
+
+```
+Side effects
+Toxicity
+Allergic reactions
+Herb-drug interactions
+```
+
+Attributes:
+
+```
+adverse effects
+toxicity
+contraindications
+pregnancy safety
+```
+
+Example:
+
+```
+Anti-inflammatory Action → Risk → Herb-drug interaction
+```
+
+---
+
+# L. Contraindication Attributes
+
+Subtopics:
+
+```
+Medical conditions
+Medication interactions
+Pregnancy
+Children
+```
+
+Example:
+
+```
+Anti-inflammatory Action → Contraindicated With → Blood-thinning drugs
+```
+
+---
+
+# M. Scientific Research Attributes
+
+Evidence behind the action.
+
+Subtopics:
+
+```
+Pharmacological studies
+Clinical trials
+Mechanistic studies
+Phytochemical research
+```
+
+Attributes:
+
+```
+in vitro studies
+in vivo studies
+clinical trials
+systematic reviews
+```
+
+Example:
+
+```
+Anti-inflammatory Action → Evidence → Clinical trials
+```
+
+---
+
+# N. Clinical Application Attributes
+
+How practitioners use the action.
+
+Subtopics:
+
+```
+Herbal prescriptions
+Preventive herbal medicine
+Functional health support
+Traditional medicine practices
+```
+
+Example:
+
+```
+Anti-inflammatory Action → Clinical Use → Arthritis management
+```
+
+---
+
+# O. Related Action Attributes
+
+Important for internal linking.
+
+Subtopics:
+
+```
+Complementary actions
+Similar pharmacological actions
+Opposing actions
+```
+
+Examples:
+
+```
+antioxidant
+analgesic
+immunomodulatory
+antispasmodic
+adaptogenic
+```
+
+Example:
+
+```
+Anti-inflammatory Action → Related Action → Antioxidant
+```
+
+---
+
+# 3. Clean Reusable Attribute Vector Model
+
+This is the **exact model every action page should follow**.
+
+```
+Herbal Pharmacological Action
+│
+├─ Identity
+├─ Biological Mechanisms
+├─ Phytochemical Basis
+├─ Physiological Targets
+├─ Therapeutic Effects
+├─ Diseases and Conditions
+├─ Herbal Sources
+├─ Preparation Methods
+├─ Dosage
+├─ Synergistic Actions
+├─ Safety and Side Effects
+├─ Contraindications
+├─ Scientific Evidence
+├─ Clinical Applications
+└─ Related Herbal Actions
+```
+
+You simply replace the entity:
+
+```
+Anti-inflammatory Action
+Antimicrobial Action
+Antioxidant Action
+Sedative Action
+Adaptogenic Action
+Diuretic Action
+Expectorant Action
+Digestive Stimulant Action
+```
+
+---
+
+# 4. Microsemantic Template (First Paragraph)
+
+Use the **same semantic pattern** for every page.
+
+Example:
+
+> In herbal medicine, the **anti-inflammatory action** refers to the ability of certain medicinal plants to reduce inflammation in the body by modulating immune responses, inhibiting inflammatory enzymes, and regulating cytokine activity. This pharmacological action is produced by bioactive plant compounds such as flavonoids, terpenoids, and phenolic compounds, and plays an important role in the herbal treatment of conditions such as arthritis, digestive inflammation, and skin irritation.
+
+This ensures the entity is immediately understood as:
+
+```
+Entity → Anti-inflammatory Action
+Type → Pharmacological Action
+Context → Herbal Medicine
+```
+
+---
+
+✅ **This template can be reused for 30+ action pages.**
+
+---
+
+If you'd like, I can also show you something **extremely important for Koray-style topical authority**:
+
+**The exact list of ~35 pharmacological actions that a complete herbal medicine site should cover**, which forms the **optimal “Actions” topical cluster.**

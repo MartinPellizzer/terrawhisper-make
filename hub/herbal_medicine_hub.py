@@ -1755,6 +1755,7 @@ def actions__classification__gen():
                     'entity': item,
                     'heading': item,
                     'subordinate': '',
+                    'slug': item.lower().strip().replace(' ', '-'),
                 }
                 items_data.append(_obj)
         json_article[key] = items_data
@@ -1903,6 +1904,7 @@ def actions__classification__gen():
         subsections_html += f'''
             <h3>{item['heading']}</h3>
             <p>{item['subordinate']}</p>
+            <p><a href="/actions/{item['slug']}.html">{item['heading']}</a></p>
         '''
     major_categories_html = f'''
         <section class="article-section">
@@ -2032,6 +2034,292 @@ def actions__classification__gen():
     io.folder_create_from_filepath(html_filepath)
     with open(html_filepath, 'w') as f: f.write(html)
 
+def actions_action__gen(action):
+    action = action.lower().strip()
+    action_slug = action.replace(' ', '-')
+    url_slug = f'actions/{action_slug}'
+    meta_title = f'Pharmacological Actions {action.title()}'
+    meta_description = ''
+    canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''
+
+    herbs_names_filtered = []
+    herbs = io.json_read(f'''{g.SSOT_FOLDERPATH}/herbs/herbs-medicinal-validated.json''')
+    for herb in herbs:
+        herb_name_scientific = herb['taxon_name']
+        herb_slug = polish.sluggify(herb_name_scientific)
+        herb_data = io.json_read(f'''{g.SSOT_FOLDERPATH}/herbs/herbs-primary/{herb_slug}.json''')
+        herb_name_common = herb_data['herb_names_common'][0]['answer']
+        ###
+        for item in herb_data['herb_actions']:
+            name = item['answer']
+            total_score = item['total_score']
+            if name.lower().strip() == action.lower().strip():
+                if total_score >= 600:
+                    found = False
+                    for herb_name_filtered in herbs_names_filtered:
+                        if herb_name_filtered['herb_name_common'].lower().strip() == herb_name_common.lower().strip():
+                            found = True
+                            break
+                    if not found:
+                        herbs_names_filtered.append(
+                            {
+                                'herb_name_common': herb_name_common,
+                                'herb_name_scientific': herb_name_scientific,
+                                'herb_slug': herb_slug,
+                            }
+                        )
+    random.shuffle(herbs_names_filtered)
+
+    ########################################
+    # json
+    ########################################
+    json_article_filepath = f'''{g.DATABASE_FOLDERPATH}/json/{url_slug}.json'''
+    json_article = io.json_read(json_article_filepath, create=True)
+    json_article['url'] = url_slug
+    io.json_write(json_article_filepath, json_article)
+
+    ###
+    intro_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='intro', 
+        attribute='introduction', entity=f'{action} action', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    definition_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='definition', 
+        attribute='definition', entity=f'{action} action', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    biological_mechanisms_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='biological_mechanisms', 
+        attribute='Biological Mechanisms of the Action', entity=f'{action} action', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    phytochemical_basis_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='phytochemical_basis', 
+        attribute='Phytochemical Compounds Responsible', entity=f'{action} action', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    physiological_targets_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='physiological_targets', 
+        attribute='Physiological Systems Affected', entity=f'{action} action', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    therapeutic_effects_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='therapeutic_effects', 
+        attribute='Therapeutic Effects and Health Benefits', entity=f'{action} action', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    diseases_and_conditions_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='diseases_and_conditions', 
+        attribute='Conditions Treated by the Action', entity=f'{action} action', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    herbal_sources_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='herbal_sources', 
+        attribute='Medicinal Herbs With This Action', entity=f'{action} action', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    preparation_methods_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='preparation_methods', 
+        attribute='Preparation Methods for Herbs With This Action', entity=f'{action} action', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    dosage_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='dosage', 
+        attribute='Dosage and Administration Considerations', entity=f'{action} action', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    synergistic_actions_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='synergistic_actions', 
+        attribute='Synergistic Herbal Combinations', entity=f'{action} action', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    safety_and_side_effects_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='safety_and_side_effects', 
+        attribute='Safety and Possible Side Effects', entity=f'{action} action', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    contraindications_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='contraindications', 
+        attribute='Contraindications and Drug Interactions', entity=f'{action} action', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    scientific_evidence_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='scientific_evidence', 
+        attribute='Scientific Research and Evidence', entity=f'{action} action', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    clinical_applications_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='clinical_applications', 
+        attribute='Clinical Applications in Herbal Medicine', entity=f'{action} action', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+    related_herbal_actions_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='related_herbal_actions', 
+        attribute='Related Herbal Actions', entity=f'{action} action', context='herbal medicine', 
+        regen=False, dispel=False
+    )
+
+    ########################################
+    # html
+    ########################################
+    ###
+    intro_html = f'''
+        <h1>
+            {action.title()} Action in Herbal Medicine
+        </h1>
+        <p>
+            {intro_subordinate_html}
+        </p>
+        <p>
+            Here you can find a complete <a href="/actions/classification.html">classification of pharmacological actions.</a>
+        </p>
+    '''
+    definition_html = f'''
+        <section class="article-section">
+            <h2>Definition of the Action</h2>
+            <p>{definition_subordinate_html}</p>
+        </section>
+    '''
+    biological_mechanisms_html = f'''
+        <section class="article-section">
+            <h2>Biological Mechanisms of the Action</h2>
+            <p>{biological_mechanisms_subordinate_html}</p>
+        </section>
+    '''
+    phytochemical_basis_html = f'''
+        <section class="article-section">
+            <h2>Phytochemical Compounds Responsible</h2>
+            <p>{phytochemical_basis_subordinate_html}</p>
+        </section>
+    '''
+    physiological_targets_html = f'''
+        <section class="article-section">
+            <h2>Physiological Systems Affected</h2>
+            <p>{physiological_targets_subordinate_html}</p>
+        </section>
+    '''
+    therapeutic_effects_html = f'''
+        <section class="article-section">
+            <h2>Therapeutic Effects and Health Benefits</h2>
+            <p>{therapeutic_effects_subordinate_html}</p>
+        </section>
+    '''
+    diseases_and_conditions_html = f'''
+        <section class="article-section">
+            <h2>Conditions Treated by the Action</h2>
+            <p>{diseases_and_conditions_subordinate_html}</p>
+        </section>
+    '''
+    ###
+    list_html = ''.join([
+        f'''<li>
+            <a href="/herbs/{item['herb_slug']}.html">{item['herb_name_common']} ({item['herb_name_scientific']})</a>
+            </li>''' 
+        for item in herbs_names_filtered[:15]
+    ])
+    herbal_sources_html = f'''
+        <section class="article-section">
+            <h2>Medicinal Herbs With This Action</h2>
+            <p>{herbal_sources_subordinate_html}</p>
+            <p>The following list shows a sample of medicinal plants that have {action.lower()} action.</p>
+            <ul>{list_html}</ul>
+        </section>
+    '''
+    ###
+    preparation_methods_html = f'''
+        <section class="article-section">
+            <h2>Preparation Methods for Herbs With This Action</h2>
+            <p>{preparation_methods_subordinate_html}</p>
+        </section>
+    '''
+    dosage_html = f'''
+        <section class="article-section">
+            <h2>Dosage and Administration Considerations</h2>
+            <p>{dosage_subordinate_html}</p>
+        </section>
+    '''
+    synergistic_actions_html = f'''
+        <section class="article-section">
+            <h2>Synergistic Herbal Combinations</h2>
+            <p>{synergistic_actions_subordinate_html}</p>
+        </section>
+    '''
+    safety_and_side_effects_html = f'''
+        <section class="article-section">
+            <h2>Safety and Possible Side Effects</h2>
+            <p>{safety_and_side_effects_subordinate_html}</p>
+        </section>
+    '''
+    contraindications_html = f'''
+        <section class="article-section">
+            <h2>Contraindications and Drug Interactions</h2>
+            <p>{contraindications_subordinate_html}</p>
+        </section>
+    '''
+    scientific_evidence_html = f'''
+        <section class="article-section">
+            <h2>Scientific Research and Evidence</h2>
+            <p>{scientific_evidence_subordinate_html}</p>
+        </section>
+    '''
+    clinical_applications_html = f'''
+        <section class="article-section">
+            <h2>Clinical Applications in Herbal Medicine</h2>
+            <p>{clinical_applications_subordinate_html}</p>
+        </section>
+    '''
+    related_herbal_actions_html = f'''
+        <section class="article-section">
+            <h2>Related Herbal Actions</h2>
+            <p>{related_herbal_actions_subordinate_html}</p>
+        </section>
+    '''
+
+    article_html = f'''
+        {intro_html}
+        {definition_html}
+        {biological_mechanisms_html}
+        {phytochemical_basis_html}
+        {physiological_targets_html}
+        {therapeutic_effects_html}
+        {diseases_and_conditions_html}
+        {herbal_sources_html}
+        {preparation_methods_html}
+        {dosage_html}
+        {synergistic_actions_html}
+        {safety_and_side_effects_html}
+        {contraindications_html}
+        {scientific_evidence_html}
+        {clinical_applications_html}
+        {related_herbal_actions_html}
+    '''
+
+    ###
+    head_html = components.html_head(
+        meta_title, meta_description, css='/styles-herb-monograph.css', canonical=canonical_html
+    )
+    import textwrap
+    html = textwrap.dedent(f''' 
+        <!DOCTYPE html>
+        <html lang="en">
+        {head_html}
+        <body>
+            {sections.header_default()}
+            {sections.breadcrumbs_new(url_slug)}
+            <main>
+                <article class="container-md article">
+                    {article_html}
+                </article>
+            </main>
+            {sections.footer()}
+        </body>
+        </html>
+    ''').strip()
+    html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
+    io.folder_create_from_filepath(html_filepath)
+    with open(html_filepath, 'w') as f: f.write(html)
+
 def main():
     herbal_medicine__gen()
     ###
@@ -2054,4 +2342,7 @@ def main():
     ###
     actions__gen()
     actions__classification__gen()
+    for action in data.actions_get(10):
+        actions_action__gen(action)
+        # break
 
