@@ -1184,89 +1184,6 @@ def herb_generally_safe_gen(herb_filepath, regen=False, clear=False):
         # print(entity_herb)
         # quit()
 
-def herb_preparations_gen(herb_filepath, regen=False, clear=False):
-    entity_herb = io.json_read(herb_filepath)
-    herb_name_scientific = entity_herb['herb_name_scientific']
-    key = 'herb_preparations'
-    if key not in entity_herb: entity_herb[key] = ''
-    if regen: entity_herb[key] = ''
-    if clear: 
-        entity_herb[key] = ''
-        io.json_write(herb_filepath, entity_herb)
-        return
-    if entity_herb[key] == '' or entity_herb[key] == []:
-        main_list_text = f'''
-            Infusion
-            Decoction
-            Tincture
-            Poultice
-            Powder
-            Capsule
-            Essential Oil
-            Extract
-            Oil Infusion
-            Culinary Use
-            '''.strip()
-        outputs = []
-        for i in range(10):
-            print(f'{i} - {herb_name_scientific}')
-            import textwrap
-            main_list_prompt = [e.strip() for e in main_list_text.split('\n') if e.strip() != '']
-            random.shuffle(main_list_prompt)
-            main_list_prompt = '\n'.join(main_list_prompt)
-            prompt = textwrap.dedent(f''' 
-                Tell me the most used preparation methods of the following plant with scientific name: {herb_name_scientific}.
-                In specific, write a confidence score from 1 to 10, indicating how sure you are about your answer.
-                The possible historical preparation methods are the following:
-                {main_list_prompt}
-                Reply using the following JSON format:
-                [
-                    {{"answer": "write historical preparation method name 1 here", "score": "write score 1 here"}},
-                    {{"answer": "write historical preparation method name 2 here", "score": "write score 2 here"}},
-                    {{"answer": "write historical preparation method name 3 here", "score": "write score 3 here"}},
-                    {{"answer": "write historical preparation method name 4 here", "score": "write score 4 here"}},
-                    {{"answer": "write historical preparation method name 5 here", "score": "write score 5 here"}},
-                    {{"answer": "write historical preparation method name 6 here", "score": "write score 6 here"}},
-                    {{"answer": "write historical preparation method name 7 here", "score": "write score 7 here"}},
-                    {{"answer": "write historical preparation method name 8 here", "score": "write score 8 here"}},
-                    {{"answer": "write historical preparation method name 9 here", "score": "write score 9 here"}},
-                    {{"answer": "write historical preparation method name 10 here", "score": "write score 10 here"}}
-                ]
-                Reply only with the JSON.
-            ''').strip()
-            prompt += f'\n/no_think'
-            print(prompt)
-            reply = llm.reply(prompt)
-            if '</think>' in reply:
-                reply = reply.split('</think>')[1].strip()
-            json_data = {}
-            try: json_data = json.loads(reply)
-            except: pass 
-            if json_data != {}:
-                _objs = answer_score_extract(json_data)
-                for _obj in _objs:
-                    answer = _obj['answer'].strip().lower()
-                    score = int(_obj['score'])
-                    found = False
-                    for output in outputs:
-                        if answer in output['answer']: 
-                            output['mentions'] += 1
-                            output['confidence_score'] += int(score)
-                            found = True
-                            break
-                    if not found:
-                        outputs.append({
-                            'answer': answer, 
-                            'mentions': 1, 
-                            'confidence_score': int(score), 
-                        })
-        outputs = total_score_calc(outputs)
-        entity_herb[key] = outputs
-        print(herb_filepath)
-        io.json_write(herb_filepath, entity_herb)
-        # print(entity_herb)
-        # quit()
-
 def herb_growing_soil_gen(herb_filepath, regen=False, clear=False):
     entity_herb = io.json_read(herb_filepath)
     herb_name_scientific = entity_herb['herb_name_scientific']
@@ -2664,6 +2581,77 @@ def herb_actions_gen(herb_filepath, regen=False, clear=False):
         io.json_write(herb_filepath, entity_herb)
         # quit()
 
+def herb_preparations_gen(herb_filepath, regen=False, clear=False):
+    entity_herb = io.json_read(herb_filepath)
+    herb_name_scientific = entity_herb['herb_name_scientific']
+    key = 'herb_preparations'
+    if key not in entity_herb: entity_herb[key] = ''
+    if regen: entity_herb[key] = ''
+    if clear: 
+        entity_herb[key] = ''
+        io.json_write(herb_filepath, entity_herb)
+        return
+    if entity_herb[key] == '' or entity_herb[key] == []:
+        items = data.preparations_get(10)
+        main_list_text = '\n'.join([
+            item.lower().strip()
+            for item in items
+        ])
+        outputs = []
+        for i in range(10):
+            print(f'{i} - {herb_name_scientific}')
+            import textwrap
+            main_list_prompt = [e.strip() for e in main_list_text.split('\n') if e.strip() != '']
+            random.shuffle(main_list_prompt)
+            main_list_prompt = '\n'.join(main_list_prompt)
+            prompt = textwrap.dedent(f''' 
+                Tell me the preparation forms of the following plant with scientific name: {herb_name_scientific}.
+                In specific, write a confidence score from 1 to 10, indicating how sure you are about your answer.
+                The possible preparation forms are the following:
+                {main_list_prompt}
+                Reply using the following JSON format:
+                [
+                    {{"answer": "write preparation form name 1 here", "score": "write score 1 here"}},
+                    {{"answer": "write preparation form name 2 here", "score": "write score 2 here"}},
+                    {{"answer": "write preparation form name 3 here", "score": "write score 3 here"}},
+                    {{"answer": "write preparation form name 4 here", "score": "write score 4 here"}},
+                    {{"answer": "write preparation form name 5 here", "score": "write score 5 here"}},
+                    {{"answer": "write preparation form name 6 here", "score": "write score 6 here"}},
+                    {{"answer": "write preparation form name 7 here", "score": "write score 7 here"}}
+                ]
+                Reply only with the JSON.
+            ''').strip()
+            prompt += f'\n/no_think'
+            print(prompt)
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            json_data = {}
+            try: json_data = json.loads(reply)
+            except: pass 
+            if json_data != {}:
+                _objs = answer_score_extract(json_data)
+                for _obj in _objs:
+                    answer = _obj['answer'].strip().lower()
+                    score = int(_obj['score'])
+                    found = False
+                    for output in outputs:
+                        if answer in output['answer']: 
+                            output['mentions'] += 1
+                            output['confidence_score'] += int(score)
+                            found = True
+                            break
+                    if not found:
+                        outputs.append({
+                            'answer': answer, 
+                            'mentions': 1, 
+                            'confidence_score': int(score), 
+                        })
+        outputs = total_score_calc(outputs)
+        entity_herb[key] = outputs
+        io.json_write(herb_filepath, entity_herb)
+        # quit()
+
 def herbs_medicinal_validated_json(herb):
     herbs_folderpath = f'{g.SSOT_FOLDERPATH}/herbs/herbs-primary'
     try: os.mkdir(herbs_folderpath)
@@ -2683,6 +2671,7 @@ def herbs_medicinal_validated_json(herb):
     ###
     herb_active_compounds_gen(herb_filepath, regen=False, clear=False)
     herb_actions_gen(herb_filepath, regen=False, clear=False)
+    herb_preparations_gen(herb_filepath, regen=False, clear=False)
 
 def herbs_medicinal_validated_gen():
     herbs_folderpath = f'{g.SSOT_FOLDERPATH}/herbs'

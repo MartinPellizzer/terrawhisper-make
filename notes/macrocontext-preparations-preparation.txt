@@ -1,0 +1,548 @@
+
+Below is a **reusable Koray-style entity template** you can apply to every page like:
+
+```
+/preparations/tinctures
+/preparations/teas
+/preparations/capsules
+/preparations/powders
+/preparations/syrups
+/preparations/oils
+/preparations/salves
+```
+
+The goal is to make **each preparation form stand alone as a complete entity node** inside your semantic content network.
+
+In Koray’s model, each page should fully express the **entity type through its attributes** using **Entity → Attribute → Value triples**, which helps create a structured knowledge base for the topic. 
+
+Example triples:
+
+```
+Herbal Tincture → Solvent → Alcohol
+Herbal Tea → Preparation Method → Infusion
+Herbal Capsule → Dosage Form → Solid
+```
+
+---
+
+# 1. Reusable Macro Structure (Page Template)
+
+You can reuse this **exact structure for every preparation form page**.
+
+```
+H1: [Preparation Form] in Herbal Medicine: Uses, Preparation, and Safety
+
+1. Definition of [Preparation Form]
+2. Purpose and Role in Herbal Medicine
+3. Characteristics of the Preparation Form
+4. Preparation Method
+5. Ingredients and Plant Materials Used
+6. Solvents or Base Materials
+7. Chemical Extraction and Active Compounds
+8. Dosage and Administration
+9. Therapeutic Uses
+10. Advantages and Limitations
+11. Quality and Standardization
+12. Safety and Side Effects
+13. Storage and Shelf Life
+14. Traditional Uses in Herbal Medicine Systems
+15. Modern Applications and Research
+```
+
+Example page titles:
+
+```
+Tinctures in Herbal Medicine
+Herbal Teas in Herbal Medicine
+Herbal Capsules in Herbal Medicine
+Herbal Powders in Herbal Medicine
+Herbal Salves in Herbal Medicine
+```
+
+---
+
+# 2. Attribute Clusters (Universal Entity Template)
+
+These are the **core attribute vectors** every preparation-form entity should cover.
+
+---
+
+# A. Identity Attributes (What It Is)
+
+Defines the entity.
+
+Subtopics:
+
+* Definition of the preparation form
+* Difference from other herbal forms
+* Role in herbal medicine
+* Classification within herbal preparations
+
+Important vectors:
+
+```
+dosage form
+herbal preparation type
+delivery format
+```
+
+Example triples:
+
+```
+Herbal Tincture → Category → Liquid herbal extract
+Herbal Capsule → Category → Solid dosage form
+```
+
+---
+
+# B. Functional Attributes (Why It Exists)
+
+Describes **the function of the form**.
+
+Subtopics:
+
+* Delivery of plant compounds
+* Preservation of herbal material
+* Bioavailability
+* Ease of administration
+
+Attributes:
+
+```
+delivery mechanism
+absorption
+preservation
+convenience
+```
+
+Example:
+
+```
+Herbal Tincture → Function → Concentrated extraction of herbs
+```
+
+---
+
+# C. Physical Characteristics
+
+Describes **the form's physical nature**.
+
+Subtopics:
+
+* Physical state
+* Appearance
+* Texture or consistency
+
+Attributes:
+
+```
+liquid
+solid
+semi-solid
+powdered
+oily
+```
+
+Example:
+
+```
+Herbal Powder → Physical State → Powder
+Herbal Salve → Consistency → Semi-solid
+```
+
+---
+
+# D. Preparation Method Attributes
+
+Explains **how the preparation is made**.
+
+Subtopics:
+
+```
+infusion
+decoction
+maceration
+alcohol extraction
+powdering
+oil infusion
+```
+
+Example triples:
+
+```
+Herbal Tea → Preparation Method → Infusion
+Herbal Tincture → Preparation Method → Maceration
+```
+
+---
+
+# E. Ingredient Attributes
+
+Covers **the plant materials used**.
+
+Subtopics:
+
+* plant species used
+* plant parts used
+
+Attributes:
+
+```
+leaf
+root
+flower
+seed
+bark
+rhizome
+```
+
+Example:
+
+```
+Herbal Tea → Plant Part → Leaf
+Herbal Powder → Plant Part → Root
+```
+
+---
+
+# F. Solvent or Base Attributes
+
+Some forms require **a medium**.
+
+Subtopics:
+
+```
+water
+alcohol
+glycerin
+oil
+honey
+wax
+```
+
+Example triples:
+
+```
+Herbal Tincture → Solvent → Alcohol
+Herbal Oil → Base → Carrier oil
+```
+
+---
+
+# G. Phytochemical Extraction Attributes
+
+Explains **which compounds are extracted**.
+
+Subtopics:
+
+```
+water-soluble compounds
+alcohol-soluble compounds
+fat-soluble compounds
+volatile compounds
+```
+
+Key compounds:
+
+```
+alkaloids
+flavonoids
+terpenes
+tannins
+essential oils
+```
+
+Example:
+
+```
+Herbal Tea → Extracted Compound → Flavonoids
+```
+
+---
+
+# H. Administration Attributes
+
+How the form is used.
+
+Subtopics:
+
+```
+oral administration
+topical application
+inhalation
+external use
+```
+
+Example:
+
+```
+Herbal Capsule → Administration → Oral
+Herbal Salve → Administration → Topical
+```
+
+---
+
+# I. Dosage Attributes
+
+Important for herbal treatment.
+
+Subtopics:
+
+```
+recommended dose
+concentration
+frequency
+treatment duration
+```
+
+Attributes:
+
+```
+dose size
+strength
+frequency
+```
+
+---
+
+# J. Therapeutic Application Attributes
+
+Conditions treated with the preparation.
+
+Subtopics:
+
+```
+digestive health
+respiratory support
+skin conditions
+pain relief
+stress management
+immune support
+```
+
+Example:
+
+```
+Herbal Tea → Used For → Digestive support
+```
+
+---
+
+# K. Advantages Attributes
+
+Benefits of this preparation form.
+
+Examples:
+
+```
+fast absorption
+easy to use
+long shelf life
+high potency
+```
+
+Example:
+
+```
+Herbal Tincture → Advantage → Long shelf life
+```
+
+---
+
+# L. Limitations Attributes
+
+Weaknesses of the form.
+
+Examples:
+
+```
+short shelf life
+alcohol content
+lower potency
+taste issues
+```
+
+Example:
+
+```
+Herbal Tea → Limitation → Short shelf life
+```
+
+---
+
+# M. Quality Attributes
+
+Ensures proper preparation quality.
+
+Subtopics:
+
+```
+raw herb quality
+purity
+contamination testing
+standardization
+```
+
+Attributes:
+
+```
+active compound concentration
+purity
+manufacturing quality
+```
+
+---
+
+# N. Safety Attributes
+
+Important for medical credibility.
+
+Subtopics:
+
+```
+side effects
+drug interactions
+contraindications
+allergic reactions
+```
+
+Example:
+
+```
+Herbal Tincture → Safety Concern → Alcohol sensitivity
+```
+
+---
+
+# O. Storage Attributes
+
+Preservation and shelf life.
+
+Subtopics:
+
+```
+storage conditions
+shelf life
+temperature requirements
+light protection
+```
+
+Attributes:
+
+```
+temperature
+light exposure
+humidity
+```
+
+Example:
+
+```
+Herbal Oil → Storage → Dark glass container
+```
+
+---
+
+# P. Historical and Traditional Use
+
+Context across herbal traditions.
+
+Subtopics:
+
+```
+Traditional Chinese Medicine
+Ayurveda
+Western herbalism
+indigenous medicine
+```
+
+Example:
+
+```
+Herbal Decoction → Used In → Traditional Chinese Medicine
+```
+
+---
+
+# Q. Scientific Research Attributes
+
+Evidence supporting the preparation.
+
+Subtopics:
+
+```
+clinical studies
+pharmacological research
+bioavailability studies
+efficacy trials
+```
+
+---
+
+# 3. Clean Attribute Vector Model (Reusable)
+
+This is the **complete semantic template** for every preparation form.
+
+```
+[Preparation Form]
+│
+├─ Identity
+├─ Functional Purpose
+├─ Physical Characteristics
+├─ Preparation Method
+├─ Ingredients and Plant Materials
+├─ Solvent or Base
+├─ Phytochemical Extraction
+├─ Administration
+├─ Dosage
+├─ Therapeutic Uses
+├─ Advantages
+├─ Limitations
+├─ Quality Control
+├─ Safety
+├─ Storage and Shelf Life
+├─ Traditional Use
+└─ Scientific Research
+```
+
+---
+
+# 4. Microsemantic Tip (Important)
+
+Every page should start with a **clear entity definition**.
+
+Example for tinctures:
+
+> A herbal tincture is a concentrated liquid extract of medicinal plants prepared by soaking herbs in alcohol or another solvent to dissolve their active compounds. Tinctures are widely used in herbal medicine because they preserve plant constituents and allow precise dosing.
+
+This establishes:
+
+* entity identity
+* category
+* attributes
+
+which helps **entity recognition and retrieval**.
+
+---
+
+✅ **Your SCN hierarchy should look like this**
+
+```
+Herbal Medicine
+   └── Preparations
+         └── Forms
+               ├── Tinctures
+               ├── Teas
+               ├── Capsules
+               ├── Powders
+               ├── Oils
+               ├── Syrups
+               ├── Salves
+               └── Poultices
+```
+
+Each page follows the **same attribute template**, which strengthens **topical authority and document similarity** across the network.
+
+---
+
+If you'd like, I can also show you **the ideal 18–20 herbal preparation forms you should include** to achieve **complete topical coverage for the “preparations” cluster** (most herbal sites only cover about half).

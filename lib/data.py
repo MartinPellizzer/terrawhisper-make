@@ -276,3 +276,19 @@ def actions_get(top=0):
     if top != 0:
         l = l[:top]
     return l
+
+def preparations_get(top=0):
+    l = [
+        'Tinctures',
+        'Teas',
+        'Capsules',
+        'Powders',
+        'Oils',
+        'Syrups',
+        'Salves',
+        'Poultices',
+    ]
+    if top != 0:
+        l = l[:top]
+    return l
+
