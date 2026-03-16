@@ -1,0 +1,513 @@
+
+Below is a **Koray-style semantic template** for the entity **“Uses”** within the **source context: Herbal Medicine**.
+
+The goal of this page is to define **how herbal medicine is used therapeutically**, while building a **knowledge base of entity–attribute–value relationships** so the page can stand alone as a semantic entity.
+
+In semantic SEO, this means covering the **main attribute vectors** connected to the entity. These vectors allow search engines to understand the relationships between **herbal medicine → therapeutic context → health condition**. 🌿
+
+---
+
+# 1. Macro Structure of the Overview Page
+
+This is the **ideal pillar page structure for the entity “Uses of Herbal Medicine.”**
+
+```
+H1: Uses of Herbal Medicine: Conditions, Applications, and Therapeutic Roles
+
+1. Definition of Herbal Medicine Uses
+2. Principles Behind Herbal Therapeutic Uses
+3. Types of Herbal Medicine Uses
+4. Preventive Uses of Herbal Medicine
+5. Therapeutic Uses for Acute Conditions
+6. Therapeutic Uses for Chronic Conditions
+7. Body System–Based Uses
+8. Symptom-Based Uses
+9. Functional Health Uses
+10. Traditional Medical Uses
+11. Modern Clinical Uses
+12. Herbal Formulas and Combination Uses
+13. Individual Herb vs Formula-Based Uses
+14. Safety Considerations in Herbal Uses
+15. Evidence-Based Uses of Herbal Medicine
+16. Limitations of Herbal Therapeutic Uses
+```
+
+This structure ensures **complete contextual coverage**, allowing the entity **“uses”** to function independently within the semantic content network.
+
+---
+
+# 2. Attribute Clusters for the Entity “Uses”
+
+Think of the entity as a **relationship layer**.
+
+Example triples:
+
+```
+Herbal Medicine → Use → Digestive disorders
+Herbal Medicine → Use → Stress relief
+Herbal Medicine → Use → Skin inflammation
+```
+
+The page must define **how uses are categorized and applied**.
+
+---
+
+# A. Identity Attributes (What “Uses” Means)
+
+Defines the entity itself.
+
+**Subtopics**
+
+* What “uses of herbal medicine” means
+* Difference between **use, treatment, and prevention**
+* Scope of herbal therapeutic uses
+* Types of health applications
+
+**Key vectors**
+
+```
+therapeutic use
+medicinal use
+health application
+clinical use
+preventive use
+```
+
+Example triples
+
+```
+Herbal Medicine → Use → Therapeutic treatment
+Herbal Medicine → Use → Preventive care
+```
+
+---
+
+# B. Purpose Attributes
+
+These define **why herbal medicine is used**.
+
+Subtopics:
+
+```
+Prevention
+Symptom relief
+Disease treatment
+Health maintenance
+Recovery support
+```
+
+Attributes:
+
+```
+preventive care
+symptom management
+disease support
+health optimization
+```
+
+Example:
+
+```
+Herbal Medicine → Use Purpose → Prevent disease
+```
+
+---
+
+# C. Condition-Based Attributes
+
+These define **health problems addressed by herbs**.
+
+Subtopics:
+
+```
+Acute conditions
+Chronic conditions
+Infectious diseases
+Inflammatory disorders
+Functional disorders
+```
+
+Attributes:
+
+```
+acute illness
+chronic disease
+infection
+inflammation
+functional imbalance
+```
+
+Example:
+
+```
+Herbal Medicine → Use → Chronic inflammation
+```
+
+---
+
+# D. Body System Attributes
+
+One of the **largest semantic clusters**.
+
+Subtopics:
+
+```
+Digestive system uses
+Respiratory system uses
+Nervous system uses
+Immune system uses
+Cardiovascular uses
+Skin uses
+Endocrine uses
+Urinary system uses
+Reproductive system uses
+Musculoskeletal uses
+```
+
+Example triples
+
+```
+Herbal Medicine → Use → Digestive health
+Herbal Medicine → Use → Respiratory support
+Herbal Medicine → Use → Nervous system relaxation
+```
+
+---
+
+# E. Symptom-Based Attributes
+
+Users often search by **symptom rather than disease**.
+
+Subtopics:
+
+```
+Pain relief
+Inflammation reduction
+Sleep improvement
+Stress reduction
+Digestive discomfort
+Fatigue
+```
+
+Attributes:
+
+```
+pain
+stress
+insomnia
+fatigue
+inflammation
+```
+
+Example:
+
+```
+Herbal Medicine → Use → Reduce inflammation
+```
+
+---
+
+# F. Functional Health Attributes
+
+These uses focus on **supporting physiological functions**.
+
+Subtopics:
+
+```
+Immune support
+Digestive support
+Detoxification support
+Energy support
+Hormonal balance
+Circulation support
+```
+
+Attributes:
+
+```
+immune modulation
+metabolic support
+detoxification
+circulation
+hormone regulation
+```
+
+Example:
+
+```
+Herbal Medicine → Use → Immune support
+```
+
+---
+
+# G. Preventive Attributes
+
+Herbal medicine is widely used for **prevention and wellness**.
+
+Subtopics:
+
+```
+Disease prevention
+Immune strengthening
+Seasonal illness prevention
+General health maintenance
+Longevity practices
+```
+
+Example triple:
+
+```
+Herbal Medicine → Preventive Use → Immune support
+```
+
+---
+
+# H. Traditional Medicine Attributes
+
+Many herbal uses come from **traditional systems**.
+
+Subtopics:
+
+```
+Traditional Chinese Medicine uses
+Ayurvedic herbal uses
+Western herbal medicine uses
+Indigenous herbal medicine uses
+```
+
+Attributes:
+
+```
+traditional diagnostic patterns
+herbal formulas
+holistic treatment strategies
+```
+
+Example:
+
+```
+Herbal Medicine → Traditional Use → Digestive strengthening
+```
+
+---
+
+# I. Modern Clinical Attributes
+
+Modern herbal medicine includes **clinical and evidence-based applications**.
+
+Subtopics:
+
+```
+Clinical herbal medicine
+Integrative medicine
+Complementary medicine uses
+Pharmacological applications
+```
+
+Attributes:
+
+```
+clinical treatment
+adjunct therapy
+integrative healthcare
+```
+
+Example:
+
+```
+Herbal Medicine → Clinical Use → Adjunct therapy
+```
+
+---
+
+# J. Combination Attributes
+
+Many herbal uses involve **formulas rather than single herbs**.
+
+Subtopics:
+
+```
+Herbal formulas
+Polyherbal formulations
+Synergistic herbal combinations
+Traditional formulas
+```
+
+Attributes:
+
+```
+herbal synergy
+formula-based therapy
+multi-herb preparation
+```
+
+Example:
+
+```
+Herbal Medicine → Use → Herbal formulas
+```
+
+---
+
+# K. Dosage and Context Attributes
+
+How the use is applied.
+
+Subtopics:
+
+```
+Dosage differences by condition
+Short-term vs long-term use
+Therapeutic context
+Treatment duration
+```
+
+Attributes:
+
+```
+dose
+duration
+frequency
+treatment context
+```
+
+---
+
+# L. Safety Attributes
+
+Important when discussing **herbal uses**.
+
+Subtopics:
+
+```
+Safe uses of herbs
+Contraindications
+Drug interactions
+Toxicity risks
+Misuse of herbal remedies
+```
+
+Attributes:
+
+```
+safety guidelines
+risk factors
+contraindications
+```
+
+Example:
+
+```
+Herbal Medicine → Use Limitation → Drug interaction risk
+```
+
+---
+
+# M. Evidence Attributes
+
+Modern medicine requires **scientific validation**.
+
+Subtopics:
+
+```
+Clinical evidence
+Pharmacological studies
+Traditional evidence
+Research limitations
+```
+
+Attributes:
+
+```
+clinical trials
+observational studies
+traditional use evidence
+```
+
+---
+
+# N. Limitations of Herbal Uses
+
+Important for credibility.
+
+Subtopics:
+
+```
+Conditions herbs cannot treat
+Situations requiring conventional medicine
+Limitations of herbal therapy
+```
+
+Attributes:
+
+```
+medical limitations
+treatment boundaries
+```
+
+Example:
+
+```
+Herbal Medicine → Limitation → Not a substitute for emergency care
+```
+
+---
+
+# 3. Clean Attribute Vector Model
+
+This is the **complete semantic map** for the entity.
+
+```
+Uses of Herbal Medicine
+│
+├─ Identity
+├─ Purpose of Use
+├─ Condition-Based Uses
+├─ Body System Uses
+├─ Symptom-Based Uses
+├─ Functional Health Uses
+├─ Preventive Uses
+├─ Traditional Medicine Uses
+├─ Modern Clinical Uses
+├─ Combination Uses
+├─ Dosage Context
+├─ Safety
+├─ Evidence
+└─ Limitations
+```
+
+---
+
+# 4. Microsemantic Tip (Very Important)
+
+Your **first paragraph should define the entity clearly**.
+
+Example:
+
+> The uses of herbal medicine refer to the therapeutic, preventive, and supportive ways in which medicinal plants are applied to maintain health or address medical conditions. Herbal remedies are used across traditional and modern healthcare systems to treat symptoms, support physiological functions, and prevent disease through plant-derived preparations such as teas, tinctures, extracts, and topical treatments.
+
+This **anchors the entity definition immediately**, helping both search engines and AI systems understand the page’s primary semantic context.
+
+---
+
+✅ **Implementation Tip (Koray Strategy)**
+
+Your **/uses page is a bridge node** in the semantic content network.
+
+It should internally link to:
+
+```
+/uses/digestion
+/uses/respiratory
+/uses/sleep
+/uses/inflammation
+/uses/skin
+```
+
+Those pages then link to **specific herbs**, creating a **two-way semantic reinforcement**.
+
+---
+
+If you'd like, I can also show you something **very powerful Koray does with these pages**:
+
+How to structure the **body-system taxonomy for herbal medicine uses** so your site covers **90–120 condition queries that competitors miss**. 🌿

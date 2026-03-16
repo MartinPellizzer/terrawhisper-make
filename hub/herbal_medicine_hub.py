@@ -92,9 +92,9 @@ def herbal_medicine__gen():
         attribute='pharmacological effects', entity='herbal medicine', context='herbal medicine', 
         regen=False, dispel=False
     )
-    applications_subordinate_html = subordinate__gen(json_article_filepath, 
-        key='applications', 
-        entity='herbal medicine', attribute='applications', context='herbal medicine', 
+    uses_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='uses', 
+        entity='herbal medicine', attribute='uses', context='herbal medicine', 
         regen=False, dispel=False
     )
     preparations_subordinate_html = subordinate__gen(json_article_filepath, 
@@ -209,10 +209,11 @@ def herbal_medicine__gen():
             <p><a href="/actions.html">Pharmacological Actions</a></p>
         </section>
     '''
-    applications_html = f'''
+    uses_html = f'''
         <section class="article-section">
-            <h2>Applications</h2>
-            <p>{applications_subordinate_html}</p>
+            <h2>Uses</h2>
+            <p>{uses_subordinate_html}</p>
+            <p><a href="/uses.html">Uses</a></p>
         </section>
     '''
     preparations_html = f'''
@@ -292,7 +293,7 @@ def herbal_medicine__gen():
         {herbs_html}
         {phytochemicals_html}
         {pharmacological_effects_html}
-        {applications_html}
+        {uses_html}
         {preparations_html}
         {administration_html}
         {dosage_html}
@@ -3227,6 +3228,256 @@ def preparations_preparation__gen(preparation):
     io.folder_create_from_filepath(html_filepath)
     with open(html_filepath, 'w') as f: f.write(html)
 
+def uses__gen():
+    url_slug = f'uses'
+    meta_title = f'Uses of Herbal Medicine: Conditions, Applications, and Therapeutic Roles'
+    meta_description = ''
+    canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''
+
+    ########################################
+    # json
+    ########################################
+    json_article_filepath = f'''{g.DATABASE_FOLDERPATH}/json/{url_slug}.json'''
+    json_article = io.json_read(json_article_filepath, create=True)
+    json_article['url'] = url_slug
+    io.json_write(json_article_filepath, json_article)
+
+    regen_function = False
+    dispel_function = False
+
+    definition_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='definition', 
+        attribute='Definition of Herbal Medicine Uses', entity='uses', context='herbal medicine', 
+        regen=regen_function, dispel=dispel_function
+    )
+    principles_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='principles', 
+        attribute='Principles Behind Herbal Therapeutic Uses', entity='uses', context='herbal medicine', 
+        regen=regen_function, dispel=dispel_function
+    )
+    types_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='types', 
+        attribute='Types of Herbal Medicine Uses', entity='uses', context='herbal medicine', 
+        regen=regen_function, dispel=dispel_function
+    )
+    preventive_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='preventive', 
+        attribute='Preventive Uses of Herbal Medicine', entity='uses', context='herbal medicine', 
+        regen=regen_function, dispel=dispel_function
+    )
+    acute_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='acute', 
+        attribute='Therapeutic Uses for Acute Conditions', entity='uses', context='herbal medicine', 
+        regen=regen_function, dispel=dispel_function
+    )
+    chronic_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='chronic', 
+        attribute='Therapeutic Uses for Chronic Conditions', entity='uses', context='herbal medicine', 
+        regen=regen_function, dispel=dispel_function
+    )
+    body_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='body', 
+        attribute='Body System–Based Uses', entity='uses', context='herbal medicine', 
+        regen=regen_function, dispel=dispel_function
+    )
+    symptom_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='symptom', 
+        attribute='Symptom-Based Uses', entity='uses', context='herbal medicine', 
+        regen=regen_function, dispel=dispel_function
+    )
+    functional_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='functional', 
+        attribute='Functional Health Uses', entity='uses', context='herbal medicine', 
+        regen=regen_function, dispel=dispel_function
+    )
+    traditional_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='traditional', 
+        attribute='Traditional Medical Uses', entity='uses', context='herbal medicine', 
+        regen=regen_function, dispel=dispel_function
+    )
+    modern_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='modern', 
+        attribute='Modern Clinical Uses', entity='uses', context='herbal medicine', 
+        regen=regen_function, dispel=dispel_function
+    )
+    formulas_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='formulas', 
+        attribute='Herbal Formulas and Combination Uses', entity='uses', context='herbal medicine', 
+        regen=regen_function, dispel=dispel_function
+    )
+    individual_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='individual', 
+        attribute='Individual Herb vs Formula-Based Uses', entity='uses', context='herbal medicine', 
+        regen=regen_function, dispel=dispel_function
+    )
+    safety_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='safety', 
+        attribute='Safety Considerations in Herbal Uses', entity='uses', context='herbal medicine', 
+        regen=regen_function, dispel=dispel_function
+    )
+    evidence_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='evidence', 
+        attribute='Evidence-Based Uses of Herbal Medicine', entity='uses', context='herbal medicine', 
+        regen=regen_function, dispel=dispel_function
+    )
+    limitations_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='limitations', 
+        attribute='Limitations of Herbal Therapeutic Uses', entity='uses', context='herbal medicine', 
+        regen=regen_function, dispel=dispel_function
+    )
+
+    ########################################
+    # html
+    ########################################
+    intro_html = f'''
+        <h1>
+            Uses of Herbal Medicine: Conditions, Applications, and Therapeutic Roles
+        </h1>
+        <p>
+            The uses of <a href="/herbal-medicine.html">herbal medicine</a> refer to the therapeutic, preventive, and supportive ways in which medicinal plants are applied to maintain health or address medical conditions. Herbal remedies are used across traditional and modern healthcare systems to treat symptoms, support physiological functions, and prevent disease through plant-derived preparations such as teas, tinctures, extracts, and topical treatments.
+        </p>
+    '''
+    definition_html = f'''
+        <section class="article-section">
+            <h2>Definition of Herbal Medicine Uses</h2>
+            <p>{definition_subordinate_html}</p>
+        </section>
+    '''
+    principles_html = f'''
+        <section class="article-section">
+            <h2>Principles Behind Herbal Therapeutic Uses</h2>
+            <p>{principles_subordinate_html}</p>
+        </section>
+    '''
+    types_html = f'''
+        <section class="article-section">
+            <h2>Types of Herbal Medicine Uses</h2>
+            <p>{types_subordinate_html}</p>
+        </section>
+    '''
+    preventive_html = f'''
+        <section class="article-section">
+            <h2>Preventive Uses of Herbal Medicine</h2>
+            <p>{preventive_subordinate_html}</p>
+        </section>
+    '''
+    acute_html = f'''
+        <section class="article-section">
+            <h2>Therapeutic Uses for Acute Conditions</h2>
+            <p>{acute_subordinate_html}</p>
+        </section>
+    '''
+    chronic_html = f'''
+        <section class="article-section">
+            <h2>Therapeutic Uses for Chronic Conditions</h2>
+            <p>{chronic_subordinate_html}</p>
+        </section>
+    '''
+    body_html = f'''
+        <section class="article-section">
+            <h2>Body System–Based Uses</h2>
+            <p>{body_subordinate_html}</p>
+        </section>
+    '''
+    symptom_html = f'''
+        <section class="article-section">
+            <h2>Symptom-Based Uses</h2>
+            <p>{symptom_subordinate_html}</p>
+        </section>
+    '''
+    functional_html = f'''
+        <section class="article-section">
+            <h2>Functional Health Uses</h2>
+            <p>{functional_subordinate_html}</p>
+        </section>
+    '''
+    traditional_html = f'''
+        <section class="article-section">
+            <h2>Traditional Medical Uses</h2>
+            <p>{traditional_subordinate_html}</p>
+        </section>
+    '''
+    modern_html = f'''
+        <section class="article-section">
+            <h2>Modern Clinical Uses</h2>
+            <p>{modern_subordinate_html}</p>
+        </section>
+    '''
+    formulas_html = f'''
+        <section class="article-section">
+            <h2>Herbal Formulas and Combination Uses</h2>
+            <p>{formulas_subordinate_html}</p>
+        </section>
+    '''
+    individual_html = f'''
+        <section class="article-section">
+            <h2>Individual Herb vs Formula-Based Uses</h2>
+            <p>{individual_subordinate_html}</p>
+        </section>
+    '''
+    safety_html = f'''
+        <section class="article-section">
+            <h2>Safety Considerations in Herbal Uses</h2>
+            <p>{safety_subordinate_html}</p>
+        </section>
+    '''
+    evidence_html = f'''
+        <section class="article-section">
+            <h2>Evidence-Based Uses of Herbal Medicine</h2>
+            <p>{evidence_subordinate_html}</p>
+        </section>
+    '''
+    limitations_html = f'''
+        <section class="article-section">
+            <h2>Limitations of Herbal Therapeutic Uses</h2>
+            <p>{limitations_subordinate_html}</p>
+        </section>
+    '''
+
+    article_html = f'''
+        {intro_html}
+        {definition_html}
+        {principles_html}
+        {types_html}
+        {preventive_html}
+        {acute_html}
+        {chronic_html}
+        {body_html}
+        {symptom_html}
+        {functional_html}
+        {traditional_html}
+        {modern_html}
+        {formulas_html}
+        {individual_html}
+        {safety_html}
+        {evidence_html}
+        {limitations_html}
+    '''
+
+    ###
+    head_html = components.html_head(
+        meta_title, meta_description, css='/styles-herb-monograph.css', canonical=canonical_html
+    )
+    import textwrap
+    html = textwrap.dedent(f''' 
+        <!DOCTYPE html>
+        <html lang="en">
+        {head_html}
+        <body>
+            {sections.header_default()}
+            {sections.breadcrumbs_new(url_slug)}
+            <main>
+                <article class="container-md article">
+                    {article_html}
+                </article>
+            </main>
+            {sections.footer()}
+        </body>
+        </html>
+    ''').strip()
+    html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
+    with open(html_filepath, 'w') as f: f.write(html)
+
 def main():
     herbal_medicine__gen()
     ###
@@ -3259,4 +3510,6 @@ def main():
         preparations_preparation__gen(item)
         # break
     # preparations__methods__gen()
+    ###
+    uses__gen()
 
