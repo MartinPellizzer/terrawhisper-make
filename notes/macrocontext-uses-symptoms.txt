@@ -1,0 +1,540 @@
+
+Now we’re getting into **deep SCN layering**, and this is exactly where most sites fail.
+
+The page **“Symptom-Based Uses of Herbal Medicine”** is not just a subsection — it’s a **query-alignment node**, because many users search by **symptoms, not diseases**.
+
+So this page must:
+
+```
+Herbal Medicine → Use → Symptom → Relief / Management
+```
+
+This creates a **high query-responsiveness layer**, which Koray emphasizes as critical for retrieval.
+
+---
+
+# 1. Macro Structure of the Overview Page
+
+This is the **ideal structure for the entity: “Symptom-Based Uses of Herbal Medicine.”**
+
+```
+H1: Symptom-Based Uses of Herbal Medicine: Relief, Support, and Natural Remedies
+
+1. Definition of Symptom-Based Herbal Uses
+2. Difference Between Symptom-Based and Condition-Based Treatment
+3. Principles of Symptom Relief in Herbal Medicine
+4. Categories of Symptoms Treated with Herbs
+5. Pain-Related Symptoms
+6. Inflammatory Symptoms
+7. Digestive Symptoms
+8. Respiratory Symptoms
+9. Nervous System and Mental Symptoms
+10. Skin-Related Symptoms
+11. Energy and Fatigue Symptoms
+12. Immune-Related Symptoms
+13. Hormonal and Metabolic Symptoms
+14. Acute vs Chronic Symptom Management
+15. Herbal Formulations for Symptom Relief
+16. Safety and Limitations of Symptom-Based Use
+17. Evidence for Symptom Relief with Herbs
+```
+
+This structure ensures:
+
+* **broad query matching**
+* **clear semantic segmentation**
+* **full symptom coverage**
+
+---
+
+# 2. Attribute Clusters for the Entity “Symptom-Based Uses”
+
+This page defines:
+
+```
+Herbal Medicine → Relieves → Symptom
+```
+
+---
+
+# A. Identity Attributes (What This Entity Is)
+
+Defines the **scope of “symptom-based uses.”**
+
+**Subtopics**
+
+* What symptom-based herbal use means
+* Difference between:
+
+  * symptom vs disease
+  * symptom relief vs root-cause treatment
+* When symptom-based herbal use is appropriate
+
+**Key vectors**
+
+```
+symptom relief
+symptom management
+supportive care
+palliative herbal use
+```
+
+Example:
+
+```
+Herbal Medicine → Use Type → Symptom relief
+```
+
+---
+
+# B. Symptom Classification Attributes
+
+This is **core to the page**.
+
+You must classify symptoms properly.
+
+**Subtopics**
+
+```
+Physical symptoms
+Psychological symptoms
+Functional symptoms
+Acute symptoms
+Chronic symptoms
+```
+
+Attributes:
+
+```
+pain
+inflammation
+fatigue
+stress
+discomfort
+dysfunction
+```
+
+---
+
+# C. Pain-Related Attributes
+
+One of the **highest-demand clusters**.
+
+Subtopics:
+
+```
+Headaches
+Muscle pain
+Joint pain
+Menstrual pain
+Nerve pain
+General body pain
+```
+
+Attributes:
+
+```
+analgesic effect
+pain reduction
+muscle relaxation
+```
+
+Example:
+
+```
+Herbal Medicine → Relieves → Headache
+```
+
+---
+
+# D. Inflammatory Symptom Attributes
+
+Closely tied to many conditions.
+
+Subtopics:
+
+```
+Swelling
+Redness
+Heat
+Chronic inflammation
+Acute inflammation
+```
+
+Attributes:
+
+```
+anti-inflammatory
+immune modulation
+tissue response
+```
+
+---
+
+# E. Digestive Symptom Attributes
+
+Very large query cluster.
+
+Subtopics:
+
+```
+Bloating
+Gas
+Indigestion
+Nausea
+Constipation
+Diarrhea
+Stomach cramps
+```
+
+Attributes:
+
+```
+digestive support
+gut motility
+enzyme stimulation
+```
+
+Example:
+
+```
+Herbal Medicine → Relieves → Bloating
+```
+
+---
+
+# F. Respiratory Symptom Attributes
+
+Subtopics:
+
+```
+Cough
+Congestion
+Sore throat
+Shortness of breath
+Mucus buildup
+```
+
+Attributes:
+
+```
+expectorant
+antitussive
+decongestant
+```
+
+---
+
+# G. Nervous System & Mental Symptom Attributes
+
+High demand in modern queries.
+
+Subtopics:
+
+```
+Stress
+Anxiety
+Insomnia
+Restlessness
+Brain fog
+Mood imbalance
+```
+
+Attributes:
+
+```
+sedative
+adaptogenic
+nervine
+calming effect
+```
+
+Example:
+
+```
+Herbal Medicine → Relieves → Anxiety
+```
+
+---
+
+# H. Skin Symptom Attributes
+
+Subtopics:
+
+```
+Rashes
+Itching
+Acne
+Inflammation
+Dryness
+Wounds
+```
+
+Attributes:
+
+```
+anti-inflammatory
+antimicrobial
+wound healing
+```
+
+---
+
+# I. Energy & Fatigue Attributes
+
+Subtopics:
+
+```
+Chronic fatigue
+Low energy
+Burnout
+Weakness
+```
+
+Attributes:
+
+```
+adaptogens
+energy support
+metabolic support
+```
+
+---
+
+# J. Immune-Related Symptom Attributes
+
+Subtopics:
+
+```
+Frequent infections
+Weak immune response
+Fever symptoms
+```
+
+Attributes:
+
+```
+immune modulation
+antiviral
+antibacterial
+```
+
+---
+
+# K. Hormonal & Metabolic Symptom Attributes
+
+Subtopics:
+
+```
+Hormonal imbalance symptoms
+Menstrual discomfort
+Hot flashes
+Blood sugar imbalance symptoms
+```
+
+Attributes:
+
+```
+endocrine modulation
+metabolic regulation
+```
+
+---
+
+# L. Temporal Attributes (Acute vs Chronic)
+
+Defines **time-based usage context**.
+
+Subtopics:
+
+```
+Acute symptom relief
+Chronic symptom management
+Recurring symptoms
+```
+
+Attributes:
+
+```
+short-term use
+long-term support
+```
+
+---
+
+# M. Functional Mechanism Attributes
+
+Explains **how herbs relieve symptoms**.
+
+Subtopics:
+
+```
+Anti-inflammatory mechanisms
+Nervous system modulation
+Digestive stimulation
+Immune response regulation
+```
+
+---
+
+# N. Formulation Attributes
+
+How herbs are used for symptoms.
+
+Subtopics:
+
+```
+Single herb use
+Herbal combinations
+Targeted symptom formulas
+Traditional formulations
+```
+
+Attributes:
+
+```
+synergy
+multi-herb formulas
+targeted blends
+```
+
+---
+
+# O. Safety Attributes
+
+Critical for symptom-based use.
+
+Subtopics:
+
+```
+When symptom relief is unsafe
+Masking serious conditions
+Drug interactions
+Overuse risks
+```
+
+Example:
+
+```
+Herbal Medicine → Limitation → Masking underlying disease
+```
+
+---
+
+# P. Evidence Attributes
+
+Subtopics:
+
+```
+Clinical evidence for symptom relief
+Traditional evidence
+Limitations of research
+```
+
+---
+
+# Q. Limitations Attributes
+
+Important for trust calibration.
+
+Subtopics:
+
+```
+Symptoms that require medical attention
+Emergency symptoms
+Limits of herbal treatment
+```
+
+---
+
+# 3. Clean Attribute Vector Model
+
+```
+Symptom-Based Uses of Herbal Medicine
+│
+├─ Identity
+├─ Symptom Classification
+├─ Pain Symptoms
+├─ Inflammatory Symptoms
+├─ Digestive Symptoms
+├─ Respiratory Symptoms
+├─ Nervous System Symptoms
+├─ Skin Symptoms
+├─ Energy & Fatigue
+├─ Immune Symptoms
+├─ Hormonal & Metabolic Symptoms
+├─ Temporal Context (Acute vs Chronic)
+├─ Mechanisms of Relief
+├─ Formulations
+├─ Safety
+├─ Evidence
+└─ Limitations
+```
+
+---
+
+# 4. Microsemantic Tip (Critical)
+
+Your **first paragraph must define the entity precisely**:
+
+> Symptom-based uses of herbal medicine refer to the application of medicinal plants to relieve or manage specific symptoms such as pain, inflammation, digestive discomfort, stress, or fatigue, rather than directly targeting an underlying disease. These uses focus on improving comfort, supporting physiological function, and providing short-term or long-term relief through plant-based preparations.
+
+This helps:
+
+* define **entity boundaries**
+* clarify **context (symptom vs disease)**
+* improve **retrieval precision**
+
+---
+
+# 5. Query Layer (VERY Important)
+
+This page targets **high-volume represented queries**:
+
+```
+herbs for pain relief
+herbs for anxiety
+herbs for bloating
+herbs for sleep
+natural remedies for inflammation
+```
+
+So your structure should support internal nodes like:
+
+```
+/uses/symptoms/pain
+/uses/symptoms/anxiety
+/uses/symptoms/bloating
+/uses/symptoms/sleep
+```
+
+---
+
+# 6. Strategic Insight (Koray-Level)
+
+This page is a **query bridge node** between:
+
+```
+Symptoms (user language)
+↔
+Conditions (medical language)
+↔
+Herbs (entity nodes)
+```
+
+Most websites only cover **conditions**.
+
+By covering **symptoms deeply**, you:
+
+✅ capture earlier-stage queries
+✅ increase query diversity
+✅ reduce semantic gaps
+✅ improve topical authority
+
+---
+
+If you want next, I can show you:
+
+👉 the **exact symptom taxonomy (50+ symptoms)** you should include to fully saturate this node
+
+That’s where real **topical authority gains** happen.

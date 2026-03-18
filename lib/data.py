@@ -292,3 +292,20 @@ def preparations_get(top=0):
         l = l[:top]
     return l
 
+def symptoms_get(top=0):
+    l = [
+        'Headache',
+        'Migraine',
+        'Abdominal Pain',
+        'Low Back Pain',
+        'Neck Pain',
+        'Joint Pain',
+        'Muscle Pain',
+        'Menstrual Pain',
+        'Nerve Pain',
+        'Chest Pain',
+    ]
+    if top != 0:
+        l = l[:top]
+    return l
+

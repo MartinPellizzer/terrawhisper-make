@@ -3383,6 +3383,7 @@ def uses__gen():
         <section class="article-section">
             <h2>Symptom-Based Uses</h2>
             <p>{symptom_subordinate_html}</p>
+            <p><a href="/uses/symptoms.html">Symptom-Based Uses</a></p>
         </section>
     '''
     functional_html = f'''
@@ -3478,6 +3479,558 @@ def uses__gen():
     html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
     with open(html_filepath, 'w') as f: f.write(html)
 
+def uses__symptoms__gen():
+    url_slug = f'uses/symptoms'
+    meta_title = f'Symptom-Based Uses of Herbal Medicine: Relief, Support, and Natural Remedies'
+    meta_description = ''
+    canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''
+
+    ########################################
+    # json
+    ########################################
+    json_article_filepath = f'''{g.DATABASE_FOLDERPATH}/json/{url_slug}.json'''
+    json_article = io.json_read(json_article_filepath, create=True)
+    json_article['url'] = url_slug
+    io.json_write(json_article_filepath, json_article)
+
+    regen_function = False
+    dispel_function = False
+
+    definition_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='definition', 
+        attribute='Definition of Symptom-Based Herbal Uses', entity='symptom-based uses', context='herbal medicine', 
+        regen=regen_function, dispel=dispel_function
+    )
+    difference_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='difference', 
+        attribute='Difference Between Symptom-Based and Condition-Based Treatment', entity='symptom-based uses', context='herbal medicine', 
+        regen=regen_function, dispel=dispel_function
+    )
+    principles_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='principles', 
+        attribute='Principles of Symptom Relief in Herbal Medicine', entity='symptom-based uses', context='herbal medicine', 
+        regen=regen_function, dispel=dispel_function
+    )
+    categories_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='categories', 
+        attribute='Categories of Symptoms Treated with Herbs', entity='symptom-based uses', context='herbal medicine', 
+        regen=regen_function, dispel=dispel_function
+    )
+    pain_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='pain', 
+        attribute='Pain-Related Symptoms', entity='symptom-based uses', context='herbal medicine', 
+        regen=regen_function, dispel=dispel_function
+    )
+    inflammatory_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='inflammatory', 
+        attribute='Inflammatory Symptoms', entity='symptom-based uses', context='herbal medicine', 
+        regen=regen_function, dispel=dispel_function
+    )
+    digestive_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='digestive', 
+        attribute='Digestive Symptoms', entity='symptom-based uses', context='herbal medicine', 
+        regen=regen_function, dispel=dispel_function
+    )
+    respiratory_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='respiratory', 
+        attribute='Respiratory Symptoms', entity='symptom-based uses', context='herbal medicine', 
+        regen=regen_function, dispel=dispel_function
+    )
+    nervous_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='nervous', 
+        attribute='Nervous System and Mental Symptoms', entity='symptom-based uses', context='herbal medicine', 
+        regen=regen_function, dispel=dispel_function
+    )
+    skin_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='skin', 
+        attribute='Skin-Related Symptoms', entity='symptom-based uses', context='herbal medicine', 
+        regen=regen_function, dispel=dispel_function
+    )
+    energy_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='energy', 
+        attribute='Energy and Fatigue Symptoms', entity='symptom-based uses', context='herbal medicine', 
+        regen=regen_function, dispel=dispel_function
+    )
+    immune_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='immune', 
+        attribute='Immune-Related Symptoms', entity='symptom-based uses', context='herbal medicine', 
+        regen=regen_function, dispel=dispel_function
+    )
+    hormonal_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='hormonal', 
+        attribute='Hormonal and Metabolic Symptoms', entity='symptom-based uses', context='herbal medicine', 
+        regen=regen_function, dispel=dispel_function
+    )
+    acute_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='acute', 
+        attribute='Acute vs Chronic Symptom Management', entity='symptom-based uses', context='herbal medicine', 
+        regen=regen_function, dispel=dispel_function
+    )
+    formulations_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='formulations', 
+        attribute='Herbal Formulations for Symptom Relief', entity='symptom-based uses', context='herbal medicine', 
+        regen=regen_function, dispel=dispel_function
+    )
+    safety_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='safety', 
+        attribute='Safety and Limitations of Symptom-Based Use', entity='symptom-based uses', context='herbal medicine', 
+        regen=regen_function, dispel=dispel_function
+    )
+    evidence_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='evidence', 
+        attribute='Evidence for Symptom Relief with Herbs', entity='symptom-based uses', context='herbal medicine', 
+        regen=regen_function, dispel=dispel_function
+    )
+
+    ########################################
+    # html
+    ########################################
+    intro_html = f'''
+        <h1>
+            Symptom-Based Uses of Herbal Medicine: Relief, Support, and Natural Remedies
+        </h1>
+        <p>
+            Symptom-based <a href="/uses.html">uses</a> of herbal medicine refer to the application of medicinal plants to relieve or manage specific symptoms such as pain, inflammation, digestive discomfort, stress, or fatigue, rather than directly targeting an underlying disease. These uses focus on improving comfort, supporting physiological function, and providing short-term or long-term relief through plant-based preparations.
+        </p>
+    '''
+    definition_html = f'''
+        <section class="article-section">
+            <h2>Definition of Symptom-Based Herbal Uses</h2>
+            <p>{definition_subordinate_html}</p>
+        </section>
+    '''
+    difference_html = f'''
+        <section class="article-section">
+            <h2>Difference Between Symptom-Based and Condition-Based Treatment</h2>
+            <p>{difference_subordinate_html}</p>
+        </section>
+    '''
+    principles_html = f'''
+        <section class="article-section">
+            <h2>Principles of Symptom Relief in Herbal Medicine</h2>
+            <p>{principles_subordinate_html}</p>
+        </section>
+    '''
+    ###
+    list_html = ''
+    list_data = data.symptoms_get(10)
+    for item in list_data:
+        item_slug = item.lower().strip().replace(' ', '-')
+        list_html += f'''
+            <li>
+                <a href="/uses/{item_slug}.html">{item}</a>
+            </li>
+        ''' 
+    categories_html = f'''
+        <section class="article-section">
+            <h2>Categories of Symptoms Treated with Herbs</h2>
+            <p>{categories_subordinate_html}</p>
+            <p>The following list shows a sample of common symptoms treated with herbal medicine.</p>
+            <ul>{list_html}</ul>
+        </section>
+    '''
+    ###
+    pain_html = f'''
+        <section class="article-section">
+            <h2>Pain-Related Symptoms</h2>
+            <p>{pain_subordinate_html}</p>
+        </section>
+    '''
+    inflammatory_html = f'''
+        <section class="article-section">
+            <h2>Inflammatory Symptoms</h2>
+            <p>{inflammatory_subordinate_html}</p>
+        </section>
+    '''
+    digestive_html = f'''
+        <section class="article-section">
+            <h2>Digestive Symptoms</h2>
+            <p>{digestive_subordinate_html}</p>
+        </section>
+    '''
+    respiratory_html = f'''
+        <section class="article-section">
+            <h2>Respiratory Symptoms</h2>
+            <p>{respiratory_subordinate_html}</p>
+        </section>
+    '''
+    nervous_html = f'''
+        <section class="article-section">
+            <h2>Nervous System and Mental Symptoms</h2>
+            <p>{nervous_subordinate_html}</p>
+        </section>
+    '''
+    skin_html = f'''
+        <section class="article-section">
+            <h2>Skin-Related Symptoms</h2>
+            <p>{skin_subordinate_html}</p>
+        </section>
+    '''
+    energy_html = f'''
+        <section class="article-section">
+            <h2>Energy and Fatigue Symptoms</h2>
+            <p>{energy_subordinate_html}</p>
+        </section>
+    '''
+    immune_html = f'''
+        <section class="article-section">
+            <h2>Immune-Related Symptoms</h2>
+            <p>{immune_subordinate_html}</p>
+        </section>
+    '''
+    hormonal_html = f'''
+        <section class="article-section">
+            <h2>Hormonal and Metabolic Symptoms</h2>
+            <p>{hormonal_subordinate_html}</p>
+        </section>
+    '''
+    acute_html = f'''
+        <section class="article-section">
+            <h2>Acute vs Chronic Symptom Management</h2>
+            <p>{acute_subordinate_html}</p>
+        </section>
+    '''
+    formulations_html = f'''
+        <section class="article-section">
+            <h2>Herbal Formulations for Symptom Relief</h2>
+            <p>{formulations_subordinate_html}</p>
+        </section>
+    '''
+    safety_html = f'''
+        <section class="article-section">
+            <h2>Safety and Limitations of Symptom-Based Use</h2>
+            <p>{safety_subordinate_html}</p>
+        </section>
+    '''
+    evidence_html = f'''
+        <section class="article-section">
+            <h2>Evidence for Symptom Relief with Herbs</h2>
+            <p>{evidence_subordinate_html}</p>
+        </section>
+    '''
+
+    article_html = f'''
+        {intro_html}
+        {definition_html}
+        {difference_html}
+        {principles_html}
+        {categories_html}
+        {pain_html}
+        {inflammatory_html}
+        {digestive_html}
+        {respiratory_html}
+        {nervous_html}
+        {skin_html}
+        {energy_html}
+        {immune_html}
+        {hormonal_html}
+        {acute_html}
+        {formulations_html}
+        {safety_html}
+        {evidence_html}
+    '''
+
+    ###
+    head_html = components.html_head(
+        meta_title, meta_description, css='/styles-herb-monograph.css', canonical=canonical_html
+    )
+    import textwrap
+    html = textwrap.dedent(f''' 
+        <!DOCTYPE html>
+        <html lang="en">
+        {head_html}
+        <body>
+            {sections.header_default()}
+            {sections.breadcrumbs_new(url_slug)}
+            <main>
+                <article class="container-md article">
+                    {article_html}
+                </article>
+            </main>
+            {sections.footer()}
+        </body>
+        </html>
+    ''').strip()
+    html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
+    io.folder_create_from_filepath(html_filepath)
+    with open(html_filepath, 'w') as f: f.write(html)
+
+def uses__symptom__gen(symptom):
+    symptom = symptom.lower().strip()
+    symptom_slug = symptom.replace(' ', '-')
+    url_slug = f'uses/{symptom_slug}'
+    meta_title = f'Herbal Medicine for {symptom.title()}: Uses, Remedies, and Safety'
+    meta_description = ''
+    canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''
+
+    herbs_names_filtered = []
+    herbs = io.json_read(f'''{g.SSOT_FOLDERPATH}/herbs/herbs-medicinal-validated.json''')
+    for herb in herbs:
+        herb_name_scientific = herb['taxon_name']
+        herb_slug = polish.sluggify(herb_name_scientific)
+        herb_data = io.json_read(f'''{g.SSOT_FOLDERPATH}/herbs/herbs-primary/{herb_slug}.json''')
+        herb_name_common = herb_data['herb_names_common'][0]['answer']
+        ###
+        for item in herb_data['herb_symptoms']:
+            name = item['answer']
+            total_score = item['total_score']
+            if name.lower().strip() == symptom.lower().strip():
+                if total_score >= 600:
+                    found = False
+                    for herb_name_filtered in herbs_names_filtered:
+                        if herb_name_filtered['herb_name_common'].lower().strip() == herb_name_common.lower().strip():
+                            found = True
+                            break
+                    if not found:
+                        herbs_names_filtered.append(
+                            {
+                                'herb_name_common': herb_name_common,
+                                'herb_name_scientific': herb_name_scientific,
+                                'herb_slug': herb_slug,
+                            }
+                        )
+    random.shuffle(herbs_names_filtered)
+
+    regen_function = False
+    dispel_function = False
+    ########################################
+    # json
+    ########################################
+    json_article_filepath = f'''{g.DATABASE_FOLDERPATH}/json/{url_slug}.json'''
+    json_article = io.json_read(json_article_filepath, create=True)
+    json_article['url'] = url_slug
+    io.json_write(json_article_filepath, json_article)
+
+    ###
+    intro_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='intro', 
+        attribute='introduction', entity=f'{symptom}', context='herbal medicine', 
+        regen=regen_function, dispel=dispel_function
+    )
+    definition_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='definition', 
+        attribute='definition', entity=f'{symptom}', context='herbal medicine', 
+        regen=regen_function, dispel=dispel_function
+    )
+    types_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='types', 
+        attribute='Types of {symptom.title()}', entity=f'{symptom}', context='herbal medicine', 
+        regen=regen_function, dispel=dispel_function
+    )
+    causes_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='causes', 
+        attribute='Causes of {symptom.title()}', entity=f'{symptom}', context='herbal medicine', 
+        regen=regen_function, dispel=dispel_function
+    )
+    how_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='how', 
+        attribute='How Herbal Medicine Helps with {symptom.title()}', entity=f'{symptom}', context='herbal medicine', 
+        regen=regen_function, dispel=dispel_function
+    )
+    best_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='best', 
+        attribute='Best Herbs for {symptom.title()}', entity=f'{symptom}', context='herbal medicine', 
+        regen=regen_function, dispel=dispel_function
+    )
+    actions_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='actions', 
+        attribute='Herbal Actions Relevant to {symptom.title()}', entity=f'{symptom}', context='herbal medicine', 
+        regen=regen_function, dispel=dispel_function
+    )
+    preparation_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='preparation', 
+        attribute='Preparation Methods for {symptom.title()} Relief', entity=f'{symptom}', context='herbal medicine', 
+        regen=regen_function, dispel=dispel_function
+    )
+    dosage_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='dosage', 
+        attribute='Dosage and Administration', entity=f'{symptom}', context='herbal medicine', 
+        regen=regen_function, dispel=dispel_function
+    )
+    combining_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='combining', 
+        attribute='Combining Herbs for {symptom.title()}', entity=f'{symptom}', context='herbal medicine', 
+        regen=regen_function, dispel=dispel_function
+    )
+    lifestyle_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='lifestyle', 
+        attribute='Lifestyle and Supportive Measures', entity=f'{symptom}', context='herbal medicine', 
+        regen=regen_function, dispel=dispel_function
+    )
+    when_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='when', 
+        attribute='When to Use Herbal Medicine for {symptom.title()}', entity=f'{symptom}', context='herbal medicine', 
+        regen=regen_function, dispel=dispel_function
+    )
+    safety_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='safety', 
+        attribute='Safety and Risks', entity=f'{symptom}', context='herbal medicine', 
+        regen=regen_function, dispel=dispel_function
+    )
+    attention_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='attention', 
+        attribute='When to Seek Medical Attention', entity=f'{symptom}', context='herbal medicine', 
+        regen=regen_function, dispel=dispel_function
+    )
+    evidence_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='evidence', 
+        attribute='Scientific Evidence for Herbal Use', entity=f'{symptom}', context='herbal medicine', 
+        regen=regen_function, dispel=dispel_function
+    )
+
+    ########################################
+    # html
+    ########################################
+    ###
+    intro_html = f'''
+        <h1>
+            Herbal Medicine for {symptom.title()}: Uses, Remedies, and Safety
+        </h1>
+        <p>
+            {intro_subordinate_html}
+        </p>
+        <p>
+            Here you can find a more about <a href="/uses/symptoms.html">symptoms to treat</a> with herbal medicine.
+        </p>
+    '''
+    definition_html = f'''
+        <section class="article-section">
+            <h2>Definition of {symptom.title()}</h2>
+            <p>{definition_subordinate_html}</p>
+        </section>
+    '''
+    types_html = f'''
+        <section class="article-section">
+            <h2>Types of {symptom.title()}</h2>
+            <p>{types_subordinate_html}</p>
+        </section>
+    '''
+    causes_html = f'''
+        <section class="article-section">
+            <h2>Causes of {symptom.title()}</h2>
+            <p>{causes_subordinate_html}</p>
+        </section>
+    '''
+    how_html = f'''
+        <section class="article-section">
+            <h2>How Herbal Medicine Helps with {symptom.title()}</h2>
+            <p>{how_subordinate_html}</p>
+        </section>
+    '''
+    ###
+    list_html = ''.join([
+        f'''<li>
+            <a href="/herbs/{item['herb_slug']}.html">{item['herb_name_common']} ({item['herb_name_scientific']})</a>
+            </li>''' 
+        for item in herbs_names_filtered[:15]
+    ])
+    best_html = f'''
+        <section class="article-section">
+            <h2>Best Herbs for {symptom.title()}</h2>
+            <p>{best_subordinate_html}</p>
+            <p>The following list shows a sample of medicinal plants that are used to treat {symptom.lower()}.</p>
+            <ul>{list_html}</ul>
+        </section>
+    '''
+    ###
+    actions_html = f'''
+        <section class="article-section">
+            <h2>Herbal Actions Relevant to {symptom.title()}</h2>
+            <p>{actions_subordinate_html}</p>
+        </section>
+    '''
+    preparation_html = f'''
+        <section class="article-section">
+            <h2>Preparation Methods for {symptom.title()} Relief</h2>
+            <p>{preparation_subordinate_html}</p>
+        </section>
+    '''
+    dosage_html = f'''
+        <section class="article-section">
+            <h2>Dosage and Administration</h2>
+            <p>{dosage_subordinate_html}</p>
+        </section>
+    '''
+    combining_html = f'''
+        <section class="article-section">
+            <h2>Combining Herbs for {symptom.title()}</h2>
+            <p>{combining_subordinate_html}</p>
+        </section>
+    '''
+    lifestyle_html = f'''
+        <section class="article-section">
+            <h2>Lifestyle and Supportive Measures</h2>
+            <p>{lifestyle_subordinate_html}</p>
+        </section>
+    '''
+    when_html = f'''
+        <section class="article-section">
+            <h2>When to Use Herbal Medicine for {symptom.title()}</h2>
+            <p>{when_subordinate_html}</p>
+        </section>
+    '''
+    safety_html = f'''
+        <section class="article-section">
+            <h2>Safety and Risks</h2>
+            <p>{safety_subordinate_html}</p>
+        </section>
+    '''
+    attention_html = f'''
+        <section class="article-section">
+            <h2>When to Seek Medical Attention</h2>
+            <p>{attention_subordinate_html}</p>
+        </section>
+    '''
+    evidence_html = f'''
+        <section class="article-section">
+            <h2>Scientific Evidence for Herbal Use</h2>
+            <p>{evidence_subordinate_html}</p>
+        </section>
+    '''
+
+    article_html = f'''
+        {intro_html}
+        {definition_html}
+        {types_html}
+        {causes_html}
+        {how_html}
+        {best_html}
+        {actions_html}
+        {preparation_html}
+        {dosage_html}
+        {combining_html}
+        {lifestyle_html}
+        {when_html}
+        {safety_html}
+        {attention_html}
+        {evidence_html}
+    '''
+
+    ###
+    head_html = components.html_head(
+        meta_title, meta_description, css='/styles-herb-monograph.css', canonical=canonical_html
+    )
+    import textwrap
+    html = textwrap.dedent(f''' 
+        <!DOCTYPE html>
+        <html lang="en">
+        {head_html}
+        <body>
+            {sections.header_default()}
+            {sections.breadcrumbs_new(url_slug)}
+            <main>
+                <article class="container-md article">
+                    {article_html}
+                </article>
+            </main>
+            {sections.footer()}
+        </body>
+        </html>
+    ''').strip()
+    html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
+    io.folder_create_from_filepath(html_filepath)
+    with open(html_filepath, 'w') as f: f.write(html)
+
 def main():
     herbal_medicine__gen()
     ###
@@ -3512,4 +4065,8 @@ def main():
     # preparations__methods__gen()
     ###
     uses__gen()
+    uses__symptoms__gen()
+    for item in data.symptoms_get(10):
+        uses__symptom__gen(item)
+        # break
 

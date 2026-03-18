@@ -1,0 +1,494 @@
+
+Perfect — now you’re at the **leaf-node level of the SCN**, where **topical authority is actually won or lost**.
+
+These pages (e.g. `/uses/headache.html`) are:
+
+```
+Herbal Medicine → Use → Symptom → Specific Page
+```
+
+They must function as **fully self-contained entities**, not just “lists of herbs.”
+
+Most sites fail here because they **only list remedies**, instead of building **full attribute coverage**.
+
+---
+
+# 1. Macro Structure of the Page (Reusable Template)
+
+Use this **for every symptom page** (headache, muscle pain, etc.):
+
+```
+H1: Herbal Medicine for [Symptom]: Uses, Remedies, and Safety
+
+1. Definition of [Symptom]
+2. Types of [Symptom]
+3. Causes of [Symptom]
+4. How Herbal Medicine Helps with [Symptom]
+5. Best Herbs for [Symptom]
+6. Herbal Actions Relevant to [Symptom]
+7. Preparation Methods for [Symptom Relief]
+8. Dosage and Administration
+9. Combining Herbs for [Symptom]
+10. Lifestyle and Supportive Measures
+11. When to Use Herbal Medicine for [Symptom]
+12. Safety and Risks
+13. When to Seek Medical Attention
+14. Scientific Evidence for Herbal Use
+```
+
+This structure ensures:
+
+* **entity identity**
+* **causal context**
+* **treatment logic**
+* **safety + trust calibration**
+
+---
+
+# 2. Attribute Clusters for Each Symptom Entity
+
+This is the **core reusable model**.
+
+---
+
+# A. Identity Attributes (What the Symptom Is)
+
+Defines the symptom clearly.
+
+**Subtopics**
+
+* Definition of the symptom
+* Medical meaning
+* How it manifests
+
+**Attributes**
+
+```
+symptom definition
+clinical description
+sensation type (sharp, dull, throbbing)
+location in body
+```
+
+Example:
+
+```
+Headache → Type → Throbbing pain
+```
+
+---
+
+# B. Classification Attributes (Types)
+
+Each symptom has **subtypes**.
+
+**Examples**
+
+### Headache:
+
+```
+tension headache
+migraine
+cluster headache
+sinus headache
+```
+
+### Muscle pain:
+
+```
+acute muscle pain
+chronic muscle pain
+exercise-induced soreness
+```
+
+This expands **query coverage massively**.
+
+---
+
+# C. Cause Attributes (Why It Happens)
+
+Critical for **semantic depth**.
+
+**Subtopics**
+
+```
+physical causes
+lifestyle causes
+environmental triggers
+underlying conditions
+```
+
+Attributes:
+
+```
+inflammation
+stress
+injury
+infection
+hormonal imbalance
+poor posture
+```
+
+Example:
+
+```
+Headache → Cause → Stress
+```
+
+---
+
+# D. Mechanism Attributes (How Herbs Work)
+
+This is where you connect **herbs → physiology → symptom**.
+
+**Subtopics**
+
+```
+anti-inflammatory action
+analgesic effects
+nervous system modulation
+muscle relaxation
+circulatory effects
+```
+
+Example:
+
+```
+Herbal Medicine → Mechanism → Reduces inflammation
+Herbal Medicine → Mechanism → Relaxes muscles
+```
+
+---
+
+# E. Herbal Remedy Attributes (Core Section)
+
+The main commercial + informational layer.
+
+**Subtopics**
+
+* Top herbs for the symptom
+* Herb-specific benefits
+* Use cases per herb
+
+**Attributes**
+
+```
+herb name
+active compounds
+specific effect
+target symptom subtype
+```
+
+Example:
+
+```
+Peppermint → Relieves → Tension headache
+Ginger → Relieves → Nausea-related headache
+```
+
+---
+
+# F. Herbal Action Attributes (VERY Important)
+
+This is a **Koray-level optimization most people miss**.
+
+Instead of just listing herbs, define **actions**:
+
+```
+analgesic
+anti-inflammatory
+antispasmodic
+sedative
+adaptogenic
+circulatory stimulant
+```
+
+This creates:
+
+```
+Symptom → Required Action → Herb
+```
+
+Example:
+
+```
+Headache → Requires → Analgesic herbs
+```
+
+---
+
+# G. Preparation Attributes
+
+How remedies are used.
+
+**Subtopics**
+
+```
+teas (infusions)
+decoctions
+tinctures
+capsules
+topical applications
+essential oils
+```
+
+Example:
+
+```
+Headache → Treatment Method → Essential oil application
+```
+
+---
+
+# H. Dosage Attributes
+
+Adds **precision and trust**.
+
+**Subtopics**
+
+```
+dosage ranges
+frequency
+duration
+form-specific dosage
+```
+
+Attributes:
+
+```
+mg dosage
+drops
+cups per day
+treatment length
+```
+
+---
+
+# I. Combination Attributes
+
+Herbs are often used **together**.
+
+**Subtopics**
+
+```
+herbal formulas
+synergistic combinations
+traditional formulas
+```
+
+Example:
+
+```
+Herbal Medicine → Combination → Peppermint + Lavender
+```
+
+---
+
+# J. Contextual Use Attributes
+
+When and how to use herbs.
+
+**Subtopics**
+
+```
+acute symptom relief
+chronic symptom management
+preventive use
+```
+
+---
+
+# K. Lifestyle Attributes
+
+Expands topical relevance beyond herbs.
+
+**Subtopics**
+
+```
+dietary changes
+hydration
+sleep
+stress management
+exercise
+```
+
+Example:
+
+```
+Headache → Trigger → Dehydration
+```
+
+---
+
+# L. Safety Attributes
+
+Mandatory for trust.
+
+**Subtopics**
+
+```
+side effects
+contraindications
+drug interactions
+pregnancy safety
+overuse risks
+```
+
+---
+
+# M. Medical Boundary Attributes
+
+Critical for credibility.
+
+**Subtopics**
+
+```
+when herbs are not enough
+red flag symptoms
+emergency signs
+```
+
+Example:
+
+```
+Headache → Red Flag → Sudden severe pain
+```
+
+---
+
+# N. Evidence Attributes
+
+Supports authority.
+
+**Subtopics**
+
+```
+clinical studies
+traditional use evidence
+mechanistic research
+```
+
+---
+
+# O. Temporal Attributes
+
+Time dimension of the symptom.
+
+**Subtopics**
+
+```
+acute vs chronic
+episodic vs continuous
+duration patterns
+```
+
+---
+
+# P. Severity Attributes
+
+Adds clinical depth.
+
+**Subtopics**
+
+```
+mild
+moderate
+severe
+disabling
+```
+
+---
+
+# 3. Clean Attribute Vector Model (Reusable)
+
+```
+[Symptom] (e.g. Headache)
+│
+├─ Identity (definition, sensation, location)
+├─ Types (sub-classifications)
+├─ Causes
+├─ Mechanisms (how herbs work)
+├─ Herbal Remedies
+├─ Herbal Actions
+├─ Preparation Methods
+├─ Dosage
+├─ Combinations
+├─ Context of Use (acute/chronic)
+├─ Lifestyle Factors
+├─ Safety
+├─ Medical Boundaries
+├─ Evidence
+├─ Temporal Patterns
+└─ Severity
+```
+
+---
+
+# 4. Microsemantic Tip (CRITICAL)
+
+Your **first paragraph must define BOTH the symptom AND the solution context**:
+
+Example:
+
+> Headaches are a common pain symptom characterized by pressure, throbbing, or discomfort in the head or neck region, often caused by stress, dehydration, muscle tension, or underlying conditions. Herbal medicine is used to relieve headaches by reducing inflammation, relaxing muscles, improving circulation, and calming the nervous system through plant-based remedies such as peppermint, ginger, and feverfew.
+
+This does 3 things:
+
+1. Defines the **entity (headache)**
+2. Introduces **causes**
+3. Connects to **herbal medicine mechanisms**
+
+→ This is **perfect Koray-style entity alignment**
+
+---
+
+# 5. Internal Linking Strategy (Very Important)
+
+Each page should connect:
+
+### Upward:
+
+```
+/uses
+/uses/symptoms
+```
+
+### Sideways:
+
+```
+/uses/muscle-pain
+/uses/joint-pain
+```
+
+### Downward:
+
+```
+/herbs/peppermint
+/herbs/ginger
+```
+
+This creates a **semantic content network (SCN)** that improves **topical authority and retrieval probability**.
+
+---
+
+# 6. Key Strategic Insight
+
+Each symptom page should answer:
+
+```
+What is the symptom?
+Why does it happen?
+How do herbs solve it?
+Which herbs work best?
+When is it safe or unsafe?
+```
+
+If you cover all of these:
+
+✅ the page stands as an independent entity
+✅ supports hundreds of queries
+✅ strengthens the entire SCN
+
+---
+
+If you want next, I can build you a **fully filled example page (e.g., headache)** so you see exactly how this turns into real content.
