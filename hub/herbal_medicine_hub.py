@@ -4031,10 +4031,361 @@ def uses__symptom__gen(symptom):
     io.folder_create_from_filepath(html_filepath)
     with open(html_filepath, 'w') as f: f.write(html)
 
+def herbs__herb__gen(herb):
+    herb_name_scientific = herb['taxon_name']
+    herb_slug = polish.sluggify(herb_name_scientific)
+    ###
+    herb_filepath = f'''{g.SSOT_FOLDERPATH}/herbs/herbs-primary/{herb_slug}.json'''
+    herb_data = io.json_read(herb_filepath)
+    herb_names_common = herb_data['herb_names_common']
+    herb_name_common = herb_names_common[0]['answer']
+    herb_name_all = f'{herb_name_common.title()} ({herb_name_scientific.capitalize()})'
+    herb_name_all = herb_name_all.replace("'S", "'s")
+    ###
+    url_slug = f'herbs/{herb_slug}'
+    meta_title = f'{herb_name_all}: Benefits, Uses, Dosage, and Safety in Herbal Medicine'
+    meta_description = ''
+    canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''
+
+    regen_function = False
+    dispel_function = False
+    ########################################
+    # json
+    ########################################
+    json_article_filepath = f'''{g.DATABASE_FOLDERPATH}/json/{url_slug}.json'''
+    json_article = io.json_read(json_article_filepath, create=True)
+    json_article['url'] = url_slug
+    io.json_write(json_article_filepath, json_article)
+
+    ###
+    intro_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='intro', 
+        attribute='introduction', entity=f'{herb_name_all}', context='herbal medicine', 
+        regen=regen_function, dispel=dispel_function
+    )
+    definition_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='definition', 
+        attribute='what is {herb_name_all}', entity=f'{herb_name_all}', context='herbal medicine', 
+        regen=regen_function, dispel=dispel_function
+    )
+    classification_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='classification', 
+        attribute='Botanical Identity and Classification', entity=f'{herb_name_all}', context='herbal medicine', 
+        regen=regen_function, dispel=dispel_function
+    )
+    names_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='names', 
+        attribute='Common Names and Synonyms', entity=f'{herb_name_all}', context='herbal medicine', 
+        regen=regen_function, dispel=dispel_function
+    )
+    morphology_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='morphology', 
+        attribute='Plant Description and Morphology', entity=f'{herb_name_all}', context='herbal medicine', 
+        regen=regen_function, dispel=dispel_function
+    )
+    native_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='native', 
+        attribute='Native Habitat and Distribution', entity=f'{herb_name_all}', context='herbal medicine', 
+        regen=regen_function, dispel=dispel_function
+    )
+    parts_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='parts', 
+        attribute='Plant Parts Used Medicinally', entity=f'{herb_name_all}', context='herbal medicine', 
+        regen=regen_function, dispel=dispel_function
+    )
+    phytochemical_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='phytochemical', 
+        attribute='Phytochemical Composition', entity=f'{herb_name_all}', context='herbal medicine', 
+        regen=regen_function, dispel=dispel_function
+    )
+    pharmacological_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='pharmacological', 
+        attribute='Pharmacological Properties', entity=f'{herb_name_all}', context='herbal medicine', 
+        regen=regen_function, dispel=dispel_function
+    )
+    mechanisms_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='mechanisms', 
+        attribute='Mechanisms of Action', entity=f'{herb_name_all}', context='herbal medicine', 
+        regen=regen_function, dispel=dispel_function
+    )
+    uses_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='uses', 
+        attribute='Therapeutic Uses and Indications', entity=f'{herb_name_all}', context='herbal medicine', 
+        regen=regen_function, dispel=dispel_function
+    )
+    preparation_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='preparation', 
+        attribute='Preparation Methods and Forms', entity=f'{herb_name_all}', context='herbal medicine', 
+        regen=regen_function, dispel=dispel_function
+    )
+    dosage_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='dosage', 
+        attribute='Dosage and Administration', entity=f'{herb_name_all}', context='herbal medicine', 
+        regen=regen_function, dispel=dispel_function
+    )
+    safety_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='safety', 
+        attribute='Safety, Side Effects, and Contraindications', entity=f'{herb_name_all}', context='herbal medicine', 
+        regen=regen_function, dispel=dispel_function
+    )
+    drug_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='drug', 
+        attribute='Drug Interactions', entity=f'{herb_name_all}', context='herbal medicine', 
+        regen=regen_function, dispel=dispel_function
+    )
+    toxicity_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='toxicity', 
+        attribute='Toxicity and Precautions', entity=f'{herb_name_all}', context='herbal medicine', 
+        regen=regen_function, dispel=dispel_function
+    )
+    cultivation_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='cultivation', 
+        attribute='Cultivation and Harvesting', entity=f'{herb_name_all}', context='herbal medicine', 
+        regen=regen_function, dispel=dispel_function
+    )
+    processing_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='processing', 
+        attribute='Processing and Extraction', entity=f'{herb_name_all}', context='herbal medicine', 
+        regen=regen_function, dispel=dispel_function
+    )
+    storage_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='storage', 
+        attribute='Storage and Shelf Life', entity=f'{herb_name_all}', context='herbal medicine', 
+        regen=regen_function, dispel=dispel_function
+    )
+    scientific_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='scientific', 
+        attribute='Scientific Research and Evidence', entity=f'{herb_name_all}', context='herbal medicine', 
+        regen=regen_function, dispel=dispel_function
+    )
+    traditional_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='traditional', 
+        attribute='Traditional and Historical Uses', entity=f'{herb_name_all}', context='herbal medicine', 
+        regen=regen_function, dispel=dispel_function
+    )
+    regulatory_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='regulatory', 
+        attribute='Regulatory Status', entity=f'{herb_name_all}', context='herbal medicine', 
+        regen=regen_function, dispel=dispel_function
+    )
+    sustainability_subordinate_html = subordinate__gen(json_article_filepath, 
+        key='sustainability', 
+        attribute='Sustainability and Conservation', entity=f'{herb_name_all}', context='herbal medicine', 
+        regen=regen_function, dispel=dispel_function
+    )
+
+    ########################################
+    # html
+    ########################################
+    ###
+    img_src = f'/images/herbs/{herb_slug}.jpg'
+    img_alt = f'{herb_name_all} dried pieces of the herb arranged on a wooden table for reference'
+    img_html = f'<img src="{img_src}" alt="{img_alt}" width="400">'
+    intro_html = f'''
+        <h1>
+            {herb_name_all}: Benefits, Uses, Dosage, and Safety in Herbal Medicine
+        </h1>
+        <p>
+            {intro_subordinate_html}
+        </p>
+        {img_html}
+        <p>
+            Here you can find a more about <a href="/herbs.html">medicinal plants</a>.
+        </p>
+    '''
+    definition_html = f'''
+        <section class="article-section">
+            <h2>What is {herb_name_all.title()}?</h2>
+            <p>{definition_subordinate_html}</p>
+        </section>
+    '''
+    classification_html = f'''
+        <section class="article-section">
+            <h2>Botanical Identity and Classification</h2>
+            <p>{classification_subordinate_html}</p>
+        </section>
+    '''
+    names_html = f'''
+        <section class="article-section">
+            <h2>Common Names and Synonyms</h2>
+            <p>{names_subordinate_html}</p>
+        </section>
+    '''
+    morphology_html = f'''
+        <section class="article-section">
+            <h2>Plant Description and Morphology</h2>
+            <p>{morphology_subordinate_html}</p>
+        </section>
+    '''
+    native_html = f'''
+        <section class="article-section">
+            <h2>Native Habitat and Distribution</h2>
+            <p>{native_subordinate_html}</p>
+        </section>
+    '''
+    parts_html = f'''
+        <section class="article-section">
+            <h2>Plant Parts Used Medicinally</h2>
+            <p>{parts_subordinate_html}</p>
+        </section>
+    '''
+    phytochemical_html = f'''
+        <section class="article-section">
+            <h2>Phytochemical Composition</h2>
+            <p>{phytochemical_subordinate_html}</p>
+        </section>
+    '''
+    pharmacological_html = f'''
+        <section class="article-section">
+            <h2>Pharmacological Properties</h2>
+            <p>{pharmacological_subordinate_html}</p>
+        </section>
+    '''
+    mechanisms_html = f'''
+        <section class="article-section">
+            <h2>Mechanisms of Action</h2>
+            <p>{mechanisms_subordinate_html}</p>
+        </section>
+    '''
+    uses_html = f'''
+        <section class="article-section">
+            <h2>Therapeutic Uses and Indications</h2>
+            <p>{uses_subordinate_html}</p>
+        </section>
+    '''
+    preparation_html = f'''
+        <section class="article-section">
+            <h2>Preparation Methods and Forms</h2>
+            <p>{preparation_subordinate_html}</p>
+        </section>
+    '''
+    dosage_html = f'''
+        <section class="article-section">
+            <h2>Dosage and Administration</h2>
+            <p>{dosage_subordinate_html}</p>
+        </section>
+    '''
+    safety_html = f'''
+        <section class="article-section">
+            <h2>Safety, Side Effects, and Contraindications</h2>
+            <p>{safety_subordinate_html}</p>
+        </section>
+    '''
+    drug_html = f'''
+        <section class="article-section">
+            <h2>Drug Interactions</h2>
+            <p>{drug_subordinate_html}</p>
+        </section>
+    '''
+    toxicity_html = f'''
+        <section class="article-section">
+            <h2>Toxicity and Precautions</h2>
+            <p>{toxicity_subordinate_html}</p>
+        </section>
+    '''
+    cultivation_html = f'''
+        <section class="article-section">
+            <h2>Cultivation and Harvesting</h2>
+            <p>{cultivation_subordinate_html}</p>
+        </section>
+    '''
+    processing_html = f'''
+        <section class="article-section">
+            <h2>Processing and Extraction</h2>
+            <p>{processing_subordinate_html}</p>
+        </section>
+    '''
+    storage_html = f'''
+        <section class="article-section">
+            <h2>Storage and Shelf Life</h2>
+            <p>{storage_subordinate_html}</p>
+        </section>
+    '''
+    scientific_html = f'''
+        <section class="article-section">
+            <h2>Scientific Research and Evidence</h2>
+            <p>{scientific_subordinate_html}</p>
+        </section>
+    '''
+    traditional_html = f'''
+        <section class="article-section">
+            <h2>Traditional and Historical Uses</h2>
+            <p>{traditional_subordinate_html}</p>
+        </section>
+    '''
+    regulatory_html = f'''
+        <section class="article-section">
+            <h2>Regulatory Status</h2>
+            <p>{regulatory_subordinate_html}</p>
+        </section>
+    '''
+    sustainability_html = f'''
+        <section class="article-section">
+            <h2>Sustainability and Conservation</h2>
+            <p>{regulatory_subordinate_html}</p>
+        </section>
+    '''
+
+    article_html = f'''
+        {intro_html}
+        {definition_html}
+        {classification_html}
+        {names_html}
+        {morphology_html}
+        {native_html}
+        {parts_html}
+        {phytochemical_html}
+        {pharmacological_html}
+        {mechanisms_html}
+        {uses_html}
+        {preparation_html}
+        {dosage_html}
+        {safety_html}
+        {drug_html}
+        {toxicity_html}
+        {cultivation_html}
+        {processing_html}
+        {storage_html}
+        {scientific_html}
+        {traditional_html}
+        {regulatory_html}
+        {sustainability_html}
+    '''
+
+    ###
+    head_html = components.html_head(
+        meta_title, meta_description, css='/styles-herb-monograph.css', canonical=canonical_html
+    )
+    import textwrap
+    html = textwrap.dedent(f''' 
+        <!DOCTYPE html>
+        <html lang="en">
+        {head_html}
+        <body>
+            {sections.header_default()}
+            {sections.breadcrumbs_new(url_slug)}
+            <main>
+                <article class="container-md article">
+                    {article_html}
+                </article>
+            </main>
+            {sections.footer()}
+        </body>
+        </html>
+    ''').strip()
+    html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
+    io.folder_create_from_filepath(html_filepath)
+    with open(html_filepath, 'w') as f: f.write(html)
+
 def main():
     herbal_medicine__gen()
     ###
     herbs__gen()
+    for item in data.herbs_get():
+        herbs__herb__gen(item)
+        # break
+    quit()
+
     ###
     phytochemicals__gen()
     phytochemicals__classification__gen()

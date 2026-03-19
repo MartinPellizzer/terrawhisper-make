@@ -309,3 +309,10 @@ def symptoms_get(top=0):
         l = l[:top]
     return l
 
+def herbs_get(top=0):
+    herbs_filepath = f'{g.SSOT_FOLDERPATH}/herbs/herbs-medicinal-validated.json'
+    l = io.json_read(herbs_filepath)
+    if top != 0:
+        l = l[:top]
+    return l
+
