@@ -4031,6 +4031,198 @@ def uses__symptom__gen(symptom):
     io.folder_create_from_filepath(html_filepath)
     with open(html_filepath, 'w') as f: f.write(html)
 
+def herbs__herb_taxonomy__gen(herb, json_article_filepath, regen=False, dispel=False):
+    herb_name_scientific = herb['taxon_name']
+    herb_slug = polish.sluggify(herb_name_scientific)
+    herb_filepath = f'''{g.SSOT_FOLDERPATH}/herbs/herbs-primary/{herb_slug}.json'''
+    herb_data = io.json_read(herb_filepath)
+    herb_names_common = herb_data['herb_names_common']
+    herb_name_common = herb_names_common[0]['answer']
+    herb_name_all = f'{herb_name_common.title()} ({herb_name_scientific.capitalize()})'
+    herb_name_all = herb_name_all.replace("'S", "'s")
+    herb_family = herb_data['herb_family'][0]['answer']
+    ### data
+    taxonomy_folderpath = f'{g.SSOT_FOLDERPATH}/taxonomy'
+    taxonomy_filepath = f'''{taxonomy_folderpath}/families.json'''
+    taxonomy_data = io.json_read(taxonomy_filepath)
+    _family = herb_family
+    _order = '' 
+    _kingdom = '' 
+    for item in taxonomy_data:
+        if item['family'] != [] and item['family'].lower().strip() == herb_family.lower().strip():
+            _order = item['order'][0]['answer']
+            break
+    taxonomy_filepath = f'''{taxonomy_folderpath}/orders.json'''
+    taxonomy_data = io.json_read(taxonomy_filepath)
+    _subclass = '' 
+    for item in taxonomy_data:
+        if item['order'] != [] and item['order'].lower().strip() == _order.lower().strip():
+            _subclass = item['subclass'][0]['answer']
+            break
+    taxonomy_filepath = f'''{taxonomy_folderpath}/subclasses.json'''
+    taxonomy_data = io.json_read(taxonomy_filepath)
+    _class = '' 
+    for item in taxonomy_data:
+        if item['subclass'] != [] and item['subclass'].lower().strip() == _subclass.lower().strip():
+            _class = item['class'][0]['answer']
+            break
+    taxonomy_filepath = f'{taxonomy_folderpath}/classes.json'
+    taxonomy_data = io.json_read(taxonomy_filepath)
+    _division = '' 
+    for item in taxonomy_data:
+        if item['class'] != [] and item['class'].lower().strip() == _class.lower().strip():
+            _division = item['division'][0]['answer']
+            break
+    taxonomy_list_html = f'''
+        <p>The following list summarize the taxonomy of plant:</p>
+        <ul>
+            <li>Kingdom: <strong>Plantae</strong></li>
+            <li>Division: <strong>{_division.capitalize()}</strong></li>
+            <li>Class: <strong>{_class.capitalize()}</strong></li>
+            <li>Order: <strong>{_order.capitalize()}</strong></li>
+            <li>Family: <strong>{_family}</strong></li>
+            <li>Genus: <strong>{herb['genus']}</strong></li>
+            <li>Species: <strong>{herb['taxon_name']}</strong></li>
+        </ul>
+    '''
+    taxonomy_list_text = f'''
+            Kingdom: Plantae
+            Division: {_division.capitalize()}
+            Class: {_class.capitalize()}
+            Order: {_order.capitalize()}
+            Family: {_family}
+            Genus: {herb['genus']}
+            Species: {herb['taxon_name']}
+    '''
+    taxonomy_table_html = f'''
+        <p>The following table shows the full taxonomy of this plant.</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>
+                        Rank
+                    </th>
+                    <th>
+                        Name
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        Kingdom
+                    </td>
+                    <td>
+                        <strong>Plantae</strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Division
+                    </td>
+                    <td>
+                        <strong>{_division.capitalize()}</strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Class
+                    </td>
+                    <td>
+                        <strong>{_class.capitalize()}</strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Order
+                    </td>
+                    <td>
+                        <strong>{_order.capitalize()}</strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Family
+                    </td>
+                    <td>
+                        <strong>{_family.capitalize()}</strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Genus
+                    </td>
+                    <td>
+                        <strong>{herb['genus'].capitalize()}</strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Species
+                    </td>
+                    <td>
+                        <strong>{herb['taxon_name'].capitalize()}</strong>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    '''
+    ### llm
+    json_article = io.json_read(json_article_filepath, create=True)
+    herb_name_all = json_article['herb_name_all']
+    key = 'classification'
+    if key not in json_article: json_article[key] = ''
+    if regen: json_article[key] = ''
+    if dispel: 
+        json_article[key] = ''
+        io.json_write(json_article_filepath, json_article)
+    if not dispel:
+        if json_article[key] == '':
+            brief = f'''
+                Include the following subtopics:
+                - Scientific name (binomial)
+                - Common names
+                - Synonyms (botanical + regional)
+            '''
+            import textwrap
+            prompt = textwrap.dedent(f'''
+                I'm writing an article about the core entity "{herb_name_all}", which is for a website where the source context is "herbal medicine". 
+                I want you to write the subordinate text for the following section: "taxonomy". 
+                The subordinate text is the first 5 sentences that must be written immediately after the headline. 
+                The subordinate text must answer in the most direct, clear, detailed way possible without fluff.
+                Don't give me bold or italicized text. 
+                Reply only with the subordinate text.
+                BRIEF:
+                {brief}
+                STRUCTURE:
+                In sentence 1, state the scientific name of this plant.
+                In sentence 2, state the full taxonomy of this plant.
+                In sentences 3 and 4, state the common names of this plant, in respect to geographical regions.
+                In sentence 5, state the synomyms of this plant.
+                DATA:
+                {taxonomy_list_text}
+                Start with the following words: The scientific name of {herb_name_common} is {herb_name_scientific}. This plant belongs to 
+                /no_think
+            ''').strip()
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            json_article[key] = reply
+            io.json_write(json_article_filepath, json_article)
+            print(json_article_filepath)
+    ### html
+    taxonomy_html = f'''
+        <section class="article-section">
+            <h2>Botanical Classification and Taxonomy</h2>
+            <p>
+            {json_article['classification']}
+            </p>
+            {taxonomy_table_html}
+        </section>
+    '''
+    return taxonomy_html
+
 def herbs__herb__gen(herb):
     herb_name_scientific = herb['taxon_name']
     herb_slug = polish.sluggify(herb_name_scientific)
@@ -4068,11 +4260,16 @@ def herbs__herb__gen(herb):
         attribute='what is {herb_name_all}', entity=f'{herb_name_all}', context='herbal medicine', 
         regen=regen_function, dispel=dispel_function
     )
-    classification_subordinate_html = subordinate__gen(json_article_filepath, 
-        key='classification', 
-        attribute='Botanical Identity and Classification', entity=f'{herb_name_all}', context='herbal medicine', 
-        regen=regen_function, dispel=dispel_function
-    )
+    ###
+    if 0:
+        classification_subordinate_html = subordinate__gen(json_article_filepath, 
+            key='classification', 
+            attribute='Botanical Identity and Classification', entity=f'{herb_name_all}', context='herbal medicine', 
+            regen=regen_function, dispel=dispel_function
+        )
+    classification_html = herbs__herb_taxonomy__gen(herb, json_article_filepath, regen=regen_function, dispel=dispel_function)
+
+    ###
     names_subordinate_html = subordinate__gen(json_article_filepath, 
         key='names', 
         attribute='Common Names and Synonyms', entity=f'{herb_name_all}', context='herbal medicine', 
@@ -4199,18 +4396,24 @@ def herbs__herb__gen(herb):
             <p>{definition_subordinate_html}</p>
         </section>
     '''
+    if 0:
+        classification_html = f'''
+            <section class="article-section">
+                <h2>Botanical Identity and Classification</h2>
+                <p>{classification_subordinate_html}</p>
+            </section>
+        '''
     classification_html = f'''
-        <section class="article-section">
-            <h2>Botanical Identity and Classification</h2>
-            <p>{classification_subordinate_html}</p>
-        </section>
+        {classification_html}
     '''
-    names_html = f'''
-        <section class="article-section">
-            <h2>Common Names and Synonyms</h2>
-            <p>{names_subordinate_html}</p>
-        </section>
-    '''
+
+    if 0:
+        names_html = f'''
+            <section class="article-section">
+                <h2>Common Names and Synonyms</h2>
+                <p>{names_subordinate_html}</p>
+            </section>
+        '''
     morphology_html = f'''
         <section class="article-section">
             <h2>Plant Description and Morphology</h2>
@@ -4330,7 +4533,6 @@ def herbs__herb__gen(herb):
         {intro_html}
         {definition_html}
         {classification_html}
-        {names_html}
         {morphology_html}
         {native_html}
         {parts_html}
@@ -4350,6 +4552,9 @@ def herbs__herb__gen(herb):
         {traditional_html}
         {regulatory_html}
         {sustainability_html}
+    '''
+    '''
+        {names_html}
     '''
 
     ###
