@@ -4305,6 +4305,69 @@ def herbs__herb_morphology__gen(herb, json_article_filepath, regen=False, dispel
     '''
     return html
 
+def herbs__herb_distribution__gen(herb, json_article_filepath, regen=False, dispel=False):
+    herb_name_scientific = herb['taxon_name']
+    herb_slug = polish.sluggify(herb_name_scientific)
+    ### data glo
+    herb_filepath = f'''{g.SSOT_FOLDERPATH}/herbs/herbs-primary/{herb_slug}.json'''
+    herb_data = io.json_read(herb_filepath)
+    herb_names_common = herb_data['herb_names_common']
+    herb_name_common = herb_names_common[0]['answer']
+    herb_name_all = f'{herb_name_common.title()} ({herb_name_scientific.capitalize()})'
+    herb_name_all = herb_name_all.replace("'S", "'s")
+    ### data loc
+    section = f'Native Habitat and Distribution'
+    brief = f'''
+        Include the following subtopics:
+        - Native regions
+        - Geographic distribution
+        - Climate preferences
+        - Ecological conditions
+    '''
+    ### llm
+    json_article = io.json_read(json_article_filepath, create=True)
+    herb_name_all = json_article['herb_name_all']
+    key = 'distribution'
+    if key not in json_article: json_article[key] = ''
+    if regen: json_article[key] = ''
+    if dispel: 
+        json_article[key] = ''
+        io.json_write(json_article_filepath, json_article)
+    if not dispel:
+        if json_article[key] == '':
+            import textwrap
+            prompt = textwrap.dedent(f'''
+                I'm writing an article about the core entity "{herb_name_all}", which is for a website where the source context is "herbal medicine". 
+                I want you to write the subordinate text for the following section: "{section}". 
+                The subordinate text is the first 5 sentences that must be written immediately after the headline. 
+                The subordinate text must answer in the most direct, clear, detailed way possible without fluff.
+                Don't give me bold or italicized text. 
+                Reply only with the subordinate text.
+                BRIEF:
+                {brief}
+                Start with the following words: {herb_name_common} is  
+                /no_think
+            ''').strip()
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            json_article[key] = reply
+            io.json_write(json_article_filepath, json_article)
+            print(json_article_filepath)
+    ### html
+    paragraph = json_article[key]
+    paragraph_formatted = paragraph_format_1N1(paragraph)
+    html = f'''
+        <section class="article-section">
+            <h2>{section}</h2>
+            <p>
+            {paragraph_formatted}
+            </p>
+        </section>
+    '''
+    return html
+
 def herbs__herb__gen(herb):
     herb_name_scientific = herb['taxon_name']
     herb_slug = polish.sluggify(herb_name_scientific)
@@ -4344,28 +4407,21 @@ def herbs__herb__gen(herb):
     )
     ###
     classification_html = herbs__herb_taxonomy__gen(herb, json_article_filepath, regen=regen_function, dispel=dispel_function)
-
-    ###
     names_subordinate_html = subordinate__gen(json_article_filepath, 
         key='names', 
         attribute='Common Names and Synonyms', entity=f'{herb_name_all}', context='herbal medicine', 
         regen=regen_function, dispel=dispel_function
     )
+    morphology_html = herbs__herb_morphology__gen(herb, json_article_filepath, regen=dispel_function, dispel=dispel_function)
+
+    distribution_html = herbs__herb_distribution__gen(herb, json_article_filepath, regen=True, dispel=dispel_function)
     ###
-    morphology_html = herbs__herb_morphology__gen(herb, json_article_filepath, regen=True, dispel=dispel_function)
     if 0:
-        morphology_subordinate_html = subordinate__gen(json_article_filepath, 
-            key='morphology', 
-            attribute='Plant Description and Morphology', entity=f'{herb_name_all}', context='herbal medicine', 
+        native_subordinate_html = subordinate__gen(json_article_filepath, 
+            key='native', 
+            attribute='Native Habitat and Distribution', entity=f'{herb_name_all}', context='herbal medicine', 
             regen=regen_function, dispel=dispel_function
         )
-    ###
-
-    native_subordinate_html = subordinate__gen(json_article_filepath, 
-        key='native', 
-        attribute='Native Habitat and Distribution', entity=f'{herb_name_all}', context='herbal medicine', 
-        regen=regen_function, dispel=dispel_function
-    )
     parts_subordinate_html = subordinate__gen(json_article_filepath, 
         key='parts', 
         attribute='Plant Parts Used Medicinally', entity=f'{herb_name_all}', context='herbal medicine', 
@@ -4499,17 +4555,14 @@ def herbs__herb__gen(herb):
         {morphology_html}
     '''
     if 0:
-        morphology_html = f'''
+        native_html = f'''
             <section class="article-section">
-                <h2>Plant Description and Morphology</h2>
-                <p>{morphology_subordinate_html}</p>
+                <h2>Native Habitat and Distribution</h2>
+                <p>{native_subordinate_html}</p>
             </section>
         '''
-    native_html = f'''
-        <section class="article-section">
-            <h2>Native Habitat and Distribution</h2>
-            <p>{native_subordinate_html}</p>
-        </section>
+    distribution_html = f'''
+        {distribution_html}
     '''
     parts_html = f'''
         <section class="article-section">
@@ -4619,7 +4672,8 @@ def herbs__herb__gen(herb):
         {definition_html}
         {classification_html}
         {morphology_html}
-        {native_html}
+        {distribution_html}
+
         {parts_html}
         {phytochemical_html}
         {pharmacological_html}
