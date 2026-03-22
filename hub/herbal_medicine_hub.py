@@ -4492,6 +4492,201 @@ def herbs__herb_phytochemical__gen(herb, json_article_filepath, regen=False, dis
     '''
     return html
 
+def herbs__herb_pharmacological__gen(herb, json_article_filepath, regen=False, dispel=False):
+    herb_name_scientific = herb['taxon_name']
+    herb_slug = polish.sluggify(herb_name_scientific)
+    ### data glo
+    herb_filepath = f'''{g.SSOT_FOLDERPATH}/herbs/herbs-primary/{herb_slug}.json'''
+    herb_data = io.json_read(herb_filepath)
+    herb_names_common = herb_data['herb_names_common']
+    herb_name_common = herb_names_common[0]['answer']
+    herb_name_all = f'{herb_name_common.title()} ({herb_name_scientific.capitalize()})'
+    herb_name_all = herb_name_all.replace("'S", "'s")
+    ### data loc
+    section = f'Pharmacological Properties'
+    brief = f'''
+        Include the following subtopics:
+        - Therapeutic actions
+        - Biological activity
+        - Pharmacodynamics
+        - System-level effects
+    '''
+    key = 'pharmacological'
+    ### llm
+    json_article = io.json_read(json_article_filepath, create=True)
+    herb_name_all = json_article['herb_name_all']
+    if key not in json_article: json_article[key] = ''
+    if regen: json_article[key] = ''
+    if dispel: 
+        json_article[key] = ''
+        io.json_write(json_article_filepath, json_article)
+    if not dispel:
+        if json_article[key] == '':
+            import textwrap
+            prompt = textwrap.dedent(f'''
+                I'm writing an article about the core entity "{herb_name_all}", which is for a website where the source context is "herbal medicine". 
+                I want you to write the subordinate text for the following section: "{section}". 
+                The subordinate text is the first 5 sentences that must be written immediately after the headline. 
+                The subordinate text must answer in the most direct, clear, detailed way possible without fluff.
+                In sentence 1, you must always reply to the implicit question asked in the section.
+                In the following sentences, you give more details.
+                Don't give me bold or italicized text. 
+                Reply only with the subordinate text.
+                BRIEF:
+                {brief}
+                /no_think
+            ''').strip()
+                # Start with the following words: {herb_name_common} 
+            print(prompt)
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            json_article[key] = reply
+            io.json_write(json_article_filepath, json_article)
+            print(json_article_filepath)
+    ### html
+    paragraph = json_article[key]
+    paragraph_formatted = paragraph_format_1N1(paragraph)
+    html = f'''
+        <section class="article-section">
+            <h2>{section}</h2>
+            <p>
+            {paragraph_formatted}
+            </p>
+        </section>
+    '''
+    return html
+
+def herbs__herb_mechanisms__gen(herb, json_article_filepath, regen=False, dispel=False):
+    herb_name_scientific = herb['taxon_name']
+    herb_slug = polish.sluggify(herb_name_scientific)
+    ### data glo
+    herb_filepath = f'''{g.SSOT_FOLDERPATH}/herbs/herbs-primary/{herb_slug}.json'''
+    herb_data = io.json_read(herb_filepath)
+    herb_names_common = herb_data['herb_names_common']
+    herb_name_common = herb_names_common[0]['answer']
+    herb_name_all = f'{herb_name_common.title()} ({herb_name_scientific.capitalize()})'
+    herb_name_all = herb_name_all.replace("'S", "'s")
+    ### data loc
+    section = f'Mechanisms of Action'
+    brief = f'''
+        Include the following subtopics:
+        - Cellular mechanisms
+        - Biochemical pathways
+        - Target systems
+    '''
+    key = 'mechanisms'
+    ### llm
+    json_article = io.json_read(json_article_filepath, create=True)
+    herb_name_all = json_article['herb_name_all']
+    if key not in json_article: json_article[key] = ''
+    if regen: json_article[key] = ''
+    if dispel: 
+        json_article[key] = ''
+        io.json_write(json_article_filepath, json_article)
+    if not dispel:
+        if json_article[key] == '':
+            import textwrap
+            prompt = textwrap.dedent(f'''
+                I'm writing an article about the core entity "{herb_name_all}", which is for a website where the source context is "herbal medicine". 
+                I want you to write the subordinate text for the following section: "{section}". 
+                The subordinate text is the first 5 sentences that must be written immediately after the headline. 
+                The subordinate text must answer in the most direct, clear, detailed way possible without fluff.
+                In sentence 1, you must always reply to the implicit question asked in the section.
+                In the following sentences, you give more details.
+                Don't give me bold or italicized text. 
+                Reply only with the subordinate text.
+                BRIEF:
+                {brief}
+                /no_think
+            ''').strip()
+                # Start with the following words: {herb_name_common} 
+            print(prompt)
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            json_article[key] = reply
+            io.json_write(json_article_filepath, json_article)
+            print(json_article_filepath)
+    ### html
+    paragraph = json_article[key]
+    paragraph_formatted = paragraph_format_1N1(paragraph)
+    html = f'''
+        <section class="article-section">
+            <h2>{section}</h2>
+            <p>
+            {paragraph_formatted}
+            </p>
+        </section>
+    '''
+    return html
+
+def herbs__herb_uses__gen(herb, json_article_filepath, regen=False, dispel=False):
+    herb_name_scientific = herb['taxon_name']
+    herb_slug = polish.sluggify(herb_name_scientific)
+    ### data glo
+    herb_filepath = f'''{g.SSOT_FOLDERPATH}/herbs/herbs-primary/{herb_slug}.json'''
+    herb_data = io.json_read(herb_filepath)
+    herb_names_common = herb_data['herb_names_common']
+    herb_name_common = herb_names_common[0]['answer']
+    herb_name_all = f'{herb_name_common.title()} ({herb_name_scientific.capitalize()})'
+    herb_name_all = herb_name_all.replace("'S", "'s")
+    ### data loc
+    section = f'Therapeutic Uses'
+    brief = f'''
+        Include the following subtopics:
+        - therapeutic uses of this medicinal plant
+        - conditions / common ailments it treats
+    '''
+    key = 'uses'
+    ### llm
+    json_article = io.json_read(json_article_filepath, create=True)
+    herb_name_all = json_article['herb_name_all']
+    if key not in json_article: json_article[key] = ''
+    if regen: json_article[key] = ''
+    if dispel: 
+        json_article[key] = ''
+        io.json_write(json_article_filepath, json_article)
+    if not dispel:
+        if json_article[key] == '':
+            import textwrap
+            prompt = textwrap.dedent(f'''
+                I'm writing an article about the core entity "{herb_name_all}", which is for a website where the source context is "herbal medicine". 
+                I want you to write the subordinate text for the following section: "{section}". 
+                The subordinate text is the first 5 sentences that must be written immediately after the headline. 
+                The subordinate text must answer in the most direct, clear, detailed way possible without fluff.
+                In sentence 1, you must always reply to the implicit question asked in the section.
+                In the following sentences, you give more details.
+                Don't give me bold or italicized text. 
+                Reply only with the subordinate text.
+                BRIEF:
+                {brief}
+                /no_think
+            ''').strip()
+                # Start with the following words: {herb_name_common} 
+            print(prompt)
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            json_article[key] = reply
+            io.json_write(json_article_filepath, json_article)
+            print(json_article_filepath)
+    ### html
+    paragraph = json_article[key]
+    paragraph_formatted = paragraph_format_1N1(paragraph)
+    html = f'''
+        <section class="article-section">
+            <h2>{section}</h2>
+            <p>
+            {paragraph_formatted}
+            </p>
+        </section>
+    '''
+    return html
+
 def herbs__herb__gen(herb):
     herb_name_scientific = herb['taxon_name']
     herb_slug = polish.sluggify(herb_name_scientific)
@@ -4547,23 +4742,16 @@ def herbs__herb__gen(herb):
     phytochemical_html = herbs__herb_phytochemical__gen(
         herb, json_article_filepath, regen=regen_function, dispel=dispel_function
     )
+    pharmacological_html = herbs__herb_pharmacological__gen(
+        herb, json_article_filepath, regen=regen_function, dispel=dispel_function
+    )
+    mechanisms_html = herbs__herb_mechanisms__gen(
+        herb, json_article_filepath, regen=regen_function, dispel=dispel_function
+    )
+    uses_html = herbs__herb_uses__gen(
+        herb, json_article_filepath, regen=True, dispel=dispel_function
+    )
 
-    if 0:
-        phytochemical_subordinate_html = subordinate__gen(json_article_filepath, 
-            key='phytochemical', 
-            attribute='Phytochemical Composition', entity=f'{herb_name_all}', context='herbal medicine', 
-            regen=regen_function, dispel=dispel_function
-        )
-    pharmacological_subordinate_html = subordinate__gen(json_article_filepath, 
-        key='pharmacological', 
-        attribute='Pharmacological Properties', entity=f'{herb_name_all}', context='herbal medicine', 
-        regen=regen_function, dispel=dispel_function
-    )
-    mechanisms_subordinate_html = subordinate__gen(json_article_filepath, 
-        key='mechanisms', 
-        attribute='Mechanisms of Action', entity=f'{herb_name_all}', context='herbal medicine', 
-        regen=regen_function, dispel=dispel_function
-    )
     uses_subordinate_html = subordinate__gen(json_article_filepath, 
         key='uses', 
         attribute='Therapeutic Uses and Indications', entity=f'{herb_name_all}', context='herbal medicine', 
@@ -4686,23 +4874,22 @@ def herbs__herb__gen(herb):
         {phytochemical_html}
     '''
     pharmacological_html = f'''
-        <section class="article-section">
-            <h2>Pharmacological Properties</h2>
-            <p>{pharmacological_subordinate_html}</p>
-        </section>
+        {pharmacological_html}
     '''
     mechanisms_html = f'''
-        <section class="article-section">
-            <h2>Mechanisms of Action</h2>
-            <p>{mechanisms_subordinate_html}</p>
-        </section>
+        {mechanisms_html}
     '''
     uses_html = f'''
-        <section class="article-section">
-            <h2>Therapeutic Uses and Indications</h2>
-            <p>{uses_subordinate_html}</p>
-        </section>
+        {uses_html}
     '''
+
+    if 0:
+        uses_html = f'''
+            <section class="article-section">
+                <h2>Therapeutic Uses and Indications</h2>
+                <p>{uses_subordinate_html}</p>
+            </section>
+        '''
     preparation_html = f'''
         <section class="article-section">
             <h2>Preparation Methods and Forms</h2>
