@@ -43,6 +43,1446 @@ def subordinate__gen(json_article_filepath, key, entity, attribute, context='her
     '''
     return html
 
+def herbal_medicine__intro__gen(json_article_filepath, regen=False, dispel=False):
+    ### data glo
+    ### data loc
+    section = f'Herbal Medicine: Definition, Principles, Uses, and Safety'
+    brief = f'''
+        Include the following subtopics when applicable:
+1. Definition and Concept of Herbal Medicine
+2. Core Principles of Herbal Medicine
+3. Historical Development of Herbal Medicine
+4. Types of Herbal Medicine Systems
+5. Medicinal Plants Used in Herbal Medicine
+6. Phytochemical Foundations
+7. Mechanisms and Physiological Effects
+8. Therapeutic Applications
+9. Herbal Preparation Methods
+10. Dosage and Administration
+11. Safety, Risks, and Contraindications
+12. Quality Control and Standardization
+13. Cultivation and Sourcing of Medicinal Herbs
+14. Processing and Manufacturing
+15. Scientific Research and Evidence
+16. Regulation and Legal Status
+17. Sustainability and Ethical Harvesting
+18. Modern Role of Herbal Medicine
+19. Education and Training in Herbal Medicine
+    '''
+    key = 'intro'
+    ### llm
+    json_article = io.json_read(json_article_filepath, create=True)
+    if key not in json_article: json_article[key] = ''
+    if regen: json_article[key] = ''
+    if dispel: 
+        json_article[key] = ''
+        io.json_write(json_article_filepath, json_article)
+    if not dispel:
+        if json_article[key] == '':
+            import textwrap
+            prompt = textwrap.dedent(f'''
+                I'm writing an article about the core entity "herbal medicine", which is for a website where the source context is "herbal medicine". 
+                I want you to write the subordinate text for the following section: "{section}". 
+                The subordinate text is the first 5 sentences that must be written immediately after the headline. 
+                The subordinate text must answer in the most direct, clear, detailed way possible without fluff.
+                In sentence 1, you must always reply to the implicit question asked in the section.
+                In the following sentences, you give more details.
+                Don't give me bold or italicized text. 
+                Reply only with the subordinate text.
+                BRIEF:
+                {brief}
+                /no_think
+            ''').strip()
+                # Start with the following words: {herb_name_common} 
+            print(prompt)
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            json_article[key] = reply
+            io.json_write(json_article_filepath, json_article)
+            print(json_article_filepath)
+    ### html
+    paragraph = json_article[key]
+    paragraph_formatted = paragraph_format_1N1(paragraph)
+    html = f'''
+        <section class="article-section">
+            <h1>{section}</h1>
+            <p>
+            {paragraph_formatted}
+            </p>
+        </section>
+    '''
+    return html
+
+def herbal_medicine__definition__gen(json_article_filepath, regen=False, dispel=False):
+    ### data glo
+    ### data loc
+    section = f'What is Herbal Medicine?'
+    brief = f'''
+        Include the following subtopics when applicable:
+        - What is herbal medicine (formal definition)
+        - Scope of herbal medicine as a healthcare practice
+        - Distinction between herbal medicine and pharmacotherapy
+        - Distinction between herbal medicine and nutrition/dietary supplements
+        - What qualifies as a herbal substance (plant-only vs derivatives)
+        - Classification as complementary, alternative, or integrative medicine
+        - Core components: plant material, preparation, therapeutic intent
+        - Role of herbal medicine in prevention vs treatment
+    '''
+    key = 'definition'
+    ### llm
+    json_article = io.json_read(json_article_filepath, create=True)
+    if key not in json_article: json_article[key] = ''
+    if regen: json_article[key] = ''
+    if dispel: 
+        json_article[key] = ''
+        io.json_write(json_article_filepath, json_article)
+    if not dispel:
+        if json_article[key] == '':
+            import textwrap
+            prompt = textwrap.dedent(f'''
+                I'm writing an article about the core entity "herbal medicine", which is for a website where the source context is "herbal medicine". 
+                I want you to write the subordinate text for the following section: "{section}". 
+                The subordinate text is the first 5 sentences that must be written immediately after the headline. 
+                The subordinate text must answer in the most direct, clear, detailed way possible without fluff.
+                In sentence 1, you must always reply to the implicit question asked in the section.
+                In the following sentences, you give more details.
+                Don't give me bold or italicized text. 
+                Reply only with the subordinate text.
+                BRIEF:
+                {brief}
+                /no_think
+            ''').strip()
+                # Start with the following words: {herb_name_common} 
+            print(prompt)
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            json_article[key] = reply
+            io.json_write(json_article_filepath, json_article)
+            print(json_article_filepath)
+    ### html
+    paragraph = json_article[key]
+    paragraph_formatted = paragraph_format_1N1(paragraph)
+    html = f'''
+        <section class="article-section">
+            <h2>{section}</h2>
+            <p>
+            {paragraph_formatted}
+            </p>
+            <dl>
+              <dt>Herbal Medicine</dt>
+              <dd>Use of plant-derived substances for therapeutic purposes.</dd>
+
+              <dt>Scope</dt>
+              <dd>Prevention, treatment, and health maintenance using botanical preparations.</dd>
+
+              <dt>Distinction</dt>
+              <dd>Differs from pharmaceuticals by using whole-plant compounds instead of isolated chemicals.</dd>
+            </dl>
+        </section>
+    '''
+    return html
+
+def herbal_medicine__principles__gen(json_article_filepath, regen=False, dispel=False):
+    ### data glo
+    ### data loc
+    section = f'Core Principles of Herbal Medicine'
+    brief = f'''
+        Include the following subtopics when applicable:
+        - Holistic treatment approach (body-mind-environment)
+        - Concept of balance and homeostasis
+        - Individualized treatment strategies
+        - Synergy of whole-plant compounds vs isolated compounds
+        - Vital force / life energy concepts (where applicable)
+        - Preventive care orientation
+        - Long-term vs acute treatment philosophy
+    '''
+    key = 'principles'
+    ### llm
+    json_article = io.json_read(json_article_filepath, create=True)
+    if key not in json_article: json_article[key] = ''
+    if regen: json_article[key] = ''
+    if dispel: 
+        json_article[key] = ''
+        io.json_write(json_article_filepath, json_article)
+    if not dispel:
+        if json_article[key] == '':
+            import textwrap
+            prompt = textwrap.dedent(f'''
+                I'm writing an article about the core entity "herbal medicine", which is for a website where the source context is "herbal medicine". 
+                I want you to write the subordinate text for the following section: "{section}". 
+                The subordinate text is the first 5 sentences that must be written immediately after the headline. 
+                The subordinate text must answer in the most direct, clear, detailed way possible without fluff.
+                In sentence 1, you must always reply to the implicit question asked in the section.
+                In the following sentences, you give more details.
+                Don't give me bold or italicized text. 
+                Reply only with the subordinate text.
+                BRIEF:
+                {brief}
+                /no_think
+            ''').strip()
+                # Start with the following words: {herb_name_common} 
+            print(prompt)
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            json_article[key] = reply
+            io.json_write(json_article_filepath, json_article)
+            print(json_article_filepath)
+    ### html
+    paragraph = json_article[key]
+    paragraph_formatted = paragraph_format_1N1(paragraph)
+    html = f'''
+        <section class="article-section">
+            <h2>{section}</h2>
+            <p>
+            {paragraph_formatted}
+            </p>
+            <p>Here are the primary principles of herbal medicine:</p>
+            <ul>
+              <li>Holistic approach (body, mind, environment)</li>
+              <li>Balance and homeostasis</li>
+              <li>Synergy of plant compounds</li>
+              <li>Individualized treatment</li>
+              <li>Preventive care focus</li>
+            </ul>
+        </section>
+    '''
+    return html
+
+def herbal_medicine__history__gen(json_article_filepath, regen=False, dispel=False):
+    ### data glo
+    ### data loc
+    section = f'Historical Development of Herbal Medicine'
+    brief = f'''
+        Include the following subtopics when applicable:
+Prehistoric and early human use of medicinal plants
+Development in ancient civilizations (Egypt, China, India, Greece)
+Transmission through oral traditions and early texts
+Medieval herbal medicine practices
+Transition during the scientific revolution
+Decline with rise of modern pharmaceuticals
+Revival in modern complementary medicine
+    '''
+    key = 'history'
+    ### llm
+    json_article = io.json_read(json_article_filepath, create=True)
+    if key not in json_article: json_article[key] = ''
+    if regen: json_article[key] = ''
+    if dispel: 
+        json_article[key] = ''
+        io.json_write(json_article_filepath, json_article)
+    if not dispel:
+        if json_article[key] == '':
+            import textwrap
+            prompt = textwrap.dedent(f'''
+                I'm writing an article about the core entity "herbal medicine", which is for a website where the source context is "herbal medicine". 
+                I want you to write the subordinate text for the following section: "{section}". 
+                The subordinate text is the first 5 sentences that must be written immediately after the headline. 
+                The subordinate text must answer in the most direct, clear, detailed way possible without fluff.
+                In sentence 1, you must always reply to the implicit question asked in the section.
+                In the following sentences, you give more details.
+                Don't give me bold or italicized text. 
+                Reply only with the subordinate text.
+                BRIEF:
+                {brief}
+                /no_think
+            ''').strip()
+                # Start with the following words: {herb_name_common} 
+            print(prompt)
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            json_article[key] = reply
+            io.json_write(json_article_filepath, json_article)
+            print(json_article_filepath)
+    ### html
+    paragraph = json_article[key]
+    paragraph_formatted = paragraph_format_1N1(paragraph)
+    html = f'''
+        <section class="article-section">
+            <h2>{section}</h2>
+            <p>
+            {paragraph_formatted}
+            </p>
+            <ol>
+              <li>Prehistoric use of medicinal plants</li>
+              <li>Ancient systems (China, India, Egypt, Greece)</li>
+              <li>Medieval herbal traditions</li>
+              <li>Scientific revolution and decline</li>
+              <li>Modern revival in integrative medicine</li>
+            </ol>
+        </section>
+    '''
+    return html
+
+def herbal_medicine__types__gen(json_article_filepath, regen=False, dispel=False):
+    ### data glo
+    ### data loc
+    section = f'Types of Herbal Medicine Systems'
+    brief = f'''
+        Include the following subtopics when applicable:
+Traditional Chinese Medicine (herbal framework overview)
+Ayurvedic herbal system structure
+Western herbal medicine tradition
+Unani herbal system
+Indigenous and folk herbal systems
+Differences in diagnostic frameworks across systems
+Differences in formulation logic (single herb vs formulas)
+    '''
+    key = 'types'
+    ### llm
+    json_article = io.json_read(json_article_filepath, create=True)
+    if key not in json_article: json_article[key] = ''
+    if regen: json_article[key] = ''
+    if dispel: 
+        json_article[key] = ''
+        io.json_write(json_article_filepath, json_article)
+    if not dispel:
+        if json_article[key] == '':
+            import textwrap
+            prompt = textwrap.dedent(f'''
+                I'm writing an article about the core entity "herbal medicine", which is for a website where the source context is "herbal medicine". 
+                I want you to write the subordinate text for the following section: "{section}". 
+                The subordinate text is the first 5 sentences that must be written immediately after the headline. 
+                The subordinate text must answer in the most direct, clear, detailed way possible without fluff.
+                In sentence 1, you must always reply to the implicit question asked in the section.
+                In the following sentences, you give more details.
+                Don't give me bold or italicized text. 
+                Reply only with the subordinate text.
+                BRIEF:
+                {brief}
+                /no_think
+            ''').strip()
+                # Start with the following words: {herb_name_common} 
+            print(prompt)
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            json_article[key] = reply
+            io.json_write(json_article_filepath, json_article)
+            print(json_article_filepath)
+    ### html
+    paragraph = json_article[key]
+    paragraph_formatted = paragraph_format_1N1(paragraph)
+    html = f'''
+        <section class="article-section">
+            <h2>{section}</h2>
+            <p>
+            {paragraph_formatted}
+            </p>
+        </section>
+        <table>
+          <tr>
+            <th>System</th>
+            <th>Origin</th>
+            <th>Key Feature</th>
+          </tr>
+          <tr>
+            <td>Traditional Chinese Medicine</td>
+            <td>China</td>
+            <td>Balance of Yin and Yang</td>
+          </tr>
+          <tr>
+            <td>Ayurveda</td>
+            <td>India</td>
+            <td>Dosha-based diagnosis</td>
+          </tr>
+          <tr>
+            <td>Western Herbalism</td>
+            <td>Europe</td>
+            <td>Plant energetics and physiology</td>
+          </tr>
+        </table>
+    '''
+    return html
+
+def herbal_medicine__plants__gen(json_article_filepath, regen=False, dispel=False):
+    ### data glo
+    ### data loc
+    section = f'Medicinal Plants Used in Herbal Medicine'
+    brief = f'''
+        Include the following subtopics when applicable:
+Definition of medicinal plant species
+Categories of plants used (trees, shrubs, herbs, fungi, algae)
+Plant parts utilized in herbal medicine
+Fresh vs dried plant material usage
+Wild vs cultivated plant sources
+Geographical variation in medicinal flora
+Commonly used global medicinal plants (high-level examples)
+    '''
+    key = 'plants'
+    ### llm
+    json_article = io.json_read(json_article_filepath, create=True)
+    if key not in json_article: json_article[key] = ''
+    if regen: json_article[key] = ''
+    if dispel: 
+        json_article[key] = ''
+        io.json_write(json_article_filepath, json_article)
+    if not dispel:
+        if json_article[key] == '':
+            import textwrap
+            prompt = textwrap.dedent(f'''
+                I'm writing an article about the core entity "herbal medicine", which is for a website where the source context is "herbal medicine". 
+                I want you to write the subordinate text for the following section: "{section}". 
+                The subordinate text is the first 5 sentences that must be written immediately after the headline. 
+                The subordinate text must answer in the most direct, clear, detailed way possible without fluff.
+                In sentence 1, you must always reply to the implicit question asked in the section.
+                In the following sentences, you give more details.
+                Don't give me bold or italicized text. 
+                Reply only with the subordinate text.
+                BRIEF:
+                {brief}
+                /no_think
+            ''').strip()
+                # Start with the following words: {herb_name_common} 
+            print(prompt)
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            json_article[key] = reply
+            io.json_write(json_article_filepath, json_article)
+            print(json_article_filepath)
+    ### html
+    paragraph = json_article[key]
+    paragraph_formatted = paragraph_format_1N1(paragraph)
+    paragraph_formatted = paragraph_formatted.replace('Medicinal plants', '''<a href="/herbs.html" title="Medicinal Plants">Medicinal plants</a>''', 1)
+    html = f'''
+        <section class="article-section">
+            <h2>{section}</h2>
+            <p>
+            {paragraph_formatted}
+            </p>
+            <figure>
+              <img src="/images/herbal-medicine/medicinal-plants.jpg" alt="Examples of medicinal plants used in herbal medicine">
+              <figcaption>Common medicinal plants include chamomile, turmeric, ginger, and echinacea.</figcaption>
+            </figure>
+        </section>
+    '''
+            # <p>Visit the <a href="/herbs.html" title="Medicinal Plants">medicinal plants</a> page to learn more.</p>
+    return html
+
+def herbal_medicine__phytochemicals__gen(json_article_filepath, regen=False, dispel=False):
+    ### data glo
+    ### data loc
+    section = f'Phytochemical Foundations'
+    brief = f'''
+        Include the following subtopics when applicable:
+Definition of phytochemicals
+Primary vs secondary metabolites
+Major phytochemical groups and their characteristics
+Distribution of compounds within plant parts
+Variability of phytochemical composition
+Factors affecting compound concentration (genetics, environment)
+Concept of active vs supportive compounds
+    '''
+    key = 'phytochemicals'
+    ### llm
+    json_article = io.json_read(json_article_filepath, create=True)
+    if key not in json_article: json_article[key] = ''
+    if regen: json_article[key] = ''
+    if dispel: 
+        json_article[key] = ''
+        io.json_write(json_article_filepath, json_article)
+    if not dispel:
+        if json_article[key] == '':
+            import textwrap
+            prompt = textwrap.dedent(f'''
+                I'm writing an article about the core entity "herbal medicine", which is for a website where the source context is "herbal medicine". 
+                I want you to write the subordinate text for the following section: "{section}". 
+                The subordinate text is the first 5 sentences that must be written immediately after the headline. 
+                The subordinate text must answer in the most direct, clear, detailed way possible without fluff.
+                In sentence 1, you must always reply to the implicit question asked in the section.
+                In the following sentences, you give more details.
+                Don't give me bold or italicized text. 
+                Reply only with the subordinate text.
+                BRIEF:
+                {brief}
+                /no_think
+            ''').strip()
+                # Start with the following words: {herb_name_common} 
+            print(prompt)
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            json_article[key] = reply
+            io.json_write(json_article_filepath, json_article)
+            print(json_article_filepath)
+    ### html
+    paragraph = json_article[key]
+    paragraph_formatted = paragraph_format_1N1(paragraph)
+    html = f'''
+        <section class="article-section">
+            <h2>{section}</h2>
+            <p>
+            {paragraph_formatted}
+            </p>
+        </section>
+        <table>
+          <tr>
+            <th>Compound Group</th>
+            <th>Example Function</th>
+          </tr>
+          <tr>
+            <td>Alkaloids</td>
+            <td>Pain relief</td>
+          </tr>
+          <tr>
+            <td>Flavonoids</td>
+            <td>Antioxidant activity</td>
+          </tr>
+          <tr>
+            <td>Terpenes</td>
+            <td>Aromatic and anti-inflammatory</td>
+          </tr>
+        </table>
+    '''
+    return html
+
+def herbal_medicine__mechanisms__gen(json_article_filepath, regen=False, dispel=False):
+    ### data glo
+    ### data loc
+    section = f'Mechanisms and Physiological Effects'
+    brief = f'''
+        Include the following subtopics when applicable:
+How herbal compounds interact with human physiology
+Absorption, metabolism, and bioavailability basics
+Dose-response relationships
+Multi-target effects of herbal compounds
+System-level physiological influence (immune, nervous, endocrine)
+Short-term vs long-term physiological effects
+Adaptogenic and regulatory effects
+    '''
+    key = 'mechanisms'
+    ### llm
+    json_article = io.json_read(json_article_filepath, create=True)
+    if key not in json_article: json_article[key] = ''
+    if regen: json_article[key] = ''
+    if dispel: 
+        json_article[key] = ''
+        io.json_write(json_article_filepath, json_article)
+    if not dispel:
+        if json_article[key] == '':
+            import textwrap
+            prompt = textwrap.dedent(f'''
+                I'm writing an article about the core entity "herbal medicine", which is for a website where the source context is "herbal medicine". 
+                I want you to write the subordinate text for the following section: "{section}". 
+                The subordinate text is the first 5 sentences that must be written immediately after the headline. 
+                The subordinate text must answer in the most direct, clear, detailed way possible without fluff.
+                In sentence 1, you must always reply to the implicit question asked in the section.
+                In the following sentences, you give more details.
+                Don't give me bold or italicized text. 
+                Reply only with the subordinate text.
+                BRIEF:
+                {brief}
+                /no_think
+            ''').strip()
+                # Start with the following words: {herb_name_common} 
+            print(prompt)
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            json_article[key] = reply
+            io.json_write(json_article_filepath, json_article)
+            print(json_article_filepath)
+    ### html
+    paragraph = json_article[key]
+    paragraph_formatted = paragraph_format_1N1(paragraph)
+    html = f'''
+        <section class="article-section">
+            <h2>{section}</h2>
+            <p>
+            {paragraph_formatted}
+            </p>
+        </section>
+        <ol>
+          <li>Absorption of plant compounds</li>
+          <li>Metabolism in the body</li>
+          <li>Interaction with biological systems</li>
+          <li>Physiological response</li>
+        </ol>
+    '''
+    return html
+
+def herbal_medicine__uses__gen(json_article_filepath, regen=False, dispel=False):
+    ### data glo
+    ### data loc
+    section = f'Therapeutic Applications'
+    brief = f'''
+        Include the following subtopics when applicable:
+Use in digestive system disorders
+Use in respiratory conditions
+Use in dermatological conditions
+Use in stress and mental health
+Use in hormonal and reproductive health
+Use in immune system support
+Use in pain and inflammation management
+Use in chronic disease support
+    '''
+    key = 'uses'
+    ### llm
+    json_article = io.json_read(json_article_filepath, create=True)
+    if key not in json_article: json_article[key] = ''
+    if regen: json_article[key] = ''
+    if dispel: 
+        json_article[key] = ''
+        io.json_write(json_article_filepath, json_article)
+    if not dispel:
+        if json_article[key] == '':
+            import textwrap
+            prompt = textwrap.dedent(f'''
+                I'm writing an article about the core entity "herbal medicine", which is for a website where the source context is "herbal medicine". 
+                I want you to write the subordinate text for the following section: "{section}". 
+                The subordinate text is the first 5 sentences that must be written immediately after the headline. 
+                The subordinate text must answer in the most direct, clear, detailed way possible without fluff.
+                In sentence 1, you must always reply to the implicit question asked in the section.
+                In the following sentences, you give more details.
+                Don't give me bold or italicized text. 
+                Reply only with the subordinate text.
+                BRIEF:
+                {brief}
+                /no_think
+            ''').strip()
+                # Start with the following words: {herb_name_common} 
+            print(prompt)
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            json_article[key] = reply
+            io.json_write(json_article_filepath, json_article)
+            print(json_article_filepath)
+    ### html
+    paragraph = json_article[key]
+    paragraph_formatted = paragraph_format_1N1(paragraph)
+    html = f'''
+        <section class="article-section">
+            <h2>{section}</h2>
+            <p>
+            {paragraph_formatted}
+            </p>
+        </section>
+        <ul>
+          <li>Digestive disorders</li>
+          <li>Respiratory conditions</li>
+          <li>Skin issues</li>
+          <li>Stress and anxiety</li>
+          <li>Immune support</li>
+        </ul>
+    '''
+    return html
+
+def herbal_medicine__preparations__gen(json_article_filepath, regen=False, dispel=False):
+    ### data glo
+    ### data loc
+    section = f'Herbal Preparation Methods'
+    brief = f'''
+        Include the following subtopics when applicable:
+Purpose of herbal preparation
+Water-based preparations (infusion, decoction)
+Alcohol-based preparations (tinctures)
+Oil-based preparations (infused oils)
+Dry preparations (powders, capsules)
+Concentrated extracts
+Topical preparation forms (ointments, salves)
+Differences in extraction efficiency by method
+    '''
+    key = 'preparations'
+    ### llm
+    json_article = io.json_read(json_article_filepath, create=True)
+    if key not in json_article: json_article[key] = ''
+    if regen: json_article[key] = ''
+    if dispel: 
+        json_article[key] = ''
+        io.json_write(json_article_filepath, json_article)
+    if not dispel:
+        if json_article[key] == '':
+            import textwrap
+            prompt = textwrap.dedent(f'''
+                I'm writing an article about the core entity "herbal medicine", which is for a website where the source context is "herbal medicine". 
+                I want you to write the subordinate text for the following section: "{section}". 
+                The subordinate text is the first 5 sentences that must be written immediately after the headline. 
+                The subordinate text must answer in the most direct, clear, detailed way possible without fluff.
+                In sentence 1, you must always reply to the implicit question asked in the section.
+                In the following sentences, you give more details.
+                Don't give me bold or italicized text. 
+                Reply only with the subordinate text.
+                BRIEF:
+                {brief}
+                /no_think
+            ''').strip()
+                # Start with the following words: {herb_name_common} 
+            print(prompt)
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            json_article[key] = reply
+            io.json_write(json_article_filepath, json_article)
+            print(json_article_filepath)
+    ### html
+    paragraph = json_article[key]
+    paragraph_formatted = paragraph_format_1N1(paragraph)
+    html = f'''
+        <section class="article-section">
+            <h2>{section}</h2>
+            <p>
+            {paragraph_formatted}
+            </p>
+        </section>
+        <table>
+          <tr>
+            <th>Method</th>
+            <th>Description</th>
+          </tr>
+          <tr>
+            <td>Infusion</td>
+            <td>Steeping herbs in hot water</td>
+          </tr>
+          <tr>
+            <td>Tincture</td>
+            <td>Alcohol-based extraction</td>
+          </tr>
+          <tr>
+            <td>Decoction</td>
+            <td>Boiling tougher plant materials</td>
+          </tr>
+        </table>
+    '''
+    return html
+
+def herbal_medicine__administration__gen(json_article_filepath, regen=False, dispel=False):
+    ### data glo
+    ### data loc
+    section = f'Dosage and Administration'
+    brief = f'''
+        Include the following subtopics when applicable:
+Determining appropriate dosage
+Factors influencing dosage (age, weight, condition)
+Frequency and timing of administration
+Duration of treatment protocols
+Routes of administration (oral, topical, inhalation)
+Standardized vs traditional dosing approaches
+Adjustments for acute vs chronic conditions
+    '''
+    key = 'administration'
+    ### llm
+    json_article = io.json_read(json_article_filepath, create=True)
+    if key not in json_article: json_article[key] = ''
+    if regen: json_article[key] = ''
+    if dispel: 
+        json_article[key] = ''
+        io.json_write(json_article_filepath, json_article)
+    if not dispel:
+        if json_article[key] == '':
+            import textwrap
+            prompt = textwrap.dedent(f'''
+                I'm writing an article about the core entity "herbal medicine", which is for a website where the source context is "herbal medicine". 
+                I want you to write the subordinate text for the following section: "{section}". 
+                The subordinate text is the first 5 sentences that must be written immediately after the headline. 
+                The subordinate text must answer in the most direct, clear, detailed way possible without fluff.
+                In sentence 1, you must always reply to the implicit question asked in the section.
+                In the following sentences, you give more details.
+                Don't give me bold or italicized text. 
+                Reply only with the subordinate text.
+                BRIEF:
+                {brief}
+                /no_think
+            ''').strip()
+                # Start with the following words: {herb_name_common} 
+            print(prompt)
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            json_article[key] = reply
+            io.json_write(json_article_filepath, json_article)
+            print(json_article_filepath)
+    ### html
+    paragraph = json_article[key]
+    paragraph_formatted = paragraph_format_1N1(paragraph)
+    html = f'''
+        <section class="article-section">
+            <h2>{section}</h2>
+            <p>
+            {paragraph_formatted}
+            </p>
+        </section>
+        <table>
+          <tr>
+            <th>Factor</th>
+            <th>Influence on Dosage</th>
+          </tr>
+          <tr>
+            <td>Age</td>
+            <td>Lower doses for children</td>
+          </tr>
+          <tr>
+            <td>Body weight</td>
+            <td>Adjusted proportionally</td>
+          </tr>
+          <tr>
+            <td>Condition severity</td>
+            <td>Higher or more frequent dosing</td>
+          </tr>
+        </table>
+    '''
+    return html
+
+def herbal_medicine__safety__gen(json_article_filepath, regen=False, dispel=False):
+    ### data glo
+    ### data loc
+    section = f'Safety, Risks, and Contraindications'
+    brief = f'''
+        Include the following subtopics when applicable:
+Types of side effects associated with herbs
+Toxicity and poisonous plants
+Herb-drug interactions
+Contraindications for specific populations
+Allergic reactions and sensitivities
+Risks of misidentification or contamination
+Overdose and misuse risks
+Safety considerations during pregnancy and lactation
+    '''
+    key = 'safety'
+    ### llm
+    json_article = io.json_read(json_article_filepath, create=True)
+    if key not in json_article: json_article[key] = ''
+    if regen: json_article[key] = ''
+    if dispel: 
+        json_article[key] = ''
+        io.json_write(json_article_filepath, json_article)
+    if not dispel:
+        if json_article[key] == '':
+            import textwrap
+            prompt = textwrap.dedent(f'''
+                I'm writing an article about the core entity "herbal medicine", which is for a website where the source context is "herbal medicine". 
+                I want you to write the subordinate text for the following section: "{section}". 
+                The subordinate text is the first 5 sentences that must be written immediately after the headline. 
+                The subordinate text must answer in the most direct, clear, detailed way possible without fluff.
+                In sentence 1, you must always reply to the implicit question asked in the section.
+                In the following sentences, you give more details.
+                Don't give me bold or italicized text. 
+                Reply only with the subordinate text.
+                BRIEF:
+                {brief}
+                /no_think
+            ''').strip()
+                # Start with the following words: {herb_name_common} 
+            print(prompt)
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            json_article[key] = reply
+            io.json_write(json_article_filepath, json_article)
+            print(json_article_filepath)
+    ### html
+    paragraph = json_article[key]
+    paragraph_formatted = paragraph_format_1N1(paragraph)
+    html = f'''
+        <section class="article-section">
+            <h2>{section}</h2>
+            <p>
+            {paragraph_formatted}
+            </p>
+        </section>
+        <ul>
+          <li><strong>Side effects:</strong> Nausea, headaches</li>
+          <li><strong>Drug interactions:</strong> May affect medications</li>
+          <li><strong>Contraindications:</strong> Certain conditions or populations</li>
+          <li><strong>Toxicity:</strong> Some plants are poisonous</li>
+        </ul>
+    '''
+    return html
+
+def herbal_medicine__quality__gen(json_article_filepath, regen=False, dispel=False):
+    ### data glo
+    ### data loc
+    section = f'Quality Control and Standardization'
+    brief = f'''
+        Include the following subtopics when applicable:
+Definition of herbal quality
+Standardization of active compounds
+Batch-to-batch consistency
+Detection of contaminants (heavy metals, pesticides)
+Adulteration and substitution issues
+Quality certifications and testing methods
+Labeling accuracy and transparency
+    '''
+    key = 'quality'
+    ### llm
+    json_article = io.json_read(json_article_filepath, create=True)
+    if key not in json_article: json_article[key] = ''
+    if regen: json_article[key] = ''
+    if dispel: 
+        json_article[key] = ''
+        io.json_write(json_article_filepath, json_article)
+    if not dispel:
+        if json_article[key] == '':
+            import textwrap
+            prompt = textwrap.dedent(f'''
+                I'm writing an article about the core entity "herbal medicine", which is for a website where the source context is "herbal medicine". 
+                I want you to write the subordinate text for the following section: "{section}". 
+                The subordinate text is the first 5 sentences that must be written immediately after the headline. 
+                The subordinate text must answer in the most direct, clear, detailed way possible without fluff.
+                In sentence 1, you must always reply to the implicit question asked in the section.
+                In the following sentences, you give more details.
+                Don't give me bold or italicized text. 
+                Reply only with the subordinate text.
+                BRIEF:
+                {brief}
+                /no_think
+            ''').strip()
+                # Start with the following words: {herb_name_common} 
+            print(prompt)
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            json_article[key] = reply
+            io.json_write(json_article_filepath, json_article)
+            print(json_article_filepath)
+    ### html
+    paragraph = json_article[key]
+    paragraph_formatted = paragraph_format_1N1(paragraph)
+    html = f'''
+        <section class="article-section">
+            <h2>{section}</h2>
+            <p>
+            {paragraph_formatted}
+            </p>
+        </section>
+        <ul>
+          <li>Standardized active compounds</li>
+          <li>Contaminant testing</li>
+          <li>Batch consistency</li>
+          <li>Accurate labeling</li>
+        </ul>
+    '''
+    return html
+
+def herbal_medicine__cultivation__gen(json_article_filepath, regen=False, dispel=False):
+    ### data glo
+    ### data loc
+    section = f'Cultivation and Sourcing of Medicinal Herbs'
+    brief = f'''
+        Include the following subtopics when applicable:
+Cultivation practices for medicinal plants
+Organic vs conventional farming
+Wildcrafting practices
+Geographical sourcing and terroir effects
+Seasonal growth cycles
+Ethical sourcing considerations (supply chain level)
+Impact of environment on plant quality
+    '''
+    key = 'cultivation'
+    ### llm
+    json_article = io.json_read(json_article_filepath, create=True)
+    if key not in json_article: json_article[key] = ''
+    if regen: json_article[key] = ''
+    if dispel: 
+        json_article[key] = ''
+        io.json_write(json_article_filepath, json_article)
+    if not dispel:
+        if json_article[key] == '':
+            import textwrap
+            prompt = textwrap.dedent(f'''
+                I'm writing an article about the core entity "herbal medicine", which is for a website where the source context is "herbal medicine". 
+                I want you to write the subordinate text for the following section: "{section}". 
+                The subordinate text is the first 5 sentences that must be written immediately after the headline. 
+                The subordinate text must answer in the most direct, clear, detailed way possible without fluff.
+                In sentence 1, you must always reply to the implicit question asked in the section.
+                In the following sentences, you give more details.
+                Don't give me bold or italicized text. 
+                Reply only with the subordinate text.
+                BRIEF:
+                {brief}
+                /no_think
+            ''').strip()
+                # Start with the following words: {herb_name_common} 
+            print(prompt)
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            json_article[key] = reply
+            io.json_write(json_article_filepath, json_article)
+            print(json_article_filepath)
+    ### html
+    paragraph = json_article[key]
+    paragraph_formatted = paragraph_format_1N1(paragraph)
+    html = f'''
+        <section class="article-section">
+            <h2>{section}</h2>
+            <p>
+            {paragraph_formatted}
+            </p>
+        </section>
+        <table>
+          <tr>
+            <th>Factor</th>
+            <th>Impact</th>
+          </tr>
+          <tr>
+            <td>Soil quality</td>
+            <td>Affects plant potency</td>
+          </tr>
+          <tr>
+            <td>Climate</td>
+            <td>Influences growth and compounds</td>
+          </tr>
+          <tr>
+            <td>Harvest location</td>
+            <td>Determines chemical variability</td>
+          </tr>
+        </table>
+    '''
+    return html
+
+def herbal_medicine__processing__gen(json_article_filepath, regen=False, dispel=False):
+    ### data glo
+    ### data loc
+    section = f'Processing and Manufacturing'
+    brief = f'''
+        Include the following subtopics when applicable:
+Post-harvest handling of medicinal plants
+Drying techniques and their impact
+Storage before processing
+Industrial extraction processes
+Grinding and particle size reduction
+Formulation into finished products
+Packaging methods
+Shelf stability considerations
+    '''
+    key = 'processing'
+    ### llm
+    json_article = io.json_read(json_article_filepath, create=True)
+    if key not in json_article: json_article[key] = ''
+    if regen: json_article[key] = ''
+    if dispel: 
+        json_article[key] = ''
+        io.json_write(json_article_filepath, json_article)
+    if not dispel:
+        if json_article[key] == '':
+            import textwrap
+            prompt = textwrap.dedent(f'''
+                I'm writing an article about the core entity "herbal medicine", which is for a website where the source context is "herbal medicine". 
+                I want you to write the subordinate text for the following section: "{section}". 
+                The subordinate text is the first 5 sentences that must be written immediately after the headline. 
+                The subordinate text must answer in the most direct, clear, detailed way possible without fluff.
+                In sentence 1, you must always reply to the implicit question asked in the section.
+                In the following sentences, you give more details.
+                Don't give me bold or italicized text. 
+                Reply only with the subordinate text.
+                BRIEF:
+                {brief}
+                /no_think
+            ''').strip()
+                # Start with the following words: {herb_name_common} 
+            print(prompt)
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            json_article[key] = reply
+            io.json_write(json_article_filepath, json_article)
+            print(json_article_filepath)
+    ### html
+    paragraph = json_article[key]
+    paragraph_formatted = paragraph_format_1N1(paragraph)
+    html = f'''
+        <section class="article-section">
+            <h2>{section}</h2>
+            <p>
+            {paragraph_formatted}
+            </p>
+        </section>
+        <ol>
+          <li>Harvesting raw plant material</li>
+          <li>Drying and preservation</li>
+          <li>Extraction or grinding</li>
+          <li>Formulation into products</li>
+          <li>Packaging and storage</li>
+        </ol>
+    '''
+    return html
+
+def herbal_medicine__research__gen(json_article_filepath, regen=False, dispel=False):
+    ### data glo
+    ### data loc
+    section = f'Scientific Research and Evidence'
+    brief = f'''
+        Include the following subtopics when applicable:
+Types of research in herbal medicine (in vitro, in vivo, clinical)
+Challenges in studying herbal medicine
+Evidence hierarchy in herbal research
+Clinical trial design for herbal treatments
+Comparing traditional knowledge with scientific findings
+Limitations of current evidence
+Emerging research trends
+    '''
+    key = 'research'
+    ### llm
+    json_article = io.json_read(json_article_filepath, create=True)
+    if key not in json_article: json_article[key] = ''
+    if regen: json_article[key] = ''
+    if dispel: 
+        json_article[key] = ''
+        io.json_write(json_article_filepath, json_article)
+    if not dispel:
+        if json_article[key] == '':
+            import textwrap
+            prompt = textwrap.dedent(f'''
+                I'm writing an article about the core entity "herbal medicine", which is for a website where the source context is "herbal medicine". 
+                I want you to write the subordinate text for the following section: "{section}". 
+                The subordinate text is the first 5 sentences that must be written immediately after the headline. 
+                The subordinate text must answer in the most direct, clear, detailed way possible without fluff.
+                In sentence 1, you must always reply to the implicit question asked in the section.
+                In the following sentences, you give more details.
+                Don't give me bold or italicized text. 
+                Reply only with the subordinate text.
+                BRIEF:
+                {brief}
+                /no_think
+            ''').strip()
+                # Start with the following words: {herb_name_common} 
+            print(prompt)
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            json_article[key] = reply
+            io.json_write(json_article_filepath, json_article)
+            print(json_article_filepath)
+    ### html
+    paragraph = json_article[key]
+    paragraph_formatted = paragraph_format_1N1(paragraph)
+    html = f'''
+        <section class="article-section">
+            <h2>{section}</h2>
+            <p>
+            {paragraph_formatted}
+            </p>
+        </section>
+        <table>
+          <tr>
+            <th>Study Type</th>
+            <th>Purpose</th>
+          </tr>
+          <tr>
+            <td>In vitro</td>
+            <td>Cell-level effects</td>
+          </tr>
+          <tr>
+            <td>Animal studies</td>
+            <td>Biological response</td>
+          </tr>
+          <tr>
+            <td>Clinical trials</td>
+            <td>Human effectiveness</td>
+          </tr>
+        </table>
+    '''
+    return html
+
+def herbal_medicine__regulation__gen(json_article_filepath, regen=False, dispel=False):
+    ### data glo
+    ### data loc
+    section = f'Regulation and Legal Status'
+    brief = f'''
+        Include the following subtopics when applicable:
+Legal classification of herbal products (medicine vs supplement)
+Regulatory differences across regions
+Approval processes for herbal products
+Labeling and marketing regulations
+Restrictions on health claims
+Role of pharmacopeias
+Import/export regulations
+    '''
+    key = 'regulation'
+    ### llm
+    json_article = io.json_read(json_article_filepath, create=True)
+    if key not in json_article: json_article[key] = ''
+    if regen: json_article[key] = ''
+    if dispel: 
+        json_article[key] = ''
+        io.json_write(json_article_filepath, json_article)
+    if not dispel:
+        if json_article[key] == '':
+            import textwrap
+            prompt = textwrap.dedent(f'''
+                I'm writing an article about the core entity "herbal medicine", which is for a website where the source context is "herbal medicine". 
+                I want you to write the subordinate text for the following section: "{section}". 
+                The subordinate text is the first 5 sentences that must be written immediately after the headline. 
+                The subordinate text must answer in the most direct, clear, detailed way possible without fluff.
+                In sentence 1, you must always reply to the implicit question asked in the section.
+                In the following sentences, you give more details.
+                Don't give me bold or italicized text. 
+                Reply only with the subordinate text.
+                BRIEF:
+                {brief}
+                /no_think
+            ''').strip()
+                # Start with the following words: {herb_name_common} 
+            print(prompt)
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            json_article[key] = reply
+            io.json_write(json_article_filepath, json_article)
+            print(json_article_filepath)
+    ### html
+    paragraph = json_article[key]
+    paragraph_formatted = paragraph_format_1N1(paragraph)
+    html = f'''
+        <section class="article-section">
+            <h2>{section}</h2>
+            <p>
+            {paragraph_formatted}
+            </p>
+        </section>
+        <table>
+          <tr>
+            <th>Region</th>
+            <th>Regulation Type</th>
+          </tr>
+          <tr>
+            <td>USA</td>
+            <td>Dietary supplements</td>
+          </tr>
+          <tr>
+            <td>EU</td>
+            <td>Traditional herbal registration</td>
+          </tr>
+          <tr>
+            <td>China</td>
+            <td>Integrated medical system</td>
+          </tr>
+        </table>
+    '''
+    return html
+
+def herbal_medicine__sustainability__gen(json_article_filepath, regen=False, dispel=False):
+    ### data glo
+    ### data loc
+    section = f'Sustainability and Ethical Harvesting'
+    brief = f'''
+        Include the following subtopics when applicable:
+Impact of herbal medicine on biodiversity
+Overharvesting risks
+Endangered medicinal plant species
+Sustainable harvesting practices
+Cultivation as conservation strategy
+Ethical wild harvesting guidelines
+Fair trade and community impact
+    '''
+    key = 'sustainability'
+    ### llm
+    json_article = io.json_read(json_article_filepath, create=True)
+    if key not in json_article: json_article[key] = ''
+    if regen: json_article[key] = ''
+    if dispel: 
+        json_article[key] = ''
+        io.json_write(json_article_filepath, json_article)
+    if not dispel:
+        if json_article[key] == '':
+            import textwrap
+            prompt = textwrap.dedent(f'''
+                I'm writing an article about the core entity "herbal medicine", which is for a website where the source context is "herbal medicine". 
+                I want you to write the subordinate text for the following section: "{section}". 
+                The subordinate text is the first 5 sentences that must be written immediately after the headline. 
+                The subordinate text must answer in the most direct, clear, detailed way possible without fluff.
+                In sentence 1, you must always reply to the implicit question asked in the section.
+                In the following sentences, you give more details.
+                Don't give me bold or italicized text. 
+                Reply only with the subordinate text.
+                BRIEF:
+                {brief}
+                /no_think
+            ''').strip()
+                # Start with the following words: {herb_name_common} 
+            print(prompt)
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            json_article[key] = reply
+            io.json_write(json_article_filepath, json_article)
+            print(json_article_filepath)
+    ### html
+    paragraph = json_article[key]
+    paragraph_formatted = paragraph_format_1N1(paragraph)
+    html = f'''
+        <section class="article-section">
+            <h2>{section}</h2>
+            <p>
+            {paragraph_formatted}
+            </p>
+        </section>
+        <ul>
+          <li>Sustainable harvesting practices</li>
+          <li>Protection of endangered species</li>
+          <li>Ethical sourcing</li>
+          <li>Biodiversity conservation</li>
+        </ul>
+    '''
+    return html
+
+def herbal_medicine__modern__gen(json_article_filepath, regen=False, dispel=False):
+    ### data glo
+    ### data loc
+    section = f'Modern Role of Herbal Medicine'
+    brief = f'''
+        Include the following subtopics when applicable:
+Integration with conventional medicine
+Role in preventive healthcare
+Consumer trends and demand
+Use in wellness and lifestyle industries
+Commercial herbal product markets
+Digital health and herbal information access
+Globalization of herbal practices
+    '''
+    key = 'modern'
+    ### llm
+    json_article = io.json_read(json_article_filepath, create=True)
+    if key not in json_article: json_article[key] = ''
+    if regen: json_article[key] = ''
+    if dispel: 
+        json_article[key] = ''
+        io.json_write(json_article_filepath, json_article)
+    if not dispel:
+        if json_article[key] == '':
+            import textwrap
+            prompt = textwrap.dedent(f'''
+                I'm writing an article about the core entity "herbal medicine", which is for a website where the source context is "herbal medicine". 
+                I want you to write the subordinate text for the following section: "{section}". 
+                The subordinate text is the first 5 sentences that must be written immediately after the headline. 
+                The subordinate text must answer in the most direct, clear, detailed way possible without fluff.
+                In sentence 1, you must always reply to the implicit question asked in the section.
+                In the following sentences, you give more details.
+                Don't give me bold or italicized text. 
+                Reply only with the subordinate text.
+                BRIEF:
+                {brief}
+                /no_think
+            ''').strip()
+                # Start with the following words: {herb_name_common} 
+            print(prompt)
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            json_article[key] = reply
+            io.json_write(json_article_filepath, json_article)
+            print(json_article_filepath)
+    ### html
+    paragraph = json_article[key]
+    paragraph_formatted = paragraph_format_1N1(paragraph)
+    html = f'''
+        <section class="article-section">
+            <h2>{section}</h2>
+            <p>
+            {paragraph_formatted}
+            </p>
+        </section>
+        <ul>
+          <li>Integration with conventional healthcare</li>
+          <li>Use in preventive wellness</li>
+          <li>Growing global demand</li>
+          <li>Expansion in supplement markets</li>
+        </ul>
+    '''
+    return html
+
+def herbal_medicine__education__gen(json_article_filepath, regen=False, dispel=False):
+    ### data glo
+    ### data loc
+    section = f'Education and Training in Herbal Medicine'
+    brief = f'''
+        Include the following subtopics when applicable:
+Types of herbal medicine education programs
+Formal vs informal training pathways
+Core subjects in herbal education (materia medica, pharmacology)
+Clinical training and apprenticeship models
+Certification and professional recognition
+Continuing education for practitioners
+Public education and self-care knowledge
+    '''
+    key = 'education'
+    ### llm
+    json_article = io.json_read(json_article_filepath, create=True)
+    if key not in json_article: json_article[key] = ''
+    if regen: json_article[key] = ''
+    if dispel: 
+        json_article[key] = ''
+        io.json_write(json_article_filepath, json_article)
+    if not dispel:
+        if json_article[key] == '':
+            import textwrap
+            prompt = textwrap.dedent(f'''
+                I'm writing an article about the core entity "herbal medicine", which is for a website where the source context is "herbal medicine". 
+                I want you to write the subordinate text for the following section: "{section}". 
+                The subordinate text is the first 5 sentences that must be written immediately after the headline. 
+                The subordinate text must answer in the most direct, clear, detailed way possible without fluff.
+                In sentence 1, you must always reply to the implicit question asked in the section.
+                In the following sentences, you give more details.
+                Don't give me bold or italicized text. 
+                Reply only with the subordinate text.
+                BRIEF:
+                {brief}
+                /no_think
+            ''').strip()
+                # Start with the following words: {herb_name_common} 
+            print(prompt)
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            json_article[key] = reply
+            io.json_write(json_article_filepath, json_article)
+            print(json_article_filepath)
+    ### html
+    paragraph = json_article[key]
+    paragraph_formatted = paragraph_format_1N1(paragraph)
+    html = f'''
+        <section class="article-section">
+            <h2>{section}</h2>
+            <p>
+            {paragraph_formatted}
+            </p>
+        </section>
+        <table>
+          <tr>
+            <th>Pathway</th>
+            <th>Description</th>
+          </tr>
+          <tr>
+            <td>Formal education</td>
+            <td>University or accredited programs</td>
+          </tr>
+          <tr>
+            <td>Apprenticeship</td>
+            <td>Learning under experienced herbalists</td>
+          </tr>
+          <tr>
+            <td>Self-study</td>
+            <td>Books and independent learning</td>
+          </tr>
+        </table>
+    '''
+    return html
+
 def herbal_medicine__gen():
     url_slug = f'herbal-medicine'
     meta_title = f'Herbal Medicine'
@@ -57,246 +1497,86 @@ def herbal_medicine__gen():
     json_article['url'] = url_slug
     io.json_write(json_article_filepath, json_article)
 
-    definition_subordinate_html = subordinate__gen(json_article_filepath, 
-        key='definition', 
-        entity='herbal medicine', attribute='definition', context='herbal medicine', 
-        regen=False, dispel=False
+    regen_function = False
+    dispel_function = False
+
+    intro_html = herbal_medicine__intro__gen(
+        json_article_filepath, regen=regen_function, dispel=dispel_function
     )
-    principles_subordinate_html = subordinate__gen(json_article_filepath, 
-        key='principles', 
-        entity='herbal medicine', attribute='principles', context='herbal medicine', 
-        regen=False, dispel=False
+    definition_html = herbal_medicine__definition__gen(
+        json_article_filepath, regen=regen_function, dispel=dispel_function
     )
-    history_subordinate_html = subordinate__gen(json_article_filepath, 
-        key='history', 
-        entity='herbal medicine', attribute='history', context='herbal medicine', 
-        regen=False, dispel=False
+    principles_html = herbal_medicine__principles__gen(
+        json_article_filepath, regen=regen_function, dispel=dispel_function
     )
-    traditions_subordinate_html = subordinate__gen(json_article_filepath, 
-        key='traditions', 
-        entity='herbal medicine', attribute='traditions', context='herbal medicine', 
-        regen=False, dispel=False
+    history_html = herbal_medicine__history__gen(
+        json_article_filepath, regen=regen_function, dispel=dispel_function
     )
-    herbs_subordinate_html = subordinate__gen(json_article_filepath, 
-        key='herbs', 
-        entity='herbal medicine', attribute='medicinal plants', context='herbal medicine', 
-        regen=False, dispel=False
+    types_html = herbal_medicine__types__gen(
+        json_article_filepath, regen=regen_function, dispel=dispel_function
     )
-    phytochemicals_subordinate_html = subordinate__gen(json_article_filepath, 
-        key='phytochemicals', 
-        entity='herbal medicine', attribute='phytochemicals', context='herbal medicine', 
-        regen=False, dispel=False
+    plants_html = herbal_medicine__plants__gen(
+        json_article_filepath, regen=regen_function, dispel=dispel_function
     )
-    pharmacological_effects_subordinate_html = subordinate__gen(json_article_filepath, 
-        key='pharmacological_effects', 
-        attribute='pharmacological effects', entity='herbal medicine', context='herbal medicine', 
-        regen=False, dispel=False
+    phytochemicals_html = herbal_medicine__phytochemicals__gen(
+        json_article_filepath, regen=regen_function, dispel=dispel_function
     )
-    uses_subordinate_html = subordinate__gen(json_article_filepath, 
-        key='uses', 
-        entity='herbal medicine', attribute='uses', context='herbal medicine', 
-        regen=False, dispel=False
+    mechanisms_html = herbal_medicine__mechanisms__gen(
+        json_article_filepath, regen=regen_function, dispel=dispel_function
     )
-    preparations_subordinate_html = subordinate__gen(json_article_filepath, 
-        key='preparations', 
-        entity='herbal medicine', attribute='preparations', context='herbal medicine', 
-        regen=False, dispel=False
+    uses_html = herbal_medicine__uses__gen(
+        json_article_filepath, regen=regen_function, dispel=dispel_function
     )
-    administration_subordinate_html = subordinate__gen(json_article_filepath, 
-        key='administration', 
-        entity='herbal medicine', attribute='administration', context='herbal medicine', 
-        regen=False, dispel=False
+    preparations_html = herbal_medicine__preparations__gen(
+        json_article_filepath, regen=regen_function, dispel=dispel_function
     )
-    dosage_subordinate_html = subordinate__gen(json_article_filepath, 
-        key='dosage', 
-        entity='herbal medicine', attribute='dosage', context='herbal medicine', 
-        regen=False, dispel=False
+    administration_html = herbal_medicine__administration__gen(
+        json_article_filepath, regen=regen_function, dispel=dispel_function
     )
-    safety_subordinate_html = subordinate__gen(json_article_filepath, 
-        key='safety', 
-        entity='herbal medicine', attribute='safety', context='herbal medicine', 
-        regen=False, dispel=False
+    safety_html = herbal_medicine__safety__gen(
+        json_article_filepath, regen=regen_function, dispel=dispel_function
     )
-    quality_subordinate_html = subordinate__gen(json_article_filepath, 
-        key='quality', 
-        entity='herbal medicine', attribute='quality', context='herbal medicine', 
-        regen=False, dispel=False
+    quality_html = herbal_medicine__quality__gen(
+        json_article_filepath, regen=regen_function, dispel=dispel_function
     )
-    cultivation_subordinate_html = subordinate__gen(json_article_filepath, 
-        key='cultivation', 
-        entity='herbal medicine', attribute='cultivation', context='herbal medicine', 
-        regen=False, dispel=False
+    cultivation_html = herbal_medicine__cultivation__gen(
+        json_article_filepath, regen=regen_function, dispel=dispel_function
     )
-    processing_subordinate_html = subordinate__gen(json_article_filepath, 
-        key='processing', 
-        entity='herbal medicine', attribute='processing', context='herbal medicine', 
-        regen=False, dispel=False
+    processing_html = herbal_medicine__processing__gen(
+        json_article_filepath, regen=regen_function, dispel=dispel_function
     )
-    research_subordinate_html = subordinate__gen(json_article_filepath, 
-        key='research', 
-        entity='herbal medicine', attribute='research', context='herbal medicine', 
-        regen=False, dispel=False
+    research_html = herbal_medicine__research__gen(
+        json_article_filepath, regen=regen_function, dispel=dispel_function
     )
-    regulation_subordinate_html = subordinate__gen(json_article_filepath, 
-        key='regulation', 
-        entity='herbal medicine', attribute='regulation', context='herbal medicine', 
-        regen=False, dispel=False
+    regulation_html = herbal_medicine__regulation__gen(
+        json_article_filepath, regen=regen_function, dispel=dispel_function
     )
-    sustainability_subordinate_html = subordinate__gen(json_article_filepath, 
-        key='sustainability', 
-        entity='herbal medicine', attribute='sustainability', context='herbal medicine', 
-        regen=False, dispel=False
+    sustainability_html = herbal_medicine__sustainability__gen(
+        json_article_filepath, regen=regen_function, dispel=dispel_function
     )
-    education_subordinate_html = subordinate__gen(json_article_filepath, 
-        key='education', 
-        entity='herbal medicine', attribute='education', context='herbal medicine', 
-        regen=False, dispel=False
+    modern_html = herbal_medicine__modern__gen(
+        json_article_filepath, regen=regen_function, dispel=dispel_function
+    )
+    education_html = herbal_medicine__education__gen(
+        json_article_filepath, regen=regen_function, dispel=dispel_function
     )
 
     ########################################
     # html
     ########################################
-    intro_html = f'''
-        <h1>
-            Herbal Medicine
-        </h1>
-        <p>
-            Herbal medicine is a form of healthcare that uses plant-derived substances such as leaves, roots, flowers, and seeds to prevent, treat, or manage health conditions. It is practiced in medical traditions such as Traditional Chinese Medicine, Ayurveda, and Western herbalism, where medicinal plants are prepared as teas, tinctures, extracts, and topical remedies to influence physiological processes through bioactive compounds.
-        </p>
-    '''
-    definition_html = f'''
-        <section class="article-section">
-            <h2>Definition</h2>
-            <p>{definition_subordinate_html}</p>
-        </section>
-    '''
-    principles_html = f'''
-        <section class="article-section">
-            <h2>Principles</h2>
-            <p>{principles_subordinate_html}</p>
-        </section>
-    '''
-    history_html = f'''
-        <section class="article-section">
-            <h2>Histrory</h2>
-            <p>{history_subordinate_html}</p>
-        </section>
-    '''
-    traditions_html = f'''
-        <section class="article-section">
-            <h2>Traditions</h2>
-            <p>{traditions_subordinate_html}</p>
-        </section>
-    '''
-    herbs_html = f'''
-        <section class="article-section">
-            <h2>Medicinal Plants</h2>
-            <p>{herbs_subordinate_html}</p>
-            <p><a href="/herbs.html">Medicinal Plants</a></p>
-        </section>
-    '''
-    phytochemicals_html = f'''
-        <section class="article-section">
-            <h2>Phytochemicals</h2>
-            <p>{phytochemicals_subordinate_html}</p>
-            <p><a href="/phytochemicals.html">Phytochemicals</a></p>
-        </section>
-    '''
-    pharmacological_effects_html = f'''
-        <section class="article-section">
-            <h2>Pharmacological Effects</h2>
-            <p>{pharmacological_effects_subordinate_html}</p>
-            <p><a href="/actions.html">Pharmacological Actions</a></p>
-        </section>
-    '''
-    uses_html = f'''
-        <section class="article-section">
-            <h2>Uses</h2>
-            <p>{uses_subordinate_html}</p>
-            <p><a href="/uses.html">Uses</a></p>
-        </section>
-    '''
-    preparations_html = f'''
-        <section class="article-section">
-            <h2>Preparations</h2>
-            <p>{preparations_subordinate_html}</p>
-            <p><a href="/preparations.html">Preparations</a></p>
-        </section>
-    '''
-    administration_html = f'''
-        <section class="article-section">
-            <h2>Administration</h2>
-            <p>{administration_subordinate_html}</p>
-        </section>
-    '''
-    dosage_html = f'''
-        <section class="article-section">
-            <h2>Dosage</h2>
-            <p>{dosage_subordinate_html}</p>
-        </section>
-    '''
-    safety_html = f'''
-        <section class="article-section">
-            <h2>Safety</h2>
-            <p>{safety_subordinate_html}</p>
-        </section>
-    '''
-    quality_html = f'''
-        <section class="article-section">
-            <h2>Quality</h2>
-            <p>{quality_subordinate_html}</p>
-        </section>
-    '''
-    cultivation_html = f'''
-        <section class="article-section">
-            <h2>Cultivation</h2>
-            <p>{cultivation_subordinate_html}</p>
-        </section>
-    '''
-    processing_html = f'''
-        <section class="article-section">
-            <h2>Processing</h2>
-            <p>{processing_subordinate_html}</p>
-        </section>
-    '''
-    research_html = f'''
-        <section class="article-section">
-            <h2>Research</h2>
-            <p>{research_subordinate_html}</p>
-        </section>
-    '''
-    regulation_html = f'''
-        <section class="article-section">
-            <h2>Regulation</h2>
-            <p>{regulation_subordinate_html}</p>
-        </section>
-    '''
-    sustainability_html = f'''
-        <section class="article-section">
-            <h2>Sustainability</h2>
-            <p>{sustainability_subordinate_html}</p>
-        </section>
-    '''
-    education_html = f'''
-        <section class="article-section">
-            <h2>Education</h2>
-            <p>{education_subordinate_html}</p>
-        </section>
-    '''
-
     article_html = f'''
         {intro_html}
+        [toc]
         {definition_html}
         {principles_html}
         {history_html}
-        {traditions_html}
-        {herbs_html}
+        {types_html}
+        {plants_html}
         {phytochemicals_html}
-        {pharmacological_effects_html}
+        {mechanisms_html}
         {uses_html}
         {preparations_html}
         {administration_html}
-        {dosage_html}
         {safety_html}
         {quality_html}
         {cultivation_html}
@@ -304,8 +1584,11 @@ def herbal_medicine__gen():
         {research_html}
         {regulation_html}
         {sustainability_html}
+        {modern_html}
         {education_html}
     '''
+
+    article_html = sections.toc(article_html)
 
     ###
     head_html = components.html_head(
@@ -5509,14 +6792,12 @@ def herbs__herb__gen(herb):
         regen=regen_function, dispel=dispel_function
     )
     ###
-    classification_html = herbs__herb_taxonomy__gen(herb, json_article_filepath, regen=regen_function, dispel=dispel_function)
-    names_subordinate_html = subordinate__gen(json_article_filepath, 
-        key='names', 
-        attribute='Common Names and Synonyms', entity=f'{herb_name_all}', context='herbal medicine', 
-        regen=regen_function, dispel=dispel_function
+    classification_html = herbs__herb_taxonomy__gen(
+        herb, json_article_filepath, regen=regen_function, dispel=dispel_function
     )
-    morphology_html = herbs__herb_morphology__gen(herb, json_article_filepath, regen=regen_function, dispel=dispel_function)
-
+    morphology_html = herbs__herb_morphology__gen(
+        herb, json_article_filepath, regen=regen_function, dispel=dispel_function
+    )
     distribution_html = herbs__herb_distribution__gen(
         herb, json_article_filepath, regen=regen_function, dispel=dispel_function
     )
@@ -5566,10 +6847,10 @@ def herbs__herb__gen(herb):
         herb, json_article_filepath, regen=regen_function, dispel=dispel_function
     )
     regulatory_html = herbs__herb_regulatory__gen(
-        herb, json_article_filepath, regen=True, dispel=dispel_function
+        herb, json_article_filepath, regen=regen_function, dispel=dispel_function
     )
     sustainability_html = herbs__herb_sustainability__gen(
-        herb, json_article_filepath, regen=True, dispel=dispel_function
+        herb, json_article_filepath, regen=regen_function, dispel=dispel_function
     )
 
     ########################################
@@ -5729,12 +7010,12 @@ def herbs__herb__gen(herb):
 
 def main():
     herbal_medicine__gen()
+    quit()
     ###
     herbs__gen()
     for item in data.herbs_get():
         herbs__herb__gen(item)
         # break
-    quit()
 
     ###
     phytochemicals__gen()

@@ -227,6 +227,9 @@ if 0:
 # HERBAL MEDICINE
 ########################################
 if 1:
+    if 0:
+        from ai import herbal_medicine_images
+        herbal_medicine_images.main()
     if 1:
         from hub import herbal_medicine_hub
         herbal_medicine_hub.main()
