@@ -10,15 +10,15 @@ def gen():
     # html_main = f'<h1>Discover the Healing Power of Herbal Medicine<br><span>Backed by Tradition & Science</span></h1>'
     # html_main = f'<h1>Herbalism for Beginners: Herbal Remedies and Natural Healing</h1>'
     # html_main = f'<h1>Herbalism and Herbal Remedies for Natural Healing</h1>'
-    html_atf_h1 = f'<h1 style="color: {g.COLOR_CARBON_POWDER }">Herbalism and Herbal Remedies for Natural Healing</h1>'
+    html_atf_h1 = f'<h1 style="color: {g.COLOR_CARBON_POWDER }">Herbal Medicine for Natural Healing</h1>'
     html_atf_tagline = f'<p style="color: {g.COLOR_CARBON_POWDER }"><em>Make herbal remedies to heal naturally.</em></p>'
     html_atf_desc = f'''
-        <p style="color: {g.COLOR_CARBON_POWDER }">
+        <p style="color: {g.COLOR_CARBON_POWDER}">
             <strong>Herbalism</strong> is the practice of using <strong>medicinal herbs</strong> to support health and well-being through simple preparations such as teas, tinctures, salves, and infused oils. This site offers <strong>beginner-friendly, educational guidance</strong> on medicinal herbs, herbal remedies, and their traditional use for common concerns, with an emphasis on <strong>safe and responsible use</strong>.
         </p>
     '''
 
-    html_hero = f'''
+    html_hero_old = f'''
         <section class="home-hero" style="padding-top: 9.6rem; padding-bottom: 9.6rem;">
             <div class="container-xl">
                 <div class="m-flex" style="gap: 4.8rem;">
@@ -42,6 +42,99 @@ def gen():
             </div>
         </section>
     '''
+
+    html_hero = f'''
+        <section style="width: 100%;">
+          <div style="display: grid; grid-template-columns: minmax(2rem, 1fr) minmax(0, 640px) minmax(0, 640px) minmax(2rem, 1fr); align-items: center;
+          ">
+            <div style="grid-column: 2;">
+              <h1 style="margin-bottom: 1.6rem;">
+                Herbal Medicine for Natural Healing
+              </h1>
+
+              <p>
+                <strong>Herbalism</strong> is the practice of using 
+                <strong>medicinal herbs</strong> to support health and well-being 
+                through simple preparations such as teas, tinctures, salves, and 
+                infused oils.
+              </p>
+
+              <div style="margin-top: 2.4rem;">
+                <a href="/herbal-medicine.html"
+                   style="text-transform: uppercase; letter-spacing: 0.5px;">
+                  Learn Herbal Medicine
+                </a>
+              </div>
+            </div>
+
+            <!-- IMAGE -->
+            <div style="grid-column: 3 / 5; height: 80vh;">
+              <img 
+                src="/images/home/sage.jpg" 
+                alt="Herbal setup"
+                style="width: 100%; height: 100%; object-fit: cover;"
+              >
+            </div>
+
+          </div>
+        </section>
+    '''
+        # <section style="background-color: {g.COLOR_WHITE_WHISPER}">
+    text_padding_right_rem = 9.6
+    text_padding_right_px = text_padding_right_rem * 10
+    text_w = 1280 // 2 + text_padding_right_px
+    html_hero = f'''
+        <section>
+            <div style="display: flex; align-items: center;">
+                <div style="flex: 1;">
+                    <div style="max-width: {text_w}px; margin-left: auto; padding-right: {text_padding_right_rem}rem;">
+                        <h1 style="color: {g.COLOR_CARBON_POWDER}; margin-bottom: 1.6rem;">
+                            Herbal Medicine for Natural Healing
+                        </h1>
+                        <p style="color: {g.COLOR_CARBON_POWDER};">
+                            <strong>Herbalism</strong> is the practice of using <strong>medicinal herbs</strong> to support health and well-being through simple preparations such as teas, tinctures, salves, and infused oils. This site offers <strong>beginner-friendly, educational guidance</strong> on medicinal herbs, herbal remedies, and their traditional use for common concerns, with an emphasis on <strong>safe and responsible use</strong>.
+                        </p>
+                        <div style="margin-top: 2.4rem;">
+                            <a class="button-default" style="text-transform: uppercase; letter-spacing: 0.5px;" href="/herbal-medicine.html">Learn Herbal Medicine</a>
+                        </div>
+                    </div>
+                </div>
+                <div style="flex: 1;">
+                    <img src="/images/home/sage.jpg" alt="Beginner-friendly herbalism setup with medicinal herbs, tinctures, and a mortar and pestle" style="height: 80vh; object-fit: cover;">
+                </div>
+            </div>
+        </section>
+    '''
+
+    padding_x = 4.8
+    text_padding_right_rem = padding_x
+    text_padding_left_rem = padding_x
+    text_padding_right_px = text_padding_right_rem * 10
+    text_w = 1280 // 2 + text_padding_right_px
+    text_w = 768
+    html_hero = f'''
+        <section style="margin-bottom: 9.6rem;">
+            <div class="m-flex" style="align-items: center;">
+                <div style="flex: 1; padding-top: 9.6rem; padding-bottom: 9.6rem;">
+                    <div style="max-width: {text_w}px; margin-left: auto; margin-right: auto; padding-right: {text_padding_right_rem}rem; padding-left: {text_padding_left_rem}rem;">
+                        <h1 style="color: {g.COLOR_CARBON_POWDER}; margin-bottom: 1.6rem;">
+                            Learn Herbal Medicine: How to Study Medicinal Plants, Remedies, and Safe Practice
+                        </h1>
+                        <p>
+Learning herbal medicine means acquiring structured knowledge and practical skills to identify medicinal plants, prepare remedies, understand safety, and apply plant-based treatments for self-care or professional use, whether as a beginner, self-learner, or practitioner moving from informal exploration to systematic, real-world application.
+                        </p>
+                        <div style="margin-top: 3.2rem;">
+                            <a class="button-default" style="text-transform: uppercase; letter-spacing: 0.5px;" href="/herbal-medicine.html">Learn Herbal Medicine</a>
+                        </div>
+                    </div>
+                </div>
+                <div style="flex: 1;">
+                    <img src="/images/home/sage.jpg" alt="Beginner-friendly herbalism setup with medicinal herbs, tinctures, and a mortar and pestle" style="height: 80vh; object-fit: cover;">
+                </div>
+            </div>
+        </section>
+    '''
+
 
     html_section_1 = f'''
         <section style="padding-bottom: 9.6rem;">
