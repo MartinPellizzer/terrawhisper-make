@@ -135,6 +135,58 @@ Learning herbal medicine means acquiring structured knowledge and practical skil
         </section>
     '''
 
+    html_what = f'''
+        <section style="padding-bottom: 9.6rem;">
+            <div class="container-md">
+                <h2>
+What Is Learning Herbal Medicine? Scope, Structure, and Outcomes
+                </h2>
+                <p>
+Learning herbal medicine is the structured study of plant-based remedies, encompassing theoretical knowledge of botany, pharmacology, and therapeutics, combined with practical skills in preparation and application, designed to progress from basic awareness to advanced clinical understanding, equipping learners with the ability to safely identify, use, and evaluate medicinal plants and their formulations.
+                </p>
+            </div>
+        </section>
+    '''
+
+    html_paths = f'''
+        <section style="padding-bottom: 9.6rem;">
+            <div class="container-md">
+                <h2>
+Herbal Medicine Learning Paths: Beginner to Advanced Progression
+                </h2>
+                <p>
+Herbal medicine learning paths progress from beginner to advanced by starting with foundational concepts and simple remedies, moving through intermediate study of plant knowledge and formulation techniques, and culminating in advanced clinical thinking and case-based application, with distinct tracks for self-care or professional practice and options for linear or modular progression to achieve common milestones in herbal education.
+                </p>
+            </div>
+        </section>
+    '''
+
+    html_topics = f'''
+        <section style="padding-bottom: 9.6rem;">
+            <div class="container-md">
+                <h2>
+Topics Covered in Herbal Medicine Education
+                </h2>
+                <p>
+Topics covered in herbal medicine education include the identification and classification of medicinal plants, preparation of herbal remedies, understanding human health conditions and appropriate herbal applications, awareness of safety and risks, study of various herbal medicine systems, and the development of both practical skills and theoretical knowledge.
+                </p>
+            </div>
+        </section>
+    '''
+
+    html_foundations = f'''
+        <section style="padding-bottom: 9.6rem;">
+            <div class="container-md">
+                <h2>
+Foundations of Herbal Medicine Knowledge
+                </h2>
+                <p>
+Foundations of herbal medicine knowledge encompass understanding basic botanical concepts, plant properties and actions, and the principles by which herbs influence human physiology, including terminology, plant energetics where applicable, and the core mechanisms behind herbal effectiveness.
+                </p>
+            </div>
+        </section>
+    '''
+
 
     html_section_1 = f'''
         <section style="padding-bottom: 9.6rem;">
@@ -268,7 +320,6 @@ These methods require minimal equipment and allow new herbalists to learn safely
 
 
 
-
     intro_html = f'''
         <section style="padding-top: 9.6rem; padding-bottom: 9.6rem;">
             <div class="container-xl">
@@ -369,13 +420,17 @@ These methods require minimal equipment and allow new herbalists to learn safely
         <body class="home">
             {sections.header_default()}
             {html_hero}
-            {html_section_1}
-            {html_section_2}
-            {html_section_3}
+            {html_what}
+            {html_paths}
+            {html_topics}
+            {html_foundations}
             {sections.footer()}
         </body>
         </html>
     '''
+            # {html_section_1}
+            # {html_section_2}
+            # {html_section_3}
     html_filepath = f'''{g.website_folderpath}/index.html'''
     with open(html_filepath, 'w') as f: f.write(html)
 
