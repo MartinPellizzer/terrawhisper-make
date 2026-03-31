@@ -1,11 +1,376 @@
 from lib import g
 from lib import io
+from lib import llm
 from lib import data
 from lib import polish
 from lib import components
 from lib import sections
 
+def paragraph_format_1N1(text):
+    sentences = text.strip().split('. ')
+    print(sentences)
+    print(len(sentences))
+    paragraphs = []
+    paragraphs.append(sentences[:1])
+    paragraphs.append(sentences[1:-1])
+    paragraphs.append(sentences[-1:])
+    print(paragraphs)
+    print(len(paragraphs))
+    paragraphs_html = ''
+    for paragraph in paragraphs:
+        chunk = '. '.join(paragraph)
+        paragraphs_html += f'<p>{chunk}.</p>'
+        paragraphs_html = paragraphs_html.replace('..', '.')
+    print(paragraphs_html)
+    return paragraphs_html
+
+def sentence__gen(json_article_filepath, key, title, brief, regen=False, dispel=False):
+    ### llm
+    json_article = io.json_read(json_article_filepath, create=True)
+    if key not in json_article: json_article[key] = ''
+    if regen: json_article[key] = ''
+    if dispel: 
+        json_article[key] = ''
+        io.json_write(json_article_filepath, json_article)
+    if not dispel:
+        if json_article[key] == '':
+            import textwrap
+            prompt = textwrap.dedent(f'''
+                I'm writing an article about the core entity "herbal medicine", which is for a website where the source context is "herbal medicine". 
+                I want you to write the subordinate text for a section with the following title: "{title}". 
+                The subordinate text is the first 1 sentence that must be written immediately after the headline. 
+                The subordinate text must answer in the most direct, clear, detailed way possible without fluff.
+                In this you must always reply to the implicit question asked in the section.
+                In the following sentences, you give more details.
+                Don't give me bold or italicized text. 
+                Reply only with the subordinate text.
+                Reply with only one sentence.
+                BRIEF:
+                {brief}
+                /no_think
+            ''').strip()
+                # Start with the following words: {herb_name_common} 
+            print(prompt)
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            json_article[key] = reply
+            io.json_write(json_article_filepath, json_article)
+            print(json_article_filepath)
+    ### html
+    paragraph = json_article[key]
+    # paragraph_formatted = paragraph_format_1N1(paragraph)
+    paragraph_formatted = paragraph
+    html = f'''
+        <section style="padding-bottom: 9.6rem;">
+            <div class="container-md">
+            <h2>{title}</h2>
+            <p>
+            {paragraph_formatted}
+            </p>
+            </div>
+        </section>
+    '''
+    return html
+
 def gen():
+    url_slug = f'herbal-medicine'
+    meta_title = f'Learn Herbal Medicine'
+    meta_description = ''
+    canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com">'''
+    json_article_filepath = f'''{g.DATABASE_FOLDERPATH}/json/{url_slug}.json'''
+    json_article = io.json_read(json_article_filepath, create=True)
+
+    regen_function = False
+    dispel_function = False
+
+    html_placeholders = ''
+    html_placeholders += sentence__gen(
+        json_article_filepath, 
+        key=f'''
+            remedies
+        ''',
+        title=f'''
+            Herbal Remedies: Types and Use Cases
+        ''', 
+        brief=f'''
+Definition of herbal remedies
+Categories of remedies (internal vs external)
+Acute vs chronic use cases
+Preventive vs therapeutic applications
+Single-herb vs multi-herb formulations
+Common forms of remedies used in practice
+        ''', 
+        regen=regen_function, dispel=dispel_function
+    )
+
+    html_placeholders += sentence__gen(
+        json_article_filepath, 
+        key=f'''
+definition
+        ''',
+        title=f'''
+What Is Learning Herbal Medicine? Scope, Structure, and Outcomes
+        ''', 
+        brief=f'''
+Definition of herbal medicine as a field of study
+What distinguishes learning from practicing herbal medicine
+Domains included in herbal education (botany, pharmacology, therapeutics)
+Types of knowledge: theoretical vs practical skills
+Levels of knowledge depth (basic awareness to clinical understanding)
+Expected competencies after learning herbal medicine
+        ''', 
+        regen=regen_function, dispel=dispel_function
+    )
+
+    html_placeholders += sentence__gen(
+        json_article_filepath, 
+        key=f'''
+paths
+        ''',
+        title=f'''
+Herbal Medicine Learning Paths: Beginner to Advanced Progression
+        ''', 
+        brief=f'''
+Beginner learning path (basic concepts and simple remedies)
+Intermediate learning path (plant knowledge and formulations)
+Advanced learning path (clinical thinking and case application)
+Self-care vs professional practice learning tracks
+Linear vs modular learning approaches
+Common progression milestones in herbal education
+        ''', 
+        regen=regen_function, dispel=dispel_function
+    )
+
+    html_placeholders += sentence__gen(
+        json_article_filepath, 
+        key=f'''
+topics
+        ''',
+        title=f'''
+Topics Covered in Herbal Medicine Education
+        ''', 
+        brief=f'''
+Plant identification and classification topics
+Herbal remedy preparation topics
+Human health and condition-based learning topics
+Safety and risk awareness topics
+Systems of herbal medicine included in curricula
+Practical skills vs theoretical knowledge areas
+        ''', 
+        regen=regen_function, dispel=dispel_function
+    )
+
+    html_placeholders += sentence__gen(
+        json_article_filepath, 
+        key=f'''
+foundations
+        ''',
+        title=f'''
+Foundations of Herbal Medicine Knowledge
+        ''', 
+        brief=f'''
+Basic botanical concepts for herbalists
+Introduction to plant properties and actions
+Fundamental concepts of how herbs influence the body
+Terminology used in herbal medicine
+Understanding plant energetics (where applicable)
+Core principles behind herbal effectiveness
+        ''', 
+        regen=regen_function, dispel=dispel_function
+    )
+
+    html_placeholders += sentence__gen(
+        json_article_filepath, 
+        key=f'''
+            plants
+        ''',
+        title=f'''
+            Medicinal Plants and Materia Medica Knowledge
+        ''', 
+        brief=f'''
+What is materia medica in herbal medicine
+Structure of plant profiles (properties, uses, preparation)
+How medicinal plants are categorized
+Regional variation in plant usage
+Importance of plant identification accuracy
+Building a personal materia medica knowledge base
+        ''', 
+        regen=regen_function, dispel=dispel_function
+    )
+
+    html_placeholders += sentence__gen(
+        json_article_filepath, 
+        key=f'''
+            safety
+        ''',
+        title=f'''
+            Herbal Medicine Safety: Principles and Risk Awareness
+        ''', 
+        brief=f'''
+Why safety is critical in herbal medicine
+Types of risks associated with herbs
+Understanding contraindications
+Recognizing safe vs unsafe usage contexts
+Importance of correct plant identification for safety
+Role of professional guidance in risk reduction
+        ''', 
+        regen=regen_function, dispel=dispel_function
+    )
+
+    html_placeholders += sentence__gen(
+        json_article_filepath, 
+        key=f'''
+preparation
+        ''',
+        title=f'''
+Herbal Preparation Skills and Techniques
+        ''', 
+        brief=f'''
+Purpose of preparing herbal remedies
+Skill sets required for preparation
+Differences between preparation techniques
+Selecting the right preparation for plant type
+Tools and materials used in herbal preparation
+Beginner vs advanced preparation complexity
+        ''', 
+        regen=regen_function, dispel=dispel_function
+    )
+
+    html_placeholders += sentence__gen(
+        json_article_filepath, 
+        key=f'''
+ways
+        ''',
+        title=f'''
+Ways to Learn Herbal Medicine: Methods and Formats
+        ''', 
+        brief=f'''
+Self-study through books and online resources
+Structured courses and certifications
+Apprenticeship and mentorship models
+Workshops and hands-on training
+Online vs in-person learning formats
+Choosing the right learning method based on goals
+        ''', 
+        regen=regen_function, dispel=dispel_function
+    )
+
+    html_placeholders += sentence__gen(
+        json_article_filepath, 
+        key=f'''
+systems
+        ''',
+        title=f'''
+Herbal Medicine Systems: Comparative Learning Approaches
+        ''', 
+        brief=f'''
+Overview of major herbal medicine systems
+Differences in diagnostic frameworks
+Differences in treatment philosophy
+Variations in herb selection and formulation
+Cultural context of each system
+Benefits of studying multiple systems
+        ''', 
+        regen=regen_function, dispel=dispel_function
+    )
+
+    html_placeholders += sentence__gen(
+        json_article_filepath, 
+        key=f'''
+benefits
+        ''',
+        title=f'''
+Benefits of Learning Herbal Medicine
+        ''', 
+        brief=f'''
+Personal health empowerment
+Preventive health knowledge
+Self-sufficiency in natural remedies
+Understanding of plant-based healing
+Connection to traditional knowledge systems
+Practical everyday applications
+        ''', 
+        regen=regen_function, dispel=dispel_function
+    )
+
+    html_placeholders += sentence__gen(
+        json_article_filepath, 
+        key=f'''
+guides
+        ''',
+        title=f'''
+Core Guides to Start Learning Herbal Medicine
+        ''', 
+        brief=f'''
+Beginner-friendly herbal medicine guides
+Step-by-step remedy-making tutorials
+Introductory plant identification resources
+Safety-focused beginner content
+Structured learning sequences
+Most essential starting topics for new learners
+        ''', 
+        regen=regen_function, dispel=dispel_function
+    )
+
+    html_placeholders += sentence__gen(
+        json_article_filepath, 
+        key=f'''
+herbal_medicine
+        ''',
+        title=f'''
+Herbal Medicine Knowledge Structure (Topical Map Overview)
+        ''', 
+        brief=f'''
+How herbal medicine knowledge is organized
+Relationship between plants, preparations, and applications
+Hierarchy of topics (foundations → applications → specialization)
+Core vs supplementary knowledge areas
+How topics connect within a learning journey
+Navigation paths for exploring the subject
+        ''', 
+        regen=regen_function, dispel=dispel_function
+    )
+
+    html_placeholders += sentence__gen(
+        json_article_filepath, 
+        key=f'''
+trust
+        ''',
+        title=f'''
+Trust, Accuracy, and Knowledge Reliability in Herbal Medicine
+        ''', 
+        brief=f'''
+Importance of accurate herbal information
+Sources of reliable herbal knowledge
+Differences between traditional knowledge and modern evidence
+Role of research and validation
+Risks of misinformation in herbal medicine
+Importance of continuous learning and verification
+        ''', 
+        regen=regen_function, dispel=dispel_function
+    )
+
+    html_placeholders += sentence__gen(
+        json_article_filepath, 
+        key=f'''
+start
+        ''',
+        title=f'''
+Start Learning Herbal Medicine: Next Steps and Direction
+        ''', 
+        brief=f'''
+How to begin learning herbal medicine step-by-step
+Choosing a first area of focus
+Building a simple learning routine
+Selecting beginner-friendly herbs
+Avoiding common beginner mistakes
+Transitioning from learning to practice
+        ''', 
+        regen=regen_function, dispel=dispel_function
+    )
+
     html_main = ''
     # html_main = f'<h1>Discover the Healing Power of Herbal Medicine<br><span>Backed by Tradition & Science</span></h1>'
     # html_main = f'<h1>Herbalism for Beginners: Herbal Remedies and Natural Healing</h1>'
@@ -420,10 +785,7 @@ These methods require minimal equipment and allow new herbalists to learn safely
         <body class="home">
             {sections.header_default()}
             {html_hero}
-            {html_what}
-            {html_paths}
-            {html_topics}
-            {html_foundations}
+            {html_placeholders}
             {sections.footer()}
         </body>
         </html>
