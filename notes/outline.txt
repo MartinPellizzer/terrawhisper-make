@@ -1,0 +1,44 @@
+########################################
+# AI CLUSTER
+########################################
+
+H1: Learn Herbal Medicine: Complete Guide to Herbs, Remedies, and Practice
+
+1. Entity Definition (What is Herbal Medicine Learning)
+2. Core Learning Paths (Query Routing Layer)
+3. What You Can Learn (Topical Coverage Preview)
+4. Herbal Medicine Foundations
+5. Herbal Remedies and Applications
+6. Medicinal Plants and Materia Medica
+7. Safety and Responsible Use
+8. Herbal Preparation Skills
+9. Learning Methods and Skill Levels
+10. Herbal Medicine Systems Overview
+11. Why Learn Herbal Medicine (Value Proposition)
+12. Featured Guides / Core Content Nodes
+13. Internal Topical Map (Structured Navigation)
+14. Trust and Authority Signals
+15. Call to Action (Next Step in Learning)
+
+
+########################################
+# DISTIL
+########################################
+
+MAIN SOURCE CONTEXT: Learn Herbal Medicine
+
+- definition
+- learning paths
+- topics
+- foundations
+- remedies
+- plants
+- safety
+- preparation
+- learning methods
+- medicine systems
+- benefits
+- core guides
+- knowledge structure
+- trust
+- start learning (cta)

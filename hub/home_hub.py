@@ -19,10 +19,57 @@ def paragraph_format_1N1(text):
     paragraphs_html = ''
     for paragraph in paragraphs:
         chunk = '. '.join(paragraph)
-        paragraphs_html += f'<p>{chunk}.</p>'
+        paragraphs_html += f'<p style="margin-bottom: 1.6rem;">{chunk}.</p>'
         paragraphs_html = paragraphs_html.replace('..', '.')
     print(paragraphs_html)
     return paragraphs_html
+
+def paragraph__gen(json_article_filepath, key, title, brief, regen=False, dispel=False):
+    ### llm
+    json_article = io.json_read(json_article_filepath, create=True)
+    if key not in json_article: json_article[key] = ''
+    if regen: json_article[key] = ''
+    if dispel: 
+        json_article[key] = ''
+        io.json_write(json_article_filepath, json_article)
+    if not dispel:
+        if json_article[key] == '':
+            import textwrap
+            prompt = textwrap.dedent(f'''
+                I'm writing an article about the core entity "herbal medicine", which is for a website where the source context is "herbal medicine". 
+                I want you to write the subordinate text for the following section: "{title}". 
+                The subordinate text is the first 5 sentences that must be written immediately after the headline. 
+                The subordinate text must answer in the most direct, clear, detailed way possible without fluff.
+                In sentence 1, you must always reply to the implicit question asked in the section.
+                In the following sentences, you give more details.
+                Don't give me bold or italicized text. 
+                Reply only with the subordinate text.
+                BRIEF:
+                {brief}
+                /no_think
+            ''').strip()
+                # Start with the following words: {herb_name_common} 
+            print(prompt)
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            json_article[key] = reply
+            io.json_write(json_article_filepath, json_article)
+            print(json_article_filepath)
+    ### html
+    paragraph = json_article[key]
+    paragraph_formatted = paragraph_format_1N1(paragraph)
+    # paragraph_formatted = paragraph
+    html = f'''
+        <section style="padding-bottom: 9.6rem;">
+            <div class="container-md">
+            <h2>{title}</h2>
+            {paragraph_formatted}
+            </div>
+        </section>
+    '''
+    return html
 
 def sentence__gen(json_article_filepath, key, title, brief, regen=False, dispel=False):
     ### llm
@@ -86,62 +133,91 @@ def gen():
     dispel_function = False
 
     html_placeholders = ''
-    html_placeholders += sentence__gen(
-        json_article_filepath, 
-        key=f'''
-            remedies
-        ''',
-        title=f'''
-            Herbal Remedies: Types and Use Cases
-        ''', 
-        brief=f'''
-Definition of herbal remedies
-Categories of remedies (internal vs external)
-Acute vs chronic use cases
-Preventive vs therapeutic applications
-Single-herb vs multi-herb formulations
-Common forms of remedies used in practice
-        ''', 
-        regen=regen_function, dispel=dispel_function
-    )
 
-    html_placeholders += sentence__gen(
-        json_article_filepath, 
-        key=f'''
-definition
-        ''',
-        title=f'''
-What Is Learning Herbal Medicine? Scope, Structure, and Outcomes
-        ''', 
-        brief=f'''
-Definition of herbal medicine as a field of study
-What distinguishes learning from practicing herbal medicine
-Domains included in herbal education (botany, pharmacology, therapeutics)
-Types of knowledge: theoretical vs practical skills
-Levels of knowledge depth (basic awareness to clinical understanding)
-Expected competencies after learning herbal medicine
-        ''', 
-        regen=regen_function, dispel=dispel_function
-    )
+    if 0:
+        html_placeholders += sentence__gen(
+            json_article_filepath, 
+            key=f'''
+    definition
+            ''',
+            title=f'''
+    What Is Learning Herbal Medicine? Scope, Structure, and Outcomes
+            ''', 
+            brief=f'''
+    Definition of herbal medicine as a field of study
+    What distinguishes learning from practicing herbal medicine
+    Domains included in herbal education (botany, pharmacology, therapeutics)
+    Types of knowledge: theoretical vs practical skills
+    Levels of knowledge depth (basic awareness to clinical understanding)
+    Expected competencies after learning herbal medicine
+            ''', 
+            regen=regen_function, dispel=dispel_function
+        )
 
-    html_placeholders += sentence__gen(
-        json_article_filepath, 
-        key=f'''
-paths
-        ''',
-        title=f'''
-Herbal Medicine Learning Paths: Beginner to Advanced Progression
-        ''', 
-        brief=f'''
-Beginner learning path (basic concepts and simple remedies)
-Intermediate learning path (plant knowledge and formulations)
-Advanced learning path (clinical thinking and case application)
-Self-care vs professional practice learning tracks
-Linear vs modular learning approaches
-Common progression milestones in herbal education
-        ''', 
-        regen=regen_function, dispel=dispel_function
-    )
+        html_placeholders += paragraph__gen(
+            json_article_filepath, 
+            key=f'''
+    paths_paragraph
+            ''',
+            title=f'''
+    Herbal Medicine Learning Paths
+            ''', 
+            brief=f'''
+    Beginner learning path (basic concepts and simple remedies)
+    Intermediate learning path (plant knowledge and formulations)
+    Advanced learning path (clinical thinking and case application)
+    Self-care vs professional practice learning tracks
+    Linear vs modular learning approaches
+    Common progression milestones in herbal education
+            ''', 
+            regen=regen_function, dispel=dispel_function
+        )
+
+                # The 3 main learning paths to start mastering herbal medicine are: <strong>The Apothecary Path<strong>, </strong>The Botanist Path</strong>, and <strong>The Chemist Path</strong>.
+    html_placeholders += f'''
+        <section style="padding-bottom: 9.6rem;">
+            <div class="container-xl">
+                <h2>Herbal Medicine Learning Paths</h2>
+                <p style="margin-bottom: 1.6rem;">
+                    The 3 main learning paths to start mastering herbal medicine are:
+                </p>
+                <ul style="margin-bottom: 1.6rem;">
+                    <li><strong>The Apothecary Path</strong></li>
+                    <li><strong>The Botanist Path</strong></li>
+                    <li><strong>The Chemist Path</strong></li>
+                </ul>
+                <p style="margin-bottom: 4.8rem;">
+                    Choose the one that best fits you below, based on your learning preferences.
+                </p>
+                <div class="grid-3" style="gap: 3.2rem;">
+                    <div>
+                        <img src="/images/home/apothecary-path.jpg" width=512 style="margin-bottom: 1.6rem;">
+                        <h3>The Apothecary Path</h3>
+                        <p style="margin-bottom: 2.4rem;"><em>(The Maker & Practical Herbalist)</em></p>
+                        <p style="margin-bottom: 3.2rem;">Difficulty level: <br> ⭐ Beginner to Intermediate</p>
+                        <h4 style="margin-bottom: 0.8rem;">Who this path is for</h4>
+                        <p>This path is for people who learn best by doing and experimenting. It's for people who want to make remedies immediately and understand herbs through hands-on practice rather than theory.</p>
+                    </div>
+                    <div>
+                        <img src="/images/home/botanist-path.jpg" width=512 style="margin-bottom: 1.6rem;">
+                        <h3>The Botanist Path</h3>
+                        <p style="margin-bottom: 2.4rem;"><em>(The Plant & Field Herbalist)</em></p>
+                        <p style="margin-bottom: 3.2rem;">Difficulty level: <br> ⭐⭐ Intermediate</p>
+                        <h4 style="margin-bottom: 0.8rem;">Who this path is for</h4>
+                        <p>This path is for people fascinated by plants themselves. It's for people who learn through observation, identification, and ecological understanding.</p>
+                    </div>
+                    <div>
+                        <img src="/images/home/chemist-path.jpg" width=512 style="margin-bottom: 1.6rem;">
+                        <h3>The Chemist Path</h3>
+                        <p style="margin-bottom: 2.4rem;"><em>(The Scientific & Analytical Herbalist)</em></p>
+                        <p style="margin-bottom: 3.2rem;">Difficulty level: <br> ⭐⭐⭐ Advanced</p>
+                        <h4 style="margin-bottom: 0.8rem;">Who this path is for</h4>
+                        <p>This path is for people who prefer theory, systems, and scientific understanding before practice. It's for people who want to understand the theory before the practice.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    '''
 
     html_placeholders += sentence__gen(
         json_article_filepath, 
@@ -177,6 +253,25 @@ Fundamental concepts of how herbs influence the body
 Terminology used in herbal medicine
 Understanding plant energetics (where applicable)
 Core principles behind herbal effectiveness
+        ''', 
+        regen=regen_function, dispel=dispel_function
+    )
+
+    html_placeholders += sentence__gen(
+        json_article_filepath, 
+        key=f'''
+            remedies
+        ''',
+        title=f'''
+            Herbal Remedies: Types and Use Cases
+        ''', 
+        brief=f'''
+Definition of herbal remedies
+Categories of remedies (internal vs external)
+Acute vs chronic use cases
+Preventive vs therapeutic applications
+Single-herb vs multi-herb formulations
+Common forms of remedies used in practice
         ''', 
         regen=regen_function, dispel=dispel_function
     )

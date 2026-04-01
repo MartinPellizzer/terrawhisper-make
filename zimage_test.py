@@ -1,3 +1,52 @@
+
+from lib import zimage
+
+def image_gen():
+    running = True
+    while running:
+        val = input('>>')
+        if val == 'q': return
+        with open('image-prompt.txt') as f: content = f.read().strip()
+        
+        w = 1280
+        h = 720
+        lines = []
+        for line in content.split('\n'):
+            line = line.strip()
+            if line == '': continue
+            if line.startswith('w:'):
+                w = int(line.split('w:')[1].strip())
+            elif line.startswith('h:'):
+                h = int(line.split('h:')[1].strip())
+            else:
+                lines.append(f'''{line} ''')
+        prompt = ''.join(lines)
+        prompt = prompt.strip()
+        if prompt[-1] == ',': prompt = prompt[:-1]
+        image_thumbnail_filepath = f'image-0000.jpg'
+        print(w)
+        print(h)
+        print(prompt)
+        print()
+        # continue
+        image = zimage.image_create(
+            output_filepath=image_thumbnail_filepath, 
+            prompt=prompt, width=w, height=h, seed=-1
+        )
+
+image_gen()
+
+
+
+
+
+
+
+
+
+
+quit()
+
 import os
 import random
 

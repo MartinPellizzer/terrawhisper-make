@@ -128,7 +128,13 @@ h3 {
     font-weight: 400;
     font-size: 1.8rem;
     line-height: 1;
-    margin-bottom: 1.6rem;
+}
+
+h4 {
+    font-family: LibreBaskerville-Regular;
+    font-weight: 700;
+    font-size: 1.6rem;
+    line-height: 1;
 }
 
 img {
@@ -137,13 +143,17 @@ img {
 }
 
 p {
-    font-family: Georgia;
     font-family: sans-serif;
     color: #333333;
 }
 
 ul {
     margin-left: 3.2rem;
+}
+
+li {
+    font-family: sans-serif;
+    color: #333333;
 }
 
 /*********************************************/
