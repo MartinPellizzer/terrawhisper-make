@@ -197,6 +197,11 @@ def gen():
                         <p style="margin-bottom: 3.2rem;">Difficulty level: <br> ⭐ Beginner to Intermediate</p>
                         <h4 style="margin-bottom: 0.8rem;">Who this path is for</h4>
                         <p>This path is for people who learn best by doing and experimenting. It's for people who want to make remedies immediately and understand herbs through hands-on practice rather than theory.</p>
+                        <div style="margin-top: 3.2rem;">
+                            <a class="button-default" style="text-transform: uppercase; letter-spacing: 0.5px;" 
+                                href="#">Coming Soon
+                            </a>
+                        </div>
                     </div>
                     <div>
                         <img src="/images/home/botanist-path.jpg" width=512 style="margin-bottom: 1.6rem;">
@@ -205,6 +210,11 @@ def gen():
                         <p style="margin-bottom: 3.2rem;">Difficulty level: <br> ⭐⭐ Intermediate</p>
                         <h4 style="margin-bottom: 0.8rem;">Who this path is for</h4>
                         <p>This path is for people fascinated by plants themselves. It's for people who learn through observation, identification, and ecological understanding.</p>
+                        <div style="margin-top: 3.2rem;">
+                            <a class="button-default" style="text-transform: uppercase; letter-spacing: 0.5px;" 
+                                href="#">Coming Soon
+                            </a>
+                        </div>
                     </div>
                     <div>
                         <img src="/images/home/chemist-path.jpg" width=512 style="margin-bottom: 1.6rem;">
@@ -213,6 +223,11 @@ def gen():
                         <p style="margin-bottom: 3.2rem;">Difficulty level: <br> ⭐⭐⭐ Advanced</p>
                         <h4 style="margin-bottom: 0.8rem;">Who this path is for</h4>
                         <p>This path is for people who prefer theory, systems, and scientific understanding before practice. It's for people who want to understand the theory before the practice.</p>
+                        <div style="margin-top: 3.2rem;">
+                            <a class="button-default" style="text-transform: uppercase; letter-spacing: 0.5px;" 
+                                href="#">Coming Soon
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
