@@ -174,22 +174,34 @@ def gen():
         )
 
                 # The 3 main learning paths to start mastering herbal medicine are: <strong>The Apothecary Path<strong>, </strong>The Botanist Path</strong>, and <strong>The Chemist Path</strong>.
-    html_placeholders += f'''
-        <section style="">
-            <div class="container-xl">
-                <h2>Herbal Medicine Learning Paths</h2>
-                <p style="margin-bottom: 1.6rem;">
-                    The 3 main learning paths to start mastering herbal medicine are:
-                </p>
+
+    '''
                 <ul style="margin-bottom: 1.6rem;">
                     <li><strong>The Apothecary Path</strong></li>
                     <li><strong>The Botanist Path</strong></li>
                     <li><strong>The Chemist Path</strong></li>
                 </ul>
-                <p style="margin-bottom: 4.8rem;">
-                    Choose the one that best fits you below, based on your learning preferences.
-                </p>
-                <div class="grid-3" style="gap: 3.2rem;">
+    '''
+    html_placeholders += f'''
+        <section style="">
+            <div class="container-xl">
+                <h2>Herbal Medicine Learning Paths</h2>
+                <div class="m-flex" style="justify-content: space-between;">
+                    <div class="flex 1;">
+                        <p style="margin-bottom: 1.6rem; max-width: 80ch;">
+                            The three main learning paths to start mastering herbal medicine are <strong>The Apothecary Path</strong>, <strong>The Botanist Path</strong>, and <strong>The Chemist Path</strong>.
+                            Choose the path that best fits your learning preferences from the following selection.
+                        </p>
+                    </div>
+                    <div class="flex 1;">
+                        <div>
+                            <a class="button-default" style="text-transform: uppercase; letter-spacing: 0.5px;" 
+                                href="#">Coming Soon
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid-3" style="gap: 3.2rem; margin-top: 4.8rem;">
                     <div>
                         <img src="/images/home/apothecary-path.jpg" width=512 style="margin-bottom: 1.6rem;">
                         <h3>The Apothecary Path</h3>
@@ -199,7 +211,7 @@ def gen():
                         <p>This path is for people who learn best by doing and experimenting. It's for people who want to make remedies immediately and understand herbs through hands-on practice rather than theory.</p>
                         <div style="margin-top: 3.2rem; margin-bottom: 9.6rem;">
                             <a class="button-default" style="text-transform: uppercase; letter-spacing: 0.5px;" 
-                                href="#">Coming Soon
+                                href="/learning-paths/apothecary.html">Discover The Apothecary Path
                             </a>
                         </div>
                     </div>

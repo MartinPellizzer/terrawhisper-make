@@ -106,7 +106,7 @@ def breadcrumbs_new(url):
     '''
     return html
 
-def toc(html_article):
+def toc_old(html_article):
     from bs4 import BeautifulSoup
     ### get headers
     soup = BeautifulSoup(html_article, 'html.parser')
@@ -140,3 +140,67 @@ def toc(html_article):
     ### insert toc in html article
     html_article = html_article.replace('[toc]', toc_html)
     return html_article
+
+def toc(html):
+    from bs4 import BeautifulSoup
+    import re
+    def slugify(text):
+        text = text.lower().strip()
+        text = re.sub(r'[^\w\s-]', '', text)
+        text = re.sub(r'\s+', '-', text)
+        return text
+    soup = BeautifulSoup(html, "html.parser")
+    headings = soup.find_all(re.compile("^h[2-6]$"))
+    used_ids = set()
+    toc_items = []
+    for h in headings:
+        level = int(h.name[1])-1
+        text = h.get_text(strip=True)
+        hid = h.get("id")
+        if not hid:
+            hid = slugify(text)
+            base = hid
+            i = 1
+            while hid in used_ids:
+                hid = f"{base}-{i}"
+                i += 1
+            h["id"] = hid
+        used_ids.add(hid)
+        toc_items.append({
+            "level": level,
+            "id": hid,
+            "text": text
+        })
+    # Build nested TOC
+    toc_html = []
+    current_level = 0
+    for item in toc_items:
+        level = item["level"]
+        while current_level < level:
+            toc_html.append("<ul>")
+            current_level += 1
+        while current_level > level:
+            toc_html.append("</ul>")
+            current_level -= 1
+        toc_html.append(f'<li><a href="#{item["id"]}">{item["text"]}</a></li>')
+    while current_level > 0:
+        toc_html.append("</ul>")
+        current_level -= 1
+    if 0:
+        toc_container = soup.new_tag("nav", **{"class": "table-of-contents"})
+        toc_container.append(BeautifulSoup("\n".join(toc_html), "html.parser"))
+        # Insert TOC at beginning of body if exists, otherwise at top
+        if soup.body:
+            soup.body.insert(0, toc_container)
+        else:
+            soup.insert(0, toc_container)
+        return str(soup)
+
+    toc_html_str = f'<nav class="table-of-contents">\n' + "\n".join(toc_html) + "\n</nav>"
+
+    html_out = str(soup)
+
+    # Replace the [toc] placeholder
+    html_out = html_out.replace("[toc]", toc_html_str)
+
+    return html_out

@@ -7010,7 +7010,9 @@ def herbs__herb__gen(herb):
 
 def main():
     herbal_medicine__gen()
-    quit()
+    ###
+    # learning_herbal_medicine__learning_paths__gen()
+    # quit()
     ###
     herbs__gen()
     for item in data.herbs_get():

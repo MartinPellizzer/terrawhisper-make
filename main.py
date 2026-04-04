@@ -246,3 +246,11 @@ if 1:
         from hub import home_hub
         home_hub.gen()
 
+########################################
+# LEARNING
+########################################
+if 1:
+    if 1:
+        from hub import learning_hub
+        learning_hub.gen()
+
