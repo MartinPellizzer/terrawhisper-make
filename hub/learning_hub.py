@@ -51,8 +51,8 @@ def paragraph__gen(json_article_filepath, core_entity='learning paths', key='', 
                 Don't write conclusive statements, like those that starts with "ultimately", "in conclusion", "finally", etc.
                 {brief}
                 {start_text}
-                /no_think
             ''').strip()
+                # /no_think
                 # The subordinate text is the first 5 sentences that must be written immediately after the headline. 
                 # Start with the following words: {herb_name_common} 
             print(prompt)
@@ -1382,6 +1382,7 @@ Provide examples of herbs traditionally prepared as infusions and link to herb-s
             'html_after': '',
             'start_text': '',
         },
+
         {
             'id': 'how',
             'heading': 'h2',
@@ -1458,7 +1459,22 @@ Explain that infusions are best for **soft plant parts**.
 * linden flower
 Explain that **roots, bark, and seeds usually require decoctions instead**.
             ''',
-            'html_after': '',
+            'html_after': f'''
+<p>Here's a list of common herbs used for this preparation.</p>
+<ul>
+    <li>Chamomile</li>
+    <li>Peppermint</li>
+    <li>Lemon Balm</li>
+    <li>Nettle</li>
+    <li>Liden</li>
+</ul>
+            ''',
+            'image_src': f'''
+/images/preparations/infusions/preparation-choose-herb.jpg
+            ''',
+            'image_alt': f'''
+Herbs chosen to prepare infusions
+            ''',
             'start_text': '',
         },
         {
@@ -1481,6 +1497,12 @@ Add herbs directly into the mug or teapot.
             ''',
             'html_after': '',
             'start_text': '',
+            'image_src': f'''
+/images/preparations/infusions/preparation-measure-herb.jpg
+            ''',
+            'image_alt': f'''
+Herbs measured to prepare infusions
+            ''',
         },
         {
             'id': 'how__0004',
@@ -1490,14 +1512,23 @@ Step 3: Heat Fresh Water
             ''',
             'brief': f'''
 **Brief**
-Explain that water should be **just boiled**, then poured immediately over the herbs.
+Explain that water should be hot but not boiling, then poured immediately over the herbs.
 **Details to include**
-* ideal temperature: near boiling (95–100°C / 203–212°F)
+* ideal temperature: near boiling (70-90°C / 160-190°F)
+* explain that to reach this temperature you can boil water and then wait about 5 minutes to make it cool slightly, it should reach about 80 degree celsius this way, this technique is useful if you don't have a termometer
 * fresh water improves flavor
 * avoid reheated water
             ''',
+            'html_before': f'''''',
             'html_after': '',
             'start_text': '',
+            'image_src': f'''
+/images/preparations/infusions/preparation-boil-water.jpg
+            ''',
+            'image_alt': f'''
+Boil water to prepare infusions
+            ''',
+            'regen': True,
         },
         {
             'id': 'how__0005',
@@ -1516,6 +1547,12 @@ Explain that **water activates the release of plant compounds**.
             ''',
             'html_after': '',
             'start_text': '',
+            'image_src': f'''
+/images/preparations/infusions/preparation-pour-water.jpg
+            ''',
+            'image_alt': f'''
+Pour water to prepare infusions
+            ''',
         },
         {
             'id': 'how__0006',
@@ -1534,6 +1571,12 @@ Explain why covering matters:
             ''',
             'html_after': '',
             'start_text': '',
+            'image_src': f'''
+/images/preparations/infusions/preparation-cover-and-steep.jpg
+            ''',
+            'image_alt': f'''
+Cover and steep to prepare infusions
+            ''',
         },
         {
             'id': 'how__0007',
@@ -1552,6 +1595,12 @@ Explain that the remaining liquid is the **finished infusion**.
             ''',
             'html_after': '',
             'start_text': '',
+            'image_src': f'''
+/images/preparations/infusions/preparation-strain-herb.jpg
+            ''',
+            'image_alt': f'''
+Strain the herb to prepare infusions
+            ''',
         },
         {
             'id': 'how__0008',
@@ -1574,6 +1623,12 @@ Optional additions
             ''',
             'html_after': '',
             'start_text': '',
+            'image_src': f'''
+/images/preparations/infusions/preparation-taste-adjust.jpg
+            ''',
+            'image_alt': f'''
+Taste and adjust the prepared infusions
+            ''',
         },
         {
             'id': 'how__0009',
@@ -1823,16 +1878,22 @@ Explain proper storage and shelf life.
         else: _regen = regen_function
         if 'start_text' in section: _start_text = f'''Start the reply with the following words: {section['start_text']}'''
         else: _start_text = ''
-        html_article += paragraph__gen(
-                json_article_filepath, 
-                core_entity=core_entity,
-                key=section['id'],
-                title=section['text'],
-                heading=section['heading'],
-                brief=section['brief'],
-                start_text=_start_text,
-                regen=_regen, dispel=dispel_function,
-        )
+        if 'html_manual' not in section or section['html_manual'] == '':
+            html_article += paragraph__gen(
+                    json_article_filepath, 
+                    core_entity=core_entity,
+                    key=section['id'],
+                    title=section['text'],
+                    heading=section['heading'],
+                    brief=section['brief'],
+                    start_text=_start_text,
+                    regen=_regen, dispel=dispel_function,
+            )
+        else:
+            html_article += f'''<{section['heading']}>{section['text']}</{section['heading']}>'''
+            html_article += section['html_manual']
+        if 'image_src' in section and section['image_src'] != '':
+            html_article += f'''<img src="{section['image_src'].strip()}">'''
         if section['html_after'] != '':
             html_article += section['html_after']
 

@@ -1,4 +1,7 @@
-w: 512
-h: 512
+w: 768
+h: 768
 
-laboratory, organic chemistry, 
+ceramic cup with tea, on a wooden table, surrounded by medicinal herbs,
+
+rustic, vintage, boho,
+warm colors
