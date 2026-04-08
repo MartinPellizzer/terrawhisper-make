@@ -74,6 +74,38 @@ def paragraph__gen(json_article_filepath, core_entity='learning paths', key='', 
     '''
     return html
 
+def section__gen(json_article_filepath, entity, key='', title='', heading='', brief='', start_text='', regen=False, dispel=False):
+    ### llm
+    json_article = io.json_read(json_article_filepath, create=True)
+    if key not in json_article: json_article[key] = ''
+    if regen: json_article[key] = ''
+    if dispel: 
+        json_article[key] = ''
+        io.json_write(json_article_filepath, json_article)
+    if not dispel:
+        if json_article[key] == '':
+            import textwrap
+            prompt = textwrap.dedent(f'''
+                {brief}
+            ''').strip()
+            print(prompt)
+            reply = llm.reply(prompt, model_filepath)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            json_article[key] = reply
+            io.json_write(json_article_filepath, json_article)
+            print(json_article_filepath)
+    ### html
+    paragraph = json_article[key]
+    paragraph_formatted = paragraph_format_1N1(paragraph)
+    # paragraph_formatted = paragraph
+    html = f'''
+        <{heading}>{title}</{heading}>
+        {paragraph_formatted}
+    '''
+    return html
+
 def sentence__gen(json_article_filepath, key, title, heading, brief, regen=False, dispel=False):
     ### llm
     json_article = io.json_read(json_article_filepath, create=True)
@@ -1208,11 +1240,11 @@ Is the Apothecary Path Safe for Beginners?
             html_article += section['html_after']
 
 
-    print(html_article)
+    # print(html_article)
     ###
     html_article = sections.toc(html_article)
-    print('###########################################################3')
-    print(html_article)
+    # print('###########################################################3')
+    # print(html_article)
 
     ###
     head_html = components.html_head(
@@ -1239,9 +1271,10 @@ Is the Apothecary Path Safe for Beginners?
     io.folder_create_from_filepath(html_filepath)
     with open(html_filepath, 'w') as f: f.write(html)
 
-def preparations__infusions__gen():
-    url_slug = f'preparations/infusions'
-    meta_title = f'Herbal Infusions: Definition, Benefits, and How to Make This Preparation'
+def preparations__preparation__gen(entity, entity_singular):
+    entity_slug = polish.sluggify(entity)
+    url_slug = f'preparations/{entity_slug}'
+    meta_title = f'{entity} in Herbal Medicine'
     meta_description = ''
     canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''
     core_entity = 'infusions'
@@ -1257,17 +1290,118 @@ def preparations__infusions__gen():
     regen_function = False
     dispel_function = False
 
-    _sections = [
+    _sections_new = [
         {
             'id': 'intro',
-            'heading': 'h1',
-            'text': f'''
-Herbal Infusions: Definition, Benefits, and How to Make This Preparation
+            'hierarchy': 'h1',
+            'heading': f'''
+{entity} in Herbal Medicine
+
 ''',
             'brief': f'''
+Write the section for an article titled: "{entity} in Herbal Medicine"
+Brief: Introduce the method briefly — what it is, its main purpose, and why it matters in herbal medicine, in 1–2 sentences to hook beginners.
+Writing rules:
+• Write 4–6 concise sentences.
+• Begin with a direct entity definition.
+• Use clear factual statements and avoid filler language.
+• Include at least one sentence explaining the extraction principle.
+• Mention one example herb if relevant.
+• Maintain an educational tone suitable for beginner herbalists.
+Do not include headings, lists, or formatting — only the paragraph text.
 ''',
             'html_after': '[toc]',
+            'regen': True,
         },
+
+        {
+            'id': 'what',
+            'hierarchy': 'h2',
+            'heading': f'''
+What Are {entity}?
+''',
+            'brief': f'''
+I'm writing an article titled: "{entity} in Herbal Medicine"
+I need you to write a section for this article with heading: "What Are {entity}?"
+Brief: Provide a precise definition, core purpose, and the fundamental principle behind how the method extracts compounds from herbs.
+Writing rules:
+• Write 4–6 concise sentences.
+• Begin with a direct entity definition.
+• Use clear factual statements and avoid filler language.
+• Include at least one sentence explaining the extraction principle.
+• Mention one example herb if relevant.
+• Maintain an educational tone suitable for beginner herbalists.
+Do not include headings, lists, or formatting — only the paragraph text.
+''',
+            'regen': True,
+        },
+
+        {
+            'id': 'why',
+            'hierarchy': 'h2',
+            'heading': f'''
+When and Why to Use {entity}
+''',
+            'brief': f'''
+I'm writing an article titled: "{entity} in Herbal Medicine"
+I need you to write a section for this article with heading: "When and Why to Use {entity}"
+Brief: Explain the situations, goals, and herbal properties that make this method appropriate compared to others.
+Writing rules:
+• Write 4–6 concise sentences.
+• Begin with a direct entity definition.
+• Use clear factual statements and avoid filler language.
+• Include at least one sentence explaining the extraction principle.
+• Mention one example herb if relevant.
+• Maintain an educational tone suitable for beginner herbalists.
+Do not include headings, lists, or formatting — only the paragraph text.
+Start the reply with the following words: "{entity} are used "
+''',
+            'regen': True,
+        },
+
+        {
+            'id': 'mechanism',
+            'hierarchy': 'h2',
+            'heading': f'''
+How This Method Extracts Herbal Compounds
+''',
+            'brief': f'''
+Write the section for an article.
+The article is titled: "Herbal {entity}: How to Prepare It Correctly"
+The section is titled: "How This Method Extracts Herbal Compounds"
+The entity (method) is: {entity}
+(Authority layer)
+Brief
+Explain the scientific mechanism of extraction, describing how solvent, temperature, and plant chemistry interact.
+Logical information order
+solvent role
+temperature influence
+compound solubility
+extraction efficiency
+Subordinate text
+This preparation method works by allowing the solvent to dissolve specific plant compounds under controlled temperature and time conditions.
+Attributes
+solvent polarity
+heat exposure
+compound solubility
+Questions
+Why does this method work?
+What compounds are extracted?
+Writing rules:
+• Write 4–6 concise sentences.
+• Begin with a direct entity definition.
+• Use clear factual statements and avoid filler language.
+• Include at least one sentence explaining the extraction principle.
+• Mention one example herb if relevant.
+• Include one contextual internal link using the anchor text **"herbal preparation methods"**.
+• Maintain an educational tone suitable for beginner herbalists.
+Do not include headings, lists, or formatting — only the paragraph text.
+''',
+            'regen': regen_function,
+        },
+    ]
+
+    _sections = [
         {
             'id': 'what',
             'heading': 'h2',
@@ -1528,7 +1662,7 @@ Explain that water should be hot but not boiling, then poured immediately over t
             'image_alt': f'''
 Boil water to prepare infusions
             ''',
-            'regen': True,
+            'regen': regen_function,
         },
         {
             'id': 'how__0005',
@@ -1872,37 +2006,50 @@ Explain proper storage and shelf life.
     ]
 
     html_article = ''
-
-    for section in _sections:
+    for section in _sections_new:
         if 'regen' in section: _regen = section['regen']
         else: _regen = regen_function
-        if 'start_text' in section: _start_text = f'''Start the reply with the following words: {section['start_text']}'''
-        else: _start_text = ''
-        if 'html_manual' not in section or section['html_manual'] == '':
-            html_article += paragraph__gen(
-                    json_article_filepath, 
-                    core_entity=core_entity,
-                    key=section['id'],
-                    title=section['text'],
-                    heading=section['heading'],
-                    brief=section['brief'],
-                    start_text=_start_text,
-                    regen=_regen, dispel=dispel_function,
-            )
-        else:
-            html_article += f'''<{section['heading']}>{section['text']}</{section['heading']}>'''
-            html_article += section['html_manual']
-        if 'image_src' in section and section['image_src'] != '':
-            html_article += f'''<img src="{section['image_src'].strip()}">'''
-        if section['html_after'] != '':
-            html_article += section['html_after']
+        html_article += section__gen(
+                json_article_filepath, 
+                entity=entity,
+                key=section['id'],
+                title=section['heading'],
+                heading=section['hierarchy'],
+                brief=section['brief'],
+                regen=_regen, dispel=dispel_function,
+        )
+
+    if 0:
+        for section in _sections:
+            if 'regen' in section: _regen = section['regen']
+            else: _regen = regen_function
+            if 'start_text' in section: _start_text = f'''Start the reply with the following words: {section['start_text']}'''
+            else: _start_text = ''
+            if 'html_manual' not in section or section['html_manual'] == '':
+                html_article += paragraph__gen(
+                        json_article_filepath, 
+                        core_entity=core_entity,
+                        key=section['id'],
+                        title=section['text'],
+                        heading=section['heading'],
+                        brief=section['brief'],
+                        start_text=_start_text,
+                        regen=_regen, dispel=dispel_function,
+                )
+            else:
+                html_article += f'''<{section['heading']}>{section['text']}</{section['heading']}>'''
+                html_article += section['html_manual']
+            if 'image_src' in section and section['image_src'] != '':
+                html_article += f'''<img src="{section['image_src'].strip()}">'''
+            if section['html_after'] != '':
+                html_article += section['html_after']
 
 
-    print(html_article)
+    # print(html_article)
     ###
     html_article = sections.toc(html_article)
-    print('###########################################################3')
-    print(html_article)
+    # print('###########################################################3')
+    # print(html_article)
 
     ###
     head_html = components.html_head(
@@ -1933,5 +2080,15 @@ Explain proper storage and shelf life.
 def gen():
     learning_herbal_medicine__learning_paths__gen()
     learning_herbal_medicine__learning_paths__apothecary__gen()
-    preparations__infusions__gen()
+    preparations__preparation__gen('Infusions', 'Infusion')
+    quit()
+    preparations__preparation__gen('Decoctions')
+    preparations__preparation__gen('Tinctures')
+    preparations__preparation__gen('Macerations')
+    preparations__preparation__gen('Syrups')
+    preparations__preparation__gen('Oils')
+    preparations__preparation__gen('Salves')
+    preparations__preparation__gen('Poultices')
+    preparations__preparation__gen('Compresses')
+    preparations__preparation__gen('Steam Inhalations')
     
