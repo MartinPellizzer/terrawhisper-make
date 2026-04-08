@@ -1290,30 +1290,32 @@ def preparations__preparation__gen(entity, entity_singular):
     regen_function = False
     dispel_function = False
 
+    prompt_article_title = f'''
+Write the section for an article titled: "{entity} in Herbal Medicine"
+    '''
+    prompt_article_writing_rules = f'''
+Writing rules:
+- Write 4–6 concise sentences.
+- Use clear factual statements and avoid filler language.
+- Maintain an educational tone suitable for beginner herbalists.
+Do not include headings or formatting, only the paragraph text.
+    '''
+
     _sections_new = [
         {
             'id': 'intro',
             'hierarchy': 'h1',
             'heading': f'''
 {entity} in Herbal Medicine
-
-''',
+            ''',
             'brief': f'''
-Write the section for an article titled: "{entity} in Herbal Medicine"
+{prompt_article_title}
 Brief: Introduce the method briefly — what it is, its main purpose, and why it matters in herbal medicine, in 1–2 sentences to hook beginners.
-Writing rules:
-• Write 4–6 concise sentences.
-• Begin with a direct entity definition.
-• Use clear factual statements and avoid filler language.
-• Include at least one sentence explaining the extraction principle.
-• Mention one example herb if relevant.
-• Maintain an educational tone suitable for beginner herbalists.
-Do not include headings, lists, or formatting — only the paragraph text.
-''',
+{prompt_article_writing_rules}
+            ''',
             'html_after': '[toc]',
             'regen': True,
         },
-
         {
             'id': 'what',
             'hierarchy': 'h2',
@@ -1321,21 +1323,13 @@ Do not include headings, lists, or formatting — only the paragraph text.
 What Are {entity}?
 ''',
             'brief': f'''
-I'm writing an article titled: "{entity} in Herbal Medicine"
+{prompt_article_title}
 I need you to write a section for this article with heading: "What Are {entity}?"
 Brief: Provide a precise definition, core purpose, and the fundamental principle behind how the method extracts compounds from herbs.
-Writing rules:
-• Write 4–6 concise sentences.
-• Begin with a direct entity definition.
-• Use clear factual statements and avoid filler language.
-• Include at least one sentence explaining the extraction principle.
-• Mention one example herb if relevant.
-• Maintain an educational tone suitable for beginner herbalists.
-Do not include headings, lists, or formatting — only the paragraph text.
+{prompt_article_writing_rules}
 ''',
             'regen': True,
         },
-
         {
             'id': 'why',
             'hierarchy': 'h2',
@@ -1343,61 +1337,74 @@ Do not include headings, lists, or formatting — only the paragraph text.
 When and Why to Use {entity}
 ''',
             'brief': f'''
-I'm writing an article titled: "{entity} in Herbal Medicine"
+{prompt_article_title}
 I need you to write a section for this article with heading: "When and Why to Use {entity}"
 Brief: Explain the situations, goals, and herbal properties that make this method appropriate compared to others.
-Writing rules:
-• Write 4–6 concise sentences.
-• Begin with a direct entity definition.
-• Use clear factual statements and avoid filler language.
-• Include at least one sentence explaining the extraction principle.
-• Mention one example herb if relevant.
-• Maintain an educational tone suitable for beginner herbalists.
-Do not include headings, lists, or formatting — only the paragraph text.
+{prompt_article_writing_rules}
 Start the reply with the following words: "{entity} are used "
 ''',
             'regen': True,
         },
 
         {
-            'id': 'mechanism',
+            'id': 'how_to',
             'hierarchy': 'h2',
             'heading': f'''
-How This Method Extracts Herbal Compounds
+How to Prepare {entity} (Step-by-Step Guide)
 ''',
             'brief': f'''
-Write the section for an article.
-The article is titled: "Herbal {entity}: How to Prepare It Correctly"
-The section is titled: "How This Method Extracts Herbal Compounds"
-The entity (method) is: {entity}
-(Authority layer)
-Brief
-Explain the scientific mechanism of extraction, describing how solvent, temperature, and plant chemistry interact.
-Logical information order
-solvent role
-temperature influence
-compound solubility
-extraction efficiency
-Subordinate text
-This preparation method works by allowing the solvent to dissolve specific plant compounds under controlled temperature and time conditions.
-Attributes
-solvent polarity
-heat exposure
-compound solubility
-Questions
-Why does this method work?
-What compounds are extracted?
-Writing rules:
-• Write 4–6 concise sentences.
-• Begin with a direct entity definition.
-• Use clear factual statements and avoid filler language.
-• Include at least one sentence explaining the extraction principle.
-• Mention one example herb if relevant.
-• Include one contextual internal link using the anchor text **"herbal preparation methods"**.
-• Maintain an educational tone suitable for beginner herbalists.
-Do not include headings, lists, or formatting — only the paragraph text.
+{prompt_article_title}
+I need you to write a section for this article with heading: "How to Prepare {entity} (Step-by-Step Guide)"
+Brief: Main procedural section guiding the reader to successfully prepare the method.
+{prompt_article_writing_rules}
 ''',
-            'regen': regen_function,
+            'regen': True,
+        },
+        {
+            'id': 'how_to_0000',
+            'hierarchy': 'h3',
+            'heading': f'''
+Tools and Ingredients Needed
+            ''',
+            'brief': f'''
+{prompt_article_title}
+I need you to write a section for this article with heading: "Tools and Ingredients Needed"
+Brief: List all tools, solvents, and materials, with beginner-friendly explanations.
+{prompt_article_writing_rules}
+            ''',
+            'regen': True,
+        },
+        {
+            'id': 'how_to_0001',
+            'hierarchy': 'h3',
+            'heading': f'''
+Recommended Herb Forms and Preparation
+            ''',
+            'brief': f'''
+{prompt_article_title}
+I need you to write a section for this article with heading: "Recommended Herb Forms and Preparation"
+Brief: Explain which plant parts and forms (fresh, dried, cut, powdered) are ideal and why.
+{prompt_article_writing_rules}
+            ''',
+            'regen': True,
+        },
+        {
+            'id': 'how_to_0002',
+            'hierarchy': 'h3',
+            'heading': f'''
+Step-by-Step Preparation Process
+            ''',
+            'brief': f'''
+{prompt_article_title}
+I need you to write a section for this article with heading: "Step-by-Step Preparation Process"
+Brief: Provide numbered steps inside this H3 for clarity and scanability:
+Step 1
+Step 2
+Step 3…
+Use bullets or short paragraphs if needed.
+{prompt_article_writing_rules}
+            ''',
+            'regen': True,
         },
     ]
 
