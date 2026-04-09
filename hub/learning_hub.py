@@ -1273,7 +1273,14 @@ Is the Apothecary Path Safe for Beginners?
 
 def preparations__preparation__gen(data):
     entity = data['entity']
+    entity_singular = data['entity_singular']
     preparation_steps = data['preparation_steps']
+    if 'preparation_info' in data: 
+        preparation_info = f'''
+            Additional context: {data['preparation_info']}
+        '''
+    else:
+        preparation_info = ''
     
     entity_slug = polish.sluggify(entity)
     url_slug = f'preparations/{entity_slug}'
@@ -1289,27 +1296,53 @@ def preparations__preparation__gen(data):
     json_article['url'] = url_slug
     io.json_write(json_article_filepath, json_article)
 
-    curated_info = ''
-    if preparation_steps == '':
-        import textwrap
-        prompt = textwrap.dedent(f'''
-I have a website about the following central source context: "learning herbal medicine".
-Write the procedure in 5 steps to make the following herbal preparation: "{entity}".
-Give only one action per step.
-Use the following information if applicable:
-- Optimal water temperature: 80 degree celsius
-        ''').strip()
-        print(prompt)
-        reply = llm.reply(prompt, model_filepath)
-        if '</think>' in reply:
-            reply = reply.split('</think>')[1].strip()
-        quit()
+    if 0:
+        curated_info = ''
+        if preparation_steps == '':
+            import textwrap
+            prompt = textwrap.dedent(f'''
+    I have a website about the following central source context: "learning herbal medicine".
+    Write the procedure in 5 steps to make the following herbal preparation: "{entity}".
+    Give only one action per step.
+    Use the following information if applicable:
+    - Optimal water temperature: 80 degree celsius
+            ''').strip()
+            print(prompt)
+            reply = llm.reply(prompt, model_filepath)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
 
+    '''
+    H1
+    [Preparation Name]: Definition, Preparation Method, and Uses in Herbal Medicine
+    H2
+    What Is an Herbal [Preparation Name]?
+    H2
+    How the [Preparation Name] Extraction Process Works
+    H2
+    How to Prepare an Herbal [Preparation Name] (Step-by-Step)
+    H3
+    Ingredients and Equipment Needed
+    H3
+    Step-by-Step Preparation Process
+    H3
+    Recommended Ratios, Time, and Temperature
+    H2
+    Best Herbs and Plant Parts for [Preparation Name] Preparations
+    H2
+    [Preparation Name] vs Other Herbal Preparations
+    H2
+    When to Use [Preparation Name] in Herbal Practice
+    H2
+    Safety Considerations and Best Practices
+    H2
+    The Role of [Preparation Name] in Traditional Herbal Medicine
+    '''
     regen_function = False
     dispel_function = False
 
     prompt_article_title = f'''
-Write the section for an article titled: "{entity} in Herbal Medicine"
+Write the section for an article titled: "{entity}: Definition, Method, and Uses in Herbal Medicine
     '''
     prompt_article_writing_rules = f'''
 Writing rules:
@@ -1324,106 +1357,408 @@ Do not include headings or formatting, only the paragraph text.
             'id': 'intro',
             'hierarchy': 'h1',
             'heading': f'''
-{entity} in Herbal Medicine
+                {entity}: Definition, Method, and Uses in Herbal Medicine
             ''',
             'brief': f'''
-{prompt_article_title}
-Brief: Introduce the method briefly — what it is, its main purpose, and why it matters in herbal medicine, in 1–2 sentences to hook beginners.
-{prompt_article_writing_rules}
+                {prompt_article_title}
+                {entity}: Definition, Method, and Uses in Herbal Medicine
+                Brief
+                The introduction must immediately satisfy definition + purpose + procedural framing in the first 2–3 sentences.
+                Explain what the preparation is, how it extracts medicinal compounds, and when it is typically used.
+                Include:
+                the extraction principle (water, alcohol, oil, heat, etc.)
+                plant parts commonly used
+                the main advantage of the preparation
+                Example structure:
+                Sentence 1 → definition
+                Sentence 2 → extraction mechanism
+                Sentence 3 → typical herbs or plant parts used
+                Sentence 4 → when this preparation is preferred
+                This paragraph establishes entity identity and topical salience, which strongly influences retrieval probability.
+                {prompt_article_writing_rules}
             ''',
             'html_after': '[toc]',
-            'regen': True,
+            'regen': regen_function,
         },
         {
-            'id': 'what',
+            'id': 'mechanism',
             'hierarchy': 'h2',
             'heading': f'''
-What Are {entity}?
-''',
+                What Is an Herbal {entity_singular}?
+            ''',
             'brief': f'''
-{prompt_article_title}
-I need you to write a section for this article with heading: "What Are {entity}?"
-Brief: Provide a precise definition, core purpose, and the fundamental principle behind how the method extracts compounds from herbs.
-{prompt_article_writing_rules}
-''',
-            'regen': True,
+                {prompt_article_title}
+                Intent covered: definition
+                Brief
+                Provide a clear conceptual definition of the preparation method as used in herbal medicine.
+                Explain:
+                the basic idea of the preparation
+                what type of solvent or medium is used
+                the types of plant materials typically processed
+                the goal of the preparation (extracting phytochemicals)
+                Clarify how this preparation fits within the broader category of herbal preparations.
+                Avoid describing exact steps here. Focus purely on what the preparation is and why it exists.
+                {preparation_info}
+                {prompt_article_writing_rules}
+            ''',
+            'regen': regen_function,
         },
         {
-            'id': 'why',
+            'id': 'procedure',
             'hierarchy': 'h2',
             'heading': f'''
-When and Why to Use {entity}
-''',
+                How the {entity_singular} Extraction Process Works
+                How to Prepare an Herbal {entity} (Step-by-Step)
+            ''',
             'brief': f'''
-{prompt_article_title}
-I need you to write a section for this article with heading: "When and Why to Use {entity}"
-Brief: Explain the situations, goals, and herbal properties that make this method appropriate compared to others.
-{prompt_article_writing_rules}
-Start the reply with the following words: "{entity} are used "
-''',
-            'regen': True,
+                {prompt_article_title}
+                Intent covered: mechanism / scientific understanding
+                Brief
+                Explain how the extraction process works at a functional level.
+                Cover:
+                the solvent used (water, alcohol, oil)
+                how temperature, time, or solvent polarity affect extraction
+                which types of plant compounds are usually extracted
+                Explain why this preparation works better for certain plant parts.
+                Examples:
+                leaves
+                flowers
+                roots
+                bark
+                seeds
+                This section builds conceptual understanding so readers know why the preparation method exists, not just how to perform it.
+                {preparation_info}
+                {prompt_article_writing_rules}
+            ''',
+            'regen': regen_function,
         },
 
         {
-            'id': 'how_to',
+            'id': 'procedure',
             'hierarchy': 'h2',
             'heading': f'''
-How to Prepare {entity} (Step-by-Step Guide)
-''',
+                How to Prepare an Herbal {entity_singular} (Step-by-Step)
+            ''',
             'brief': f'''
-{prompt_article_title}
-I need you to write a section for this article with heading: "How to Prepare {entity} (Step-by-Step Guide)"
-Brief: Main procedural section guiding the reader to successfully prepare the method.
-{prompt_article_writing_rules}
-''',
-            'regen': True,
+                {prompt_article_title}
+                Intent covered: dominant procedural intent
+                Content weight: largest section in the article
+                Brief (What to write here)
+                Begin this section with a short introductory passage (2–4 sentences) that explains the overall preparation process before detailing the individual steps. This introduction should summarize how the preparation works, what variables influence it, and what the reader will learn in the following subsections.
+                Specifically, this introductory text should:
+                • Explain that the preparation involves extracting plant compounds using a specific solvent and process (heat, alcohol, oil, soaking, etc.).
+                • Mention the key variables that determine the final preparation, such as herb quantity, solvent ratio, temperature, and extraction time.
+                • Clarify that the following subsections will guide the reader through ingredients, equipment, preparation steps, and optimal conditions.
+                The goal is to create a procedural overview so both users and search engines understand that this section contains the complete method for preparing the herbal extract.
+                Avoid listing detailed steps here; instead, provide a concise procedural summary that prepares the reader for the structured instructions in the H3 subsections.
+                {preparation_info}
+                {prompt_article_writing_rules}
+            ''',
+            'regen': regen_function,
         },
         {
-            'id': 'how_to_0000',
+            'id': 'procedure__ingredients',
             'hierarchy': 'h3',
             'heading': f'''
-Tools and Ingredients Needed
+                Ingredients and Equipment Needed
             ''',
             'brief': f'''
-{prompt_article_title}
-I need you to write a section for this article with heading: "Tools and Ingredients Needed"
-Brief: List all tools, solvents, and materials, with beginner-friendly explanations.
-{prompt_article_writing_rules}
+                {prompt_article_title}
+                Brief
+                Ingredients and Equipment Needed
+                List and explain the essential components required to perform the preparation.
+                Cover:
+                plant material (fresh or dried herbs)
+                extraction medium (water, alcohol, oil)
+                preparation tools (jar, pot, strainer, etc.)
+                Explain why each item is necessary and mention practical alternatives where appropriate.
+                {preparation_info}
+                {prompt_article_writing_rules}
             ''',
-            'regen': True,
+            'regen': regen_function,
         },
         {
-            'id': 'how_to_0001',
+            'id': 'procedure__herbs',
             'hierarchy': 'h3',
             'heading': f'''
-Recommended Herb Forms and Preparation
+                How to Prepare the Herbs Before Extraction
             ''',
             'brief': f'''
-{prompt_article_title}
-I need you to write a section for this article with heading: "Recommended Herb Forms and Preparation"
-Brief: Explain which plant parts and forms (fresh, dried, cut, powdered) are ideal and why.
-{prompt_article_writing_rules}
+                {prompt_article_title}
+                Explain how herbs should be prepared before extraction.
+                Brief
+                How to Prepare the Herbs Before Extraction
+                chopping or crushing herbs
+                fresh vs dried plant material
+                particle size and extraction efficiency
+                removing impurities
+                Explain why preparation affects extraction quality.
+                {preparation_info}
+                {prompt_article_writing_rules}
             ''',
-            'regen': True,
+            'regen': regen_function,
         },
         {
-            'id': 'how_to_0002',
+            'id': 'procedure__ratio',
             'hierarchy': 'h3',
             'heading': f'''
-Step-by-Step Preparation Process
+                Recommended Herb-to-Solvent Ratio
             ''',
             'brief': f'''
-{prompt_article_title}
-I need you to write a section for this article with heading: "Step-by-Step Preparation Process"
-Brief: Provide numbered steps inside this H3 for clarity and scanability:
-Step 1
-Step 2
-Step 3…
-Use bullets or short paragraphs if needed.
-{prompt_article_writing_rules}
+                {prompt_article_title}
+                Brief
+                Recommended Herb-to-Solvent Ratio
+                Explain the ideal proportion between herbs and the extracting liquid.
+                Describe:
+                common ratios used in herbal preparation
+                how ratios change for fresh vs dried herbs
+                how stronger or weaker preparations can be created
+                Give clear examples.
+                {preparation_info}
+                {prompt_article_writing_rules}
             ''',
-            'regen': True,
+            'regen': regen_function,
         },
+        {
+            'id': 'procedure__steps',
+            'hierarchy': 'h3',
+            'heading': f'''
+                Step-by-Step Preparation Process
+            ''',
+            'brief': f'''
+                {prompt_article_title}
+                Brief
+                Step-by-Step Preparation Process
+                Provide the complete chronological process.
+                Each step should include:
+                the action
+                the reason for the step
+                a practical tip
+                Typical sequence:
+                measure herbs
+                add solvent
+                apply heat or extraction method
+                allow extraction time
+                strain or filter
+                collect the preparation
+                Ensure the process is easy for beginners to replicate.
+                {preparation_info}
+                {prompt_article_writing_rules}
+            ''',
+            'regen': regen_function,
+        },
+        {
+            'id': 'procedure__time_temp',
+            'hierarchy': 'h3',
+            'heading': f'''
+                Optimal Extraction Time and Temperature
+            ''',
+            'brief': f'''
+                {prompt_article_title}
+                Brief
+                Optimal Extraction Time and Temperature
+                Explain how time and temperature affect the extraction process.
+                Describe:
+                typical duration ranges
+                how heat affects compound release
+                what happens if extraction is too short or too long
+                Clarify differences depending on plant material type.
+                {preparation_info}
+                {prompt_article_writing_rules}
+            ''',
+            'regen': regen_function,
+        },
+        {
+            'id': 'procedure__strength',
+            'hierarchy': 'h3',
+            'heading': f'''
+                How to Adjust the Strength of the Preparation
+            ''',
+            'brief': f'''
+                {prompt_article_title}
+                Brief
+                How to Adjust the Strength of the Preparation
+                Explain how users can control the potency of the preparation.
+                Discuss:
+                increasing or reducing herb quantity
+                adjusting extraction time
+                adjusting solvent volume
+                strong vs mild preparations
+                {preparation_info}
+                {prompt_article_writing_rules}
+            ''',
+            'regen': regen_function,
+        },
+        {
+            'id': 'procedure__strain_store',
+            'hierarchy': 'h3',
+            'heading': f'''
+                How to Strain and Store the Preparation
+            ''',
+            'brief': f'''
+                {prompt_article_title}
+                Brief
+                How to Strain and Store the Preparation
+                Explain what to do after the extraction is complete.
+                Cover:
+                filtering methods
+                storage containers
+                refrigeration or preservation
+                typical shelf life
+                Focus on maintaining potency and safety.
+                {preparation_info}
+                {prompt_article_writing_rules}
+            ''',
+            'regen': regen_function,
+        },
+        {
+            'id': 'procedure__mistakes',
+            'hierarchy': 'h3',
+            'heading': f'''
+            Common Mistakes to Avoid When Preparing {entity}
+            ''',
+            'brief': f'''
+                {prompt_article_title}
+                Brief
+                Common Mistakes to Avoid When Preparing {entity}
+                Explain frequent preparation errors and how to avoid them.
+                Examples:
+                overheating delicate herbs
+                incorrect ratios
+                over-extraction
+                improper storage
+                {preparation_info}
+                {prompt_article_writing_rules}
+            ''',
+            'regen': regen_function,
+        },
+        {
+            'id': 'usage',
+            'hierarchy': 'h2',
+            'heading': f'''
+                Which Herbs and Plant Parts Work Best for {entity}
+            ''',
+            'brief': f'''
+                {prompt_article_title}
+                Which Herbs and Plant Parts Work Best for {entity}
+                Intent covered: usage / application
+                Brief
+                Explain when this preparation method is appropriate.
+                Describe:
+                which plant parts it works best for
+                examples of specific herbs
+                why these herbs respond well to this preparation method
+                Example structure:
+                leaves and flowers
+                roots and bark
+                aromatic herbs
+                mucilaginous herbs
+                Focus on selection criteria, not preparation steps.
+                {preparation_info}
+                {prompt_article_writing_rules}
+            ''',
+            'regen': regen_function,
+        },
+        {
+            'id': 'comparison',
+            'hierarchy': 'h2',
+            'heading': f'''
+                {entity} vs Other Herbal Preparations
+            ''',
+            'brief': f'''
+                {prompt_article_title}
+                {entity} vs Other Herbal Preparations
+                Intent covered: comparison
+                Brief
+                Explain how this preparation differs from other extraction methods.
+                Compare with other pereparation types like the following when it makes sense:
+                infusion
+                decoction
+                tincture
+                maceration
+                Focus on differences in:
+                solvent
+                extraction strength
+                preparation time
+                plant parts suitability
+                A simple comparison table improves clarity and supports comparison queries.
+                {preparation_info}
+                {prompt_article_writing_rules}
+            ''',
+            'regen': regen_function,
+        },
+        {
+            'id': 'when',
+            'hierarchy': 'h2',
+            'heading': f'''
+                When to Use {entity} in Herbal Practice
+            ''',
+            'brief': f'''
+                {prompt_article_title}
+                When to Use {entity} in Herbal Practice
+                Intent covered: practical decision-making
+                Brief
+                Explain situations where this preparation method is preferred.
+                Discuss:
+                medicinal goals
+                herbal traditions
+                convenience and shelf life
+                strength of extraction
+                This section answers questions like:
+                when should you use a decoction instead of an infusion
+                Focus on decision logic, not preparation instructions.
+                {preparation_info}
+                {prompt_article_writing_rules}
+            ''',
+            'regen': regen_function,
+        },
+        {
+            'id': 'safety',
+            'hierarchy': 'h2',
+            'heading': f'''
+                Safety Considerations and Best Practices
+            ''',
+            'brief': f'''
+                {prompt_article_title}
+                Safety Considerations and Best Practices
+                Intent covered: safety intent
+                Brief
+                Provide responsible guidance for safe preparation and use.
+                Cover:
+                proper herb identification
+                contamination risks
+                storage recommendations
+                dosage awareness
+                Clarify that some herbs require professional guidance.
+                Avoid repeating preparation steps; focus strictly on risk prevention.
+                {preparation_info}
+                {prompt_article_writing_rules}
+            ''',
+            'regen': regen_function,
+        },
+        {
+            'id': 'historical',
+            'hierarchy': 'h2',
+            'heading': f'''
+                The Role of {entity} in Traditional Herbal Medicine
+            ''',
+            'brief': f'''
+                {prompt_article_title}
+                The Role of {entity} in Traditional Herbal Medicine
+                Intent covered: contextual / historical
+                Brief
+                Explain how this preparation method has been used historically in herbal traditions.
+                Discuss:
+                traditional herbal systems (European, Chinese, Ayurvedic, etc.)
+                common historical uses
+                why this preparation method became widely used
+                This section adds topical depth and cultural context without overlapping with practical sections.
+                {preparation_info}
+                {prompt_article_writing_rules}
+            ''',
+            'regen': regen_function,
+        },
+
     ]
 
     html_article = ''
@@ -1478,17 +1813,64 @@ def gen():
     preparations__preparation__gen(
         {
             'entity': 'Infusions',
+            'entity_singular': 'Infusion',
+            'preparation_info': 'uses hot water',
             'preparation_steps': '',
         }
     )
-    quit()
-    preparations__preparation__gen('Decoctions')
-    preparations__preparation__gen('Tinctures')
-    preparations__preparation__gen('Macerations')
-    preparations__preparation__gen('Syrups')
-    preparations__preparation__gen('Oils')
-    preparations__preparation__gen('Salves')
-    preparations__preparation__gen('Poultices')
-    preparations__preparation__gen('Compresses')
-    preparations__preparation__gen('Steam Inhalations')
-    
+    preparations__preparation__gen(
+        {
+            'entity': 'Decoctions',
+            'entity_singular': 'Decoction',
+            'preparation_steps': '',
+        }
+    )
+    preparations__preparation__gen(
+        {
+            'entity': 'Tinctures',
+            'entity_singular': 'Tincture',
+            'preparation_steps': '',
+        }
+    )
+    preparations__preparation__gen(
+        {
+            'entity': 'Macerations',
+            'entity_singular': 'Maceration',
+            'preparation_steps': '',
+        }
+    )
+    preparations__preparation__gen(
+        {
+            'entity': 'Syrups',
+            'entity_singular': 'Syrup',
+            'preparation_steps': '',
+        }
+    )
+    preparations__preparation__gen(
+        {
+            'entity': 'Oils',
+            'entity_singular': 'Oil',
+            'preparation_steps': '',
+        }
+    )
+    preparations__preparation__gen(
+        {
+            'entity': 'Salves',
+            'entity_singular': 'Salve',
+            'preparation_steps': '',
+        }
+    )
+    preparations__preparation__gen(
+        {
+            'entity': 'Poultices',
+            'entity_singular': 'Poultice',
+            'preparation_steps': '',
+        }
+    )
+    preparations__preparation__gen(
+        {
+            'entity': 'Compresses',
+            'entity_singular': 'Compress',
+            'preparation_steps': '',
+        }
+    )
