@@ -226,7 +226,7 @@ if 0:
 ########################################
 # HERBAL MEDICINE
 ########################################
-if 0:
+if 1:
     if 0:
         from ai import herbal_medicine_images
         herbal_medicine_images.main()
@@ -237,7 +237,7 @@ if 0:
 ########################################
 # HOME...........................[HOM]
 ########################################
-if 1:
+if 0:
     if 0:
         ### OLD
         from lib import pag_home
@@ -249,7 +249,7 @@ if 1:
 ########################################
 # LEARNING
 ########################################
-if 1:
+if 0:
     if 1:
         from hub import learning_hub
         learning_hub.gen()

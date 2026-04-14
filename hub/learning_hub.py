@@ -6,7 +6,8 @@ from lib import polish
 from lib import components
 from lib import sections
 
-model_filepath = '/home/ubuntu/vault-tmp/llm/Qwen3.5-9B-Q8_0.gguf'
+# model_filepath = '/home/ubuntu/vault-tmp/llm/Qwen3.5-9B-Q8_0.gguf'
+model_filepath = '/home/ubuntu/vault-tmp/llm/gemma-4-26B-A4B-it-UD-Q4_K_XL.gguf'
 
 def paragraph_format_1N1(text):
     sentences = text.strip().split('. ')
@@ -74,7 +75,7 @@ def paragraph__gen(json_article_filepath, core_entity='learning paths', key='', 
     '''
     return html
 
-def section__gen(json_article_filepath, entity, key='', title='', heading='', brief='', start_text='', regen=False, dispel=False):
+def section__gen(json_article_filepath, entity, key='', title='', heading='', brief='', start_text='', top_img_src='', link_anchor='', link_href='', regen=False, dispel=False):
     ### llm
     json_article = io.json_read(json_article_filepath, create=True)
     if key not in json_article: json_article[key] = ''
@@ -88,7 +89,6 @@ def section__gen(json_article_filepath, entity, key='', title='', heading='', br
             prompt = textwrap.dedent(f'''
                 {brief}
             ''').strip()
-            print(prompt)
             reply = llm.reply(prompt, model_filepath)
             if '</think>' in reply:
                 reply = reply.split('</think>')[1].strip()
@@ -100,8 +100,15 @@ def section__gen(json_article_filepath, entity, key='', title='', heading='', br
     paragraph = json_article[key]
     paragraph_formatted = paragraph_format_1N1(paragraph)
     # paragraph_formatted = paragraph
+
+    if top_img_src != '': html_top_img_src = f'''<img src="{top_img_src}">'''
+    else: html_top_img_src = ''
+    if link_anchor != '' and link_href != '':
+        html_link = f'''<a href="{link_href}">{link_anchor}</a>'''
+        paragraph_formatted = paragraph_formatted.replace(link_anchor, html_link)
     html = f'''
         <{heading}>{title}</{heading}>
+        {html_top_img_src}
         {paragraph_formatted}
     '''
     return html
@@ -1271,16 +1278,19 @@ Is the Apothecary Path Safe for Beginners?
     io.folder_create_from_filepath(html_filepath)
     with open(html_filepath, 'w') as f: f.write(html)
 
-def preparations__preparation__gen(data):
+def preparations__preparation__gen__bak(data, preparations=[]):
     entity = data['entity']
     entity_singular = data['entity_singular']
     preparation_steps = data['preparation_steps']
     if 'preparation_info' in data: 
         preparation_info = f'''
-            Additional context: {data['preparation_info']}
+            Additional context: 
+            Temperature: {data['preparation_info']}
         '''
     else:
         preparation_info = ''
+
+    preparations_names_plurals = [item['name_plural'] for item in preparations]
     
     entity_slug = polish.sluggify(entity)
     url_slug = f'preparations/{entity_slug}'
@@ -1362,6 +1372,7 @@ Do not include headings or formatting, only the paragraph text.
             'brief': f'''
                 {prompt_article_title}
                 {entity}: Definition, Method, and Uses in Herbal Medicine
+                Use the following structure:
                 Brief
                 The introduction must immediately satisfy definition + purpose + procedural framing in the first 2–3 sentences.
                 Explain what the preparation is, how it extracts medicinal compounds, and when it is typically used.
@@ -1374,10 +1385,14 @@ Do not include headings or formatting, only the paragraph text.
                 Sentence 2 → extraction mechanism
                 Sentence 3 → typical herbs or plant parts used
                 Sentence 4 → when this preparation is preferred
-                This paragraph establishes entity identity and topical salience, which strongly influences retrieval probability.
+                Keyword you must include:
+                - herbal preparations
                 {prompt_article_writing_rules}
             ''',
             'html_after': '[toc]',
+            'top_img_src': f'/images/preparations/herbal-{entity_slug}.jpg',
+            'link_anchor': 'herbal preparations',
+            'link_href': '/preparations.html',
             'regen': regen_function,
         },
         {
@@ -1408,7 +1423,6 @@ Do not include headings or formatting, only the paragraph text.
             'hierarchy': 'h2',
             'heading': f'''
                 How the {entity_singular} Extraction Process Works
-                How to Prepare an Herbal {entity} (Step-by-Step)
             ''',
             'brief': f'''
                 {prompt_article_title}
@@ -1659,6 +1673,7 @@ Do not include headings or formatting, only the paragraph text.
             ''',
             'regen': regen_function,
         },
+
         {
             'id': 'comparison',
             'hierarchy': 'h2',
@@ -1671,21 +1686,16 @@ Do not include headings or formatting, only the paragraph text.
                 Intent covered: comparison
                 Brief
                 Explain how this preparation differs from other extraction methods.
-                Compare with other pereparation types like the following when it makes sense:
-                infusion
-                decoction
-                tincture
-                maceration
                 Focus on differences in:
                 solvent
                 extraction strength
                 preparation time
                 plant parts suitability
-                A simple comparison table improves clarity and supports comparison queries.
                 {preparation_info}
                 {prompt_article_writing_rules}
             ''',
-            'regen': regen_function,
+            'start_text': '{entity} differ from ',
+            'regen': True,
         },
         {
             'id': 'when',
@@ -1765,6 +1775,16 @@ Do not include headings or formatting, only the paragraph text.
     for section in _sections_new:
         if 'regen' in section: _regen = section['regen']
         else: _regen = regen_function
+        if 'top_img_src' in section: top_img_src = section['top_img_src']
+        else: top_img_src = ''
+        if 'link_anchor' in section and 'link_href' in section: 
+            link_anchor = section['link_anchor']
+            link_href = section['link_href']
+        else:
+            link_anchor = ''
+            link_href = ''
+        if 'start_text' in section: start_text = section['start_text']
+        else: start_text = ''
         html_article += section__gen(
                 json_article_filepath, 
                 entity=entity,
@@ -1772,8 +1792,386 @@ Do not include headings or formatting, only the paragraph text.
                 title=section['heading'],
                 heading=section['hierarchy'],
                 brief=section['brief'],
+                top_img_src=top_img_src,
+                link_anchor=link_anchor,
+                link_href=link_href,
+                start_text=start_text,
                 regen=_regen, dispel=dispel_function,
         )
+        if 'html_after' in section: html_article += section['html_after']
+
+    # print(html_article)
+    ###
+    html_article = sections.toc(html_article)
+    # print('###########################################################3')
+    # print(html_article)
+
+    ###
+    head_html = components.html_head(
+        meta_title, meta_description, css='/styles-herb-monograph.css', canonical=canonical_html
+    )
+    import textwrap
+    html = textwrap.dedent(f''' 
+        <!DOCTYPE html>
+        <html lang="en">
+        {head_html}
+        <body>
+            {sections.header_default()}
+            {sections.breadcrumbs_new(url_slug)}
+            <main>
+                <article class="container-md article">
+                    {html_article}
+                </article>
+            </main>
+            {sections.footer()}
+        </body>
+        </html>
+    ''').strip()
+    html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
+    io.folder_create_from_filepath(html_filepath)
+    with open(html_filepath, 'w') as f: f.write(html)
+
+
+
+def preparations__preparation__gen(preparation_data, preparations_data=[]):
+    entity = preparation_data['entity']
+    entity_url = preparation_data['url']
+    entity_singular = preparation_data['name_singular']
+    if 'preparation_info' in preparation_data: 
+        preparation_info = f'''
+            Additional context: 
+            Temperature: {preparation_data['preparation_info']}
+        '''
+    else:
+        preparation_info = ''
+    
+    entity_slug = polish.sluggify(entity)
+    url_slug = f'preparations/{entity_url}'
+    meta_title = f'{entity}: Definition, Method, and Uses'
+    meta_description = ''
+    canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''
+
+    ########################################
+    # json
+    ########################################
+    json_article_filepath = f'''{g.DATABASE_FOLDERPATH}/json/{url_slug}.json'''
+    json_article = io.json_read(json_article_filepath, create=True)
+    json_article['url'] = url_slug
+    io.json_write(json_article_filepath, json_article)
+
+    '''
+    H1
+    [Preparation Name]: Definition, Preparation Method, and Uses in Herbal Medicine
+    H2
+    What Is an Herbal [Preparation Name]?
+    H2
+    How the [Preparation Name] Extraction Process Works
+    H2
+    How to Prepare an Herbal [Preparation Name] (Step-by-Step)
+    H3
+    Ingredients and Equipment Needed
+    H3
+    Step-by-Step Preparation Process
+    H3
+    Recommended Ratios, Time, and Temperature
+    H2
+    Best Herbs and Plant Parts for [Preparation Name] Preparations
+    H2
+    [Preparation Name] vs Other Herbal Preparations
+    H2
+    When to Use [Preparation Name] in Herbal Practice
+    H2
+    Safety Considerations and Best Practices
+    H2
+    The Role of [Preparation Name] in Traditional Herbal Medicine
+    '''
+
+    regen_function = True
+    dispel_function = False
+
+    html_article = ''
+
+    prompt_article_title = f'''
+Write the section for an article titled: "{entity}: Definition, Method, and Uses
+    '''
+    prompt_article_writing_rules = f'''
+Writing rules:
+- Write 4–6 concise sentences.
+- Use clear factual statements and avoid filler language.
+- Maintain an educational tone suitable for beginner herbalists.
+Do not include headings or formatting, only the paragraph text.
+    '''
+
+    ### intro
+    regen = regen_function
+    dispel = dispel_function
+    key = 'intro'
+    json_article = io.json_read(json_article_filepath, create=True)
+    if key not in json_article: json_article[key] = ''
+    if regen: json_article[key] = ''
+    if dispel: 
+        json_article[key] = ''
+        io.json_write(json_article_filepath, json_article)
+    if not dispel:
+        if json_article[key] == '':
+            import textwrap
+            prompt = textwrap.dedent(f'''
+                {prompt_article_title}
+                Brief
+                The introduction must immediately satisfy definition + purpose + procedural framing in the first 2–3 sentences.
+                Explain what the preparation is, how it extracts medicinal compounds, and when it is typically used.
+                Include:
+                the extraction principle (water, alcohol, oil, heat, etc.)
+                plant parts commonly used
+                the main advantage of the preparation
+                Example structure:
+                Sentence 1 → definition
+                Sentence 2 → extraction mechanism
+                Sentence 3 → typical herbs or plant parts used
+                Sentence 4 → when this preparation is preferred
+                Include the following keywords one time in the answer were they fit best and flow naturally:
+                "herbal preparations"
+                {prompt_article_writing_rules}
+                Start the reply with: "{entity} are ".
+            ''').strip()
+            print(prompt)
+            reply = llm.reply(prompt, model_filepath)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            json_article[key] = reply
+            io.json_write(json_article_filepath, json_article)
+            print(json_article_filepath)
+    paragraph = json_article[key]
+    paragraph_formatted = paragraph_format_1N1(paragraph)
+    link_anchor = 'herbal preparations'
+    link_href = '/preparations.html'
+    if link_anchor != '' and link_href != '':
+        html_link = f'''<a href="{link_href}">{link_anchor}</a>'''
+        paragraph_formatted = paragraph_formatted.replace(link_anchor, html_link)
+    html_article += f'''
+        <h1>{entity}: Definition, Method, and Uses in Herbal Medicine</h1>
+        <img src="/images/preparations/{entity_slug}.jpg">
+        {paragraph_formatted}
+        [toc]
+    '''
+
+    ### definition
+    regen = regen_function
+    dispel = dispel_function
+    key = 'definition'
+    json_article = io.json_read(json_article_filepath, create=True)
+    if key not in json_article: json_article[key] = ''
+    if regen: json_article[key] = ''
+    if dispel: 
+        json_article[key] = ''
+        io.json_write(json_article_filepath, json_article)
+    if not dispel:
+        if json_article[key] == '':
+            import textwrap
+            prompt = textwrap.dedent(f'''
+                {prompt_article_title}
+                Write the section "What is {entity} and how does it function?" for an article titled: "{entity}: Definition, Method, and Uses"
+                Cover the following.
+                Goal: Establish the "Is-A" relationship
+                Attributes to cover:
+                - Core Definition: A concise, dictionary-style definition.
+                - Etymology/Linguistics: (Optional but builds topical authority) Where the term comes from.
+                - Classification: Explicitly state its place in the hierarchy (*Liquid Extract $\rightarrow$ [Entity]*).
+                - Primary Purpose: Why does this form exist? (e.g., solubility, shelf-life, potency).
+                Start with the following words: {entity} are . 
+                {prompt_article_writing_rules}
+                Never include the character "—".
+            ''').strip()
+            print(prompt)
+            # prompt = io.file_read('prompts/preparations-[preparation]-what.txt')
+            # prompt = prompt.replace('{{entity}}', entity)
+            reply = llm.reply(prompt, model_filepath)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            json_article[key] = reply
+            io.json_write(json_article_filepath, json_article)
+            print(json_article_filepath)
+    paragraph = json_article[key]
+    paragraph_formatted = paragraph_format_1N1(paragraph)
+    html_article += f'''
+        <h2>What Is an Herbal {entity_singular}?</h2>
+        {paragraph_formatted}
+    '''
+
+    ### mechanism
+    regen = regen_function
+    dispel = dispel_function
+    key = 'mechanism'
+    json_article = io.json_read(json_article_filepath, create=True)
+    if key not in json_article: json_article[key] = ''
+    if regen: json_article[key] = ''
+    if dispel: 
+        json_article[key] = ''
+        io.json_write(json_article_filepath, json_article)
+    if not dispel:
+        if json_article[key] == '':
+            import textwrap
+            prompt = textwrap.dedent(f'''
+                Write a section for an article titled: "{entity}: Definition, Method, and Uses"
+                The section is about "How Does the {entity} Extraction Process Work?"
+                Cover the following when appropriate:
+                - Extraction Principles
+                - Solvent/Menstruum Requirements
+                - Solvent-to-Herb Ratio
+                - Temperature & Time Variables
+                {prompt_article_writing_rules}
+                Never include the character "—".
+            ''').strip()
+            print(prompt)
+            reply = llm.reply(prompt, model_filepath)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            json_article[key] = reply
+            io.json_write(json_article_filepath, json_article)
+            print(json_article_filepath)
+    paragraph = json_article[key]
+    paragraph_formatted = paragraph_format_1N1(paragraph)
+    html_article += f'''
+        <h2>How Does the {entity} Extraction Process Work?</h2>
+        {paragraph_formatted}
+    '''
+
+    regen = regen_function
+    dispel = dispel_function
+    key = 'procedure'
+    json_article = io.json_read(json_article_filepath, create=True)
+    if key not in json_article: json_article[key] = ''
+    if regen: json_article[key] = ''
+    if dispel: 
+        json_article[key] = ''
+        io.json_write(json_article_filepath, json_article)
+    if not dispel:
+        if json_article[key] == '':
+            import textwrap
+            prompt = textwrap.dedent(f'''
+                Write a section for an article titled: "{entity}: Definition, Method, and Uses"
+                The section is about "Step-by-Step Protocol: How to Prepare {entity}"
+                Cover the following when appropriate:
+                - Required Equipment
+                - Step-by-Step Procedure
+                - Critical Success Factors
+                - Safety and Contamination Control
+                {prompt_article_writing_rules}
+            ''').strip()
+            print(prompt)
+            reply = llm.reply(prompt, model_filepath)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            json_article[key] = reply
+            io.json_write(json_article_filepath, json_article)
+            print(json_article_filepath)
+    paragraph = json_article[key]
+    paragraph_formatted = paragraph_format_1N1(paragraph)
+    html_article += f'''
+        <h2>Step-by-Step Protocol: How to Prepare {entity}</h2>
+        {paragraph_formatted}
+    '''
+
+    regen = regen_function
+    dispel = dispel_function
+    key = 'comparision'
+    json_article = io.json_read(json_article_filepath, create=True)
+    if key not in json_article: json_article[key] = ''
+    if regen: json_article[key] = ''
+    if dispel: 
+        json_article[key] = ''
+        io.json_write(json_article_filepath, json_article)
+    if not dispel:
+        if json_article[key] == '':
+            import textwrap
+            prompt = textwrap.dedent(f'''
+                Write a section for an article titled: "{entity}: Definition, Method, and Uses"
+                The section is about "{entity} vs. Other Preparations: Key Differences in Herbal Preparation"
+                {prompt_article_writing_rules}
+            ''').strip()
+            print(prompt)
+            reply = llm.reply(prompt, model_filepath)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            json_article[key] = reply
+            io.json_write(json_article_filepath, json_article)
+            print(json_article_filepath)
+    paragraph = json_article[key]
+    paragraph_formatted = paragraph_format_1N1(paragraph)
+    html_article += f'''
+        <h2>{entity} vs. Other Preparations: Key Differences in Herbal Preparation</h2>
+        {paragraph_formatted}
+    '''
+
+    regen = regen_function
+    dispel = dispel_function
+    key = 'plants'
+    json_article = io.json_read(json_article_filepath, create=True)
+    if key not in json_article: json_article[key] = ''
+    if regen: json_article[key] = ''
+    if dispel: 
+        json_article[key] = ''
+        io.json_write(json_article_filepath, json_article)
+    if not dispel:
+        if json_article[key] == '':
+            import textwrap
+            prompt = textwrap.dedent(f'''
+                Write a section for an article titled: "{entity}: Definition, Method, and Uses"
+                The section is about "Which Plants and Phytochemicals are Best for {entity}?"
+                {prompt_article_writing_rules}
+            ''').strip()
+            print(prompt)
+            reply = llm.reply(prompt, model_filepath)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            json_article[key] = reply
+            io.json_write(json_article_filepath, json_article)
+            print(json_article_filepath)
+    paragraph = json_article[key]
+    paragraph_formatted = paragraph_format_1N1(paragraph)
+    html_article += f'''
+        <h2>Which Plants and Phytochemicals are Best for {entity}?</h2>
+        {paragraph_formatted}
+    '''
+
+    regen = regen_function
+    dispel = dispel_function
+    key = 'storage'
+    json_article = io.json_read(json_article_filepath, create=True)
+    if key not in json_article: json_article[key] = ''
+    if regen: json_article[key] = ''
+    if dispel: 
+        json_article[key] = ''
+        io.json_write(json_article_filepath, json_article)
+    if not dispel:
+        if json_article[key] == '':
+            import textwrap
+            prompt = textwrap.dedent(f'''
+                Write a section for an article titled: "{entity}: Definition, Method, and Uses"
+                The section is about "How to Store {entity} for Long-Term Stability"
+                {prompt_article_writing_rules}
+            ''').strip()
+            print(prompt)
+            reply = llm.reply(prompt, model_filepath)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            json_article[key] = reply
+            io.json_write(json_article_filepath, json_article)
+            print(json_article_filepath)
+    paragraph = json_article[key]
+    paragraph_formatted = paragraph_format_1N1(paragraph)
+    html_article += f'''
+        <h2>How to Store {entity} for Long-Term Stability</h2>
+        {paragraph_formatted}
+    '''
+
 
     # print(html_article)
     ###
@@ -1810,14 +2208,136 @@ Do not include headings or formatting, only the paragraph text.
 def gen():
     learning_herbal_medicine__learning_paths__gen()
     learning_herbal_medicine__learning_paths__apothecary__gen()
-    preparations__preparation__gen(
+    preparations_data = [
         {
-            'entity': 'Infusions',
-            'entity_singular': 'Infusion',
-            'preparation_info': 'uses hot water',
-            'preparation_steps': '',
-        }
-    )
+            'url': 'infusions',
+            'entity': 'Herbal Infusions',
+            'name_plural': 'Infusions',
+            'name_singular': 'Infusion',
+            'manual_info': {
+                'solvent': 'water',
+                'temperature_general': 'use hot water',
+                'temperature_specific': 'use 80 degree celsius water',
+            }
+        },
+        {
+            'url': 'wines',
+            'entity': 'Herbal Wines',
+            'name_plural': 'Wines',
+            'name_singular': 'Wine',
+            'manual_info': {
+                'solvent': 'wine',
+                'temperature_general': '',
+                'temperature_specific': '',
+            }
+        },
+        {
+            'url': 'vinegars',
+            'entity': 'Herbal Vinegars',
+            'name_plural': 'Vinegars',
+            'name_singular': 'Vinegar',
+            'manual_info': {
+                'solvent': 'vinegar',
+                'temperature_general': '',
+                'temperature_specific': '',
+            }
+        },
+        {
+            'url': 'decoctions',
+            'entity': 'Herbal Decoctions',
+            'name_plural': 'Decoctions',
+            'name_singular': 'Decoction',
+            'manual_info': {
+                'temperature_general': '',
+                'temperature_specific': '',
+            }
+        },
+        {
+            'url': 'tinctures',
+            'entity': 'Herbal Tinctures',
+            'name_plural': 'Tinctures',
+            'name_singular': 'Tincture',
+            'manual_info': {
+                'temperature_general': '',
+                'temperature_specific': '',
+            }
+        },
+        {
+            'url': 'glycerites',
+            'entity': 'Herbal Glycerites',
+            'name_plural': 'Glycreites',
+            'name_singular': 'Glycreite',
+            'manual_info': {
+                'temperature_general': '',
+                'temperature_specific': '',
+            }
+        },
+        {
+            'url': 'oxymels',
+            'entity': 'Herbal Oxymels',
+            'name_plural': 'Oxymels',
+            'name_singular': 'Oxymel',
+            'manual_info': {
+                'temperature_general': '',
+                'temperature_specific': '',
+            }
+        },
+        {
+            'url': 'syrups',
+            'entity': 'Herbal Syrups',
+            'name_plural': 'Syrups',
+            'name_singular': 'Syrup',
+            'manual_info': {
+                'temperature_general': '',
+                'temperature_specific': '',
+            }
+        },
+        {
+            'url': 'oils',
+            'entity': 'Herbal Oils',
+            'name_plural': 'Oils',
+            'name_singular': 'Oil',
+            'manual_info': {
+                'temperature_general': '',
+                'temperature_specific': '',
+            }
+        },
+        {
+            'url': 'poultices',
+            'entity': 'Herbal Poultices',
+            'name_plural': 'Poultices',
+            'name_singular': 'Poultice',
+            'manual_info': {
+                'temperature_general': '',
+                'temperature_specific': '',
+            }
+        },
+        {
+            'url': 'compresses',
+            'entity': 'Herbal Compresses',
+            'name_plural': 'Compresses',
+            'name_singular': 'Compress',
+            'manual_info': {
+                'temperature_general': '',
+                'temperature_specific': '',
+            }
+        },
+        {
+            'url': 'liniments',
+            'entity': 'Herbal Liniments',
+            'name_plural': 'Liniments',
+            'name_singular': 'Liniment',
+            'manual_info': {
+                'temperature_general': '',
+                'temperature_specific': '',
+            }
+        },
+    ]
+    for preparation_data in preparations_data:
+        preparations__preparation__gen(preparation_data, preparations_data)
+        quit()
+
+    quit()
     preparations__preparation__gen(
         {
             'entity': 'Decoctions',

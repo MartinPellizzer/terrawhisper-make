@@ -1,0 +1,78 @@
+IA (Information Architecture)
+
+PASE 1. semantic entity extraction
+    - define core entity (herbal medicine)
+    - define related entities
+    - define attributes
+
+PASE 2. topical map (hierarchy)
+    - level 1. root (topical pillar)
+        - subject: intro herbal medicine (theory, history, ...)
+
+    - level 2. semantic clusters (thematic silos)
+        Divide the subject into mutually exclusive, collectively exhaustive (MECE) clusters:
+        Cluster A: Botanical Identification 
+            (Taxonomy, Morphology, Seasonality).
+        Cluster B: Phytochemistry 
+            (Alkaloids, Flavonoids, Terpenes, Tannins).
+        Cluster C: Materia Medica 
+            (Specific herbs: e.g., Echinacea, Ashwagandha).
+        Cluster D: Preparation Methods 
+            (Tinctures, Infusions, Decoctions, Salves).
+        Cluster E: Safety & Toxicology 
+            (Drug interactions, Side effects).
+
+    - level 3. granular nodes (long-tail/specifics)
+        Ashwagandha -> 
+            Ashwagandha for Sleep 
+            Ashwagandha dosage in Tincture vs. Powder.
+
+
+PASE 3. Establishing Semantic Connectivity (The Internal Linking)
+In this framework, links are not just for SEO; they are **Semantic Bridges**. You must link nodes based on their relationship in the real world.
+
+*   **Thematic Links:** Link "Valerian" to "Sedative Herbs."
+*   **Functional Links:** Link "Alkaloids" to "Echinacea" (explaining *why* the chemical causes the effect).
+*   **Contextual Links:** Link "Decoctions" to "Hardy Roots" (explaining *how* to prepare specific plant parts).
+
+**The Rule:** Every time you mention a concept in an article that has its own dedicated page, you **must** link to it. This builds a "Web of Context."
+
+---
+
+### 4. Phase Four: Content Coverage & Semantic Density
+GÜBÜR’s methodology requires you to satisfy the **Search Intent** through **Information Foraging**. For "Learning Herbal Medicine," your content must answer the "How, Why, and What" to cover the semantic space.
+
+**For every "Herb" page, you must cover these Semantic Properties to achieve Topical Authority:**
+1.  **Taxonomy:** Scientific name, Family.
+2.  **Morphology:** What does the plant look like?
+3.  **Phytochemistry:** What are the active compounds?
+4.  **Pharmacology:** How does it work in the human body?
+5.  **Therapeutic Use:** What conditions does it treat?
+6.  **Preparation:** How is it extracted?
+7.  **Safety:** Who should avoid it?
+
+*If you miss "Phytochemistry" on a herb page, your semantic coverage is incomplete, and your authority is capped.*
+
+---
+
+### 5. Phase Five: Implementation Strategy (The Workflow)
+
+To avoid "Content Decay" and "Information Gaps," follow this order:
+
+1.  **Start with the "Definition" and "Theory" nodes:** Build the foundation so the search engine understands your "Context."
+2.  **Build the "Categorical" nodes:** Define your clusters (e.g., "Herbs for Digestion").
+3.  **Build the "Entity" nodes:** Create the individual herb pages.
+4.  **Connect upwards and downwards:** Use a "Hub and Spoke" model.
+
+#### Example Content Map for a single node:
+*   **Article 1 (Hub):** The Ultimate Guide to Herbal Tinctures.
+*   **Article 2 (Spoke):** How to choose an alcohol percentage for tinctures.
+*   **Article 3 (Spoke):** Using Glycerin as a solvent for children's tinctures.
+*   **Article 4 (Deep Spoke):** The chemical stability of Valerian in a 40% ABV tincture.
+
+### Summary Checklist for your "Learning Herbal Medicine" Site:
+*   [ ] **Does every page have a clear Entity?** (e.g., not "How to use it," but "How to use *Peppermint*")
+*   [ ] **Is the Taxonomy correct?** (Linking Latin names to common names)
+*   [ ] **Is there a logical hierarchy?** (General $\rightarrow$ Specific)
+*   [ ] **Is there "Semantic Completeness"?** (Do you cover chemistry, safety, and usage for every herb?)
+*   [ ] **Are links meaningful?** (Do links explain the relationship between two concepts?)

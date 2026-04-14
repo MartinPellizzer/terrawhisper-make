@@ -1,0 +1,89 @@
+TODO:
+
+read page 127 to end of chapter, book "the herbal medicine-maker's handbook"
+
+read page 189 to end of chapter, book "the herbal medicine-maker's handbook"
+
+---
+
+extraction process:
+- plant part
+- herb state (fresh, dryied)
+- extration time (soft tissues -> fast, hard tissues -> slow)
+- expost soft tissue by slicing parts (extra important for seeds and leaves, which are impermeable)
+- increase surface area to speed up extraction process (powder dried plant)
+- heat also increase extraction process speed
+- pros and cons of heat
+- when maceration done, liquid is poured off (decanted), and marc (insoluble pulp) pressed
+- percolation (column of mestrum flows through packed powdere herb)
+- maceration fresh herbs -> blending machine or chopping
+
+extraction process [preparation type]
+attributes:
+- temperature (hot, cold, vs, when)
+- containers (best/worst, why, when)
+- preservation and storage (consume within, immediate/future use)
+- dosage/ratio (common, exceptions, herbs weight/part if fresh/dry, ex for hot infusion: 1/20 herb/water [dried] - 1/10 herb/water [fresh])
+- time of extraction (ex infusion 20-30 mins)
+- strain
+- best herbs
+
+---
+
+solvents (liquid extracts):
+
+entities:
+- water
+- wine
+- vinegar
+- ethyl alcohol
+- alcohol-water mixture
+- oil
+- glycerin
+
+attributes:
+- availability
+- cost
+- quality (charactersitics) (ex. best/worst types of water, why)
+- preservative (y/n) (shelf-life)
+- adoption
+- relieability
+- components extracted
+
+industrial solvents (liquid extracts) -> DONT USE, NOT SAFE:
+acetone,
+chloroform
+methyl alcohol
+denatured alcohol
+amylic alcohol
+acetic ether
+sulfuric ether
+hexane
+and carbon disulfide
+
+---
+
+methods:
+- maceration (soaking)
+- digestion (soaking + heat [not boiling])
+- percolation
+
+---
+
+forms (entities):
+
+
+'''
+topics:
+- extraction process
+
+methods:
+- maceration (soaking)
+- infusion
+- decoction
+- digestion
+
+solvents:
+- vinegar
+- wine
+'''

@@ -7008,7 +7008,55 @@ def herbs__herb__gen(herb):
     io.folder_create_from_filepath(html_filepath)
     with open(html_filepath, 'w') as f: f.write(html)
 
+def page__home():
+    url_slug = 'index'
+    meta_title = f'Learn Herbal Medicine: A Complete Guide to Medicinal Herbs, Remedies, and Herbalism'
+    meta_description = ''
+    canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com">'''
+
+    html_hero = f'''
+        <h1>
+            Learn Herbal Medicine: A Complete Guide to Medicinal Herbs, Remedies, and Herbalism
+        </h1>
+        <p>
+            Discover how medicinal herbs work, how to prepare herbal remedies, and how to practice herbalism safely, from beginner basics to advanced herbal knowledge.
+        </p>
+        <p>
+            Explore structured guides on medicinal plants, herbal actions, plant chemistry, health applications, and traditional herbal practices used around the world.
+        </p>
+        <a href="/herbal-medicine.html">Start Learning Herbal Medicine</a>
+        <a href="/herbs.html">Explore Medicinal Herbs</a>
+    '''
+    html_main = f'''
+        {html_hero}
+    '''
+
+    ###
+    head_html = components.html_head(
+        meta_title, meta_description, css='/styles.css', canonical=canonical_html
+    )
+    import textwrap
+    html = textwrap.dedent(f''' 
+        <!DOCTYPE html>
+        <html lang="en">
+        {head_html}
+        <body>
+            {sections.header_default()}
+            <main>
+                {html_main}
+            </main>
+            {sections.footer()}
+        </body>
+        </html>
+    ''').strip()
+    html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
+    io.folder_create_from_filepath(html_filepath)
+    with open(html_filepath, 'w') as f: f.write(html)
+
+
 def main():
+    page__home()
+    quit()
     herbal_medicine__gen()
     ###
     # learning_herbal_medicine__learning_paths__gen()

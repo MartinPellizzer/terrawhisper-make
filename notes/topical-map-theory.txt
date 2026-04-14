@@ -1,0 +1,43 @@
+Information Architecture (IA)
+
+1. Entity Extraction (Expansion)
+
+information foraging theory ???
+
+article workflow:
+    1. entity definition: what is the "thing"
+    2. attribute mapping: what are the properties that define the "thing" (solvent, ration, etc...)
+    3. topical scope: how deep does this node go
+    4. intent layering: (when, how)
+
+intent:
+    - one dominant intent
+    - several secondary intents
+    
+    layered content artchitecture:
+        1. what
+        2. how
+        3. why/science (for topical authority boost too)
+        4. comparison (for links too)
+
+---
+
+keep structure / change depth (based on intent layer)
+
+expandable skeleton concept
+
+To execute this correctly, do not use a "Word Count Template." Use a **"Complexity-Based Attribute Checklist."**
+
+The Workflow Recommendation
+    1. use universal skeleton
+    2. use complexity modifier
+        before writing assign a complexity level to entity
+        - ex. infusion -> level 1
+        - ex. tincture -> level 3
+
+---
+
+master semantic skeleton
+
+based on koray and the previous conversations, give me a complete outline template that is generalized for all the types (forms) of preparations that involves liquid extraction. give this outline in headings (from h1 up to h3). remember that this outline must be MECE, to write the heading based on koray rules, include all the core attributes i need to cover in each section for authority, and the sections must be in logical order based on koray semantic.
+
