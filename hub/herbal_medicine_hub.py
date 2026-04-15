@@ -7009,26 +7009,68 @@ def herbs__herb__gen(herb):
     with open(html_filepath, 'w') as f: f.write(html)
 
 def page__home():
+    color_dark = '#101211'
+    color_carbon_powder_x2 = '#202422'
+    text_color = '#5f6368'
     url_slug = 'index'
     meta_title = f'Learn Herbal Medicine: A Complete Guide to Medicinal Herbs, Remedies, and Herbalism'
     meta_description = ''
     canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com">'''
 
     html_hero = f'''
-        <h1>
-            Learn Herbal Medicine: A Complete Guide to Medicinal Herbs, Remedies, and Herbalism
-        </h1>
-        <p>
-            Discover how medicinal herbs work, how to prepare herbal remedies, and how to practice herbalism safely, from beginner basics to advanced herbal knowledge.
-        </p>
-        <p>
-            Explore structured guides on medicinal plants, herbal actions, plant chemistry, health applications, and traditional herbal practices used around the world.
-        </p>
-        <a href="/herbal-medicine.html">Start Learning Herbal Medicine</a>
-        <a href="/herbs.html">Explore Medicinal Herbs</a>
+        <section style="background-color: #000; padding-top: 8rem; padding-bottom: 8rem; margin-bottom: 8rem;">
+            <div class="container-xl">
+                <div class="m-flex">
+                    <div style="flex: 2;">
+                        <h1 style="color: #fff; font-size: 5.6rem; font-weight: 400; line-height: 1.3; margin-bottom: 1.6rem; letter-spacing: -0.5px;">
+                            Learn Herbal Medicine: A Complete Guide to Medicinal Herbs, Remedies, and Herbalism
+                        </h1>
+                        <p style="color: #fff; margin-bottom: 1.6rem;">
+                            Discover how medicinal herbs work, how to prepare herbal remedies, and how to practice herbalism safely, from beginner basics to advanced herbal knowledge.
+                        </p>
+                        <p style="color: #fff; margin-bottom: 1.6rem;">
+                            Explore structured guides on medicinal plants, herbal actions, plant chemistry, health applications, and traditional herbal practices used around the world.
+                        </p>
+                        <a href="/herbal-medicine.html">Start Learning Herbal Medicine</a>
+                        <a href="/herbs.html">Explore Medicinal Herbs</a>
+                    </div>
+                    <div style="flex: 1;">
+                    </div>
+                </div>
+            </div>
+        </section>
     '''
+
+    html_article = f'''
+    <div class="container-xl">
+        <div class="m-flex">
+            <div style="flex: 3;">
+                <section style="margin-bottom: 4.8rem;">
+                    <h2 style="color: {color_carbon_powder_x2}; font-size: 4.8rem; font-weight: 400; line-height: 1.2; margin-bottom: 1.6rem;">
+                        What You Will Learn About Herbal Medicine
+                    </h2>
+                    <p style="color: {text_color};">
+    Herbal medicine includes a wide range of knowledge areas that explain how medicinal plants support health and how herbalists apply them in practice. You will learn about medicinal herbs and their therapeutic properties, how herbal preparations such as teas, tinctures, and oils are made, and how different herbal actions influence the body’s systems. The resource also explores how herbs are used for common health conditions, the plant chemistry known as phytochemicals that gives herbs their effects, and the safety principles required for responsible use. In addition, you will discover traditional herbal medicine systems and develop practical herbalism skills that connect plant knowledge, remedy preparation, and safe therapeutic application.
+                    </p>
+                </section>
+                <section style="margin-bottom: 4.8rem;">
+                    <h2 style="color: {color_carbon_powder_x2}; font-size: 4.8rem; font-weight: 400; line-height: 1.2; margin-bottom: 1.6rem;">
+                        Explore the Herbal Medicine Knowledge System
+                    </h2>
+                    <p style="color: {text_color};">
+The herbal medicine knowledge system is organized into interconnected topics that explain how medicinal plants are understood, prepared, and used in practice. You can explore individual herbs, learn how herbal preparations such as teas and tinctures are made, and understand herbal actions that describe how plants influence body systems and support health conditions. Additional sections examine the scientific foundations of herbal medicine through phytochemicals and plant families, along with traditional concepts like herbal energetics that help herbalists select appropriate remedies. The system also includes essential areas such as herbal safety, plant identification, and practical herbalism skills, creating a structured path for learning how herbs work, how they are used, and how herbal medicine is practiced responsibly.
+                    </p>
+                </section>
+            </div>
+            <div style="flex: 1;">
+            </div>
+        </div>
+    </div>
+    '''
+
     html_main = f'''
         {html_hero}
+        {html_article}
     '''
 
     ###

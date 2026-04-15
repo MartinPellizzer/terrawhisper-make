@@ -14,7 +14,7 @@ html {
 }
 
 body {
-    font-size: 1.8rem;
+    font-size: 1.6rem;
     line-height: 1.6;
     font-family: sans-serif;
     color: #333;
@@ -104,7 +104,7 @@ header {
     background-color: #ffffff;
     /* clean white */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    position: sticky;
+    /* position: sticky; */
     top: 0;
     z-index: 1000;
 }
@@ -192,6 +192,12 @@ header li {
 
     /* Use general sibling combinator ~ instead of + */
     #nav-toggle:checked~.main-nav .nav-links {
+        display: flex;
+    }
+}
+
+@media (min-width: 768px) {
+    .m-flex {
         display: flex;
     }
 }
