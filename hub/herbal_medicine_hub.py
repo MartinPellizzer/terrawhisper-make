@@ -7061,6 +7061,62 @@ def page__home():
 The herbal medicine knowledge system is organized into interconnected topics that explain how medicinal plants are understood, prepared, and used in practice. You can explore individual herbs, learn how herbal preparations such as teas and tinctures are made, and understand herbal actions that describe how plants influence body systems and support health conditions. Additional sections examine the scientific foundations of herbal medicine through phytochemicals and plant families, along with traditional concepts like herbal energetics that help herbalists select appropriate remedies. The system also includes essential areas such as herbal safety, plant identification, and practical herbalism skills, creating a structured path for learning how herbs work, how they are used, and how herbal medicine is practiced responsibly.
                     </p>
                 </section>
+                <section style="margin-bottom: 4.8rem;">
+                    <h2 style="color: {color_carbon_powder_x2}; font-size: 4.8rem; font-weight: 400; line-height: 1.2; margin-bottom: 1.6rem;">
+How Herbal Medicine Works
+                    </h2>
+                    <p style="color: {text_color};">
+Herbal medicine works because medicinal plants contain phytochemicals and bioactive plant compounds that interact with biological systems in the human body. These compounds can support the immune system, modulate the nervous system, improve digestion, and influence inflammatory responses, which is why different herbs are traditionally used for specific health conditions. Rather than targeting a single pathway, many herbs produce multi-system effects, supporting balance across physiological processes such as immunity, metabolism, and stress response. This broader interaction reflects the holistic healing principles of herbalism, where plant compounds help regulate and support the body’s natural ability to maintain health.
+                    </p>
+                </section>
+                <section style="margin-bottom: 4.8rem;">
+                    <h2 style="color: {color_carbon_powder_x2}; font-size: 4.8rem; font-weight: 400; line-height: 1.2; margin-bottom: 1.6rem;">
+Featured Medicinal Herbs
+                    </h2>
+                    <p style="color: {text_color};">
+Medicinal herbs are the foundation of herbal medicine, providing natural compounds that support health through plant-based healing traditions. Common herbs such as chamomile, ginger, turmeric, peppermint, lavender, and echinacea illustrate how different plants offer distinct therapeutic properties, from calming the nervous system and aiding digestion to supporting immune function and reducing inflammation. Each of these herbs contains bioactive phytochemicals that influence the body in specific ways and can be prepared as teas, tinctures, or other herbal remedies. Explore each herb to learn its medicinal actions, preparation methods, safety considerations, and traditional uses in herbal practice.
+                    </p>
+                </section>
+                <section style="margin-bottom: 4.8rem;">
+                    <h2 style="color: {color_carbon_powder_x2}; font-size: 4.8rem; font-weight: 400; line-height: 1.2; margin-bottom: 1.6rem;">
+Herbal Remedies and Preparations
+                    </h2>
+                    <p style="color: {text_color};">
+Medicinal herbs are transformed into remedies through specific preparation methods that extract their active compounds and make them usable for health support. Herbal teas, also called infusions, are made by steeping leaves or flowers in hot water, while decoctions simmer tougher plant parts like roots and bark to release their medicinal constituents. More concentrated preparations include tinctures, which use alcohol to extract plant compounds, as well as herbal oils and salves that deliver herbal properties through topical application to the skin. Other common forms such as capsules and herbal syrups provide convenient ways to consume medicinal herbs while preserving their therapeutic effects and supporting consistent dosage.
+                    </p>
+                </section>
+                <section style="margin-bottom: 4.8rem;">
+                    <h2 style="color: {color_carbon_powder_x2}; font-size: 4.8rem; font-weight: 400; line-height: 1.2; margin-bottom: 1.6rem;">
+Herbal Medicine for Everyday Health
+                    </h2>
+                    <p style="color: {text_color};">
+Herbal medicine is widely used to support everyday health concerns by applying medicinal herbs that influence specific biological systems and physiological responses. Many herbs help regulate stress and anxiety through nervine and adaptogenic actions, while others promote healthy sleep patterns by supporting nervous system relaxation. Digestive herbs such as bitters and carminatives assist with digestion and gut balance, and immune-supporting plants help strengthen the body’s natural defenses against infections. Additional herbs are traditionally used to reduce inflammation, soothe irritated tissues, and support skin health through antimicrobial, anti-inflammatory, and tissue-repairing plant compounds.
+                    </p>
+                </section>
+                <section style="margin-bottom: 4.8rem;">
+                    <h2 style="color: {color_carbon_powder_x2}; font-size: 4.8rem; font-weight: 400; line-height: 1.2; margin-bottom: 1.6rem;">
+Herbal Medicine Safety Principles
+                    </h2>
+                    <p style="color: {text_color};">
+Herbal medicine can provide significant health benefits, but medicinal plants must be used responsibly to ensure safety and effectiveness. Proper herbal dosage, awareness of contraindications, and understanding potential herb-drug interactions are essential because plant compounds can influence biological systems and may interact with medications or existing health conditions. Some plants contain toxic compounds or require careful preparation, and certain herbs may not be appropriate during pregnancy or for specific populations. Responsible herbal practice combines traditional knowledge with evidence-based research so that herbs are used safely, appropriately, and with a clear understanding of their effects on the body.
+                    </p>
+                </section>
+                <section style="margin-bottom: 4.8rem;">
+                    <h2 style="color: {color_carbon_powder_x2}; font-size: 4.8rem; font-weight: 400; line-height: 1.2; margin-bottom: 1.6rem;">
+How to Start Learning Herbal Medicine
+                    </h2>
+                    <p style="color: {text_color};">
+Learning herbal medicine begins with understanding the basic principles of medicinal plants and how herbs are traditionally used to support health and balance in the body. Beginners should start by studying common medicinal herbs, learning plant identification skills, and understanding the core properties and actions that make each herb useful for specific conditions. Practical learning includes preparing simple herbal remedies such as teas, infusions, and tinctures, while gradually building a small herbal medicine cabinet with widely used herbs for everyday wellness. To deepen knowledge and develop safe herbal practice, learners should explore reliable herbal study resources, including field guides, herbal medicine books, and structured educational materials that explain plant chemistry, preparation methods, and responsible herbal use.
+                    </p>
+                </section>
+                <section style="margin-bottom: 4.8rem;">
+                    <h2 style="color: {color_carbon_powder_x2}; font-size: 4.8rem; font-weight: 400; line-height: 1.2; margin-bottom: 1.6rem;">
+Start Exploring the Herbal Medicine Knowledge Network
+                    </h2>
+                    <p style="color: {text_color};">
+Explore the herbal medicine knowledge network to understand how medicinal plants, herbal remedies, and herbal practices connect within a complete system of natural health knowledge. Start with the Learn Herbal Medicine guide to understand the foundations of herbalism, then explore medicinal herbs, herbal preparations, and herbal actions to see how plants are used to support the body. You can also discover how herbal medicine applies to common health conditions, learn essential herbal safety principles, and develop practical herbalism skills for preparing and using herbs responsibly. Each section expands a different part of herbal medicine, helping you build a deeper understanding of medicinal plants and how herbalists use them in safe, effective ways.
+                    </p>
+                </section>
             </div>
             <div style="flex: 1;">
             </div>
