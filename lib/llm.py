@@ -1,7 +1,7 @@
 from llama_cpp import Llama
 
 llm = None
-def reply(prompt, model_filepath=''):
+def reply(prompt, model_filepath='', temperature=1):
     global llm
     if model_filepath == '':
         model_filepath = '/home/ubuntu/vault-tmp/llm/Qwen3-8B-Q4_K_M.gguf'
@@ -18,7 +18,7 @@ def reply(prompt, model_filepath=''):
         messages = chat_history,
         stream=True,
         # temperature=0.9,
-        temperature=1.0,
+        temperature=temperature,
         top_p=0.95,
         top_k=64,
     )
