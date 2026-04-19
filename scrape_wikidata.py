@@ -1,12 +1,7 @@
-wikidata_folderpath = f'/home/ubuntu/vault/terrawhisper/database/ssot/wikidata'
-taxdmp_folderpath = f'{wikidata_folderpath}/taxdmp'
-taxdmp_nodes_filepath = f'{taxdmp_folderpath}/nodes.dmp'
-taxdmp_names_filepath = f'{taxdmp_folderpath}/names.dmp'
-# wikidata_filepath = f'{wikidata_folderpath}/label-map.json'
-
 import os
 import json
 import shutil
+import sqlite3
 
 from neo4j import GraphDatabase
 
@@ -14,11 +9,21 @@ from lib import io
 from lib import llm
 from lib import data
 
+kg_folderpath = f'/home/ubuntu/vault/terrawhisper/database/ssot/kg'
+wikidata_folderpath = f'{kg_folderpath}/wikidata'
+taxdmp_folderpath = f'{wikidata_folderpath}/taxdmp'
+taxdmp_nodes_filepath = f'{taxdmp_folderpath}/nodes.dmp'
+taxdmp_names_filepath = f'{taxdmp_folderpath}/names.dmp'
+sqlite_database_filepath = f'{kg_folderpath}/taxonomy.db'
+# wikidata_filepath = f'{wikidata_folderpath}/label-map.json'
+
+'''
 uri = "bolt://localhost:7687"
 username = "neo4j"
 password = "Newoliark1"
 
 driver = GraphDatabase.driver(uri, auth=(username, password))
+'''
 
 def db_clear():
     with driver.session() as session:
@@ -98,13 +103,15 @@ def insert_families_orders():
             tx.run(query, rows=batch)
             tx.commit()
 
+'''
 insert_families_orders()
 
 driver.close()
 
-quit()
+quit() 
 # db_clear()
 db_insert__plant_family()
+'''
 
 '''
 def read_dmp(path, num_fields=None):
@@ -144,7 +151,6 @@ def read_dmp(path, num_fields=None):
             rows.append(parts)
     return rows
 
-'''
 nodes_families = []
 rows = read_dmp(taxdmp_nodes_filepath)
 nodes = []
@@ -169,33 +175,24 @@ print(f'NODES: {len(list(nodes_families))}')
 print(nodes[0])
 
 '''
-import sqlite3
-
-# connect (or create) database
-conn = sqlite3.connect("taxonomy.db")
-cur = conn.cursor()
-
 '''
-# create table
-cur.execute("""
-CREATE TABLE IF NOT EXISTS nodes (
-    tax_id INTEGER PRIMARY KEY,
-    parent_tax_id INTEGER,
-    rank TEXT
-)
-""")
 
-# transform rows → keep only needed fields
-nodes_data = [(int(r[0]), int(r[1]), r[2]) for r in nodes]
-
-# bulk insert (FAST)
-cur.executemany(
-    "INSERT INTO nodes (tax_id, parent_tax_id, rank) VALUES (?, ?, ?)",
-    nodes_data
-)
-
-conn.commit()
-'''
+def sqlite_table_nodes_create(nodes):
+    conn = sqlite3.connect(sqlite_database_filepath)
+    cur = conn.cursor()
+    cur.execute("""
+    CREATE TABLE IF NOT EXISTS nodes (
+        tax_id INTEGER PRIMARY KEY,
+        parent_tax_id INTEGER,
+        rank TEXT
+    )
+    """)
+    nodes_data = [(int(r[0]), int(r[1]), r[2]) for r in nodes]
+    cur.executemany(
+        "INSERT INTO nodes (tax_id, parent_tax_id, rank) VALUES (?, ?, ?)",
+        nodes_data
+    )
+    conn.commit()
 
 '''
 # how many rows?
@@ -301,10 +298,11 @@ print(len(parents))
 
 # print(cur.fetchall())
 
-quit()
+# quit()
 
         # if 'Rosaceae' in name_txt:
 
+'''
 rows = read_dmp(taxdmp_names_filepath)
 names_families = []
 for node in nodes_families:
@@ -403,24 +401,28 @@ for family in families:
     i += 1
     if i >= 5: break
 
-for item in names:
-    print(f'''TAXON_ID:     {item['taxon_id']}''')
-    print(f'''NAME_TXT:     {item['name_txt']}''')
-    print(f'''UNIQUE_NAME:  {item['unique_name']}''')
-    print(f'''NAME_CLASS:   {item['name_class']}''')
-    print()
+'''
+if 0:
+    for item in names:
+        print(f'''TAXON_ID:     {item['taxon_id']}''')
+        print(f'''NAME_TXT:     {item['name_txt']}''')
+        print(f'''UNIQUE_NAME:  {item['unique_name']}''')
+        print(f'''NAME_CLASS:   {item['name_class']}''')
+        print()
 
-for item in divisions:
-    print(f'''DIVISION_ID:      {item['division_id']}''')
-    print(f'''DIVISION_CDE:     {item['division_cde']}''')
-    print(f'''DIVISION_NAME:    {item['division_name']}''')
-    print(f'''COMMENTS:         {item['comments']}''')
-    print()
+    for item in divisions:
+        print(f'''DIVISION_ID:      {item['division_id']}''')
+        print(f'''DIVISION_CDE:     {item['division_cde']}''')
+        print(f'''DIVISION_NAME:    {item['division_name']}''')
+        print(f'''COMMENTS:         {item['comments']}''')
+        print()
 
+'''
 quit()
 
 
 quit()
+'''
 
 model_filepath = '/home/ubuntu/vault-tmp/llm/gemma-4-26B-A4B-it-UD-Q4_K_XL.gguf'
 
@@ -432,18 +434,22 @@ model_filepath = '/home/ubuntu/vault-tmp/llm/gemma-4-26B-A4B-it-UD-Q4_K_XL.gguf'
 def create_node(tx):
     tx.run("CREATE (n:Test {name: $name})", name="Python Node")
 
+'''
 with driver.session() as session:
     session.execute_write(create_node)
+'''
 
 def get_nodes(tx):
     query = "MATCH (n:Test) RETURN n.name AS name"
     result = tx.run(query)
     return [record["name"] for record in result]
 
+'''
 with driver.session() as session:
     names = session.execute_read(get_nodes)
     print(names)
 
+'''
 # driver.close()
 # quit()
 
@@ -696,7 +702,7 @@ def entities_relationships_distribution():
     io.json_write(f'{wikidata_folderpath}/relationships-distribution.json', p_distributions)
     quit()
 
-entities_relationships_distribution()
+# entities_relationships_distribution()
 
 def entities_jsons_get():
     import os
@@ -865,7 +871,7 @@ def triples_gen():
 # entities_jsons_get()
 # relationships_jsons_get()
 
-triples_gen()
+# triples_gen()
 
 def triples_resolution_sparql():
     import sys
@@ -965,10 +971,11 @@ def triples_extraction():
     # TODO
     # https://www.wikidata.org/w/api.php?action=wbgetentities&ids=Q37153|P31|Q5&props=labels&languages=en&format=json
 
-triples_extraction()
+# triples_extraction()
 
-quit()
+# quit()
 
+'''
 import requests
 
 def fetch_entities(qids):
@@ -1005,6 +1012,7 @@ query = """
     }
     LIMIT 500 OFFSET 0
 """
+'''
 
 
 def get_results(endpoint_url, query):
@@ -1016,6 +1024,7 @@ def get_results(endpoint_url, query):
     return sparql.query().convert()
 
 
+'''
 for i in range(2):
     results = get_results(endpoint_url, query)
 
@@ -1023,7 +1032,12 @@ for i in range(2):
         print(result)
 
     print(len(results["results"]["bindings"]))
+'''
 
 
+def main():
+    sqlite_table_nodes_create(nodes)
+    quit()
 
+main()
 
