@@ -1,7 +1,10 @@
 import os
 import json
+import time
+import random
 import shutil
 import sqlite3
+import requests
 
 from neo4j import GraphDatabase
 
@@ -17,19 +20,321 @@ taxdmp_names_filepath = f'{taxdmp_folderpath}/names.dmp'
 sqlite_database_filepath = f'{kg_folderpath}/taxonomy.db'
 # wikidata_filepath = f'{wikidata_folderpath}/label-map.json'
 
+
+def powo_plants_jsons():
+    plants_folderpath = f'{wikidata_folderpath}/entity_has-use_medicinal-plant'
+    plants_filepaths = sorted([f'{plants_folderpath}/{filename}' for filename in os.listdir(plants_folderpath)])
+    failed = []
+    for plant_filepath in plants_filepaths:
+        plant_filename_raw = plant_filepath.split('/')[-1].split('.')[0]
+        plant_data = io.json_read(plant_filepath)
+        try: claim = plant_data['entities'][plant_filename_raw]['claims']['P5037'][0]
+        except: claim = None
+        if claim:
+            value = claim['mainsnak']['datavalue']['value']
+            print(json.dumps(value, indent=4))
+            value_url_id = value.split(':')[-1]
+            print(value_url_id)
+            output_filepath = f'{kg_folderpath}/powo/plants-jsons/{value_url_id}.json'
+            if not os.path.exists(output_filepath):
+                url = f"https://powo.science.kew.org/api/2/taxon/{value}"
+                headers = {
+                    "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120 Safari/537.36"
+                }
+                try:
+                    response = requests.get(url, headers=headers)
+                    response.raise_for_status()
+                    data = response.json()
+                    io.json_write(output_filepath, data)
+                    print(data)
+                except:
+                    failed.append(plant_filepath)
+                time.sleep(random.randint(2, 3))
+
+    for f in failed:
+        print(f)
+    print(len(failed))
+    quit()
+
+
+plants_folderpath = f'{wikidata_folderpath}/entity_has-use_medicinal-plant'
+plants_filepaths = sorted([f'{plants_folderpath}/{filename}' for filename in os.listdir(plants_folderpath)])
+plants_taxonomies = []
+for plant_filepath in plants_filepaths:
+    plant_filename_raw = plant_filepath.split('/')[-1].split('.')[0]
+    plant_data = io.json_read(plant_filepath)
+    try: claim = plant_data['entities'][plant_filename_raw]['claims']['P5037'][0]
+    except: claim = None
+    try: taxon_name = plant_data['entities'][plant_filename_raw]['claims']['P225'][0]['mainsnak']['datavalue']['value']
+    except: taxon_name = None
+    if claim:
+        value = claim['mainsnak']['datavalue']['value']
+        print(json.dumps(value, indent=4))
+        value_url_id = value.split(':')[-1]
+        print(value_url_id)
+        plant_filepath = f'{kg_folderpath}/powo/plants-jsons/{value_url_id}.json'
+        if os.path.exists(plant_filepath):
+            plant_data = io.json_read(plant_filepath)
+            kingdom = plant_data['kingdom']
+            phylum = plant_data['phylum']
+            clazz = plant_data['clazz']
+            subclass = plant_data['subclass']
+            order = plant_data['order']
+            family = plant_data['family']
+            genus = plant_data['genus']
+            # try: species = plant_data['species']
+            # except: species = None
+            species = taxon_name
+            item = {
+                'species': species,
+                'genus': genus,
+                'family': family,
+                'order': order,
+                'subclass': subclass,
+                'clazz': clazz,
+                'phylum': phylum,
+                'kingdom': kingdom,
+            }
+            plants_taxonomies.append(item)
+# quit()
+
 '''
+plants_folderpath = f'{kg_folderpath}/powo/plants-jsons'
+plants_filepaths = sorted([f'{plants_folderpath}/{filename}' for filename in os.listdir(plants_folderpath)])
+data = []
+for plant_filepath in plants_filepaths:
+    plant_data = io.json_read(plant_filepath)
+    print(json.dumps(plant_data, indent=4))
+    kingdom = plant_data['kingdom']
+    phylum = plant_data['phylum']
+    clazz = plant_data['clazz']
+    subclass = plant_data['subclass']
+    order = plant_data['order']
+    family = plant_data['family']
+    genus = plant_data['genus']
+    # try: species = plant_data['species']
+    # except: species = None
+    print(json.dumps(plant_data, indent=4))
+    quit()
+    item = {
+        'species': species,
+        'genus': genus,
+        'family': family,
+        'order': order,
+        'subclass': subclass,
+        'clazz': clazz,
+        'phylum': phylum,
+        'kingdom': kingdom,
+    }
+    data.append(item)
+'''
+
 uri = "bolt://localhost:7687"
 username = "neo4j"
 password = "Newoliark1"
 
 driver = GraphDatabase.driver(uri, auth=(username, password))
-'''
 
-def db_clear():
+def neo4j_clear():
     with driver.session() as session:
         tx = session.begin_transaction()
         tx.run("MATCH (n) DETACH DELETE n")
         tx.commit()
+
+with driver.session() as session:
+    # 1. Delete all data
+    session.run("MATCH (n) DETACH DELETE n")
+
+    # 2. Drop constraints
+    constraints = session.run("SHOW CONSTRAINTS").data()
+    for c in constraints:
+        session.run(f"DROP CONSTRAINT {c['name']}")
+
+    # 3. Drop indexes
+    indexes = session.run("SHOW INDEXES").data()
+    for i in indexes:
+        session.run(f"DROP INDEX {i['name']}")
+
+# neo4j_clear()
+# quit()
+
+def insert_taxonomy(tx, batch):
+    query = """
+    UNWIND $rows AS row
+
+    // Require at least species
+    WITH row WHERE row.species IS NOT NULL
+
+    MERGE (sp:Species {name: row.species})
+
+    // Genus
+    FOREACH (_ IN CASE WHEN row.genus IS NOT NULL THEN [1] ELSE [] END |
+        MERGE (g:Genus {name: row.genus})
+        MERGE (sp)-[:PARENT_OF]->(g)
+    )
+
+    // Family (connect to genus if exists)
+    FOREACH (_ IN CASE WHEN row.family IS NOT NULL THEN [1] ELSE [] END |
+        MERGE (f:Family {name: row.family})
+
+        FOREACH (_ IN CASE WHEN row.genus IS NOT NULL THEN [1] ELSE [] END |
+            MERGE (g:Genus {name: row.genus})
+            MERGE (g)-[:PARENT_OF]->(f)
+        )
+    )
+
+    // Order
+    FOREACH (_ IN CASE WHEN row.order IS NOT NULL THEN [1] ELSE [] END |
+        MERGE (o:Order {name: row.order})
+
+        FOREACH (_ IN CASE WHEN row.family IS NOT NULL THEN [1] ELSE [] END |
+            MERGE (f:Family {name: row.family})
+            MERGE (f)-[:PARENT_OF]->(o)
+        )
+    )
+
+    // Subclass
+    FOREACH (_ IN CASE WHEN row.subclass IS NOT NULL THEN [1] ELSE [] END |
+        MERGE (c:Subclass {name: row.subclass})
+
+        FOREACH (_ IN CASE WHEN row.order IS NOT NULL THEN [1] ELSE [] END |
+            MERGE (o:Order {name: row.order})
+            MERGE (o)-[:PARENT_OF]->(c)
+        )
+    )
+
+    // Clazz
+    FOREACH (_ IN CASE WHEN row.clazz IS NOT NULL THEN [1] ELSE [] END |
+        MERGE (c:Clazz {name: row.clazz})
+
+        FOREACH (_ IN CASE WHEN row.subclass IS NOT NULL THEN [1] ELSE [] END |
+            MERGE (o:Subclass {name: row.subclass})
+            MERGE (o)-[:PARENT_OF]->(c)
+        )
+    )
+
+    // Phylum
+    FOREACH (_ IN CASE WHEN row.phylum IS NOT NULL THEN [1] ELSE [] END |
+        MERGE (p:Phylum {name: row.phylum})
+
+        FOREACH (_ IN CASE WHEN row.clazz IS NOT NULL THEN [1] ELSE [] END |
+            MERGE (c:Clazz {name: row.clazz})
+            MERGE (c)-[:PARENT_OF]->(p)
+        )
+    )
+
+    // Kingdom
+    FOREACH (_ IN CASE WHEN row.kingdom IS NOT NULL THEN [1] ELSE [] END |
+        MERGE (k:Kingdom {name: row.kingdom})
+
+        FOREACH (_ IN CASE WHEN row.phylum IS NOT NULL THEN [1] ELSE [] END |
+            MERGE (p:Phylum {name: row.phylum})
+            MERGE (p)-[:PARENT_OF]->(k)
+        )
+    )
+    """
+    query = """
+UNWIND $rows AS row
+
+WITH row WHERE row.species IS NOT NULL
+
+// Species = your plant name
+MERGE (sp:Taxon {scientificName: row.species})
+SET sp.taxonRank = "species"
+
+// Genus
+FOREACH (_ IN CASE WHEN row.genus IS NOT NULL THEN [1] ELSE [] END |
+    MERGE (g:Taxon {scientificName: row.genus})
+    SET g.taxonRank = "genus"
+    MERGE (sp)-[:PARENT_TAXON]->(g)
+)
+
+// Family
+FOREACH (_ IN CASE WHEN row.family IS NOT NULL THEN [1] ELSE [] END |
+    MERGE (f:Taxon {scientificName: row.family})
+    SET f.taxonRank = "family"
+
+    FOREACH (_ IN CASE WHEN row.genus IS NOT NULL THEN [1] ELSE [] END |
+        MERGE (g:Taxon {scientificName: row.genus})
+        MERGE (g)-[:PARENT_TAXON]->(f)
+    )
+)
+
+// Order
+FOREACH (_ IN CASE WHEN row.order IS NOT NULL THEN [1] ELSE [] END |
+    MERGE (o:Taxon {scientificName: row.order})
+    SET o.taxonRank = "order"
+
+    FOREACH (_ IN CASE WHEN row.family IS NOT NULL THEN [1] ELSE [] END |
+        MERGE (f:Taxon {scientificName: row.family})
+        MERGE (f)-[:PARENT_TAXON]->(o)
+    )
+)
+
+// Class
+FOREACH (_ IN CASE WHEN row.clazz IS NOT NULL THEN [1] ELSE [] END |
+    MERGE (c:Taxon {scientificName: row.clazz})
+    SET c.taxonRank = "class"
+
+    FOREACH (_ IN CASE WHEN row.order IS NOT NULL THEN [1] ELSE [] END |
+        MERGE (o:Taxon {scientificName: row.order})
+        MERGE (o)-[:PARENT_TAXON]->(c)
+    )
+)
+
+// Phylum
+FOREACH (_ IN CASE WHEN row.phylum IS NOT NULL THEN [1] ELSE [] END |
+    MERGE (p:Taxon {scientificName: row.phylum})
+    SET p.taxonRank = "phylum"
+
+    FOREACH (_ IN CASE WHEN row.clazz IS NOT NULL THEN [1] ELSE [] END |
+        MERGE (c:Taxon {scientificName: row.clazz})
+        MERGE (c)-[:PARENT_TAXON]->(p)
+    )
+)
+
+// Kingdom
+FOREACH (_ IN CASE WHEN row.kingdom IS NOT NULL THEN [1] ELSE [] END |
+    MERGE (k:Taxon {scientificName: row.kingdom})
+    SET k.taxonRank = "kingdom"
+
+    FOREACH (_ IN CASE WHEN row.phylum IS NOT NULL THEN [1] ELSE [] END |
+        MERGE (p:Taxon {scientificName: row.phylum})
+        MERGE (p)-[:PARENT_TAXON]->(k)
+    )
+)
+    """
+    tx.run(query, rows=batch)
+
+batch_size = 1000
+
+with driver.session() as session:
+    for i in range(0, len(plants_taxonomies), batch_size):
+        session.execute_write(insert_taxonomy, plants_taxonomies[i:i+batch_size])
+
+driver.close()
+
+quit()
+
+
+def fetch_entities(qids):
+    ids = "|".join(qids)
+    url = "https://www.wikidata.org/w/api.php"
+    
+    params = {
+        "action": "wbgetentities",
+        "ids": ids,
+        "format": "json",
+        "languages": "en"
+    }
+    
+    return requests.get(url, params=params).json()["entities"]
+
+fetch_entities(['Q37153'])
+
+quit()
+
+
 
 def db_read_family(plant_taxon_name):
     with driver.session() as session:
@@ -151,8 +456,8 @@ def read_dmp(path, num_fields=None):
             rows.append(parts)
     return rows
 
+'''
 nodes_families = []
-rows = read_dmp(taxdmp_nodes_filepath)
 nodes = []
 for row_i, row in enumerate(rows):
     # print(f'{row_i}/{len(list(rows))}')
@@ -173,75 +478,416 @@ for row_i, row in enumerate(rows):
 
 print(f'NODES: {len(list(nodes_families))}')
 print(nodes[0])
+'''
 
 '''
 '''
 
-def sqlite_table_nodes_create(nodes):
+def sqlite_table_nodes_create():
     conn = sqlite3.connect(sqlite_database_filepath)
     cur = conn.cursor()
     cur.execute("""
-    CREATE TABLE IF NOT EXISTS nodes (
-        tax_id INTEGER PRIMARY KEY,
-        parent_tax_id INTEGER,
-        rank TEXT
-    )
+        SELECT name FROM sqlite_master 
+        WHERE type='table' AND name='nodes';
     """)
-    nodes_data = [(int(r[0]), int(r[1]), r[2]) for r in nodes]
-    cur.executemany(
-        "INSERT INTO nodes (tax_id, parent_tax_id, rank) VALUES (?, ?, ?)",
-        nodes_data
-    )
+    exists = cur.fetchone() is not None
+    if not exists:
+        cur.execute('''
+            CREATE TABLE IF NOT EXISTS nodes (
+                tax_id INTEGER PRIMARY KEY,
+                parent_tax_id INTEGER,
+                rank TEXT
+            )
+        ''')
+        rows = read_dmp(taxdmp_nodes_filepath)
+        data = [(int(r[0]), int(r[1]), r[2]) for r in rows]
+        cur.executemany(
+            "INSERT INTO nodes (tax_id, parent_tax_id, rank) VALUES (?, ?, ?)",
+            data
+        )
+        conn.commit()
+
+def sqlite_table_names_create():
+    conn = sqlite3.connect(sqlite_database_filepath)
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT name FROM sqlite_master 
+        WHERE type='table' AND name='names';
+    """)
+    exists = cur.fetchone() is not None
+    if not exists:
+        cur.execute('''
+            CREATE TABLE IF NOT EXISTS names (
+                tax_id INTEGER,
+                name_txt TEXT,
+                unique_name TEXT,
+                name_class TEXT
+            )
+        ''')
+        rows = read_dmp(taxdmp_names_filepath)
+        data = [(int(r[0]), r[1], r[2], r[3]) for r in rows]
+        cur.executemany(
+            "INSERT INTO names (tax_id, name_txt, unique_name, name_class) VALUES (?, ?, ?, ?)",
+            data
+        )
+        conn.commit()
+
+def sqlite_table_index_create():
+    conn = sqlite3.connect(sqlite_database_filepath)
+    cur = conn.cursor()
+    cur.execute("CREATE INDEX IF NOT EXISTS idx_names_name ON names(name_txt)")
+    cur.execute("CREATE INDEX IF NOT EXISTS idx_names_tax ON names(tax_id)")
+    cur.execute("CREATE INDEX IF NOT EXISTS idx_nodes_tax ON nodes(tax_id)")
     conn.commit()
 
-'''
-# how many rows?
-cur.execute("SELECT COUNT(*) FROM nodes")
-print("nodes rows:", cur.fetchone()[0])
+def sqlite_table_nodes_rows_count():
+    conn = sqlite3.connect(sqlite_database_filepath)
+    cur = conn.cursor()
+    cur.execute("SELECT COUNT(*) FROM nodes")
+    print("NODES ROWS:", cur.fetchone()[0])
 
-cur.execute("SELECT * FROM nodes LIMIT 10")
-for row in cur.fetchall():
-    print(row)
-'''
+def sqlite_table_names_rows_count():
+    conn = sqlite3.connect(sqlite_database_filepath)
+    cur = conn.cursor()
+    cur.execute("SELECT COUNT(*) FROM names")
+    print("NAMES ROWS:", cur.fetchone()[0])
 
-'''
-cur.execute("""
-CREATE TABLE IF NOT EXISTS names (
-    tax_id INTEGER,
-    name_txt TEXT,
-    unique_name TEXT,
-    name_class TEXT
-)
-""")
+def sqlite_table_nodes_rows_sample():
+    conn = sqlite3.connect(sqlite_database_filepath)
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM nodes LIMIT 10")
+    for row in cur.fetchall():
+        print(row)
 
-names_rows = read_dmp(taxdmp_names_filepath)
+def sqlite_table_names_rows_sample():
+    conn = sqlite3.connect(sqlite_database_filepath)
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM nodes LIMIT 10")
+    for row in cur.fetchall():
+        print(row)
 
-names_data = [(int(r[0]), r[1], r[2], r[3]) for r in names_rows]
+sqlite_table_nodes_create()
+sqlite_table_names_create()
+sqlite_table_index_create()
+###
+sqlite_table_nodes_rows_count()
+sqlite_table_names_rows_count()
+sqlite_table_nodes_rows_sample()
+sqlite_table_names_rows_sample()
 
-cur.executemany(
-    "INSERT INTO names (tax_id, name_txt, unique_name, name_class) VALUES (?, ?, ?, ?)",
-    names_data
-)
+# get [families] from 'wikidata-wcvp-jsons'
+def families_get():
+    triples = []
+    families = []
+    jsons_foldername = 'wikidata-wcvp-jsons'
+    jsons_folderpath = f'{wikidata_folderpath}/{jsons_foldername}'
+    jsons_filepaths = [f'{jsons_folderpath}/{filename}' for filename in os.listdir(jsons_folderpath)]
+    for json_filepath in jsons_filepaths:
+        json_data = io.json_read(json_filepath)
+        _item = {
+            'taxon_name': json_data['taxon_name'],
+            'family': json_data['family'],
+        }
+        triples.append(_item)
+        if json_data['family'] not in families:
+            families.append(json_data['family'])
+    return families
 
-conn.commit()
-'''
+def get_lineage(cur, family_name):
+    lineage = []
 
-'''
-cur.execute("SELECT COUNT(*) FROM names")
-print("names rows:", cur.fetchone()[0])
+    # resolve name → tax_id
+    cur.execute("""
+        SELECT tax_id
+        FROM names
+        WHERE name_txt = ?
+        AND name_class = 'scientific name'
+        LIMIT 1
+    """, (family_name,))
 
-cur.execute("SELECT * FROM names LIMIT 10")
-for row in cur.fetchall():
-    print(row)
-'''
+    result = cur.fetchone()
+    if not result:
+        return []
 
+    tax_id = result[0]
 
-'''
-cur.execute("CREATE INDEX IF NOT EXISTS idx_names_name ON names(name_txt)")
-cur.execute("CREATE INDEX IF NOT EXISTS idx_names_tax ON names(tax_id)")
-cur.execute("CREATE INDEX IF NOT EXISTS idx_nodes_tax ON nodes(tax_id)")
-conn.commit()
-'''
+    visited = set()   # 🔴 IMPORTANT: cycle protection
+
+    while tax_id is not None:
+
+        # stop infinite loops
+        if tax_id in visited:
+            print("Cycle detected at:", tax_id)
+            break
+        visited.add(tax_id)
+
+        cur.execute("""
+            SELECT n.tax_id, n.parent_tax_id, n.rank, nm.name_txt
+            FROM nodes n
+            JOIN names nm ON n.tax_id = nm.tax_id
+            WHERE n.tax_id = ?
+            AND nm.name_class = 'scientific name'
+        """, (tax_id,))
+
+        row = cur.fetchone()
+        if not row:
+            break
+
+        lineage.append(row)
+
+        parent_tax_id = row[1]
+
+        # 🔴 safety stop conditions
+        if parent_tax_id is None or parent_tax_id == tax_id:
+            break
+
+        tax_id = parent_tax_id
+
+    return lineage
+
+def compress_to_7_ranks(lineage):
+    """
+    lineage: list of tuples (tax_id, parent_tax_id, rank, name)
+    returns: dict with 7-level taxonomy
+    """
+
+    # target structure
+    taxonomy = {
+        "kingdom": None,
+        "phylum": None,
+        "class": None,
+        "order": None,
+        "family": None,
+        "genus": None,
+        "species": None
+    }
+
+    # NCBI uses "phylum" or "division" for plants
+    rank_map = {
+        "superkingdom": "kingdom",
+        "kingdom": "kingdom",
+        "phylum": "phylum",
+        "division": "phylum",
+
+        "class": "class",
+        "order": "order",
+        "family": "family",
+        "genus": "genus",
+        "species": "species"
+    }
+
+    for tax_id, parent_id, rank, name in lineage:
+        if rank in rank_map:
+            canonical_rank = rank_map[rank]
+
+            # keep first match (most specific in upward traversal)
+            if taxonomy[canonical_rank] is None:
+                taxonomy[canonical_rank] = name
+
+    return taxonomy
+
+def sqlite_query_families_orders():
+    families = families_get()
+    parents = []
+    conn = sqlite3.connect(sqlite_database_filepath)
+    cur = conn.cursor()
+    parents_ranks = []
+    for family_i, family in enumerate(families):
+        print(f'{family_i}/{len(families)}')
+        lineage = get_lineage(cur, family)
+        lineage = compress_to_7_ranks(lineage)
+        print(lineage)
+        # quit()
+        continue
+        query = """
+SELECT
+    family.name_txt AS family,
+    n.rank AS family_rank,
+    n.tax_id,
+    n.parent_tax_id,
+    parent.name_txt AS parent_name,
+    parent_node.rank AS parent_rank
+FROM names family
+JOIN nodes n ON family.tax_id = n.tax_id
+JOIN nodes parent_node ON n.parent_tax_id = parent_node.tax_id
+JOIN names parent ON parent_node.tax_id = parent.tax_id
+WHERE family.name_txt = ?
+AND family.name_class = 'scientific name'
+AND parent.name_class = 'scientific name'
+AND parent_node.rank = 'order';
+        """
+        query = """
+SELECT
+    n0.tax_id AS family_id,
+    f.name_txt AS family_name,
+
+    n1.tax_id AS parent1_id,
+    p1.name_txt AS parent1_name,
+    n1.rank AS parent1_rank,
+
+    n2.tax_id AS parent2_id,
+    p2.name_txt AS parent2_name,
+    n2.rank AS parent2_rank,
+
+    n3.tax_id AS parent3_id,
+    p3.name_txt AS parent3_name,
+    n3.rank AS parent3_rank,
+
+    n4.tax_id AS parent4_id,
+    p4.name_txt AS parent4_name,
+    n4.rank AS parent4_rank
+
+FROM nodes n0
+JOIN names f ON f.tax_id = n0.tax_id
+
+LEFT JOIN nodes n1 ON n0.parent_tax_id = n1.tax_id
+LEFT JOIN names p1 ON p1.tax_id = n1.tax_id
+
+LEFT JOIN nodes n2 ON n1.parent_tax_id = n2.tax_id
+LEFT JOIN names p2 ON p2.tax_id = n2.tax_id
+
+LEFT JOIN nodes n3 ON n2.parent_tax_id = n3.tax_id
+LEFT JOIN names p3 ON p3.tax_id = n3.tax_id
+
+LEFT JOIN nodes n4 ON n3.parent_tax_id = n4.tax_id
+LEFT JOIN names p4 ON p4.tax_id = n4.tax_id
+
+WHERE f.name_txt = ?
+AND f.name_class = 'scientific name';
+        """
+        query = """
+SELECT
+    child.name_txt AS family,
+    parent.name_txt AS parent_name,
+    parent_node.rank AS parent_rank,
+    parent_node.tax_id AS parent_tax_id
+FROM names child
+JOIN nodes child_node ON child.tax_id = child_node.tax_id
+JOIN nodes parent_node ON child_node.parent_tax_id = parent_node.tax_id
+JOIN names parent ON parent_node.tax_id = parent.tax_id
+WHERE child.name_txt = ?
+AND child.name_class = 'scientific name'
+AND parent.name_class = 'scientific name';
+        """
+        query = """
+SELECT
+    f.name_txt  AS level0_family,
+    p1.name_txt AS level1_parent,
+    p1n.rank    AS level1_rank,
+
+    p2.name_txt AS level2_parent,
+    p2n.rank    AS level2_rank,
+
+    p3.name_txt AS level3_parent,
+    p3n.rank    AS level3_rank,
+
+    p4.name_txt AS level4_parent,
+    p4n.rank    AS level4_rank,
+
+    p5.name_txt AS level5_parent,
+    p5n.rank    AS level5_rank
+
+FROM names f
+JOIN nodes n0 ON f.tax_id = n0.tax_id
+
+-- level 1
+JOIN nodes p1n ON n0.parent_tax_id = p1n.tax_id
+JOIN names p1 ON p1n.tax_id = p1.tax_id
+
+-- level 2
+LEFT JOIN nodes p2n ON p1n.parent_tax_id = p2n.tax_id
+LEFT JOIN names p2 ON p2n.tax_id = p2.tax_id
+
+-- level 3
+LEFT JOIN nodes p3n ON p2n.parent_tax_id = p3n.tax_id
+LEFT JOIN names p3 ON p3n.tax_id = p3.tax_id
+
+-- level 4
+LEFT JOIN nodes p4n ON p3n.parent_tax_id = p4n.tax_id
+LEFT JOIN names p4 ON p4n.tax_id = p4.tax_id
+
+-- level 5
+LEFT JOIN nodes p5n ON p4n.parent_tax_id = p5n.tax_id
+LEFT JOIN names p5 ON p5n.tax_id = p5.tax_id
+
+WHERE f.name_txt = ?
+AND f.name_class = 'scientific name';
+        """
+        cur.execute(query, (family,))
+        res = cur.fetchall()
+        if res:
+            res = res[0]
+            print(res)
+            parents_ranks.append([res[2], res[1]])
+            # parents.append({'family': res[0], 'order': res[3]})
+        # quit()
+    # for parent_rank in parents_ranks:
+        # print(parent_rank)
+    # io.json_write(f'{kg_folderpath}/taxonomy/families-orders.json', parents)
+    # print(len(triples))
+    # print(len(parents))
+
+def sqlite_query_orders_classes():
+    families_orders_data = io.json_read(f'{kg_folderpath}/taxonomy/families-orders.json')
+    orders = [item['order'] for item in families_orders_data]
+    ###
+    parents = []
+    conn = sqlite3.connect(sqlite_database_filepath)
+    cur = conn.cursor()
+    for order in orders:
+        query = f"""
+        SELECT
+            child.name_txt AS child,
+            n.tax_id,
+            n.parent_tax_id,
+            parent.name_txt AS parent_name
+        FROM names child
+        JOIN nodes n ON child.tax_id = n.tax_id
+        JOIN names parent ON n.parent_tax_id = parent.tax_id
+        WHERE child.name_txt = '{order}'
+        AND child.name_class = 'scientific name'
+        AND parent.name_class = 'scientific name'
+        """
+        cur.execute(query)
+        res = cur.fetchall()
+        if res:
+            res = res[0]
+            print(res)
+            # parents.append({'family': res[0], 'order': res[3]})
+    # io.json_write(f'{kg_folderpath}/taxonomy/families-orders.json', parents)
+    # print(len(triples))
+    # print(len(parents))
+
+def sqlite_query_test():
+    parents = []
+    conn = sqlite3.connect(sqlite_database_filepath)
+    cur = conn.cursor()
+    query = f"""
+    SELECT
+        child.name_txt AS child,
+        n.tax_id,
+        n.parent_tax_id,
+        n.rank,
+        parent.name_txt AS parent_name
+    FROM names child
+    JOIN nodes n ON child.tax_id = n.tax_id
+    JOIN names parent ON n.parent_tax_id = parent.tax_id
+    WHERE child.name_txt = 'campanulids'
+    AND child.name_class = 'scientific name'
+    AND parent.name_class = 'scientific name'
+    """
+    cur.execute(query)
+    res = cur.fetchall()
+    if res:
+        res = res[0]
+        print(res)
+
+sqlite_query_families_orders()
+# sqlite_query_orders_classes()
+# sqlite_query_test()
+
+quit()
+
 
 '''
 cur.execute("""
@@ -254,46 +900,6 @@ LIMIT 10
 '''
 
 '''
-triples = []
-jsons_foldername = 'wikidata-wcvp-jsons'
-jsons_folderpath = f'{wikidata_folderpath}/{jsons_foldername}'
-jsons_filepaths = [f'{jsons_folderpath}/{filename}' for filename in os.listdir(jsons_folderpath)]
-for json_filepath in jsons_filepaths:
-    json_data = io.json_read(json_filepath)
-    _item = {
-        'taxon_name': json_data['taxon_name'],
-        'family': json_data['family'],
-    }
-    triples.append(_item)
-
-parents = []
-for triple in triples:
-    # print(triple)
-    family = triple['family']
-    query = f"""
-    SELECT
-        family.name_txt AS family,
-        n.tax_id,
-        n.parent_tax_id,
-        parent.name_txt AS parent_name
-    FROM names family
-    JOIN nodes n ON family.tax_id = n.tax_id
-    JOIN names parent ON n.parent_tax_id = parent.tax_id
-    WHERE family.name_txt = '{family}'
-    AND family.name_class = 'scientific name'
-    AND parent.name_class = 'scientific name'
-    """
-    cur.execute(query)
-    res = cur.fetchall()
-    if res:
-        res = res[0]
-        print(res)
-        parents.append({'family': res[0], 'order': res[3]})
-
-io.json_write(f'{wikidata_folderpath}/families-orders.json', parents)
-
-print(len(triples))
-print(len(parents))
 '''
 
 # print(cur.fetchall())
