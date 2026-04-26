@@ -8,24 +8,464 @@ import requests
 
 from neo4j import GraphDatabase
 
+from lib import g
 from lib import io
 from lib import llm
 from lib import data
 
-kg_folderpath = f'/home/ubuntu/vault/terrawhisper/database/ssot/kg'
-wikidata_folderpath = f'{kg_folderpath}/wikidata'
-taxdmp_folderpath = f'{wikidata_folderpath}/taxdmp'
-taxdmp_nodes_filepath = f'{taxdmp_folderpath}/nodes.dmp'
-taxdmp_names_filepath = f'{taxdmp_folderpath}/names.dmp'
+kg_folderpath = f'/{g.SSOT_FOLDERPATH}/kg'
+wikidata_folderpath = f'{g.SSOT_FOLDERPATH}/wikidata'
+# taxdmp_folderpath = f'{wikidata_folderpath}/taxdmp'
+# taxdmp_nodes_filepath = f'{taxdmp_folderpath}/nodes.dmp'
+# taxdmp_names_filepath = f'{taxdmp_folderpath}/names.dmp'
 sqlite_database_filepath = f'{kg_folderpath}/taxonomy.db'
-# wikidata_filepath = f'{wikidata_folderpath}/label-map.json'
+lotus_filepath = f'{g.SSOT_FOLDERPATH}/lotus/lotusUniqueNaturalProduct.bson'
+lotus_output_filepath = f'{g.SSOT_FOLDERPATH}/lotus/output.json'
+herb20_filepath = f'{g.SSOT_FOLDERPATH}/herb20/HERB_herb_info_v2.txt'
+pubchem_folderpath = f'{g.SSOT_FOLDERPATH}/pubchem'
 
+def chunks(lst, n):
+    for i in range(0, len(lst), n):
+        yield lst[i:i+n]
+
+########################################
+# DUMPS
+########################################
+def pubchem_properties_batches_to_single_by_inchikey():
+    batches_folderpath = f'{g.SSOT_FOLDERPATH}/pubchem/oregano-batches'
+    batches_filepaths = sorted([f'{batches_folderpath}/{filename}' for filename in os.listdir(batches_folderpath)])
+    print(batches_filepaths)
+    for batch_i, batch_filepath in enumerate(batches_filepaths):
+        print(f'{batch_i}/{len(batches_filepaths)}')
+        batch_data = io.json_read(batch_filepath)
+        items_export = batch_data['PropertyTable']['Properties']
+        for item_export in items_export:
+            item_export_filepath = f'''{g.SSOT_FOLDERPATH}/pubchem/compounds-inchikey/{item_export['InChIKey']}.json'''
+            io.json_write(item_export_filepath, item_export)
+            # print(item_export_filepath)
+        # print(batch_data)
+        # quit()
+
+def lotus_bson_to_json():
+    export_items = []
+    docs_num = 0
+    parent_count = 0
+    class_count = 0
+    superclass_count = 0
+    kingdom_count = 0
+    npclassifier_pathway_count = 0
+    npclassifier_superclass_count = 0
+    npclassifier_class_count = 0
+    inchikey_count = 0
+    for doc_i, doc in enumerate(first_n_bson(lotus_filepath, 1000000)):
+        # print(doc["inchikey"])
+        print(json.dumps(doc, indent=4, default=str))
+        quit()
+        docs_num += 1
+        component_lotus_id = doc['lotus_id']
+        try: component_wikidata_id = doc['wikidata_id']
+        except: component_wikidata_id = None
+        print(doc_i)
+        found = True
+        try: component_taxonomy_classyfire_parent = doc['chemicalTaxonomyClassyfireDirectParent']
+        except: 
+            component_taxonomy_classyfire_parent = None
+            parent_count += 1
+            found = False
+        try: component_taxonomy_classyfire_class = doc['chemicalTaxonomyClassyfireClass']
+        except: 
+            component_taxonomy_classyfire_class = None
+            class_count += 1
+            found = False
+        try: component_taxonomy_classyfire_superclass = doc['chemicalTaxonomyClassyfireSuperclass']
+        except: 
+            component_taxonomy_classyfire_superclass = None
+            superclass_count += 1
+            found = False
+        try: component_taxonomy_classyfire_kingdom = doc['chemicalTaxonomyClassyfireKingdom']
+        except: 
+            component_taxonomy_classyfire_kingdom = None
+            kingdom_count += 1
+            found = False
+        try: component_taxonomy_npclassifier_pathway = doc['chemicalTaxonomyNPclassifierPathway']
+        except: 
+            component_taxonomy_npclassifier_pathway = None
+            npclassifier_pathway_count += 1
+            found = False
+        try: component_taxonomy_npclassifier_superclass = doc['chemicalTaxonomyNPclassifierSuperclass']
+        except: 
+            component_taxonomy_npclassifier_superclass = None
+            npclassifier_superclass_count += 1
+            found = False
+        try: component_taxonomy_npclassifier_class = doc['chemicalTaxonomyNPclassifierClass']
+        except: 
+            component_taxonomy_npclassifier_class = None
+            npclassifier_class_count += 1
+            found = False
+        try: component_inchikey = doc['inchikey']
+        except: 
+            component_inchikey = None
+            inchikey_count += 1
+            found = False
+        # if not found:
+            # print(json.dumps(doc, indent=4, default=str))
+            # quit()
+        # print(component_lotus_id, component_taxonomy_classyfire_class)
+        plant_names = []
+        for ref_id in doc.get("taxonomyReferenceObjects", {}):
+            for source in doc["taxonomyReferenceObjects"][ref_id]:
+                for org in doc["taxonomyReferenceObjects"][ref_id][source]:
+                    plant_name = org.get("organism_value")
+                    if plant_name and plant_name not in plant_names:
+                        plant_names.append(plant_name)
+        export_item = {
+            'component_lotus_id': component_lotus_id,
+            'component_inchikey': component_inchikey,
+            'component_wikidata_id': component_wikidata_id,
+            'component_taxonomy_npclassifier_pathway': component_taxonomy_npclassifier_pathway,
+            'component_taxonomy_npclassifier_superclass': component_taxonomy_npclassifier_superclass,
+            'component_taxonomy_npclassifier_class': component_taxonomy_npclassifier_class,
+            'component_taxonomy_classyfire_kingdom': component_taxonomy_classyfire_kingdom,
+            'component_taxonomy_classyfire_superclass': component_taxonomy_classyfire_superclass,
+            'component_taxonomy_classyfire_class': component_taxonomy_classyfire_class,
+            'component_taxonomy_classyfire_parent': component_taxonomy_classyfire_parent,
+            'plant_names': plant_names,
+        }
+        # classyfire_partent -> npclassifier_superclass -> npclassifier_pathway
+        # ex. Plant X contains cucurbitacin glycosides, a class of triterpenoid compounds (terpenoids).
+        export_items.append(export_item)
+        continue
+        break
+    for export_item in export_items:
+        print(json.dumps(export_item, indent=4, default=str))
+        break
+    print(docs_num)
+    print(parent_count)
+    print(class_count)
+    print(superclass_count)
+    print(kingdom_count)
+    print(npclassifier_pathway_count)
+    print(npclassifier_superclass_count)
+    print(npclassifier_class_count)
+    print('INCHIKEY FAILED COUNTER:', inchikey_count)
+    io.json_write(lotus_output_filepath, export_items)
+    quit()
+
+# pubchem_properties_batches_to_single_by_inchikey()
+# lotus_bson_to_json()
+# quit()
+
+########################################
+# MERGES
+########################################
+def lotus_pubchem__inchikey_cid__merge():
+    # add to lotus objects "pubchem_cids" by searching it with inchikey on bulk download file
+    pubchem_cid_inchikey_filepath = f'{pubchem_folderpath}/CID-InChI-Key'
+    # print(os.listdir(pubchem_folderpath))
+    '''
+    def build_mapping(file_path, target_inchikeys):
+        mapping = {}
+        with open(file_path, "r") as f:
+            for i, line in enumerate(f):
+                parts = line.strip().split("\t")
+                if len(parts) < 2:
+                    continue  # skip malformed lines
+                cid = parts[0]
+                inchikey = parts[1]
+                if inchikey in target_inchikeys:
+                    mapping.setdefault(inchikey, []).append(cid)
+                if i % 1_000_000 == 0:
+                    print(f"Processed {i} lines...")
+        return mapping
+    '''
+    '''
+    def write_matches(input_path, target_keys, output_dir):
+        os.makedirs(output_dir, exist_ok=True)
+        for i, line in enumerate(open(input_path, "r")):
+            parts = line.strip().split("\t")
+            if len(parts) < 2:
+                continue
+            cid, inchi, inchikey = parts[0], parts[1], parts[2]
+            print(parts)
+            print(cid)
+            print(inchi)
+            print(inchikey)
+            print()
+            if i > 10: quit()
+            continue
+            if inchikey in target_keys:
+                filepath = os.path.join(output_dir, f"{inchikey}.json")
+                # append CID safely
+                if os.path.exists(filepath):
+                    with open(filepath, "r") as f:
+                        data = json.load(f)
+                else:
+                    data = {
+                        "inchikey": inchikey,
+                        "cids": []
+                    }
+                data["cids"].append(cid)
+                with open(filepath, "w") as f:
+                    json.dump(data, f)
+            if i % 1_000_000 == 0:
+                print(f"{i} lines processed")
+    '''
+    lotus_items = io.json_read(lotus_output_filepath)
+    lotus_components_inchikey = [item['component_inchikey'] for item in lotus_items]
+    print(lotus_components_inchikey[0])
+    print(len(lotus_components_inchikey))
+    lotus_components_inchikey = set(
+        item['component_inchikey'] for item in lotus_items
+    )
+    '''
+    mapping = build_mapping(
+        pubchem_cid_inchikey_filepath,   # unzipped file
+        lotus_components_inchikey,
+    )
+    '''
+    '''
+    write_matches(
+        input_path=pubchem_cid_inchikey_filepath, 
+        target_keys=lotus_components_inchikey, 
+        output_dir=f'{pubchem_folderpath}/lotus-pubchem-inchikey-cid-extract',
+    )
+    '''
+    def sqlite_table_pubchem_inchikey_cid_create():
+        conn = sqlite3.connect(f'{pubchem_folderpath}/pubchem_inchikey_cid_mapping.db')
+        cur = conn.cursor()
+        cur.execute("""
+            CREATE TABLE IF NOT EXISTS pubchem_inchikey_cid_mapping (
+                inchikey TEXT,
+                inchi TEXT,
+                cid TEXT
+            )
+        """)
+        cur.execute("PRAGMA synchronous = OFF")
+        cur.execute("PRAGMA journal_mode = MEMORY")
+        cur.execute("PRAGMA temp_store = MEMORY")
+        cur.execute("PRAGMA cache_size = 1000000")
+        with open(pubchem_cid_inchikey_filepath, "r") as f:
+            for i, line in enumerate(f):
+                parts = line.strip().split("\t")
+                if len(parts) < 2:
+                    continue
+                cid, inchi, inchikey = parts[0], parts[1], parts[2]
+                cur.execute("INSERT INTO pubchem_inchikey_cid_mapping VALUES (?, ?, ?)", (inchikey, inchi, cid))
+                if i % 100000 == 0:
+                    conn.commit()
+                    print(f"{i} lines inserted")
+        cur.execute("CREATE INDEX IF NOT EXISTS idx_inchikey ON pubchem_inchikey_cid_mapping(inchikey)")
+        conn.commit()
+        conn.close()
+    sqlite_table_pubchem_inchikey_cid_create()
+    pass
+    quit()
+
+def get_cids(db_path, inchikey):
+    conn = sqlite3.connect(db_path)
+    cur = conn.cursor()
+    cur.execute(
+        "SELECT cid FROM pubchem_inchikey_cid_mapping WHERE inchikey = ?",
+        (inchikey,)
+    )
+    results = [row[0] for row in cur.fetchall()]
+    conn.close()
+    return results
+
+# test
+lotus_items = io.json_read(lotus_output_filepath)
+lotus_items_output = []
+print('here')
+for i, lotus_item in enumerate(lotus_items[:]):
+    print(f'{i}/{len(lotus_items)}')
+    inchikey = lotus_item['component_inchikey']
+    cids = get_cids(f'{pubchem_folderpath}/pubchem_inchikey_cid_mapping.db', inchikey)
+    _item = lotus_item
+    _item['pubchem_cids'] = cids
+    lotus_items_output.append(_item)
+    # break
+lotus_folderpath = f'{g.SSOT_FOLDERPATH}/lotus'
+io.json_write(f'{lotus_folderpath}/0001-cid.json', lotus_items_output) 
+
+# lotus_pubchem__inchikey_cid__merge()
+# lotus_items = io.json_read(lotus_output_filepath)
+# print(lotus_items[0])
+quit()
+
+def pubchem_batches_by_inchikey():
+    chunk_size = 10
+    lotus_items = io.json_read(lotus_output_filepath)
+    print(lotus_items[0])
+    quit()
+    lotus_components_inchikeys = sorted([item['component_inchikey'] for item in lotus_items])
+    # print(lotus_components_inchikeys[0])
+    # quit()
+    for batch_i, batch in enumerate(chunks(lotus_components_inchikeys, chunk_size)):
+        print(f'{batch_i}/{len(lotus_components_inchikeys)//chunk_size}')
+        # url = f"https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/{','.join(batch)}/record/JSON"
+        # url = f"https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/{','.join(batch)}/property/InChIKey,CanonicalSMILES,IUPACName/JSON"
+        FIELDS = "InChIKey,CanonicalSMILES,IUPACName,Title"
+        # url = f"https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/{','.join(batch)}/property/{FIELDS}/JSON"
+        url = f"https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/inchikey/{','.join(batch)}/property/{FIELDS}/JSON"
+        batch_i_str = ''
+        if batch_i < 10: batch_i_str = f'0000{batch_i}'
+        elif batch_i < 100: batch_i_str = f'000{batch_i}'
+        elif batch_i < 1000: batch_i_str = f'00{batch_i}'
+        elif batch_i < 10000: batch_i_str = f'0{batch_i}'
+        elif batch_i < 100000: batch_i_str = f'{batch_i}'
+        output_filepath = f"{g.SSOT_FOLDERPATH}/pubchem/lotus-compounds-inchikey-batches/batch_{batch_i_str}.json"
+        if os.path.exists(output_filepath): continue
+        ###
+        r = requests.get(url)
+        if r.status_code == 200:
+            data = r.json()
+            with open(output_filepath, 'w') as f:
+                json.dump(data, f)
+        else:
+            print("Error:", r.status_code)
+            print(url)
+            break
+        time.sleep(random.randint(2, 3))
+        # print('#########################################################')
+        # print(data['PropertyTable']['Properties'][0])
+        # print('#########################################################')
+        # break
+
+# pubchem_batches_by_inchikey()
+# quit()
+
+def herb20_todo():
+    export_data = []
+    items = io.csv_to_dict(herb20_filepath, delimiter='\t')
+    for item in items:
+        # print(item)
+        latin_name = item['Herb_latin_name']
+        used_part = item['UsePart']
+        function = item['Function']
+        indication = item['Indication']
+        print(latin_name)
+        print(used_part)
+        print(indication)
+        print()
+        pass
+    print(items[0])
+    '''
+    Herb_id	
+    Herb_pinyin_name	
+    Herb_cn_name	
+    Herb_alias_name	
+    Herb_en_name	
+    Herb_latin_name	
+    Properties	
+    Meridians	
+    UsePart	
+    Function	
+    Indication	
+    Toxicity	
+    Clinical_manifestations	
+    Therapeutic_en_class	
+    Therapeutic_cn_class	
+    SymMap_id	
+    TCMID_id	
+    TCMSP_id	
+    TCM_ID_id
+    * 1. Herb_id: A unique identifier for each herb within the HERD database.
+    4. Herb_pinyin_name: The pronunciation of the herb's Chinese name using Pinyin.
+    2. Herb_cn_name: The official Chinese name of the herb.
+    3. Herb_alias_name: Various alternative names for the herb in Chinese.
+    * 5. Herb_en_name: The common English name of the herb.
+    * 6. Herb_latin_name: The scientific Latin name that classifies the species of the herb.
+    7. Properties: A description of the inherent characteristics or 'properties' of the herb, often referring to its nature in Traditional Chinese Medicine (TCM), such as being warm, cold, sweet, pungent, etc.
+    8. Meridians: The specific pathways or 'meridians' in the body through which the herb is believed to act, according to TCM theory.
+    * 9. UsePart: The specific part of the herb that is used for medicinal purposes, such as the root, leaf, seed, or bulb.
+    * 10. Function: A description of the medicinal functions or 'effects' the herb is traditionally believed to have.
+    * 11. Indication: The conditions or symptoms for which the herb is traditionally used to treat.
+    * 12. Toxicity: Information regarding the potential toxicity or side effects of the herb.
+    * 13. Clinical_manifestations: The observed clinical effects or indications that the herb may address or alleviate.
+    * 14. Therapeutic_en_class: The therapeutic category of the herb in English, which may include terms like 'blood activation and stasis removal' or 'medicinal for detoxification'.
+    15. Therapeutic_cn_class: The therapeutic category of the herb in Chinese, providing a cultural and linguistic context for its use.
+    18. SymMap_id: A cross-reference identifier for the herb within the SymMap database.
+    16. TCMID_id: A cross-reference identifier linking the herb to the TCMID database.
+    17. TCM_ID_id: A cross-reference identifier for the herb within the TCM-ID database.
+    19. TCMSP_id: A cross-reference identifier for the herb within the TCMSP database.
+    '''
+    quit()
+
+def first_n_bson(path, n=5):
+    from bson import BSON
+    with open(path, "rb") as f:
+        for _ in range(n):
+            size_bytes = f.read(4)
+            if not size_bytes:
+                break
+            size = int.from_bytes(size_bytes, "little")
+            f.seek(-4, 1)
+            raw = f.read(size)
+            yield BSON(raw).decode()
+
+# parse lotus file (.bson) -> extract fields you need -> save to json
+
+def lotus_json_preview(formatted=False):
+    items = io.json_read(lotus_output_filepath)
+    if not formatted:
+        print(items[0])
+    else:
+        print(json.dumps(items[0], indent=4))
+    quit()
+# lotus_json_preview(formatted=True)
+
+def lotus_pubchem_match():
+    lotus_items = io.json_read(lotus_output_filepath)
+    for lotus_item_i, lotus_item in enumerate(lotus_items):
+        print(f'{lotus_item_i}/{len(lotus_items)}')
+        # lotus_item = lotus_items[0]
+        lotus_item_inchikey = lotus_item['component_inchikey']
+        pubchem_inchikey_filepath = f'''{g.SSOT_FOLDERPATH}/pubchem/compounds-inchikey/{lotus_item_inchikey}.json'''
+        try: pubchem_data = io.json_read(pubchem_inchikey_filepath)
+        except: continue
+        pubchem_cid = pubchem_data['CID']
+        print(lotus_item)
+        print(lotus_item_inchikey)
+        print(pubchem_inchikey_filepath)
+        print(pubchem_data)
+        ###
+        print(pubchem_cid)
+        oregano_compounds_text = io.file_read(
+            f'{g.SSOT_FOLDERPATH}/oregano/oregano-master/Integration/Integration V3/GESTION_ID/COMPOUND.tsv'
+        )
+        oregano_compounds_lines = oregano_compounds_text.split('\n')
+        ###
+        headings = oregano_compounds_lines[0].split('\t')
+        headings[0] = 'ID_OREGANO'
+        cids = []
+        for line_i, line in enumerate(oregano_compounds_lines[:]):
+            if line_i == 0: continue
+            if line.strip() == '': continue
+            values = line.split('\t')
+            item = {}
+            for i in range(len(headings)):
+                item[headings[i]] = values[i].strip()
+            # print(json.dumps(item, indent=4))
+            # quit()
+            pubchem_compound_id = item['PUBCHEM COMPOUND']
+            if pubchem_compound_id.strip() == '': continue
+            if ',' in pubchem_compound_id: continue
+            if ';' in pubchem_compound_id: continue
+            # print(pubchem_compound_id, pubchem_cid)
+            if str(pubchem_compound_id).strip() == str(pubchem_cid).strip():
+                print(item)
+                # print('ID:', item['ID_OREGANO'], '  WIKIDATA:', item['WIKIPEDIA'], '  CID:', pubchem_compound_id)
+        if lotus_item_i > 5: quit()
+    quit()
+
+lotus_pubchem_match()
+quit()
 
 def powo_plants_jsons():
     plants_folderpath = f'{wikidata_folderpath}/entity_has-use_medicinal-plant'
     plants_filepaths = sorted([f'{plants_folderpath}/{filename}' for filename in os.listdir(plants_folderpath)])
     failed = []
-    for plant_filepath in plants_filepaths:
+    for plant_filepath_i, plant_filepath in enumerate(plants_filepaths):
         plant_filename_raw = plant_filepath.split('/')[-1].split('.')[0]
         plant_data = io.json_read(plant_filepath)
         try: claim = plant_data['entities'][plant_filename_raw]['claims']['P5037'][0]
@@ -56,47 +496,210 @@ def powo_plants_jsons():
     print(len(failed))
     quit()
 
+def powo_plants_taxonomies_get():
+    plants_folderpath = f'{wikidata_folderpath}/entity_has-use_medicinal-plant'
+    plants_filepaths = sorted([f'{plants_folderpath}/{filename}' for filename in os.listdir(plants_folderpath)])
+    plants_taxonomies = []
+    for plant_filepath_i, plant_filepath in enumerate(plants_filepaths):
+        print(f'{plant_filepath_i}/{len(plants_filepaths)}')
+        plant_filename_raw = plant_filepath.split('/')[-1].split('.')[0]
+        plant_data = io.json_read(plant_filepath)
+        try: claim = plant_data['entities'][plant_filename_raw]['claims']['P5037'][0]
+        except: claim = None
+        try: taxon_name = plant_data['entities'][plant_filename_raw]['claims']['P225'][0]['mainsnak']['datavalue']['value']
+        except: taxon_name = None
+        if claim:
+            value = claim['mainsnak']['datavalue']['value']
+            print(json.dumps(value, indent=4))
+            value_url_id = value.split(':')[-1]
+            print(value_url_id)
+            plant_filepath = f'{kg_folderpath}/powo/plants-jsons/{value_url_id}.json'
+            if os.path.exists(plant_filepath):
+                plant_data = io.json_read(plant_filepath)
+                kingdom = plant_data['kingdom']
+                phylum = plant_data['phylum']
+                clazz = plant_data['clazz']
+                subclass = plant_data['subclass']
+                order = plant_data['order']
+                family = plant_data['family']
+                genus = plant_data['genus']
+                # try: species = plant_data['species']
+                # except: species = None
+                species = taxon_name
+                item = {
+                    'species': species,
+                    'genus': genus,
+                    'family': family,
+                    'order': order,
+                    'subclass': subclass,
+                    'clazz': clazz,
+                    'phylum': phylum,
+                    'kingdom': kingdom,
+                }
+                plants_taxonomies.append(item)
+    return plants_taxonomies
 
-plants_folderpath = f'{wikidata_folderpath}/entity_has-use_medicinal-plant'
-plants_filepaths = sorted([f'{plants_folderpath}/{filename}' for filename in os.listdir(plants_folderpath)])
-plants_taxonomies = []
-for plant_filepath in plants_filepaths:
-    plant_filename_raw = plant_filepath.split('/')[-1].split('.')[0]
-    plant_data = io.json_read(plant_filepath)
-    try: claim = plant_data['entities'][plant_filename_raw]['claims']['P5037'][0]
-    except: claim = None
-    try: taxon_name = plant_data['entities'][plant_filename_raw]['claims']['P225'][0]['mainsnak']['datavalue']['value']
-    except: taxon_name = None
-    if claim:
-        value = claim['mainsnak']['datavalue']['value']
-        print(json.dumps(value, indent=4))
-        value_url_id = value.split(':')[-1]
-        print(value_url_id)
-        plant_filepath = f'{kg_folderpath}/powo/plants-jsons/{value_url_id}.json'
-        if os.path.exists(plant_filepath):
-            plant_data = io.json_read(plant_filepath)
-            kingdom = plant_data['kingdom']
-            phylum = plant_data['phylum']
-            clazz = plant_data['clazz']
-            subclass = plant_data['subclass']
-            order = plant_data['order']
-            family = plant_data['family']
-            genus = plant_data['genus']
-            # try: species = plant_data['species']
-            # except: species = None
-            species = taxon_name
-            item = {
-                'species': species,
-                'genus': genus,
-                'family': family,
-                'order': order,
-                'subclass': subclass,
-                'clazz': clazz,
-                'phylum': phylum,
-                'kingdom': kingdom,
-            }
-            plants_taxonomies.append(item)
-# quit()
+def powo_lotus_match():
+    lotus_items = io.json_read(lotus_output_filepath)
+    powo_plants_taxonomies = powo_plants_taxonomies_get()
+    matches = []
+    for lotus_item_i, lotus_item in enumerate(lotus_items):
+        print(f'{lotus_item_i}/{len(lotus_items)}')
+        # print(lotus_item)
+        lotus_plant_name = lotus_item['plant_names'][0]
+        for powo_item in powo_plants_taxonomies:
+            powo_plant_species = powo_item['species']
+            if lotus_plant_name == powo_plant_species:
+                print('found')
+                print(lotus_item)
+                print(powo_item)
+                match = {
+                    'powo_plant_species': powo_plant_species,
+                    'lotus_components': lotus_item,
+                }
+                matches.append(match)
+                # break
+        # break
+    io.json_write(f'{kg_folderpath}/powo-lotus/matches-all.json', matches)
+    quit()
+
+
+# lotus_items = io.json_read(lotus_output_filepath)
+# print(lotus_items[0])
+
+def oregano_cids_extract():
+    oregano_compounds_text = io.file_read(f'{g.SSOT_FOLDERPATH}/oregano/oregano-master/Integration/Integration V3/GESTION_ID/COMPOUND.tsv')
+    oregano_compounds_lines = oregano_compounds_text.split('\n')
+    ###
+    # oregano_compounds_data = io.csv_to_dict(f'{g.SSOT_FOLDERPATH}/oregano/oregano-master/Integration/Integration V3/GESTION_ID/COMPOUND.tsv', delimiter='\t')
+    headings = oregano_compounds_lines[0].split('\t')
+    headings[0] = 'ID_OREGANO'
+    cids = []
+    for line_i, line in enumerate(oregano_compounds_lines[:]):
+        if line_i == 0: continue
+        if line.strip() == '': continue
+        values = line.split('\t')
+        item = {}
+        for i in range(len(headings)):
+            item[headings[i]] = values[i].strip()
+        # print(json.dumps(item, indent=4))
+        # quit()
+        pubchem_compound_id = item['PUBCHEM COMPOUND']
+        if pubchem_compound_id.strip() == '': continue
+        if ',' in pubchem_compound_id: continue
+        if ';' in pubchem_compound_id: continue
+        print(item['ID_OREGANO'], item['WIKIPEDIA'], pubchem_compound_id)
+        cids.append(pubchem_compound_id.strip())
+    print(cids[:10])
+    print(len(cids))
+    print(len(list(set(cids))))
+    cids = sorted(list(set(cids)))
+
+# cids = oregano_cids_extract()
+
+def oregano_compound_to_pubmed_match():
+    oregano_compounds_text = io.file_read(
+        f'{g.SSOT_FOLDERPATH}/oregano/oregano-master/Integration/Integration V3/GESTION_ID/COMPOUND.tsv'
+    )
+    oregano_compounds_lines = oregano_compounds_text.split('\n')
+    ###
+    headings = oregano_compounds_lines[0].split('\t')
+    headings[0] = 'ID_OREGANO'
+    cids = []
+    for line_i, line in enumerate(oregano_compounds_lines[:]):
+        if line_i == 0: continue
+        if line.strip() == '': continue
+        values = line.split('\t')
+        item = {}
+        for i in range(len(headings)):
+            item[headings[i]] = values[i].strip()
+        # print(json.dumps(item, indent=4))
+        # quit()
+        pubchem_compound_id = item['PUBCHEM COMPOUND']
+        if pubchem_compound_id.strip() == '': continue
+        if ',' in pubchem_compound_id: continue
+        if ';' in pubchem_compound_id: continue
+        # pubchem_cid_filepath = f'''{g.SSOT_FOLDERPATH}/pubchem/oregano-compounds/{pubchem_compound_id}.json'''
+        # pubchem_data = io.json_read(pubchem_cid_filepath)
+        # try: pubchem_title = pubchem_data['Title']
+        # except: pubchem_title = ''
+        # print('ID:', item['ID_OREGANO'], '  WIKIDATA:', item['WIKIPEDIA'], '  CID:', pubchem_compound_id, '  TITLE:', pubchem_title)
+        print('ID:', item['ID_OREGANO'], '  WIKIDATA:', item['WIKIPEDIA'], '  CID:', pubchem_compound_id)
+
+# oregano_compound_to_pubmed_match()
+
+quit()
+
+def pubmed_properties_from_cids(cids):
+    chunk_size = 100
+    for batch_i, batch in enumerate(chunks(cids, chunk_size)):
+        print(f'{batch_i}/{len(cids)//chunk_size}')
+        # url = f"https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/{','.join(batch)}/record/JSON"
+        # url = f"https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/{','.join(batch)}/property/InChIKey,CanonicalSMILES,IUPACName/JSON"
+        FIELDS = "InChIKey,CanonicalSMILES,IUPACName,Title"
+        url = f"https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/{','.join(batch)}/property/{FIELDS}/JSON"
+        batch_i_str = ''
+        if batch_i < 10: batch_i_str = f'000{batch_i}'
+        elif batch_i < 100: batch_i_str = f'00{batch_i}'
+        elif batch_i < 1000: batch_i_str = f'0{batch_i}'
+        elif batch_i < 10000: batch_i_str = f'{batch_i}'
+        output_filepath = f"{g.SSOT_FOLDERPATH}/pubchem/oregano-batches/batch_{batch_i_str}.json"
+        if os.path.exists(output_filepath): continue
+        ###
+        r = requests.get(url)
+        if r.status_code == 200:
+            data = r.json()
+            with open(output_filepath, 'w') as f:
+                json.dump(data, f)
+        else:
+            print("Error:", r.status_code)
+            print(url)
+            break
+        time.sleep(random.randint(3, 5))
+        # print('#########################################################')
+        # print(data['PropertyTable']['Properties'][0])
+        # print('#########################################################')
+        # break
+
+# pubmed_properties_from_cids(cids)
+
+def pubmed_properties_batches_to_single():
+    batches_folderpath = f'{g.SSOT_FOLDERPATH}/pubchem/oregano-batches'
+    batches_filepaths = sorted([f'{batches_folderpath}/{filename}' for filename in os.listdir(batches_folderpath)])
+    print(batches_filepaths)
+    for batch_i, batch_filepath in enumerate(batches_filepaths):
+        print(f'{batch_i}/{len(batches_filepaths)}')
+        batch_data = io.json_read(batch_filepath)
+        items_export = batch_data['PropertyTable']['Properties']
+        for item_export in items_export:
+            item_export_filepath = f'''{g.SSOT_FOLDERPATH}/pubchem/oregano-compounds/{item_export['CID']}.json'''
+            io.json_write(item_export_filepath, item_export)
+            # print(item_export_filepath)
+        # print(batch_data)
+        # quit()
+quit()
+
+# oregano_items = io.csv_to_dict(f'{g.SSOT_FOLDERPATH}/oregano/oregano-master/Data_OREGANO/Graphs/OREGANO_V3.tsv', delimiter='\t')
+oregano_text = io.file_read(f'{g.SSOT_FOLDERPATH}/oregano/oregano-master/Data_OREGANO/Graphs/OREGANO_V3_WIW.tsv')
+oregano_lines = oregano_text.split('\n')
+triples_failed = []
+s_types = []
+for oregano_line in oregano_lines:
+    try: chunk_1, chunk_2, chunk_3 = oregano_line.split('\t')
+    except:
+        triples_failed.append(oregano_line)
+        continue
+    s_type = chunk_1.split(':')[0]
+    if s_type not in s_types:
+        s_types.append(s_type)
+    print(chunk_2)
+    # print(chunk_1, '->', chunk_2, '->', chunk_3)
+    # quit()
+
+print('#########################################3')
+for s_type in s_types:
+    print(s_type)
+quit()
 
 '''
 plants_folderpath = f'{kg_folderpath}/powo/plants-jsons'

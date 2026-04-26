@@ -72,6 +72,7 @@ body {
     margin-bottom: 1.6rem;
 }
 
+/*
 .article table {
     border-collapse: collapse;
     width: 100%;
@@ -91,6 +92,29 @@ body {
 .article td {
     border: 1px solid #333;
     padding: 1.6rem;
+}
+*/
+
+.article table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 1.4rem;
+    margin-top: 1.6rem;
+}
+
+.article th {
+    text-align: left;
+    padding: 1.6rem;
+    background-color: #f8f9fa;
+    color: #555;
+    font-weight: 600;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.article td {
+    padding: 1.6rem;
+    border-bottom: 1px solid #e2e8f0;
+    vertical-align: top;
 }
 
 /*********************************************/
