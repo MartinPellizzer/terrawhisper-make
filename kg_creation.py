@@ -13,39 +13,267 @@ from lib import io
 from lib import llm
 from lib import data
 
-kg_folderpath = f'/{g.SSOT_FOLDERPATH}/kg'
+kg_folderpath = f'{g.SSOT_FOLDERPATH}/kg'
 wikidata_folderpath = f'{g.SSOT_FOLDERPATH}/wikidata'
+powo_folderpath = f'{g.SSOT_FOLDERPATH}/powo'
 # taxdmp_folderpath = f'{wikidata_folderpath}/taxdmp'
 # taxdmp_nodes_filepath = f'{taxdmp_folderpath}/nodes.dmp'
 # taxdmp_names_filepath = f'{taxdmp_folderpath}/names.dmp'
 sqlite_database_filepath = f'{kg_folderpath}/taxonomy.db'
 lotus_filepath = f'{g.SSOT_FOLDERPATH}/lotus/lotusUniqueNaturalProduct.bson'
-lotus_output_filepath = f'{g.SSOT_FOLDERPATH}/lotus/output.json'
 herb20_filepath = f'{g.SSOT_FOLDERPATH}/herb20/HERB_herb_info_v2.txt'
 pubchem_folderpath = f'{g.SSOT_FOLDERPATH}/pubchem'
+lotus_folderpath = f'{g.SSOT_FOLDERPATH}/lotus'
 
 def chunks(lst, n):
     for i in range(0, len(lst), n):
         yield lst[i:i+n]
 
 ########################################
-# DUMPS
+# DATASETS DOWNLOAD
 ########################################
-def pubchem_properties_batches_to_single_by_inchikey():
-    batches_folderpath = f'{g.SSOT_FOLDERPATH}/pubchem/oregano-batches'
-    batches_filepaths = sorted([f'{batches_folderpath}/{filename}' for filename in os.listdir(batches_folderpath)])
-    print(batches_filepaths)
-    for batch_i, batch_filepath in enumerate(batches_filepaths):
-        print(f'{batch_i}/{len(batches_filepaths)}')
-        batch_data = io.json_read(batch_filepath)
-        items_export = batch_data['PropertyTable']['Properties']
-        for item_export in items_export:
-            item_export_filepath = f'''{g.SSOT_FOLDERPATH}/pubchem/compounds-inchikey/{item_export['InChIKey']}.json'''
-            io.json_write(item_export_filepath, item_export)
-            # print(item_export_filepath)
-        # print(batch_data)
-        # quit()
 
+def wikidata_medicinal_plants_download():
+    ### wikidata/0000
+    data = io.json_read(f'{wikidata_folderpath}/entity_has-use_medicinal-plant.json')
+    for item in data:
+        item_url = item['item']
+        item_id = item_url.split('/')[-1]
+        print(item_id)
+        output_filepath = f'{wikidata_folderpath}/0000-medicinal-plants/{item_id}.json'
+        if not os.path.exists(output_filepath):
+            url = f"https://www.wikidata.org/wiki/Special:EntityData/{item_id}.json"
+            headers = {
+                "User-Agent": "MyWikidataApp/1.0 (your_email@example.com) requests"
+            }
+            response = requests.get(url, headers=headers)
+            response.raise_for_status()
+            data = response.json()
+            io.json_write(output_filepath, data)
+            time.sleep(random.randint(2, 3))
+            # break
+    quit()
+
+def wikidata_medicinal_plants_properties_download():
+    ### wikidata/0001
+    entity_folderpath = f'{wikidata_folderpath}/0000-medicinal-plants'
+    entities_filenames = os.listdir(entity_folderpath)
+    for entity_filename in entities_filenames:
+        entity_id = entity_filename.split('.')[0]
+        entity_filepath = f'{entity_folderpath}/{entity_filename}'
+        print(entity_filepath)
+        ###
+        data = io.json_read(entity_filepath)
+        claims = data['entities'][entity_id]['claims']
+        for claim in claims:
+            p_id = claim.strip()
+            output_filepath = f'{wikidata_folderpath}/0001-properties/{p_id}.json'
+            if not os.path.exists(output_filepath):
+                url = f"https://www.wikidata.org/wiki/Special:EntityData/{p_id}.json"
+                headers = {
+                    "User-Agent": "MyWikidataApp/1.0 (your_email@example.com) requests"
+                }
+                response = requests.get(url, headers=headers)
+                response.raise_for_status()
+                data = response.json()
+                io.json_write(output_filepath, data)
+                time.sleep(random.randint(2, 3))
+                # quit()
+    quit()
+
+def wikidata_medicinal_plants_properties_distribution():
+    ### wikidata/0002
+    p_distributions = []
+    entity_foldername = 'entity_has-use_medicinal-plant'
+    entity_folderpath = f'{wikidata_folderpath}/{entity_foldername}'
+    entities_filepaths = [f'{entity_folderpath}/{filename}' for filename in os.listdir(entity_folderpath)]
+    ###
+    relationship_folderpath = f'{wikidata_folderpath}/0001-properties'
+    ###
+    i = 0
+    for entity_i, entity_filepath in enumerate(entities_filepaths):
+        s_id = entity_filepath.split('/')[-1].split('.')[0]
+        s_data = io.json_read(entity_filepath)
+        try: s_label = s_data['entities'][s_id]['labels']['en']['value']
+        except: s_label = 'S_LABEL N/A'
+        claims = s_data['entities'][s_id]['claims']
+        print(entity_filepath)
+        print(f'{entity_i}/{len(entities_filepaths)}')
+        for claim in claims:
+            p_id = claim.strip()
+            p_filepath = f'{relationship_folderpath}/{p_id}.json'
+            p_data = io.json_read(p_filepath)
+            p_label = p_data['entities'][p_id]['labels']['en']['value']
+            print(p_id)
+            found = False
+            for p_distribution in p_distributions:
+                if p_id == p_distribution['id']:
+                    p_distribution['count'] += 1
+                    found = True
+                    break
+            if not found:
+                _item = {
+                    'id': p_id,
+                    'label': p_label,
+                    'count': 1,
+                }
+                p_distributions.append(_item)
+        i += 1
+        if i >= 99999: break
+    p_distributions = sorted(p_distributions, key=lambda x: x['count'], reverse=True)
+    for p_distribution in p_distributions:
+        print(p_distribution)
+    io.json_write(f'{wikidata_folderpath}/0002-distribution/relationships-distribution.json', p_distributions)
+    quit()
+
+def wikidata_medicinal_plants_find_in_wcvp():
+    entity_folderpath = f'{wikidata_folderpath}/0000-medicinal-plants'
+    entities_filepaths = [f'{entity_folderpath}/{filename}' for filename in os.listdir(entity_folderpath)]
+    ###
+    from_folderpath = entity_folderpath
+    to_folderpath = f'{wikidata_folderpath}/0003-found-in-wcvp'
+    ###
+    P_ID = 'P225'
+    for entity_i, entity_filepath in enumerate(entities_filepaths[:99999]):
+        s_id = entity_filepath.split('/')[-1].split('.')[0]
+        s_data = io.json_read(entity_filepath)
+        claims = s_data['entities'][s_id]['claims']
+        for claim in claims:
+            p_id = claim.strip()
+            if p_id == P_ID:
+                o_taxon_name_value = claims[P_ID][0]['mainsnak']['datavalue']['value']
+                from_filepath = f'{from_folderpath}/{s_id}.json'
+                to_filepath = f'{to_folderpath}/{s_id}.json' 
+                if os.path.exists(to_filepath):
+                    continue
+                found = False
+                for herb_wcvp in herbs_wcvp:
+                    if o_taxon_name_value.lower().strip() == herb_wcvp['taxon_name'].lower().strip():
+                        shutil.copy2(from_filepath, to_filepath)
+                        print(s_id, '->', o_taxon_name_value, '->', herb_wcvp['family'])
+                        found = True
+                        break
+                if not found:
+                    print('N/A')
+
+################################################################################
+# POWO -> taxonomy
+################################################################################
+def powo_plants_download_jsons():
+    plants_folderpath = f'{wikidata_folderpath}/0000-medicinal-plants'
+    plants_filepaths = sorted([f'{plants_folderpath}/{filename}' for filename in os.listdir(plants_folderpath)])
+    failed = []
+    for plant_filepath_i, plant_filepath in enumerate(plants_filepaths):
+        plant_filename_raw = plant_filepath.split('/')[-1].split('.')[0]
+        plant_data = io.json_read(plant_filepath)
+        try: claim = plant_data['entities'][plant_filename_raw]['claims']['P5037'][0]
+        except: claim = None
+        if claim:
+            value = claim['mainsnak']['datavalue']['value']
+            print(json.dumps(value, indent=4))
+            value_url_id = value.split(':')[-1]
+            print(value_url_id)
+            output_filepath = f'{kg_folderpath}/powo/0000-plants/{value_url_id}.json'
+            if not os.path.exists(output_filepath):
+                url = f"https://powo.science.kew.org/api/2/taxon/{value}"
+                headers = {
+                    "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120 Safari/537.36"
+                }
+                try:
+                    response = requests.get(url, headers=headers)
+                    response.raise_for_status()
+                    data = response.json()
+                    io.json_write(output_filepath, data)
+                    print(data)
+                except:
+                    failed.append(plant_filepath)
+                time.sleep(random.randint(2, 3))
+    for f in failed:
+        print(f)
+    print(len(failed))
+    quit()
+
+################################################################################
+# WIKIDATA/POWO
+################################################################################
+def wikidata_plants__powo_plants__match_jsons():
+    plants_folderpath = f'{wikidata_folderpath}/0000-medicinal-plants'
+    plants_filepaths = sorted([f'{plants_folderpath}/{filename}' for filename in os.listdir(plants_folderpath)])
+    failed = []
+    powo_plants = []
+    for plant_filepath_i, plant_filepath in enumerate(plants_filepaths):
+        print(f'{plant_filepath_i}/{len(plants_filepaths)}')
+        plant_filename_raw = plant_filepath.split('/')[-1].split('.')[0]
+        plant_data = io.json_read(plant_filepath)
+        try: claim = plant_data['entities'][plant_filename_raw]['claims']['P5037'][0]
+        except: claim = None
+        if claim:
+            value = claim['mainsnak']['datavalue']['value']
+            print(json.dumps(value, indent=4))
+            value_url_id = value.split(':')[-1]
+            print(value_url_id)
+            powo_filepath = f'{powo_folderpath}/0000-plants/{value_url_id}.json'
+            if os.path.exists(powo_filepath):
+                powo_plant_data = io.json_read(powo_filepath)
+                powo_plant_kingdom = powo_plant_data['kingdom']
+                powo_plant_phylum = powo_plant_data['phylum']
+                powo_plant_class = powo_plant_data['clazz']
+                powo_plant_subclass = powo_plant_data['subclass']
+                powo_plant_order = powo_plant_data['order']
+                powo_plant_family = powo_plant_data['family']
+                powo_plant_genus = powo_plant_data['genus']
+                try: powo_plant_species = powo_plant_data['species']
+                except: powo_plant_species = ''
+                powo_plant_name = powo_plant_data['name']
+                powo_plant_rank = powo_plant_data['rank']
+                # print(json.dumps(powo_plant_data, indent=4))
+                # print(plant_filename_raw)
+                # quit()
+                _powo_plant = {
+                    'wikidata_id': plant_filename_raw,
+                    'powo_id': value_url_id,
+                    'powo_plant_kingdom': powo_plant_kingdom,
+                    'powo_plant_phylum': powo_plant_phylum,
+                    'powo_plant_class': powo_plant_class,
+                    'powo_plant_subclass': powo_plant_subclass,
+                    'powo_plant_order': powo_plant_order,
+                    'powo_plant_family': powo_plant_family,
+                    'powo_plant_genus': powo_plant_genus,
+                    'powo_plant_species': powo_plant_species,
+                    'powo_plant_name': powo_plant_name,
+                    'powo_plant_rank': powo_plant_rank,
+                }
+                powo_plants.append(_powo_plant)
+                output_filepath = f'{g.SSOT_FOLDERPATH}/wikidata-powo/0000-ids/{plant_filename_raw}.json'
+                io.json_write(output_filepath, _powo_plant)
+            else:
+                failed.append(powo_filepath)
+    print(len(failed))
+    ranks = set([item['powo_plant_rank'] for item in powo_plants])
+    genus_count = 0
+    species_count = 0
+    form_count = 0
+    subspecies_count = 0
+    variety_count = 0
+    for powo_plant in powo_plants:
+        rank = powo_plant['powo_plant_rank']
+        if rank.lower() == 'genus': genus_count += 1
+        elif rank.lower() == 'species': species_count += 1
+        elif rank.lower() == 'form': form_count += 1
+        elif rank.lower() == 'subspecies': subspecies_count += 1
+        elif rank.lower() == 'variety': variety_count += 1
+    print(genus_count)
+    print(species_count)
+    print(form_count)
+    print(subspecies_count)
+    print(variety_count)
+        
+    # print(ranks)
+    quit()
+
+################################################################################
+# LOTUS -> plants constituents
+################################################################################
 def lotus_bson_to_json():
     export_items = []
     docs_num = 0
@@ -57,15 +285,29 @@ def lotus_bson_to_json():
     npclassifier_superclass_count = 0
     npclassifier_class_count = 0
     inchikey_count = 0
+    wikidata_count = 0
+    def first_n_bson(path, n=5):
+        from bson import BSON
+        with open(path, "rb") as f:
+            for _ in range(n):
+                size_bytes = f.read(4)
+                if not size_bytes:
+                    break
+                size = int.from_bytes(size_bytes, "little")
+                f.seek(-4, 1)
+                raw = f.read(size)
+                yield BSON(raw).decode()
     for doc_i, doc in enumerate(first_n_bson(lotus_filepath, 1000000)):
         # print(doc["inchikey"])
-        print(json.dumps(doc, indent=4, default=str))
-        quit()
+        # print(json.dumps(doc, indent=4, default=str))
+        # quit()
         docs_num += 1
+        print(doc_i)
         component_lotus_id = doc['lotus_id']
         try: component_wikidata_id = doc['wikidata_id']
-        except: component_wikidata_id = None
-        print(doc_i)
+        except: 
+            component_wikidata_id = None
+            wikidata_count += 1
         found = True
         try: component_taxonomy_classyfire_parent = doc['chemicalTaxonomyClassyfireDirectParent']
         except: 
@@ -148,8 +390,152 @@ def lotus_bson_to_json():
     print(npclassifier_superclass_count)
     print(npclassifier_class_count)
     print('INCHIKEY FAILED COUNTER:', inchikey_count)
+    print('WIKIDATA FAILED COUNTER:', wikidata_count)
+    lotus_output_filepath = f'{g.SSOT_FOLDERPATH}/lotus/0000-bson-to-json/data.json'
     io.json_write(lotus_output_filepath, export_items)
     quit()
+
+def lotus_group_components_by_plant():
+    output_data = []
+    input_filepath = f'{lotus_folderpath}/0000-bson-to-json/data.json'
+    input_data = io.json_read(input_filepath)
+    for input_i, input_item in enumerate(input_data[:]):
+        print(f'{input_i}/{len(input_data)}')
+        plant_names = input_item['plant_names']
+        component_lotus_id = input_item['component_lotus_id']
+        component_inchikey = input_item['component_inchikey']
+        component_wikidata_id = input_item['component_wikidata_id']
+        component_taxonomy_npclassifier_pathway = input_item['component_taxonomy_npclassifier_pathway']
+        component_taxonomy_npclassifier_superclass = input_item['component_taxonomy_npclassifier_superclass']
+        component_taxonomy_npclassifier_class = input_item['component_taxonomy_npclassifier_class']
+        component_taxonomy_classyfire_kingdom = input_item['component_taxonomy_classyfire_kingdom']
+        component_taxonomy_classyfire_superclass = input_item['component_taxonomy_classyfire_superclass']
+        component_taxonomy_classyfire_class = input_item['component_taxonomy_classyfire_class']
+        component_taxonomy_classyfire_parent = input_item['component_taxonomy_classyfire_parent']
+        # print(json.dumps(input_item, indent=4))
+        # quit()
+        for plant_name in plant_names:
+            plant_name = plant_name.strip().lower()
+            found = False
+            for output_item in output_data:
+                if plant_name == output_item['plant_name']:
+                    new_component = {
+                        'component_lotus_id': component_lotus_id,
+                        'component_inchikey': component_inchikey,
+                        'component_wikidata_id': component_wikidata_id,
+                        'component_taxonomy_npclassifier_pathway': component_taxonomy_npclassifier_pathway,
+                        'component_taxonomy_npclassifier_superclass': component_taxonomy_npclassifier_superclass,
+                        'component_taxonomy_npclassifier_class': component_taxonomy_npclassifier_class,
+                        'component_taxonomy_classyfire_kingdom': component_taxonomy_classyfire_kingdom,
+                        'component_taxonomy_classyfire_superclass': component_taxonomy_classyfire_superclass,
+                        'component_taxonomy_classyfire_class': component_taxonomy_classyfire_class,
+                        'component_taxonomy_classyfire_parent': component_taxonomy_classyfire_parent,
+                    }
+                    output_item['components'].append(new_component)
+                    found = True
+                    break
+            if not found:
+                new_item = {
+                    'plant_name': plant_name,
+                    'components': [
+                        {
+                            'component_lotus_id': component_lotus_id,
+                            'component_inchikey': component_inchikey,
+                            'component_wikidata_id': component_wikidata_id,
+                            'component_taxonomy_npclassifier_pathway': component_taxonomy_npclassifier_pathway,
+                            'component_taxonomy_npclassifier_superclass': component_taxonomy_npclassifier_superclass,
+                            'component_taxonomy_npclassifier_class': component_taxonomy_npclassifier_class,
+                            'component_taxonomy_classyfire_kingdom': component_taxonomy_classyfire_kingdom,
+                            'component_taxonomy_classyfire_superclass': component_taxonomy_classyfire_superclass,
+                            'component_taxonomy_classyfire_class': component_taxonomy_classyfire_class,
+                            'component_taxonomy_classyfire_parent': component_taxonomy_classyfire_parent,
+                        },
+                    ]
+                }
+                output_data.append(new_item)
+        # print(plant_names)
+    print(len(output_data))
+    # print(json.dumps(output_data, indent=4))
+    io.json_write(f'{lotus_folderpath}/0001-plants-constituents-group/data.json', output_data)
+    # for output_item in output_data:
+        # if len(output_item['components']) > 1:
+            # print(json.dumps(output_item, indent=4))
+        
+################################################################################
+# WIKIDATA/POWO + LOTUS
+################################################################################
+def wikidata_powo_plants__lotus_plants__match_jsons():
+    wikidata_powo_folderpath = f'{g.SSOT_FOLDERPATH}/wikidata-powo/0000-ids'
+    wikidata_powo_filenames = os.listdir(wikidata_powo_folderpath)
+    wikidata_powo_data = []
+    for wikidata_powo_i, wikidata_powo_filename in enumerate(wikidata_powo_filenames):
+        print(f'{wikidata_powo_i}/{len(wikidata_powo_filenames)}')
+        wikidata_powo_filepath = f'{wikidata_powo_folderpath}/{wikidata_powo_filename}'
+        _data = io.json_read(wikidata_powo_filepath)
+        wikidata_powo_data.append(_data)
+
+    lotus_filepath = f'{lotus_folderpath}/0001-plants-constituents-group/data.json'
+    lotus_data = io.json_read(lotus_filepath)
+    for lotus_item in lotus_data:
+        print(json.dumps(lotus_item, indent=4))
+        print(len(lotus_item['components']))
+        lotus_plant_name = lotus_item['plant_name']
+        found = False
+        for wikidata_powo_item in wikidata_powo_data:
+            if lotus_plant_name.lower().strip() == wikidata_powo_item['powo_plant_name'].lower().strip():
+                print(wikidata_powo_item)
+                # TODO: merge found record (wikidata_powo + lotus)
+                quit()
+            pass
+        quit()
+    for x in wikidata_powo_data:
+        print(x)
+
+wikidata_powo_plants__lotus_plants__match_jsons()
+quit()
+
+################################################################################
+# KNOWLEDGE GRAPH
+################################################################################
+def kg_jsons__create():
+    input_folderpath = f'{g.SSOT_FOLDERPATH}/wikidata-powo/0000-ids'
+    for i, input_filename in enumerate(sorted(os.listdir(input_folderpath))):
+        i_str = ''
+        if i < 10: i_str = f'00000{i}'
+        elif i < 100: i_str = f'0000{i}'
+        elif i < 1000: i_str = f'000{i}'
+        elif i < 10000: i_str = f'00{i}'
+        elif i < 100000: i_str = f'0{i}'
+        elif i < 1000000: i_str = f'{i}'
+        output_filepath = f'{g.SSOT_FOLDERPATH}/kg/jsons/{i_str}.json'
+        if not os.path.exists(output_filepath):
+            input_filepath = f'{input_folderpath}/{input_filename}'
+            input_data = io.json_read(input_filepath)
+            output_data = {'terra_id': i_str, **input_data}
+            io.json_write(output_filepath, output_data)
+        # quit()
+
+# kg_jsons__create()
+quit()
+
+########################################
+# DUMPS
+########################################
+def pubchem_properties_batches_to_single_by_inchikey():
+    batches_folderpath = f'{g.SSOT_FOLDERPATH}/pubchem/oregano-batches'
+    batches_filepaths = sorted([f'{batches_folderpath}/{filename}' for filename in os.listdir(batches_folderpath)])
+    print(batches_filepaths)
+    for batch_i, batch_filepath in enumerate(batches_filepaths):
+        print(f'{batch_i}/{len(batches_filepaths)}')
+        batch_data = io.json_read(batch_filepath)
+        items_export = batch_data['PropertyTable']['Properties']
+        for item_export in items_export:
+            item_export_filepath = f'''{g.SSOT_FOLDERPATH}/pubchem/compounds-inchikey/{item_export['InChIKey']}.json'''
+            io.json_write(item_export_filepath, item_export)
+            # print(item_export_filepath)
+        # print(batch_data)
+        # quit()
+
 
 # pubchem_properties_batches_to_single_by_inchikey()
 # lotus_bson_to_json()
@@ -284,7 +670,6 @@ for i, lotus_item in enumerate(lotus_items[:]):
     _item['pubchem_cids'] = cids
     lotus_items_output.append(_item)
     # break
-lotus_folderpath = f'{g.SSOT_FOLDERPATH}/lotus'
 io.json_write(f'{lotus_folderpath}/0001-cid.json', lotus_items_output) 
 
 # lotus_pubchem__inchikey_cid__merge()
@@ -391,17 +776,6 @@ def herb20_todo():
     '''
     quit()
 
-def first_n_bson(path, n=5):
-    from bson import BSON
-    with open(path, "rb") as f:
-        for _ in range(n):
-            size_bytes = f.read(4)
-            if not size_bytes:
-                break
-            size = int.from_bytes(size_bytes, "little")
-            f.seek(-4, 1)
-            raw = f.read(size)
-            yield BSON(raw).decode()
 
 # parse lotus file (.bson) -> extract fields you need -> save to json
 
@@ -460,41 +834,6 @@ def lotus_pubchem_match():
 
 lotus_pubchem_match()
 quit()
-
-def powo_plants_jsons():
-    plants_folderpath = f'{wikidata_folderpath}/entity_has-use_medicinal-plant'
-    plants_filepaths = sorted([f'{plants_folderpath}/{filename}' for filename in os.listdir(plants_folderpath)])
-    failed = []
-    for plant_filepath_i, plant_filepath in enumerate(plants_filepaths):
-        plant_filename_raw = plant_filepath.split('/')[-1].split('.')[0]
-        plant_data = io.json_read(plant_filepath)
-        try: claim = plant_data['entities'][plant_filename_raw]['claims']['P5037'][0]
-        except: claim = None
-        if claim:
-            value = claim['mainsnak']['datavalue']['value']
-            print(json.dumps(value, indent=4))
-            value_url_id = value.split(':')[-1]
-            print(value_url_id)
-            output_filepath = f'{kg_folderpath}/powo/plants-jsons/{value_url_id}.json'
-            if not os.path.exists(output_filepath):
-                url = f"https://powo.science.kew.org/api/2/taxon/{value}"
-                headers = {
-                    "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120 Safari/537.36"
-                }
-                try:
-                    response = requests.get(url, headers=headers)
-                    response.raise_for_status()
-                    data = response.json()
-                    io.json_write(output_filepath, data)
-                    print(data)
-                except:
-                    failed.append(plant_filepath)
-                time.sleep(random.randint(2, 3))
-
-    for f in failed:
-        print(f)
-    print(len(failed))
-    quit()
 
 def powo_plants_taxonomies_get():
     plants_folderpath = f'{wikidata_folderpath}/entity_has-use_medicinal-plant'
@@ -1662,73 +2001,11 @@ with driver.session() as session:
 # driver.close()
 # quit()
 
-def wikidata_taxon_names_get():
-    import os
-    from lib import io
-    taxon_names = []
-    ###
-    entity_foldername = 'entity_has-use_medicinal-plant'
-    entity_folderpath = f'{wikidata_folderpath}/{entity_foldername}'
-    entities_filepaths = [f'{entity_folderpath}/{filename}' for filename in os.listdir(entity_folderpath)]
-    ###
-    relationship_foldername = 'property_medicinal-plant'
-    relationship_folderpath = f'{wikidata_folderpath}/{relationship_foldername}'
-    ###
-    P_ID = 'P225'
-    for entity_i, entity_filepath in enumerate(entities_filepaths):
-        s_id = entity_filepath.split('/')[-1].split('.')[0]
-        s_data = io.json_read(entity_filepath)
-        claims = s_data['entities'][s_id]['claims']
-        for claim in claims:
-            p_id = claim.strip()
-            if p_id == P_ID:
-                o_taxon_name_value = claims[P_ID][0]['mainsnak']['datavalue']['value']
-                # print(o_taxon_name_value)
-                taxon_names.append({'id': s_id, 'taxon_name': o_taxon_name_value})
-        # quit()
-    return taxon_names
-
-# wikidata_taxon_names = wikidata_taxon_names_get()
-
 # herbs_wcvp = data.herbs_wcvp_get()
 # for herb in herbs_wcvp[:100]:
     # print(herb['family'])
     # print(herb)
 
-
-def wikidata_found_in_wcvp_gen():
-    entity_foldername = 'entity_has-use_medicinal-plant'
-    entity_folderpath = f'{wikidata_folderpath}/{entity_foldername}'
-    entities_filepaths = [f'{entity_folderpath}/{filename}' for filename in os.listdir(entity_folderpath)]
-    ###
-    relationship_foldername = 'property_medicinal-plant'
-    relationship_folderpath = f'{wikidata_folderpath}/{relationship_foldername}'
-    ###
-    from_folderpath = f'{wikidata_folderpath}/entity_has-use_medicinal-plant'
-    to_folderpath = f'{wikidata_folderpath}/wikidata-found-in-wcvp'
-    ###
-    P_ID = 'P225'
-    for entity_i, entity_filepath in enumerate(entities_filepaths[:99999]):
-        s_id = entity_filepath.split('/')[-1].split('.')[0]
-        s_data = io.json_read(entity_filepath)
-        claims = s_data['entities'][s_id]['claims']
-        for claim in claims:
-            p_id = claim.strip()
-            if p_id == P_ID:
-                o_taxon_name_value = claims[P_ID][0]['mainsnak']['datavalue']['value']
-                from_filepath = f'{from_folderpath}/{s_id}.json'
-                to_filepath = f'{to_folderpath}/{s_id}.json' 
-                if os.path.exists(to_filepath):
-                    continue
-                found = False
-                for herb_wcvp in herbs_wcvp:
-                    if o_taxon_name_value.lower().strip() == herb_wcvp['taxon_name'].lower().strip():
-                        shutil.copy2(from_filepath, to_filepath)
-                        print(s_id, '->', o_taxon_name_value, '->', herb_wcvp['family'])
-                        found = True
-                        break
-                if not found:
-                    print('N/A')
 
 def wikidata_wcvp_family_gen():
     wikidata_found_in_wcvp_foldername = 'wikidata-found-in-wcvp'
@@ -1766,51 +2043,7 @@ def wikidata_wcvp_family_gen():
 
 # quit()
 
-def scrape_powo():
-    # gbif.org
-    import time
-
-    from selenium import webdriver
-    from selenium.webdriver.common.keys import Keys
-    from selenium.webdriver.common.by import By
-    from selenium.webdriver.support.ui import WebDriverWait
-    from selenium.webdriver.support import expected_conditions as EC
-    from selenium.webdriver.firefox.options import Options
-
-    geckodriver_path = 'geckodriver'
-    driver_service = webdriver.FirefoxService(executable_path=geckodriver_path)
-
-    driver = webdriver.Firefox(service=driver_service)
-    driver.get('https://www.google.com')
-    driver.maximize_window()
-
-    # driver.get('https://www.gbif.org/')
-    time.sleep(10)
-
-    taxon_name = 'achillea millefolium'
-    powo_taxon_id = 'urn:lsid:ipni.org:names:541365-1'
-    driver.get(f'https://powo.science.kew.org/taxon/{powo_taxon_id}')
-
-    e = driver.find_element(By.XPATH, '//ul[@id="siteSearchInputHome"]')
-
-
-'''
-e = driver.find_element(By.XPATH, '//input[@id="siteSearchInputHome"]')
-for c in 'test':
-    try: e.send_keys(c)
-    except: break
-e.send_keys(Keys.ENTER)
-'''
-
-# quit()
-
 def plants_taxon():
-    import os
-    import time
-    import random
-
-    from lib import io
-
     entity_foldername = 'entity_has-use_medicinal-plant'
     entity_folderpath = f'{wikidata_folderpath}/{entity_foldername}'
     entities_filepaths = [f'{entity_folderpath}/{filename}' for filename in os.listdir(entity_folderpath)]
@@ -1859,173 +2092,10 @@ def plants_taxon():
 
 # plants_taxon()
 
-def entities_relationships_distribution():
-    import os
-    import time
-    import random
-
-    from lib import io
-
-    p_distributions = []
-
-    entity_foldername = 'entity_has-use_medicinal-plant'
-    entity_folderpath = f'{wikidata_folderpath}/{entity_foldername}'
-    entities_filepaths = [f'{entity_folderpath}/{filename}' for filename in os.listdir(entity_folderpath)]
-    ###
-    relationship_foldername = 'property_medicinal-plant'
-    relationship_folderpath = f'{wikidata_folderpath}/{relationship_foldername}'
-    ###
-    i = 0
-    for entity_i, entity_filepath in enumerate(entities_filepaths):
-        s_id = entity_filepath.split('/')[-1].split('.')[0]
-        s_data = io.json_read(entity_filepath)
-        try: s_label = s_data['entities'][s_id]['labels']['en']['value']
-        except: s_label = 'S_LABEL N/A'
-        claims = s_data['entities'][s_id]['claims']
-        print(entity_filepath)
-        print(f'{entity_i}/{len(entities_filepaths)}')
-        for claim in claims:
-            p_id = claim.strip()
-            p_filepath = f'{relationship_folderpath}/{p_id}.json'
-            p_data = io.json_read(p_filepath)
-            p_label = p_data['entities'][p_id]['labels']['en']['value']
-            print(p_id)
-            found = False
-            for p_distribution in p_distributions:
-                if p_id == p_distribution['id']:
-                    p_distribution['count'] += 1
-                    found = True
-                    break
-            if not found:
-                _item = {
-                    'id': p_id,
-                    'label': p_label,
-                    'count': 1,
-                }
-                p_distributions.append(_item)
-        i += 1
-        if i >= 99999: break
-    p_distributions = sorted(p_distributions, key=lambda x: x['count'], reverse=True)
-    for p_distribution in p_distributions:
-        print(p_distribution)
-    io.json_write(f'{wikidata_folderpath}/relationships-distribution.json', p_distributions)
-    quit()
-
 # entities_relationships_distribution()
 
-def entities_jsons_get():
-    import os
-    import time
-    import random
-
-    import requests
-
-    from lib import io
-
-    data = io.json_read(f'{wikidata_folderpath}/entity_has-use_medicinal-plant.json')
-    for item in data:
-        item_url = item['item']
-        item_id = item_url.split('/')[-1]
-        print(item_id)
-    
-        output_filepath = f'{wikidata_folderpath}/entity_has-use_medicinal-plant/{item_id}.json'
-        if not os.path.exists(output_filepath):
-            # url = "https://www.wikidata.org/wiki/Special:EntityData/Q37153.json"
-            # url = "https://www.wikidata.org/w/api.php?action=wbgetentities&ids=Q37153|P31|Q5&props=labels&languages=en&format=json"
-            url = f"https://www.wikidata.org/wiki/Special:EntityData/{item_id}.json"
-
-            headers = {
-                "User-Agent": "MyWikidataApp/1.0 (your_email@example.com) requests"
-            }
-
-            response = requests.get(url, headers=headers)
-            response.raise_for_status()
-
-            data = response.json()
-            # print(data["entities"]["Q37153"]["labels"]["en"]["value"])
-            # print(data["entities"])
-            io.json_write(output_filepath, data)
-
-            time.sleep(random.randint(2, 3))
-            # break
-
-    quit()
-
-def relationships_jsons_get():
-    import os
-    import time
-    import random
-
-    import requests
-
-    from lib import io
-
-    print(wikidata_folderpath)
-    entity_foldername = 'entity_has-use_medicinal-plant'
-    entity_folderpath = f'{wikidata_folderpath}/{entity_foldername}'
-    entities_filenames = os.listdir(entity_folderpath)
-    for entity_filename in entities_filenames:
-        entity_id = entity_filename.split('.')[0]
-        entity_filepath = f'{entity_folderpath}/{entity_filename}'
-        print(entity_filepath)
-        ###
-        data = io.json_read(entity_filepath)
-        claims = data['entities'][entity_id]['claims']
-        for claim in claims:
-            p_id = claim.strip()
-
-            output_filepath = f'{wikidata_folderpath}/property_medicinal-plant/{p_id}.json'
-            if not os.path.exists(output_filepath):
-                url = f"https://www.wikidata.org/wiki/Special:EntityData/{p_id}.json"
-
-                headers = {
-                    "User-Agent": "MyWikidataApp/1.0 (your_email@example.com) requests"
-                }
-
-                response = requests.get(url, headers=headers)
-                response.raise_for_status()
-
-                data = response.json()
-                # print(data["entities"]["Q37153"]["labels"]["en"]["value"])
-                # print(data["entities"])
-                io.json_write(output_filepath, data)
-
-                time.sleep(random.randint(2, 3))
-                # quit()
-
-    quit()
-
-def entity_json_download(q_id):
-    import os
-    import time
-    import random
-
-    import requests
-
-    from lib import io
-
-    output_filepath = f'{wikidata_folderpath}/Q/{q_id}.json'
-    if not os.path.exists(output_filepath):
-        url = f"https://www.wikidata.org/wiki/Special:EntityData/{q_id}.json"
-
-        headers = {
-            "User-Agent": "MyWikidataApp/1.0 (your_email@example.com) requests"
-        }
-
-        response = requests.get(url, headers=headers)
-        response.raise_for_status()
-
-        data = response.json()
-        io.json_write(output_filepath, data)
-        time.sleep(random.randint(2, 3))
 
 def triples_gen():
-    import os
-    import time
-    import random
-
-    from lib import io
-
     entity_foldername = 'entity_has-use_medicinal-plant'
     entity_folderpath = f'{wikidata_folderpath}/{entity_foldername}'
     entities_filepaths = [f'{entity_folderpath}/{filename}' for filename in os.listdir(entity_folderpath)]
@@ -2060,10 +2130,8 @@ def triples_gen():
                 except: 
                     o_id = None
                     o_value = 'ID N/A'
-
                 if o_id:
                     entity_json_download(o_id)
-
                     o_filepath = f'{wikidata_folderpath}/Q/{o_id}.json'
                     o_data = io.json_read(o_filepath)
                     try: o_value = o_data['entities'][o_id]['labels']['en']['value']
@@ -2077,30 +2145,20 @@ def triples_gen():
         # quit()
     quit()
 
-# entities_jsons_get()
-# relationships_jsons_get()
-
-# triples_gen()
-
 def triples_resolution_sparql():
     import sys
     from SPARQLWrapper import SPARQLWrapper, JSON
-
     endpoint_url = "https://query.wikidata.org/sparql"
-
     query = """
     SELECT ?plant ?plantLabel ?use ?useLabel WHERE {
       ?plant wdt:P31/wdt:P279* wd:Q207123 .
       OPTIONAL { ?plant wdt:P366 ?use . }
-
       SERVICE wikibase:label {
         bd:serviceParam wikibase:language "en".
       }
     }
     LIMIT 200
     """
-
-
     def get_results(endpoint_url, query):
         user_agent = "WDQS-example Python/%s.%s" % (sys.version_info[0], sys.version_info[1])
         # TODO adjust user agent; see https://w.wiki/CX6
@@ -2108,54 +2166,38 @@ def triples_resolution_sparql():
         sparql.setQuery(query)
         sparql.setReturnFormat(JSON)
         return sparql.query().convert()
-
-
     for i in range(2):
         results = get_results(endpoint_url, query)
-
         for result in results["results"]["bindings"]:
             print(result)
-
         print(len(results["results"]["bindings"]))
-
 
 
 def triples_extraction():
     import json
     from lib import io
-
     label_map = [
         {'id': 'Q37153', 'value': 'Aguacate',},
         {'id': 'P366', 'value': 'has use',},
     ]
-
     wikidata_folderpath = f'/home/ubuntu/vault/terrawhisper/database/ssot/wikidata'
     wikidata_filepath = f'{wikidata_folderpath}/label-map.json'
-
     label_map = io.json_read(wikidata_filepath, create=True)
-
     s_id = 'Q37153'
     with open(f"{wikidata_folderpath}/{s_id}.json", "r", encoding="utf-8") as f:
         json_data = json.load(f)
-
     claims = data['entities'][subject_id]['claims']
-
     quit()
-
     subject_id = 'Q37153'
     predicate_id = 'P366'
     with open(f"{subject_id}.json", "r", encoding="utf-8") as f:
         data = json.load(f)
-
     # print(json.dumps(data['entities'][subject]['claims']['P366'], indent=4))
-
     claims = data['entities'][subject_id]['claims']
-
     for claim in claims:
         subject_value = [item['value'] for item in label_map if item['id'] == subject_id][0]
         # _predicate = claim
         # _object = claim['mainsnak']['datavalue']['value']['id']
-
         # triple = f'{_subject} -> {_predicate} -> {_object}'
         # print(triple)
         predicate_id = claim
@@ -2173,10 +2215,8 @@ def triples_extraction():
             predicate_value = predicate_values[0]
         else:
             predicate_value = predicate_id
-        
         # print(claims[claim])
         print(subject_value, '->', predicate_value, '->', claims[claim][0]['mainsnak']['datavalue']['value'])
-
     # TODO
     # https://www.wikidata.org/w/api.php?action=wbgetentities&ids=Q37153|P31|Q5&props=labels&languages=en&format=json
 
@@ -2209,9 +2249,7 @@ quit()
 
 import sys
 from SPARQLWrapper import SPARQLWrapper, JSON
-
 endpoint_url = "https://query.wikidata.org/sparql"
-
 query = """
     SELECT ?item ?itemLabel
     WHERE
