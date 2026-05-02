@@ -25,13 +25,331 @@ herb20_filepath = f'{g.SSOT_FOLDERPATH}/herb20/HERB_herb_info_v2.txt'
 pubchem_folderpath = f'{g.SSOT_FOLDERPATH}/pubchem'
 lotus_folderpath = f'{g.SSOT_FOLDERPATH}/lotus'
 
-def chunks(lst, n):
-    for i in range(0, len(lst), n):
-        yield lst[i:i+n]
+def neo4j_clear_db():
+    driver = GraphDatabase.driver("bolt://localhost:7687", auth=("neo4j", "Newoliark1"))
+    def delete_data(tx):
+        tx.run("MATCH (n) DETACH DELETE n")
+    def drop_constraints(tx):
+        result = tx.run("SHOW CONSTRAINTS")
+        for record in result:
+            name = record["name"]
+            tx.run(f"DROP CONSTRAINT {name}")
+    def drop_indexes(tx):
+        result = tx.run("SHOW INDEXES")
+        for record in result:
+            name = record["name"]
+            tx.run(f"DROP INDEX {name}")
+    with driver.session() as session:
+        session.execute_write(delete_data)
+    with driver.session() as session:
+        session.execute_write(drop_constraints)
+    with driver.session() as session:
+        session.execute_write(drop_indexes)
+    driver.close()
+
+# neo4j_clear_db()
+# quit()
+
+################################################################################
+# KG
+################################################################################
+
+def kg__entities__plants():
+    wikidata_powo_folderpath = f'{g.SSOT_FOLDERPATH}/wikidata-powo/0000-ids'
+    wikidata_powo_filenames = os.listdir(wikidata_powo_folderpath)
+    wikidata_powo_data = []
+    for wikidata_powo_i, wikidata_powo_filename in enumerate(wikidata_powo_filenames):
+        print(f'{wikidata_powo_i}/{len(wikidata_powo_filenames)}')
+        wikidata_powo_filepath = f'{wikidata_powo_folderpath}/{wikidata_powo_filename}'
+        _data = io.json_read(wikidata_powo_filepath)
+        wikidata_powo_data.append(_data)
+    for item in wikidata_powo_data:
+        print(json.dumps(item, indent=4))
+    print(len(wikidata_powo_data))
+    tw_plants_data = []
+    for item_i, item in enumerate(wikidata_powo_data):
+        tw_plant_id = 'TERRA:PLANT:' + str(item_i)
+        tw_plant_name = item['powo_plant_name']
+        tw_plant_item = {
+            'tw_id': tw_plant_id,
+            'name': tw_plant_name,
+        }
+        tw_plants_data.append(tw_plant_item)
+    io.json_write(f'{g.SSOT_FOLDERPATH}/kg/entities/plants.json', tw_plants_data)
+    preview_data = io.json_read(f'{g.SSOT_FOLDERPATH}/kg/entities/plants.json')
+    for preview_item in preview_data:
+        print(preview_item)
+
+# kg__entities__plants()
+# quit()
+
+def kg__entities__compounds():
+    input_folderpath = f'{g.SSOT_FOLDERPATH}/wikidata-powo-lotus/0000-ids'
+    input_filenames = os.listdir(input_folderpath)
+    input_data = []
+    for input_i, input_filename in enumerate(input_filenames):
+        print(f'{input_i}/{len(input_filenames)}')
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        _data = io.json_read(input_filepath)
+        input_data.append(_data)
+    # extract + deduplicate compounds
+    seen = set()
+    compounds_items = []
+    for item in input_data:
+        for compound_item in item['lotus_plant_components']:
+            if compound_item['component_lotus_id'] in seen: continue
+            compounds_items.append(compound_item)
+            seen.add(compound_item['component_lotus_id'])
+    # for item in compounds_items:
+        # print(json.dumps(item, indent=4))
+    tw_compounds_data = []
+    for item_i, item in enumerate(compounds_items):
+        tw_compound_id = 'TERRA:COMPOUND:' + str(item_i)
+        compound_name = item['component_taxonomy_classyfire_parent']
+        compound_inchikey = item['component_inchikey']
+        tw_compound_item = {
+            'tw_id': tw_compound_id,
+            'inchikey': compound_inchikey,
+            'name': compound_name,
+        }
+        tw_compounds_data.append(tw_compound_item)
+    io.json_write(f'{g.SSOT_FOLDERPATH}/kg/entities/compounds.json', tw_compounds_data)
+    preview_data = io.json_read(f'{g.SSOT_FOLDERPATH}/kg/entities/compounds.json')
+    for preview_item in preview_data:
+        print(preview_item)
+
+# kg__entities__compounds()
+# quit()
+
+def kg__relationships__plants_compounds():
+    entities_plants_data = io.json_read(f'{g.SSOT_FOLDERPATH}/kg/entities/plants.json')
+    entities_compounds_data = io.json_read(f'{g.SSOT_FOLDERPATH}/kg/entities/compounds.json')
+    input_folderpath = f'{g.SSOT_FOLDERPATH}/wikidata-powo-lotus/0000-ids'
+    input_filenames = os.listdir(input_folderpath)
+    triples_plant_compound = []
+    for input_i, input_filename in enumerate(input_filenames[:]):
+        print(f'{input_i}/{len(input_filenames)}')
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        input_data = io.json_read(input_filepath)
+        # print(json.dumps(input_data, indent=4))
+        plant_name = input_data['powo_plant_name']
+        tw_plant_id = ''
+        for entity_plant_item in entities_plants_data:
+            tw_name = entity_plant_item['name']
+            if plant_name == tw_name:
+                tw_plant_id = entity_plant_item['tw_id']
+                break
+        for i, compound_item in enumerate(input_data['lotus_plant_components']):
+            compound_inchikey = compound_item['component_inchikey']
+            tw_compound_id = ''
+            for entity_compound_item in entities_compounds_data:
+                # print(entity_compound_item['inchikey'])
+                if compound_inchikey == entity_compound_item['inchikey']:
+                    tw_compound_id = entity_compound_item['tw_id']
+                    # print(tw_plant_id, tw_compound_id)
+                    triples_plant_compound.append([tw_plant_id, 'has_compound', tw_compound_id])
+                    break
+    output_content = ''
+    for triple in triples_plant_compound:
+        triple_tsv = '\t'.join(triple)
+        output_content += triple_tsv + '\n'
+    output_content = output_content.strip()
+    io.file_write(f'{g.SSOT_FOLDERPATH}/kg/relationships/plants-compounds.tsv', output_content)
+    quit()
+
+# kg__relationships__plants_compounds()
+# quit()
+
+def kg__relationships__plants_compounds__preview():
+    lines = io.csv_read(f'{g.SSOT_FOLDERPATH}/kg/relationships/plants-compounds.tsv', delimiter='\t')
+    for line in lines[:10]:
+        print(line)
+    print(len(lines))
+
+def kg__relationships__plants_compounds__add():
+    neo4j_clear_db()
+    driver = GraphDatabase.driver("bolt://localhost:7687", auth=("neo4j", "Newoliark1"))
+    lines = io.csv_read(f'{g.SSOT_FOLDERPATH}/kg/relationships/plants-compounds.tsv', delimiter='\t')
+    with driver.session() as session:
+        session.run("CREATE CONSTRAINT plant_id IF NOT EXISTS FOR (n:PLANT) REQUIRE n.id IS NODE KEY;")
+        session.run("CREATE CONSTRAINT compound_id IF NOT EXISTS FOR (n:COMPOUND) REQUIRE n.id IS NODE KEY;")
+    with driver.session() as session:
+        def query_exe(tx, batch):
+            tx.run("""
+                UNWIND $rows AS row
+                MERGE (a:PLANT {id: row.plant_id})
+                MERGE (b:COMPOUND {id: row.compound_id})
+                MERGE (a)-[:HAS_COMPOUND]->(b)
+            """, rows=batch)
+        batch = []
+        for line_i, line in enumerate(lines):
+            batch.append({"plant_id": line[0], "compound_id": line[2]})
+            if len(batch) == 1000:
+                session.execute_write(query_exe, batch)
+                batch = []
+            print(line_i)
+        if batch:
+            session.execute_write(query_exe, batch)
+    driver.close()
+
+# kg__relationships__plants_compounds__add()
+# quit()
+
+def kg__relationships__plants_compounds__preview():
+    entities_plants_data = io.json_read(f'{g.SSOT_FOLDERPATH}/kg/entities/plants.json')
+    entities_compounds_data = io.json_read(f'{g.SSOT_FOLDERPATH}/kg/entities/compounds.json')
+    driver = GraphDatabase.driver("bolt://localhost:7687", auth=("neo4j", "Newoliark1"))
+    with driver.session() as session:
+        # query_multihop = """
+            # MATCH p=(a:plant)-[:HAS_COMPOUND*]->(b)
+            # RETURN p
+        # """
+        result = session.run("""
+            MATCH p=(a:PLANT)-[:HAS_COMPOUND]->(b:COMPOUND)
+            RETURN p
+        """)
+        subjects = []
+        objects = []
+        for record_i, record in enumerate(result):
+            print(record_i)
+            p = record["p"]
+            for node in p.nodes:
+                node = dict(node)
+                node_id = node['id']
+                if 'PLANT' in node_id:
+                    for entity_plant_data in entities_plants_data:
+                        tw_id = entity_plant_data['tw_id']
+                        name = entity_plant_data['name']
+                        if node_id == tw_id:
+                            subjects.append(name)
+                            break
+                elif 'COMPOUND' in node_id:
+                    for entity_compound_data in entities_compounds_data:
+                        tw_id = entity_compound_data['tw_id']
+                        name = entity_compound_data['name']
+                        if node_id == tw_id:
+                            objects.append(name)
+                            break
+        for i in range(len(subjects)):
+            print(subjects[i], 'HAS_COMPOUND', objects[i])
+    driver.close()
+
+def kg__bridge__compounds():
+    input_data_folderpath = f'{g.SSOT_FOLDERPATH}/wikidata-powo-lotus-pubchem-oregano/0003-mesh-names'
+    input_data_filenames = [item for item in os.listdir(input_data_folderpath)]
+    input_data = []
+    for i, input_data_filename in enumerate(input_data_filenames):
+        print(f'{i}/{len(input_data_filenames)}')
+        input_data_filepath = f'{input_data_folderpath}/{input_data_filename}'
+        _data = io.json_read(input_data_filepath)
+        input_data.append(_data)
+    ###
+    kg_compounds_data = io.json_read(f'{g.SSOT_FOLDERPATH}/kg/entities/compounds.json')
+    bridges = []
+    for kg_compound_item in kg_compounds_data[:]:
+        for input_item in input_data:
+            found = False
+            for lotus_plant_component in input_item['lotus_plant_components']:
+                if lotus_plant_component['component_inchikey'] == kg_compound_item['inchikey']:
+                    try: oregano_id = lotus_plant_component['oregano_id']
+                    except: oregano_id = ''
+                    bridge = [kg_compound_item['tw_id'], kg_compound_item['inchikey'], lotus_plant_component['component_lotus_id'], oregano_id]
+                    # print(kg_compound_item['inchikey'], '->', oregano_id)
+                    print(bridge)
+                    bridges.append(bridge)
+                    found = True
+                    break
+            if found:
+                break
+    output_content = ''
+    for bridge in bridges:
+        bridge_tsv = '\t'.join(bridge)
+        output_content += bridge_tsv + '\n'
+    output_content = output_content.strip()
+    io.file_write(f'{g.SSOT_FOLDERPATH}/kg/bridges/compounds.tsv', output_content)
+
+# kg__bridge__compounds()
+# quit()
+
+def kg__bridge__compounds__preview():
+    input_filepath = f'{g.SSOT_FOLDERPATH}/kg/bridges/compounds.tsv'
+    input_lines = io.file_read(input_filepath).split('\n')
+    for line in input_lines[:100]:
+        line_pieces = line.split('\t')
+        print(line_pieces)
+    print(len(input_lines))
+
+# kg__bridge__compounds__preview()
+# quit()
+
+def kg__bridge__compounds__filter():
+    input_filepath = f'{g.SSOT_FOLDERPATH}/kg/bridges/compounds.tsv'
+    input_lines = io.file_read(input_filepath).split('\n')
+    output_lines = []
+    for line in input_lines[:]:
+        line_pieces = line.split('\t')
+        failed = False
+        for piece in line_pieces:
+            if piece.strip() == '':
+                failed = True
+                break
+        if not failed:
+            output_lines.append(line)
+    output_content = ''
+    for line in output_lines:
+        line_tsv = line
+        output_content += line_tsv + '\n'
+    output_content = output_content.strip()
+    io.file_write(f'{g.SSOT_FOLDERPATH}/kg/bridges/compounds-filter.tsv', output_content)
+    ### preview
+    input_filepath = f'{g.SSOT_FOLDERPATH}/kg/bridges/compounds-filter.tsv'
+    input_lines = io.file_read(input_filepath).split('\n')
+    for line in input_lines[:100]:
+        line_pieces = line.split('\t')
+        print(line_pieces)
+    print(len(input_lines))
+
+# kg__bridge__compounds__filter()
+# quit()
+
+def kg__relationsips__compound_disease__extract():
+    oregano_relationships_filepath = f'{g.SSOT_FOLDERPATH}/oregano/oregano-master/Data_OREGANO/Graphs/OREGANO_V3.tsv'
+    oregano_relationships_lines = io.file_read(oregano_relationships_filepath).split('\n')
+    bridges_compounds_filepath = f'{g.SSOT_FOLDERPATH}/kg/bridges/compounds-filter.tsv'
+    bridges_compounds_lines = io.file_read(bridges_compounds_filepath).split('\n')
+    oregano_relationships_lines_filtered = []
+    for i, oregano_relationship_line in enumerate(oregano_relationships_lines[:]):
+        print(i)
+        oregano_relationship_pieces = oregano_relationship_line.split('\t')
+        if len(oregano_relationship_pieces) == 3:
+            oregano_relationship_node_1 = oregano_relationship_pieces[0]
+            oregano_relationship_type = oregano_relationship_pieces[1]
+            oregano_relationship_node_2 = oregano_relationship_pieces[2]
+            if oregano_relationship_type == 'is_substance_that_treats':
+                oregano_relationships_lines_filtered.append(oregano_relationship_line)
+    print(len(oregano_relationships_lines_filtered))
+    output_content = '\n'.join(oregano_relationships_lines_filtered)
+    io.file_write(f'{g.SSOT_FOLDERPATH}/oregano/relationships-is_substance_that_treats.tsv', output_content)
+
+def kg__relationsips__compound_disease__extract__preview():
+    lines = io.file_read(f'{g.SSOT_FOLDERPATH}/oregano/relationships-is_substance_that_treats.tsv').split('\n')
+    print(len(lines))
+
+# kg__relationsips__compound_disease__extract()
+kg__relationsips__compound_disease__extract__preview()
+quit()
 
 ########################################
 # DATASETS DOWNLOAD
 ########################################
+quit()
+
+########################################
+# DATASETS DOWNLOAD
+########################################
+def chunks(lst, n):
+    for i in range(0, len(lst), n):
+        yield lst[i:i+n]
 
 def wikidata_medicinal_plants_download():
     ### wikidata/0000
@@ -271,9 +589,29 @@ def wikidata_plants__powo_plants__match_jsons():
     # print(ranks)
     quit()
 
+
 ################################################################################
 # LOTUS -> plants constituents
 ################################################################################
+def lotus_bson_preview():
+    def first_n_bson(path, n=5):
+        from bson import BSON
+        with open(path, "rb") as f:
+            for _ in range(n):
+                size_bytes = f.read(4)
+                if not size_bytes:
+                    break
+                size = int.from_bytes(size_bytes, "little")
+                f.seek(-4, 1)
+                raw = f.read(size)
+                yield BSON(raw).decode()
+    for doc_i, doc in enumerate(first_n_bson(lotus_filepath, 1000000)):
+        print(json.dumps(doc, indent=4, default=str))
+        quit()
+
+# lotus_bson_preview()
+# quit()
+
 def lotus_bson_to_json():
     export_items = []
     docs_num = 0
@@ -460,7 +798,7 @@ def lotus_group_components_by_plant():
     # for output_item in output_data:
         # if len(output_item['components']) > 1:
             # print(json.dumps(output_item, indent=4))
-        
+
 ################################################################################
 # WIKIDATA/POWO + LOTUS
 ################################################################################
@@ -473,25 +811,684 @@ def wikidata_powo_plants__lotus_plants__match_jsons():
         wikidata_powo_filepath = f'{wikidata_powo_folderpath}/{wikidata_powo_filename}'
         _data = io.json_read(wikidata_powo_filepath)
         wikidata_powo_data.append(_data)
-
     lotus_filepath = f'{lotus_folderpath}/0001-plants-constituents-group/data.json'
     lotus_data = io.json_read(lotus_filepath)
-    for lotus_item in lotus_data:
-        print(json.dumps(lotus_item, indent=4))
-        print(len(lotus_item['components']))
+    for lotus_item_i, lotus_item in enumerate(lotus_data):
+        print(f'{lotus_item_i}/{len(lotus_data)}')
+        # print(json.dumps(lotus_item, indent=4))
+        # print(len(lotus_item['components']))
         lotus_plant_name = lotus_item['plant_name']
         found = False
         for wikidata_powo_item in wikidata_powo_data:
-            if lotus_plant_name.lower().strip() == wikidata_powo_item['powo_plant_name'].lower().strip():
-                print(wikidata_powo_item)
-                # TODO: merge found record (wikidata_powo + lotus)
-                quit()
+            wikidata_id = wikidata_powo_item['wikidata_id']
+            powo_plant_name = wikidata_powo_item['powo_plant_name']
+            if lotus_plant_name.lower().strip() == powo_plant_name.lower().strip():
+                lotus_plant_name = lotus_item['plant_name']
+                lotus_plant_components = lotus_item['components']
+                output_data = {
+                    **wikidata_powo_item, 
+                    'lotus_plant_name': lotus_plant_name,
+                    'lotus_plant_components': lotus_plant_components,
+                }
+                # print(json.dumps(output_data, indent=4))
+                output_filepath = f'{g.SSOT_FOLDERPATH}/wikidata-powo-lotus/0000-ids/{wikidata_id}.json'
+                io.json_write(output_filepath, output_data)
+                # quit()
             pass
-        quit()
-    for x in wikidata_powo_data:
-        print(x)
+        # quit()
+    # for x in wikidata_powo_data:
+        # print(x)
 
-wikidata_powo_plants__lotus_plants__match_jsons()
+################################################################################
+# PUBCHEM
+################################################################################
+def pubchem_sqlite_table_inchikey_cid_create():
+    pubchem_cid_inchikey_filepath = f'{pubchem_folderpath}/CID-InChI-Key'
+    conn = sqlite3.connect(f'{pubchem_folderpath}/pubchem_inchikey_cid_mapping.db')
+    cur = conn.cursor()
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS pubchem_inchikey_cid_mapping (
+            inchikey TEXT,
+            inchi TEXT,
+            cid TEXT
+        )
+    """)
+    cur.execute("PRAGMA synchronous = OFF")
+    cur.execute("PRAGMA journal_mode = MEMORY")
+    cur.execute("PRAGMA temp_store = MEMORY")
+    cur.execute("PRAGMA cache_size = 1000000")
+    with open(pubchem_cid_inchikey_filepath, "r") as f:
+        for i, line in enumerate(f):
+            parts = line.strip().split("\t")
+            if len(parts) < 2:
+                continue
+            cid, inchi, inchikey = parts[0], parts[1], parts[2]
+            cur.execute("INSERT INTO pubchem_inchikey_cid_mapping VALUES (?, ?, ?)", (inchikey, inchi, cid))
+            if i % 100000 == 0:
+                conn.commit()
+                print(f"{i} lines inserted")
+    cur.execute("CREATE INDEX IF NOT EXISTS idx_inchikey ON pubchem_inchikey_cid_mapping(inchikey)")
+    conn.commit()
+    conn.close()
+
+################################################################################
+# WIKIDATA/POWO/LOTUS + PUBCHEM
+################################################################################
+def wikidta_powo_lotus_inchikey__pubchem_cids__merge():
+    input_folderpath = f'{g.SSOT_FOLDERPATH}/wikidata-powo-lotus/0000-ids'
+    input_filenames = os.listdir(input_folderpath)
+    for input_filename_i, input_filename in enumerate(input_filenames[:]):
+        print(f'{input_filename_i}/{len(input_filenames)}')
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        input_data = io.json_read(input_filepath)
+        lotus_plant_components = input_data['lotus_plant_components']
+        output_filepath = f'{g.SSOT_FOLDERPATH}/wikidata-powo-lotus-pubchem/0000-ids/{input_filename}'
+        for i, lotus_plant_component in enumerate(lotus_plant_components):
+            lotus_plant_component_inchikey = lotus_plant_component['component_inchikey']
+            # print(lotus_plant_component_inchikey)
+            # print(json.dumps(input_data, indent=4))
+            conn = sqlite3.connect(f'{pubchem_folderpath}/pubchem_inchikey_cid_mapping.db')
+            cur = conn.cursor()
+            cur.execute(
+                "SELECT cid FROM pubchem_inchikey_cid_mapping WHERE inchikey = ?",
+                (lotus_plant_component_inchikey,)
+            )
+            results = [row[0] for row in cur.fetchall()]
+            conn.close()
+            lotus_plant_component['pubchem_cids'] = results
+            # print(json.dumps(lotus_plant_component, indent=4))
+            # break
+        io.json_write(output_filepath, input_data)
+        # quit()
+    return results
+
+################################################################################
+# OREGANO
+################################################################################
+def oregano_clear_db():
+    driver = GraphDatabase.driver("bolt://localhost:7687", auth=("neo4j", "Newoliark1"))
+    def delete_data(tx):
+        tx.run("MATCH (n) DETACH DELETE n")
+    def drop_constraints(tx):
+        result = tx.run("SHOW CONSTRAINTS")
+        for record in result:
+            name = record["name"]
+            tx.run(f"DROP CONSTRAINT {name}")
+    def drop_indexes(tx):
+        result = tx.run("SHOW INDEXES")
+        for record in result:
+            name = record["name"]
+            tx.run(f"DROP INDEX {name}")
+    with driver.session() as session:
+        session.execute_write(delete_data)
+    with driver.session() as session:
+        session.execute_write(drop_constraints)
+    with driver.session() as session:
+        session.execute_write(drop_indexes)
+    driver.close()
+
+def oregano__kg_create__batch_grouped():
+    from collections import defaultdict
+    driver = GraphDatabase.driver("bolt://localhost:7687", auth=("neo4j", "Newoliark1"))
+    oregano_relationships_filepath = f'{g.SSOT_FOLDERPATH}/oregano/oregano-master/Data_OREGANO/Graphs/OREGANO_V3.tsv'
+    def batch_insert_grouped(tx, grouped_batch):
+        for rel_type, rows in grouped_batch.items():
+            query = f"""
+            UNWIND $rows AS row
+            WITH row,
+                 split(row.s, ":")[0] AS s_type,
+                 split(row.s, ":")[1] AS s_id,
+                 split(row.o, ":")[0] AS o_type,
+                 split(row.o, ":")[1] AS o_id
+            MERGE (s:Entity {{id: row.s}})
+            SET s.type = s_type
+            MERGE (o:Entity {{id: row.o}})
+            SET o.type = o_type
+            MERGE (s)-[:{rel_type}]->(o)
+            """
+            tx.run(query, rows=rows)
+    batch = defaultdict(list)
+    batch_size = 5000
+    with open(oregano_relationships_filepath) as f:
+        with driver.session() as session:
+            session.run("CREATE INDEX entity_id IF NOT EXISTS FOR (n:Entity) ON (n.id)")
+            for line in f:
+                s, p, o = line.strip().split("\t")
+                if p == "rdf/type":
+                    continue
+                batch[p].append({"s": s, "o": o})
+                if sum(len(v) for v in batch.values()) >= batch_size:
+                    session.execute_write(batch_insert_grouped, batch)
+                    batch.clear()
+                    print(batch_size)
+            if batch:
+                session.execute_write(batch_insert_grouped, batch)
+    driver.close()
+
+################################################################################
+# WIKIDATA/POWO/LOTUS/PUBCHEM + OREGANO
+################################################################################
+def wikidata_powo_lotus_pubchem_cids__oregano_ids__merge():
+    oregano_data = []
+    oregano_compounds_text = io.file_read(
+        f'{g.SSOT_FOLDERPATH}/oregano/oregano-master/Integration/Integration V3/GESTION_ID/COMPOUND.tsv'
+    )
+    oregano_compounds_lines = oregano_compounds_text.split('\n')
+    ###
+    headings = oregano_compounds_lines[0].split('\t')
+    headings[0] = 'ID_OREGANO'
+    cids = []
+    for line_i, line in enumerate(oregano_compounds_lines[:]):
+        print(line_i)
+        if line_i == 0: continue
+        if line.strip() == '': continue
+        values = line.split('\t')
+        item = {}
+        for i in range(len(headings)):
+            item[headings[i]] = values[i].strip()
+        # print(json.dumps(item, indent=4))
+        # quit()
+        pubchem_compound_id = item['PUBCHEM COMPOUND']
+        if pubchem_compound_id.strip() == '': continue
+        if ',' in pubchem_compound_id: continue
+        if ';' in pubchem_compound_id: continue
+        # print('ID:', item['ID_OREGANO'], '  WIKIDATA:', item['WIKIPEDIA'], '  CID:', pubchem_compound_id)
+        item = {
+            'oregano_id': item['ID_OREGANO'],
+            'pubchem_cid': pubchem_compound_id,
+        }
+        oregano_data.append(item)
+    input_folderpath = f'{g.SSOT_FOLDERPATH}/wikidata-powo-lotus-pubchem/0000-ids'
+    input_filenames = os.listdir(input_folderpath)
+    # input_data = []
+    for i, input_filename in enumerate(input_filenames[:]):
+        print(i)
+        # print(json.dumps(input_item, indent=4))
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        input_item = io.json_read(input_filepath)
+        input_components = input_item['lotus_plant_components']
+        for input_component_i, input_component in enumerate(input_components):
+            # print(f'{input_component_i}/{len(input_components)}')
+            pubchem_cids = input_component['pubchem_cids']
+            for pubchem_cid in pubchem_cids:
+                pubchem_cid_found = False
+                for oregano_item in oregano_data:
+                    oregano_id = oregano_item['oregano_id']
+                    if oregano_item['pubchem_cid'] == pubchem_cid:
+                        # print(oregano_id, pubchem_cid)
+                        input_component['oregano_id'] = oregano_id
+                        pubchem_cid_found = True
+                        break
+                        # quit()
+                if pubchem_cid_found:
+                    # print(input_component)
+                    break
+                    # quit()
+            # print(pubchem_ids)
+        output_filepath = f'{g.SSOT_FOLDERPATH}/wikidata-powo-lotus-pubchem-oregano/0000-ids/{input_filename}'
+        io.json_write(output_filepath, input_item)
+        # quit()
+
+################################################################################
+# WIKIDATA/POWO/LOTUS/PUBCHEM/OREGANO + INTERNALE MAPPING
+################################################################################
+def wikidata_powo_lotus_pubchem_oregano__compounds_ids__diseases_ids_merge():
+    driver = GraphDatabase.driver("bolt://localhost:7687", auth=("neo4j", "Newoliark1"))
+    input_folderpath = f'{g.SSOT_FOLDERPATH}/wikidata-powo-lotus-pubchem-oregano/0000-ids'
+    input_filenames = sorted(os.listdir(input_folderpath))
+    for i, input_filename in enumerate(input_filenames[:]):
+        print(f'{i}/{len(input_filenames)}')
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        input_item = io.json_read(input_filepath)
+        # print(json.dumps(input_item, indent=4))
+        for lotus_plant_component in input_item['lotus_plant_components']:
+            if 'oregano_id' in lotus_plant_component:
+                oregano_component_id = lotus_plant_component['oregano_id']
+                # print(oregano_component_id)
+                # quit()
+                query = """
+                    MATCH p=(s:Entity {id: $compound_id})
+                            -[:is_substance_that_treats]->
+                            (o) 
+                    RETURN o.id as id
+                """
+                with driver.session() as session:
+                    result = session.run(query, compound_id=oregano_component_id)
+                    diseases = [record['id'] for record in result]
+                    # print(diseases)
+                    if diseases != []:
+                        # quit()
+                        pass
+                    lotus_plant_component['oregano_diseases_ids'] = diseases
+        output_folderpath = f'{g.SSOT_FOLDERPATH}/wikidata-powo-lotus-pubchem-oregano/0001-diseases'
+        output_filepath = f'{output_folderpath}/{input_filename}'
+        # print(json.dumps(input_item, indent=4))
+        io.json_write(output_filepath, input_item)
+        # break
+    driver.close()
+    ###
+    input_folderpath = f'{g.SSOT_FOLDERPATH}/wikidata-powo-lotus-pubchem-oregano/0001-diseases'
+    input_filenames = sorted(os.listdir(input_folderpath))
+    for i, input_filename in enumerate(input_filenames[:]):
+        print(f'{i}/{len(input_filenames)}')
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        input_item = io.json_read(input_filepath)
+        for lotus_plant_component in input_item['lotus_plant_components']:
+            if 'oregano_diseases_ids' in lotus_plant_component:
+                oregano_diseases_ids = lotus_plant_component['oregano_diseases_ids']
+                print(oregano_diseases_ids)
+        # quit()
+
+def oregano_disease_ids__mesh_disease_ids():
+    oregano_data = []
+    oregano_file_content = io.file_read(
+        f'{g.SSOT_FOLDERPATH}/oregano/oregano-master/Integration/Integration V3/GESTION_ID/DISEASES.tsv'
+    )
+    oregano_compounds_lines = oregano_file_content.split('\n')
+    ###
+    headings = oregano_compounds_lines[0].split('\t')
+    headings[0] = 'ID'
+    oregano_diseases_items = []
+    for line_i, line in enumerate(oregano_compounds_lines[:]):
+        print(line_i)
+        if line_i == 0: continue
+        if line.strip() == '': continue
+        values = line.split('\t')
+        item = {}
+        for i in range(len(headings)):
+            item[headings[i]] = values[i].strip()
+        oregano_diseases_items.append(item)
+    ###
+    input_folderpath = f'{g.SSOT_FOLDERPATH}/wikidata-powo-lotus-pubchem-oregano/0001-diseases'
+    input_filenames = sorted(os.listdir(input_folderpath))
+    for i, input_filename in enumerate(input_filenames[:]):
+        print(f'{i}/{len(input_filenames)}')
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        input_item = io.json_read(input_filepath)
+        for lotus_plant_component in input_item['lotus_plant_components']:
+            lotus_plant_component['mesh_diseases_ids'] = []
+            if 'oregano_diseases_ids' in lotus_plant_component:
+                oregano_diseases_ids = lotus_plant_component['oregano_diseases_ids']
+                if oregano_diseases_ids != []:
+                    for oregano_disease_id in oregano_diseases_ids:
+                        print(oregano_disease_id)
+                        # match oregano/mesh disease ids
+                        for oregano_disease_item in oregano_diseases_items:
+                            if oregano_disease_item['ID'] == oregano_disease_id:
+                                if 'MESH' in oregano_disease_item and oregano_disease_item['MESH'] != '': 
+                                    mesh_id = oregano_disease_item['MESH']
+                                    lotus_plant_component['mesh_diseases_ids'].append(mesh_id)
+                                    print(oregano_disease_id, mesh_id)
+                                    # quit()
+                                    break
+                        # quit()
+        # print(json.dumps(input_item, indent=4))
+        output_filepath = f'{g.SSOT_FOLDERPATH}/wikidata-powo-lotus-pubchem-oregano/0002-mesh-ids/{input_filename}'
+        io.json_write(output_filepath, input_item)
+        # break
+        # quit()
+
+# oregano_disease_ids__mesh_disease_ids()
+# quit()
+
+def mesh_disease_ids__mesh_disease_names():
+    input_folderpath = f'{g.SSOT_FOLDERPATH}/wikidata-powo-lotus-pubchem-oregano/0002-mesh-ids'
+    input_filenames = sorted(os.listdir(input_folderpath))
+    for i, input_filename in enumerate(input_filenames[:]):
+        print(f'{i}/{len(input_filenames)}')
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        input_item = io.json_read(input_filepath)
+        for lotus_plant_component in input_item['lotus_plant_components']:
+            lotus_plant_component['mesh_diseases'] = []
+            mesh_diseases_ids = lotus_plant_component['mesh_diseases_ids']
+            print(mesh_diseases_ids)
+            if mesh_diseases_ids != []:
+                for mesh_disease_id in mesh_diseases_ids:
+                    mesh_filepath = f'{g.SSOT_FOLDERPATH}/mesh/0000-ids-jsons/{mesh_disease_id}.json'
+                    try: mesh_data = io.json_read(mesh_filepath)
+                    except: mesh_data = {}
+                    if mesh_data != {}:
+                        label = mesh_data['label']
+                        if label['@language'] == 'en':
+                            value = label['@value']
+                        else:
+                            value = ''
+                        if value != '':
+                            lotus_plant_component['mesh_diseases'].append({
+                                'mesh_disease_id': mesh_disease_id,
+                                'mesh_disease_name': value,
+                            })
+                            print(json.dumps(mesh_data, indent=4))
+                            print(mesh_data['label'])
+                            # break
+                            # quit()
+        # print(json.dumps(input_item, indent=4))
+        # quit()
+        output_filepath = f'{g.SSOT_FOLDERPATH}/wikidata-powo-lotus-pubchem-oregano/0003-mesh-names/{input_filename}'
+        io.json_write(output_filepath, input_item)
+        # quit()
+
+# mesh_disease_ids__mesh_disease_names()
+# quit()
+
+def wikidata_powo_lotu_pubchem_oregano__preview_diseases_names():
+    input_folderpath = f'{g.SSOT_FOLDERPATH}/wikidata-powo-lotus-pubchem-oregano/0003-mesh-names'
+    input_filenames = sorted(os.listdir(input_folderpath))
+    for i, input_filename in enumerate(input_filenames[:]):
+        print(f'{i}/{len(input_filenames)}')
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        input_item = io.json_read(input_filepath)
+        for lotus_plant_component in input_item['lotus_plant_components']:
+            mesh_diseases = lotus_plant_component['mesh_diseases']
+            if mesh_diseases != []:
+                print(mesh_diseases)
+                quit()
+
+quit()
+
+# wikidata_powo_lotus_pubchem_oregano__compounds_ids__diseases_ids_merge()
+# quit()
+
+'''
+def oregano_compound_id_to_targets_ids():
+    oregano_text = io.file_read(f'{g.SSOT_FOLDERPATH}/oregano/oregano-master/Data_OREGANO/Graphs/OREGANO_V3_WIW.tsv')
+    oregano_lines = oregano_text.split('\n')
+    triples_failed = []
+    s_types = []
+    triples = []
+    for oregano_line_i, oregano_line in enumerate(oregano_lines):
+        print(f'{oregano_line_i}/{len(oregano_lines)}')
+        try: chunk_1, chunk_2, chunk_3 = oregano_line.split('\t')
+        except:
+            triples_failed.append(oregano_line)
+            continue
+        s_type = chunk_1.split(':')[0]
+        if s_type not in s_types:
+            s_types.append(s_type)
+        # print(chunk_2)
+        # print(chunk_1, '->', chunk_2, '->', chunk_3)
+        if chunk_1 == 'NATURAL_COMPOUND:22707':
+            triple = [chunk_1, chunk_2, chunk_3]
+            if triple not in triples:
+                triples.append(triple)
+            print(triples)
+            # quit()
+    for triple in triples:
+        print(triple)
+    print(len(triples))
+    quit()
+'''
+
+'''
+def oregano_natural_compound_relationships_triples_get():
+    oregano_text = io.file_read(f'{g.SSOT_FOLDERPATH}/oregano/oregano-master/Data_OREGANO/Graphs/OREGANO_V3.tsv')
+    oregano_lines = oregano_text.split('\n')
+    triples_failed = []
+    s_types = []
+    triples = []
+    for oregano_line_i, oregano_line in enumerate(oregano_lines):
+        print(f'{oregano_line_i}/{len(oregano_lines)}')
+        try: chunk_1, chunk_2, chunk_3 = oregano_line.split('\t')
+        except:
+            triples_failed.append(oregano_line)
+            continue
+        s_type = chunk_1.split(':')[0]
+        if s_type not in s_types:
+            s_types.append(s_type)
+        # if chunk_1 == 'NATURAL_COMPOUND:22707':
+        if chunk_1 == 'GENE:16036':
+            triple = [chunk_1, chunk_2, chunk_3]
+            if triple not in triples:
+                triples.append(triple)
+            print(triples)
+            # quit()
+    for triple in triples:
+        print(triple)
+    print(len(triples))
+    quit()
+'''
+
+def oregano__diseases_get():
+    oregano_target_lines = io.file_read(
+        f'{g.SSOT_FOLDERPATH}/oregano/oregano-master/Integration/Integration V3/GESTION_ID/DISEASES.tsv'
+    ).split('\n')
+    ###
+    headings = oregano_target_lines[0].split('\t')
+    field_mesh_failed_count = 0
+    output_items = []
+    for heading in headings:
+        # print(heading)
+        headings[0] = 'ID'
+        cids = []
+        for line_i, line in enumerate(oregano_target_lines[:]):
+            print(f'{line_i}/{len(oregano_target_lines)}')
+            if line_i == 0: continue
+            if line.strip() == '': continue
+            values = line.split('\t')
+            item = {}
+            for i in range(len(headings)):
+                item[headings[i]] = values[i].strip()
+            # print(json.dumps(item, indent=4))
+            # quit()
+            if 'MESH' not in item or item['MESH'].strip() == '':
+                field_mesh_failed_count = 0
+            else:
+                output_items.append(item)
+            # if line_i > 5:
+                # quit()
+    # print(field_mesh_failed_count)
+    return output_items
+
+def oregano__neo4j__diseases_by_compound():
+    driver = GraphDatabase.driver("bolt://localhost:7687", auth=("neo4j", "Newoliark1"))
+    query = """
+        MATCH (c:Entity {type: "COMPOUND", id: $compound_id})
+        MATCH (c)-[*1..6]-(d:Entity {type: "DISEASE"})
+        RETURN DISTINCT d.id AS disease_id
+    """
+    query = """
+        MATCH (c:Entity {type: "NATURAL_COMPOUND", id: $compound_id})
+        MATCH (c)-[*1..6]-(d:Entity {type: "DISEASE"})
+        RETURN DISTINCT d.id AS disease_id
+    """
+    query = """
+        MATCH p=(s:Entity {type: "NATURAL_COMPOUND", id: $compound_id})
+                -[:is_substance_that_treats]->
+                (o) 
+        RETURN o.id as id
+    """
+    with driver.session() as session:
+        result = session.run(query, compound_id="NATURAL_COMPOUND:1095")
+        diseases = [record['id'] for record in result]
+    print(diseases)
+    driver.close()
+
+# oregano__neo4j__diseases_by_compound()
+# quit()
+
+def mesh__jsons_get():
+    '''
+    mesh_filepath = f'{g.SSOT_FOLDERPATH}/mesh/mesh.nt'
+    mesh_content = io.file_read(mesh_filepath)
+    mesh_lines = mesh_content.split('\n')
+    for line in mesh_lines[:100]:
+        print(line)
+    from rdflib import Graph, URIRef, RDFS
+    graph = Graph()
+    graph.parse(mesh_filepath, format="nt")
+    def get_mesh_name(mesh_id):
+        uri = URIRef(f"http://id.nlm.nih.gov/mesh/{mesh_id}")
+        for _, _, label in g.triples((uri, RDFS.label, None)):
+            return str(label)
+        return None
+    print(get_mesh_name("D054868"))
+    '''
+    oregano_diseases = oregano__diseases_get()
+    mesh_ids = []
+    for oregano_disease in oregano_diseases:
+        mesh_id = oregano_disease['MESH']
+        # if mesh_id not in mesh_ids:
+        mesh_id_chunks = mesh_id.split(';')
+        # mesh_id_chunk = mesh_id.split(';')[0]
+        # mesh_ids.append(mesh_id_chunk)
+        for mesh_id_chunk in mesh_id_chunks:
+            mesh_ids.append(mesh_id_chunk)
+    print(len(mesh_ids))
+    mesh_ids = sorted(list(set(mesh_ids)))
+    print(len(mesh_ids))
+    # quit()
+    # for i, mesh_id in enumerate(mesh_ids):
+        # print(mesh_id)
+        # if i > 10000:
+            # quit()
+    # quit()
+    '''
+    mesh_ids = [item['MESH'] for item in oregano_diseases]
+    mesh_ids = sorted(list(set(mesh_ids)))
+    print(mesh_ids[:100])
+    quit()
+    '''
+
+    session = requests.Session()
+    for mesh_id_i, mesh_id in enumerate(mesh_ids[7000:]):
+        print(f'{mesh_id_i}/{len(mesh_ids)}')
+        output_filepath = f'{g.SSOT_FOLDERPATH}/mesh/0000-ids-jsons/{mesh_id}.json'
+        try: 
+            print(mesh_id)
+            if 'OMIM' in mesh_id: continue
+            output_data = io.json_read(output_filepath)
+            if output_data == {}: os.remove(output_filepath)
+        except:
+            pass
+        if not os.path.exists(output_filepath):
+            url = f"https://id.nlm.nih.gov/mesh/{mesh_id}.json"
+            print(url)
+            data = {}
+            for attempt in range(5):
+                try:
+                    r = requests.get(url, timeout=10)
+                    if r.status_code == 200:
+                        data =  r.json()
+                        break
+                except requests.exceptions.RequestException:
+                    print('failed')
+                    pass
+                time.sleep(2 * (attempt + 1))  # exponential backoff
+            if data != {}:
+                io.json_write(output_filepath, data)
+            if mesh_id_i % 100 == 0 and mesh_id_i != 0:
+                time.sleep(60)
+        # if mesh_id_i > 5:
+            # quit()
+    quit()
+
+# mesh__jsons_get()
+# oregano__diseases_get()
+
+# start = time.perf_counter()
+# oregano__kg_create__batch_grouped()
+# end = time.perf_counter()
+# print(f"Execution time: {end - start:.6f} seconds")
+
+# oregano_natural_compound_relationships_triples_get()
+quit()
+
+# oregano_text = io.file_read(f'{g.SSOT_FOLDERPATH}/oregano/oregano-master/Data_OREGANO/Graphs/OREGANO_V3_WIW.tsv')
+oregano_text = io.file_read(f'{g.SSOT_FOLDERPATH}/oregano/oregano-master/Data_OREGANO/Graphs/OREGANO_V3.tsv')
+oregano_lines = oregano_text.split('\n')
+triples = []
+relationships = []
+entities = []
+for oregano_line_i, oregano_line in enumerate(oregano_lines[:50]):
+    # print(f'{oregano_line_i}/{len(oregano_lines)}')
+    try: chunk_1, chunk_2, chunk_3 = oregano_line.split('\t')
+    except: continue
+    # if chunk_1.split(':')[0].lower().strip() == 'natural_compound':
+        # if chunk_2 not in relationships:
+    relationships.append(chunk_2)
+    triple = [chunk_1, chunk_2, chunk_3]
+    print(oregano_line)
+    triples.append(triple)
+    # quit()
+
+print(len(triples))
+quit()
+'''
+['NATURAL_COMPOUND:16168', 'rdf/type', 'COMPOUND']
+['NATURAL_COMPOUND:16168', 'has_target', 'PROTEIN:358']
+['NATURAL_COMPOUND:99', 'has_code', 'G02AC01']
+['NATURAL_COMPOUND:1515', 'interacts_with', 'COMPOUND:1']
+['NATURAL_COMPOUND:982', 'is_affecting', 'GENE:746']
+['NATURAL_COMPOUND:1015', 'is_substance_that_treats', 'DISEASE:2631']
+['NATURAL_COMPOUND:569', 'has_indication', 'INDICATION:1']
+['NATURAL_COMPOUND:569', 'has_side_effect', 'SIDE_EFFECT:1']
+'''
+
+'''
+natural compound, type, compound
+natural compound, has target, protein
+natural compound, is affecting, gene
+natural compound, has indication, indication
+natural compound, has side effect, side effect
+
+compound, downregulates, gene
+compound, upregulatges, gene
+compound, is substance that treats, disease
+compound, has code, *code
+compound, interacts with, compound
+
+protein, involved in, bioprocess
+protein, gene product of, gene
+
+reaction, part of, bioprocess
+reaction, reaction of, pathway
+
+gene, causes condition, disease
+gene, acts within, pathway
+
+disease, has phenotype, phenotype
+
+pathway, participates in, pathway
+'''
+
+# for triple in triples:
+    # print(triple)
+quit()
+
+# oregano_compound_id_to_targets_ids()
+
+oregano_target_lines = io.file_read(
+    f'{g.SSOT_FOLDERPATH}/oregano/oregano-master/Integration/Integration V3/GESTION_ID/TARGET.tsv'
+).split('\n')
+###
+headings = oregano_target_lines[0].split('\t')
+for heading in headings:
+    # print(heading)
+    headings[0] = 'TARGET_ID'
+    cids = []
+    for line_i, line in enumerate(oregano_target_lines[:]):
+        print(line_i)
+        if line_i == 0: continue
+        if line.strip() == '': continue
+        values = line.split('\t')
+        item = {}
+        for i in range(len(headings)):
+            item[headings[i]] = values[i].strip()
+        if item['TARGET_ID'] == 'PROTEIN:1519':
+            print(json.dumps(item, indent=4))
+            # TODO: resolve protein name with UNIPROTKB id
+            quit()
+
+# TODO: investigate oregano dataset (relationships chain)
+quit()
+
+# oregano_items = io.csv_to_dict(f'{g.SSOT_FOLDERPATH}/oregano/oregano-master/Data_OREGANO/Graphs/OREGANO_V3.tsv', delimiter='\t')
+
+print('#########################################3')
+for s_type in s_types:
+    print(s_type)
+
+quit()
 quit()
 
 ################################################################################
@@ -535,189 +1532,6 @@ def pubchem_properties_batches_to_single_by_inchikey():
             # print(item_export_filepath)
         # print(batch_data)
         # quit()
-
-
-# pubchem_properties_batches_to_single_by_inchikey()
-# lotus_bson_to_json()
-# quit()
-
-########################################
-# MERGES
-########################################
-def lotus_pubchem__inchikey_cid__merge():
-    # add to lotus objects "pubchem_cids" by searching it with inchikey on bulk download file
-    pubchem_cid_inchikey_filepath = f'{pubchem_folderpath}/CID-InChI-Key'
-    # print(os.listdir(pubchem_folderpath))
-    '''
-    def build_mapping(file_path, target_inchikeys):
-        mapping = {}
-        with open(file_path, "r") as f:
-            for i, line in enumerate(f):
-                parts = line.strip().split("\t")
-                if len(parts) < 2:
-                    continue  # skip malformed lines
-                cid = parts[0]
-                inchikey = parts[1]
-                if inchikey in target_inchikeys:
-                    mapping.setdefault(inchikey, []).append(cid)
-                if i % 1_000_000 == 0:
-                    print(f"Processed {i} lines...")
-        return mapping
-    '''
-    '''
-    def write_matches(input_path, target_keys, output_dir):
-        os.makedirs(output_dir, exist_ok=True)
-        for i, line in enumerate(open(input_path, "r")):
-            parts = line.strip().split("\t")
-            if len(parts) < 2:
-                continue
-            cid, inchi, inchikey = parts[0], parts[1], parts[2]
-            print(parts)
-            print(cid)
-            print(inchi)
-            print(inchikey)
-            print()
-            if i > 10: quit()
-            continue
-            if inchikey in target_keys:
-                filepath = os.path.join(output_dir, f"{inchikey}.json")
-                # append CID safely
-                if os.path.exists(filepath):
-                    with open(filepath, "r") as f:
-                        data = json.load(f)
-                else:
-                    data = {
-                        "inchikey": inchikey,
-                        "cids": []
-                    }
-                data["cids"].append(cid)
-                with open(filepath, "w") as f:
-                    json.dump(data, f)
-            if i % 1_000_000 == 0:
-                print(f"{i} lines processed")
-    '''
-    lotus_items = io.json_read(lotus_output_filepath)
-    lotus_components_inchikey = [item['component_inchikey'] for item in lotus_items]
-    print(lotus_components_inchikey[0])
-    print(len(lotus_components_inchikey))
-    lotus_components_inchikey = set(
-        item['component_inchikey'] for item in lotus_items
-    )
-    '''
-    mapping = build_mapping(
-        pubchem_cid_inchikey_filepath,   # unzipped file
-        lotus_components_inchikey,
-    )
-    '''
-    '''
-    write_matches(
-        input_path=pubchem_cid_inchikey_filepath, 
-        target_keys=lotus_components_inchikey, 
-        output_dir=f'{pubchem_folderpath}/lotus-pubchem-inchikey-cid-extract',
-    )
-    '''
-    def sqlite_table_pubchem_inchikey_cid_create():
-        conn = sqlite3.connect(f'{pubchem_folderpath}/pubchem_inchikey_cid_mapping.db')
-        cur = conn.cursor()
-        cur.execute("""
-            CREATE TABLE IF NOT EXISTS pubchem_inchikey_cid_mapping (
-                inchikey TEXT,
-                inchi TEXT,
-                cid TEXT
-            )
-        """)
-        cur.execute("PRAGMA synchronous = OFF")
-        cur.execute("PRAGMA journal_mode = MEMORY")
-        cur.execute("PRAGMA temp_store = MEMORY")
-        cur.execute("PRAGMA cache_size = 1000000")
-        with open(pubchem_cid_inchikey_filepath, "r") as f:
-            for i, line in enumerate(f):
-                parts = line.strip().split("\t")
-                if len(parts) < 2:
-                    continue
-                cid, inchi, inchikey = parts[0], parts[1], parts[2]
-                cur.execute("INSERT INTO pubchem_inchikey_cid_mapping VALUES (?, ?, ?)", (inchikey, inchi, cid))
-                if i % 100000 == 0:
-                    conn.commit()
-                    print(f"{i} lines inserted")
-        cur.execute("CREATE INDEX IF NOT EXISTS idx_inchikey ON pubchem_inchikey_cid_mapping(inchikey)")
-        conn.commit()
-        conn.close()
-    sqlite_table_pubchem_inchikey_cid_create()
-    pass
-    quit()
-
-def get_cids(db_path, inchikey):
-    conn = sqlite3.connect(db_path)
-    cur = conn.cursor()
-    cur.execute(
-        "SELECT cid FROM pubchem_inchikey_cid_mapping WHERE inchikey = ?",
-        (inchikey,)
-    )
-    results = [row[0] for row in cur.fetchall()]
-    conn.close()
-    return results
-
-# test
-lotus_items = io.json_read(lotus_output_filepath)
-lotus_items_output = []
-print('here')
-for i, lotus_item in enumerate(lotus_items[:]):
-    print(f'{i}/{len(lotus_items)}')
-    inchikey = lotus_item['component_inchikey']
-    cids = get_cids(f'{pubchem_folderpath}/pubchem_inchikey_cid_mapping.db', inchikey)
-    _item = lotus_item
-    _item['pubchem_cids'] = cids
-    lotus_items_output.append(_item)
-    # break
-io.json_write(f'{lotus_folderpath}/0001-cid.json', lotus_items_output) 
-
-# lotus_pubchem__inchikey_cid__merge()
-# lotus_items = io.json_read(lotus_output_filepath)
-# print(lotus_items[0])
-quit()
-
-def pubchem_batches_by_inchikey():
-    chunk_size = 10
-    lotus_items = io.json_read(lotus_output_filepath)
-    print(lotus_items[0])
-    quit()
-    lotus_components_inchikeys = sorted([item['component_inchikey'] for item in lotus_items])
-    # print(lotus_components_inchikeys[0])
-    # quit()
-    for batch_i, batch in enumerate(chunks(lotus_components_inchikeys, chunk_size)):
-        print(f'{batch_i}/{len(lotus_components_inchikeys)//chunk_size}')
-        # url = f"https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/{','.join(batch)}/record/JSON"
-        # url = f"https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/{','.join(batch)}/property/InChIKey,CanonicalSMILES,IUPACName/JSON"
-        FIELDS = "InChIKey,CanonicalSMILES,IUPACName,Title"
-        # url = f"https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/{','.join(batch)}/property/{FIELDS}/JSON"
-        url = f"https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/inchikey/{','.join(batch)}/property/{FIELDS}/JSON"
-        batch_i_str = ''
-        if batch_i < 10: batch_i_str = f'0000{batch_i}'
-        elif batch_i < 100: batch_i_str = f'000{batch_i}'
-        elif batch_i < 1000: batch_i_str = f'00{batch_i}'
-        elif batch_i < 10000: batch_i_str = f'0{batch_i}'
-        elif batch_i < 100000: batch_i_str = f'{batch_i}'
-        output_filepath = f"{g.SSOT_FOLDERPATH}/pubchem/lotus-compounds-inchikey-batches/batch_{batch_i_str}.json"
-        if os.path.exists(output_filepath): continue
-        ###
-        r = requests.get(url)
-        if r.status_code == 200:
-            data = r.json()
-            with open(output_filepath, 'w') as f:
-                json.dump(data, f)
-        else:
-            print("Error:", r.status_code)
-            print(url)
-            break
-        time.sleep(random.randint(2, 3))
-        # print('#########################################################')
-        # print(data['PropertyTable']['Properties'][0])
-        # print('#########################################################')
-        # break
-
-# pubchem_batches_by_inchikey()
-# quit()
 
 def herb20_todo():
     export_data = []
@@ -776,200 +1590,9 @@ def herb20_todo():
     '''
     quit()
 
-
-# parse lotus file (.bson) -> extract fields you need -> save to json
-
-def lotus_json_preview(formatted=False):
-    items = io.json_read(lotus_output_filepath)
-    if not formatted:
-        print(items[0])
-    else:
-        print(json.dumps(items[0], indent=4))
-    quit()
-# lotus_json_preview(formatted=True)
-
-def lotus_pubchem_match():
-    lotus_items = io.json_read(lotus_output_filepath)
-    for lotus_item_i, lotus_item in enumerate(lotus_items):
-        print(f'{lotus_item_i}/{len(lotus_items)}')
-        # lotus_item = lotus_items[0]
-        lotus_item_inchikey = lotus_item['component_inchikey']
-        pubchem_inchikey_filepath = f'''{g.SSOT_FOLDERPATH}/pubchem/compounds-inchikey/{lotus_item_inchikey}.json'''
-        try: pubchem_data = io.json_read(pubchem_inchikey_filepath)
-        except: continue
-        pubchem_cid = pubchem_data['CID']
-        print(lotus_item)
-        print(lotus_item_inchikey)
-        print(pubchem_inchikey_filepath)
-        print(pubchem_data)
-        ###
-        print(pubchem_cid)
-        oregano_compounds_text = io.file_read(
-            f'{g.SSOT_FOLDERPATH}/oregano/oregano-master/Integration/Integration V3/GESTION_ID/COMPOUND.tsv'
-        )
-        oregano_compounds_lines = oregano_compounds_text.split('\n')
-        ###
-        headings = oregano_compounds_lines[0].split('\t')
-        headings[0] = 'ID_OREGANO'
-        cids = []
-        for line_i, line in enumerate(oregano_compounds_lines[:]):
-            if line_i == 0: continue
-            if line.strip() == '': continue
-            values = line.split('\t')
-            item = {}
-            for i in range(len(headings)):
-                item[headings[i]] = values[i].strip()
-            # print(json.dumps(item, indent=4))
-            # quit()
-            pubchem_compound_id = item['PUBCHEM COMPOUND']
-            if pubchem_compound_id.strip() == '': continue
-            if ',' in pubchem_compound_id: continue
-            if ';' in pubchem_compound_id: continue
-            # print(pubchem_compound_id, pubchem_cid)
-            if str(pubchem_compound_id).strip() == str(pubchem_cid).strip():
-                print(item)
-                # print('ID:', item['ID_OREGANO'], '  WIKIDATA:', item['WIKIPEDIA'], '  CID:', pubchem_compound_id)
-        if lotus_item_i > 5: quit()
-    quit()
-
-lotus_pubchem_match()
 quit()
 
-def powo_plants_taxonomies_get():
-    plants_folderpath = f'{wikidata_folderpath}/entity_has-use_medicinal-plant'
-    plants_filepaths = sorted([f'{plants_folderpath}/{filename}' for filename in os.listdir(plants_folderpath)])
-    plants_taxonomies = []
-    for plant_filepath_i, plant_filepath in enumerate(plants_filepaths):
-        print(f'{plant_filepath_i}/{len(plants_filepaths)}')
-        plant_filename_raw = plant_filepath.split('/')[-1].split('.')[0]
-        plant_data = io.json_read(plant_filepath)
-        try: claim = plant_data['entities'][plant_filename_raw]['claims']['P5037'][0]
-        except: claim = None
-        try: taxon_name = plant_data['entities'][plant_filename_raw]['claims']['P225'][0]['mainsnak']['datavalue']['value']
-        except: taxon_name = None
-        if claim:
-            value = claim['mainsnak']['datavalue']['value']
-            print(json.dumps(value, indent=4))
-            value_url_id = value.split(':')[-1]
-            print(value_url_id)
-            plant_filepath = f'{kg_folderpath}/powo/plants-jsons/{value_url_id}.json'
-            if os.path.exists(plant_filepath):
-                plant_data = io.json_read(plant_filepath)
-                kingdom = plant_data['kingdom']
-                phylum = plant_data['phylum']
-                clazz = plant_data['clazz']
-                subclass = plant_data['subclass']
-                order = plant_data['order']
-                family = plant_data['family']
-                genus = plant_data['genus']
-                # try: species = plant_data['species']
-                # except: species = None
-                species = taxon_name
-                item = {
-                    'species': species,
-                    'genus': genus,
-                    'family': family,
-                    'order': order,
-                    'subclass': subclass,
-                    'clazz': clazz,
-                    'phylum': phylum,
-                    'kingdom': kingdom,
-                }
-                plants_taxonomies.append(item)
-    return plants_taxonomies
-
-def powo_lotus_match():
-    lotus_items = io.json_read(lotus_output_filepath)
-    powo_plants_taxonomies = powo_plants_taxonomies_get()
-    matches = []
-    for lotus_item_i, lotus_item in enumerate(lotus_items):
-        print(f'{lotus_item_i}/{len(lotus_items)}')
-        # print(lotus_item)
-        lotus_plant_name = lotus_item['plant_names'][0]
-        for powo_item in powo_plants_taxonomies:
-            powo_plant_species = powo_item['species']
-            if lotus_plant_name == powo_plant_species:
-                print('found')
-                print(lotus_item)
-                print(powo_item)
-                match = {
-                    'powo_plant_species': powo_plant_species,
-                    'lotus_components': lotus_item,
-                }
-                matches.append(match)
-                # break
-        # break
-    io.json_write(f'{kg_folderpath}/powo-lotus/matches-all.json', matches)
-    quit()
-
-
-# lotus_items = io.json_read(lotus_output_filepath)
-# print(lotus_items[0])
-
-def oregano_cids_extract():
-    oregano_compounds_text = io.file_read(f'{g.SSOT_FOLDERPATH}/oregano/oregano-master/Integration/Integration V3/GESTION_ID/COMPOUND.tsv')
-    oregano_compounds_lines = oregano_compounds_text.split('\n')
-    ###
-    # oregano_compounds_data = io.csv_to_dict(f'{g.SSOT_FOLDERPATH}/oregano/oregano-master/Integration/Integration V3/GESTION_ID/COMPOUND.tsv', delimiter='\t')
-    headings = oregano_compounds_lines[0].split('\t')
-    headings[0] = 'ID_OREGANO'
-    cids = []
-    for line_i, line in enumerate(oregano_compounds_lines[:]):
-        if line_i == 0: continue
-        if line.strip() == '': continue
-        values = line.split('\t')
-        item = {}
-        for i in range(len(headings)):
-            item[headings[i]] = values[i].strip()
-        # print(json.dumps(item, indent=4))
-        # quit()
-        pubchem_compound_id = item['PUBCHEM COMPOUND']
-        if pubchem_compound_id.strip() == '': continue
-        if ',' in pubchem_compound_id: continue
-        if ';' in pubchem_compound_id: continue
-        print(item['ID_OREGANO'], item['WIKIPEDIA'], pubchem_compound_id)
-        cids.append(pubchem_compound_id.strip())
-    print(cids[:10])
-    print(len(cids))
-    print(len(list(set(cids))))
-    cids = sorted(list(set(cids)))
-
-# cids = oregano_cids_extract()
-
-def oregano_compound_to_pubmed_match():
-    oregano_compounds_text = io.file_read(
-        f'{g.SSOT_FOLDERPATH}/oregano/oregano-master/Integration/Integration V3/GESTION_ID/COMPOUND.tsv'
-    )
-    oregano_compounds_lines = oregano_compounds_text.split('\n')
-    ###
-    headings = oregano_compounds_lines[0].split('\t')
-    headings[0] = 'ID_OREGANO'
-    cids = []
-    for line_i, line in enumerate(oregano_compounds_lines[:]):
-        if line_i == 0: continue
-        if line.strip() == '': continue
-        values = line.split('\t')
-        item = {}
-        for i in range(len(headings)):
-            item[headings[i]] = values[i].strip()
-        # print(json.dumps(item, indent=4))
-        # quit()
-        pubchem_compound_id = item['PUBCHEM COMPOUND']
-        if pubchem_compound_id.strip() == '': continue
-        if ',' in pubchem_compound_id: continue
-        if ';' in pubchem_compound_id: continue
-        # pubchem_cid_filepath = f'''{g.SSOT_FOLDERPATH}/pubchem/oregano-compounds/{pubchem_compound_id}.json'''
-        # pubchem_data = io.json_read(pubchem_cid_filepath)
-        # try: pubchem_title = pubchem_data['Title']
-        # except: pubchem_title = ''
-        # print('ID:', item['ID_OREGANO'], '  WIKIDATA:', item['WIKIPEDIA'], '  CID:', pubchem_compound_id, '  TITLE:', pubchem_title)
-        print('ID:', item['ID_OREGANO'], '  WIKIDATA:', item['WIKIPEDIA'], '  CID:', pubchem_compound_id)
-
-# oregano_compound_to_pubmed_match()
-
-quit()
-
-def pubmed_properties_from_cids(cids):
+def pubchem_properties_from_cids(cids):
     chunk_size = 100
     for batch_i, batch in enumerate(chunks(cids, chunk_size)):
         print(f'{batch_i}/{len(cids)//chunk_size}')
@@ -1000,9 +1623,7 @@ def pubmed_properties_from_cids(cids):
         # print('#########################################################')
         # break
 
-# pubmed_properties_from_cids(cids)
-
-def pubmed_properties_batches_to_single():
+def pubchem_properties_batches_to_single():
     batches_folderpath = f'{g.SSOT_FOLDERPATH}/pubchem/oregano-batches'
     batches_filepaths = sorted([f'{batches_folderpath}/{filename}' for filename in os.listdir(batches_folderpath)])
     print(batches_filepaths)
@@ -1017,59 +1638,6 @@ def pubmed_properties_batches_to_single():
         # print(batch_data)
         # quit()
 quit()
-
-# oregano_items = io.csv_to_dict(f'{g.SSOT_FOLDERPATH}/oregano/oregano-master/Data_OREGANO/Graphs/OREGANO_V3.tsv', delimiter='\t')
-oregano_text = io.file_read(f'{g.SSOT_FOLDERPATH}/oregano/oregano-master/Data_OREGANO/Graphs/OREGANO_V3_WIW.tsv')
-oregano_lines = oregano_text.split('\n')
-triples_failed = []
-s_types = []
-for oregano_line in oregano_lines:
-    try: chunk_1, chunk_2, chunk_3 = oregano_line.split('\t')
-    except:
-        triples_failed.append(oregano_line)
-        continue
-    s_type = chunk_1.split(':')[0]
-    if s_type not in s_types:
-        s_types.append(s_type)
-    print(chunk_2)
-    # print(chunk_1, '->', chunk_2, '->', chunk_3)
-    # quit()
-
-print('#########################################3')
-for s_type in s_types:
-    print(s_type)
-quit()
-
-'''
-plants_folderpath = f'{kg_folderpath}/powo/plants-jsons'
-plants_filepaths = sorted([f'{plants_folderpath}/{filename}' for filename in os.listdir(plants_folderpath)])
-data = []
-for plant_filepath in plants_filepaths:
-    plant_data = io.json_read(plant_filepath)
-    print(json.dumps(plant_data, indent=4))
-    kingdom = plant_data['kingdom']
-    phylum = plant_data['phylum']
-    clazz = plant_data['clazz']
-    subclass = plant_data['subclass']
-    order = plant_data['order']
-    family = plant_data['family']
-    genus = plant_data['genus']
-    # try: species = plant_data['species']
-    # except: species = None
-    print(json.dumps(plant_data, indent=4))
-    quit()
-    item = {
-        'species': species,
-        'genus': genus,
-        'family': family,
-        'order': order,
-        'subclass': subclass,
-        'clazz': clazz,
-        'phylum': phylum,
-        'kingdom': kingdom,
-    }
-    data.append(item)
-'''
 
 uri = "bolt://localhost:7687"
 username = "neo4j"
