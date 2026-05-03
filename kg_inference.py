@@ -10,11 +10,14 @@ from lib import polish
 from lib import components
 from lib import sections
 
+neo4j_user = io.file_read(f'g.DATABASE_FOLDERPATH/neo4j-user.txt').strip()
+neo4j_pass = io.file_read(f'g.DATABASE_FOLDERPATH/neo4j-pass.txt').strip()
+
 model_filepath = '/home/ubuntu/vault-tmp/llm/gemma-4-26B-A4B-it-UD-Q4_K_XL.gguf'
 
 uri = "bolt://localhost:7687"
-username = "neo4j"
-password = "Newoliark1"
+username = neo4j_user
+password = neo4j_pass
 driver = GraphDatabase.driver(uri, auth=(username, password))
 
 shutil.copy2('styles.css', f'{g.website_folderpath}/styles.css')
@@ -43,16 +46,22 @@ def neo4j_paths_get(node1_kind, node2_kind):
 
 def neo4j__get_diseases_by_plant(plant_id):
     driver = GraphDatabase.driver(uri, auth=(username, password))
+    diseases = []
     with driver.session() as session:
         query = f"""
-            MATCH p=(s:PLANT {{id: "{plant_id}"}})-[*]->(o:DISEASE) RETURN p LIMIT 1000;
+            MATCH p=(s:PLANT {{id: "{plant_id}"}})-[*]->(o:DISEASE) RETURN o;
         """
-        print(query)
+        # print(query)
         result = session.run(query)
         for record in result:
-            path = record["p"]
-            print(path)
+            path = record["o"]
+            disease = path['id']
+            diseases.append(disease)
+            # print(disease)
+            # for node in path.nodes:
+                # print(dict(node))
     driver.close()
+    return diseases
 
 def plants__plant__gen():
     def get_species_hierarchy(tx):
@@ -230,13 +239,39 @@ def plants__plant__new_gen():
         print(node['id'])
     '''
     # neo4j_paths_get('PLANT', 'DISEASE')
-    neo4j__get_diseases_by_plant('TERRA:PLANT:6571')
     ###
     plants = io.json_read(f'{g.SSOT_FOLDERPATH}/kg/entities/plants.json')
-    for plant in plants: 
-        if plant['tw_id'] == 'TERRA:PLANT:6571':
-            print(plant['name'])
+    output_plants_diseases = []
+    for i, input_plant in enumerate(plants[:]):
+        input_plant_id = input_plant['tw_id']
+        # print(i)
+        neo4j_diseases = neo4j__get_diseases_by_plant(input_plant_id)
+        plant_name = ''
+        for plant in plants: 
+            if plant['tw_id'] == input_plant_id:
+                # print(plant['name'])
+                plant_name = plant['name']
+                break
+        ###
+        diseases_lines = io.file_read(f'{g.SSOT_FOLDERPATH}/kg/maps/diseases-mesh.tsv').split('\n')
+        for neo4j_disease in neo4j_diseases:
+            for disease_line in diseases_lines:
+                parts = disease_line.split('\t')
+                # print(parts[0], neo4j_disease)
+                if parts[0] == neo4j_disease:
+                    print(plant_name, parts[2])
+                    output_plants_diseases.append([plant_name, parts[2]])
+                    break
+                    quit()
 
+    ###
+    output_content = ''
+    for item in output_plants_diseases:
+        output_line = '\t'.join(item)
+        output_content += f'{output_line}\n'
+    output_content = output_content.strip()
+    print(output_content)
+    io.file_write(f'{g.SSOT_FOLDERPATH}/kg/tmp-kg-final-plants-diseases.tsv', output_content)
     quit()
 
 def plants__families__gen():

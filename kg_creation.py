@@ -25,8 +25,14 @@ herb20_filepath = f'{g.SSOT_FOLDERPATH}/herb20/HERB_herb_info_v2.txt'
 pubchem_folderpath = f'{g.SSOT_FOLDERPATH}/pubchem'
 lotus_folderpath = f'{g.SSOT_FOLDERPATH}/lotus'
 
+### TODO: do all with sqlite3 (terra ids -> other ids, and other ids -> other_ids)
+### TODO: put all downloaded datasets in /ssot/datasets
+
+neo4j_user = io.file_read(f'g.DATABASE_FOLDERPATH/neo4j-user.txt').strip()
+neo4j_pass = io.file_read(f'g.DATABASE_FOLDERPATH/neo4j-pass.txt').strip()
+
 def neo4j_clear_db():
-    driver = GraphDatabase.driver("bolt://localhost:7687", auth=("neo4j", "Newoliark1"))
+    driver = GraphDatabase.driver("bolt://localhost:7687", auth=(neo4j_user, neo4j_pass))
     def delete_data(tx):
         tx.run("MATCH (n) DETACH DELETE n")
     def drop_constraints(tx):
@@ -168,7 +174,7 @@ def kg__relationships__plants_compounds__preview():
 
 def kg__relationships__plants_compounds__add():
     neo4j_clear_db()
-    driver = GraphDatabase.driver("bolt://localhost:7687", auth=("neo4j", "Newoliark1"))
+    driver = GraphDatabase.driver("bolt://localhost:7687", auth=(neo4j_user, neo4j_pass))
     lines = io.csv_read(f'{g.SSOT_FOLDERPATH}/kg/relationships/plants-compounds.tsv', delimiter='\t')
     with driver.session() as session:
         session.run("CREATE CONSTRAINT plant_id IF NOT EXISTS FOR (n:PLANT) REQUIRE n.id IS NODE KEY;")
@@ -198,7 +204,7 @@ def kg__relationships__plants_compounds__add():
 def kg__relationships__plants_compounds__preview():
     entities_plants_data = io.json_read(f'{g.SSOT_FOLDERPATH}/kg/entities/plants.json')
     entities_compounds_data = io.json_read(f'{g.SSOT_FOLDERPATH}/kg/entities/compounds.json')
-    driver = GraphDatabase.driver("bolt://localhost:7687", auth=("neo4j", "Newoliark1"))
+    driver = GraphDatabase.driver("bolt://localhost:7687", auth=(neo4j_user, neo4j_pass))
     with driver.session() as session:
         # query_multihop = """
             # MATCH p=(a:plant)-[:HAS_COMPOUND*]->(b)
@@ -576,7 +582,7 @@ def kg__maps__disease__mesh__create():
 # quit()
 
 def kg__maps__disease__mesh__updata_name():
-    driver = GraphDatabase.driver("bolt://localhost:7687", auth=("neo4j", "Newoliark1"))
+    driver = GraphDatabase.driver("bolt://localhost:7687", auth=(neo4j_user, neo4j_pass))
     input_lines = io.file_read(f'{g.SSOT_FOLDERPATH}/kg/maps/diseases-mesh.tsv').split('\n')
     for input_line in input_lines[:]:
         input_parts = input_line.split('\t')
@@ -594,7 +600,7 @@ def kg__maps__disease__mesh__updata_name():
 # quit()
 
 def kg__relationships__compounds_diseases__add():
-    driver = GraphDatabase.driver("bolt://localhost:7687", auth=("neo4j", "Newoliark1"))
+    driver = GraphDatabase.driver("bolt://localhost:7687", auth=(neo4j_user, neo4j_pass))
     lines = io.csv_read(f'{g.SSOT_FOLDERPATH}/kg/relationships/compounds-diseases.tsv', delimiter='\t')
     with driver.session() as session:
         session.run("CREATE CONSTRAINT compound_id IF NOT EXISTS FOR (n:COMPOUND) REQUIRE n.id IS NODE KEY;")
@@ -1190,7 +1196,7 @@ def wikidta_powo_lotus_inchikey__pubchem_cids__merge():
 # OREGANO
 ################################################################################
 def oregano_clear_db():
-    driver = GraphDatabase.driver("bolt://localhost:7687", auth=("neo4j", "Newoliark1"))
+    driver = GraphDatabase.driver("bolt://localhost:7687", auth=(neo4j_user, neo4j_pass))
     def delete_data(tx):
         tx.run("MATCH (n) DETACH DELETE n")
     def drop_constraints(tx):
@@ -1213,7 +1219,7 @@ def oregano_clear_db():
 
 def oregano__kg_create__batch_grouped():
     from collections import defaultdict
-    driver = GraphDatabase.driver("bolt://localhost:7687", auth=("neo4j", "Newoliark1"))
+    driver = GraphDatabase.driver("bolt://localhost:7687", auth=(neo4j_user, neo4j_pass))
     oregano_relationships_filepath = f'{g.SSOT_FOLDERPATH}/oregano/oregano-master/Data_OREGANO/Graphs/OREGANO_V3.tsv'
     def batch_insert_grouped(tx, grouped_batch):
         for rel_type, rows in grouped_batch.items():
@@ -1317,7 +1323,7 @@ def wikidata_powo_lotus_pubchem_cids__oregano_ids__merge():
 # WIKIDATA/POWO/LOTUS/PUBCHEM/OREGANO + INTERNALE MAPPING
 ################################################################################
 def wikidata_powo_lotus_pubchem_oregano__compounds_ids__diseases_ids_merge():
-    driver = GraphDatabase.driver("bolt://localhost:7687", auth=("neo4j", "Newoliark1"))
+    driver = GraphDatabase.driver("bolt://localhost:7687", auth=(neo4j_user, neo4j_pass))
     input_folderpath = f'{g.SSOT_FOLDERPATH}/wikidata-powo-lotus-pubchem-oregano/0000-ids'
     input_filenames = sorted(os.listdir(input_folderpath))
     for i, input_filename in enumerate(input_filenames[:]):
@@ -1564,7 +1570,7 @@ def oregano__diseases_get():
     return output_items
 
 def oregano__neo4j__diseases_by_compound():
-    driver = GraphDatabase.driver("bolt://localhost:7687", auth=("neo4j", "Newoliark1"))
+    driver = GraphDatabase.driver("bolt://localhost:7687", auth=(neo4j_user, neo4j_pass))
     query = """
         MATCH (c:Entity {type: "COMPOUND", id: $compound_id})
         MATCH (c)-[*1..6]-(d:Entity {type: "DISEASE"})
@@ -1924,8 +1930,8 @@ def pubchem_properties_batches_to_single():
 quit()
 
 uri = "bolt://localhost:7687"
-username = "neo4j"
-password = "Newoliark1"
+username = neo4j_user
+password = neo4j_pass
 
 driver = GraphDatabase.driver(uri, auth=(username, password))
 
