@@ -336,7 +336,174 @@ def kg__relationsips__compound_disease__extract__preview():
     print(len(lines))
 
 # kg__relationsips__compound_disease__extract()
-kg__relationsips__compound_disease__extract__preview()
+# kg__relationsips__compound_disease__extract__preview()
+
+def kg__relationsips__compound_disease__extract__match():
+    oregano_lines = io.file_read(f'{g.SSOT_FOLDERPATH}/oregano/relationships-is_substance_that_treats.tsv').split('\n')
+    bridges_compounds_lines = io.file_read(f'{g.SSOT_FOLDERPATH}/kg/bridges/compounds-filter.tsv').split('\n')
+    for i, oregano_line in enumerate(oregano_lines[:1000]):
+        print(i)
+        oregano_compound, oregano_relation, oregano_disease = oregano_line.split('\t')
+        for bridge_compound_line in bridges_compounds_lines:
+            # print(bridge_compound_line)
+            pieces = bridge_compound_line.split('\t')
+            if len(pieces) == 4:
+                # print(pieces[3], oregano_compound)
+                if pieces[3] == oregano_compound:
+                    print('##################################')
+                    print(pieces[3], oregano_compound)
+                    print('##################################')
+                    quit()
+                    # print(oregano_compound, oregano_relation, oregano_disease)
+        
+    print('nothing found?')
+
+# kg__relationsips__compound_disease__extract__match()
+# TODO: match compounds >> "kg/bridges/compounds-filter.tsv" and "oregano/relationships-is_substance_that_treats"
+    # result merge TERRA:COMPOUNDS to DISEASES
+
+def kg__bridges__sqlite__oregano__compound_is_substance_that_treats_disease():
+    conn = sqlite3.connect(f'{g.SSOT_FOLDERPATH}/kg/bridges/compound_is_substance_that_treats_disease.db')
+    cur = conn.cursor()
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS main (
+            compound_id TEXT,
+            disease_id TEXT
+        )
+    """)
+    cur.execute("PRAGMA synchronous = OFF")
+    cur.execute("PRAGMA journal_mode = MEMORY")
+    cur.execute("PRAGMA temp_store = MEMORY")
+    cur.execute("PRAGMA cache_size = 1000000")
+    input_filepath = f'{g.SSOT_FOLDERPATH}/oregano/relationships-is_substance_that_treats.tsv'
+    with open(input_filepath, "r") as f:
+        for i, line in enumerate(f):
+            parts = line.strip().split("\t")
+            # if len(parts) < 2:
+                # continue
+            compound_id, relation, disease_id = parts[0], parts[1], parts[2]
+            cur.execute("INSERT INTO main VALUES (?, ?)", (compound_id, disease_id))
+            if i % 100000 == 0:
+                conn.commit()
+                print(f"{i} lines inserted")
+    cur.execute("CREATE INDEX IF NOT EXISTS idx_compound_id ON main(compound_id)")
+    conn.commit()
+    conn.close()
+
+# kg__bridges__sqlite__oregano__compound_is_substance_that_treats_disease__create()
+# quit()
+
+def kg__bridges__sqlite__oregano__compound_is_substance_that_treats_disease__query():
+    input_filepath = f'{g.SSOT_FOLDERPATH}/kg/bridges/compound_is_substance_that_treats_disease.db'
+    conn = sqlite3.connect(input_filepath)
+    cur = conn.cursor()
+    compound_id = 'NATURAL_COMPOUND:16031'
+    compound_id = 'COMPOUND:131204'
+    bridges_compounds_lines = io.file_read(f'{g.SSOT_FOLDERPATH}/kg/bridges/compounds-filter.tsv').split('\n')
+    for i, line in enumerate(bridges_compounds_lines):
+        print(i)
+        parts = line.strip().split("\t")
+        if len(parts) == 4:
+            compound_id = parts[3]
+            cur.execute(
+                "SELECT * FROM main WHERE compound_id = ?",
+                (compound_id,)
+            )
+            results = [row for row in cur.fetchall()]
+            if results:
+                print(results)
+                # break
+    conn.close()
+
+# kg__bridges__sqlite__oregano__compound_is_substance_that_treats_disease__query()
+# quit()
+
+def kg__relationships__compound_disease__extract():
+    input_filepath = f'{g.SSOT_FOLDERPATH}/kg/bridges/compound_is_substance_that_treats_disease.db'
+    conn = sqlite3.connect(input_filepath)
+    cur = conn.cursor()
+    bridges_compounds_lines = io.file_read(f'{g.SSOT_FOLDERPATH}/kg/bridges/compounds-filter.tsv').split('\n')
+    disease_i = 0
+    output_diseases_bridges = []
+    output_relationships = []
+    for line in bridges_compounds_lines:
+        parts = line.strip().split("\t")
+        if len(parts) == 4:
+            terra_compound_id = parts[0]
+            compound_id = parts[3]
+            cur.execute(
+                "SELECT disease_id FROM main WHERE compound_id = ?",
+                (compound_id,)
+            )
+            results = [row[0] for row in cur.fetchall()]
+            diseases_filtered = set()
+            for disease in results:
+                diseases_filtered.add(disease)
+            diseases_filtered = list(diseases_filtered)
+            for disease in diseases_filtered:
+                ### create diseases bridges
+                terra_disease_id = f'TERRA:DISEASE:{disease_i}'
+                oregano_disease_id = f'{disease}'
+                # print(terra_disease_id, oregano_disease_id)
+                # break
+                output_diseases_bridges.append([terra_disease_id, oregano_disease_id])
+                ###
+                ### create diseases relationships (terra:compound, terra:disease)
+                terra_compound_id = terra_compound_id
+                terra_disease_id = f'TERRA:DISEASE:{disease_i}'
+                print(terra_compound_id, terra_disease_id)
+                # break
+                output_relationships.append([terra_compound_id, 'is_substance_that_treats', terra_disease_id])
+                disease_i += 1
+    ###
+    output_content = ''
+    for item in output_diseases_bridges:
+        output_line = '\t'.join(item)
+        output_content += f'{output_line}\n'
+    output_content = output_content.strip()
+    print(output_content)
+    io.file_write(f'{g.SSOT_FOLDERPATH}/kg/bridges/diseases.tsv', output_content)
+    ###
+    output_content = ''
+    for item in output_relationships:
+        output_line = '\t'.join(item)
+        output_content += f'{output_line}\n'
+    output_content = output_content.strip()
+    print(output_content)
+    io.file_write(f'{g.SSOT_FOLDERPATH}/kg/relationships/compounds-diseases.tsv', output_content)
+    
+    conn.close()
+
+# kg__relationships__compound_disease__extract()
+# quit()
+
+def kg__relationships__compounds_diseases__add():
+    driver = GraphDatabase.driver("bolt://localhost:7687", auth=("neo4j", "Newoliark1"))
+    lines = io.csv_read(f'{g.SSOT_FOLDERPATH}/kg/relationships/compounds-diseases.tsv', delimiter='\t')
+    with driver.session() as session:
+        session.run("CREATE CONSTRAINT compound_id IF NOT EXISTS FOR (n:COMPOUND) REQUIRE n.id IS NODE KEY;")
+        session.run("CREATE CONSTRAINT disease_id IF NOT EXISTS FOR (n:DISEASE) REQUIRE n.id IS NODE KEY;")
+    with driver.session() as session:
+        def query_exe(tx, batch):
+            tx.run("""
+                UNWIND $rows AS row
+                MERGE (a:COMPOUND {id: row.compound_id})
+                MERGE (b:DISEASE {id: row.disease_id})
+                MERGE (a)-[:IS_SUBSTANCE_THAT_TREATS]->(b)
+            """, rows=batch)
+        batch = []
+        for line_i, line in enumerate(lines):
+            batch.append({"compound_id": line[0], "disease_id": line[2]})
+            if len(batch) == 1000:
+                session.execute_write(query_exe, batch)
+                batch = []
+            print(line_i)
+        if batch:
+            session.execute_write(query_exe, batch)
+    driver.close()
+
+# neo4j_clear_db()
+kg__relationships__compounds_diseases__add()
 quit()
 
 ########################################
