@@ -474,7 +474,123 @@ def kg__relationships__compound_disease__extract():
     
     conn.close()
 
-# kg__relationships__compound_disease__extract()
+def kg__maps__disease__create():
+    input_filepath = f'{g.SSOT_FOLDERPATH}/kg/bridges/compound_is_substance_that_treats_disease.db'
+    conn = sqlite3.connect(input_filepath)
+    cur = conn.cursor()
+    ###
+    bridges_compounds_lines = io.file_read(f'{g.SSOT_FOLDERPATH}/kg/bridges/compounds-filter.tsv').split('\n')
+    disease_i = 0
+    output_maps = []
+    for line in bridges_compounds_lines:
+        parts = line.strip().split("\t")
+        if len(parts) == 4:
+            terra_compound_id = parts[0]
+            compound_id = parts[3]
+            cur.execute(
+                "SELECT disease_id FROM main WHERE compound_id = ?",
+                (compound_id,)
+            )
+            results = [row[0] for row in cur.fetchall()]
+            diseases_filtered = set()
+            for disease in results:
+                diseases_filtered.add(disease)
+            diseases_filtered = list(diseases_filtered)
+            for disease in diseases_filtered:
+                ### create diseases maps
+                terra_disease_id = f'TERRA:DISEASE:{disease_i}'
+                oregano_disease_id = f'{disease}'
+                # print(terra_disease_id, oregano_disease_id)
+                # break
+                output_maps.append([terra_disease_id, oregano_disease_id])
+                ###
+                disease_i += 1
+    ###
+    output_content = ''
+    for item in output_maps:
+        output_line = '\t'.join(item)
+        output_content += f'{output_line}\n'
+    output_content = output_content.strip()
+    print(output_content)
+    io.file_write(f'{g.SSOT_FOLDERPATH}/kg/maps/diseases.tsv', output_content)
+    ###
+    conn.close()
+
+# kg__maps__disease__create()
+# quit()
+
+def kg__maps__disease__mesh__create():
+    ### get oregano diseases lines
+    lines = io.file_read(f'{g.SSOT_FOLDERPATH}/oregano/oregano-master/Integration/Integration V3/GESTION_ID/DISEASES.tsv').split('\n')
+    headings = lines[0].split('\t')
+    headings[0] = 'ID'
+    oregano_diseases_items = []
+    for line_i, line in enumerate(lines[:]):
+        print(line_i)
+        if line_i == 0: continue
+        if line.strip() == '': continue
+        values = line.split('\t')
+        item = {}
+        for i in range(len(headings)):
+            item[headings[i]] = values[i].strip()
+        oregano_diseases_items.append(item)
+    for oregano_disease_item in oregano_diseases_items:
+        print(oregano_disease_item)
+    ### only keep disease with mesh_id
+    oregano_diseases_items_filtered = []
+    for oregano_disease_item in oregano_diseases_items:
+        mesh_id = oregano_disease_item['MESH'].strip()
+        if mesh_id == '': continue
+        if 'OMIM' in mesh_id: continue
+        mesh_id = mesh_id.split(';')[0]
+        oregano_diseases_items_filtered.append(oregano_disease_item)
+    print(len(oregano_diseases_items))
+    output_maps = []
+    map_lines = io.file_read(f'{g.SSOT_FOLDERPATH}/kg/maps/diseases.tsv').split('\n')
+    for map_i, map_line in enumerate(map_lines):
+        print(f'{map_i}/{len(map_lines)}')
+        map_parts = map_line.split('\t')
+        for oregano_disease_item in oregano_diseases_items_filtered:
+            if oregano_disease_item['ID'] == map_parts[1]:
+                mesh_id = oregano_disease_item['MESH']
+                mesh_filepath = f'{g.SSOT_FOLDERPATH}/mesh/0000-ids-jsons/{mesh_id}.json'
+                if not os.path.exists(mesh_filepath): break
+                mesh_item = io.json_read(mesh_filepath)
+                mesh_value = mesh_item['label']['@value']
+                if mesh_value.strip() != '':
+                    output_maps.append([map_parts[0], mesh_id, mesh_value])
+                break
+                # quit()
+    ###
+    output_content = ''
+    for item in output_maps:
+        output_line = '\t'.join(item)
+        output_content += f'{output_line}\n'
+    output_content = output_content.strip()
+    print(output_content)
+    io.file_write(f'{g.SSOT_FOLDERPATH}/kg/maps/diseases-mesh.tsv', output_content)
+    # quit()
+    ### 
+
+# kg__maps__disease__mesh__create()
+# quit()
+
+def kg__maps__disease__mesh__updata_name():
+    driver = GraphDatabase.driver("bolt://localhost:7687", auth=("neo4j", "Newoliark1"))
+    input_lines = io.file_read(f'{g.SSOT_FOLDERPATH}/kg/maps/diseases-mesh.tsv').split('\n')
+    for input_line in input_lines[:]:
+        input_parts = input_line.split('\t')
+        with driver.session() as session:
+            result = session.run("""
+                MATCH (n:DISEASE {id: $_id})
+                SET n.name = $value
+                RETURN n
+            """, _id=input_parts[0], value=input_parts[2],)
+            for record in result:
+                print(record["n"])
+    driver.close()
+
+# kg__maps__disease__mesh__updata_name()
 # quit()
 
 def kg__relationships__compounds_diseases__add():
@@ -503,8 +619,9 @@ def kg__relationships__compounds_diseases__add():
     driver.close()
 
 # neo4j_clear_db()
-kg__relationships__compounds_diseases__add()
-quit()
+# kg__relationships__compounds_diseases__add()
+# quit()
+
 
 ########################################
 # DATASETS DOWNLOAD

@@ -19,6 +19,41 @@ driver = GraphDatabase.driver(uri, auth=(username, password))
 
 shutil.copy2('styles.css', f'{g.website_folderpath}/styles.css')
 
+def neo4j_nodes_get(kind):
+    driver = GraphDatabase.driver(uri, auth=(username, password))
+    records = []
+    with driver.session() as session:
+        result = session.run(f"MATCH (n:{kind}) RETURN n")
+        for record in result:
+            records.append(record['n'])
+    driver.close()
+    return records
+
+def neo4j_paths_get(node1_kind, node2_kind):
+    driver = GraphDatabase.driver(uri, auth=(username, password))
+    with driver.session() as session:
+        result = session.run(
+            "MATCH p = (a:PLANT)-[*]-(b:DISEASE) "
+            "RETURN p"
+        )
+        for record in result:
+            path = record["p"]
+            print(path)
+    driver.close()
+
+def neo4j__get_diseases_by_plant(plant_id):
+    driver = GraphDatabase.driver(uri, auth=(username, password))
+    with driver.session() as session:
+        query = f"""
+            MATCH p=(s:PLANT {{id: "{plant_id}"}})-[*]->(o:DISEASE) RETURN p LIMIT 1000;
+        """
+        print(query)
+        result = session.run(query)
+        for record in result:
+            path = record["p"]
+            print(path)
+    driver.close()
+
 def plants__plant__gen():
     def get_species_hierarchy(tx):
         query = """
@@ -188,6 +223,22 @@ def plants__plant__gen():
         with open(html_filepath, 'w') as f: f.write(html)
         # quit()
 
+def plants__plant__new_gen():
+    '''
+    nodes = neo4j_nodes_get('PLANT')
+    for node in nodes:
+        print(node['id'])
+    '''
+    # neo4j_paths_get('PLANT', 'DISEASE')
+    neo4j__get_diseases_by_plant('TERRA:PLANT:6571')
+    ###
+    plants = io.json_read(f'{g.SSOT_FOLDERPATH}/kg/entities/plants.json')
+    for plant in plants: 
+        if plant['tw_id'] == 'TERRA:PLANT:6571':
+            print(plant['name'])
+
+    quit()
+
 def plants__families__gen():
     def neo4j_families_get(tx):
         query = """
@@ -331,10 +382,11 @@ def plants__families__family__gen():
 
 
 def main():
-    plants__plant__gen()
+    # plants__plant__gen()
+    plants__plant__new_gen()
     # plants__taxonomy__gen()
-    plants__families__gen()
-    plants__families__family__gen()
+    # plants__families__gen()
+    # plants__families__family__gen()
 
 main()
 
