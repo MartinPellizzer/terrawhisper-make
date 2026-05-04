@@ -12,6 +12,7 @@ proj = 'terrawhisper'
 proj = 'ozonogroup'
 query = 'medicinal plant'
 query = 'ozone'
+query = 'ozone wine'
 
 query = query.strip().lower()
 query_slug = query.replace(' ', '-')

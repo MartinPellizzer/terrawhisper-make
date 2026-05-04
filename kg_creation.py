@@ -28,8 +28,128 @@ lotus_folderpath = f'{g.SSOT_FOLDERPATH}/lotus'
 ### TODO: do all with sqlite3 (terra ids -> other ids, and other ids -> other_ids)
 ### TODO: put all downloaded datasets in /ssot/datasets
 
-neo4j_user = io.file_read(f'g.DATABASE_FOLDERPATH/neo4j-user.txt').strip()
-neo4j_pass = io.file_read(f'g.DATABASE_FOLDERPATH/neo4j-pass.txt').strip()
+neo4j_user = io.file_read(f'{g.DATABASE_FOLDERPATH}/neo4j-user.txt').strip()
+neo4j_pass = io.file_read(f'{g.DATABASE_FOLDERPATH}/neo4j-pass.txt').strip()
+
+def tsv_to_json(input_filepath):
+    content = io.file_read(input_filepath)
+    lines = content.split('\n')
+    headings = lines[0].split('\t')
+    # headings[0] = 'ID'
+    items = []
+    for line_i, line in enumerate(lines[:]):
+        print(line_i)
+        if line_i == 0: continue
+        if line.strip() == '': continue
+        values = line.split('\t')
+        item = {}
+        for i in range(len(headings)):
+            item[headings[i]] = values[i].strip()
+        items.append(item)
+    return items
+
+def oregano__process_dataset():
+    input_filepath = f'{g.SSOT_FOLDERPATH}/datasets/oregano/oregano-master/Integration/Integration V3/GESTION_ID/DISEASES.tsv'
+    items = tsv_to_json(input_filepath)
+    ids = []
+    pharmgkb = []
+    mesh = []
+    snomedct = []
+    umls = []
+    ndfrt = []
+    meddra = []
+    orphanet = []
+    icd_11 = []
+    icd_10 = []
+    omim = []
+    gard = []
+    ctd = []
+    therapeutic_targets_database = []
+    for item in items[:]:
+        print(json.dumps(item, indent=4))
+        if item['ID_OREGANO:21848'].strip() != '': ids.append(item['ID_OREGANO:21848'])
+        if item['PHARMGKB'].strip() != '': pharmgkb.append(item['PHARMGKB'])
+        if item['MESH'].strip() != '': mesh.append(item['MESH'])
+        if item['SNOMEDCT'].strip() != '': snomedct.append(item['SNOMEDCT'])
+        if item['UMLS'].strip() != '': umls.append(item['UMLS'])
+        if item['NDFRT'].strip() != '': ndfrt.append(item['NDFRT'])
+        if item['MEDDRA'].strip() != '': meddra.append(item['MEDDRA'])
+        if item['ORPHANET'].strip() != '': orphanet.append(item['ORPHANET'])
+        if item['ICD-11'].strip() != '': icd_11.append(item['ICD-11'])
+        if item['ICD-10'].strip() != '': icd_10.append(item['ICD-10'])
+        if item['OMIM'].strip() != '': omim.append(item['OMIM'])
+        if item['GARD'].strip() != '': gard.append(item['GARD'])
+        if item['CTD'].strip() != '': ctd.append(item['CTD'])
+        if item['THERAPEUTIC TARGETS DATABASE'].strip() != '': therapeutic_targets_database.append(item['THERAPEUTIC TARGETS DATABASE'])
+    ids_perc = len(ids) / len(items) * 100.0
+    pharmgkb_perc = len(pharmgkb) / len(items) * 100.0
+    mesh_perc = len(mesh) / len(items) * 100.0
+    snomedct_perc = len(snomedct) / len(items) * 100.0
+    umls_perc = len(umls) / len(items) * 100.0
+    ndfrt_perc = len(ndfrt) / len(items) * 100.0
+    meddra_perc = len(meddra) / len(items) * 100.0
+    orphanet_perc = len(orphanet) / len(items) * 100.0
+    icd_11_perc = len(icd_11) / len(items) * 100.0
+    icd_10_perc = len(icd_10) / len(items) * 100.0
+    omim_perc = len(omim) / len(items) * 100.0
+    gard_perc = len(gard) / len(items) * 100.0
+    ctd_perc = len(ctd) / len(items) * 100.0
+    therapeutic_targets_database_perc = (len(items) - len(therapeutic_targets_database)) / len(items) * 100.0
+    print(len(ids), '/', len(items), f'{ids_perc:.2f}%', '''ID_OREGANO:21848''')
+    print(len(pharmgkb), '/', len(items), f'{pharmgkb_perc:.2f}%', '''PHARMGKB''')
+    print(len(mesh), '/', len(items), f'{mesh_perc:.2f}%', '''MESH''')
+    print(len(snomedct), '/', len(items), f'{snomedct_perc:.2f}%', '''SNOMEDCT''')
+    print(len(umls), '/', len(items), f'{umls_perc:.2f}%', '''UMLS''')
+    print(len(ndfrt), '/', len(items), f'{ndfrt_perc:.2f}%', '''NDFRT''')
+    print(len(meddra), '/', len(items), f'{meddra_perc:.2f}%', '''MEDDRA''')
+    print(len(orphanet), '/', len(items), f'{orphanet_perc:.2f}%', '''ORPHANET''')
+    print(len(icd_11), '/', len(items), f'{icd_11_perc:.2f}%', '''ICD-11''')
+    print(len(icd_10), '/', len(items), f'{icd_10_perc:.2f}%', '''ICD-10''')
+    print(len(omim), '/', len(items), f'{omim_perc:.2f}%', '''OMIM''')
+    print(len(gard), '/', len(items), f'{gard_perc:.2f}%', '''GARD''')
+    print(len(ctd), '/', len(items), f'{ctd_perc:.2f}%', '''CTD''')
+    print(len(therapeutic_targets_database), '/', len(items), f'{therapeutic_targets_database_perc:.2f}%', '''THERAPEUTIC TARGETS DATABASE''')
+
+    conn = sqlite3.connect(f'{g.SSOT_FOLDERPATH}/sqlite/database.db')
+    cur = conn.cursor()
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS diseases (
+            terra_id TEXT,
+            oregano_id TEXT,
+            mesh_id TEXT
+        )
+    """)
+    cur.execute("PRAGMA synchronous = OFF")
+    cur.execute("PRAGMA journal_mode = MEMORY")
+    cur.execute("PRAGMA temp_store = MEMORY")
+    cur.execute("PRAGMA cache_size = 1000000")
+    for item_i, item in enumerate(items[:]):
+        terra_id = f'TERRA:DISEASE:{item_i}'
+        oregano_id = item['ID_OREGANO:21848'].strip()
+        mesh_id = item['MESH'].strip()
+        mesh_id = mesh_id.split(';')[0]
+        if 'OMIM' in mesh_id: mesh_id = ''
+        cur.execute("INSERT INTO diseases VALUES (?, ?, ?)", (terra_id, oregano_id, mesh_id))
+        if item_i % 100000 == 0:
+            conn.commit()
+            print(f"{item_i} lines inserted")
+    cur.execute("CREATE INDEX IF NOT EXISTS idx_terra_id ON diseases(terra_id)")
+    conn.commit()
+    print(f"{item_i} lines inserted")
+    conn.close()
+
+def oregano__preview_dataset():
+    conn = sqlite3.connect(f'{g.SSOT_FOLDERPATH}/sqlite/database.db')
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM diseases WHERE mesh_id != ''")
+    rows = cur.fetchall()
+    for row in rows:
+        print(row)
+    conn.close()
+
+# oregano__process_dataset()
+oregano__preview_dataset()
+quit()
 
 def neo4j_clear_db():
     driver = GraphDatabase.driver("bolt://localhost:7687", auth=(neo4j_user, neo4j_pass))
