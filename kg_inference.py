@@ -1,5 +1,6 @@
 import shutil
 import textwrap
+import sqlite3
 
 from neo4j import GraphDatabase
 
@@ -10,8 +11,8 @@ from lib import polish
 from lib import components
 from lib import sections
 
-neo4j_user = io.file_read(f'g.DATABASE_FOLDERPATH/neo4j-user.txt').strip()
-neo4j_pass = io.file_read(f'g.DATABASE_FOLDERPATH/neo4j-pass.txt').strip()
+neo4j_user = io.file_read(f'{g.DATABASE_FOLDERPATH}/neo4j-user.txt').strip()
+neo4j_pass = io.file_read(f'{g.DATABASE_FOLDERPATH}/neo4j-pass.txt').strip()
 
 model_filepath = '/home/ubuntu/vault-tmp/llm/gemma-4-26B-A4B-it-UD-Q4_K_XL.gguf'
 
@@ -233,46 +234,49 @@ def plants__plant__gen():
         # quit()
 
 def plants__plant__new_gen():
-    '''
-    nodes = neo4j_nodes_get('PLANT')
-    for node in nodes:
-        print(node['id'])
-    '''
-    # neo4j_paths_get('PLANT', 'DISEASE')
-    ###
-    plants = io.json_read(f'{g.SSOT_FOLDERPATH}/kg/entities/plants.json')
-    output_plants_diseases = []
-    for i, input_plant in enumerate(plants[:]):
-        input_plant_id = input_plant['tw_id']
-        # print(i)
-        neo4j_diseases = neo4j__get_diseases_by_plant(input_plant_id)
-        plant_name = ''
-        for plant in plants: 
-            if plant['tw_id'] == input_plant_id:
-                # print(plant['name'])
-                plant_name = plant['name']
-                break
-        ###
-        diseases_lines = io.file_read(f'{g.SSOT_FOLDERPATH}/kg/maps/diseases-mesh.tsv').split('\n')
-        for neo4j_disease in neo4j_diseases:
-            for disease_line in diseases_lines:
-                parts = disease_line.split('\t')
-                # print(parts[0], neo4j_disease)
-                if parts[0] == neo4j_disease:
-                    print(plant_name, parts[2])
-                    output_plants_diseases.append([plant_name, parts[2]])
-                    break
-                    quit()
-
-    ###
-    output_content = ''
-    for item in output_plants_diseases:
-        output_line = '\t'.join(item)
-        output_content += f'{output_line}\n'
-    output_content = output_content.strip()
-    print(output_content)
-    io.file_write(f'{g.SSOT_FOLDERPATH}/kg/tmp-kg-final-plants-diseases.tsv', output_content)
-    quit()
+    driver = GraphDatabase.driver("bolt://localhost:7687", auth=(neo4j_user, neo4j_pass))
+    ### get all plants
+    with driver.session() as session:
+        result = session.run("""
+            MATCH (s:PLANT) RETURN s;
+        """)
+        plants_ids = []
+        for record in result:
+            node = dict(record["s"])
+            plants_ids.append(node['id'])
+    ### get all diseases per plant
+    for plant_i, plant_id in enumerate(plants_ids[:]):
+        print(f'{plant_i}/{len(plants_ids)}')
+        with driver.session() as session:
+            result = session.run(f"""
+                MATCH p=(s:PLANT {{id: "{plant_id}"}})-[*]->(o:DISEASE) 
+                RETURN p 
+                LIMIT 25;
+            """)
+            for record_i, record in enumerate(result):
+                path = record["p"]
+                for node in path.nodes:
+                    node_id = node['id']
+                    if 'DISEASE' in node_id:
+                        print(node["id"])
+                        terra_disease_id = node_id
+                        ### resolve disease id
+                        conn = sqlite3.connect(f'{g.SSOT_FOLDERPATH}/sqlite/database.db')
+                        cur = conn.cursor()
+                        cur.execute(f"SELECT * FROM diseases WHERE terra_id = '{terra_disease_id}'")
+                        rows = cur.fetchall()[0]
+                        conn.close()
+                        print(rows)
+                        mesh_descriptor_ui = rows[2]
+                        ### resolve disease name
+                        conn = sqlite3.connect(f'{g.SSOT_FOLDERPATH}/sqlite/database.db')
+                        cur = conn.cursor()
+                        cur.execute("SELECT name FROM mesh_descriptors WHERE ui = ?", (mesh_descriptor_ui,))
+                        row = cur.fetchone()
+                        conn.close()
+                        print(row[0])
+                        quit()
+    driver.close()
 
 def plants__families__gen():
     def neo4j_families_get(tx):

@@ -7,6 +7,8 @@ import sqlite3
 import requests
 
 from neo4j import GraphDatabase
+from lxml import etree
+import xml.etree.ElementTree as ET
 
 from lib import g
 from lib import io
@@ -48,7 +50,248 @@ def tsv_to_json(input_filepath):
         items.append(item)
     return items
 
-def oregano__process_dataset():
+def sqlite3__wikidata_plants_create():
+    plants_folderpath = f'{g.SSOT_FOLDERPATH}/datasets/wikidata/medicinal-plants'
+    plants_filepaths = sorted([f'{plants_folderpath}/{filename}' for filename in os.listdir(plants_folderpath)])
+    items = []
+    for plant_filepath_i, plant_filepath in enumerate(plants_filepaths):
+        print(f'{plant_filepath_i}/{len(plants_filepaths)}')
+        plant_filename_raw = plant_filepath.split('/')[-1].split('.')[0]
+        plant_data = io.json_read(plant_filepath)
+        try: claim = plant_data['entities'][plant_filename_raw]['claims']['P5037'][0]
+        except: claim = None
+        if claim:
+            value = claim['mainsnak']['datavalue']['value']
+            # print(json.dumps(value, indent=4))
+            value_url_id = value.split(':')[-1]
+            # print(plant_filename_raw, value_url_id)
+            # quit()
+            items.append({
+                'wikidata_id': plant_filename_raw,
+                'powo_id': value,
+            })
+    ###
+    table_name = 'wikidata'
+    conn = sqlite3.connect(f'{g.SSOT_FOLDERPATH}/sqlite/database.db')
+    cur = conn.cursor()
+    ### delete previous table
+    cur.execute("DROP TABLE IF EXISTS wikidata")
+    ### create new table
+    cur.execute(f"""
+        CREATE TABLE IF NOT EXISTS {table_name} (
+            wikidata_id TEXT,
+            powo_id TEXT
+        )
+    """)
+    cur.execute("PRAGMA synchronous = OFF")
+    cur.execute("PRAGMA journal_mode = MEMORY")
+    cur.execute("PRAGMA temp_store = MEMORY")
+    cur.execute("PRAGMA cache_size = 1000000")
+    ### insert into new table
+    for item_i, item in enumerate(items[:]):
+        wikidata_id = item['wikidata_id'].strip()
+        powo_id = item['powo_id'].strip()
+        cur.execute(f"INSERT INTO {table_name} VALUES (?, ?)", (wikidata_id, powo_id))
+        if item_i % 100000 == 0:
+            conn.commit()
+            print(f"{item_i} lines inserted")
+    ### create index
+    cur.execute(f"CREATE INDEX IF NOT EXISTS idx_wikidata_id ON {table_name}(wikidata_id)")
+    conn.commit()
+    print(f"{item_i} lines inserted")
+    conn.close()
+
+def sqlite3__wikidata_plants_preview(wikidata_id=''):
+    if wikidata_id == '':
+        conn = sqlite3.connect(f'{g.SSOT_FOLDERPATH}/sqlite/database.db')
+        cur = conn.cursor()
+        cur.execute("SELECT * FROM wikidata LIMIT 10")
+        rows = cur.fetchall()
+        conn.close()
+        for row in rows:
+            print(row)
+    else:
+        conn = sqlite3.connect(f'{g.SSOT_FOLDERPATH}/sqlite/database.db')
+        cur = conn.cursor()
+        cur.execute("SELECT name FROM wikidata WHERE wikidata_id = ?", (wikidata_id,))
+        row = cur.fetchone()
+        conn.close()
+        return row[0] if row else None
+
+def wikidata__sqlite3_medicinal_plants_create():
+    plants_folderpath = f'{g.SSOT_FOLDERPATH}/datasets/wikidata/medicinal-plants'
+    plants_filepaths = sorted([f'{plants_folderpath}/{filename}' for filename in os.listdir(plants_folderpath)])
+    failed = []
+    powo_plants = []
+    for plant_filepath_i, plant_filepath in enumerate(plants_filepaths):
+        print(f'{plant_filepath_i}/{len(plants_filepaths)}')
+        plant_filename_raw = plant_filepath.split('/')[-1].split('.')[0]
+        plant_data = io.json_read(plant_filepath)
+        try: claim = plant_data['entities'][plant_filename_raw]['claims']['P5037'][0]
+        except: claim = None
+        if claim:
+            value = claim['mainsnak']['datavalue']['value']
+            print(json.dumps(value, indent=4))
+            value_url_id = value.split(':')[-1]
+            print(value_url_id)
+            powo_filepath = f'{powo_folderpath}/0000-plants/{value_url_id}.json'
+            if os.path.exists(powo_filepath):
+                powo_plant_data = io.json_read(powo_filepath)
+                print(powo_plant_data)
+                quit()
+                powo_plant_kingdom = powo_plant_data['kingdom']
+                powo_plant_phylum = powo_plant_data['phylum']
+                powo_plant_class = powo_plant_data['clazz']
+                powo_plant_subclass = powo_plant_data['subclass']
+                powo_plant_order = powo_plant_data['order']
+                powo_plant_family = powo_plant_data['family']
+                powo_plant_genus = powo_plant_data['genus']
+                try: powo_plant_species = powo_plant_data['species']
+                except: powo_plant_species = ''
+                powo_plant_name = powo_plant_data['name']
+                powo_plant_rank = powo_plant_data['rank']
+                # print(json.dumps(powo_plant_data, indent=4))
+                # print(plant_filename_raw)
+                # quit()
+                _powo_plant = {
+                    'wikidata_id': plant_filename_raw,
+                    'powo_id': value_url_id,
+                    'powo_plant_kingdom': powo_plant_kingdom,
+                    'powo_plant_phylum': powo_plant_phylum,
+                    'powo_plant_class': powo_plant_class,
+                    'powo_plant_subclass': powo_plant_subclass,
+                    'powo_plant_order': powo_plant_order,
+                    'powo_plant_family': powo_plant_family,
+                    'powo_plant_genus': powo_plant_genus,
+                    'powo_plant_species': powo_plant_species,
+                    'powo_plant_name': powo_plant_name,
+                    'powo_plant_rank': powo_plant_rank,
+                }
+                powo_plants.append(_powo_plant)
+                output_filepath = f'{g.SSOT_FOLDERPATH}/wikidata-powo/0000-ids/{plant_filename_raw}.json'
+                io.json_write(output_filepath, _powo_plant)
+            else:
+                failed.append(powo_filepath)
+    print(len(failed))
+    ranks = set([item['powo_plant_rank'] for item in powo_plants])
+    genus_count = 0
+    species_count = 0
+    form_count = 0
+    subspecies_count = 0
+    variety_count = 0
+    for powo_plant in powo_plants:
+        rank = powo_plant['powo_plant_rank']
+        if rank.lower() == 'genus': genus_count += 1
+        elif rank.lower() == 'species': species_count += 1
+        elif rank.lower() == 'form': form_count += 1
+        elif rank.lower() == 'subspecies': subspecies_count += 1
+        elif rank.lower() == 'variety': variety_count += 1
+    print(genus_count)
+    print(species_count)
+    print(form_count)
+    print(subspecies_count)
+    print(variety_count)
+        
+    # print(ranks)
+    quit()
+
+def mesh__parse_xml(file_path):
+    for event, elem in ET.iterparse(file_path, events=("end",)):
+        if elem.tag == "DescriptorRecord":
+            ui = elem.findtext(".//DescriptorUI")
+            name = elem.findtext(".//DescriptorName/String")
+            tree_numbers = [
+                tn.text for tn in elem.findall(".//TreeNumberList/TreeNumber")
+            ]
+            yield ui, name, tree_numbers
+            elem.clear()
+
+def mesh__count_descriptors(file_path):
+    count = 0
+    for event, elem in ET.iterparse(file_path, events=("end",)):
+        if elem.tag == "DescriptorRecord":
+            count += 1
+            elem.clear()  # important for memory
+    return count
+
+
+def mesh__print_one_entry(file_path):
+    for event, elem in ET.iterparse(file_path, events=("end",)):
+        if elem.tag == "DescriptorRecord":
+            print(ET.tostring(elem, encoding="unicode"))
+            break  # only first entry
+
+
+def mesh__sqlite3_create():
+    conn = sqlite3.connect(f'{g.SSOT_FOLDERPATH}/sqlite/database.db')
+    cur = conn.cursor()
+    ### delete old table
+    cur.execute("DROP TABLE IF EXISTS mesh")
+    conn.commit()
+    ### create new table
+    cur.execute("""
+    CREATE TABLE IF NOT EXISTS mesh_descriptors (
+        ui TEXT PRIMARY KEY,
+        name TEXT NOT NULL
+    )
+    """)
+    conn.commit()
+    ### insert to new table
+    batch = []
+    BATCH_SIZE = 1000
+    context = etree.iterparse(
+        f'{g.SSOT_FOLDERPATH}/datasets/mesh/{mesh_filename}',
+        events=("end",),
+        tag="DescriptorRecord"
+    )
+    for _, elem in context:
+        ui = elem.findtext("DescriptorUI")
+        name = elem.findtext("DescriptorName/String")
+        if ui and name:
+            batch.append((ui, name))
+        if len(batch) >= BATCH_SIZE:
+            cur.executemany(
+                "INSERT OR REPLACE INTO mesh_descriptors (ui, name) VALUES (?, ?)",
+                batch
+            )
+            conn.commit()
+            batch.clear()
+        elem.clear()
+        while elem.getprevious() is not None:
+            del elem.getparent()[0]
+    if batch:
+        cur.executemany(
+            "INSERT OR REPLACE INTO mesh_descriptors (ui, name) VALUES (?, ?)",
+            batch
+        )
+        conn.commit()
+    conn.close()
+
+def mesh__sqlite3_descriptor_name_get(ui):
+    conn = sqlite3.connect(f'{g.SSOT_FOLDERPATH}/sqlite/database.db')
+    cur = conn.cursor()
+    cur.execute("SELECT name FROM mesh_descriptors WHERE ui = ?", (ui,))
+    row = cur.fetchone()
+    conn.close()
+    return row[0] if row else None
+
+def mesh__sqlite3_count():
+    conn = sqlite3.connect(f'{g.SSOT_FOLDERPATH}/sqlite/database.db')
+    cur = conn.cursor()
+    cur.execute("SELECT COUNT(*) FROM mesh_descriptors")
+    print(cur.fetchone()[0])
+    conn.close()
+
+def mesh__sqlite3_descriptors_preview():
+    conn = sqlite3.connect(f'{g.SSOT_FOLDERPATH}/sqlite/database.db')
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM mesh_descriptors LIMIT 10")
+    rows = cur.fetchall()
+    for row in rows:
+        print(row)
+    conn.close()
+
+def oregano__dataset_disease_analyze():
     input_filepath = f'{g.SSOT_FOLDERPATH}/datasets/oregano/oregano-master/Integration/Integration V3/GESTION_ID/DISEASES.tsv'
     items = tsv_to_json(input_filepath)
     ids = []
@@ -108,8 +351,41 @@ def oregano__process_dataset():
     print(len(omim), '/', len(items), f'{omim_perc:.2f}%', '''OMIM''')
     print(len(gard), '/', len(items), f'{gard_perc:.2f}%', '''GARD''')
     print(len(ctd), '/', len(items), f'{ctd_perc:.2f}%', '''CTD''')
-    print(len(therapeutic_targets_database), '/', len(items), f'{therapeutic_targets_database_perc:.2f}%', '''THERAPEUTIC TARGETS DATABASE''')
+    # print(len(therapeutic_targets_database), '/', len(items), f'{therapeutic_targets_database_perc:.2f}%', '''THERAPEUTIC TARGETS DATABASE''')
 
+def oregano__sqlite3_disease_create():
+    input_filepath = f'{g.SSOT_FOLDERPATH}/datasets/oregano/oregano-master/Integration/Integration V3/GESTION_ID/DISEASES.tsv'
+    items = tsv_to_json(input_filepath)
+    ids = []
+    pharmgkb = []
+    mesh = []
+    snomedct = []
+    umls = []
+    ndfrt = []
+    meddra = []
+    orphanet = []
+    icd_11 = []
+    icd_10 = []
+    omim = []
+    gard = []
+    ctd = []
+    therapeutic_targets_database = []
+    for item in items[:]:
+        print(json.dumps(item, indent=4))
+        if item['ID_OREGANO:21848'].strip() != '': ids.append(item['ID_OREGANO:21848'])
+        if item['PHARMGKB'].strip() != '': pharmgkb.append(item['PHARMGKB'])
+        if item['MESH'].strip() != '': mesh.append(item['MESH'])
+        if item['SNOMEDCT'].strip() != '': snomedct.append(item['SNOMEDCT'])
+        if item['UMLS'].strip() != '': umls.append(item['UMLS'])
+        if item['NDFRT'].strip() != '': ndfrt.append(item['NDFRT'])
+        if item['MEDDRA'].strip() != '': meddra.append(item['MEDDRA'])
+        if item['ORPHANET'].strip() != '': orphanet.append(item['ORPHANET'])
+        if item['ICD-11'].strip() != '': icd_11.append(item['ICD-11'])
+        if item['ICD-10'].strip() != '': icd_10.append(item['ICD-10'])
+        if item['OMIM'].strip() != '': omim.append(item['OMIM'])
+        if item['GARD'].strip() != '': gard.append(item['GARD'])
+        if item['CTD'].strip() != '': ctd.append(item['CTD'])
+        if item['THERAPEUTIC TARGETS DATABASE'].strip() != '': therapeutic_targets_database.append(item['THERAPEUTIC TARGETS DATABASE'])
     conn = sqlite3.connect(f'{g.SSOT_FOLDERPATH}/sqlite/database.db')
     cur = conn.cursor()
     cur.execute("""
@@ -138,18 +414,114 @@ def oregano__process_dataset():
     print(f"{item_i} lines inserted")
     conn.close()
 
+def oregano__sqlite3_disease_get(terra_disease_id):
+    conn = sqlite3.connect(f'{g.SSOT_FOLDERPATH}/sqlite/database.db')
+    cur = conn.cursor()
+    cur.execute(f"SELECT * FROM diseases WHERE terra_id = '{terra_disease_id}'")
+    rows = cur.fetchall()
+    conn.close()
+    return rows[0]
+
 def oregano__preview_dataset():
     conn = sqlite3.connect(f'{g.SSOT_FOLDERPATH}/sqlite/database.db')
     cur = conn.cursor()
     cur.execute("SELECT * FROM diseases WHERE mesh_id != ''")
     rows = cur.fetchall()
-    for row in rows:
-        print(row)
+    for row in rows[:10000]:
+        # print(row)
+        if row[2][0] == 'D':
+            continue
+            print(row[2])
+            res = mesh__sqlite3_descriptor_name_get(row[2])
+            if res == None:
+                print(res)
+                print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+            # quit()
+        if row[2][0] == 'C':
+            print(row[2])
+            res = sqlite3__mesh_concept_name_get(row[2])
+            print(res)
+            quit()
+
+        # quit(type(row))
     conn.close()
 
-# oregano__process_dataset()
-oregano__preview_dataset()
+
+
+################################################################################
+# TERRA
+################################################################################
+def terra__plants_get():
+    driver = GraphDatabase.driver("bolt://localhost:7687", auth=(neo4j_user, neo4j_pass))
+    ### get all plants
+    with driver.session() as session:
+        result = session.run("""
+            MATCH (s:PLANT) RETURN s;
+        """)
+        plants_ids = []
+        for record in result:
+            node = dict(record["s"])
+            plants_ids.append(node['id'])
+    return plants_ids
+
+def terra__plants_diseases_preview():
+    ### get all plants ids
+    plants_ids = terra__plants_get()
+    driver = GraphDatabase.driver("bolt://localhost:7687", auth=(neo4j_user, neo4j_pass))
+    for plant_i, plant_id in enumerate(plants_ids[:]):
+        print(f'{plant_i}/{len(plants_ids)}')
+        with driver.session() as session:
+            result = session.run(f"""
+                MATCH p=(s:PLANT {{id: "{plant_id}"}})-[*]->(o:DISEASE) 
+                RETURN p 
+                LIMIT 25;
+            """)
+            for record_i, record in enumerate(result):
+                path = record["p"]
+                for node in path.nodes:
+                    node_id = node['id']
+                    if 'DISEASE' in node_id:
+                        print(node["id"])
+                        terra_disease_id = node_id
+                        rows = oregano__sqlite3_disease_get(terra_disease_id)
+                        print(rows)
+                        mesh_descriptor_ui = rows[2]
+                        row = mesh__sqlite3_descriptor_name_get(mesh_descriptor_ui)
+                        print(row)
+                        # quit()
+    driver.close()
+
+mesh_filename = 'desc2026.xml'
+if 0:
+    for ui, name, tree_numbers in mesh__parse_xml(f'{g.SSOT_FOLDERPATH}/datasets/mesh/{mesh_filename}'):
+        print(ui, name, tree_numbers)
+    print(mesh_count_descriptors(f'{g.SSOT_FOLDERPATH}/datasets/mesh/{mesh_filename}'))
+    mesh__print_one_entry(f'{g.SSOT_FOLDERPATH}/datasets/mesh/{mesh_filename}')
+
+    concepts = mesh__extract_concept_uis()
+    print(len(concepts))
+    print(list(concepts)[:100])
+
+    mesh__sqlite3_create()
+    print(mesh__sqlite3_descriptor_name_get("D012345"))
+    mesh__sqlite3_count()
+    mesh__sqlite3_descriptors_preview()
+
+    oregano__sqlite3_disease_create()
+    oregano__dataset_disease_analyze()
+    oregano__preview_dataset()
+
+    terra__plants_diseases_preview()
+
+
+sqlite3__wikidata_plants_create()
+sqlite3__wikidata_plants_preview()
+
+# wikidata__sqlite3_medicinal_plants_create()
+
 quit()
+
+
 
 def neo4j_clear_db():
     driver = GraphDatabase.driver("bolt://localhost:7687", auth=(neo4j_user, neo4j_pass))
