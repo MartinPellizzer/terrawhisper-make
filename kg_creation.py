@@ -22,13 +22,13 @@ powo_folderpath = f'{g.SSOT_FOLDERPATH}/powo'
 # taxdmp_nodes_filepath = f'{taxdmp_folderpath}/nodes.dmp'
 # taxdmp_names_filepath = f'{taxdmp_folderpath}/names.dmp'
 sqlite_database_filepath = f'{kg_folderpath}/taxonomy.db'
-lotus_filepath = f'{g.SSOT_FOLDERPATH}/lotus/lotusUniqueNaturalProduct.bson'
 herb20_filepath = f'{g.SSOT_FOLDERPATH}/herb20/HERB_herb_info_v2.txt'
 pubchem_folderpath = f'{g.SSOT_FOLDERPATH}/pubchem'
-lotus_folderpath = f'{g.SSOT_FOLDERPATH}/lotus'
 
 ### TODO: do all with sqlite3 (terra ids -> other ids, and other ids -> other_ids)
 ### TODO: put all downloaded datasets in /ssot/datasets
+
+### TODO: maybe using sqlite to populate neo4j is not best idea? maybe use sqlite only for entity resolution?
 
 neo4j_user = io.file_read(f'{g.DATABASE_FOLDERPATH}/neo4j-user.txt').strip()
 neo4j_pass = io.file_read(f'{g.DATABASE_FOLDERPATH}/neo4j-pass.txt').strip()
@@ -49,6 +49,231 @@ def tsv_to_json(input_filepath):
             item[headings[i]] = values[i].strip()
         items.append(item)
     return items
+
+################################################################################
+# DATASETS
+################################################################################
+def dataset__lotus_bson_preview():
+    lotus_filepath = f'{g.SSOT_FOLDERPATH}/datasets/lotus/lotusUniqueNaturalProduct.bson'
+    def first_n_bson(path, n=5):
+        from bson import BSON
+        with open(path, "rb") as f:
+            for _ in range(n):
+                size_bytes = f.read(4)
+                if not size_bytes:
+                    break
+                size = int.from_bytes(size_bytes, "little")
+                f.seek(-4, 1)
+                raw = f.read(size)
+                yield BSON(raw).decode()
+    for doc_i, doc in enumerate(first_n_bson(lotus_filepath, 1000000)):
+        print(json.dumps(doc, indent=4, default=str))
+
+def dataset__lotus_bson_to_json():
+    lotus_filepath = f'{g.SSOT_FOLDERPATH}/datasets/lotus/lotusUniqueNaturalProduct.bson'
+    lotus_output_filepath = f'{g.SSOT_FOLDERPATH}/datasets/lotus/data.json'
+    export_items = []
+    docs_num = 0
+    parent_count = 0
+    class_count = 0
+    superclass_count = 0
+    kingdom_count = 0
+    npclassifier_pathway_count = 0
+    npclassifier_superclass_count = 0
+    npclassifier_class_count = 0
+    inchikey_count = 0
+    wikidata_count = 0
+    def first_n_bson(path, n=5):
+        from bson import BSON
+        with open(path, "rb") as f:
+            for _ in range(n):
+                size_bytes = f.read(4)
+                if not size_bytes:
+                    break
+                size = int.from_bytes(size_bytes, "little")
+                f.seek(-4, 1)
+                raw = f.read(size)
+                yield BSON(raw).decode()
+    for doc_i, doc in enumerate(first_n_bson(lotus_filepath, 1000000)):
+        # print(doc["inchikey"])
+        # print(json.dumps(doc, indent=4, default=str))
+        # quit()
+        docs_num += 1
+        print(doc_i)
+        component_lotus_id = doc['lotus_id']
+        try: component_wikidata_id = doc['wikidata_id']
+        except: 
+            component_wikidata_id = None
+            wikidata_count += 1
+        found = True
+        try: component_taxonomy_classyfire_parent = doc['chemicalTaxonomyClassyfireDirectParent']
+        except: 
+            component_taxonomy_classyfire_parent = None
+            parent_count += 1
+            found = False
+        try: component_taxonomy_classyfire_class = doc['chemicalTaxonomyClassyfireClass']
+        except: 
+            component_taxonomy_classyfire_class = None
+            class_count += 1
+            found = False
+        try: component_taxonomy_classyfire_superclass = doc['chemicalTaxonomyClassyfireSuperclass']
+        except: 
+            component_taxonomy_classyfire_superclass = None
+            superclass_count += 1
+            found = False
+        try: component_taxonomy_classyfire_kingdom = doc['chemicalTaxonomyClassyfireKingdom']
+        except: 
+            component_taxonomy_classyfire_kingdom = None
+            kingdom_count += 1
+            found = False
+        try: component_taxonomy_npclassifier_pathway = doc['chemicalTaxonomyNPclassifierPathway']
+        except: 
+            component_taxonomy_npclassifier_pathway = None
+            npclassifier_pathway_count += 1
+            found = False
+        try: component_taxonomy_npclassifier_superclass = doc['chemicalTaxonomyNPclassifierSuperclass']
+        except: 
+            component_taxonomy_npclassifier_superclass = None
+            npclassifier_superclass_count += 1
+            found = False
+        try: component_taxonomy_npclassifier_class = doc['chemicalTaxonomyNPclassifierClass']
+        except: 
+            component_taxonomy_npclassifier_class = None
+            npclassifier_class_count += 1
+            found = False
+        try: component_inchikey = doc['inchikey']
+        except: 
+            component_inchikey = None
+            inchikey_count += 1
+            found = False
+        # if not found:
+            # print(json.dumps(doc, indent=4, default=str))
+            # quit()
+        # print(component_lotus_id, component_taxonomy_classyfire_class)
+        plants_names = []
+        for ref_id in doc.get("taxonomyReferenceObjects", {}):
+            for source in doc["taxonomyReferenceObjects"][ref_id]:
+                for org in doc["taxonomyReferenceObjects"][ref_id][source]:
+                    plant_name = org.get("organism_value")
+                    if plant_name and plant_name not in plants_names:
+                        plants_names.append(plant_name)
+        export_item = {
+            'component_lotus_id': component_lotus_id,
+            'component_inchikey': component_inchikey,
+            'component_wikidata_id': component_wikidata_id,
+            'component_taxonomy_npclassifier_pathway': component_taxonomy_npclassifier_pathway,
+            'component_taxonomy_npclassifier_superclass': component_taxonomy_npclassifier_superclass,
+            'component_taxonomy_npclassifier_class': component_taxonomy_npclassifier_class,
+            'component_taxonomy_classyfire_kingdom': component_taxonomy_classyfire_kingdom,
+            'component_taxonomy_classyfire_superclass': component_taxonomy_classyfire_superclass,
+            'component_taxonomy_classyfire_class': component_taxonomy_classyfire_class,
+            'component_taxonomy_classyfire_parent': component_taxonomy_classyfire_parent,
+            'plants_names': plants_names,
+        }
+        # classyfire_partent -> npclassifier_superclass -> npclassifier_pathway
+        # ex. Plant X contains cucurbitacin glycosides, a class of triterpenoid compounds (terpenoids).
+        export_items.append(export_item)
+        continue
+        break
+    for export_item in export_items:
+        print(json.dumps(export_item, indent=4, default=str))
+        break
+    print(docs_num)
+    print(parent_count)
+    print(class_count)
+    print(superclass_count)
+    print(kingdom_count)
+    print(npclassifier_pathway_count)
+    print(npclassifier_superclass_count)
+    print(npclassifier_class_count)
+    print('INCHIKEY FAILED COUNTER:', inchikey_count)
+    print('WIKIDATA FAILED COUNTER:', wikidata_count)
+    io.json_write(lotus_output_filepath, export_items)
+
+def dataset__lotus_groups_create():
+    output_data = []
+    input_filepath = f'{g.SSOT_FOLDERPATH}/datasets/lotus/data.json'
+    output_filepath = f'{g.SSOT_FOLDERPATH}/datasets/lotus/groups.json'
+    input_data = io.json_read(input_filepath)
+    for input_i, input_item in enumerate(input_data[:]):
+        print(f'{input_i}/{len(input_data)}')
+        plants_names = input_item['plants_names']
+        component_lotus_id = input_item['component_lotus_id']
+        component_inchikey = input_item['component_inchikey']
+        component_wikidata_id = input_item['component_wikidata_id']
+        component_taxonomy_npclassifier_pathway = input_item['component_taxonomy_npclassifier_pathway']
+        component_taxonomy_npclassifier_superclass = input_item['component_taxonomy_npclassifier_superclass']
+        component_taxonomy_npclassifier_class = input_item['component_taxonomy_npclassifier_class']
+        component_taxonomy_classyfire_kingdom = input_item['component_taxonomy_classyfire_kingdom']
+        component_taxonomy_classyfire_superclass = input_item['component_taxonomy_classyfire_superclass']
+        component_taxonomy_classyfire_class = input_item['component_taxonomy_classyfire_class']
+        component_taxonomy_classyfire_parent = input_item['component_taxonomy_classyfire_parent']
+        # print(json.dumps(input_item, indent=4))
+        # quit()
+        for plant_name in plants_names:
+            plant_name = plant_name.strip()
+            found = False
+            for output_item in output_data:
+                if plant_name == output_item['plant_name']:
+                    new_component = {
+                        'component_lotus_id': component_lotus_id,
+                        'component_inchikey': component_inchikey,
+                        'component_wikidata_id': component_wikidata_id,
+                        'component_taxonomy_npclassifier_pathway': component_taxonomy_npclassifier_pathway,
+                        'component_taxonomy_npclassifier_superclass': component_taxonomy_npclassifier_superclass,
+                        'component_taxonomy_npclassifier_class': component_taxonomy_npclassifier_class,
+                        'component_taxonomy_classyfire_kingdom': component_taxonomy_classyfire_kingdom,
+                        'component_taxonomy_classyfire_superclass': component_taxonomy_classyfire_superclass,
+                        'component_taxonomy_classyfire_class': component_taxonomy_classyfire_class,
+                        'component_taxonomy_classyfire_parent': component_taxonomy_classyfire_parent,
+                    }
+                    output_item['components'].append(new_component)
+                    found = True
+                    break
+            if not found:
+                new_item = {
+                    'plant_name': plant_name,
+                    'components': [
+                        {
+                            'component_lotus_id': component_lotus_id,
+                            'component_inchikey': component_inchikey,
+                            'component_wikidata_id': component_wikidata_id,
+                            'component_taxonomy_npclassifier_pathway': component_taxonomy_npclassifier_pathway,
+                            'component_taxonomy_npclassifier_superclass': component_taxonomy_npclassifier_superclass,
+                            'component_taxonomy_npclassifier_class': component_taxonomy_npclassifier_class,
+                            'component_taxonomy_classyfire_kingdom': component_taxonomy_classyfire_kingdom,
+                            'component_taxonomy_classyfire_superclass': component_taxonomy_classyfire_superclass,
+                            'component_taxonomy_classyfire_class': component_taxonomy_classyfire_class,
+                            'component_taxonomy_classyfire_parent': component_taxonomy_classyfire_parent,
+                        },
+                    ]
+                }
+                output_data.append(new_item)
+        # print(plants_names)
+    print(len(output_data))
+    # print(json.dumps(output_data, indent=4))
+    io.json_write(output_filepath, output_data)
+    # for output_item in output_data:
+        # if len(output_item['components']) > 1:
+            # print(json.dumps(output_item, indent=4))
+
+def dataset__lotus_groups_preview():
+    items = io.json_read(f'{g.SSOT_FOLDERPATH}/datasets/lotus/groups.json')
+    for item_i, item in enumerate(items[:1]):
+        print(json.dumps(item, indent=4))
+    print(len(items))
+
+################################################################################
+# SQLITE3
+################################################################################
+def sqlite3__table_preview(table_name):
+    conn = sqlite3.connect(f'{g.SSOT_FOLDERPATH}/sqlite/database.db')
+    cur = conn.cursor()
+    cur.execute(f"SELECT * FROM {table_name} LIMIT 10")
+    rows = cur.fetchall()
+    conn.close()
+    for row in rows:
+        print(row)
 
 def sqlite3__wikidata_plants_create():
     plants_folderpath = f'{g.SSOT_FOLDERPATH}/datasets/wikidata/medicinal-plants'
@@ -294,6 +519,124 @@ def wikidata__sqlite3_medicinal_plants_create():
         
     # print(ranks)
     quit()
+
+def sqlite3__lotus_components_create():
+    ### get data
+    items = io.json_read(f'{g.SSOT_FOLDERPATH}/datasets/lotus/data.json')
+    ## preview data
+    for item in items[:10]:
+        print(item)
+    ### create/populate sql table
+    table_name = 'lotus_components'
+    conn = sqlite3.connect(f'{g.SSOT_FOLDERPATH}/sqlite/database.db')
+    cur = conn.cursor()
+    ### delete previous table
+    cur.execute(f"DROP TABLE IF EXISTS {table_name}")
+    ### create new table
+    cur.execute(f"""
+        CREATE TABLE IF NOT EXISTS {table_name} (
+            lotus_id TEXT,
+            inchikey TEXT,
+            taxonomy_npclassifier_pathway TEXT,
+            taxonomy_npclassifier_superclass TEXT,
+            taxonomy_npclassifier_class TEXT,
+            taxonomy_classyfire_kingdom TEXT,
+            taxonomy_classyfire_superclass TEXT,
+            taxonomy_classyfire_class TEXT,
+            taxonomy_classyfire_parent TEXT
+        )
+    """)
+    cur.execute("PRAGMA synchronous = OFF")
+    cur.execute("PRAGMA journal_mode = MEMORY")
+    cur.execute("PRAGMA temp_store = MEMORY")
+    cur.execute("PRAGMA cache_size = 1000000")
+    ### insert into new table
+    for item_i, item in enumerate(items[:]):
+        print(item_i)
+        lotus_id = item['component_lotus_id'].strip()
+        lotus_inchikey = item['component_inchikey'].strip()
+        try: lotus_taxonomy_npclassifier_pathway = item['component_taxonomy_npclassifier_pathway'].strip()
+        except: lotus_taxonomy_classifier_pathway = ''
+        try: lotus_taxonomy_npclassifier_superclass = item['component_taxonomy_npclassifier_superclass'].strip()
+        except: lotus_taxonomy_npclassifier_superclass = ''
+        try: lotus_taxonomy_npclassifier_class = item['component_taxonomy_npclassifier_class'].strip()
+        except: lotus_taxonomy_npclassifier_class = ''
+        try: lotus_taxonomy_classyfire_kingdom = item['component_taxonomy_classyfire_kingdom'].strip()
+        except: lotus_taxonomy_classyfire_kingdom = ''
+        try: lotus_taxonomy_classyfire_superclass = item['component_taxonomy_classyfire_superclass'].strip()
+        except: lotus_taxonomy_classyfire_superclass = ''
+        try: lotus_taxonomy_classyfire_class = item['component_taxonomy_classyfire_class'].strip()
+        except: lotus_taxonomy_classyfire_class = ''
+        try: lotus_taxonomy_classyfire_parent = item['component_taxonomy_classyfire_parent'].strip()
+        except: lotus_taxonomy_classyfire_parent = ''
+        cur.execute(
+            f"INSERT INTO {table_name} VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", 
+            (
+                lotus_id,
+                lotus_inchikey,
+                lotus_taxonomy_npclassifier_pathway,
+                lotus_taxonomy_npclassifier_superclass,
+                lotus_taxonomy_npclassifier_class,
+                lotus_taxonomy_classyfire_kingdom,
+                lotus_taxonomy_classyfire_superclass,
+                lotus_taxonomy_classyfire_class,
+                lotus_taxonomy_classyfire_parent,
+            )
+        )
+    ### create index
+    cur.execute(f"CREATE INDEX IF NOT EXISTS idx_lotus_id ON {table_name}(lotus_id)")
+    conn.commit()
+    conn.close()
+
+def sqlite3__lotus_plants_components_create():
+    ### get data
+    items = io.json_read(f'{g.SSOT_FOLDERPATH}/datasets/lotus/data.json')
+    ### create/populate sql table
+    table_name = 'lotus_plants_components'
+    conn = sqlite3.connect(f'{g.SSOT_FOLDERPATH}/sqlite/database.db')
+    cur = conn.cursor()
+    ### delete previous table
+    cur.execute(f"DROP TABLE IF EXISTS {table_name}")
+    ### create new table
+    cur.execute(f"""
+        CREATE TABLE IF NOT EXISTS {table_name} (
+            plant_name TEXT,
+            lotus_id TEXT
+        )
+    """)
+    cur.execute("PRAGMA synchronous = OFF")
+    cur.execute("PRAGMA journal_mode = MEMORY")
+    cur.execute("PRAGMA temp_store = MEMORY")
+    cur.execute("PRAGMA cache_size = 1000000")
+    ## preview data
+    for item_i, item in enumerate(items[:]):
+        print(item_i)
+        for plant_name in item['plants_names']:
+            cur.execute(
+                f"INSERT INTO {table_name} VALUES (?, ?)", 
+                (
+                    plant_name,
+                    item['component_lotus_id'],
+                )
+            )
+    ### create index
+    # cur.execute(f"CREATE INDEX IF NOT EXISTS idx_lotus_id ON {table_name}(lotus_id)")
+    conn.commit()
+    conn.close()
+    quit()
+
+def sqlite3__lotus_ids_get(plant_name):
+    conn = sqlite3.connect(f'{g.SSOT_FOLDERPATH}/sqlite/database.db')
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT *
+        FROM lotus_plants_components
+        WHERE plant_name = ?
+    """, (plant_name,))
+    rows = cur.fetchall()
+    for row in rows:
+        print(row)
+    conn.close()
 
 def mesh__parse_xml(file_path):
     for event, elem in ET.iterparse(file_path, events=("end",)):
@@ -666,6 +1009,42 @@ def sqlite3__terra_plants_create():
     print(f"{len(rows)} lines inserted")
     conn.close()
 
+def sqlite3__terra_compounds_create():
+    ### get all plants from lotus table
+    table_name = 'lotus_components'
+    conn = sqlite3.connect(f'{g.SSOT_FOLDERPATH}/sqlite/database.db')
+    cur = conn.cursor()
+    cur.execute(f"SELECT * FROM {table_name}")
+    rows = cur.fetchall()
+    conn.close()
+    ### create/populate terra plants table
+    table_name = 'terra_compounds'
+    conn = sqlite3.connect(f'{g.SSOT_FOLDERPATH}/sqlite/database.db')
+    cur = conn.cursor()
+    ### delete previous table
+    cur.execute(f"DROP TABLE IF EXISTS {table_name}")
+    ### create new table
+    cur.execute(f"""
+        CREATE TABLE IF NOT EXISTS {table_name} (
+            terra_id TEXT,
+            lotus_id TEXT
+        )
+    """)
+    cur.execute("PRAGMA synchronous = OFF")
+    cur.execute("PRAGMA journal_mode = MEMORY")
+    cur.execute("PRAGMA temp_store = MEMORY")
+    cur.execute("PRAGMA cache_size = 1000000")
+    ### insert into new table
+    for row_i, row in enumerate(rows[:]):
+        terra_id = f'TERRA:COMPOUND:{row_i}'
+        lotus_id = row[0].strip()
+        cur.execute(f"INSERT INTO {table_name} VALUES (?, ?)", (terra_id, lotus_id))
+    ### create index
+    cur.execute(f"CREATE INDEX IF NOT EXISTS idx_terra_id ON {table_name}(terra_id)")
+    conn.commit()
+    print(f"{len(rows)} lines inserted")
+    conn.close()
+
 def sqlite3__terra_plants_preview():
     table = 'terra_plants'
     conn = sqlite3.connect(f'{g.SSOT_FOLDERPATH}/sqlite/database.db')
@@ -678,6 +1057,15 @@ def sqlite3__terra_plants_preview():
 
 def sqlite3__terra_plants_get():
     table = 'terra_plants'
+    conn = sqlite3.connect(f'{g.SSOT_FOLDERPATH}/sqlite/database.db')
+    cur = conn.cursor()
+    cur.execute(f"SELECT * FROM {table}")
+    rows = cur.fetchall()
+    conn.close()
+    return rows
+
+def sqlite3__terra_compounds_get():
+    table = 'terra_compounds'
     conn = sqlite3.connect(f'{g.SSOT_FOLDERPATH}/sqlite/database.db')
     cur = conn.cursor()
     cur.execute(f"SELECT * FROM {table}")
@@ -749,6 +1137,80 @@ def neo4j__terra_plants_preview():
             sqlite3__terra_plant_name_get(terra_id=record['id'])
     driver.close()
 
+def neo4j__terra_compounds_create():
+    ### get data
+    rows = sqlite3__terra_compounds_get()
+    rows = [{"id": n} for n, a in rows]
+    ### populate kg plants
+    driver = GraphDatabase.driver("bolt://localhost:7687", auth=(neo4j_user, neo4j_pass))
+    def create_nodes(tx, rows):
+        query = """
+        UNWIND $rows AS row
+        CREATE (n:Compound {id: row.id})
+        """
+        tx.run(query, rows=rows)
+    with driver.session() as session:
+        session.execute_write(create_nodes, rows)
+    driver.close()
+
+def neo4j__terra_plants_compounds_create():
+    ### get data
+    pass
+    rows = [
+        {
+            'terra_plant_id': 'TERRA:PLANT:0',
+            'terra_compound_id': 'TERRA:COMPOUND:0',
+        }
+    ]
+    ### populate kg
+    driver = GraphDatabase.driver("bolt://localhost:7687", auth=(neo4j_user, neo4j_pass))
+    def insert_relationships(tx, rows):
+        tx.run("""
+            UNWIND $rows AS row
+            MERGE (s:Plant {id: row.terra_plant_id})
+            MERGE (o:Compound {id: row.terra_compound_id})
+            MERGE (s)-[:HAS_COMPOUND]->(o)
+        """, rows=rows)
+    with driver.session() as session:
+        session.execute_write(insert_relationships, rows)
+    driver.close()
+
+def neo4j__terra_plants_compounds_get():
+    driver = GraphDatabase.driver("bolt://localhost:7687", auth=(neo4j_user, neo4j_pass))
+    def _get(tx):
+        result = tx.run("""
+            MATCH (p:Plant)-[:HAS_COMPOUND]->(c:Compound)
+            RETURN p.id AS plant, c.id AS compound
+        """)
+        return [(r["plant"], r["compound"]) for r in result]
+    with driver.session() as session:
+        results = session.execute_read(_get)
+    driver.close()
+    return results
+
+def sqlite3__terra_compound_name_get(terra_id):
+    conn = sqlite3.connect(f'{g.SSOT_FOLDERPATH}/sqlite/database.db')
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT t2.inchikey
+        FROM terra_compounds t1
+        JOIN lotus_components t2 ON t1.lotus_id = t2.lotus_id
+        WHERE t1.terra_id = ?
+    """, (terra_id,))
+    row = cur.fetchone()
+    if row:
+        print(row[0])
+    else:
+        print("No result found")
+    conn.close()
+
+### DATASETS (download/process)
+# dataset__lotus_bson_preview()
+# dataset__lotus_bson_to_json()
+# dataset__lotus_groups_create()
+# dataset__lotus_groups_preview()
+
+### SQLITE3
 
 # sqlite3__wikidata_plants_create()
 # sqlite3__wikidata_plants_preview()
@@ -758,18 +1220,42 @@ def neo4j__terra_plants_preview():
 # sqlite3__powo_preview()
 # wikidata__sqlite3_medicinal_plants_create()
 
+# sqlite3__lotus_components_create()
+# sqlite3__lotus_plants_components_create()
+# sqlite3__lotus_ids_get(plant_name='Salvia miltiorrhiza')
+
+# sqlite3__table_preview('terra_compounds')
+# sqlite3__table_preview('lotus_components')
+# sqlite3__table_preview('lotus_plants_components')
+
 # sqlite3__terra_plants_create()
-# sqlite3__terra_plants_preview()
 # sqlite3__terra_plants_get()
+# sqlite3__terra_compounds_create()
+# sqlite3__terra_compounds_get()
+
+### NEO4J
+# neo4j__clear()
+# neo4j__terra_plants_create()
+### TODO: redo compounds / only those from plants
+# neo4j__terra_compounds_create()
+
+neo4j__terra_plants_compounds_create()
+
+# neo4j__terra_plants_preview()
 
 ### DEMO
 # sqlite3__plant_name_get(wikidata_id='Q1000854')
 # sqlite3__terra_plant_name_get(terra_id='TERRA:PLANT:0')
 
-# neo4j__clear()
+################################################################################
+# DEMOS
+################################################################################
 
-# neo4j__terra_plants_create()
-neo4j__terra_plants_preview()
+### get resolved "plant -[has_compound]-> compound" (replace inchikey with one hierarchy)
+plants_compounds_rows = neo4j__terra_plants_compounds_get()
+print(plants_compounds_rows)
+sqlite3__terra_plant_name_get(plants_compounds_rows[0][0])
+sqlite3__terra_compound_name_get(plants_compounds_rows[0][1])
 
 quit()
 
@@ -1602,214 +2088,6 @@ def wikidata_plants__powo_plants__match_jsons():
     quit()
 
 
-################################################################################
-# LOTUS -> plants constituents
-################################################################################
-def lotus_bson_preview():
-    def first_n_bson(path, n=5):
-        from bson import BSON
-        with open(path, "rb") as f:
-            for _ in range(n):
-                size_bytes = f.read(4)
-                if not size_bytes:
-                    break
-                size = int.from_bytes(size_bytes, "little")
-                f.seek(-4, 1)
-                raw = f.read(size)
-                yield BSON(raw).decode()
-    for doc_i, doc in enumerate(first_n_bson(lotus_filepath, 1000000)):
-        print(json.dumps(doc, indent=4, default=str))
-        quit()
-
-# lotus_bson_preview()
-# quit()
-
-def lotus_bson_to_json():
-    export_items = []
-    docs_num = 0
-    parent_count = 0
-    class_count = 0
-    superclass_count = 0
-    kingdom_count = 0
-    npclassifier_pathway_count = 0
-    npclassifier_superclass_count = 0
-    npclassifier_class_count = 0
-    inchikey_count = 0
-    wikidata_count = 0
-    def first_n_bson(path, n=5):
-        from bson import BSON
-        with open(path, "rb") as f:
-            for _ in range(n):
-                size_bytes = f.read(4)
-                if not size_bytes:
-                    break
-                size = int.from_bytes(size_bytes, "little")
-                f.seek(-4, 1)
-                raw = f.read(size)
-                yield BSON(raw).decode()
-    for doc_i, doc in enumerate(first_n_bson(lotus_filepath, 1000000)):
-        # print(doc["inchikey"])
-        # print(json.dumps(doc, indent=4, default=str))
-        # quit()
-        docs_num += 1
-        print(doc_i)
-        component_lotus_id = doc['lotus_id']
-        try: component_wikidata_id = doc['wikidata_id']
-        except: 
-            component_wikidata_id = None
-            wikidata_count += 1
-        found = True
-        try: component_taxonomy_classyfire_parent = doc['chemicalTaxonomyClassyfireDirectParent']
-        except: 
-            component_taxonomy_classyfire_parent = None
-            parent_count += 1
-            found = False
-        try: component_taxonomy_classyfire_class = doc['chemicalTaxonomyClassyfireClass']
-        except: 
-            component_taxonomy_classyfire_class = None
-            class_count += 1
-            found = False
-        try: component_taxonomy_classyfire_superclass = doc['chemicalTaxonomyClassyfireSuperclass']
-        except: 
-            component_taxonomy_classyfire_superclass = None
-            superclass_count += 1
-            found = False
-        try: component_taxonomy_classyfire_kingdom = doc['chemicalTaxonomyClassyfireKingdom']
-        except: 
-            component_taxonomy_classyfire_kingdom = None
-            kingdom_count += 1
-            found = False
-        try: component_taxonomy_npclassifier_pathway = doc['chemicalTaxonomyNPclassifierPathway']
-        except: 
-            component_taxonomy_npclassifier_pathway = None
-            npclassifier_pathway_count += 1
-            found = False
-        try: component_taxonomy_npclassifier_superclass = doc['chemicalTaxonomyNPclassifierSuperclass']
-        except: 
-            component_taxonomy_npclassifier_superclass = None
-            npclassifier_superclass_count += 1
-            found = False
-        try: component_taxonomy_npclassifier_class = doc['chemicalTaxonomyNPclassifierClass']
-        except: 
-            component_taxonomy_npclassifier_class = None
-            npclassifier_class_count += 1
-            found = False
-        try: component_inchikey = doc['inchikey']
-        except: 
-            component_inchikey = None
-            inchikey_count += 1
-            found = False
-        # if not found:
-            # print(json.dumps(doc, indent=4, default=str))
-            # quit()
-        # print(component_lotus_id, component_taxonomy_classyfire_class)
-        plant_names = []
-        for ref_id in doc.get("taxonomyReferenceObjects", {}):
-            for source in doc["taxonomyReferenceObjects"][ref_id]:
-                for org in doc["taxonomyReferenceObjects"][ref_id][source]:
-                    plant_name = org.get("organism_value")
-                    if plant_name and plant_name not in plant_names:
-                        plant_names.append(plant_name)
-        export_item = {
-            'component_lotus_id': component_lotus_id,
-            'component_inchikey': component_inchikey,
-            'component_wikidata_id': component_wikidata_id,
-            'component_taxonomy_npclassifier_pathway': component_taxonomy_npclassifier_pathway,
-            'component_taxonomy_npclassifier_superclass': component_taxonomy_npclassifier_superclass,
-            'component_taxonomy_npclassifier_class': component_taxonomy_npclassifier_class,
-            'component_taxonomy_classyfire_kingdom': component_taxonomy_classyfire_kingdom,
-            'component_taxonomy_classyfire_superclass': component_taxonomy_classyfire_superclass,
-            'component_taxonomy_classyfire_class': component_taxonomy_classyfire_class,
-            'component_taxonomy_classyfire_parent': component_taxonomy_classyfire_parent,
-            'plant_names': plant_names,
-        }
-        # classyfire_partent -> npclassifier_superclass -> npclassifier_pathway
-        # ex. Plant X contains cucurbitacin glycosides, a class of triterpenoid compounds (terpenoids).
-        export_items.append(export_item)
-        continue
-        break
-    for export_item in export_items:
-        print(json.dumps(export_item, indent=4, default=str))
-        break
-    print(docs_num)
-    print(parent_count)
-    print(class_count)
-    print(superclass_count)
-    print(kingdom_count)
-    print(npclassifier_pathway_count)
-    print(npclassifier_superclass_count)
-    print(npclassifier_class_count)
-    print('INCHIKEY FAILED COUNTER:', inchikey_count)
-    print('WIKIDATA FAILED COUNTER:', wikidata_count)
-    lotus_output_filepath = f'{g.SSOT_FOLDERPATH}/lotus/0000-bson-to-json/data.json'
-    io.json_write(lotus_output_filepath, export_items)
-    quit()
-
-def lotus_group_components_by_plant():
-    output_data = []
-    input_filepath = f'{lotus_folderpath}/0000-bson-to-json/data.json'
-    input_data = io.json_read(input_filepath)
-    for input_i, input_item in enumerate(input_data[:]):
-        print(f'{input_i}/{len(input_data)}')
-        plant_names = input_item['plant_names']
-        component_lotus_id = input_item['component_lotus_id']
-        component_inchikey = input_item['component_inchikey']
-        component_wikidata_id = input_item['component_wikidata_id']
-        component_taxonomy_npclassifier_pathway = input_item['component_taxonomy_npclassifier_pathway']
-        component_taxonomy_npclassifier_superclass = input_item['component_taxonomy_npclassifier_superclass']
-        component_taxonomy_npclassifier_class = input_item['component_taxonomy_npclassifier_class']
-        component_taxonomy_classyfire_kingdom = input_item['component_taxonomy_classyfire_kingdom']
-        component_taxonomy_classyfire_superclass = input_item['component_taxonomy_classyfire_superclass']
-        component_taxonomy_classyfire_class = input_item['component_taxonomy_classyfire_class']
-        component_taxonomy_classyfire_parent = input_item['component_taxonomy_classyfire_parent']
-        # print(json.dumps(input_item, indent=4))
-        # quit()
-        for plant_name in plant_names:
-            plant_name = plant_name.strip().lower()
-            found = False
-            for output_item in output_data:
-                if plant_name == output_item['plant_name']:
-                    new_component = {
-                        'component_lotus_id': component_lotus_id,
-                        'component_inchikey': component_inchikey,
-                        'component_wikidata_id': component_wikidata_id,
-                        'component_taxonomy_npclassifier_pathway': component_taxonomy_npclassifier_pathway,
-                        'component_taxonomy_npclassifier_superclass': component_taxonomy_npclassifier_superclass,
-                        'component_taxonomy_npclassifier_class': component_taxonomy_npclassifier_class,
-                        'component_taxonomy_classyfire_kingdom': component_taxonomy_classyfire_kingdom,
-                        'component_taxonomy_classyfire_superclass': component_taxonomy_classyfire_superclass,
-                        'component_taxonomy_classyfire_class': component_taxonomy_classyfire_class,
-                        'component_taxonomy_classyfire_parent': component_taxonomy_classyfire_parent,
-                    }
-                    output_item['components'].append(new_component)
-                    found = True
-                    break
-            if not found:
-                new_item = {
-                    'plant_name': plant_name,
-                    'components': [
-                        {
-                            'component_lotus_id': component_lotus_id,
-                            'component_inchikey': component_inchikey,
-                            'component_wikidata_id': component_wikidata_id,
-                            'component_taxonomy_npclassifier_pathway': component_taxonomy_npclassifier_pathway,
-                            'component_taxonomy_npclassifier_superclass': component_taxonomy_npclassifier_superclass,
-                            'component_taxonomy_npclassifier_class': component_taxonomy_npclassifier_class,
-                            'component_taxonomy_classyfire_kingdom': component_taxonomy_classyfire_kingdom,
-                            'component_taxonomy_classyfire_superclass': component_taxonomy_classyfire_superclass,
-                            'component_taxonomy_classyfire_class': component_taxonomy_classyfire_class,
-                            'component_taxonomy_classyfire_parent': component_taxonomy_classyfire_parent,
-                        },
-                    ]
-                }
-                output_data.append(new_item)
-        # print(plant_names)
-    print(len(output_data))
-    # print(json.dumps(output_data, indent=4))
-    io.json_write(f'{lotus_folderpath}/0001-plants-constituents-group/data.json', output_data)
-    # for output_item in output_data:
-        # if len(output_item['components']) > 1:
-            # print(json.dumps(output_item, indent=4))
 
 ################################################################################
 # WIKIDATA/POWO + LOTUS
