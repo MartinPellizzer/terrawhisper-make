@@ -263,6 +263,25 @@ def dataset__lotus_groups_preview():
         print(json.dumps(item, indent=4))
     print(len(items))
 
+def dataset__lotus_groups_filtered_create():
+    input_filepath = f'{g.SSOT_FOLDERPATH}/datasets/lotus/groups.json'
+    output_filepath = f'{g.SSOT_FOLDERPATH}/datasets/lotus/groups-filtered.json'
+    input_data = io.json_read(input_filepath)
+    plants_rows = sqlite3__terra_plants_get()
+    output_items = []
+    for plant_row_i, plant_row in enumerate(plants_rows[:]):
+        print(f'{plant_row_i}/{len(plants_rows)}')
+        plant_name = sqlite3__terra_plant_name_get(terra_id=plant_row[0])
+        if not plant_name: continue
+        for item_i, item in enumerate(input_data):
+            if plant_name.lower().strip() == item['plant_name'].lower().strip():
+                # print(plant_name)
+                # print(item['components'])
+                # quit()
+                output_items.append(item)
+                pass
+    io.json_write(output_filepath, output_items)
+
 ################################################################################
 # SQLITE3
 ################################################################################
@@ -1084,11 +1103,8 @@ def sqlite3__terra_plant_name_get(terra_id):
         WHERE t1.terra_id = ?
     """, (terra_id,))
     row = cur.fetchone()
-    if row:
-        print(row[0])
-    else:
-        print("No result found")
     conn.close()
+    return row[0] if row else None
 
 def neo4j__clear():
     driver = GraphDatabase.driver("bolt://localhost:7687", auth=(neo4j_user, neo4j_pass))
@@ -1155,6 +1171,12 @@ def neo4j__terra_compounds_create():
 
 def neo4j__terra_plants_compounds_create():
     ### get data
+    # - get plants names (sqlite terra_plants -> names)
+    # - search the plants names on louts groups-filtered.json
+    # - extract all the compounds per plant
+    # - generate terra:compound ids for the compounds (if compound already generated id don't gen a new one)
+    # - create triples terra:plant has compound terra:compound
+    # - generate sql terra_compound_id to lotus_id
     pass
     rows = [
         {
@@ -1209,6 +1231,7 @@ def sqlite3__terra_compound_name_get(terra_id):
 # dataset__lotus_bson_to_json()
 # dataset__lotus_groups_create()
 # dataset__lotus_groups_preview()
+dataset__lotus_groups_filtered_create()
 
 ### SQLITE3
 
@@ -1252,10 +1275,10 @@ neo4j__terra_plants_compounds_create()
 ################################################################################
 
 ### get resolved "plant -[has_compound]-> compound" (replace inchikey with one hierarchy)
-plants_compounds_rows = neo4j__terra_plants_compounds_get()
-print(plants_compounds_rows)
-sqlite3__terra_plant_name_get(plants_compounds_rows[0][0])
-sqlite3__terra_compound_name_get(plants_compounds_rows[0][1])
+# plants_compounds_rows = neo4j__terra_plants_compounds_get()
+# print(plants_compounds_rows)
+# sqlite3__terra_plant_name_get(plants_compounds_rows[0][0])
+# sqlite3__terra_compound_name_get(plants_compounds_rows[0][1])
 
 quit()
 
