@@ -101,23 +101,123 @@ def sqlite3__wikidata_plants_create():
     print(f"{item_i} lines inserted")
     conn.close()
 
-def sqlite3__wikidata_plants_preview(wikidata_id=''):
-    if wikidata_id == '':
-        conn = sqlite3.connect(f'{g.SSOT_FOLDERPATH}/sqlite/database.db')
-        cur = conn.cursor()
-        cur.execute("SELECT * FROM wikidata LIMIT 10")
-        rows = cur.fetchall()
-        conn.close()
-        for row in rows:
-            print(row)
-    else:
-        conn = sqlite3.connect(f'{g.SSOT_FOLDERPATH}/sqlite/database.db')
-        cur = conn.cursor()
-        cur.execute("SELECT name FROM wikidata WHERE wikidata_id = ?", (wikidata_id,))
-        row = cur.fetchone()
-        conn.close()
-        return row[0] if row else None
+def sqlite3__wikidata_plants_preview():
+    conn = sqlite3.connect(f'{g.SSOT_FOLDERPATH}/sqlite/database.db')
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM wikidata LIMIT 10")
+    rows = cur.fetchall()
+    conn.close()
+    for row in rows:
+        print(row)
 
+def sqlite3__wikidata_plant_get(wikidata_id=''):
+    conn = sqlite3.connect(f'{g.SSOT_FOLDERPATH}/sqlite/database.db')
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM wikidata WHERE wikidata_id = ?", (wikidata_id,))
+    row = cur.fetchone()
+    conn.close()
+    return row if row else None
+
+def sqlite3__powo_create():
+    ### get all wikidata medicinal plants, only use these to create powo table
+    conn = sqlite3.connect(f'{g.SSOT_FOLDERPATH}/sqlite/database.db')
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM wikidata")
+    rows = cur.fetchall()
+    conn.close()
+    ### get all powo plants data
+    items = []
+    for row_i, row in enumerate(rows[:]):
+        print(f'{row_i}/{len(rows)}')
+        powo_plant_id_end = row[1].split(':')[-1].strip()
+        powo_plant_filepath = f'''{g.SSOT_FOLDERPATH}/datasets/powo/plants/{powo_plant_id_end}.json'''
+        if not os.path.exists(powo_plant_filepath): continue
+        powo_plant_data = io.json_read(powo_plant_filepath)
+        powo_plant_kingdom = powo_plant_data['kingdom']
+        powo_plant_phylum = powo_plant_data['phylum']
+        powo_plant_class = powo_plant_data['clazz']
+        powo_plant_subclass = powo_plant_data['subclass']
+        powo_plant_order = powo_plant_data['order']
+        powo_plant_family = powo_plant_data['family']
+        powo_plant_genus = powo_plant_data['genus']
+        try: powo_plant_species = powo_plant_data['species']
+        except: powo_plant_species = ''
+        powo_plant_name = powo_plant_data['name']
+        powo_plant_rank = powo_plant_data['rank']
+        _powo_plant = {
+            'powo_plant_id': row[1],
+            'powo_plant_kingdom': powo_plant_kingdom,
+            'powo_plant_phylum': powo_plant_phylum,
+            'powo_plant_class': powo_plant_class,
+            'powo_plant_subclass': powo_plant_subclass,
+            'powo_plant_order': powo_plant_order,
+            'powo_plant_family': powo_plant_family,
+            'powo_plant_genus': powo_plant_genus,
+            'powo_plant_species': powo_plant_species,
+            'powo_plant_name': powo_plant_name,
+            'powo_plant_rank': powo_plant_rank,
+        }
+        items.append(_powo_plant)
+    ### create/populate sql table
+    table_name = 'powo'
+    conn = sqlite3.connect(f'{g.SSOT_FOLDERPATH}/sqlite/database.db')
+    cur = conn.cursor()
+    ### delete previous table
+    cur.execute(f"DROP TABLE IF EXISTS {table_name}")
+    ### create new table
+    cur.execute(f"""
+        CREATE TABLE IF NOT EXISTS {table_name} (
+            powo_id TEXT,
+            powo_kingdom TEXT,
+            powo_phylum TEXT,
+            powo_class TEXT,
+            powo_subclass TEXT,
+            powo_order TEXT,
+            powo_family TEXT,
+            powo_genus TEXT,
+            powo_species TEXT,
+            powo_name TEXT,
+            powo_rank TEXT
+        )
+    """)
+    cur.execute("PRAGMA synchronous = OFF")
+    cur.execute("PRAGMA journal_mode = MEMORY")
+    cur.execute("PRAGMA temp_store = MEMORY")
+    cur.execute("PRAGMA cache_size = 1000000")
+    ### insert into new table
+    for item_i, item in enumerate(items[:]):
+        powo_id = item['powo_plant_id'].strip()
+        powo_kingdom = item['powo_plant_kingdom'].strip()
+        powo_phylum = item['powo_plant_phylum'].strip()
+        powo_class = item['powo_plant_class'].strip()
+        powo_subclass = item['powo_plant_subclass'].strip()
+        powo_order = item['powo_plant_order'].strip()
+        powo_family = item['powo_plant_family'].strip()
+        powo_genus = item['powo_plant_genus'].strip()
+        powo_species = item['powo_plant_species'].strip()
+        powo_name = item['powo_plant_name'].strip()
+        powo_rank = item['powo_plant_rank'].strip()
+        cur.execute(f"INSERT INTO {table_name} VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (powo_id, powo_kingdom, powo_phylum, powo_class, powo_subclass, powo_order, powo_family, powo_genus, powo_species, powo_name, powo_rank,))
+        if item_i % 100000 == 0:
+            conn.commit()
+            print(f"{item_i} lines inserted")
+    ### create index
+    cur.execute(f"CREATE INDEX IF NOT EXISTS idx_powo_id ON {table_name}(powo_id)")
+    conn.commit()
+    print(f"{item_i} lines inserted")
+    conn.close()
+
+def sqlite3__powo_preview():
+    table = 'powo'
+    conn = sqlite3.connect(f'{g.SSOT_FOLDERPATH}/sqlite/database.db')
+    cur = conn.cursor()
+    cur.execute(f"SELECT * FROM {table} LIMIT 10")
+    rows = cur.fetchall()
+    conn.close()
+    for row in rows:
+        print(row)
+
+# TODO: keep analytics of valid records, convert this function in "dataset" function
 def wikidata__sqlite3_medicinal_plants_create():
     plants_folderpath = f'{g.SSOT_FOLDERPATH}/datasets/wikidata/medicinal-plants'
     plants_filepaths = sorted([f'{plants_folderpath}/{filename}' for filename in os.listdir(plants_folderpath)])
@@ -514,16 +614,95 @@ if 0:
     terra__plants_diseases_preview()
 
 
-sqlite3__wikidata_plants_create()
-sqlite3__wikidata_plants_preview()
+def sqlite3__plant_name_get(wikidata_id):
+    conn = sqlite3.connect(f'{g.SSOT_FOLDERPATH}/sqlite/database.db')
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT t2.powo_name
+        FROM wikidata t1
+        JOIN powo t2 ON t1.powo_id = t2.powo_id
+        WHERE t1.wikidata_id = ?
+    """, (wikidata_id,))
+    row = cur.fetchone()
+    if row:
+        print(row[0])
+    else:
+        print("No result found")
+    conn.close()
 
-# wikidata__sqlite3_medicinal_plants_create()
+def sqlite3__terra_plants_create():
+    ### get all plants from wikidata table
+    table_name = 'wikidata'
+    conn = sqlite3.connect(f'{g.SSOT_FOLDERPATH}/sqlite/database.db')
+    cur = conn.cursor()
+    cur.execute(f"SELECT * FROM {table_name}")
+    rows = cur.fetchall()
+    conn.close()
+    ### create/populate terra plants table
+    table_name = 'terra_plants'
+    conn = sqlite3.connect(f'{g.SSOT_FOLDERPATH}/sqlite/database.db')
+    cur = conn.cursor()
+    ### delete previous table
+    cur.execute(f"DROP TABLE IF EXISTS {table_name}")
+    ### create new table
+    cur.execute(f"""
+        CREATE TABLE IF NOT EXISTS {table_name} (
+            terra_id TEXT,
+            wikidata_id TEXT
+        )
+    """)
+    cur.execute("PRAGMA synchronous = OFF")
+    cur.execute("PRAGMA journal_mode = MEMORY")
+    cur.execute("PRAGMA temp_store = MEMORY")
+    cur.execute("PRAGMA cache_size = 1000000")
+    ### insert into new table
+    for row_i, row in enumerate(rows[:]):
+        terra_id = f'TERRA:PLANT:{row_i}'
+        wikidata_id = row[0].strip()
+        cur.execute(f"INSERT INTO {table_name} VALUES (?, ?)", (terra_id, wikidata_id))
+    ### create index
+    cur.execute(f"CREATE INDEX IF NOT EXISTS idx_terra_id ON {table_name}(terra_id)")
+    conn.commit()
+    print(f"{len(rows)} lines inserted")
+    conn.close()
 
-quit()
+def sqlite3__terra_plants_preview():
+    table = 'terra_plants'
+    conn = sqlite3.connect(f'{g.SSOT_FOLDERPATH}/sqlite/database.db')
+    cur = conn.cursor()
+    cur.execute(f"SELECT * FROM {table} LIMIT 10")
+    rows = cur.fetchall()
+    conn.close()
+    for row in rows:
+        print(row)
 
+def sqlite3__terra_plants_get():
+    table = 'terra_plants'
+    conn = sqlite3.connect(f'{g.SSOT_FOLDERPATH}/sqlite/database.db')
+    cur = conn.cursor()
+    cur.execute(f"SELECT * FROM {table}")
+    rows = cur.fetchall()
+    conn.close()
+    return rows
 
+def sqlite3__terra_plant_name_get(terra_id):
+    conn = sqlite3.connect(f'{g.SSOT_FOLDERPATH}/sqlite/database.db')
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT t3.powo_name
+        FROM terra_plants t1
+        JOIN wikidata t2 ON t1.wikidata_id = t2.wikidata_id
+        JOIN powo t3 ON t2.powo_id = t3.powo_id
+        WHERE t1.terra_id = ?
+    """, (terra_id,))
+    row = cur.fetchone()
+    if row:
+        print(row[0])
+    else:
+        print("No result found")
+    conn.close()
 
-def neo4j_clear_db():
+def neo4j__clear():
     driver = GraphDatabase.driver("bolt://localhost:7687", auth=(neo4j_user, neo4j_pass))
     def delete_data(tx):
         tx.run("MATCH (n) DETACH DELETE n")
@@ -544,6 +723,57 @@ def neo4j_clear_db():
     with driver.session() as session:
         session.execute_write(drop_indexes)
     driver.close()
+
+def neo4j__terra_plants_create():
+    ### get data
+    rows = sqlite3__terra_plants_get()
+    rows = [{"id": n} for n, a in rows]
+    ### populate kg plants
+    driver = GraphDatabase.driver("bolt://localhost:7687", auth=(neo4j_user, neo4j_pass))
+    def create_nodes(tx, rows):
+        query = """
+        UNWIND $rows AS row
+        CREATE (n:Plant {id: row.id})
+        """
+        tx.run(query, rows=rows)
+    with driver.session() as session:
+        session.execute_write(create_nodes, rows)
+    driver.close()
+
+def neo4j__terra_plants_preview():
+    driver = GraphDatabase.driver("bolt://localhost:7687", auth=(neo4j_user, neo4j_pass))
+    with driver.session() as session:
+        result = session.run("MATCH (p:Plant) RETURN p.id AS id")
+        for record in result:
+            print(record["id"])
+            sqlite3__terra_plant_name_get(terra_id=record['id'])
+    driver.close()
+
+
+# sqlite3__wikidata_plants_create()
+# sqlite3__wikidata_plants_preview()
+# print(sqlite3__wikidata_plant_get(wikidata_id='Q1000854'))
+
+# sqlite3__powo_create()
+# sqlite3__powo_preview()
+# wikidata__sqlite3_medicinal_plants_create()
+
+# sqlite3__terra_plants_create()
+# sqlite3__terra_plants_preview()
+# sqlite3__terra_plants_get()
+
+### DEMO
+# sqlite3__plant_name_get(wikidata_id='Q1000854')
+# sqlite3__terra_plant_name_get(terra_id='TERRA:PLANT:0')
+
+# neo4j__clear()
+
+# neo4j__terra_plants_create()
+neo4j__terra_plants_preview()
+
+quit()
+
+
 
 # neo4j_clear_db()
 # quit()
