@@ -1394,7 +1394,7 @@ def sqlite3__terra_oregano_get(terra_id):
     conn.close()
     return row
 
-def sqlite3__oregano_create():
+def sqlite3__oregano_compounds_create():
     oregano_compounds_text = io.file_read(
         f'{g.SSOT_FOLDERPATH}/datasets/oregano/oregano-master/Integration/Integration V3/GESTION_ID/COMPOUND.tsv'
     )
@@ -1482,7 +1482,7 @@ def sqlite3__oregano_create():
 # sqlite3__pubchem_create()
 # sqlite3__table_preview('pubchem')
 
-# sqlite3__oregano_create()
+# sqlite3__oregano_compounds_create()
 # sqlite3__table_preview('oregano_compounds')
 
 # sqlite3__terra_plants_create()
@@ -1530,7 +1530,32 @@ for i, plant_compound_row in enumerate(plants_compounds_rows[:100]):
 
 quit()
 
+### SO FAR:
+# - TERRA:COMPOUND -> OREGANO:COMPOUND
 
+### NEXT:
+# - OREGANO:COMPOUND -> MESH:DISEASE
+
+### TODO
+# - maybe add oregano compounds ids to main terra compunds table? (to avoid sql joins)
+
+# - get all oregano relationships COMPOUND/NATURAL_COMPOUND -[IS_SUBSTANCE_THAT_TREATS]-> DISEASE
+
+# - create sql oregano compounds table (oregano_compound_id, cid) ALREADY DONE!!!
+# - create sql oregano diseases table (oregano_disease_id, mesh_id)
+# - create sql oregano compound disease table (oregano_compounds_id, oregano_disease_id)
+
+# - download mesh dataset
+# - create sql mesh table to resolve name (mesh_id, disease_name)
+
+# - get all oregano compound ids form terra compounds ids >> sqlite3__terra_oregano_get
+# - create sql terra disease table (terra_disease_id, oregano_disease_id)
+
+# - create neo4j terra relationships (terra_compound_id, terra_disease_id)
+#   - to do this, get all oregano_compounds_ids with sqlite query starting form terra_plant_id
+#   - then do another query to join tables from oregano_compounds_ids to oregano_diseases_ids
+#   - save the result in terra/compounds-diseases.json
+#   - use this file to populate the kg
 
 # neo4j_clear_db()
 # quit()
