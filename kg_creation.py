@@ -282,6 +282,54 @@ def dataset__lotus_groups_filtered_create():
                 pass
     io.json_write(output_filepath, output_items)
 
+def dataset__lotus_terra_create():
+    ### get data
+    lotus_filepath = f'{g.SSOT_FOLDERPATH}/datasets/lotus/groups-filtered.json'
+    lotus_data = io.json_read(lotus_filepath)
+    # - get plants names (sqlite terra_plants -> names)
+    plants_rows = sqlite3__terra_plants_get()
+    lotus_ids_done = []
+    i = 0
+    terra_triples = [] # [terra:plant:id, has_compound, terra:compound:id] for neo4j
+    terra_maps = [] # [terra_compound_id, lotus_id] for sqlite
+    for plant_i, plant_row in enumerate(plants_rows[:]):
+        print(f'{plant_i}/{len(plants_rows)}')
+        plant_name = sqlite3__plant_name_get(plant_row[1])
+        print(plant_row, plant_name)
+        if plant_name == None:  continue
+        # - search the plants names on louts groups-filtered.json
+        for lotus_item in lotus_data:
+            if plant_name == lotus_item['plant_name']:
+                # - extract all the compounds per plant
+                plant_compounds = lotus_item['components']
+                for plant_compound in plant_compounds:
+                    # - generate terra:compound ids for the compounds (if compound not already generated id)
+                    if plant_compound['component_lotus_id'] not in lotus_ids_done:
+                        lotus_ids_done.append(plant_compound['component_lotus_id'])
+                        terra_compound_id = f'TERRA:COMPOUND:{i}'
+                        # - create triples terra:plant has compound terra:compound
+                        terra_triple = {
+                            'terra_plant_id': plant_row[0], 
+                            'relationship': 'HAS_COMPOUND', 
+                            'terra_compound_id': terra_compound_id,
+                        }
+                        # - generate sql terra_compound_id to lotus_id
+                        terra_map = {
+                            'terra_compound_id': terra_compound_id, 
+                            'lotus_id': plant_compound['component_lotus_id'],
+                        }
+                        terra_triples.append(terra_triple)
+                        terra_maps.append(terra_map)
+                        i += 1
+                        # print(json.dumps(plant_compound, indent=4))
+                        # quit()
+    io.json_write(f'{g.SSOT_FOLDERPATH}/datasets/terra/plants-compounds.json', terra_triples)
+    io.json_write(f'{g.SSOT_FOLDERPATH}/datasets/lotus/terra-lotus-maps.json', terra_maps)
+    for terra_triple in terra_triples:
+        print(terra_triple)
+    for terra_map in terra_maps:
+        print(terra_map)
+
 ################################################################################
 # SQLITE3
 ################################################################################
@@ -642,7 +690,6 @@ def sqlite3__lotus_plants_components_create():
     # cur.execute(f"CREATE INDEX IF NOT EXISTS idx_lotus_id ON {table_name}(lotus_id)")
     conn.commit()
     conn.close()
-    quit()
 
 def sqlite3__lotus_ids_get(plant_name):
     conn = sqlite3.connect(f'{g.SSOT_FOLDERPATH}/sqlite/database.db')
@@ -655,6 +702,55 @@ def sqlite3__lotus_ids_get(plant_name):
     rows = cur.fetchall()
     for row in rows:
         print(row)
+    conn.close()
+
+def sqlite3__pubchem_create():
+    ### get lotus compounents
+    rows = sqlite3__lotus_components_get()
+    ### search them on big pubchem db and store them to another table on main db for future faster lookup
+    rows_valid = []
+    conn = sqlite3.connect(f'{g.SSOT_FOLDERPATH}/datasets/pubchem/pubchem_inchikey_cid_mapping.db')
+    for row_i, row in enumerate(rows):
+        print(row_i)
+        inchikey = row[1]
+        cur = conn.cursor()
+        cur.execute("""
+            SELECT *
+            FROM pubchem_inchikey_cid_mapping
+            WHERE inchikey = ?
+            LIMIT 10
+        """, (inchikey,))
+        record = cur.fetchone()
+        if record:
+            rows_valid.append(record)
+    conn.close()
+    ### create/populate sql table
+    table_name = 'pubchem'
+    conn = sqlite3.connect(f'{g.SSOT_FOLDERPATH}/sqlite/database.db')
+    cur = conn.cursor()
+    ### delete previous table
+    cur.execute(f"DROP TABLE IF EXISTS {table_name}")
+    ### create new table
+    cur.execute(f"""
+        CREATE TABLE IF NOT EXISTS {table_name} (
+            inchikey TEXT,
+            cid TEXT
+        )
+    """)
+    cur.execute("PRAGMA synchronous = OFF")
+    cur.execute("PRAGMA journal_mode = MEMORY")
+    cur.execute("PRAGMA temp_store = MEMORY")
+    cur.execute("PRAGMA cache_size = 1000000")
+    ## preview data
+    for row_i, row in enumerate(rows_valid[:]):
+        print(row_i)
+        cur.execute(
+            f"INSERT INTO {table_name} VALUES (?, ?)", 
+            (row[0], row[2],)
+        )
+    cur.execute(f"CREATE INDEX IF NOT EXISTS idx_inchikey ON {table_name}(inchikey)")
+    ### create index
+    conn.commit()
     conn.close()
 
 def mesh__parse_xml(file_path):
@@ -986,11 +1082,8 @@ def sqlite3__plant_name_get(wikidata_id):
         WHERE t1.wikidata_id = ?
     """, (wikidata_id,))
     row = cur.fetchone()
-    if row:
-        print(row[0])
-    else:
-        print("No result found")
     conn.close()
+    return row[0] if row else None
 
 def sqlite3__terra_plants_create():
     ### get all plants from wikidata table
@@ -1030,12 +1123,15 @@ def sqlite3__terra_plants_create():
 
 def sqlite3__terra_compounds_create():
     ### get all plants from lotus table
+    '''
     table_name = 'lotus_components'
     conn = sqlite3.connect(f'{g.SSOT_FOLDERPATH}/sqlite/database.db')
     cur = conn.cursor()
     cur.execute(f"SELECT * FROM {table_name}")
     rows = cur.fetchall()
     conn.close()
+    '''
+    rows = io.json_read(f'{g.SSOT_FOLDERPATH}/datasets/lotus/terra-lotus-maps.json')
     ### create/populate terra plants table
     table_name = 'terra_compounds'
     conn = sqlite3.connect(f'{g.SSOT_FOLDERPATH}/sqlite/database.db')
@@ -1055,8 +1151,8 @@ def sqlite3__terra_compounds_create():
     cur.execute("PRAGMA cache_size = 1000000")
     ### insert into new table
     for row_i, row in enumerate(rows[:]):
-        terra_id = f'TERRA:COMPOUND:{row_i}'
-        lotus_id = row[0].strip()
+        terra_id = row['terra_compound_id']
+        lotus_id = row['lotus_id']
         cur.execute(f"INSERT INTO {table_name} VALUES (?, ?)", (terra_id, lotus_id))
     ### create index
     cur.execute(f"CREATE INDEX IF NOT EXISTS idx_terra_id ON {table_name}(terra_id)")
@@ -1170,20 +1266,7 @@ def neo4j__terra_compounds_create():
     driver.close()
 
 def neo4j__terra_plants_compounds_create():
-    ### get data
-    # - get plants names (sqlite terra_plants -> names)
-    # - search the plants names on louts groups-filtered.json
-    # - extract all the compounds per plant
-    # - generate terra:compound ids for the compounds (if compound already generated id don't gen a new one)
-    # - create triples terra:plant has compound terra:compound
-    # - generate sql terra_compound_id to lotus_id
-    pass
-    rows = [
-        {
-            'terra_plant_id': 'TERRA:PLANT:0',
-            'terra_compound_id': 'TERRA:COMPOUND:0',
-        }
-    ]
+    rows = io.json_read(f'{g.SSOT_FOLDERPATH}/datasets/terra/plants-compounds.json')
     ### populate kg
     driver = GraphDatabase.driver("bolt://localhost:7687", auth=(neo4j_user, neo4j_pass))
     def insert_relationships(tx, rows):
@@ -1194,6 +1277,16 @@ def neo4j__terra_plants_compounds_create():
             MERGE (s)-[:HAS_COMPOUND]->(o)
         """, rows=rows)
     with driver.session() as session:
+        session.run("""
+            CREATE CONSTRAINT plant_id IF NOT EXISTS
+            FOR (p:Plant)
+            REQUIRE p.id IS UNIQUE
+        """)
+        session.run("""
+            CREATE CONSTRAINT compound_id IF NOT EXISTS
+            FOR (c:Compound)
+            REQUIRE c.id IS UNIQUE
+        """)
         session.execute_write(insert_relationships, rows)
     driver.close()
 
@@ -1214,24 +1307,162 @@ def sqlite3__terra_compound_name_get(terra_id):
     conn = sqlite3.connect(f'{g.SSOT_FOLDERPATH}/sqlite/database.db')
     cur = conn.cursor()
     cur.execute("""
-        SELECT t2.inchikey
+        SELECT 
+            t2.lotus_id,
+            t2.inchikey,
+            t2.taxonomy_npclassifier_pathway,
+            t2.taxonomy_npclassifier_superclass,
+            t2.taxonomy_npclassifier_class,
+            t2.taxonomy_classyfire_kingdom,
+            t2.taxonomy_classyfire_superclass,
+            t2.taxonomy_classyfire_class,
+            t2.taxonomy_classyfire_parent
         FROM terra_compounds t1
         JOIN lotus_components t2 ON t1.lotus_id = t2.lotus_id
         WHERE t1.terra_id = ?
     """, (terra_id,))
     row = cur.fetchone()
-    if row:
-        print(row[0])
-    else:
-        print("No result found")
+    best_name = None
+    inchikey = row[1]
+    taxonomy_npclassifier_pathway = row[2]
+    taxonomy_npclassifier_superclass = row[3]
+    taxonomy_npclassifier_class = row[4]
+    taxonomy_classyfire_kingdom = row[5]
+    taxonomy_classyfire_superclass = row[6]
+    taxonomy_classyfire_class = row[7]
+    taxonomy_classyfire_parent = row[8]
+    if taxonomy_classyfire_parent != None or taxonomy_classyfire_parent != '': best_name = taxonomy_classyfire_parent
+    elif taxonomy_classyfire_class != None or taxonomy_classyfire_class != '': best_name = taxonomy_classyfire_class
+    elif taxonomy_classyfire_superclass != None or taxonomy_classyfire_superclass != '': best_name = taxonomy_classyfire_superclass
+    elif taxonomy_classyfire_kingdom != None or taxonomy_classyfire_kingdom != '': best_name = taxonomy_classyfire_kingdom
+    elif taxonomy_npclassifier_class != None or taxonomy_npclassifier_class != '': best_name = taxonomy_npclassifier_class
+    elif taxonomy_npclassifier_superclass != None or taxonomy_npclassifier_superclass != '': best_name = taxonomy_npclassifier_superclass
+    elif taxonomy_npclassifier_pathway != None or taxonomy_npclassifier_pathway != '': best_name = taxonomy_npclassifier_pathway
     conn.close()
+    return best_name 
+
+def sqlite3__terra_compound_get(terra_id):
+    conn = sqlite3.connect(f'{g.SSOT_FOLDERPATH}/sqlite/database.db')
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT *
+        FROM terra_compounds t1
+        JOIN lotus_components t2 ON t1.lotus_id = t2.lotus_id
+        WHERE t1.terra_id = ?
+    """, (terra_id,))
+    row = cur.fetchone()
+    conn.close()
+    return row  
+
+def sqlite3__lotus_components_get():
+    table = 'lotus_components'
+    conn = sqlite3.connect(f'{g.SSOT_FOLDERPATH}/sqlite/database.db')
+    cur = conn.cursor()
+    cur.execute(f"SELECT * FROM {table}")
+    rows = cur.fetchall()
+    conn.close()
+    return rows
+
+def sqlite3__terra_pubchem_get(terra_id):
+    ### return complete row from terra to pubchem
+    conn = sqlite3.connect(f'{g.SSOT_FOLDERPATH}/sqlite/database.db')
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT *
+        FROM terra_compounds t1
+        JOIN lotus_components t2 ON t1.lotus_id = t2.lotus_id
+        JOIN pubchem t3 ON t2.inchikey = t3.inchikey
+        WHERE t1.terra_id = ?
+    """, (terra_id,))
+    row = cur.fetchone()
+    conn.close()
+    return row
+
+def sqlite3__terra_oregano_get(terra_id):
+    ### return complete row from terra to pubchem
+    conn = sqlite3.connect(f'{g.SSOT_FOLDERPATH}/sqlite/database.db')
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT *
+        FROM terra_compounds t1
+        JOIN lotus_components t2 ON t1.lotus_id = t2.lotus_id
+        JOIN pubchem t3 ON t2.inchikey = t3.inchikey
+        JOIN oregano_compounds t4 ON t3.cid = t4.cid
+        WHERE t1.terra_id = ?
+    """, (terra_id,))
+    row = cur.fetchone()
+    conn.close()
+    return row
+
+def sqlite3__oregano_create():
+    oregano_compounds_text = io.file_read(
+        f'{g.SSOT_FOLDERPATH}/datasets/oregano/oregano-master/Integration/Integration V3/GESTION_ID/COMPOUND.tsv'
+    )
+    oregano_compounds_lines = oregano_compounds_text.split('\n')
+    ###
+    headings = oregano_compounds_lines[0].split('\t')
+    headings[0] = 'ID_OREGANO'
+    items = []
+    for line_i, line in enumerate(oregano_compounds_lines[:]):
+        # print(line_i)
+        if line_i == 0: continue
+        if line.strip() == '': continue
+        values = line.split('\t')
+        item = {}
+        for i in range(len(headings)):
+            item[headings[i]] = values[i].strip()
+        # print(json.dumps(item, indent=4))
+        # quit()
+        pubchem_compound_id = item['PUBCHEM COMPOUND']
+        if pubchem_compound_id.strip() == '': continue
+        pubchem_compound_id = pubchem_compound_id.split(',')[0].strip()
+        pubchem_compound_id = pubchem_compound_id.split(';')[0].strip()
+        # print('ID:', item['ID_OREGANO'], 'CID:', pubchem_compound_id)
+        item = {
+            'oregano_id': item['ID_OREGANO'],
+            'cid': pubchem_compound_id,
+        }
+        # print(item)
+        items.append(item)
+    ### create/populate sql table
+    table_name = 'oregano_compounds'
+    conn = sqlite3.connect(f'{g.SSOT_FOLDERPATH}/sqlite/database.db')
+    cur = conn.cursor()
+    ### delete previous table
+    cur.execute(f"DROP TABLE IF EXISTS {table_name}")
+    ### create new table
+    cur.execute(f"""
+        CREATE TABLE IF NOT EXISTS {table_name} (
+            oregano_id TEXT,
+            cid TEXT
+        )
+    """)
+    cur.execute("PRAGMA synchronous = OFF")
+    cur.execute("PRAGMA journal_mode = MEMORY")
+    cur.execute("PRAGMA temp_store = MEMORY")
+    cur.execute("PRAGMA cache_size = 1000000")
+    ## preview data
+    for item_i, item in enumerate(items[:]):
+        print(item_i)
+        cur.execute(
+            f"INSERT INTO {table_name} VALUES (?, ?)", 
+            (item['oregano_id'], item['cid'],)
+        )
+    cur.execute(f"CREATE INDEX IF NOT EXISTS idx_inchikey ON {table_name}(inchikey)")
+    cur.execute(f"CREATE INDEX IF NOT EXISTS idx_cid ON {table_name}(cid)")
+    ### create index
+    conn.commit()
+    conn.close()
+
 
 ### DATASETS (download/process)
 # dataset__lotus_bson_preview()
 # dataset__lotus_bson_to_json()
 # dataset__lotus_groups_create()
 # dataset__lotus_groups_preview()
-dataset__lotus_groups_filtered_create()
+# dataset__lotus_groups_filtered_create()
+# dataset__lotus_terra_create()
+# ---
 
 ### SQLITE3
 
@@ -1244,25 +1475,33 @@ dataset__lotus_groups_filtered_create()
 # wikidata__sqlite3_medicinal_plants_create()
 
 # sqlite3__lotus_components_create()
+# sqlite3__lotus_components_get()
 # sqlite3__lotus_plants_components_create()
 # sqlite3__lotus_ids_get(plant_name='Salvia miltiorrhiza')
 
-# sqlite3__table_preview('terra_compounds')
-# sqlite3__table_preview('lotus_components')
-# sqlite3__table_preview('lotus_plants_components')
+# sqlite3__pubchem_create()
+# sqlite3__table_preview('pubchem')
+
+# sqlite3__oregano_create()
+# sqlite3__table_preview('oregano_compounds')
 
 # sqlite3__terra_plants_create()
 # sqlite3__terra_plants_get()
 # sqlite3__terra_compounds_create()
 # sqlite3__terra_compounds_get()
 
+# sqlite3__table_preview('terra_compounds')
+# sqlite3__table_preview('lotus_components')
+# sqlite3__table_preview('lotus_plants_components')
+
 ### NEO4J
+
 # neo4j__clear()
 # neo4j__terra_plants_create()
-### TODO: redo compounds / only those from plants
 # neo4j__terra_compounds_create()
 
-neo4j__terra_plants_compounds_create()
+# neo4j__terra_plants_compounds_create()
+# print(neo4j__terra_plants_compounds_get())
 
 # neo4j__terra_plants_preview()
 
@@ -1274,11 +1513,20 @@ neo4j__terra_plants_compounds_create()
 # DEMOS
 ################################################################################
 
-### get resolved "plant -[has_compound]-> compound" (replace inchikey with one hierarchy)
+### 1. get resolved "plant -[has_compound]-> compound" (replace inchikey with one hierarchy)
 # plants_compounds_rows = neo4j__terra_plants_compounds_get()
-# print(plants_compounds_rows)
-# sqlite3__terra_plant_name_get(plants_compounds_rows[0][0])
-# sqlite3__terra_compound_name_get(plants_compounds_rows[0][1])
+# for i, plant_compound_row in enumerate(plants_compounds_rows[:1000]):
+    # print(f'{i}/{len(plants_compounds_rows)}')
+    # print(plant_compound_row)
+    # print(sqlite3__terra_plant_name_get(plant_compound_row[0]))
+    # print(sqlite3__terra_compound_name_get(plant_compound_row[1]))
+
+### 2. TERRA COUMPOUND -> PUBCHEM CID
+plants_compounds_rows = neo4j__terra_plants_compounds_get()
+for i, plant_compound_row in enumerate(plants_compounds_rows[:100]):
+    print(f'{i}/{len(plants_compounds_rows)}')
+    # print(sqlite3__terra_pubchem_get(plant_compound_row[1]))
+    print(sqlite3__terra_oregano_get(plant_compound_row[1]))
 
 quit()
 
@@ -2281,6 +2529,7 @@ def oregano__kg_create__batch_grouped():
 ################################################################################
 # WIKIDATA/POWO/LOTUS/PUBCHEM + OREGANO
 ################################################################################
+# ;jump
 def wikidata_powo_lotus_pubchem_cids__oregano_ids__merge():
     oregano_data = []
     oregano_compounds_text = io.file_read(
