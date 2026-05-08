@@ -1569,6 +1569,104 @@ def sqlite3__mesh_create():
     conn.commit()
     conn.close()
 
+def dataset__oregano_compound_diseases_create():
+    ### get relevant triples
+    tvs_lines = io.file_read(
+        f'{g.SSOT_FOLDERPATH}/datasets/oregano/oregano-master/Data_OREGANO/Graphs/OREGANO_V3.tsv'
+    ).split('\n')
+    triples = []
+    for line_i, line in enumerate(tvs_lines[:]):
+        print(f'{line_i}/{len(tvs_lines)}')
+        try: chunk_1, chunk_2, chunk_3 = line.split('\t')
+        except: continue
+        if chunk_2 == 'is_substance_that_treats':
+            triple = [chunk_1, chunk_2, chunk_3]
+            print(triple)
+            # quit()
+            triples.append(triple)
+    for triple in triples:
+        print(triple)
+    print(len(triples))
+    ### deduplicate triples
+    seen = set()
+    unique = []
+    for lst in triples:
+        t = tuple(lst)
+        if t not in seen:
+            seen.add(t)
+            unique.append(lst)
+    print(len(unique))
+    ### triples to json
+    triples_items = []
+    for triple in unique[:]:
+        triple_item = {
+            'compound_id': triple[0],
+            'relationship': triple[1],
+            'disease_id': triple[2],
+        }
+        triples_items.append(triple_item)
+    io.json_write(
+        f'{g.SSOT_FOLDERPATH}/datasets/oregano/compound-is_substance_that_treats-disease.json',
+        triples_items,
+    )
+
+def sqlite3__oregano_compounds_diseases_create():
+    items = io.json_read(
+        f'{g.SSOT_FOLDERPATH}/datasets/oregano/compound-is_substance_that_treats-disease.json',
+    )
+    ### create/populate sql table
+    table_name = 'oregano_compounds_diseases'
+    conn = sqlite3.connect(f'{g.SSOT_FOLDERPATH}/sqlite/database.db')
+    cur = conn.cursor()
+    ### delete previous table
+    cur.execute(f"DROP TABLE IF EXISTS {table_name}")
+    ### create new table
+    cur.execute(f"""
+        CREATE TABLE IF NOT EXISTS {table_name} (
+            oregano_compound_id TEXT,
+            oregano_disease_id TEXT
+        )
+    """)
+    cur.execute("PRAGMA synchronous = OFF")
+    cur.execute("PRAGMA journal_mode = MEMORY")
+    cur.execute("PRAGMA temp_store = MEMORY")
+    cur.execute("PRAGMA cache_size = 1000000")
+    ## preview data
+    for item_i, item in enumerate(items[:]):
+        print(item_i)
+        cur.execute(
+            f"INSERT INTO {table_name} VALUES (?, ?)", 
+            (item['compound_id'], item['disease_id'],)
+        )
+    ### create index
+    cur.execute(f"CREATE INDEX IF NOT EXISTS idx_oregano_compound_id ON {table_name}(oregano_compound_id)")
+    cur.execute(f"CREATE INDEX IF NOT EXISTS idx_oregano_disease_id ON {table_name}(oregano_disease_id)")
+    conn.commit()
+    conn.close()
+
+def sqlite3__oregano_compounds_diseases_get():
+    table = 'oregano_compounds_diseases'
+    conn = sqlite3.connect(f'{g.SSOT_FOLDERPATH}/sqlite/database.db')
+    cur = conn.cursor()
+    cur.execute(f"SELECT * FROM {table}")
+    rows = cur.fetchall()
+    conn.close()
+    return rows
+
+def sqlite3__oregano_compound_disease_name_get(oregano_compound_id):
+    ### return complete row from terra to pubchem
+    conn = sqlite3.connect(f'{g.SSOT_FOLDERPATH}/sqlite/database.db')
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT *
+        FROM oregano_compounds_diseases t1
+        JOIN oregano_diseases t2 ON t1.oregano_disease_id = t2.oregano_disease_id
+        JOIN mesh t3 ON t2.mesh_id = t3.mesh_descriptor_ui
+        WHERE t1.oregano_compound_id = ?
+    """, (oregano_compound_id,))
+    row = cur.fetchone()
+    conn.close()
+    return row
 
 ### DATASETS (download/process)
 # dataset__lotus_bson_preview()
@@ -1578,6 +1676,7 @@ def sqlite3__mesh_create():
 # dataset__lotus_groups_filtered_create()
 # dataset__lotus_terra_create()
 # dataset__mesh_create()
+# dataset__oregano_compound_diseases_create()
 # ---
 
 ### SQLITE3
@@ -1600,7 +1699,9 @@ def sqlite3__mesh_create():
 
 # sqlite3__oregano_compounds_create()
 # sqlite3__oregano_diseases_create()
-sqlite3__table_preview('oregano_diseases')
+# sqlite3__oregano_compounds_diseases_create()
+# sqlite3__oregano_compounds_diseases_get()
+# sqlite3__table_preview('oregano_compounds_diseases')
 
 # sqlite3__mesh_create()
 # sqlite3__table_preview('mesh')
@@ -1647,27 +1748,32 @@ sqlite3__table_preview('oregano_diseases')
     # print(f'{i}/{len(plants_compounds_rows)}')
     # print(sqlite3__terra_oregano_get(plant_compound_row[1]))
 
+### 3. OREGANO COMPOUND -> DISEASE NAME
+rows = sqlite3__oregano_compounds_diseases_get()
+for i, row in enumerate(rows[:100]):
+    print(f'{i}/{len(rows)}')
+    print(sqlite3__oregano_compound_disease_name_get(row[0]))
+    quit()
+    # print(sqlite3__terra_oregano_get(plant_compound_row[1]))
+
 quit()
 
 ### SO FAR:
-# - TERRA:COMPOUND -> OREGANO:COMPOUND
+# - TERRA:COMPOUND -> OREGANO:COMPOUND (indirect, sqlite joins)
 
 ### NEXT:
-# - OREGANO:COMPOUND -> MESH:DISEASE
+# - TERRA:COMPOUND -> OREGANO:COMPOUND (direct, same table, no sqlite joins)
 
 ### TODO
-# - maybe add oregano compounds ids to main terra compunds table? (to avoid sql joins)
-
-# - get all oregano relationships COMPOUND/NATURAL_COMPOUND -[IS_SUBSTANCE_THAT_TREATS]-> DISEASE
-
 # ! create sql oregano compounds table (oregano_compound_id, cid) ALREADY DONE!!!
 # ! create sql oregano diseases table (oregano_disease_id, mesh_id)
-# - create sql oregano compound disease table (oregano_compound_id, oregano_disease_id)
+# ! create sql oregano compound disease table (oregano_compound_id, oregano_disease_id)
 
 # ! download mesh dataset
 # ! create sql mesh table to resolve name (mesh_id, disease_name)
 
-# - get all oregano compound ids form terra compounds ids >> sqlite3__terra_oregano_get
+# - get all oregano compound ids form terra compounds ids (sqlite3__terra_oregano_get)
+# - create sql terra oregano compound table (terra_compound_id, oregano_compound_id)
 # - create sql terra disease table (terra_disease_id, oregano_disease_id)
 
 # - create neo4j terra relationships (terra_compound_id, terra_disease_id)
