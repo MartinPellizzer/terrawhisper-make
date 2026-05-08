@@ -753,17 +753,6 @@ def sqlite3__pubchem_create():
     conn.commit()
     conn.close()
 
-def mesh__parse_xml(file_path):
-    for event, elem in ET.iterparse(file_path, events=("end",)):
-        if elem.tag == "DescriptorRecord":
-            ui = elem.findtext(".//DescriptorUI")
-            name = elem.findtext(".//DescriptorName/String")
-            tree_numbers = [
-                tn.text for tn in elem.findall(".//TreeNumberList/TreeNumber")
-            ]
-            yield ui, name, tree_numbers
-            elem.clear()
-
 def mesh__count_descriptors(file_path):
     count = 0
     for event, elem in ET.iterparse(file_path, events=("end",)):
@@ -1049,7 +1038,7 @@ def terra__plants_diseases_preview():
                         # quit()
     driver.close()
 
-mesh_filename = 'desc2026.xml'
+
 if 0:
     for ui, name, tree_numbers in mesh__parse_xml(f'{g.SSOT_FOLDERPATH}/datasets/mesh/{mesh_filename}'):
         print(ui, name, tree_numbers)
@@ -1454,6 +1443,132 @@ def sqlite3__oregano_compounds_create():
     conn.commit()
     conn.close()
 
+def sqlite3__oregano_diseases_create():
+    tsv_lines = io.file_read(
+        f'{g.SSOT_FOLDERPATH}/datasets/oregano/oregano-master/Integration/Integration V3/GESTION_ID/DISEASES.tsv'
+    ).split('\n')
+    ###
+    headings = tsv_lines[0].split('\t')
+    headings[0] = 'ID'
+    items = []
+    for line_i, line in enumerate(tsv_lines[:]):
+        # print(line_i)
+        if line_i == 0: continue
+        if line.strip() == '': continue
+        values = line.split('\t')
+        item = {}
+        for i in range(len(headings)):
+            item[headings[i]] = values[i].strip()
+        # print(json.dumps(item, indent=4))
+        # quit()
+        mesh = item['MESH']
+        if mesh.strip() == '': continue
+        if 'OMIM' in mesh.strip(): continue
+        mesh = mesh.split(',')[0].strip()
+        mesh = mesh.split(';')[0].strip()
+        if mesh[0] == 'C': continue
+        item = {
+            'oregano_disease_id': item['ID'],
+            'mesh_id': mesh,
+        }
+        items.append(item)
+    ### create/populate sql table
+    table_name = 'oregano_diseases'
+    conn = sqlite3.connect(f'{g.SSOT_FOLDERPATH}/sqlite/database.db')
+    cur = conn.cursor()
+    ### delete previous table
+    cur.execute(f"DROP TABLE IF EXISTS {table_name}")
+    ### create new table
+    cur.execute(f"""
+        CREATE TABLE IF NOT EXISTS {table_name} (
+            oregano_disease_id TEXT,
+            mesh_id TEXT
+        )
+    """)
+    cur.execute("PRAGMA synchronous = OFF")
+    cur.execute("PRAGMA journal_mode = MEMORY")
+    cur.execute("PRAGMA temp_store = MEMORY")
+    cur.execute("PRAGMA cache_size = 1000000")
+    ## preview data
+    for item_i, item in enumerate(items[:]):
+        print(item_i)
+        cur.execute(
+            f"INSERT INTO {table_name} VALUES (?, ?)", 
+            (item['oregano_disease_id'], item['mesh_id'],)
+        )
+    ### create index
+    cur.execute(f"CREATE INDEX IF NOT EXISTS idx_oregano_disease_id ON {table_name}(oregano_disease_id)")
+    cur.execute(f"CREATE INDEX IF NOT EXISTS idx_mesh_id ON {table_name}(mesh_id)")
+    conn.commit()
+    conn.close()
+
+def dataset__mesh_create():
+    def mesh__parse_xml(file_path):
+        for event, elem in ET.iterparse(file_path, events=("end",)):
+            if elem.tag == "DescriptorRecord":
+                ui = elem.findtext(".//DescriptorUI")
+                name = elem.findtext(".//DescriptorName/String")
+                tree_numbers = [
+                    tn.text for tn in elem.findall(".//TreeNumberList/TreeNumber")
+                ]
+                yield ui, name, tree_numbers
+                elem.clear()
+    mesh_filename = 'desc2026.xml'
+    items = []
+    i = 0
+    for ui, name, tree_numbers in mesh__parse_xml(f'{g.SSOT_FOLDERPATH}/datasets/mesh/{mesh_filename}'):
+        # print(ui, name, tree_numbers)
+        print(i)
+        item = {
+            'mesh_descriptor_ui': ui,
+            'mesh_name': name
+        }
+        items.append(item)
+        i += 1
+    for item in items[:10]:
+        print(item)
+    io.json_write(f'{g.SSOT_FOLDERPATH}/datasets/mesh/data.json', items)
+
+def sqlite3__mesh_create():
+    ### get data
+    items = io.json_read(f'{g.SSOT_FOLDERPATH}/datasets/mesh/data.json')
+    ## preview data
+    for item in items[:10]:
+        print(item)
+    ### create/populate sql table
+    table_name = 'mesh'
+    conn = sqlite3.connect(f'{g.SSOT_FOLDERPATH}/sqlite/database.db')
+    cur = conn.cursor()
+    ### delete previous table
+    cur.execute(f"DROP TABLE IF EXISTS {table_name}")
+    ### create new table
+    cur.execute(f"""
+        CREATE TABLE IF NOT EXISTS {table_name} (
+            mesh_descriptor_ui TEXT,
+            mesh_name TEXT
+        )
+    """)
+    cur.execute("PRAGMA synchronous = OFF")
+    cur.execute("PRAGMA journal_mode = MEMORY")
+    cur.execute("PRAGMA temp_store = MEMORY")
+    cur.execute("PRAGMA cache_size = 1000000")
+    ### insert into new table
+    for item_i, item in enumerate(items[:]):
+        print(item_i)
+        mesh_descriptor_ui = item['mesh_descriptor_ui'].strip()
+        mesh_name = item['mesh_name'].strip()
+        cur.execute(
+            f"INSERT INTO {table_name} VALUES (?, ?)", 
+            (
+                mesh_descriptor_ui,
+                mesh_name,
+            )
+        )
+    ### create index
+    cur.execute(f"CREATE INDEX IF NOT EXISTS idx_mesh_descriptor_ui ON {table_name}(mesh_descriptor_ui)")
+    conn.commit()
+    conn.close()
+
 
 ### DATASETS (download/process)
 # dataset__lotus_bson_preview()
@@ -1462,6 +1577,7 @@ def sqlite3__oregano_compounds_create():
 # dataset__lotus_groups_preview()
 # dataset__lotus_groups_filtered_create()
 # dataset__lotus_terra_create()
+# dataset__mesh_create()
 # ---
 
 ### SQLITE3
@@ -1483,7 +1599,11 @@ def sqlite3__oregano_compounds_create():
 # sqlite3__table_preview('pubchem')
 
 # sqlite3__oregano_compounds_create()
-# sqlite3__table_preview('oregano_compounds')
+# sqlite3__oregano_diseases_create()
+sqlite3__table_preview('oregano_diseases')
+
+# sqlite3__mesh_create()
+# sqlite3__table_preview('mesh')
 
 # sqlite3__terra_plants_create()
 # sqlite3__terra_plants_get()
@@ -1522,11 +1642,10 @@ def sqlite3__oregano_compounds_create():
     # print(sqlite3__terra_compound_name_get(plant_compound_row[1]))
 
 ### 2. TERRA COUMPOUND -> PUBCHEM CID
-plants_compounds_rows = neo4j__terra_plants_compounds_get()
-for i, plant_compound_row in enumerate(plants_compounds_rows[:100]):
-    print(f'{i}/{len(plants_compounds_rows)}')
-    # print(sqlite3__terra_pubchem_get(plant_compound_row[1]))
-    print(sqlite3__terra_oregano_get(plant_compound_row[1]))
+# plants_compounds_rows = neo4j__terra_plants_compounds_get()
+# for i, plant_compound_row in enumerate(plants_compounds_rows[:100]):
+    # print(f'{i}/{len(plants_compounds_rows)}')
+    # print(sqlite3__terra_oregano_get(plant_compound_row[1]))
 
 quit()
 
@@ -1541,12 +1660,12 @@ quit()
 
 # - get all oregano relationships COMPOUND/NATURAL_COMPOUND -[IS_SUBSTANCE_THAT_TREATS]-> DISEASE
 
-# - create sql oregano compounds table (oregano_compound_id, cid) ALREADY DONE!!!
-# - create sql oregano diseases table (oregano_disease_id, mesh_id)
-# - create sql oregano compound disease table (oregano_compounds_id, oregano_disease_id)
+# ! create sql oregano compounds table (oregano_compound_id, cid) ALREADY DONE!!!
+# ! create sql oregano diseases table (oregano_disease_id, mesh_id)
+# - create sql oregano compound disease table (oregano_compound_id, oregano_disease_id)
 
-# - download mesh dataset
-# - create sql mesh table to resolve name (mesh_id, disease_name)
+# ! download mesh dataset
+# ! create sql mesh table to resolve name (mesh_id, disease_name)
 
 # - get all oregano compound ids form terra compounds ids >> sqlite3__terra_oregano_get
 # - create sql terra disease table (terra_disease_id, oregano_disease_id)
