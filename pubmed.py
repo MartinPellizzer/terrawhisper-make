@@ -8,11 +8,11 @@ from Bio import Entrez
 
 from lib import io
 
-proj = 'terrawhisper'
 proj = 'ozonogroup'
-query = 'medicinal plant'
+proj = 'terrawhisper'
 query = 'ozone'
 query = 'ozone wine'
+query = 'medicinal plant'
 
 query = query.strip().lower()
 query_slug = query.replace(' ', '-')
@@ -26,7 +26,7 @@ Entrez.email = 'martinpellizzer@gmail.com'
 sort_by = 'relevance'
 datetypes = ['mdat', 'pdat', 'edat']
 datetype = datetypes[2]
-years = [year for year in range(2025, 1750, -1)]
+years = [year for year in range(2026, 1750, -1)]
 yesterday = datetime.datetime.now() - datetime.timedelta(1)
 yesterday = datetime.datetime.strftime(yesterday, '%Y/%m/%d')
 

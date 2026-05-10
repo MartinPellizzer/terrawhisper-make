@@ -6,6 +6,7 @@ from neo4j import GraphDatabase
 
 from lib import g
 from lib import io
+from lib import kg
 from lib import llm
 from lib import polish
 from lib import components
@@ -236,47 +237,154 @@ def plants__plant__gen():
 def plants__plant__new_gen():
     driver = GraphDatabase.driver("bolt://localhost:7687", auth=(neo4j_user, neo4j_pass))
     ### get all plants
+    terra_plants_ids = []
     with driver.session() as session:
         result = session.run("""
-            MATCH (s:PLANT) RETURN s;
+            MATCH (s:Plant) RETURN s;
         """)
-        plants_ids = []
         for record in result:
             node = dict(record["s"])
-            plants_ids.append(node['id'])
-    ### get all diseases per plant
-    for plant_i, plant_id in enumerate(plants_ids[:]):
-        print(f'{plant_i}/{len(plants_ids)}')
-        with driver.session() as session:
-            result = session.run(f"""
-                MATCH p=(s:PLANT {{id: "{plant_id}"}})-[*]->(o:DISEASE) 
-                RETURN p 
-                LIMIT 25;
-            """)
-            for record_i, record in enumerate(result):
-                path = record["p"]
-                for node in path.nodes:
-                    node_id = node['id']
-                    if 'DISEASE' in node_id:
-                        print(node["id"])
-                        terra_disease_id = node_id
-                        ### resolve disease id
-                        conn = sqlite3.connect(f'{g.SSOT_FOLDERPATH}/sqlite/database.db')
-                        cur = conn.cursor()
-                        cur.execute(f"SELECT * FROM diseases WHERE terra_id = '{terra_disease_id}'")
-                        rows = cur.fetchall()[0]
-                        conn.close()
-                        print(rows)
-                        mesh_descriptor_ui = rows[2]
-                        ### resolve disease name
-                        conn = sqlite3.connect(f'{g.SSOT_FOLDERPATH}/sqlite/database.db')
-                        cur = conn.cursor()
-                        cur.execute("SELECT name FROM mesh_descriptors WHERE ui = ?", (mesh_descriptor_ui,))
-                        row = cur.fetchone()
-                        conn.close()
-                        print(row[0])
-                        quit()
+            terra_plants_ids.append(node['id'])
     driver.close()
+
+    ###
+    for i, terra_plant_id in enumerate(terra_plants_ids):
+        print(i)
+        plant_name = kg.sqlite3__terra_plant_name_get(terra_plant_id)
+        plant_taxonomy = kg.sqlite3__terra_plant_taxonomy_get(terra_plant_id)
+        plant_slug = polish.sluggify(plant_name)
+        url_slug = f'herbs/{plant_slug}'
+
+        ########################################
+        # json
+        ########################################
+        ### json init
+        json_article_filepath = f'''{g.DATABASE_FOLDERPATH}/json/{url_slug}.json'''
+        json_article = io.json_read(json_article_filepath, create=True)
+        json_article['url_slug'] = url_slug
+        json_article['plant_slug'] = plant_slug
+        json_article['plant_name'] = plant_name
+        json_article['kingdom'] = plant_taxonomy[0]
+        json_article['phylum'] = plant_taxonomy[1]
+        json_article['class'] = plant_taxonomy[2]
+        json_article['order'] = plant_taxonomy[3]
+        json_article['family'] = plant_taxonomy[4]
+        json_article['genus'] = plant_taxonomy[5]
+        json_article['species'] = plant_taxonomy[6]
+        json_article['article_title'] = plant_name
+        io.json_write(json_article_filepath, json_article)
+
+        regen = False
+        dispel = False
+        key = 'taxonomy'
+        if key not in json_article: json_article[key] = ''
+        if regen: json_article[key] = ''
+        if dispel: 
+            json_article[key] = ''
+            io.json_write(json_article_filepath, json_article)
+        if not dispel:
+            if json_article[key] == '':
+                prompt = textwrap.dedent(f'''
+                    Write a paragraph about the taxonomy of this plant: {plant_name}.
+                    Use the following data:
+                    - kingdom {plant_taxonomy[0]}
+                    - phylum {plant_taxonomy[1]}
+                    - class {plant_taxonomy[2]}
+                    - order {plant_taxonomy[3]}
+                    - family {plant_taxonomy[4]}
+                    - genus {plant_taxonomy[5]}
+                    - species {plant_taxonomy[5]}
+                    Guidelines:
+                    Start with the following words: {plant_name} belongs .
+                ''').strip()
+                print(prompt)
+                reply = llm.reply(prompt, model_filepath)
+                if '</think>' in reply:
+                    reply = reply.split('</think>')[1].strip()
+                reply = polish.vanilla(reply)
+                json_article[key] = reply
+                io.json_write(json_article_filepath, json_article)
+
+        ########################################
+        # html
+        ########################################
+        html_article = f'''
+            <h1>
+                {plant_name}
+            </h1>
+            <section>
+                <h2>
+                    What's the taxonomical classification of {plant_name}?
+                </h2>
+                <p>
+                    {json_article['taxonomy']}
+                </p>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Taxonomic Rank</th>
+                      <th>Classification</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Kingdom</td>
+                      <td>{json_article['kingdom']}</td>
+                    </tr>
+                    <tr>
+                      <td>Phylum</td>
+                      <td>{json_article['phylum']}</td>
+                    </tr>
+                    <tr>
+                      <td>Class</td>
+                      <td>{json_article['class']}</td>
+                    </tr>
+                    <tr>
+                      <td>Order</td>
+                      <td>{json_article['order']}</td>
+                    </tr>
+                    <tr>
+                      <td>Family</td>
+                      <td>{json_article['family']}</td>
+                    </tr>
+                    <tr>
+                      <td>Genus</td>
+                      <td>{json_article['genus']}</td>
+                    </tr>
+                    <tr>
+                      <td>Species</td>
+                      <td>{json_article['species']}</td>
+                    </tr>
+                  </tbody>
+                </table>
+            </section>
+        '''
+        meta_title = f'{plant_name}'
+        meta_description = ''
+        canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''
+        head_html = components.html_head(
+            meta_title, meta_description, css='/styles.css', canonical=canonical_html
+        )
+        html = textwrap.dedent(f''' 
+            <!DOCTYPE html>
+            <html lang="en">
+            {head_html}
+            <body>
+                {sections.header_default()}
+                <main class="article">
+                    {sections.breadcrumbs_new(url_slug)}
+                    <article>
+                        {html_article}
+                    </article>
+                </main>
+                {sections.footer()}
+            </body>
+            </html>
+        ''').strip()
+        html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
+        with open(html_filepath, 'w') as f: f.write(html)
+        print(html_filepath)
+        # quit()
 
 def plants__families__gen():
     def neo4j_families_get(tx):
@@ -419,10 +527,76 @@ def plants__families__family__gen():
         with open(html_filepath, 'w') as f: f.write(html)
         # quit()
 
+def plants__all__gen():
+    driver = GraphDatabase.driver("bolt://localhost:7687", auth=(neo4j_user, neo4j_pass))
+    ### get all plants
+    terra_plants_ids = []
+    with driver.session() as session:
+        result = session.run("""
+            MATCH (s:Plant) RETURN s;
+        """)
+        for record in result:
+            node = dict(record["s"])
+            terra_plants_ids.append(node['id'])
+    driver.close()
+    ###
+    url_slug = f'herbs/all'
+    items = []
+    for i, terra_plant_id in enumerate(terra_plants_ids):
+        print(i)
+        plant_name = kg.sqlite3__terra_plant_name_get(terra_plant_id)
+        plant_slug = polish.sluggify(plant_name)
+        items.append({'plant_name': plant_name, 'plant_slug': plant_slug})
+    items = sorted(items, key=lambda x: x['plant_name'], reverse=False)
+    ###
+    html_links = ''
+    html_links += '<ul>'
+    for i, item in enumerate(items):
+        html_links += f'''<li><a href="/herbs/{item['plant_slug']}.html">{item['plant_name']}</a></li>'''
+    html_links += '</ul>'
+
+    ########################################
+    # html
+    ########################################
+    html_article = f'''
+        <h1>
+            List of All Medicinal Plants
+        </h1>
+        {html_links}
+    '''
+
+    meta_title = f'List of All Medicinal Plants'
+    meta_description = ''
+    canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''
+    head_html = components.html_head(
+        meta_title, meta_description, css='/styles.css', canonical=canonical_html
+    )
+    html = textwrap.dedent(f''' 
+        <!DOCTYPE html>
+        <html lang="en">
+        {head_html}
+        <body>
+            {sections.header_default()}
+            <main class="article">
+                {sections.breadcrumbs_new(url_slug)}
+                <article>
+                    {html_article}
+                </article>
+            </main>
+            {sections.footer()}
+        </body>
+        </html>
+    ''').strip()
+    html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
+    with open(html_filepath, 'w') as f: f.write(html)
+    print(html_filepath)
+    # quit()
+
 
 def main():
     # plants__plant__gen()
-    plants__plant__new_gen()
+    # plants__plant__new_gen()
+    plants__all__gen()
     # plants__taxonomy__gen()
     # plants__families__gen()
     # plants__families__family__gen()
