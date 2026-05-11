@@ -37,3 +37,15 @@ def sqlite3__terra_plant_taxonomy_get(terra_id):
     conn.close()
     return row
 
+def sqlite3__wcvp_get(taxon_name):
+    conn = sqlite3.connect(f'{g.SSOT_FOLDERPATH}/sqlite/database.db')
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT *
+        FROM wcvp
+        WHERE taxon_name = ?
+    """, (taxon_name,))
+    row = cur.fetchone()
+    conn.close()
+    return row
+

@@ -6,6 +6,7 @@ from neo4j import GraphDatabase
 
 from lib import g
 from lib import io
+from lib import kg
 from lib import llm
 
 model_filepath = '/home/ubuntu/vault-tmp/llm/gemma-4-26B-A4B-it-UD-Q4_K_XL.gguf'
@@ -101,6 +102,19 @@ def json__study__used_to_treat__extract():
     output_filepath = f'{g.SSOT_FOLDERPATH}/studies/extraction/json/plant_name-used_to_treat-disease_name.json'
     io.json_write(output_filepath, output_items)
 
+def json__study__used_to_treat__filter():
+    input_filepath = f'{g.SSOT_FOLDERPATH}/studies/extraction/json/plant_name-used_to_treat-disease_name.json'
+    input_data = io.json_read(input_filepath)
+    items_found = []
+    for i, item in enumerate(input_data):
+        print(i)
+        row = kg.sqlite3__wcvp_get(item['plant_name'])
+        if row != None:
+            print(json.dumps(item, indent=4))
+            items_found.append(item)
+    output_filepath = f'{g.SSOT_FOLDERPATH}/studies/extraction/json/plant_name-used_to_treat-disease_name-filtered.json'
+    io.json_write(output_filepath, items_found)
+
 def neo4j__clear():
     driver = GraphDatabase.driver("bolt://localhost:7687", auth=(neo4j_user, neo4j_pass))
     def delete_data(tx):
@@ -123,27 +137,31 @@ def neo4j__clear():
         session.execute_write(drop_indexes)
     driver.close()
 
-neo4j__clear()
-rows = io.json_read(f'{g.SSOT_FOLDERPATH}/studies/extraction/json/plant_name-used_to_treat-disease_name.json')
-### populate kg
-driver = GraphDatabase.driver("bolt://localhost:7687", auth=(neo4j_user, neo4j_pass))
-def execute(tx, rows):
-    tx.run("""
-        UNWIND $rows AS row
-        MERGE (s:Plant {id: row.plant_name})
-        MERGE (o:Disease {id: row.disease_name})
-        MERGE (s)-[:USED_TO_TREAT]->(o)
-    """, rows=rows)
-with driver.session() as session:
-    session.run("""
-        CREATE CONSTRAINT plant_name IF NOT EXISTS
-        FOR (p:Plant)
-        REQUIRE p.id IS UNIQUE
-    """)
-    session.run("""
-        CREATE CONSTRAINT disease_name IF NOT EXISTS
-        FOR (c:Disease)
-        REQUIRE c.id IS UNIQUE
-    """)
-    session.execute_write(execute, rows)
-driver.close()
+def neo4j__create():
+    rows = io.json_read(f'{g.SSOT_FOLDERPATH}/studies/extraction/json/plant_name-used_to_treat-disease_name-filtered.json')
+    ### populate kg
+    driver = GraphDatabase.driver("bolt://localhost:7687", auth=(neo4j_user, neo4j_pass))
+    def execute(tx, rows):
+        tx.run("""
+            UNWIND $rows AS row
+            MERGE (s:Plant {id: row.plant_name})
+            MERGE (o:Disease {id: row.disease_name})
+            MERGE (s)-[:USED_TO_TREAT]->(o)
+        """, rows=rows)
+    with driver.session() as session:
+        session.run("""
+            CREATE CONSTRAINT plant_name IF NOT EXISTS
+            FOR (p:Plant)
+            REQUIRE p.id IS UNIQUE
+        """)
+        session.run("""
+            CREATE CONSTRAINT disease_name IF NOT EXISTS
+            FOR (c:Disease)
+            REQUIRE c.id IS UNIQUE
+        """)
+        session.execute_write(execute, rows)
+    driver.close()
+
+# neo4j__clear()
+# neo4j__create()
+

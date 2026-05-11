@@ -1,7 +1,5 @@
-### TODO: test if oregano is to throw away
-###       gen oregano knowledge graph, find all the paths from compounds --> diseases, filter by those from lotus, 
-###       and resolve the disease names to mesh (check number and see if the coverage is enough to write articles)
-
+### TODO: try creating article with oregano diseases found with full paths
+### TODO: get all targets from oregano and resolve the names (find dataset)
 
 import os
 import json
@@ -275,7 +273,7 @@ def sqlite3__table_preview(table_name, num_rows=10):
     print(f'{num_rows}/{row_count} - {table_name}')
     print()
 
-def sqlite3__oregano_diseases_create():
+def sqlite3__oregano_diseases_create(filtering=False):
     tsv_lines = io.file_read(
         f'{g.SSOT_FOLDERPATH}/datasets/oregano/oregano-master/Integration/Integration V3/GESTION_ID/DISEASES.tsv'
     ).split('\n')
@@ -294,11 +292,12 @@ def sqlite3__oregano_diseases_create():
         # print(json.dumps(item, indent=4))
         # quit()
         mesh = item['MESH']
-        if mesh.strip() == '': continue
-        if 'OMIM' in mesh.strip(): continue
-        mesh = mesh.split(',')[0].strip()
-        mesh = mesh.split(';')[0].strip()
-        if mesh[0] == 'C': continue
+        if filtering:
+            if mesh.strip() == '': continue
+            if 'OMIM' in mesh.strip(): continue
+            mesh = mesh.split(',')[0].strip()
+            mesh = mesh.split(';')[0].strip()
+            if mesh[0] == 'C': continue
         item = {
             'oregano_disease_id': item['ID'],
             'mesh_descriptor_ui': mesh,
@@ -709,6 +708,52 @@ def sqlite3__wikidata_create():
 # [0001] POWO
 ################################################################################
 
+def sqlite3__wcvp_create():
+    items = io.csv_to_dict(f'{g.SSOT_FOLDERPATH}/datasets/powo/wcvp/wcvp_names.csv', delimiter='|')
+    ### create/populate sql table
+    table_name = 'wcvp'
+    conn = sqlite3.connect(f'{g.SSOT_FOLDERPATH}/sqlite/database.db')
+    cur = conn.cursor()
+    ### delete previous table
+    cur.execute(f"DROP TABLE IF EXISTS {table_name}")
+    ### create new table
+    cur.execute(f"""
+        CREATE TABLE IF NOT EXISTS {table_name} (
+            taxon_name TEXT,
+            powo_id TEXT
+        )
+    """)
+    cur.execute("PRAGMA synchronous = OFF")
+    cur.execute("PRAGMA journal_mode = MEMORY")
+    cur.execute("PRAGMA temp_store = MEMORY")
+    cur.execute("PRAGMA cache_size = 1000000")
+    ### insert into new table
+    for item_i, item in enumerate(items[:]):
+        taxon_name = item['taxon_name'].strip()
+        powo_id = item['powo_id'].strip()
+        cur.execute(f"INSERT INTO {table_name} VALUES (?, ?)", (taxon_name, powo_id,))
+        if item_i % 100000 == 0:
+            conn.commit()
+            print(f"{item_i} lines inserted")
+    ### create index
+    cur.execute(f"CREATE INDEX IF NOT EXISTS idx_{table_name}_taxon_name ON {table_name}(taxon_name)")
+    cur.execute(f"CREATE INDEX IF NOT EXISTS idx_{table_name}_powo_id ON {table_name}(powo_id)")
+    conn.commit()
+    print(f"{item_i} lines inserted")
+    conn.close()
+
+def sqlite3__wcvp_get(taxon_name):
+    conn = sqlite3.connect(f'{g.SSOT_FOLDERPATH}/sqlite/database.db')
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT *
+        FROM wcvp
+        WHERE taxon_name = ?
+    """, (taxon_name,))
+    row = cur.fetchone()
+    conn.close()
+    return row
+
 def sqlite3__powo_create():
     ### get all wikidata medicinal plants, only use these to create powo table
     conn = sqlite3.connect(f'{g.SSOT_FOLDERPATH}/sqlite/database.db')
@@ -1116,8 +1161,6 @@ def sqlite3__terra_compound_name_get(terra_id):
 ### --- BRANCH DISEASE ---
 
 ### OREGANO: DISEASES
-# sqlite3__oregano_diseases_create()
-# sqlite3__table_preview('oregano_diseases', num_rows=1)
 
 ### OREGANO: MESH
 # sqlite3__mesh_create()
@@ -1178,8 +1221,12 @@ if 0:
 ################################################################################
 
 if 0:
+    # sqlite3__wcvp_create()
+    # print(sqlite3__wcvp_get('Lindera strychifolia'))
+    print(sqlite3__wcvp_get('Viola striis-notata'))
+    # sqlite3__table_preview('wcvp', num_rows=1)
     # sqlite3__powo_create()
-    sqlite3__table_preview('powo', num_rows=1)
+    # sqlite3__table_preview('powo', num_rows=1)
 
 ################################################################################
 # [0002] LOTUS
@@ -1192,6 +1239,11 @@ if 0:
 ################################################################################
 # [0004] OREGANO
 ################################################################################
+
+if 0:
+    sqlite3__oregano_diseases_create()
+    # sqlite3__table_preview('oregano_diseases', num_rows=10000)
+    # quit()
 
 # -- OREGANO: RELATIONSHIPS ANALYTICS --
 if 0:
@@ -1316,6 +1368,7 @@ if 0:
     print(len(items), '\n')
     quit()
 
+
 ################################################################################
 # [0000_0001] WIKIDATA_POWO
 ################################################################################
@@ -1328,35 +1381,138 @@ if 0:
 # [9999] TERRA
 ################################################################################
 
-if 1:
+if 0:
     # sqlite3__terra_compounds_lotus_create()
     # sqlite3__table_preview('terra_compounds_lotus', num_rows=1)
-    rows = sqlite3__terra_lotus_get_all()
-    print(rows[0], '\n', len(rows), 'terra --> lotus', '\n')
+    # rows = sqlite3__terra_lotus_get_all()
+    # print(rows[0], '\n', len(rows), 'terra --> lotus', '\n')
     # rows = sqlite3__terra_lotus_pubchem_get_all()
     # print(rows[0], '\n', len(rows), 'terra --> lotus --> pubchem', '\n')
-    # rows = sqlite3__terra_lotus_pubchem_oregano_get_all()
-    # print(rows[0], '\n', len(rows), 'terra --> lotus --> pubchem --> oregano', '\n')
+    rows = sqlite3__terra_lotus_pubchem_oregano_get_all()
+    print(rows[0], '\n', len(rows), 'terra --> lotus --> pubchem --> oregano', '\n')
     # rows = sqlite3__terra_lotus_pubchem_oregano_relationship_get_all()
     # print(rows[0], '\n', len(rows), 'terra --> lotus --> pubchem --> oregano --> relationship', '\n')
     # rows = sqlite3__terra_lotus_pubchem_oregano_relationship_disease_get_all()
     # print(rows[0], '\n', len(rows), 'terra --> lotus --> pubchem --> oregano --> relationship --> disease', '\n')
-    rows = sqlite3__terra_lotus_pubchem_oregano_relationship_disease_mesh_get_all()
-    print(rows[0], '\n', len(rows), 'terra --> lotus --> pubchem --> oregano --> relationship --> disease --> mesh', '\n')
-    for row in rows:
-        print(row[-1])
+    # rows = sqlite3__terra_lotus_pubchem_oregano_relationship_disease_mesh_get_all()
+    # print(rows[0], '\n', len(rows), 'terra --> lotus --> pubchem --> oregano --> relationship --> disease --> mesh', '\n')
+    # for row in rows:
+        # print(row[-1])
 
     # neo4j__clear()
     # neo4j__terra_plants_compounds_create()
 
+def neo4j__oregano__compounds_diseases__get():
+    driver = GraphDatabase.driver("bolt://localhost:7687", auth=(neo4j_user, neo4j_pass))
+    def run(tx):
+        rows = sqlite3__terra_lotus_pubchem_oregano_get_all()
+        print(rows[0], '\n', len(rows), 'terra --> lotus --> pubchem --> oregano', '\n')
+        print(rows[0][-2])
+        diseases = set()
+        print(len(rows))
+        compound_ids = [row[-2] for row in rows]
+        '''
+        query = """
+            MATCH (c:Entity)
+            WHERE c.id IN $compound_ids
+            OPTIONAL MATCH (c)-[*1..6]->(d:Entity {type: "DISEASE"})
+            WITH c, collect(DISTINCT d.id) AS diseases
+            RETURN c.id AS compound, diseases
+        """
+        result = tx.run(query, {"compound_ids": compound_ids})
+        for record in result:
+            print(
+                record["compound"],
+                record["disease_paths"]
+            )
+        quit()
+        '''
+
+        for row_i, row in enumerate(rows[:]):
+            print(f'{row_i}/{len(rows)}')
+            query = f"""
+                MATCH p = (s:Entity {{id: "{row[-2]}"}}) -[*1..6]-> (o:Entity {{type: "DISEASE"}})
+                RETURN p
+            """
+            query = f"""
+                MATCH (c:Entity {{id: "{row[-2]}"}})
+                MATCH (c)-[*1..4]->(d:Entity {{type: "DISEASE"}})
+                RETURN DISTINCT d.id AS disease
+            """
+            # print(query)
+            result = tx.run(query)
+            records_row_count = []
+            for i, record in enumerate(result):
+                # print(i)
+                disease_id = record.data()['disease']
+                '''
+                continue
+                ###
+                path = record["p"]
+                parts = []
+                # first node
+                first_node = path.nodes[0]
+                first_type = first_node.get("id", "UNKNOWN")
+                parts.append(first_type)
+                # relationships + next nodes
+                for rel, node in zip(path.relationships, path.nodes[1:]):
+                    rel_type = rel.type
+                    node_type = node.get("id", "UNKNOWN")
+                    parts.append(f"{rel_type}")
+                    parts.append(node_type)
+                # print(f"Path {i}:")
+                # print(" ".join(parts))
+                # print("-" * 80)
+                # quit()
+                records.append(parts)
+                records_row_count.append(parts)
+                '''
+                records_row_count.append(disease_id)
+                diseases.add(disease_id)
+                # quit()
+            # print(len(records_row_count))
+        # for record in records:
+            # print(record)
+        print(len(diseases))
+        diseases_items = [{'oregano_disease_id': val} for val in diseases]
+        for disease in diseases_items:
+            print(disease)
+        io.json_write(f'{g.SSOT_FOLDERPATH}/oregano/tmp.json', diseases_items)
+    with driver.session() as session:
+        results = session.execute_read(run)
+    driver.close()
+
+# neo4j__oregano__compounds_diseases__get()
+
 # -- NAME RESOLUTION --
 
-if 0:
-    rows = neo4j__terra_plants_compounds_get()
-    for i, row in enumerate(rows[:1000]):
-        print(f'{i}/{len(rows)}')
-        print(row)
-        print(sqlite3__terra_plant_name_get(row[0]))
-        print(sqlite3__terra_compound_name_get(row[1]))
-        quit()
+if 1:
+    if 0:
+        rows = neo4j__terra_plants_compounds_get()
+        for i, row in enumerate(rows[:1000]):
+            print(f'{i}/{len(rows)}')
+            print(row)
+            print(sqlite3__terra_plant_name_get(row[0]))
+            print(sqlite3__terra_compound_name_get(row[1]))
+            quit()
+    if 1:
+        sqlite3__oregano_diseases_create(filtering=False)
+        sqlite3__oregano_diseases_create(filtering=True)
+        sqlite3__table_preview('oregano_diseases', num_rows=1)
+        # quit()
+        items = io.json_read(f'{g.SSOT_FOLDERPATH}/oregano/tmp.json')
+        found = []
+        for i, item in enumerate(items[:]):
+            print(f'{i}/{len(items)}')
+            print(item)
+            disease_id = item['oregano_disease_id']
+            print(disease_id)
+            row = sqlite3__oregano_disease_name_get(disease_id)
+            print(row)
+            if row != []:
+                found.append(row)
+        for val in found:
+            print(val)
+        print(len(found), 'found names')
+            # quit()
 
