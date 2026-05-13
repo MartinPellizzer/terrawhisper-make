@@ -563,6 +563,10 @@ def sqlite3__oregano_compounds_pubchem_get_all():
     conn.close()
     return rows_found
 
+################################################################################
+# [0002] LOTUS
+################################################################################
+
 def sqlite3__lotus_components_create():
     ### get data
     items = io.json_read(f'{g.SSOT_FOLDERPATH}/datasets/lotus/data.json')
@@ -1085,6 +1089,41 @@ def neo4j__terra_plants_compounds_create():
         session.execute_write(insert_relationships, rows)
     driver.close()
 
+def neo4j__terra_plants_compounds_create_new_temp():
+    # rows = io.json_read(f'{g.SSOT_FOLDERPATH}/datasets/terra/plants-compounds.json')
+    rows = sqlite3__terra_lotus_pubchem_oregano_get_all()
+    rows = [{'terra_plant_id': row[0], 'oregano_compound_id': row[-2], 'oregano_compound_type': row[-2].split(':')[0]} for row in rows]
+    print(rows[0])
+    print(len(rows))
+    plants = set()
+    for row in rows:
+        plants.add(row['terra_plant_id'])
+    print(list(plants)[0])
+    print(len(plants))
+    quit()
+    ### populate kg
+    driver = GraphDatabase.driver("bolt://localhost:7687", auth=(neo4j_user, neo4j_pass))
+    def insert_relationships(tx, rows):
+        tx.run("""
+            UNWIND $rows AS row
+            MERGE (s:Plant {id: row.terra_plant_id})
+            MERGE (o:Entity {id: row.oregano_compound_id, type: row.oregano_compound_type})
+            MERGE (s)-[:HAS_COMPOUND]->(o)
+        """, rows=rows)
+    with driver.session() as session:
+        session.run("""
+            CREATE CONSTRAINT plant_id IF NOT EXISTS
+            FOR (p:Plant)
+            REQUIRE p.id IS UNIQUE
+        """)
+        session.run("""
+            CREATE CONSTRAINT compound_id IF NOT EXISTS
+            FOR (c:Compound)
+            REQUIRE c.id IS UNIQUE
+        """)
+        session.execute_write(insert_relationships, rows)
+    driver.close()
+
 def neo4j__terra_plants_compounds_get():
     driver = GraphDatabase.driver("bolt://localhost:7687", auth=(neo4j_user, neo4j_pass))
     def _get(tx):
@@ -1150,6 +1189,47 @@ def sqlite3__terra_compound_name_get(terra_id):
     conn.close()
     return best_name 
 
+################################################################################
+# [0004] OREGANO
+################################################################################
+
+def oregano__neo4j_create():
+    from collections import defaultdict
+    driver = GraphDatabase.driver("bolt://localhost:7687", auth=(neo4j_user, neo4j_pass))
+    oregano_relationships_filepath = f'{g.SSOT_FOLDERPATH}/datasets/oregano/oregano-master/Data_OREGANO/Graphs/OREGANO_V3.tsv'
+    def batch_insert_grouped(tx, grouped_batch):
+        for rel_type, rows in grouped_batch.items():
+            query = f"""
+            UNWIND $rows AS row
+            WITH row,
+                 split(row.s, ":")[0] AS s_type,
+                 split(row.s, ":")[1] AS s_id,
+                 split(row.o, ":")[0] AS o_type,
+                 split(row.o, ":")[1] AS o_id
+            MERGE (s:Entity {{id: row.s}})
+            SET s.type = s_type
+            MERGE (o:Entity {{id: row.o}})
+            SET o.type = o_type
+            MERGE (s)-[:{rel_type}]->(o)
+            """
+            tx.run(query, rows=rows)
+    batch = defaultdict(list)
+    batch_size = 5000
+    with open(oregano_relationships_filepath) as f:
+        with driver.session() as session:
+            session.run("CREATE INDEX entity_id IF NOT EXISTS FOR (n:Entity) ON (n.id)")
+            for line in f:
+                s, p, o = line.strip().split("\t")
+                if p == "rdf/type":
+                    continue
+                batch[p].append({"s": s, "o": o})
+                if sum(len(v) for v in batch.values()) >= batch_size:
+                    session.execute_write(batch_insert_grouped, batch)
+                    batch.clear()
+                    print(batch_size)
+            if batch:
+                session.execute_write(batch_insert_grouped, batch)
+    driver.close()
 
 ### OREGANO: COMPOUNDS --> DISEASES
 # json__items_preview(f'{g.SSOT_FOLDERPATH}/datasets/oregano/compound-is_substance_that_treats-disease.json', num_items=1)
@@ -1186,10 +1266,46 @@ if 0:
 
 ### --- BRANCH COMPOUNDS ---
 
+################################################################################
+# [0000] WIKIDATA
+################################################################################
+
+if 0:
+    # sqlite3__wikidata_create()
+    sqlite3__table_preview('wikidata', num_rows=1)
+
+################################################################################
+# [0001] POWO
+################################################################################
+
+if 0:
+    # sqlite3__wcvp_create()
+    # print(sqlite3__wcvp_get('Lindera strychifolia'))
+    # print(sqlite3__wcvp_get('Viola striis-notata'))
+    # sqlite3__table_preview('wcvp', num_rows=1)
+    # sqlite3__powo_create()
+    sqlite3__table_preview('powo', num_rows=1)
+
+################################################################################
+# [0002] LOTUS
+################################################################################
+
+if 0:
+    # sqlite3__lotus_components_create()
+    sqlite3__table_preview('lotus_components', num_rows=1)
+
+################################################################################
+# [0004] OREGANO
+################################################################################
+
+if 0:
+    oregano__neo4j_create()
+
 ### OREGANO: COMPOUNDS
-# analytics__oregano_compounds_print()
-# sqlite3__oregano_compounds_create()
-# sqlite3__table_preview('oregano_compounds', num_rows=10)
+if 0:
+    analytics__oregano_compounds_print()
+    sqlite3__oregano_compounds_create()
+    sqlite3__table_preview('oregano_compounds', num_rows=10)
 
 ### OREGANO: PUBCHEM
 # sqlite3__pubchem_big_create()
@@ -1208,42 +1324,10 @@ if 0:
 # print(len(rows), 'oregano --> lotus')
 # print()
 
-################################################################################
-# [0000] WIKIDATA
-################################################################################
-
-if 0:
-    # sqlite3__wikidata_create()
-    sqlite3__table_preview('wikidata', num_rows=1)
-
-################################################################################
-# [0001] POWO
-################################################################################
-
-if 0:
-    # sqlite3__wcvp_create()
-    # print(sqlite3__wcvp_get('Lindera strychifolia'))
-    print(sqlite3__wcvp_get('Viola striis-notata'))
-    # sqlite3__table_preview('wcvp', num_rows=1)
-    # sqlite3__powo_create()
-    # sqlite3__table_preview('powo', num_rows=1)
-
-################################################################################
-# [0002] LOTUS
-################################################################################
-
-if 0:
-    # sqlite3__lotus_components_create()
-    sqlite3__table_preview('lotus_components', num_rows=1)
-
-################################################################################
-# [0004] OREGANO
-################################################################################
-
+### OREGANO: DISEASES
 if 0:
     sqlite3__oregano_diseases_create()
-    # sqlite3__table_preview('oregano_diseases', num_rows=10000)
-    # quit()
+    sqlite3__table_preview('oregano_diseases', num_rows=10000)
 
 # -- OREGANO: RELATIONSHIPS ANALYTICS --
 if 0:
@@ -1374,7 +1458,7 @@ if 0:
 ################################################################################
 
 if 0:
-    # rows = sqlite3__wikidata_powo_get_all()
+    rows = sqlite3__wikidata_powo_get_all()
     print(rows[0], '\n', len(rows), 'wikidata --> powo', '\n')
 
 ################################################################################
@@ -1382,14 +1466,14 @@ if 0:
 ################################################################################
 
 if 0:
-    # sqlite3__terra_compounds_lotus_create()
-    # sqlite3__table_preview('terra_compounds_lotus', num_rows=1)
+    sqlite3__terra_compounds_lotus_create()
+    sqlite3__table_preview('terra_compounds_lotus', num_rows=1)
     # rows = sqlite3__terra_lotus_get_all()
     # print(rows[0], '\n', len(rows), 'terra --> lotus', '\n')
     # rows = sqlite3__terra_lotus_pubchem_get_all()
     # print(rows[0], '\n', len(rows), 'terra --> lotus --> pubchem', '\n')
-    rows = sqlite3__terra_lotus_pubchem_oregano_get_all()
-    print(rows[0], '\n', len(rows), 'terra --> lotus --> pubchem --> oregano', '\n')
+    # rows = sqlite3__terra_lotus_pubchem_oregano_get_all()
+    # print(rows[0], '\n', len(rows), 'terra --> lotus --> pubchem --> oregano', '\n')
     # rows = sqlite3__terra_lotus_pubchem_oregano_relationship_get_all()
     # print(rows[0], '\n', len(rows), 'terra --> lotus --> pubchem --> oregano --> relationship', '\n')
     # rows = sqlite3__terra_lotus_pubchem_oregano_relationship_disease_get_all()
@@ -1401,6 +1485,10 @@ if 0:
 
     # neo4j__clear()
     # neo4j__terra_plants_compounds_create()
+    # neo4j__terra_plants_compounds_create_new_temp()
+    # Nodes (146,828)
+    # Relationships (3,601,505)
+    pass
 
 def neo4j__oregano__compounds_diseases__get():
     driver = GraphDatabase.driver("bolt://localhost:7687", auth=(neo4j_user, neo4j_pass))
@@ -1486,7 +1574,7 @@ def neo4j__oregano__compounds_diseases__get():
 
 # -- NAME RESOLUTION --
 
-if 1:
+if 0:
     if 0:
         rows = neo4j__terra_plants_compounds_get()
         for i, row in enumerate(rows[:1000]):

@@ -8,6 +8,7 @@ from lib import g
 from lib import io
 from lib import kg
 from lib import llm
+from lib import data
 from lib import polish
 from lib import components
 from lib import sections
@@ -235,23 +236,22 @@ def plants__plant__gen():
         # quit()
 
 def plants__plant__new_gen():
-    driver = GraphDatabase.driver("bolt://localhost:7687", auth=(neo4j_user, neo4j_pass))
-    ### get all plants
-    terra_plants_ids = []
-    with driver.session() as session:
-        result = session.run("""
-            MATCH (s:Plant) RETURN s;
-        """)
-        for record in result:
-            node = dict(record["s"])
-            terra_plants_ids.append(node['id'])
-    driver.close()
+    import textwrap
+    rows = data.sqlite3__wikidata_powo_get_all()
+    rows = [row for row in rows if row[-1] == 'SPECIES']
 
     ###
-    for i, terra_plant_id in enumerate(terra_plants_ids):
-        print(i)
-        plant_name = kg.sqlite3__terra_plant_name_get(terra_plant_id)
-        plant_taxonomy = kg.sqlite3__terra_plant_taxonomy_get(terra_plant_id)
+    for row_i, row in enumerate(rows):
+        print(row_i)
+        plant_name = row[-2]
+        plant_kingdom = row[3]
+        plant_phylum = row[4]
+        plant_class = row[5]
+        plant_subclass = row[6]
+        plant_order = row[7]
+        plant_family = row[8]
+        plant_genus = row[9]
+        plant_species = row[10]
         plant_slug = polish.sluggify(plant_name)
         url_slug = f'herbs/{plant_slug}'
 
@@ -264,18 +264,22 @@ def plants__plant__new_gen():
         json_article['url_slug'] = url_slug
         json_article['plant_slug'] = plant_slug
         json_article['plant_name'] = plant_name
-        json_article['kingdom'] = plant_taxonomy[0]
-        json_article['phylum'] = plant_taxonomy[1]
-        json_article['class'] = plant_taxonomy[2]
-        json_article['order'] = plant_taxonomy[3]
-        json_article['family'] = plant_taxonomy[4]
-        json_article['genus'] = plant_taxonomy[5]
-        json_article['species'] = plant_taxonomy[6]
+        json_article['kingdom'] = plant_kingdom
+        json_article['phylum'] = plant_phylum
+        json_article['class'] = plant_class
+        json_article['subclass'] = plant_subclass
+        json_article['order'] = plant_order
+        json_article['family'] = plant_family
+        json_article['genus'] = plant_genus
+        json_article['species'] = plant_species
         json_article['article_title'] = plant_name
         io.json_write(json_article_filepath, json_article)
 
-        regen = False
-        dispel = False
+        regen_function = False
+        dispel_function = False
+
+        regen = regen_function
+        dispel = dispel_function
         key = 'taxonomy'
         if key not in json_article: json_article[key] = ''
         if regen: json_article[key] = ''
@@ -287,13 +291,14 @@ def plants__plant__new_gen():
                 prompt = textwrap.dedent(f'''
                     Write a paragraph about the taxonomy of this plant: {plant_name}.
                     Use the following data:
-                    - kingdom {plant_taxonomy[0]}
-                    - phylum {plant_taxonomy[1]}
-                    - class {plant_taxonomy[2]}
-                    - order {plant_taxonomy[3]}
-                    - family {plant_taxonomy[4]}
-                    - genus {plant_taxonomy[5]}
-                    - species {plant_taxonomy[5]}
+                    - kingdom {plant_kingdom}
+                    - phylum {plant_phylum}
+                    - class {plant_class}
+                    - subclass {plant_subclass}
+                    - order {plant_order}
+                    - family {plant_family}
+                    - genus {plant_genus}
+                    - species {plant_species}
                     Guidelines:
                     Start with the following words: {plant_name} belongs .
                 ''').strip()
@@ -304,6 +309,63 @@ def plants__plant__new_gen():
                 reply = polish.vanilla(reply)
                 json_article[key] = reply
                 io.json_write(json_article_filepath, json_article)
+
+        regen = regen_function
+        dispel = dispel_function
+        key = 'compounds'
+        if key not in json_article: json_article[key] = ''
+        if regen: json_article[key] = ''
+        if dispel: 
+            json_article[key] = ''
+            io.json_write(json_article_filepath, json_article)
+        if not dispel:
+            if json_article[key] == '':
+                import textwrap
+                prompt = textwrap.dedent(f'''
+                    Write a paragraph in 4-6 sentences about the medicinal compounds of this plant: {plant_name}.
+                    The first sentence must answer in the most direct, clear, detailed way possible without fluff.
+                    The following sentences must give more details about this topic.
+                    Don't give me bold or italicized text. 
+                    Reply only with the content.
+                    Start the reply with the following words: "{plant_name} contains "
+                    /no_think
+                ''').strip()
+                reply = llm.reply(prompt, model_filepath)
+                if '</think>' in reply:
+                    reply = reply.split('</think>')[1].strip()
+                reply = polish.vanilla(reply)
+                json_article[key] = reply
+                io.json_write(json_article_filepath, json_article)
+                print(json_article_filepath)
+
+        regen = regen_function
+        dispel = dispel_function
+        key = 'diseases'
+        if key not in json_article: json_article[key] = ''
+        if regen: json_article[key] = ''
+        if dispel: 
+            json_article[key] = ''
+            io.json_write(json_article_filepath, json_article)
+            continue
+        if not dispel:
+            if json_article[key] == '':
+                import textwrap
+                prompt = textwrap.dedent(f'''
+                    Write a paragraph in 4-6 sentences about the diseases treated with this plant: {plant_name}.
+                    The first sentence must answer in the most direct, clear, detailed way possible without fluff.
+                    The following sentences must give more details about this topic.
+                    Don't give me bold or italicized text. 
+                    Reply only with the content.
+                    Start the reply with the following words: "This plant is used to treat "
+                    /no_think
+                ''').strip()
+                reply = llm.reply(prompt, model_filepath)
+                if '</think>' in reply:
+                    reply = reply.split('</think>')[1].strip()
+                reply = polish.vanilla(reply)
+                json_article[key] = reply
+                io.json_write(json_article_filepath, json_article)
+                print(json_article_filepath)
 
         ########################################
         # html
@@ -340,6 +402,10 @@ def plants__plant__new_gen():
                       <td>{json_article['class']}</td>
                     </tr>
                     <tr>
+                      <td>Subclass</td>
+                      <td>{json_article['subclass']}</td>
+                    </tr>
+                    <tr>
                       <td>Order</td>
                       <td>{json_article['order']}</td>
                     </tr>
@@ -358,7 +424,22 @@ def plants__plant__new_gen():
                   </tbody>
                 </table>
             </section>
+            <section class="container-lg" style="margin-top: 4.8rem; border-bottom: 1px solid #e2e8f0; padding-bottom: 3.2rem;">
+                <h2>What medicinal compounds this plant contains?</h2>
+                <p>
+                    {json_article['compounds']}
+                </p>
+                <h2>What are the therapeutic actions of {plant_name}?</h2>
+                <p>
+                    {json_article['actions']}
+                </p>
+                <h2>What diseases this plant treats?</h2>
+                <p>
+                    {json_article['diseases']}
+                </p>
+            </section>
         '''
+
         meta_title = f'{plant_name}'
         meta_description = ''
         canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''
@@ -595,8 +676,8 @@ def plants__all__gen():
 
 def main():
     # plants__plant__gen()
-    # plants__plant__new_gen()
-    plants__all__gen()
+    plants__plant__new_gen()
+    # plants__all__gen()
     # plants__taxonomy__gen()
     # plants__families__gen()
     # plants__families__family__gen()

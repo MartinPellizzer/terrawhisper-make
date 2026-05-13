@@ -1,4 +1,5 @@
 import os
+import sqlite3
 
 from lib import g
 from lib import io
@@ -315,4 +316,55 @@ def herbs_get(top=0):
     if top != 0:
         l = l[:top]
     return l
+
+################################################################################
+# [0000_0001] WIKIDATA_POWO
+################################################################################
+
+def sqlite3__table_get(table_name, id_1=None, id_2=None):
+    if id_1 == None and id_2 == None:
+        conn = sqlite3.connect(f'{g.SSOT_FOLDERPATH}/sqlite/database.db')
+        cur = conn.cursor()
+        cur.execute(f"SELECT * FROM {table_name}")
+        rows = cur.fetchall()
+        conn.close()
+        return rows
+    elif id_1 != None and id_2 != None:
+        return None
+    elif id_1 == None and id_2 != None:
+        conn = sqlite3.connect(f'{g.SSOT_FOLDERPATH}/sqlite/database.db')
+        cur = conn.cursor()
+        query = f"SELECT * FROM {table_name} WHERE {id_2[0]} = ?"
+        cur.execute(query, (id_2[1],))
+        row = cur.fetchone()
+        conn.close()
+        return row
+    elif id_1 != None and id_2 == None:
+        conn = sqlite3.connect(f'{g.SSOT_FOLDERPATH}/sqlite/database.db')
+        cur = conn.cursor()
+        query = f"SELECT * FROM {table_name} WHERE {id_1[0]} = ?"
+        cur.execute(query, (id_1[1],))
+        row = cur.fetchone()
+        conn.close()
+        return row
+
+def sqlite3__wikidata_powo_get_all():
+    rows = sqlite3__table_get('wikidata')
+    conn = sqlite3.connect(f'{g.SSOT_FOLDERPATH}/sqlite/database.db')
+    cur = conn.cursor()
+    rows_found = []
+    for row_i, row in enumerate(rows[:]):
+        # print(row_i)
+        wikidata_id = row[0]
+        cur.execute("""
+            SELECT *
+            FROM wikidata t1
+            JOIN powo t2 ON t1.powo_id = t2.powo_id
+            WHERE t1.wikidata_id = ?
+        """, (wikidata_id,))
+        record = cur.fetchone()
+        if record:
+            rows_found.append(record)
+    conn.close()
+    return rows_found
 
