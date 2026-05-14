@@ -347,6 +347,34 @@ def plants__plant():
 
         regen = regen_function
         dispel = dispel_function
+        key = 'actions'
+        if key not in json_article: json_article[key] = ''
+        if regen: json_article[key] = ''
+        if dispel: 
+            json_article[key] = ''
+            io.json_write(json_article_filepath, json_article)
+        if not dispel:
+            if json_article[key] == '':
+                import textwrap
+                prompt = textwrap.dedent(f'''
+                    Write a paragraph in 4-6 sentences about the therapeutic actions of this plant: {plant_name}.
+                    The first sentence must answer in the most direct, clear, detailed way possible without fluff.
+                    The following sentences must give more details about this topic.
+                    Don't give me bold or italicized text. 
+                    Reply only with the content.
+                    Start the reply with the following words: "{plant_name} has "
+                    /no_think
+                ''').strip()
+                reply = llm.reply(prompt, model_filepath)
+                if '</think>' in reply:
+                    reply = reply.split('</think>')[1].strip()
+                reply = polish.vanilla(reply)
+                json_article[key] = reply
+                io.json_write(json_article_filepath, json_article)
+                print(json_article_filepath)
+
+        regen = regen_function
+        dispel = dispel_function
         key = 'diseases'
         if key not in json_article: json_article[key] = ''
         if regen: json_article[key] = ''
