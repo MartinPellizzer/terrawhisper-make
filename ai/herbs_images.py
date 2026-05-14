@@ -8,8 +8,8 @@ from lib import media
 from lib import polish
 from lib import zimage
 
-herbs_primary = data.herbs_primary_get()
-herbs_popular = data.herbs_popular_get('teas', 100)
+# herbs_primary = data.herbs_primary_get()
+# herbs_popular = data.herbs_popular_get('teas', 100)
 
 def gen_old():
     herbs = data.herbs_medicinal_get()
@@ -41,7 +41,6 @@ def gen_old():
         print()
         shutil.copy2(in_filepath, web_filepath)
 
-
 def herbs_gen(dispel=False):
     herbs = []
     if 1:
@@ -72,7 +71,35 @@ def herbs_gen(dispel=False):
                 output_filepath=f'{output_filepath}', 
                 prompt=prompt, width=768, height=768, seed=-1,
             )
+        quit()
+
+def herbs_gen_new(dispel=False):
+    rows = data.sqlite3__wikidata_powo_get_all()
+    herbs = [row[-2] for row in rows if row[-1] == 'SPECIES']
+    for herb_i, herb in enumerate(herbs):
+        print(f'{herb_i}/{len(herbs)} - {herb}')
+        herb_name_scientific = herb
+        herb_slug = polish.sluggify(herb_name_scientific)
+        ###
+        output_folderpath = f'''{g.WEBSITE_FOLDERPATH}/images/herbs/primary'''
+        output_filepath = f'''{output_folderpath}/{herb_slug}.jpg'''
+        try: os.makedirs(output_folderpath)
+        except: pass
+        if dispel:
+            try: os.remove(out_filepath)
+            except: pass
+            continue
+        ###
+        if not os.path.exists(output_filepath):
+            prompt = f'''
+                dry {herb_name_scientific} herb on a wooden table surrounded by other medicinal herbs,
+                rustic, vintage, boho,
+            '''.replace('  ', ' ')
+            zimage.image_create(
+                output_filepath=f'{output_filepath}', 
+                prompt=prompt, width=768, height=768, seed=-1,
+            )
 
 def gen():
-    herbs_gen(dispel=False)
+    herbs_gen_new(dispel=False)
 

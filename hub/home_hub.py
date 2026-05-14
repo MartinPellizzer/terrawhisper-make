@@ -1,3 +1,5 @@
+import os
+
 from lib import g
 from lib import io
 from lib import llm
@@ -122,6 +124,86 @@ def sentence__gen(json_article_filepath, key, title, brief, regen=False, dispel=
     return html
 
 def gen():
+    # items = data.studies__plants_popular_create()
+    items = data.studies__plants_popular_get()
+    plants_images = ''
+    items_counter = 0
+    for item in items[:]:
+        plant_name = item['plant_name']
+        plant_slug = polish.sluggify(plant_name)
+        plant_img_src = f'/images/herbs/{plant_slug}.jpg'
+        plant_filepath = f'{g.WEBSITE_FOLDERPATH}/images/herbs/{plant_slug}.jpg'
+        if os.path.exists(plant_filepath):
+            plants_images += f'''
+                <article>
+                    <a href="/herbs/{plant_slug}.html" style="text-decoration: none;">
+                        <img src="{plant_img_src}" alt="image of {plant_name} plant material on a wooden table" style="margin-bottom: 1.6rem;">
+                        <h3>{plant_name}</h3>
+                    </a>
+                </article>
+            '''
+            items_counter += 1
+            if items_counter >= 6: break
+
+    url_slug = f'herbal-medicine'
+    meta_title = f'Evidence-Based Herbal Medicine for Beginners | TerraWhisper'
+    meta_description = ''
+
+    background_color = '#000'
+    foreground_color = '#fff'
+    html_article = f'''
+        <section style="background: {background_color};">
+            <div class="m-flex" style="align-items: center;">
+                <div style="flex: 1;">
+                    <div class="container-md" style="margin: 0 0 0 auto;">
+                        <h1 style="color: {foreground_color};">
+                            Evidence-Based Herbal Medicine for Beginners
+                        </h1>
+                        <p style="color: {foreground_color};">
+                            Explore science-backed herbal remedies, medicinal herbs, and research-based wellness information for everyday health.
+                        </p>
+                    </div>
+                </div>
+                <div style="flex: 1;">
+                    <img src="/images/home/sage.jpg" style="height: 800px; object-fit: cover;">
+                </div>
+            </div>
+        </section>
+        <section class="container-xl" style="margin-top: 9.6rem; margin-bottom: 9.6rem;">
+            <h2 style="text-align: center; margin-bottom: 1.6rem;">Browse Medicinal Herbs</h2>
+            <p style="text-align: center; margin-bottom: 4.8rem;">Visit out Materia Medica of more than 10,000 herbs and learn about medicinal plants uses, benefits, and even side-effects.</p>
+            <div class="grid-3" style="gap: 1.6rem; row-gap: 3.2rem;">
+                {plants_images}
+            </div>
+        </section>
+    '''
+
+    html = f'''
+        <!DOCTYPE html>
+        <html lang="en">
+        {components.html_head(meta_title, meta_description, css='/styles.css')}
+        <body class="home">
+            {sections.header_default()}
+            {html_article}
+            {sections.footer()}
+        </body>
+        </html>
+    '''
+    html_filepath = f'''{g.website_folderpath}/index.html'''
+    with open(html_filepath, 'w') as f: f.write(html)
+
+    quit()
+
+
+
+
+
+
+
+
+
+
+
     url_slug = f'herbal-medicine'
     meta_title = f'Learn Herbal Medicine'
     meta_description = ''

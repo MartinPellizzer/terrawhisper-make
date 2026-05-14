@@ -1,3 +1,4 @@
+import os
 import shutil
 import textwrap
 import sqlite3
@@ -235,12 +236,13 @@ def plants__plant__gen():
         with open(html_filepath, 'w') as f: f.write(html)
         # quit()
 
-def plants__plant__new_gen():
+def plants__plant():
     import textwrap
     rows = data.sqlite3__wikidata_powo_get_all()
     rows = [row for row in rows if row[-1] == 'SPECIES']
 
     ###
+    images_found = 0
     for row_i, row in enumerate(rows):
         print(row_i)
         plant_name = row[-2]
@@ -254,6 +256,11 @@ def plants__plant__new_gen():
         plant_species = row[10]
         plant_slug = polish.sluggify(plant_name)
         url_slug = f'herbs/{plant_slug}'
+        image_filepath = f"{g.WEBSITE_FOLDERPATH}/images/herbs/{plant_slug}.jpg"
+        print(image_filepath)
+        if os.path.exists(image_filepath):
+            images_found += 1
+        print(images_found)
 
         ########################################
         # json
@@ -367,6 +374,64 @@ def plants__plant__new_gen():
                 io.json_write(json_article_filepath, json_article)
                 print(json_article_filepath)
 
+        regen = regen_function
+        dispel = dispel_function
+        key = 'preparations'
+        if key not in json_article: json_article[key] = ''
+        if regen: json_article[key] = ''
+        if dispel: 
+            json_article[key] = ''
+            io.json_write(json_article_filepath, json_article)
+            continue
+        if not dispel:
+            if json_article[key] == '':
+                import textwrap
+                prompt = textwrap.dedent(f'''
+                    Write a paragraph in 4-6 sentences about the herbal preparation forms with this plant: {plant_name}.
+                    The first sentence must answer in the most direct, clear, detailed way possible without fluff.
+                    The following sentences must give more details about this topic.
+                    Don't give me bold or italicized text. 
+                    Reply only with the content.
+                    Start the reply with the following words: "{plant_name} is prepared "
+                    /no_think
+                ''').strip()
+                reply = llm.reply(prompt, model_filepath)
+                if '</think>' in reply:
+                    reply = reply.split('</think>')[1].strip()
+                reply = polish.vanilla(reply)
+                json_article[key] = reply
+                io.json_write(json_article_filepath, json_article)
+                print(json_article_filepath)
+
+        regen = regen_function
+        dispel = dispel_function
+        key = 'side_effects'
+        if key not in json_article: json_article[key] = ''
+        if regen: json_article[key] = ''
+        if dispel: 
+            json_article[key] = ''
+            io.json_write(json_article_filepath, json_article)
+            continue
+        if not dispel:
+            if json_article[key] == '':
+                import textwrap
+                prompt = textwrap.dedent(f'''
+                    Write a paragraph in 4-6 sentences about the possible side effects of this plant: {plant_name}.
+                    The first sentence must answer in the most direct, clear, detailed way possible without fluff.
+                    The following sentences must give more details about this topic.
+                    Don't give me bold or italicized text. 
+                    Reply only with the content.
+                    Start the reply with the following words: "{plant_name} can "
+                    /no_think
+                ''').strip()
+                reply = llm.reply(prompt, model_filepath)
+                if '</think>' in reply:
+                    reply = reply.split('</think>')[1].strip()
+                reply = polish.vanilla(reply)
+                json_article[key] = reply
+                io.json_write(json_article_filepath, json_article)
+                print(json_article_filepath)
+
         ########################################
         # html
         ########################################
@@ -374,6 +439,7 @@ def plants__plant__new_gen():
             <h1>
                 {plant_name}
             </h1>
+            <img src="/images/herbs/{plant_slug}.jpg">
             <section>
                 <h2>
                     What's the taxonomical classification of {plant_name}?
@@ -436,6 +502,14 @@ def plants__plant__new_gen():
                 <h2>What diseases this plant treats?</h2>
                 <p>
                     {json_article['diseases']}
+                </p>
+                <h2>What are the herbal preparations of {plant_name}?</h2>
+                <p>
+                    {json_article['preparations']}
+                </p>
+                <h2>What side-effects this plant can have?</h2>
+                <p>
+                    {json_article['side_effects']}
                 </p>
             </section>
         '''
@@ -675,8 +749,7 @@ def plants__all__gen():
 
 
 def main():
-    # plants__plant__gen()
-    plants__plant__new_gen()
+    plants__plant()
     # plants__all__gen()
     # plants__taxonomy__gen()
     # plants__families__gen()

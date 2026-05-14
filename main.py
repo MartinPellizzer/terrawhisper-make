@@ -8,6 +8,7 @@ shutil.copy2('styles-tmp.css', f'{g.website_folderpath}/styles-tmp.css')
 shutil.copy2('styles.css', f'{g.website_folderpath}/styles.css')
 shutil.copy2('styles-herb-monograph.css', f'{g.website_folderpath}/styles-herb-monograph.css')
 
+# [0000] HOME
 # HERBS..........................[HRB]
 # PREPARATIONS...................[PRP]
 # AILMENTS.......................[ALM]
@@ -18,7 +19,6 @@ shutil.copy2('styles-herb-monograph.css', f'{g.website_folderpath}/styles-herb-m
 # SPIRITUALITY...................[SPR]
 # ART............................[ART]
 # SHOP...........................[SHP]
-# HOME...........................[HOM]
 
 ########################################
 # IMAGES.........................[IMG]
@@ -226,7 +226,7 @@ if 0:
 ########################################
 # HERBAL MEDICINE
 ########################################
-if 1:
+if 0:
     if 0:
         from ai import herbal_medicine_images
         herbal_medicine_images.main()
@@ -234,10 +234,10 @@ if 1:
         from hub import herbal_medicine_hub
         herbal_medicine_hub.main()
 
-########################################
-# HOME...........................[HOM]
-########################################
-if 0:
+##########################################################################################
+# [0000] HOME
+##########################################################################################
+if 1:
     if 0:
         ### OLD
         from lib import pag_home

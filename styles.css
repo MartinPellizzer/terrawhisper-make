@@ -3,6 +3,11 @@
     --color-white-whisper: #f7f6f2;
 }
 
+@font-face {
+    font-family: LibreBaskerville-Regular;
+    src: url("./assets/fonts/Libre_Baskerville/static/LibreBaskerville-Regular.ttf");
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -14,7 +19,7 @@ html {
 }
 
 body {
-    font-size: 1.6rem;
+    font-size: 1.8rem;
     line-height: 1.6;
     font-family: sans-serif;
     color: #333;
@@ -39,6 +44,45 @@ body {
     margin: 0 auto;
     padding-left: 1.6rem;
     padding-right: 1.6rem;
+}
+
+h1 {
+    font-family: LibreBaskerville-Regular;
+    font-size: 7.2rem;
+    line-height: 1.2;
+    margin-bottom: 1.6rem;
+    color: var(--color-carbon-powder);
+}
+
+h2 {
+    font-family: LibreBaskerville-Regular;
+    font-size: 4.8rem;
+    line-height: 1.2;
+    margin-bottom: 1.6rem;
+    color: var(--color-carbon-powder);
+}
+
+h3 {
+    font-family: LibreBaskerville-Regular;
+    font-size: 2.4rem;
+    line-height: 1.2;
+    margin-bottom: 1.6rem;
+    color: var(--color-carbon-powder);
+}
+
+img {
+    width: 100%;
+    display: block;
+}
+
+.grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.grid-4 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
 }
 
 /*********************************************/
