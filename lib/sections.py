@@ -13,8 +13,6 @@ def header_default():
             <nav class="main-nav" aria-label="Main Navigation">
                 <ul class="nav-links">
                 <li><a href="/herbs.html">Herbs</a></li>
-                <li><a href="/preparations.html">Preparations</a></li>
-                <li><a href="/ailments.html">Ailments</a></li>
                 </ul>
             </nav>
             <!-- Hamburger button -->
@@ -27,6 +25,10 @@ def header_default():
     '''
     return html
 
+    '''
+                <li><a href="/preparations.html">Preparations</a></li>
+                <li><a href="/ailments.html">Ailments</a></li>
+    '''
 def header():
     html = f'''
         <header>

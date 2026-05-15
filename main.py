@@ -9,7 +9,7 @@ shutil.copy2('styles.css', f'{g.website_folderpath}/styles.css')
 shutil.copy2('styles-herb-monograph.css', f'{g.website_folderpath}/styles-herb-monograph.css')
 
 # [0000] HOME
-# HERBS..........................[HRB]
+# [0001] HERBS
 # PREPARATIONS...................[PRP]
 # AILMENTS.......................[ALM]
 # EQUIPMENT......................[EQP]
@@ -160,7 +160,7 @@ if 0:
         pag_shop.gen()
 
 ########################################
-# HERBS..........................[HRB]
+# [0001] HERBS
 ########################################
 ### RUN ONLY WHEN NEW WCVP FILE
 if 0:
@@ -168,7 +168,7 @@ if 0:
     herbs_data.main()
     quit()
 
-if 0:
+if 1:
     from ai import herbs_ai
     herbs_ai.main()
     quit()

@@ -29,6 +29,30 @@ def tsv_to_json(input_filepath):
             item[headings[i]] = values[i].strip()
         items.append(item)
     return items
+'''
+input_filepath = (
+    f'{g.SSOT_FOLDERPATH}/datasets/oregano/oregano-master/Integration/Integration V3/GESTION_ID/TARGET.tsv'
+)
+items = tsv_to_json(input_filepath)
+targets_labels = []
+for item in items[:]:
+    # print(json.dumps(item, indent=4))
+    target_id = item['ID_OREGANO:26317']
+    found = False
+    for target_label in targets_labels:
+        if target_label['name'] == target_id.split(':')[0]:
+            target_label['count'] += 1
+            found = True
+            break
+    if not found:
+        targets_labels.append({
+            'name': target_id.split(':')[0],
+            'count': 1,
+        })
+print(targets_labels)
+    
+quit()
+'''
 
 def json__items_preview(json_filepath, num_items=10):
     items = io.json_read(json_filepath)

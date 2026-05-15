@@ -12,6 +12,8 @@ herbs_wcvp = None
 
 herbs_num = 140000
 
+model_filepath = '/home/ubuntu/vault-tmp/llm/gemma-4-26B-A4B-it-UD-Q4_K_XL.gguf'
+
 def medicine_poison_inert_get(tmp_filepath):
     tmp_data = io.json_read(tmp_filepath)
     try: tmp_medicine_poison_inert = tmp_data['medicine_poison_inert'] 
@@ -723,7 +725,7 @@ def herb_medicinal_actions_gen(herb_filepath, regen=False, clear=False):
 def herb_active_compounds_gen(herb_filepath, regen=False, clear=False):
     entity_herb = io.json_read(herb_filepath)
     herb_name_scientific = entity_herb['herb_name_scientific']
-    key = 'herb_active_compounds'
+    key = 'compounds__llm_list_1_try_raw'
     if key not in entity_herb: entity_herb[key] = ''
     if regen: entity_herb[key] = ''
     if clear: 
@@ -731,7 +733,8 @@ def herb_active_compounds_gen(herb_filepath, regen=False, clear=False):
         io.json_write(herb_filepath, entity_herb)
         return
     if entity_herb[key] == '' or entity_herb[key] == []:
-        main_list_text = f'''
+        '''
+        main_list_text = f"""
             alkaloids 
             flavonoids 
             terpenoids
@@ -740,44 +743,50 @@ def herb_active_compounds_gen(herb_filepath, regen=False, clear=False):
             tannins
             saponin
             essential oils
-        '''.strip()
+        """.strip()
+        '''
         outputs = []
-        for i in range(10):
+        for i in range(1):
             print(f'{i} - {herb_name_scientific}')
             import textwrap
+            '''
             main_list_prompt = [e.strip() for e in main_list_text.split('\n') if e.strip() != '']
             random.shuffle(main_list_prompt)
             main_list_prompt = '\n'.join(main_list_prompt)
+            '''
             prompt = textwrap.dedent(f''' 
-                Tell me the active compounds of the following plant with scientific name: {herb_name_scientific}.
+                Tell me the primary medicinal compounds of the following plant: {herb_name_scientific}.
+                By medicinal compounds, I mean things like alkaloids, flavonoids, terpenoids, etc.
                 In specific, write a confidence score from 1 to 10, indicating how sure you are about your answer.
-                The possible active compounds are the following:
-                {main_list_prompt}
                 Reply using the following JSON format:
                 [
-                    {{"answer": "write active compound name 1 here", "score": "write score 1 here"}},
-                    {{"answer": "write active compound name 2 here", "score": "write score 2 here"}},
-                    {{"answer": "write active compound name 3 here", "score": "write score 3 here"}},
-                    {{"answer": "write active compound name 4 here", "score": "write score 4 here"}},
-                    {{"answer": "write active compound name 5 here", "score": "write score 5 here"}},
-                    {{"answer": "write active compound name 6 here", "score": "write score 6 here"}},
-                    {{"answer": "write active compound name 7 here", "score": "write score 7 here"}},
-                    {{"answer": "write active compound name 8 here", "score": "write score 8 here"}}
+                    {{"answer": "write compound name 1 here", "score": "write score 1 here"}}
                 ]
                 Reply only with the JSON.
+                If you don't know the answer, reply with "NONE".
             ''').strip()
+            '''
+                The possible active compounds are the following:
+                {main_list_prompt}
+            '''
             prompt += f'\n/no_think'
             print(prompt)
-            reply = llm.reply(prompt)
+            reply = llm.reply(prompt, model_filepath=model_filepath)
             if '</think>' in reply:
                 reply = reply.split('</think>')[1].strip()
+            reply_clean = ''
+            for line in reply.split('\n'):
+                line = line.strip()
+                if line == '': continue
+                if line.startswith('`'): continue
+                reply_clean += f'{line}\n'
             json_data = {}
-            try: json_data = json.loads(reply)
+            try: json_data = json.loads(reply_clean)
             except: pass 
             if json_data != {}:
                 _objs = answer_score_extract(json_data)
                 for _obj in _objs:
-                    answer = _obj['answer'].strip().lower()
+                    answer = _obj['answer'].strip()
                     score = int(_obj['score'])
                     found = False
                     for output in outputs:
@@ -2763,12 +2772,46 @@ def herbs_medicinal_validated_gen():
         print()
         print()
 
+def herbs_wiki_powo_species():
+    rows = data.sqlite3__wikidata_powo_get_all()
+    rows = [row for row in rows if row[-1] == 'SPECIES']
+
+    output_folderpath = f'{g.SSOT_FOLDERPATH}/herbs/herbs-wiki-powo-species'
+    try: os.mkdir(output_folderpath)
+    except: pass
+
+    for row_i, row in enumerate(rows):
+        print('####################################')
+        print(f'{row_i}/{len(rows)} - {row}')
+        print('####################################')
+        ###
+        herb_name_scientific = row[-2]
+        herb_slug = polish.sluggify(herb_name_scientific)
+        ###
+        output_filepath = f'''{output_folderpath}/{herb_slug}.json'''
+        herb_data = io.json_read(output_filepath, create=True)
+        herb_data['herb_slug'] = herb_slug
+        herb_data['herb_name_scientific'] = herb_name_scientific
+        io.json_write(output_filepath, herb_data)
+        ###
+        herb_active_compounds_gen(output_filepath, regen=False, clear=False)
+        continue
+        ###
+        herb_medicine_conditions_gen(herb_filepath, regen=False, clear=False)
+        herb_preparations_monograph_gen(herb_filepath, regen=False, clear=False)
+        herb_actions_gen(herb_filepath, regen=False, clear=False)
+        herb_preparations_gen(herb_filepath, regen=False, clear=False)
+        herb_symptoms_gen(herb_filepath, regen=False, clear=False)
+
+        print()
+        print()
+        print()
+
 def main():
-    herbs_medicinal_validated_gen()
+    # herbs_medicinal_validated_gen()
     # herbs_primary_gen()
     # herbs_popular_gen()
-
     # herbs_primary_report()
-
     # herbs_wcvp_medicinal_gen()
 
+    herbs_wiki_powo_species()
