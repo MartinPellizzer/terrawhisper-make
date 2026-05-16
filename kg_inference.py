@@ -11,6 +11,7 @@ from lib import io
 from lib import kg
 from lib import llm
 from lib import data
+from lib import utils
 from lib import polish
 from lib import components
 from lib import sections
@@ -325,31 +326,59 @@ def plants__plant():
 
         regen = regen_function
         dispel = dispel_function
-        key = 'compounds'
-        if key not in json_article: json_article[key] = ''
-        if regen: json_article[key] = ''
-        if dispel: 
-            json_article[key] = ''
-            io.json_write(json_article_filepath, json_article)
-        if not dispel:
-            if json_article[key] == '':
-                import textwrap
-                prompt = textwrap.dedent(f'''
-                    Write a paragraph in 4-6 sentences about the medicinal compounds of this plant: {plant_name}.
-                    The first sentence must answer in the most direct, clear, detailed way possible without fluff.
-                    The following sentences must give more details about this topic.
-                    Don't give me bold or italicized text. 
-                    Reply only with the content.
-                    Start the reply with the following words: "{plant_name} contains "
-                    /no_think
-                ''').strip()
-                reply = llm.reply(prompt, model_filepath)
-                if '</think>' in reply:
-                    reply = reply.split('</think>')[1].strip()
-                reply = polish.vanilla(reply)
-                json_article[key] = reply
+        if 'compounds__llm_list_1_try_raw' in herb_llm_data and herb_llm_data['compounds__llm_list_1_try_raw'] != '':
+            key = 'compounds__llm_list_1_try_raw'
+            if key not in json_article: json_article[key] = ''
+            if regen: json_article[key] = ''
+            if dispel: 
+                json_article[key] = ''
                 io.json_write(json_article_filepath, json_article)
-                print(json_article_filepath)
+            if not dispel:
+                if json_article[key] == '':
+                    compounds_names = [item['answer'] for item in herb_llm_data['compounds__llm_list_1_try_raw']]
+                    compounds_names = ', '.join(compounds_names)
+                    prompt = textwrap.dedent(f'''
+                        Write a paragraph in 4-6 sentences about the medicinal compounds of this plant: {plant_name}.
+                        Include the following compounds: {compounds_names}.
+                        The first sentence must answer in the most direct, clear, detailed way possible without fluff.
+                        The following sentences must give more details about this topic.
+                        Don't give me bold or italicized text. 
+                        Reply only with the content.
+                        Start the reply with the following words: "This plant contains "
+                        /no_think
+                    ''').strip()
+                    reply = llm.reply(prompt, model_filepath)
+                    if '</think>' in reply:
+                        reply = reply.split('</think>')[1].strip()
+                    reply = polish.vanilla(reply)
+                    json_article[key] = reply
+                    io.json_write(json_article_filepath, json_article)
+                    print(json_article_filepath)
+        else:
+            key = 'compounds'
+            if key not in json_article: json_article[key] = ''
+            if regen: json_article[key] = ''
+            if dispel: 
+                json_article[key] = ''
+                io.json_write(json_article_filepath, json_article)
+            if not dispel:
+                if json_article[key] == '':
+                    prompt = textwrap.dedent(f'''
+                        Write a paragraph in 4-6 sentences about the medicinal compounds of this plant: {plant_name}.
+                        The first sentence must answer in the most direct, clear, detailed way possible without fluff.
+                        The following sentences must give more details about this topic.
+                        Don't give me bold or italicized text. 
+                        Reply only with the content.
+                        Start the reply with the following words: "{plant_name} contains "
+                        /no_think
+                    ''').strip()
+                    reply = llm.reply(prompt, model_filepath)
+                    if '</think>' in reply:
+                        reply = reply.split('</think>')[1].strip()
+                    reply = polish.vanilla(reply)
+                    json_article[key] = reply
+                    io.json_write(json_article_filepath, json_article)
+                    print(json_article_filepath)
 
         regen = regen_function
         dispel = dispel_function
@@ -438,32 +467,61 @@ def plants__plant():
 
         regen = regen_function
         dispel = dispel_function
-        key = 'diseases'
-        if key not in json_article: json_article[key] = ''
-        if regen: json_article[key] = ''
-        if dispel: 
-            json_article[key] = ''
-            io.json_write(json_article_filepath, json_article)
-            continue
-        if not dispel:
-            if json_article[key] == '':
-                import textwrap
-                prompt = textwrap.dedent(f'''
-                    Write a paragraph in 4-6 sentences about the diseases treated with this plant: {plant_name}.
-                    The first sentence must answer in the most direct, clear, detailed way possible without fluff.
-                    The following sentences must give more details about this topic.
-                    Don't give me bold or italicized text. 
-                    Reply only with the content.
-                    Start the reply with the following words: "This plant is used to treat "
-                    /no_think
-                ''').strip()
-                reply = llm.reply(prompt, model_filepath)
-                if '</think>' in reply:
-                    reply = reply.split('</think>')[1].strip()
-                reply = polish.vanilla(reply)
-                json_article[key] = reply
+        key = 'ailments'
+        if 'ailments_llm_list_1_try_hint' in herb_llm_data and herb_llm_data['ailments_llm_list_1_try_hint'] != '':
+            key = 'ailments_llm_list_1_try_hint'
+            if key not in json_article: json_article[key] = ''
+            if regen: json_article[key] = ''
+            if dispel: 
+                json_article[key] = ''
                 io.json_write(json_article_filepath, json_article)
-                print(json_article_filepath)
+                continue
+            if not dispel:
+                if json_article[key] == '':
+                    import textwrap
+                    prompt = textwrap.dedent(f'''
+                        Write a paragraph in 4-6 sentences about the common ailments treated with this plant: {plant_name}.
+                        The first sentence must answer in the most direct, clear, detailed way possible without fluff.
+                        The following sentences must give more details about this topic.
+                        Don't give me bold or italicized text. 
+                        Reply only with the content.
+                        Start the reply with the following words: "This plant is used to treat "
+                        /no_think
+                    ''').strip()
+                    reply = llm.reply(prompt, model_filepath)
+                    if '</think>' in reply:
+                        reply = reply.split('</think>')[1].strip()
+                    reply = polish.vanilla(reply)
+                    json_article[key] = reply
+                    io.json_write(json_article_filepath, json_article)
+                    print(json_article_filepath)
+        else:
+            key = 'ailments_llm_list_1_try_hint'
+            if key not in json_article: json_article[key] = ''
+            if regen: json_article[key] = ''
+            if dispel: 
+                json_article[key] = ''
+                io.json_write(json_article_filepath, json_article)
+                continue
+            if not dispel:
+                if json_article[key] == '':
+                    import textwrap
+                    prompt = textwrap.dedent(f'''
+                        Write a paragraph in 4-6 sentences about the common ailments treated with this plant: {plant_name}.
+                        The first sentence must answer in the most direct, clear, detailed way possible without fluff.
+                        The following sentences must give more details about this topic.
+                        Don't give me bold or italicized text. 
+                        Reply only with the content.
+                        Start the reply with the following words: "This plant is used to treat "
+                        /no_think
+                    ''').strip()
+                    reply = llm.reply(prompt, model_filepath)
+                    if '</think>' in reply:
+                        reply = reply.split('</think>')[1].strip()
+                    reply = polish.vanilla(reply)
+                    json_article[key] = reply
+                    io.json_write(json_article_filepath, json_article)
+                    print(json_article_filepath)
 
         regen = regen_function
         dispel = dispel_function
@@ -523,18 +581,26 @@ def plants__plant():
                 io.json_write(json_article_filepath, json_article)
                 print(json_article_filepath)
 
+        html_decorator = ''
         herb_compounds_list = ''
         if 'compounds__llm_list_1_try_raw' in herb_llm_data and herb_llm_data['compounds__llm_list_1_try_raw'] != '':
             herb_compounds_list = herb_llm_data['compounds__llm_list_1_try_raw']
             herb_compounds_list_html = ''
+            herb_compounds_list_html += '<p>The primary medicinal compounds of this plant are shown in the list below.</p>'
             herb_compounds_list_html += '<ul>'
             for item in herb_compounds_list:
-                herb_compounds_list_html += f'''<li>{item['answer']}</li>'''
+                herb_compounds_list_html += f'''<li>{item['answer'].capitalize()}</li>'''
             herb_compounds_list_html += '</ul>'
+        if 'compounds__llm_list_1_try_raw' in json_article and json_article['compounds__llm_list_1_try_raw'] != '':
+            compounds_paragraph = utils.format_1N1(json_article['compounds__llm_list_1_try_raw'])
+            html_decorator = '<div style="background-color: #111; height: 4px; width: 10px; margin-bottom: 1.6rem;"></div>'
+        else:
+            compounds_paragraph = utils.format_1N1(json_article['compounds'])
         html_compounds = f'''
             <h2>What medicinal compounds this plant contains?</h2>
+            {html_decorator}
             <p>
-                {json_article['compounds']}
+                {compounds_paragraph}
             </p>
             {herb_compounds_list_html}
         '''
@@ -650,7 +716,6 @@ def plants__plant():
         html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
         with open(html_filepath, 'w') as f: f.write(html)
         print(html_filepath)
-        # quit()
 
 def plants__families__gen():
     def neo4j_families_get(tx):
