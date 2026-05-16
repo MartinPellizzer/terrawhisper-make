@@ -479,8 +479,11 @@ def plants__plant():
             if not dispel:
                 if json_article[key] == '':
                     import textwrap
+                    hint = [item['answer'] for item in herb_llm_data['ailments_llm_list_1_try_hint']]
+                    hint = ', '.join(hint)
                     prompt = textwrap.dedent(f'''
                         Write a paragraph in 4-6 sentences about the common ailments treated with this plant: {plant_name}.
+                        Include the following: {hint}.
                         The first sentence must answer in the most direct, clear, detailed way possible without fluff.
                         The following sentences must give more details about this topic.
                         Don't give me bold or italicized text. 
@@ -496,7 +499,7 @@ def plants__plant():
                     io.json_write(json_article_filepath, json_article)
                     print(json_article_filepath)
         else:
-            key = 'ailments_llm_list_1_try_hint'
+            key = 'ailments'
             if key not in json_article: json_article[key] = ''
             if regen: json_article[key] = ''
             if dispel: 
@@ -581,6 +584,11 @@ def plants__plant():
                 io.json_write(json_article_filepath, json_article)
                 print(json_article_filepath)
 
+        ########################################
+        # html
+        ########################################
+        # COMPOUNDS
+        # ---
         html_decorator = ''
         herb_compounds_list = ''
         if 'compounds__llm_list_1_try_raw' in herb_llm_data and herb_llm_data['compounds__llm_list_1_try_raw'] != '':
@@ -604,9 +612,31 @@ def plants__plant():
             </p>
             {herb_compounds_list_html}
         '''
-        ########################################
-        # html
-        ########################################
+
+        # AILMENTS
+        # ---
+        html_decorator = ''
+        if 'ailments_llm_list_1_try_hint' in herb_llm_data and herb_llm_data['ailments_llm_list_1_try_hint'] != '':
+            html_list = ''
+            html_list += '<p>The main common ailment treated using this plant are shown in the list below.</p>'
+            html_list += '<ul>'
+            for item in herb_llm_data['ailments_llm_list_1_try_hint']:
+                html_list += f'''<li>{item['answer'].capitalize()}</li>'''
+            html_list += '</ul>'
+        if 'ailments_llm_list_1_try_hint' in json_article and json_article['ailments_llm_list_1_try_hint'] != '':
+            html_paragraph = utils.format_1N1(json_article['ailments_llm_list_1_try_hint'])
+            html_decorator = '<div style="background-color: #111; height: 4px; width: 10px; margin-bottom: 1.6rem;"></div>'
+        else:
+            html_paragraph = utils.format_1N1(json_article['ailments'])
+        html_ailments = f'''
+            <h2>What common ailments are treated using this plant?</h2>
+            {html_decorator}
+            <p>
+                {html_paragraph}
+            </p>
+            {html_list}
+        '''
+
         html_article = f'''
             <h1>
                 {plant_name}
@@ -676,10 +706,7 @@ def plants__plant():
                 <p>
                     {json_article['actions']}
                 </p>
-                <h2>What diseases this plant treats?</h2>
-                <p>
-                    {json_article['diseases']}
-                </p>
+                {html_ailments}
                 <h2>What are the herbal preparations of {plant_name}?</h2>
                 <p>
                     {json_article['preparations']}

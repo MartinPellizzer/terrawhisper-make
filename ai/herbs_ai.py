@@ -2876,7 +2876,7 @@ def herbs_wiki_powo_species():
         io.json_write(output_filepath, herb_data)
         ###
         herb_active_compounds_gen(output_filepath, regen=False, clear=False)
-        herb_ailments_llm_list_1_try_hint_gen(herb_filepath, regen=False, clear=False)
+        herb_ailments_llm_list_1_try_hint_gen(output_filepath, regen=False, clear=False)
         continue
         ###
         herb_preparations_monograph_gen(herb_filepath, regen=False, clear=False)

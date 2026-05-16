@@ -4,7 +4,8 @@ llm = None
 def reply(prompt, model_filepath='', temperature=1):
     global llm
     if model_filepath == '':
-        model_filepath = '/home/ubuntu/vault-tmp/llm/Qwen3-8B-Q4_K_M.gguf'
+        # model_filepath = '/home/ubuntu/vault-tmp/llm/Qwen3-8B-Q4_K_M.gguf'
+        model_filepath = '/home/ubuntu/vault-tmp/llm/gemma-4-26B-A4B-it-UD-Q4_K_XL.gguf'
     if llm == None:
         llm = Llama(
               model_path=model_filepath,
