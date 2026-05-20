@@ -1,6 +1,12 @@
 import sqlite3
 
+from neo4j import GraphDatabase
+
 from lib import g
+from lib import io
+
+neo4j_user = io.file_read(f'{g.DATABASE_FOLDERPATH}/neo4j-user.txt').strip()
+neo4j_pass = io.file_read(f'{g.DATABASE_FOLDERPATH}/neo4j-pass.txt').strip()
 
 def sqlite3__table_preview(table_name, num_rows=10):
     conn = sqlite3.connect(f'{g.SSOT_FOLDERPATH}/sqlite/database.db')
@@ -99,4 +105,43 @@ def sqlite3__terra_compound_name_get(terra_id):
     elif taxonomy_npclassifier_pathway != None or taxonomy_npclassifier_pathway != '': best_name = taxonomy_npclassifier_pathway
     conn.close()
     return best_name 
+
+
+def neo4j__study_plants_get():
+    driver = GraphDatabase.driver("bolt://localhost:7687", auth=(neo4j_user, neo4j_pass))
+    with driver.session() as session:
+        result = session.run("""
+            MATCH (p:PLANT)
+            RETURN p.id AS plant_name
+            ORDER BY plant_name
+        """)
+        plants = [record["plant_name"] for record in result]
+    driver.close()
+    return plants
+
+def neo4j__get_plant_compounds(plant_name):
+    driver = GraphDatabase.driver("bolt://localhost:7687", auth=(neo4j_user, neo4j_pass))
+    with driver.session() as session:
+        result = session.run("""
+            MATCH (p:PLANT)-[:CONTAINS]->(c:COMPOUND)
+            WHERE p.id = $plant_name
+            RETURN p.id AS plant, c.id AS compound
+            ORDER BY compound
+        """, plant_name=plant_name)
+        rows = [dict(record) for record in result]
+    driver.close()
+    return rows
+
+def neo4j__get_plant_health_problems(plant_name):
+    driver = GraphDatabase.driver("bolt://localhost:7687", auth=(neo4j_user, neo4j_pass))
+    with driver.session() as session:
+        result = session.run("""
+            MATCH (p:PLANT)-[:TREATS]->(c:HEALTH_PROBLEM)
+            WHERE p.id = $plant_name
+            RETURN p.id AS plant, c.id AS health_problem
+            ORDER BY health_problem
+        """, plant_name=plant_name)
+        rows = [dict(record) for record in result]
+    driver.close()
+    return rows
 

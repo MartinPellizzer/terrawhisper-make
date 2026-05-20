@@ -2437,7 +2437,7 @@ def herb_actions_llm_list_1_try_hint_gen(herb_filepath, regen=False, clear=False
                 if line.startswith('`'): continue
                 reply_clean += f'{line}\n'
             json_data = {}
-            try: json_data = json.loads(reply)
+            try: json_data = json.loads(reply_clean)
             except: pass 
             if json_data != {}:
                 _objs = []
@@ -2483,7 +2483,7 @@ def herb_actions_llm_list_1_try_hint_gen(herb_filepath, regen=False, clear=False
         print('***********************')
         print('***********************')
         print('***********************')
-        entity_herb[key] = outputs
+        entity_herb[key] = outputs_final
         print(herb_filepath)
         io.json_write(herb_filepath, entity_herb)
         # print(entity_herb)
@@ -2526,7 +2526,7 @@ def herb_ailments_llm_list_1_try_hint_gen(herb_filepath, regen=False, clear=Fals
                 if line.startswith('`'): continue
                 reply_clean += f'{line}\n'
             json_data = {}
-            try: json_data = json.loads(reply)
+            try: json_data = json.loads(reply_clean)
             except: pass 
             if json_data != {}:
                 _objs = []
@@ -2572,7 +2572,191 @@ def herb_ailments_llm_list_1_try_hint_gen(herb_filepath, regen=False, clear=Fals
         print('***********************')
         print('***********************')
         print('***********************')
-        entity_herb[key] = outputs
+        entity_herb[key] = outputs_final
+        print(herb_filepath)
+        io.json_write(herb_filepath, entity_herb)
+        # print(entity_herb)
+        # quit()
+
+def herb_preparations_llm_list_1_try_hint_gen(herb_filepath, regen=False, clear=False):
+    entity_herb = io.json_read(herb_filepath)
+    herb_name_scientific = entity_herb['herb_name_scientific']
+    key = 'preparations_llm_list_1_try_hint'
+    if key not in entity_herb: entity_herb[key] = ''
+    if regen: entity_herb[key] = ''
+    if clear: 
+        entity_herb[key] = ''
+        io.json_write(herb_filepath, entity_herb)
+        return
+    if entity_herb[key] == '' or entity_herb[key] == []:
+        outputs = []
+        for i in range(1):
+            print(f'{i} - {herb_name_scientific}')
+            import textwrap
+            prompt = textwrap.dedent(f''' 
+                Tell me the main herbal preparations of the following plant: {herb_name_scientific}.
+                By herbal preparations I mean things like infusions, tinctures, essential oils, etc.
+                In specific, write a confidence score from 1 to 10, indicating how sure you are about your answer.
+                Reply using the following JSON format:
+                [
+                    {{"answer": "write preparation name 1 here", "score": "write score 1 here"}}
+                ]
+                Reply only with the JSON.
+                Reply using as few words as possible.
+                If you don't know the answer, reply only with the word "NONE".
+            ''').strip()
+            prompt += f'\n/no_think'
+            print(prompt)
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply_clean = ''
+            for line in reply.split('\n'):
+                line = line.strip()
+                if line == '': continue
+                if line.startswith('`'): continue
+                reply_clean += f'{line}\n'
+            json_data = {}
+            try: json_data = json.loads(reply_clean)
+            except: pass 
+            if json_data != {}:
+                _objs = []
+                for item in json_data:
+                    try: answer = item['answer']
+                    except: continue
+                    try: score = item['score']
+                    except: continue
+                    if answer.lower().strip() == 'none': continue
+                    _objs.append({
+                        "answer": answer, 
+                        "score": score,
+                    })
+                for _obj in _objs:
+                    answer = _obj['answer'].strip().lower()
+                    score = int(_obj['score'])
+                    found = False
+                    for output in outputs:
+                        if answer in output['answer']: 
+                            output['mentions'] += 1
+                            output['confidence_score'] += int(score)
+                            found = True
+                            break
+                    if not found:
+                        outputs.append({
+                            'answer': answer, 
+                            'mentions': 1, 
+                            'confidence_score': int(score), 
+                        })
+        outputs_final = []
+        for output in outputs:
+            outputs_final.append({
+                'answer': output['answer'],
+                'mentions': int(output['mentions']),
+                'confidence_score': int(output['confidence_score']),
+                'total_score': int(output['mentions']) * int(output['confidence_score']),
+            })
+        outputs_final = sorted(outputs_final, key=lambda x: x['total_score'], reverse=True)
+        print('***********************')
+        print('***********************')
+        print('***********************')
+        for output in outputs_final:
+            print(output)
+        print('***********************')
+        print('***********************')
+        print('***********************')
+        entity_herb[key] = outputs_final
+        print(herb_filepath)
+        io.json_write(herb_filepath, entity_herb)
+        # print(entity_herb)
+        # quit()
+
+def herb_side_effects_llm_list_1_try_hint_gen(herb_filepath, regen=False, clear=False):
+    entity_herb = io.json_read(herb_filepath)
+    herb_name_scientific = entity_herb['herb_name_scientific']
+    key = 'side_effects_llm_list_1_try_hint'
+    if key not in entity_herb: entity_herb[key] = ''
+    if regen: entity_herb[key] = ''
+    if clear: 
+        entity_herb[key] = ''
+        io.json_write(herb_filepath, entity_herb)
+        return
+    if entity_herb[key] == '' or entity_herb[key] == []:
+        outputs = []
+        for i in range(1):
+            print(f'{i} - {herb_name_scientific}')
+            import textwrap
+            prompt = textwrap.dedent(f''' 
+                Tell me the all possible health side effects the following plant: {herb_name_scientific}.
+                By side effects I mean things nausea, dizziness, etc.
+                In specific, write a confidence score from 1 to 10, indicating how sure you are about your answer.
+                Reply using the following JSON format:
+                [
+                    {{"answer": "write side effect name 1 here", "score": "write score 1 here"}}
+                ]
+                Reply only with the JSON.
+                Reply using as few words as possible.
+                If you don't know the answer, reply only with the word "NONE".
+            ''').strip()
+            prompt += f'\n/no_think'
+            print(prompt)
+            reply = llm.reply(prompt)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply_clean = ''
+            for line in reply.split('\n'):
+                line = line.strip()
+                if line == '': continue
+                if line.startswith('`'): continue
+                reply_clean += f'{line}\n'
+            json_data = {}
+            try: json_data = json.loads(reply_clean)
+            except: pass 
+            if json_data != {}:
+                _objs = []
+                for item in json_data:
+                    try: answer = item['answer']
+                    except: continue
+                    try: score = item['score']
+                    except: continue
+                    if answer.lower().strip() == 'none': continue
+                    _objs.append({
+                        "answer": answer, 
+                        "score": score,
+                    })
+                for _obj in _objs:
+                    answer = _obj['answer'].strip().lower()
+                    score = int(_obj['score'])
+                    found = False
+                    for output in outputs:
+                        if answer in output['answer']: 
+                            output['mentions'] += 1
+                            output['confidence_score'] += int(score)
+                            found = True
+                            break
+                    if not found:
+                        outputs.append({
+                            'answer': answer, 
+                            'mentions': 1, 
+                            'confidence_score': int(score), 
+                        })
+        outputs_final = []
+        for output in outputs:
+            outputs_final.append({
+                'answer': output['answer'],
+                'mentions': int(output['mentions']),
+                'confidence_score': int(output['confidence_score']),
+                'total_score': int(output['mentions']) * int(output['confidence_score']),
+            })
+        outputs_final = sorted(outputs_final, key=lambda x: x['total_score'], reverse=True)
+        print('***********************')
+        print('***********************')
+        print('***********************')
+        for output in outputs_final:
+            print(output)
+        print('***********************')
+        print('***********************')
+        print('***********************')
+        entity_herb[key] = outputs_final
         print(herb_filepath)
         io.json_write(herb_filepath, entity_herb)
         # print(entity_herb)
@@ -2974,6 +3158,8 @@ def herbs_wiki_powo_species():
         herb_active_compounds_gen(output_filepath, regen=False, clear=False)
         herb_actions_llm_list_1_try_hint_gen(output_filepath, regen=False, clear=False)
         herb_ailments_llm_list_1_try_hint_gen(output_filepath, regen=False, clear=False)
+        herb_preparations_llm_list_1_try_hint_gen(output_filepath, regen=False, clear=False)
+        herb_side_effects_llm_list_1_try_hint_gen(output_filepath, regen=False, clear=False)
         continue
         ###
         herb_preparations_monograph_gen(herb_filepath, regen=False, clear=False)

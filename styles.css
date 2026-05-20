@@ -77,6 +77,7 @@ img {
 
 ul {
     margin-left: 3.2rem;
+    margin-bottom: 1.6rem;
 }
 
 .grid-3 {
@@ -87,6 +88,28 @@ ul {
 .grid-4 {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+.reliability-1 {
+    display: inline-block;
+    background-color: #fef2f2;
+    padding: 0.8rem 1.6rem;
+    border-radius: 9999px;
+}
+
+.reliability-3 {
+    display: inline-block;
+    background-color: #fffbeb;
+    background-color: #f7fee7;
+    padding: 0.8rem 1.6rem;
+    border-radius: 9999px;
+}
+
+.reliability-4 {
+    display: inline-block;
+    background-color: #ecfdf5;
+    padding: 0.8rem 1.6rem;
+    border-radius: 9999px;
 }
 
 /*********************************************/

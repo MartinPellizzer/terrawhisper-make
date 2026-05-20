@@ -1,7 +1,7 @@
 from llama_cpp import Llama
 
 llm = None
-def reply(prompt, model_filepath='', temperature=1):
+def reply(prompt, model_filepath='', temperature=1, n_ctx=16386, max_tokens=1024):
     global llm
     if model_filepath == '':
         # model_filepath = '/home/ubuntu/vault-tmp/llm/Qwen3-8B-Q4_K_M.gguf'
@@ -11,7 +11,7 @@ def reply(prompt, model_filepath='', temperature=1):
               model_path=model_filepath,
               n_gpu_layers=-1, # Uncomment to use GPU acceleration
               # seed=1337, # Uncomment to set a specific seed
-              n_ctx=16384, # Uncomment to increase the context window
+              n_ctx=n_ctx, # Uncomment to increase the context window
         )
     chat_history = []
     chat_history.append({'role': 'user', 'content': prompt})
@@ -22,6 +22,7 @@ def reply(prompt, model_filepath='', temperature=1):
         temperature=temperature,
         top_p=0.95,
         top_k=64,
+        max_tokens=max_tokens,
     )
     llm_response = ''
     for piece in stream:
