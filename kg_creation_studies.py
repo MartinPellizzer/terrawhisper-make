@@ -8,21 +8,19 @@ from lib import g
 from lib import io
 from lib import kg
 from lib import llm
+from lib import polish
 
 model_filepath = '/home/ubuntu/vault-tmp/llm/gemma-4-26B-A4B-it-UD-Q4_K_XL.gguf'
 
 neo4j_user = io.file_read(f'{g.DATABASE_FOLDERPATH}/neo4j-user.txt').strip()
 neo4j_pass = io.file_read(f'{g.DATABASE_FOLDERPATH}/neo4j-pass.txt').strip()
 
-def relationship_extract_raw(output_foldename, node_1, relationship, node_2):
+def relationship_extract_raw(output_foldename, node_1, relationship, node_2, rules):
     input_foldername = 'medicinal-plant'
     input_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/studies/pubmed/{input_foldername}/json'
     output_folderpath = f'{g.SSOT_FOLDERPATH}/studies/extraction/{output_foldername}'
     try: os.mkdir(output_folderpath)
     except: pass
-    rules = f'''
-            Always write the names of the plants in latin binomial scientific name, no common names or abbreviated names.
-    '''
     relationships_found = []
     input_filenames = os.listdir(input_folderpath)
     i = 0
@@ -110,6 +108,7 @@ def relationship_txt_to_json(output_foldername, node_1, relationship, node_2):
                     f'{node1_type}': node1,
                     f'relationship': relationship_llm,
                     f'{node2_type}': node2,
+                    f'source_id': input_filename.split('.')[0],
                 }
                 output_items.append(output_item)
     for output_item in output_items:
@@ -153,8 +152,8 @@ def neo4j__clear():
         session.execute_write(drop_indexes)
     driver.close()
 
-def neo4j__create_plant_compound():
-    input_filename = 'plant-contains-compound-filter'
+def neo4j__create_plant_compounds(output_filename):
+    input_filename = f'{output_foldername}-filter'
     rows = io.json_read(f'{g.SSOT_FOLDERPATH}/studies/extraction/{input_filename}.json')
     ### populate kg
     driver = GraphDatabase.driver("bolt://localhost:7687", auth=(neo4j_user, neo4j_pass))
@@ -162,8 +161,8 @@ def neo4j__create_plant_compound():
         tx.run("""
             UNWIND $rows AS row
             MERGE (s:PLANT {id: row.plant_name})
-            MERGE (o:COMPOUND {id: row.compound_name})
-            MERGE (s)-[:CONTAINS]->(o)
+            MERGE (o:COMPOUND {id: row.medicinal_compound_name})
+            MERGE (s)-[:CONTAINS {source_id: row.source_id}]->(o)
         """, rows=rows)
     with driver.session() as session:
         session.run("""
@@ -172,14 +171,14 @@ def neo4j__create_plant_compound():
             REQUIRE p.id IS UNIQUE
         """)
         session.run("""
-            CREATE CONSTRAINT compound_name IF NOT EXISTS
+            CREATE CONSTRAINT medicinal_compound_name IF NOT EXISTS
             FOR (c:COMPOUND)
             REQUIRE c.id IS UNIQUE
         """)
         session.execute_write(execute, rows)
     driver.close()
 
-def neo4j__create_plant_disease(output_foldername):
+def neo4j__create_plant_health_problems(output_foldername):
     input_filename = f'{output_foldername}-filter'
     rows = io.json_read(f'{g.SSOT_FOLDERPATH}/studies/extraction/{input_filename}.json')
     ### populate kg
@@ -189,7 +188,7 @@ def neo4j__create_plant_disease(output_foldername):
             UNWIND $rows AS row
             MERGE (s:PLANT {id: row.plant_name})
             MERGE (o:HEALTH_PROBLEM {id: row.health_problem_name})
-            MERGE (s)-[:TREATS]->(o)
+            MERGE (s)-[:TREATS {source_id: row.source_id}]->(o)
         """, rows=rows)
     with driver.session() as session:
         session.run("""
@@ -200,6 +199,32 @@ def neo4j__create_plant_disease(output_foldername):
         session.run("""
             CREATE CONSTRAINT health_problem_name IF NOT EXISTS
             FOR (c:HEALTH_PROBLEM)
+            REQUIRE c.id IS UNIQUE
+        """)
+        session.execute_write(execute, rows)
+    driver.close()
+
+def neo4j__create_plant_conditions(output_foldername):
+    input_filename = f'{output_foldername}-filter'
+    rows = io.json_read(f'{g.SSOT_FOLDERPATH}/studies/extraction/{input_filename}.json')
+    ### populate kg
+    driver = GraphDatabase.driver("bolt://localhost:7687", auth=(neo4j_user, neo4j_pass))
+    def execute(tx, rows):
+        tx.run("""
+            UNWIND $rows AS row
+            MERGE (s:PLANT {id: row.plant_name})
+            MERGE (o:CONDITION {id: row.health_condition_name})
+            MERGE (s)-[:USED_FOR {source_id: row.source_id}]->(o)
+        """, rows=rows)
+    with driver.session() as session:
+        session.run("""
+            CREATE CONSTRAINT plant_name IF NOT EXISTS
+            FOR (p:PLANT)
+            REQUIRE p.id IS UNIQUE
+        """)
+        session.run("""
+            CREATE CONSTRAINT problem_name IF NOT EXISTS
+            FOR (c:CONDITION)
             REQUIRE c.id IS UNIQUE
         """)
         session.execute_write(execute, rows)
@@ -243,21 +268,58 @@ def neo4j__get_plant_health_problems(plant_name):
     driver.close()
     return rows
 
+# neo4j__clear()
+
 # RAW: output not validated
-output_foldername = 'plant-treats-problem'
-node_1 = 'plant name'
-node_2 = 'health problem name'
-relationship = 'treats'
-# relationship_extract_raw(output_foldername, node_1, relationship, node_2)
+if 1:
+    node_1 = 'plant name'
+    node_2 = 'medicinal compound name'
+    relationship = 'contains'
+    node_1_slug = polish.sluggify(node_1)
+    node_2_slug = polish.sluggify(node_2)
+    output_foldername = f'{node_1_slug}-{relationship}-{node_2_slug}'
+    neo4j__create_plant_compounds(output_foldername)
+
+if 0:
+    node_1 = 'plant name'
+    node_2 = 'health problem name'
+    relationship = 'treats'
+    node_1_slug = polish.sluggify(node_1)
+    node_2_slug = polish.sluggify(node_2)
+    output_foldername = f'{node_1_slug}-{relationship}-{node_2_slug}'
+
+if 0:
+    node_1 = 'plant name'
+    node_2 = 'pharmacological activity name'
+    relationship = 'pharmacological_activity'
+    node_1_slug = polish.sluggify(node_1)
+    node_2_slug = polish.sluggify(node_2)
+    output_foldername = f'{node_1_slug}-{relationship}-{node_2_slug}'
+    rules = f'''
+        Always write the names of the plants in latin binomial scientific name, no common names or abbreviated names.
+        To clarify, by {node_2} (medicinal bioactivity) I mean things such as anti-inflammatory, antimicrobial, antioxidant, antiseptic, carminative, analgesic, sedative, etc.
+    '''
+
+if 0:
+    node_1 = 'plant name'
+    node_2 = 'health condition name'
+    relationship = 'used_for'
+    node_1_slug = polish.sluggify(node_1)
+    node_2_slug = polish.sluggify(node_2)
+    output_foldername = f'{node_1_slug}-{relationship}-{node_2_slug}'
+    rules = f'''
+        Always write the names of the plants in latin binomial scientific name, no common names or abbreviated names.
+        By health conditions, I mean I want to extract all diseases, disorders, symptoms, syndromes, ailments, and health issues that the plant is claimed to treat, relieve, prevent, manage, or improve.
+    '''
+    neo4j__create_plant_conditions(output_foldername)
+
+# relationship_extract_raw(output_foldername, node_1, relationship, node_2, rules)
 # relationship_txt_to_json(output_foldername, node_1, relationship, node_2)
 # plant_wcvp_filter(output_foldername)
 
 # TODO: VALIDATED: output names checked if really present in the study (string matching)
 
 
-# neo4j__clear()
-# neo4j__create_plant_compound(output_foldername)
-# neo4j__create_plant_disease(output_foldername)
 
 '''
 plants = neo4j__get_plants()
@@ -267,7 +329,8 @@ print(len(plants))
 '''
 
 # paths = neo4j__get_plant_compounds("Ginkgo biloba")
-paths = neo4j__get_plant_health_problems("Ginkgo biloba")
+# paths = neo4j__get_plant_health_problems("Ginkgo biloba")
 
-for path in paths:
-    print(path)
+# for path in paths:
+    # print(path)
+

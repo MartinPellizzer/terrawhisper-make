@@ -123,9 +123,9 @@ def neo4j__get_plant_compounds(plant_name):
     driver = GraphDatabase.driver("bolt://localhost:7687", auth=(neo4j_user, neo4j_pass))
     with driver.session() as session:
         result = session.run("""
-            MATCH (p:PLANT)-[:CONTAINS]->(c:COMPOUND)
-            WHERE p.id = $plant_name
-            RETURN p.id AS plant, c.id AS compound
+            MATCH (s:PLANT)-[p:CONTAINS]->(o:COMPOUND)
+            WHERE s.id = $plant_name
+            RETURN s.id AS plant, o.id AS compound, p.source_id AS source
             ORDER BY compound
         """, plant_name=plant_name)
         rows = [dict(record) for record in result]
@@ -136,10 +136,23 @@ def neo4j__get_plant_health_problems(plant_name):
     driver = GraphDatabase.driver("bolt://localhost:7687", auth=(neo4j_user, neo4j_pass))
     with driver.session() as session:
         result = session.run("""
-            MATCH (p:PLANT)-[:TREATS]->(c:HEALTH_PROBLEM)
-            WHERE p.id = $plant_name
-            RETURN p.id AS plant, c.id AS health_problem
+            MATCH (s:PLANT)-[p:TREATS]->(o:HEALTH_PROBLEM)
+            WHERE s.id = $plant_name
+            RETURN s.id AS plant, o.id AS health_problem, p.source_id AS source
             ORDER BY health_problem
+        """, plant_name=plant_name)
+        rows = [dict(record) for record in result]
+    driver.close()
+    return rows
+
+def neo4j__get_plant_conditions(plant_name):
+    driver = GraphDatabase.driver("bolt://localhost:7687", auth=(neo4j_user, neo4j_pass))
+    with driver.session() as session:
+        result = session.run("""
+            MATCH (s:PLANT)-[p:USED_FOR]->(o:CONDITION)
+            WHERE s.id = $plant_name
+            RETURN s.id AS plant, o.id AS condition, p.source_id AS source
+            ORDER BY condition
         """, plant_name=plant_name)
         rows = [dict(record) for record in result]
     driver.close()
