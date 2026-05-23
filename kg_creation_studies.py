@@ -152,6 +152,32 @@ def neo4j__clear():
         session.execute_write(drop_indexes)
     driver.close()
 
+def neo4j__create(output_filename, neo4j_node_1, neo4j_node_2, node_1_slug_underline, node_2_slug_underline, neo4j_relationship):
+    input_filename = f'{output_foldername}-filter'
+    rows = io.json_read(f'{g.SSOT_FOLDERPATH}/studies/extraction/{input_filename}.json')
+    ### populate kg
+    driver = GraphDatabase.driver("bolt://localhost:7687", auth=(neo4j_user, neo4j_pass))
+    def execute(tx, rows):
+        tx.run(f"""
+            UNWIND $rows AS row
+            MERGE (s:{neo4j_node_1} {{id: row.{node_1_slug_underline}}})
+            MERGE (o:{neo4j_node_2} {{id: row.{node_2_slug_underline}}})
+            MERGE (s)-[:{neo4j_relationship} {{source_id: row.source_id}}]->(o)
+        """, rows=rows)
+    with driver.session() as session:
+        session.run(f"""
+            CREATE CONSTRAINT {node_1_slug_underline} IF NOT EXISTS
+            FOR (p:{neo4j_node_1})
+            REQUIRE p.id IS UNIQUE
+        """)
+        session.run(f"""
+            CREATE CONSTRAINT {node_2_slug_underline} IF NOT EXISTS
+            FOR (c:{neo4j_node_2})
+            REQUIRE c.id IS UNIQUE
+        """)
+        session.execute_write(execute, rows)
+    driver.close()
+
 def neo4j__create_plant_compounds(output_filename):
     input_filename = f'{output_foldername}-filter'
     rows = io.json_read(f'{g.SSOT_FOLDERPATH}/studies/extraction/{input_filename}.json')
@@ -268,18 +294,6 @@ def neo4j__get_plant_health_problems(plant_name):
     driver.close()
     return rows
 
-# neo4j__clear()
-
-# RAW: output not validated
-if 1:
-    node_1 = 'plant name'
-    node_2 = 'medicinal compound name'
-    relationship = 'contains'
-    node_1_slug = polish.sluggify(node_1)
-    node_2_slug = polish.sluggify(node_2)
-    output_foldername = f'{node_1_slug}-{relationship}-{node_2_slug}'
-    neo4j__create_plant_compounds(output_foldername)
-
 if 0:
     node_1 = 'plant name'
     node_2 = 'health problem name'
@@ -288,30 +302,63 @@ if 0:
     node_2_slug = polish.sluggify(node_2)
     output_foldername = f'{node_1_slug}-{relationship}-{node_2_slug}'
 
+# neo4j__clear()
+
+# RAW: output not validated
 if 0:
     node_1 = 'plant name'
     node_2 = 'pharmacological activity name'
-    relationship = 'pharmacological_activity'
+    relationship = 'has_pharmacological_activity'
     node_1_slug = polish.sluggify(node_1)
     node_2_slug = polish.sluggify(node_2)
+    node_1_slug_underline = node_1_slug.replace('-', '_')
+    node_2_slug_underline = node_2_slug.replace('-', '_')
     output_foldername = f'{node_1_slug}-{relationship}-{node_2_slug}'
     rules = f'''
         Always write the names of the plants in latin binomial scientific name, no common names or abbreviated names.
         To clarify, by {node_2} (medicinal bioactivity) I mean things such as anti-inflammatory, antimicrobial, antioxidant, antiseptic, carminative, analgesic, sedative, etc.
     '''
+    # relationship_extract_raw(output_foldername, node_1, relationship, node_2, rules)
+    # relationship_txt_to_json(output_foldername, node_1, relationship, node_2)
+    # plant_wcvp_filter(output_foldername)
+    neo4j_node_1 = 'PLANT'
+    neo4j_node_2 = 'PHARMACOLOGICAL_ACTIVITY'
+    neo4j_relationship = 'HAS_PHARMACOLOGICAL_ACTIVITY'
+    neo4j__create(output_foldername, neo4j_node_1, neo4j_node_2, node_1_slug_underline, node_2_slug_underline, neo4j_relationship)
 
 if 0:
+    node_1 = 'plant name'
+    node_2 = 'medicinal compound name'
+    relationship = 'contains'
+    node_1_slug = polish.sluggify(node_1)
+    node_2_slug = polish.sluggify(node_2)
+    node_1_slug_underline = node_1_slug.replace('-', '_')
+    node_2_slug_underline = node_2_slug.replace('-', '_')
+    output_foldername = f'{node_1_slug}-{relationship}-{node_2_slug}'
+    # neo4j__create_plant_compounds(output_foldername)
+    neo4j_node_1 = 'PLANT'
+    neo4j_node_2 = 'COMPOUND'
+    neo4j_relationship = 'CONTAINS'
+    neo4j__create(output_foldername, neo4j_node_1, neo4j_node_2, node_1_slug_underline, node_2_slug_underline, neo4j_relationship)
+
+if 1:
     node_1 = 'plant name'
     node_2 = 'health condition name'
     relationship = 'used_for'
     node_1_slug = polish.sluggify(node_1)
     node_2_slug = polish.sluggify(node_2)
+    node_1_slug_underline = node_1_slug.replace('-', '_')
+    node_2_slug_underline = node_2_slug.replace('-', '_')
     output_foldername = f'{node_1_slug}-{relationship}-{node_2_slug}'
     rules = f'''
         Always write the names of the plants in latin binomial scientific name, no common names or abbreviated names.
         By health conditions, I mean I want to extract all diseases, disorders, symptoms, syndromes, ailments, and health issues that the plant is claimed to treat, relieve, prevent, manage, or improve.
     '''
-    neo4j__create_plant_conditions(output_foldername)
+    # neo4j__create_plant_conditions(output_foldername)
+    neo4j_node_1 = 'PLANT'
+    neo4j_node_2 = 'CONDITION'
+    neo4j_relationship = 'USED_FOR'
+    neo4j__create(output_foldername, neo4j_node_1, neo4j_node_2, node_1_slug_underline, node_2_slug_underline, neo4j_relationship)
 
 # relationship_extract_raw(output_foldername, node_1, relationship, node_2, rules)
 # relationship_txt_to_json(output_foldername, node_1, relationship, node_2)

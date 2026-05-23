@@ -158,3 +158,16 @@ def neo4j__get_plant_conditions(plant_name):
     driver.close()
     return rows
 
+def neo4j__get_rows(plant_name, node_1, relationship, node_2, node_1_as, node_2_as):
+    driver = GraphDatabase.driver("bolt://localhost:7687", auth=(neo4j_user, neo4j_pass))
+    with driver.session() as session:
+        result = session.run(f"""
+            MATCH (s:{node_1})-[p:{relationship}]->(o:{node_2})
+            WHERE s.id = $plant_name
+            RETURN s.id AS {node_1_as}, o.id AS {node_2_as}, p.source_id AS source
+            ORDER BY {node_2_as}
+        """, plant_name=plant_name)
+        rows = [dict(record) for record in result]
+    driver.close()
+    return rows
+
