@@ -482,6 +482,7 @@ def plants__plant():
         )
         if res == 0:
             continue
+        '''
         res = section_gen(
             key_base='conditions',
             key_item='condition',
@@ -507,6 +508,7 @@ def plants__plant():
         )
         if res == 0:
             continue
+        '''
 
         regen = regen_function
         dispel = dispel_function
