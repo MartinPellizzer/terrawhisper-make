@@ -98,6 +98,15 @@ def relationship_txt_to_json(output_foldername, node_1, relationship, node_2):
             chunks = [chunk.strip() for chunk in line.split(',')]
             relationships_lines.append(chunks)
         print(len(relationships_lines))
+        study_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/studies/pubmed/medicinal-plant/json'
+        study_filepath = f'{study_folderpath}/{input_filename}'
+        study_data = io.json_read(study_filepath)
+        try: article_data = study_data['PubmedArticle'][0]['MedlineCitation']['Article']
+        except: pass
+        try: journal_title = article_data['Journal']['Title']
+        except: pass
+        # print(json.dumps(article_data, indent=4))
+        # print(json.dumps(journal_title, indent=4))
         ###
         for line in relationships_lines:
             print(line)
@@ -109,6 +118,7 @@ def relationship_txt_to_json(output_foldername, node_1, relationship, node_2):
                     f'relationship': relationship_llm,
                     f'{node2_type}': node2,
                     f'source_id': input_filename.split('.')[0],
+                    f'journal_title': journal_title,
                 }
                 output_items.append(output_item)
     for output_item in output_items:
@@ -321,6 +331,7 @@ if 0:
     # relationship_extract_raw(output_foldername, node_1, relationship, node_2, rules)
     # relationship_txt_to_json(output_foldername, node_1, relationship, node_2)
     # plant_wcvp_filter(output_foldername)
+    # quit()
     neo4j_node_1 = 'PLANT'
     neo4j_node_2 = 'PHARMACOLOGICAL_ACTIVITY'
     neo4j_relationship = 'HAS_PHARMACOLOGICAL_ACTIVITY'
@@ -335,7 +346,9 @@ if 0:
     node_1_slug_underline = node_1_slug.replace('-', '_')
     node_2_slug_underline = node_2_slug.replace('-', '_')
     output_foldername = f'{node_1_slug}-{relationship}-{node_2_slug}'
-    # neo4j__create_plant_compounds(output_foldername)
+    # relationship_extract_raw(output_foldername, node_1, relationship, node_2, rules)
+    relationship_txt_to_json(output_foldername, node_1, relationship, node_2)
+    plant_wcvp_filter(output_foldername)
     neo4j_node_1 = 'PLANT'
     neo4j_node_2 = 'COMPOUND'
     neo4j_relationship = 'CONTAINS'
@@ -354,14 +367,14 @@ if 1:
         Always write the names of the plants in latin binomial scientific name, no common names or abbreviated names.
         By health conditions, I mean I want to extract all diseases, disorders, symptoms, syndromes, ailments, and health issues that the plant is claimed to treat, relieve, prevent, manage, or improve.
     '''
-    # neo4j__create_plant_conditions(output_foldername)
+    # relationship_extract_raw(output_foldername, node_1, relationship, node_2, rules)
+    relationship_txt_to_json(output_foldername, node_1, relationship, node_2)
+    plant_wcvp_filter(output_foldername)
     neo4j_node_1 = 'PLANT'
     neo4j_node_2 = 'CONDITION'
     neo4j_relationship = 'USED_FOR'
     neo4j__create(output_foldername, neo4j_node_1, neo4j_node_2, node_1_slug_underline, node_2_slug_underline, neo4j_relationship)
 
-# relationship_extract_raw(output_foldername, node_1, relationship, node_2, rules)
-# relationship_txt_to_json(output_foldername, node_1, relationship, node_2)
 # plant_wcvp_filter(output_foldername)
 
 # TODO: VALIDATED: output names checked if really present in the study (string matching)

@@ -340,8 +340,18 @@ def plants__plant():
                         if '</think>' in reply:
                             reply = reply.split('</think>')[1].strip()
                         reply = polish.vanilla(reply)
+                        print(prompt)
                         names_selected_prompt = reply
-                        names_selected = reply.split('\n')
+                        names_selected = []
+                        for line in reply.split('\n'):
+                            line = line.strip()
+                            if line == '': continue
+                            if len(line) < 2: continue
+                            if line[0].isdigit(): line = line[1:]
+                            if line[0] == '.': line = line[1:]
+                            line = line.strip()
+                            if line == '': continue
+                            names_selected.append(line)
                         print('########################################')
                         print(reply)
                         print('########################################')
@@ -369,6 +379,7 @@ def plants__plant():
                         for name in names_selected:
                             found = False
                             for neo4j_item in neo4j_data:
+                                print(f'{neo4j_item[key_item].lower().strip()} == {name.lower().strip()}')
                                 if neo4j_item[key_item].lower().strip() == name.lower().strip():
                                     print(neo4j_item, name)
                                     source_id = neo4j_item['source']
@@ -378,7 +389,13 @@ def plants__plant():
                                         print(study_filepath)
                                         study_data = io.json_read(study_filepath)
                                     except: break
-                                    print(json.dumps(study_data, indent=4))
+                                    study_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/studies/pubmed/medicinal-plant/json'
+                                    study_filepath = f'{study_folderpath}/{source_id}.json'
+                                    study_items = io.json_read(study_filepath)
+                                    try: article_data = study_items['PubmedArticle'][0]['MedlineCitation']['Article']
+                                    except: pass
+                                    try: journal_title = article_data['Journal']['Title']
+                                    except: pass
                                     prompt = textwrap.dedent(f'''
                                         Write a paragraph in 4-6 sentences about the following topic: 
                                         {topic}.
@@ -388,7 +405,7 @@ def plants__plant():
                                         Incluse as many numbers as possible.
                                         Don't give me bold or italicized text. 
                                         Reply only with the content.
-                                        Start the reply with the following words: "As discussed in a study, "
+                                        Start the reply with the following words: According to a study published by "{journal_title}", 
                                         SCIENTIFIC STUDY:
                                         {study_data['title']} 
                                         {study_data['abstract']}
@@ -469,33 +486,6 @@ def plants__plant():
                         json_article[key] = reply
                         io.json_write(json_article_filepath, json_article)
 
-        '''
-        res = section_gen(
-            key_base='compounds',
-            key_item='compound',
-            relationship_slug='contains',
-            topic='medicinal compounds the plant {plant_name} contains',
-            start_words='This plant contains',
-            neo4j_data=kg.neo4j__get_plant_compounds(plant_name),
-            study_node_1='plant-name',
-            study_node_2='medicinal-compound-name',
-        )
-        if res == 0:
-            continue
-        '''
-        res = section_gen(
-            key_base='conditions',
-            key_item='condition',
-            relationship_slug='used_for',
-            topic='health contitions the plant {plant_name} is used for',
-            start_words='This plant is used for ',
-            neo4j_data=kg.neo4j__get_plant_conditions(plant_name),
-            study_node_1='plant-name',
-            study_node_2='health-condition-name',
-        )
-        if res == 0:
-            continue
-        '''
         res = section_gen(
             key_base=f'pharmacological_activities',
             key_item=f'pharmacological_activity',
@@ -508,7 +498,30 @@ def plants__plant():
         )
         if res == 0:
             continue
-        '''
+        res = section_gen(
+            key_base=f'compounds',
+            key_item=f'compound',
+            relationship_slug=f'contains',
+            topic=f'medicinal compounds the plant {plant_name} contains',
+            start_words=f'This plant contains',
+            neo4j_data=kg.neo4j__get_plant_compounds(plant_name),
+            study_node_1=f'plant-name',
+            study_node_2=f'medicinal-compound-name',
+        )
+        if res == 0:
+            continue
+        res = section_gen(
+            key_base=f'conditions',
+            key_item=f'condition',
+            relationship_slug=f'used_for',
+            topic=f'health contitions the plant {plant_name} is used for',
+            start_words=f'This plant is used for ',
+            neo4j_data=kg.neo4j__get_plant_conditions(plant_name),
+            study_node_1=f'plant-name',
+            study_node_2=f'health-condition-name',
+        )
+        if res == 0:
+            continue
 
         regen = regen_function
         dispel = dispel_function
@@ -997,9 +1010,9 @@ def plants__plant():
             list_intro = f'The primary medicinal compounds of this plant are shown in the list below.',
         )
         html_article += html_section_gen(
-            key_slug = f'health_problems', 
-            heading = f'What health problems is this plant used for?',
-            list_intro = f'The main health problems this plant is used for are shown in the list below.',
+            key_slug = f'conditions', 
+            heading = f'What health conditions is this plant used for?',
+            list_intro = f'The main health conditions this plant is used for are shown in the list below.',
         )
         html_article += html_section_gen(
             key_slug = f'preparations', 
