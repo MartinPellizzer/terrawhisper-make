@@ -317,6 +317,40 @@ def plants__plant():
             # NEO4J
             ################################################################################ 
             if neo4j_data:
+                # TODO: separate first prompt, extract best items, save to a "key" list, use this list for html
+                # STUDY LIST
+                regen = regen_function
+                dispel = dispel_function
+                key_list = f'{key_base}_study_list'
+                if key_list not in json_article: json_article[key_list] = ''
+                if regen: json_article[key_list] = ''
+                if dispel: 
+                    json_article[key_list] = ''
+                    io.json_write(json_article_filepath, json_article)
+                    return 0
+                if not dispel:
+                    if json_article[key_list] == '':
+                        names = [item[key_item] for item in neo4j_data]
+                        names_unique = sorted(list(set(names)))
+                        names_unique_prompt = '\n'.join(names_unique)
+                        prompt = textwrap.dedent(f'''
+                            Extract from the list below the 5 most relevant items about this topic:
+                            {topic}
+                            Reply only with the 5 {key_base_name}. Don't include additional text.
+                            Here's the list of {key_base_name} to extract the most relevant 5 ones for the above topic:
+                            {names_unique_prompt}
+                        ''').strip()
+                        reply = llm.reply(prompt, model_filepath)
+                        if '</think>' in reply:
+                            reply = reply.split('</think>')[1].strip()
+                        reply = polish.vanilla(reply)
+                        print(prompt)
+                        json_article[key_list] = reply
+                        io.json_write(json_article_filepath, json_article)
+
+                # STUDY PARAGRAPH
+                regen = regen_function
+                dispel = dispel_function
                 key = f'{key_base}_study_raw'
                 if key not in json_article: json_article[key] = ''
                 if regen: json_article[key] = ''
@@ -485,7 +519,22 @@ def plants__plant():
                         reply = polish.vanilla(reply)
                         json_article[key] = reply
                         io.json_write(json_article_filepath, json_article)
+                        # FORMAT 1N1
+                        reply_format_1N1 = utils.format_1N1(reply)
+                        json_article[f'{key_base}_format_1N1'] = reply_format_1N1
+                        io.json_write(json_article_filepath, json_article)
 
+        section_gen(
+            key_base=f'cultivation',
+            key_item=f'cultivation',
+            relationship_slug='',
+            topic=f'cultivation of the plant {plant_name}',
+            start_words=f'This plant ',
+            neo4j_data='',
+            study_node_1=f'',
+            study_node_2=f'',
+        )
+        '''
         res = section_gen(
             key_base=f'pharmacological_activities',
             key_item=f'pharmacological_activity',
@@ -523,6 +572,7 @@ def plants__plant():
         if res == 0:
             continue
 
+        '''
         regen = regen_function
         dispel = dispel_function
         key = 'taxonomy'
@@ -884,35 +934,55 @@ def plants__plant():
             key_list = f'{key_slug}_llm_list_1_try_hint'
             key_study = f'{key_slug}_study_raw'
             key_study_source = f'{key_slug}_study_source_raw'
+            key_study_list = f'{key_slug}_study_list'
             html_list = ''
+            html_paragraph = ''
             html_score = f'''
                 <div class="reliability-1" aria-label="Reliability score 1 out of 5">
                     Evidence Level: ★☆☆☆☆
                 </div>
             '''
-            if key_list in herb_llm_data and herb_llm_data[key_list] != '':
-                html_list += f'<p>{list_intro}</p>'
-                html_list += f'<ul>'
-                for item in herb_llm_data[key_list]:
-                    html_list += f'''<li>{item['answer'].capitalize()}</li>'''
-                html_list += f'</ul>'
             ### STUDY
             if key_study in json_article and json_article[key_study] != '':
+                ### STUDY PARAGRAPH
                 html_paragraph = f'<p>{json_article[key_study]}</p>'
-                ### TODO: remove try/except after fixing compounds
+                ### STUDY SOURCE
                 try: html_paragraph += f'<p>{json_article[key_study_source]}</p>'
                 except: pass
+                ### STUDY LIST
+                if key_study_list in json_article and json_article[key_study_list] != '':
+                    items = json_article[key_study_list].split('\n')
+                    html_list += f'<p>{list_intro}</p>'
+                    html_list += f'<ul>'
+                    for item in items:
+                        html_list += f'<li>{item}</li>'
+                    html_list += f'</ul>'
+                ### STUDY RELIABILITY
                 html_score = f'''
                     <div class="reliability-3" aria-label="Reliability score 3 out of 5">
                         Evidence Level: ★★★☆☆
                     </div>
                 '''
-            elif key_list in json_article and json_article[key_list] != '':
-                # html_paragraph = utils.format_1N1(json_article[key_list])
-                html_paragraph = f'<p>{json_article[key_list]}</p>'
+            ### NO STUDY
             else:
-                # html_paragraph = utils.format_1N1(json_article[key_raw])
-                html_paragraph = f'<p>{json_article[key_raw]}</p>'
+                ### LIST
+                if key_list in herb_llm_data and herb_llm_data[key_list] != '':
+                    html_list += f'<p>{list_intro}</p>'
+                    html_list += f'<ul>'
+                    for item in herb_llm_data[key_list]:
+                        html_list += f'''<li>{item['answer'].capitalize()}</li>'''
+                    html_list += f'</ul>'
+                ### PARAGRAPH LIST
+                if key_list in json_article and json_article[key_list] != '':
+                    # html_paragraph = utils.format_1N1(json_article[key_list])
+                    html_paragraph = f'<p>{json_article[key_list]}</p>'
+                ### PARAGRAPH RAW
+                else:
+                    key_format_1N1 = f'{key_slug}_format_1N1'
+                    if key_format_1N1 in json_article and json_article[key_format_1N1] != '':
+                        html_paragraph = json_article[key_format_1N1]
+                    else:
+                        html_paragraph = f'<p>{json_article[key_raw]}</p>'
             html_section = f'''
                 <section>
                     <h2>{heading}</h2>
@@ -984,6 +1054,7 @@ def plants__plant():
                 </div>
             </section>
         '''
+
         html_article += html_section_gen(
             key_slug = f'morphology', 
             heading = f'What are the morphological characteristics of this plant?',
@@ -992,6 +1063,11 @@ def plants__plant():
         html_article += html_section_gen(
             key_slug = f'distribution', 
             heading = f'What is the geographical distribution of this plant?',
+            list_intro = f'The geographical distribution of this plant is shown in the list below.',
+        )
+        html_article += html_section_gen(
+            key_slug = f'cultivation', 
+            heading = f'How is this plant cultivated?',
             list_intro = f'The geographical distribution of this plant is shown in the list below.',
         )
         html_article += html_section_gen(
