@@ -524,11 +524,23 @@ def plants__plant():
                         json_article[f'{key_base}_format_1N1'] = reply_format_1N1
                         io.json_write(json_article_filepath, json_article)
 
+        '''
         section_gen(
             key_base=f'cultivation',
             key_item=f'cultivation',
             relationship_slug='',
             topic=f'cultivation of the plant {plant_name}',
+            start_words=f'This plant ',
+            neo4j_data='',
+            study_node_1=f'',
+            study_node_2=f'',
+        )
+        '''
+        section_gen(
+            key_base=f'systems',
+            key_item=f'system',
+            relationship_slug='',
+            topic=f'traditional systems and historical use of the plant {plant_name}',
             start_words=f'This plant ',
             neo4j_data='',
             study_node_1=f'',
@@ -1074,6 +1086,11 @@ def plants__plant():
             key_slug = f'parts', 
             heading = f'What parts of this plant are used medicinally?',
             list_intro = f'The parts of this plant that are ued medicinally are shown in the list below.',
+        )
+        html_article += html_section_gen(
+            key_slug = f'systems', 
+            heading = f'What traditional systems uses this plant?',
+            list_intro = f'The hystorical systems that uses this plant are shown in the list below.',
         )
         html_article += html_section_gen(
             key_slug = f'pharmacological_activities', 
