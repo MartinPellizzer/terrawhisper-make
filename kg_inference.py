@@ -535,7 +535,6 @@ def plants__plant():
             study_node_1=f'',
             study_node_2=f'',
         )
-        '''
         section_gen(
             key_base=f'systems',
             key_item=f'system',
@@ -546,7 +545,6 @@ def plants__plant():
             study_node_1=f'',
             study_node_2=f'',
         )
-        '''
         res = section_gen(
             key_base=f'pharmacological_activities',
             key_item=f'pharmacological_activity',
@@ -583,8 +581,18 @@ def plants__plant():
         )
         if res == 0:
             continue
-
         '''
+        section_gen(
+            key_base=f'pairings',
+            key_item=f'pairing',
+            relationship_slug='',
+            topic=f'herb pairings of the plant {plant_name}',
+            start_words=f'This plant ',
+            neo4j_data='',
+            study_node_1=f'',
+            study_node_2=f'',
+        )
+
         regen = regen_function
         dispel = dispel_function
         key = 'taxonomy'
@@ -1112,12 +1120,23 @@ def plants__plant():
             heading = f'What are the herbal preparations of this plant?',
             list_intro = f'The main herbal preparations of this plant are shown in the list below.',
         )
+        '''
+        html_article += html_section_gen(
+            key_slug = f'dosage', 
+            heading = f'',
+            list_intro = f'',
+        )
+        '''
         html_article += html_section_gen(
             key_slug = f'side_effects', 
             heading = f'What side effects this plant can have?',
             list_intro = f'The main side effects this plant can have are shown in the list below.',
         )
-
+        html_article += html_section_gen(
+            key_slug = f'pairings', 
+            heading = f'What herbs are paired with {plant_name}?',
+            list_intro = f'The main herbs paired with this plant are shown in the list below.',
+        )
         '''
             <section>
                 <h2>What are the molecular targets of this plant?</h2>
