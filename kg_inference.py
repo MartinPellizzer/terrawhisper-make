@@ -306,7 +306,7 @@ def plants__plant():
         json_article['article_title'] = plant_name
         io.json_write(json_article_filepath, json_article)
 
-        regen_function = False
+        regen_function = True
         dispel_function = False
 
         def section_gen(key_base, key_item, relationship_slug, topic, start_words, neo4j_data, study_node_1, study_node_2):
@@ -333,10 +333,30 @@ def plants__plant():
                         names = [item[key_item] for item in neo4j_data]
                         names_unique = sorted(list(set(names)))
                         names_unique_prompt = '\n'.join(names_unique)
+                        ###
+                        lines = []
+                        for line in names_unique_prompt.split('\n'):
+                            line = line.strip()
+                            if line == '': continue
+                            found = False
+                            for _line in lines:
+                                found_word = False
+                                for _word in _line.split(' '):
+                                    for word in line.split(' '):
+                                        if word.lower() == _word.lower():
+                                            found_word = True
+                                            found = True
+                                            break
+                                    if found_word: break
+                                if found_word: break
+                            if found: continue
+                            lines.append(line)
+                        names_unique_prompt = '\n'.join(lines)
                         prompt = textwrap.dedent(f'''
-                            Extract from the list below the 5 most relevant items about this topic:
+                            Extract from the list below the 5 most relevant (maximum) items about this topic:
                             {topic}
-                            Reply only with the 5 {key_base_name}. Don't include additional text.
+                            Reply only with the {key_base_name}. Don't include additional text.
+                            Also, don't repeat too similar names, like singular/plural and synonyms.
                             Here's the list of {key_base_name} to extract the most relevant 5 ones for the above topic:
                             {names_unique_prompt}
                         ''').strip()
@@ -345,6 +365,7 @@ def plants__plant():
                             reply = reply.split('</think>')[1].strip()
                         reply = polish.vanilla(reply)
                         print(prompt)
+                        print()
                         json_article[key_list] = reply
                         io.json_write(json_article_filepath, json_article)
 
@@ -360,22 +381,7 @@ def plants__plant():
                     return 0
                 if not dispel:
                     if json_article[key] == '':
-                        names = [item[key_item] for item in neo4j_data]
-                        names_unique = sorted(list(set(names)))
-                        names_unique_prompt = '\n'.join(names_unique)
-                        prompt = textwrap.dedent(f'''
-                            Extract from the list below the 5 most relevant items about this topic:
-                            {topic}
-                            Reply only with the 5 {key_base_name}. Don't include additional text.
-                            Here's the list of {key_base_name} to extract the most relevant 5 ones for the above topic:
-                            {names_unique_prompt}
-                        ''').strip()
-                        reply = llm.reply(prompt, model_filepath)
-                        if '</think>' in reply:
-                            reply = reply.split('</think>')[1].strip()
-                        reply = polish.vanilla(reply)
-                        print(prompt)
-                        names_selected_prompt = reply
+                        names_selected_prompt = json_article[f'{key_base}_study_list']
                         names_selected = []
                         for line in reply.split('\n'):
                             line = line.strip()
@@ -408,6 +414,7 @@ def plants__plant():
                         print('########################################')
                         json_article[key] = reply
                         io.json_write(json_article_filepath, json_article)
+                        print(prompt)
                         ### STUDY SOURCE
                         key = f'{key_base}_study_source_raw'
                         for name in names_selected:
@@ -535,6 +542,20 @@ def plants__plant():
             study_node_1=f'',
             study_node_2=f'',
         )
+        '''
+        res = section_gen(
+            key_base=f'parts',
+            key_item=f'part',
+            topic=f'herb parts of the plant {plant_name} that are used medicinally',
+            start_words=f'This plant ',
+            neo4j_data=kg.neo4j__get_rows(plant_name, 'PLANT', 'HAS_PART', 'PART', 'plant', 'part'),
+            study_node_1=f'plant-name',
+            relationship_slug='contains',
+            study_node_2=f'plant-part-name',
+        )
+        if res == 0:
+            continue
+        '''
         section_gen(
             key_base=f'systems',
             key_item=f'system',
@@ -582,6 +603,7 @@ def plants__plant():
         if res == 0:
             continue
         '''
+        '''
         section_gen(
             key_base=f'pairings',
             key_item=f'pairing',
@@ -592,6 +614,7 @@ def plants__plant():
             study_node_1=f'',
             study_node_2=f'',
         )
+        '''
 
         regen = regen_function
         dispel = dispel_function
@@ -673,34 +696,6 @@ def plants__plant():
                     Don't give me bold or italicized text. 
                     Reply only with the content.
                     Start the reply with the following words: "This plant is "
-                    /no_think
-                ''').strip()
-                reply = llm.reply(prompt, model_filepath)
-                if '</think>' in reply:
-                    reply = reply.split('</think>')[1].strip()
-                reply = polish.vanilla(reply)
-                json_article[key] = reply
-                io.json_write(json_article_filepath, json_article)
-                print(json_article_filepath)
-
-        regen = regen_function
-        dispel = dispel_function
-        key = 'parts'
-        if key not in json_article: json_article[key] = ''
-        if regen: json_article[key] = ''
-        if dispel: 
-            json_article[key] = ''
-            io.json_write(json_article_filepath, json_article)
-        if not dispel:
-            if json_article[key] == '':
-                import textwrap
-                prompt = textwrap.dedent(f'''
-                    Write a paragraph in 4-6 sentences about the plant's parts used medicinally of this plant: {plant_name}.
-                    The first sentence must answer in the most direct, clear, detailed way possible without fluff.
-                    The following sentences must give more details about this topic.
-                    Don't give me bold or italicized text. 
-                    Reply only with the content.
-                    Start the reply with the following words: "{plant_name} contains "
                     /no_think
                 ''').strip()
                 reply = llm.reply(prompt, model_filepath)

@@ -123,7 +123,7 @@ def sentence__gen(json_article_filepath, key, title, brief, regen=False, dispel=
     '''
     return html
 
-def gen():
+def gen_old():
     # items = data.studies__plants_popular_create()
     items = data.studies__plants_popular_get()
     plants_images = ''
@@ -192,7 +192,7 @@ def gen():
     html_filepath = f'''{g.website_folderpath}/index.html'''
     with open(html_filepath, 'w') as f: f.write(html)
 
-    quit()
+    return
 
 
 
@@ -997,6 +997,117 @@ These methods require minimal equipment and allow new herbalists to learn safely
             # {html_section_1}
             # {html_section_2}
             # {html_section_3}
+    html_filepath = f'''{g.website_folderpath}/index.html'''
+    with open(html_filepath, 'w') as f: f.write(html)
+
+def gen():
+    # HERO
+    # --------------------------------------------------------------------------------
+    padding_x = 4.8
+    text_padding_right_rem = padding_x
+    text_padding_left_rem = padding_x
+    text_padding_right_px = text_padding_right_rem * 10
+    text_w = 1280 // 2 + text_padding_right_px
+    text_w = 768
+    html_button_primary = f'''
+        <div>
+            <a 
+                class="button-default" 
+                style="
+                    text-transform: uppercase; letter-spacing: 0.5px;
+                " 
+                    href="/herbs.html">
+                    Browse 10.000+ Herbs
+            </a>
+        </div>
+    '''
+    html_button_secondary = f'''
+        <div>
+            <a 
+                style="
+                    display: inline-block;
+                    border: 1px solid {g.COLOR_CARBON_POWDER};
+                    padding: 1.6rem 2.4rem;
+                    text-transform: uppercase; 
+                    letter-spacing: 0.5px;
+                    color: {g.COLOR_CARBON_POWDER};
+                    text-decoration: none;
+            " 
+                href="/about-us.html">
+                About Us
+            </a>
+        </div>
+    '''
+    html_hero = f'''
+        <section style="margin-bottom: 9.6rem;">
+            <div class="m-flex" style="align-items: center;">
+                <div style="flex: 1; padding-top: 9.6rem; padding-bottom: 9.6rem;">
+                    <div style="max-width: {text_w}px; margin-left: auto; margin-right: auto; padding-right: {text_padding_right_rem}rem; padding-left: {text_padding_left_rem}rem;">
+                        <h1 style="color: {g.COLOR_CARBON_POWDER}; margin-bottom: 1.6rem;">
+                            Learn Herbal Medicine, Improve Your Life
+                        </h1>
+                        <p>
+Learning herbal medicine means acquiring structured knowledge and practical skills to identify medicinal plants, prepare remedies, understand safety, and apply plant-based treatments for self-care or professional use, whether as a beginner, self-learner, or practitioner moving from informal exploration to systematic, real-world application.
+                        </p>
+                        <div class="m-flex" style="margin-top: 3.2rem; gap: 1.6rem;">
+                            {html_button_primary}
+                            {html_button_secondary}
+                        </div>
+                    </div>
+                </div>
+                <div style="flex: 1;">
+                    <img src="/images/home/sage.jpg" alt="Beginner-friendly herbalism setup with medicinal herbs, tinctures, and a mortar and pestle" style="height: 80vh; object-fit: cover;">
+                </div>
+            </div>
+        </section>
+    '''
+
+    items = data.studies__plants_popular_get()
+    plants_images = ''
+    items_counter = 0
+    for item in items[:]:
+        plant_name = item['plant_name']
+        plant_slug = polish.sluggify(plant_name)
+        plant_img_src = f'/images/herbs/{plant_slug}.jpg'
+        plant_filepath = f'{g.WEBSITE_FOLDERPATH}/images/herbs/{plant_slug}.jpg'
+        if os.path.exists(plant_filepath):
+            plants_images += f'''
+                <article>
+                    <a href="/herbs/{plant_slug}.html" style="text-decoration: none;">
+                        <img src="{plant_img_src}" alt="image of {plant_name} plant material on a wooden table" style="margin-bottom: 1.6rem;">
+                        <h3>{plant_name}</h3>
+                    </a>
+                </article>
+            '''
+            items_counter += 1
+            if items_counter >= 6: break
+
+    background_color = '#000'
+    foreground_color = '#fff'
+    html_article = f'''
+        <section class="container-xl" style="margin-top: 9.6rem; margin-bottom: 9.6rem;">
+            <h2 style="text-align: center; margin-bottom: 1.6rem;">Browse Medicinal Herbs</h2>
+            <p style="text-align: center; margin-bottom: 4.8rem;">Visit out Materia Medica of more than 10,000 herbs and learn about medicinal plants uses, benefits, and even side-effects.</p>
+            <div class="grid-3" style="gap: 1.6rem; row-gap: 3.2rem;">
+                {plants_images}
+            </div>
+        </section>
+    '''
+
+    meta_title = f'''Herbalism & Herbal Remedies for Natural Healing | Terra Whisper'''
+    meta_description = f'''Learn herbalism from the ground up. Discover medicinal herbs, herbal remedies, apothecary methods, and beginner-friendly natural healing guides.'''
+    html = f'''
+        <!DOCTYPE html>
+        <html lang="en">
+        {components.html_head(meta_title, meta_description, css='/style.css')}
+        <body class="home">
+            {sections.header_default()}
+            {html_hero}
+            {html_article}
+            {sections.footer()}
+        </body>
+        </html>
+    '''
     html_filepath = f'''{g.website_folderpath}/index.html'''
     with open(html_filepath, 'w') as f: f.write(html)
 

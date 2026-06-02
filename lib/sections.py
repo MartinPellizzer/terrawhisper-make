@@ -12,7 +12,8 @@ def header_default():
             <!-- Navigation -->
             <nav class="main-nav" aria-label="Main Navigation">
                 <ul class="nav-links">
-                <li><a href="/herbs.html">Herbs</a></li>
+                    <li><a href="/herbs.html">Herbs</a></li>
+                    <li><a href="/about-us.html">About Us</a></li>
                 </ul>
             </nav>
             <!-- Hamburger button -->

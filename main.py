@@ -8,8 +8,9 @@ shutil.copy2('styles-tmp.css', f'{g.website_folderpath}/styles-tmp.css')
 shutil.copy2('styles.css', f'{g.website_folderpath}/styles.css')
 shutil.copy2('styles-herb-monograph.css', f'{g.website_folderpath}/styles-herb-monograph.css')
 
-# [0000] HOME
-# [0001] HERBS
+# [HOM] HOME
+# [HRB] HERBS
+# [ABT] ABOUT
 # PREPARATIONS...................[PRP]
 # AILMENTS.......................[ALM]
 # EQUIPMENT......................[EQP]
@@ -160,7 +161,7 @@ if 0:
         pag_shop.gen()
 
 ########################################
-# [0001] HERBS
+# [HRB] HERBS
 ########################################
 ### RUN ONLY WHEN NEW WCVP FILE
 if 0:
@@ -168,7 +169,7 @@ if 0:
     herbs_data.main()
     quit()
 
-if 1:
+if 0:
     from ai import herbs_ai
     herbs_ai.main()
     quit()
@@ -235,16 +236,20 @@ if 0:
         herbal_medicine_hub.main()
 
 ##########################################################################################
-# [0000] HOME
+# [HOM] HOME
 ##########################################################################################
 if 1:
-    if 0:
-        ### OLD
-        from lib import pag_home
-        pag_home.gen()
     if 1:
         from hub import home_hub
         home_hub.gen()
+
+##########################################################################################
+# [ABT] ABOUT
+##########################################################################################
+if 1:
+    if 1:
+        from hub import about_hub
+        about_hub.gen()
 
 ########################################
 # LEARNING

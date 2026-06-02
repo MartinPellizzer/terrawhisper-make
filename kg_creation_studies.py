@@ -390,12 +390,12 @@ if 1:
         By plant parts I mean things like leaf, flower, root, etc.
     '''
     ### WARNING: next like takes hours
-    relationship_extract_raw(output_foldername, node_1, relationship, node_2, rules)
+    # relationship_extract_raw(output_foldername, node_1, relationship, node_2, rules)
     relationship_txt_to_json(output_foldername, node_1, relationship, node_2)
     plant_wcvp_filter(output_foldername)
     neo4j_node_1 = 'PLANT'
     neo4j_node_2 = 'PART'
-    neo4j_relationship = 'CONTAINS'
+    neo4j_relationship = 'HAS_PART'
     neo4j__create(output_foldername, neo4j_node_1, neo4j_node_2, node_1_slug_underline, node_2_slug_underline, neo4j_relationship)
 
 # plant_wcvp_filter(output_foldername)
