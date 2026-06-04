@@ -1066,7 +1066,7 @@ Learning herbal medicine means acquiring structured knowledge and practical skil
     plants_images = ''
     items_counter = 0
     for item in items[:]:
-        plant_name = item['plant_name']
+        plant_name = item['name']
         plant_slug = polish.sluggify(plant_name)
         plant_img_src = f'/images/herbs/{plant_slug}.jpg'
         plant_filepath = f'{g.WEBSITE_FOLDERPATH}/images/herbs/{plant_slug}.jpg'

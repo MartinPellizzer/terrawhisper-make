@@ -1,6 +1,7 @@
 import os
 import random
 import json
+import textwrap
 
 from lib import g
 from lib import io
@@ -9,7 +10,7 @@ from lib import data
 from lib import polish
 from lib import components
 from lib import sections
-from lib import study
+# from lib import study
 
 '''
 # Medicinal Plant Monograph Template (Entity-Centered)
@@ -7724,4 +7725,84 @@ def main():
     # herbs__biochemistry__gen()
     # herbs__immunity__gen()
     # herbs__interactions__gen()
+
+def cards_gen(items, num):
+    cards = ''
+    items_counter = 0
+    for item in items[:]:
+        plant_name = item['name']
+        plant_slug = polish.sluggify(plant_name)
+        plant_img_src = f'/images/herbs/{plant_slug}.jpg'
+        plant_filepath = f'{g.WEBSITE_FOLDERPATH}/images/herbs/{plant_slug}.jpg'
+        cards += f'''
+            <article>
+                <a href="/herbs/{plant_slug}.html" style="text-decoration: none;">
+                    <img src="{plant_img_src}" alt="image of {plant_name} plant material on a wooden table" style="margin-bottom: 1.6rem;">
+                    <h3>{plant_name}</h3>
+                </a>
+            </article>
+        '''
+        items_counter += 1
+        if items_counter >= num: break
+    return cards
+
+def gen():
+    items = data.studies__plants_popular_get(regen=False)
+    html_cards_plants = cards_gen(items, 3)
+    html_cards_plants = f'''
+        <section style="margin-bottom: 9.6rem;">
+            <h2>
+                Popular
+            </h2>
+            <div class="grid-3" style="gap: 1.6rem; row-gap: 3.2rem;">
+                {html_cards_plants}
+            </div>
+        </section>
+    '''
+    items = data.studies__actions_popular_get(regen=False)
+    html_cards_actions = cards_gen(items, 3)
+    html_cards_actions = f'''
+        <section style="margin-bottom: 9.6rem;">
+            <h2>
+                Actions
+            </h2>
+            <div class="grid-3" style="gap: 1.6rem; row-gap: 3.2rem;">
+                {html_cards_actions}
+            </div>
+        </section>
+    '''
+    ###
+    html_article = ''
+    html_article += f'''
+        <h1 style="margin-top: 9.6rem;">
+            Medicinal Herbs
+        </h1>
+    '''
+    html_article += html_cards_plants
+    html_article += html_cards_actions
+    ###
+    url_slug = 'herbs'
+    meta_title = f'Medicinal Herbs'
+    meta_description = ''
+    canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''
+    head_html = components.html_head(
+        meta_title, meta_description, css='/styles.css', canonical=canonical_html
+    )
+    html = textwrap.dedent(f''' 
+        <!DOCTYPE html>
+        <html lang="en">
+        {head_html}
+        <body>
+            {sections.header_default()}
+            {sections.breadcrumbs_new(url_slug)}
+            <main class="container-xl">
+                {html_article}
+            </main>
+            {sections.footer()}
+        </body>
+        </html>
+    ''').strip()
+    html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
+    with open(html_filepath, 'w') as f: f.write(html)
+    print(html_filepath)
 

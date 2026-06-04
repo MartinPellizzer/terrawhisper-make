@@ -116,8 +116,14 @@ ul {
 /* BREADCRUMBS */
 /*********************************************/
 .breadcrumbs {
-    margin-bottom: 1.6rem;
+    padding: 16px 24px;
 }
+
+.breadcrumbs a {
+    color: #333;
+    text-decoration: None;
+}
+
 
 /*********************************************/
 /* ARTICLE */

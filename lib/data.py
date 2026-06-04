@@ -373,28 +373,66 @@ def sqlite3__wikidata_powo_get_all():
 ################################################################################
 
 def studies__plants_popular_create():
-    input_filepath = f'{g.SSOT_FOLDERPATH}/studies/extraction/json/plant_name-used_to_treat-disease_name.json'
+    input_filepath = f'{g.SSOT_FOLDERPATH}/studies/extraction/plant-name-used_for-health-condition-name.json'
     input_data = io.json_read(input_filepath)
     items_group = []
     for item_i, item in enumerate(input_data):
         print(f'{item_i}/{len(input_data)} - {item}')
         found = False
         for item_group in items_group:
-            if item['plant_name'] == item_group['plant_name']:
-                item_group['plant_mentions'] += 1
+            if item['plant_name'] == item_group['name']:
+                item_group['mentions'] += 1
                 found = True
                 break
         if not found:
             items_group.append({
-                'plant_name': item['plant_name'],
-                'plant_mentions': 1,
+                'name': item['plant_name'],
+                'mentions': 1,
             })
-    items_group = sorted(items_group, key=lambda x: x['plant_mentions'], reverse=True)
+    items_group = sorted(items_group, key=lambda x: x['mentions'], reverse=True)
     output_filepath = f'{g.SSOT_FOLDERPATH}/studies/extraction/json/plants-popular.json'
     io.json_write(output_filepath, items_group)
     return items_group
 
-def studies__plants_popular_get():
+def studies__plants_popular_get(regen=False):
     filepath = f'{g.SSOT_FOLDERPATH}/studies/extraction/json/plants-popular.json'
+    if regen:
+        studies__plants_popular_create()
+    else:
+        if not os.path.exists(filepath):
+            studies__plants_popular_create()
     items = io.json_read(filepath)
     return items
+
+def studies__actions_popular_create():
+    input_filepath = f'{g.SSOT_FOLDERPATH}/studies/extraction/plant-name-has_pharmacological_activity-pharmacological-activity-name.json'
+    input_data = io.json_read(input_filepath)
+    items_group = []
+    for item_i, item in enumerate(input_data):
+        print(f'{item_i}/{len(input_data)} - {item}')
+        found = False
+        for item_group in items_group:
+            if item['pharmacological_activity_name'] == item_group['name']:
+                item_group['mentions'] += 1
+                found = True
+                break
+        if not found:
+            items_group.append({
+                'name': item['pharmacological_activity_name'],
+                'mentions': 1,
+            })
+    items_group = sorted(items_group, key=lambda x: x['mentions'], reverse=True)
+    output_filepath = f'{g.SSOT_FOLDERPATH}/studies/extraction/json/actions-popular.json'
+    io.json_write(output_filepath, items_group)
+    return items_group
+
+def studies__actions_popular_get(regen=False):
+    filepath = f'{g.SSOT_FOLDERPATH}/studies/extraction/json/actions-popular.json'
+    if regen:
+        studies__actions_popular_create()
+    else:
+        if not os.path.exists(filepath):
+            studies__actions_popular_create()
+    items = io.json_read(filepath)
+    return items
+

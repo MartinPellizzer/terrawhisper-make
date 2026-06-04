@@ -376,7 +376,7 @@ if 0:
     neo4j__create(output_foldername, neo4j_node_1, neo4j_node_2, node_1_slug_underline, node_2_slug_underline, neo4j_relationship)
 
 ### PARTS
-if 1:
+if 0:
     node_1 = 'plant name'
     node_2 = 'plant part name'
     relationship = 'contains'
@@ -396,6 +396,40 @@ if 1:
     neo4j_node_1 = 'PLANT'
     neo4j_node_2 = 'PART'
     neo4j_relationship = 'HAS_PART'
+    neo4j__create(output_foldername, neo4j_node_1, neo4j_node_2, node_1_slug_underline, node_2_slug_underline, neo4j_relationship)
+
+### TRADITIONAL SYSTEM
+if 1:
+    node_1 = 'plant name'
+    node_2 = 'traditional_system name'
+    relationship = 'used_in_traditional_system'
+    node_1_slug = polish.sluggify(node_1)
+    node_2_slug = polish.sluggify(node_2)
+    node_1_slug_underline = node_1_slug.replace('-', '_')
+    node_2_slug_underline = node_2_slug.replace('-', '_')
+    output_foldername = f'{node_1_slug}-{relationship}-{node_2_slug}'
+    rules = f'''
+        Always write the names of the plants in latin binomial scientific name, no common names or abbreviated names.
+        By traditional systems I mean things like:
+        - Ayurveda
+        - Traditional Chinese Medicine
+        - Kampo
+        - Traditional Korean Medicine
+        - Unani
+        - Western Herbal Medicine
+        - Traditional African Medicine
+        - Native American Herbal Medicine
+        - Traditional Arabic Medicine
+        - Jamu
+        Always write the systems with the full name (like in the given list), no acronyms.
+    '''
+    ### WARNING: next like takes hours
+    relationship_extract_raw(output_foldername, node_1, relationship, node_2, rules)
+    relationship_txt_to_json(output_foldername, node_1, relationship, node_2)
+    plant_wcvp_filter(output_foldername)
+    neo4j_node_1 = 'PLANT'
+    neo4j_node_2 = 'TRADITIONAL_SYSTEM'
+    neo4j_relationship = 'USED_IN_TRADITIONAL_SYSTEM'
     neo4j__create(output_foldername, neo4j_node_1, neo4j_node_2, node_1_slug_underline, node_2_slug_underline, neo4j_relationship)
 
 # plant_wcvp_filter(output_foldername)

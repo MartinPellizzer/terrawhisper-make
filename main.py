@@ -163,6 +163,10 @@ if 0:
 ########################################
 # [HRB] HERBS
 ########################################
+if 1:
+    from hub import herbs_hub
+    herbs_hub.gen()
+
 ### RUN ONLY WHEN NEW WCVP FILE
 if 0:
     from data import herbs_data

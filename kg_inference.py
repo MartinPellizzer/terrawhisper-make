@@ -306,7 +306,7 @@ def plants__plant():
         json_article['article_title'] = plant_name
         io.json_write(json_article_filepath, json_article)
 
-        regen_function = True
+        regen_function = False
         dispel_function = False
 
         def section_gen(key_base, key_item, relationship_slug, topic, start_words, neo4j_data, study_node_1, study_node_2):
@@ -383,6 +383,7 @@ def plants__plant():
                     if json_article[key] == '':
                         names_selected_prompt = json_article[f'{key_base}_study_list']
                         names_selected = []
+                        reply = json_article[f'{key_base}_study_list']
                         for line in reply.split('\n'):
                             line = line.strip()
                             if line == '': continue
@@ -616,6 +617,7 @@ def plants__plant():
         )
         '''
 
+        """
         regen = regen_function
         dispel = dispel_function
         key = 'taxonomy'
@@ -939,6 +941,7 @@ def plants__plant():
                     json_article[key] = reply
                     io.json_write(json_article_filepath, json_article)
                     print(json_article_filepath)
+        """
 
 
         ########################################
