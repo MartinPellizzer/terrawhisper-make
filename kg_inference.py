@@ -310,7 +310,7 @@ def plants__plant():
         dispel_function = False
 
         def section_gen(key_base, key_item, relationship_slug, topic, start_words, neo4j_data, study_node_1, study_node_2):
-            regen = True
+            regen = regen_function
             dispel = dispel_function
             key_base_name = key_base.replace('_', ' ')
             ################################################################################ 
@@ -554,7 +554,6 @@ def plants__plant():
         )
         if res == 0:
             continue
-        '''
         neo4j_data = kg.neo4j__get_rows(plant_name, 'PLANT', 'USED_IN_TRADITIONAL_SYSTEM', 'TRADITIONAL_SYSTEM', node_1_as='plant', node_2_as='traditional_system')
         res = section_gen(
             key_base=f'traditional_systems',
@@ -568,7 +567,6 @@ def plants__plant():
         )
         if res == 0:
             continue
-        '''
         res = section_gen(
             key_base=f'pharmacological_activities',
             key_item=f'pharmacological_activity',
@@ -618,6 +616,19 @@ def plants__plant():
             study_node_2=f'',
         )
         '''
+        neo4j_data = kg.neo4j__get_rows(plant_name, 'PLANT', 'PREPARED_AS', 'HERBAL_PREPARATION', node_1_as='plant', node_2_as='herbal_preparation')
+        res = section_gen(
+            key_base=f'herbal_preparations',
+            key_item=f'herbal_preparation',
+            topic=f'medicinal herbal preparations made with the plant {plant_name}',
+            start_words=f'This plant is ',
+            neo4j_data=neo4j_data,
+            relationship_slug='prepared_as',
+            study_node_1=f'plant-name',
+            study_node_2=f'herbal-preparation-name',
+        )
+        if res == 0:
+            continue
 
         ########################################
         # html
@@ -789,7 +800,7 @@ def plants__plant():
             list_intro = f'The main health conditions this plant is used for are shown in the list below.',
         )
         html_article += html_section_gen(
-            key_slug = f'preparations', 
+            key_slug = f'herbal_preparations', 
             heading = f'What are the herbal preparations of this plant?',
             list_intro = f'The main herbal preparations of this plant are shown in the list below.',
         )
