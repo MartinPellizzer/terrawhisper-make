@@ -7726,6 +7726,9 @@ def main():
     # herbs__immunity__gen()
     # herbs__interactions__gen()
 
+def card_gen(items, num, image=True):
+    pass
+
 def cards_gen(items, num, image=True):
     cards = ''
     items_counter = 0
@@ -7767,14 +7770,50 @@ def gen():
         </section>
     '''
     items = data.studies__actions_popular_get(regen=False)
-    html_cards_actions = cards_gen(items, grid_cols, image=False)
+    ###
+    cards = ''
+    items_counter = 0
+    num = 4
+    plants_done = []
+    for item in items[:]:
+        name = item['name']
+        slug = polish.sluggify(name)
+        filepath = f'{g.WEBSITE_FOLDERPATH}/images/herbs/{slug}.jpg'
+        ###
+        plants = sorted(item['plants'], key=lambda x: x['mentions'], reverse=True)
+        plant_cur = None
+        for plant in plants:
+            if plant['name'] not in plants_done:
+                plant_cur = plant['name']
+                plants_done.append(plant_cur)
+                break
+        plant_name = plant_cur
+        plant_slug = polish.sluggify(plant_name)
+        plant_img_src = f'/images/herbs/{plant_slug}.jpg'
+        plant_filepath = f'{g.WEBSITE_FOLDERPATH}/images/herbs/{plant_slug}.jpg'
+        ###
+        html_image = f'''
+            <img src="{plant_img_src}" alt="{name}" style="margin-bottom: 1.6rem;">
+        '''
+        card = f'''
+            <article>
+                <a href="/herbs/{plant_slug}.html" style="text-decoration: none;">
+                    {html_image}
+                    <h3>{name}</h3>
+                </a>
+            </article>
+        '''
+        cards += card
+        items_counter += 1
+        if items_counter >= num: break
+    ###
     html_cards_actions = f'''
         <section style="margin-bottom: 9.6rem;">
             <h2>
                 Actions
             </h2>
             <div class="grid-{grid_cols}" style="gap: 1.6rem; row-gap: 3.2rem;">
-                {html_cards_actions}
+                {cards}
             </div>
         </section>
     '''
