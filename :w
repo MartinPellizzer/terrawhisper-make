@@ -7726,24 +7726,20 @@ def main():
     # herbs__immunity__gen()
     # herbs__interactions__gen()
 
-def cards_gen(items, num, image=True):
+def cards_gen(items, num):
     cards = ''
     items_counter = 0
     for item in items[:]:
         plant_name = item['name']
+        try: image = item['name_2']
+        else: item['name']
         plant_slug = polish.sluggify(plant_name)
         plant_img_src = f'/images/herbs/{plant_slug}.jpg'
         plant_filepath = f'{g.WEBSITE_FOLDERPATH}/images/herbs/{plant_slug}.jpg'
-        if image == True:
-            html_image = f'''
-                <img src="{plant_img_src}" alt="{plant_name}" style="margin-bottom: 1.6rem;">
-            '''
-        else:
-            html_image = f''''''
         cards += f'''
             <article>
                 <a href="/herbs/{plant_slug}.html" style="text-decoration: none;">
-                    {html_image}
+                    <img src="{plant_img_src}" alt="image of {plant_name} plant material on a wooden table" style="margin-bottom: 1.6rem;">
                     <h3>{plant_name}</h3>
                 </a>
             </article>
@@ -7753,27 +7749,26 @@ def cards_gen(items, num, image=True):
     return cards
 
 def gen():
-    grid_cols = 4
     items = data.studies__plants_popular_get(regen=False)
-    html_cards_plants = cards_gen(items, grid_cols, image=True)
+    html_cards_plants = cards_gen(items, 3)
     html_cards_plants = f'''
         <section style="margin-bottom: 9.6rem;">
             <h2>
                 Popular
             </h2>
-            <div class="grid-{grid_cols}" style="gap: 1.6rem; row-gap: 3.2rem;">
+            <div class="grid-3" style="gap: 1.6rem; row-gap: 3.2rem;">
                 {html_cards_plants}
             </div>
         </section>
     '''
     items = data.studies__actions_popular_get(regen=False)
-    html_cards_actions = cards_gen(items, grid_cols, image=False)
+    html_cards_actions = cards_gen(items, 3)
     html_cards_actions = f'''
         <section style="margin-bottom: 9.6rem;">
             <h2>
                 Actions
             </h2>
-            <div class="grid-{grid_cols}" style="gap: 1.6rem; row-gap: 3.2rem;">
+            <div class="grid-3" style="gap: 1.6rem; row-gap: 3.2rem;">
                 {html_cards_actions}
             </div>
         </section>
