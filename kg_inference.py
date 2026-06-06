@@ -615,7 +615,6 @@ def plants__plant():
             study_node_1=f'',
             study_node_2=f'',
         )
-        '''
         neo4j_data = kg.neo4j__get_rows(plant_name, 'PLANT', 'PREPARED_AS', 'HERBAL_PREPARATION', node_1_as='plant', node_2_as='herbal_preparation')
         res = section_gen(
             key_base=f'herbal_preparations',
@@ -626,6 +625,20 @@ def plants__plant():
             relationship_slug='prepared_as',
             study_node_1=f'plant-name',
             study_node_2=f'herbal-preparation-name',
+        )
+        if res == 0:
+            continue
+        '''
+        neo4j_data = kg.neo4j__get_rows(plant_name, 'PLANT', 'HAS_SIDE_EFFECT', 'SIDE_EFFECT', node_1_as='plant', node_2_as='side_effect')
+        res = section_gen(
+            key_base=f'side_effects',
+            key_item=f'side_effect',
+            topic=f'health side effects of the plant {plant_name}',
+            start_words=f'This plant can ',
+            neo4j_data=neo4j_data,
+            relationship_slug='has_side_effect',
+            study_node_1=f'plant-name',
+            study_node_2=f'side-effect-name',
         )
         if res == 0:
             continue

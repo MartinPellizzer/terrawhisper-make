@@ -43,7 +43,7 @@ def relationship_extract_raw(output_foldename, node_1, relationship, node_2, rul
         # quit()
         content_to_extract = f'{input_title} {input_abstract}'
         prompt = textwrap.dedent(f'''
-            From the scientific study ABSTRACT below, extract all the relationships (triples) about {node_1} and {node_2}.
+            From the scientific study ABSTRACT below, extract all the relationships (triples) between {node_1} and {node_2}.
             Write each relationship using this format: [{node_1}, {relationship}, {node_2}]
             {rules}
             Only reply with the relationships requested.
@@ -433,7 +433,7 @@ if 0:
     neo4j__create(output_foldername, neo4j_node_1, neo4j_node_2, node_1_slug_underline, node_2_slug_underline, neo4j_relationship)
 
 ### PREPARATIONS
-if 1:
+if 0:
     node_1 = 'plant name'
     node_2 = 'herbal preparation name'
     relationship = 'prepared_as'
@@ -459,6 +459,29 @@ if 1:
     neo4j_node_1 = 'PLANT'
     neo4j_node_2 = 'HERBAL_PREPARATION'
     neo4j_relationship = 'PREPARED_AS'
+    neo4j__create(output_foldername, neo4j_node_1, neo4j_node_2, node_1_slug_underline, node_2_slug_underline, neo4j_relationship)
+
+### SIDE EFFECTS
+if 1:
+    node_1 = 'plant name'
+    node_2 = 'side effect name'
+    relationship = 'has_side_effect'
+    node_1_slug = polish.sluggify(node_1)
+    node_2_slug = polish.sluggify(node_2)
+    node_1_slug_underline = node_1_slug.replace('-', '_')
+    node_2_slug_underline = node_2_slug.replace('-', '_')
+    output_foldername = f'{node_1_slug}-{relationship}-{node_2_slug}'
+    rules = f'''
+        Always write the names of the plants in latin binomial scientific name, no common names or abbreviated names.
+        Always write the names of the side effects on health in full, no acronyms.
+    '''
+    ### WARNING: next like takes hours
+    relationship_extract_raw(output_foldername, node_1, relationship, node_2, rules)
+    relationship_txt_to_json(output_foldername, node_1, relationship, node_2)
+    plant_wcvp_filter(output_foldername)
+    neo4j_node_1 = 'PLANT'
+    neo4j_node_2 = 'SIDE_EFFECT'
+    neo4j_relationship = 'HAS_SIDE_EFFECT'
     neo4j__create(output_foldername, neo4j_node_1, neo4j_node_2, node_1_slug_underline, node_2_slug_underline, neo4j_relationship)
 
 # plant_wcvp_filter(output_foldername)
