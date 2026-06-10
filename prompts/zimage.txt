@@ -1,0 +1,8 @@
+w:768
+h:768
+output_filepath:/home/ubuntu/vault/terrawhisper/website/terrawhisper/images/home/hero.jpg
+
+---
+
+dried herbs,
+rustic workshop,

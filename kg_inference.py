@@ -628,7 +628,6 @@ def plants__plant():
         )
         if res == 0:
             continue
-        '''
         neo4j_data = kg.neo4j__get_rows(plant_name, 'PLANT', 'HAS_SIDE_EFFECT', 'SIDE_EFFECT', node_1_as='plant', node_2_as='side_effect')
         res = section_gen(
             key_base=f'side_effects',
@@ -642,6 +641,7 @@ def plants__plant():
         )
         if res == 0:
             continue
+        '''
 
         ########################################
         # html
@@ -817,13 +817,6 @@ def plants__plant():
             heading = f'What are the herbal preparations of this plant?',
             list_intro = f'The main herbal preparations of this plant are shown in the list below.',
         )
-        '''
-        html_article += html_section_gen(
-            key_slug = f'dosage', 
-            heading = f'',
-            list_intro = f'',
-        )
-        '''
         html_article += html_section_gen(
             key_slug = f'side_effects', 
             heading = f'What side effects this plant can have?',
