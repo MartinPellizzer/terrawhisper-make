@@ -12,6 +12,8 @@ from lib import components
 from lib import sections
 # from lib import study
 
+model_filepath = '/home/ubuntu/vault-tmp/llm/gemma-4-26B-A4B-it-UD-Q4_K_XL.gguf'
+
 '''
 # Medicinal Plant Monograph Template (Entity-Centered)
 
@@ -7756,6 +7758,16 @@ def cards_gen(items, num, image=True):
     return cards
 
 def gen():
+    url_slug = 'herbs'
+    ########################################
+    # json
+    ########################################
+    ### json init
+    json_article_filepath = f'''{g.DATABASE_FOLDERPATH}/json/{url_slug}.json'''
+    json_article = io.json_read(json_article_filepath, create=True)
+    json_article['title'] = 'Medicinal Herbs'
+    io.json_write(json_article_filepath, json_article)
+
     grid_cols = 4
     items = data.studies__plants_popular_get(regen=False)
     html_cards_plants = cards_gen(items, grid_cols, image=True)
@@ -7773,7 +7785,7 @@ def gen():
     ###
     cards = ''
     items_counter = 0
-    num = 4
+    num = 8
     plants_done = []
     for item in items[:]:
         name = item['name']
@@ -7795,11 +7807,35 @@ def gen():
         html_image = f'''
             <img src="{plant_img_src}" alt="{name}" style="margin-bottom: 1.6rem;">
         '''
+        ### CARD DESCRIPTION
+        regen = False
+        dispel = False
+        key = f'action_{name}_description'
+        if key not in json_article: json_article[key] = ''
+        if regen: json_article[key] = ''
+        if dispel: 
+            json_article[key] = ''
+            io.json_write(json_article_filepath, json_article)
+            return 0
+        if not dispel:
+            if json_article[key] == '':
+                prompt = textwrap.dedent(f'''
+                    Write a 1-line sentence to define the following action of medicinal herbs: {name} 
+                ''').strip()
+                reply = llm.reply(prompt, model_filepath)
+                if '</think>' in reply:
+                    reply = reply.split('</think>')[1].strip()
+                reply = polish.vanilla(reply)
+                print(prompt)
+                print()
+                json_article[key] = reply
+                io.json_write(json_article_filepath, json_article)
+        ###
         card = f'''
-            <article>
-                <a href="/herbs/{plant_slug}.html" style="text-decoration: none;">
-                    {html_image}
-                    <h3>{name}</h3>
+            <article style="padding: 2.4rem; background-color: #faf8f6;">
+                <a href="/herbs/{plant_slug}.html" style="text-decoration: none; color: #000000;">
+                    <h3 style="text-align: center; text-transform: capitalize;">{name}</h3>
+                    <p style="text-align: center;">{json_article[key]}</p>
                 </a>
             </article>
         '''
@@ -7809,9 +7845,14 @@ def gen():
     ###
     html_cards_actions = f'''
         <section style="margin-bottom: 9.6rem;">
-            <h2>
-                Actions
-            </h2>
+            <div class="m-flex" style="justify-content: space-between; align-items: center; margin-bottom: 3.2rem;">
+                <h2>
+                    Actions
+                </h2>
+                <div>
+                    <a href="/">Browse All Actions</a>
+                </div>
+            </div>
             <div class="grid-{grid_cols}" style="gap: 1.6rem; row-gap: 3.2rem;">
                 {cards}
             </div>

@@ -31,7 +31,6 @@ h1 {
 h2 {
     font-size: 4.8rem;
     line-height: 1.2;
-    margin-bottom: 1.6rem;
     color: #000000;
 }
 
@@ -71,6 +70,11 @@ img {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
     }
+
+    .m-flex {
+        display: flex;
+    }
+
 
 }
 
