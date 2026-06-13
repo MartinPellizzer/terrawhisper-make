@@ -41,11 +41,6 @@ h3 {
     color: #000000;
 }
 
-ul {
-    margin-left: 3.2rem;
-    margin-bottom: 1.6rem;
-}
-
 img {
     width: 100%;
     display: block;
@@ -223,6 +218,11 @@ footer span {
 }
 
 .article p {
+    margin-bottom: 1.6rem;
+}
+
+.article ul {
+    margin-left: 3.2rem;
     margin-bottom: 1.6rem;
 }
 
