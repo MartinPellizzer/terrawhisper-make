@@ -1,13 +1,3 @@
-:root {
-    --color-carbon-powder: #101211;
-    --color-white-whisper: #f7f6f2;
-}
-
-@font-face {
-    font-family: LibreBaskerville-Regular;
-    src: url("./assets/fonts/Libre_Baskerville/static/LibreBaskerville-Regular.ttf");
-}
-
 * {
     margin: 0;
     padding: 0;
@@ -19,10 +9,9 @@ html {
 }
 
 body {
-    font-size: 1.8rem;
-    line-height: 1.6;
+    font-size: 1.6rem;
+    line-height: 1.5;
     font-family: sans-serif;
-    color: #333;
 }
 
 .container-xl {
@@ -32,47 +21,25 @@ body {
     padding-right: 1.6rem;
 }
 
-.container-lg {
-    max-width: 99.2rem;
-    margin: 0 auto;
-    padding-left: 1.6rem;
-    padding-right: 1.6rem;
-}
-
-.container-md {
-    max-width: 76.8rem;
-    margin: 0 auto;
-    padding-left: 1.6rem;
-    padding-right: 1.6rem;
-}
-
 h1 {
-    font-family: LibreBaskerville-Regular;
     font-size: 7.2rem;
     line-height: 1.2;
     margin-bottom: 1.6rem;
-    color: var(--color-carbon-powder);
+    color: #000000;
 }
 
 h2 {
-    font-family: LibreBaskerville-Regular;
     font-size: 4.8rem;
     line-height: 1.2;
     margin-bottom: 1.6rem;
-    color: var(--color-carbon-powder);
+    color: #000000;
 }
 
 h3 {
-    font-family: LibreBaskerville-Regular;
     font-size: 2.4rem;
     line-height: 1.2;
     margin-bottom: 1.6rem;
-    color: var(--color-carbon-powder);
-}
-
-img {
-    width: 100%;
-    display: block;
+    color: #000000;
 }
 
 ul {
@@ -80,139 +47,44 @@ ul {
     margin-bottom: 1.6rem;
 }
 
-.grid-3 {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-}
-
-.grid-4 {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-}
-
-.reliability-1 {
-    display: inline-block;
-    background-color: #fef2f2;
-    padding: 0.8rem 1.6rem;
-    border-radius: 9999px;
-}
-
-.reliability-3 {
-    display: inline-block;
-    background-color: #fffbeb;
-    background-color: #f7fee7;
-    padding: 0.8rem 1.6rem;
-    border-radius: 9999px;
-}
-
-.reliability-4 {
-    display: inline-block;
-    background-color: #ecfdf5;
-    padding: 0.8rem 1.6rem;
-    border-radius: 9999px;
-}
-
-/*********************************************/
-/* BREADCRUMBS */
-/*********************************************/
-.breadcrumbs {
-    padding: 16px 24px;
-}
-
-.breadcrumbs a {
-    color: #333;
-    text-decoration: None;
-}
-
-
-/*********************************************/
-/* ARTICLE */
-/*********************************************/
-.article {
-    max-width: 76.8rem;
-    margin: 0 auto;
-    padding-left: 1.6rem;
-    padding-right: 1.6rem;
-    padding-top: 6.4rem;
-    padding-bottom: 6.4rem;
-}
-
-.article h1 {
-    font-size: 4.8rem;
-    line-height: 1.1;
-    margin-bottom: 1.6rem;
-    color: var(--color-carbon-powder);
-}
-
-.article h2 {
-    font-size: 3.2rem;
-    line-height: 1.3;
-    margin-top: 6.4rem;
-    margin-bottom: 1.6rem;
-    color: var(--color-carbon-powder);
-}
-
-.article p {
-    margin-bottom: 1.6rem;
-}
-
-/*
-.article table {
-    border-collapse: collapse;
+img {
     width: 100%;
-    text-align: left;
-    font-size: 1.6rem;
-}
-
-.article th {
-    border: 1px solid #333;
-    padding: 1.6rem;
-    background-color: var(--color-carbon-powder);
-    color: var(--color-white-whisper);
-    font-weight: 400;
-    text-transform: uppercase;
-}
-
-.article td {
-    border: 1px solid #333;
-    padding: 1.6rem;
-}
-*/
-
-.article table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 1.4rem;
-    margin-top: 1.6rem;
-}
-
-.article th {
-    text-align: left;
-    padding: 1.6rem;
-    background-color: #f8f9fa;
-    color: #555;
-    font-weight: 600;
-    border-bottom: 2px solid #e2e8f0;
-}
-
-.article td {
-    padding: 1.6rem;
-    border-bottom: 1px solid #e2e8f0;
-    vertical-align: top;
+    display: block;
 }
 
 /*********************************************/
-/* header..............................[hdr] */
+/* LAYOUTS                                   */
 /*********************************************/
+
+@media screen and (min-width: 768px) {
+    .grid-2 {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .grid-3 {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .grid-4 {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+}
+
+/********************************************/
+/* HEADER                                   */
+/********************************************/
 header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 16px 24px;
+    padding: 1.6rem 2.4rem;
     background-color: #ffffff;
-    /* clean white */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    /* position: sticky; */
+    position: sticky;
     top: 0;
     z-index: 1000;
 }
@@ -223,42 +95,32 @@ header .logo img {
     display: block;
 }
 
-header ul {
-    margin: 0;
-}
-
-header li {
-    margin-bottom: 0;
-}
-
 .main-nav .nav-links {
     display: flex;
-    gap: 24px;
+    gap: 2.4rem;
     list-style: none;
 }
 
 .main-nav .nav-links li a {
     font-weight: 500;
     font-size: 16px;
-    color: var(--color-neutral-dark);
+    color: #000000;
     text-decoration: none;
     transition: color 0.2s ease;
 }
 
 .main-nav .nav-links li a:hover,
 .main-nav .nav-links li a:focus {
-    color: var(--color-primary);
+    color: #000000;
     outline: none;
 }
 
 #nav-toggle {
     display: none;
-    /* hidden checkbox */
 }
 
 .hamburger {
     display: none;
-    /* hidden on desktop */
     flex-direction: column;
     justify-content: space-between;
     width: 25px;
@@ -285,44 +147,122 @@ header li {
 
     .main-nav .nav-links {
         display: none;
-        /* hidden by default */
         position: absolute;
         top: 100%;
-        /* below header */
         right: 0;
         width: 100%;
         background-color: #ffffff;
         flex-direction: column;
-        padding: 16px 24px;
-        gap: 16px;
+        padding: 1.6rem 2.4rem;
+        gap: 1.6rem;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
 
-    /* Use general sibling combinator ~ instead of + */
     #nav-toggle:checked~.main-nav .nav-links {
         display: flex;
     }
+
 }
 
-@media (min-width: 768px) {
-    .m-flex {
-        display: flex;
-    }
-}
-
-/*********************************************/
-/* footer..............................[ftr] */
-/*********************************************/
+/********************************************/
+/* FOOTER                                   */
+/********************************************/
 footer {
-    background-color: var(--color-carbon-powder);
-    margin: 0 auto;
-    padding-top: 2.4rem;
-    padding-bottom: 2.4rem;
-    padding-left: 1.6rem;
-    padding-right: 1.6rem;
+    background-color: #000000;
+    padding: 1.6rem 2.4rem;
 }
 
 footer span {
-    color: var(--color-white-whisper);
+    color: white;
+}
+
+/*********************************************/
+/* BREADCRUMBS                               */
+/*********************************************/
+.breadcrumbs {
+    padding-top: 1.6rem; 
+    padding-bottom: 0;
+    padding-left: 2.4rem;
+    padding-right: 2.4rem;
+}
+
+.breadcrumbs a {
+    color: #000000;
+    text-decoration: none;
+}
+
+/*********************************************/
+/* ARTICLE                                   */
+/*********************************************/
+.article {
+    max-width: 76.8rem;
+    margin: 0 auto;
+    padding-left: 1.6rem;
+    padding-right: 1.6rem;
+    padding-top: 6.4rem;
+    padding-bottom: 6.4rem;
+}
+
+.article h1 {
+    font-size: 4.8rem;
+    line-height: 1.1;
+    margin-bottom: 1.6rem;
+    color: #000000;
+}
+
+.article h2 {
+    font-size: 3.2rem;
+    line-height: 1.3;
+    margin-top: 6.4rem;
+    margin-bottom: 1.6rem;
+    color: #000000;
+}
+
+.article p {
+    margin-bottom: 1.6rem;
+}
+
+.article table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 1.4rem;
+    margin-top: 1.6rem;
+}
+
+.article th {
+    text-align: left;
+    padding: 1.6rem;
+    background-color: #f8f9fa;
+    color: #555;
+    font-weight: 600;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.article td {
+    padding: 1.6rem;
+    border-bottom: 1px solid #e2e8f0;
+    vertical-align: top;
+}
+
+.reliability-1 {
+    display: inline-block;
+    background-color: #fef2f2;
+    padding: 0.8rem 1.6rem;
+    border-radius: 9999px;
+}
+
+.reliability-3 {
+    display: inline-block;
+    background-color: #fffbeb;
+    background-color: #f7fee7;
+    padding: 0.8rem 1.6rem;
+    border-radius: 9999px;
+}
+
+.reliability-4 {
+    display: inline-block;
+    background-color: #ecfdf5;
+    padding: 0.8rem 1.6rem;
+    border-radius: 9999px;
 }
 

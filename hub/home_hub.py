@@ -1039,14 +1039,14 @@ def gen():
         </div>
     '''
 
-                            # Learn Herbal Medicine, Improve Your Life
+                            # Discover The Medicinal Herbs That Improve Your Health And Change Your Life
     html_hero = f'''
         <section style="margin-bottom: 9.6rem;">
             <div class="m-flex" style="align-items: center;">
                 <div style="flex: 1; padding-top: 9.6rem; padding-bottom: 9.6rem;">
                     <div style="max-width: {text_w}px; margin-left: auto; margin-right: auto; padding-right: {text_padding_right_rem}rem; padding-left: {text_padding_left_rem}rem;">
                         <h1 style="color: {g.COLOR_CARBON_POWDER}; margin-bottom: 1.6rem; line-height: 1.2;">
-                            Discover The Medicinal Herbs That Improve Your Health And Change Your Life
+                            Learn Herbal Medicine, Improve Your Life
                         </h1>
                     </div>
                     <div style="max-width: {text_w}px; margin-left: auto; margin-right: auto; padding-right: {text_padding_right_rem}rem; padding-left: {text_padding_left_rem}rem;">
