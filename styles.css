@@ -66,6 +66,11 @@ img {
         grid-template-columns: repeat(4, 1fr);
     }
 
+    .grid-5 {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+    }
+
     .m-flex {
         display: flex;
     }

@@ -5,6 +5,7 @@ import textwrap
 
 from lib import g
 from lib import io
+from lib import kg
 from lib import llm
 from lib import data
 from lib import polish
@@ -7757,7 +7758,115 @@ def cards_gen(items, num, image=True):
         if items_counter >= num: break
     return cards
 
+def html_card_gen(card_link, card_title, card_description):
+    html = f'''
+        <article style="padding: 2.4rem; background-color: #faf8f6;">
+            <a href="{card_link}" style="text-decoration: none; color: #000000;">
+                <h3 style="text-align: center; text-transform: capitalize;">{card_title}</h3>
+                <p style="text-align: center;">{card_description}</p>
+            </a>
+        </article>
+    '''
+    return html
+
+def html_cards_gen(title, link_href, cards, grid_cols):
+    if link_href == '':
+        html_link = ''
+    else:
+        html_link = f'<a href="{link_href}">Browse All</a>'
+    html = f'''
+        <section style="margin-bottom: 9.6rem;">
+            <div class="m-flex" style="justify-content: space-between; align-items: center; margin-bottom: 3.2rem;">
+                <h2>
+                    {title}
+                </h2>
+                <div>
+                    {html_link}
+                </div>
+            </div>
+            <div class="grid-{grid_cols}" style="gap: 1.6rem; row-gap: 3.2rem;">
+                {cards}
+            </div>
+        </section>
+    '''
+    return html
+
+def taxonomy_gen():
+    url_slug = 'herbs/taxonomy'
+
+    rows = data.sqlite3__wikidata_powo_get_all()
+    rows = [row for row in rows if row[-1] == 'SPECIES']
+    print(rows[0])
+    print(len(rows))
+    kingdoms = []
+    phylums = []
+    classes = []
+    subclasses = []
+    order = []
+    families = []
+    for row in rows:
+        kingdoms.append(row[3])
+        phylums.append(row[4])
+        classes.append(row[5])
+        subclasses.append(row[6])
+        order.append(row[7])
+        families.append(row[8])
+    kingdoms = list(set(kingdoms))
+    phylums = list(set(phylums))
+    classes = list(set(classes))
+    subclasses = list(set(subclasses))
+    order = list(set(order))
+    families = list(set(families))
+    print(kingdoms)
+    print(phylums)
+    print(classes)
+    print(subclasses)
+    print(order)
+    print(families)
+
+    ###
+    html_article = ''
+
+    cards = ''
+    for kingdom in kingdoms:
+        kingdom_slug = polish.sluggify(kingdom)
+        cards += html_card_gen(card_link=f'/{url_slug}/kingdoms/{kingdom_slug}.html', card_title=f'{kingdom}', card_description='')
+    html_article += html_cards_gen(f'Kingdoms', f'/{url_slug}/kingdoms.html', cards, grid_cols=3)
+
+    cards = ''
+    for item in phylums:
+        item_slug = polish.sluggify(item)
+        cards += html_card_gen(card_link=f'/{url_slug}/phylums/{item_slug}.html', card_title=f'{item}', card_description='')
+    html_article += html_cards_gen(f'Phylums', f'/{url_slug}/phylums.html', cards, grid_cols=3)
+
+
+    meta_title = f'Taxonomy of Medicinal Plants'
+    meta_description = ''
+    canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''
+    head_html = components.html_head(
+        meta_title, meta_description, css='/styles.css', canonical=canonical_html
+    )
+    html = textwrap.dedent(f''' 
+        <!DOCTYPE html>
+        <html lang="en">
+        {head_html}
+        <body>
+            {sections.header_default()}
+            {sections.breadcrumbs_new(url_slug)}
+            <main class="container-xl">
+                {html_article}
+            </main>
+            {sections.footer()}
+        </body>
+        </html>
+    ''').strip()
+    html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
+    with open(html_filepath, 'w') as f: f.write(html)
+    print(html_filepath)
+
 def gen():
+    taxonomy_gen()
+
     url_slug = 'herbs'
     ########################################
     # json
@@ -7768,14 +7877,19 @@ def gen():
     json_article['title'] = 'Medicinal Herbs'
     io.json_write(json_article_filepath, json_article)
 
-    grid_cols = 4
+    grid_cols = 5
     items = data.studies__plants_popular_get(regen=False)
     html_cards_plants = cards_gen(items, grid_cols, image=True)
     html_cards_plants = f'''
         <section style="margin-bottom: 9.6rem;">
-            <h2>
-                Popular
-            </h2>
+            <div class="m-flex" style="justify-content: space-between; align-items: center; margin-bottom: 3.2rem;">
+                <h2>
+                    Popular
+                </h2>
+                <div>
+                    <a href="/herbs/all.html">Browse All Herbs</a>
+                </div>
+            </div>
             <div class="grid-{grid_cols}" style="gap: 1.6rem; row-gap: 3.2rem;">
                 {html_cards_plants}
             </div>
@@ -7786,6 +7900,7 @@ def gen():
     cards = ''
     items_counter = 0
     num = 8
+    grid_cols = 4
     plants_done = []
     for item in items[:]:
         name = item['name']
@@ -7843,6 +7958,7 @@ def gen():
         items_counter += 1
         if items_counter >= num: break
     ###
+    grid_cols = 3
     html_cards_actions = f'''
         <section style="margin-bottom: 9.6rem;">
             <div class="m-flex" style="justify-content: space-between; align-items: center; margin-bottom: 3.2rem;">
@@ -7859,6 +7975,16 @@ def gen():
         </section>
     '''
     ###
+    cards = ''
+    cards += html_card_gen(card_link=f'/herbs/taxonomy/kingdoms.html', card_title=f'Kingdoms', card_description='')
+    cards += html_card_gen(card_link=f'/herbs/taxonomy/phylums.html', card_title=f'Phylums', card_description='')
+    cards += html_card_gen(card_link=f'/herbs/taxonomy/classes.html', card_title=f'Classes', card_description='')
+    cards += html_card_gen(card_link=f'/herbs/taxonomy/subclasses.html', card_title=f'Subclasses', card_description='')
+    cards += html_card_gen(card_link=f'/herbs/taxonomy/orders.html', card_title=f'Orders', card_description='')
+    cards += html_card_gen(card_link=f'/herbs/taxonomy/families.html', card_title=f'Families', card_description='')
+
+    html_taxonomy = html_cards_gen(f'Taxonomy', f'/{url_slug}/taxonomy.html', cards, grid_cols)
+
     html_article = ''
     html_article += f'''
         <h1 style="margin-top: 9.6rem;">
@@ -7866,6 +7992,7 @@ def gen():
         </h1>
     '''
     html_article += html_cards_plants
+    html_article += html_taxonomy
     html_article += html_cards_actions
     ###
     url_slug = 'herbs'
