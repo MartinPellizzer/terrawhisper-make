@@ -7792,7 +7792,7 @@ def html_cards_gen(title, link_href, cards, grid_cols):
     return html
 
 def taxonomy_gen():
-    url_slug = 'herbs/taxonomy'
+    url_slug = 'taxonomy'
     rows = data.sqlite3__wikidata_powo_get_all()
     rows = [row for row in rows if row[-1] == 'SPECIES']
     print(rows[0])
@@ -7880,7 +7880,7 @@ def taxonomy_gen():
     print(html_filepath)
 
 def taxonomy_kingdoms_gen():
-    url_slug = 'herbs/taxonomy/kingdoms'
+    url_slug = 'taxonomy/kingdoms'
     ###
     rows = data.sqlite3__wikidata_powo_get_all()
     rows = [row for row in rows if row[-1] == 'SPECIES']
@@ -7893,7 +7893,7 @@ def taxonomy_kingdoms_gen():
     cards = ''
     for kingdom in kingdoms:
         kingdom_slug = polish.sluggify(kingdom)
-        cards += html_card_gen(card_link=f'/{url_slug}/kingdoms/{kingdom_slug}.html', card_title=f'{kingdom}', card_description='')
+        cards += html_card_gen(card_link=f'/{url_slug}/{kingdom_slug}.html', card_title=f'{kingdom}', card_description='')
     html_article += html_cards_gen(f'Kingdoms', f'', cards, grid_cols=3)
     ###
     meta_title = f'Taxonomical Kingdoms of Medicinal Plants'
@@ -7922,7 +7922,7 @@ def taxonomy_kingdoms_gen():
     print(html_filepath)
 
 def taxonomy_phylums_gen():
-    url_slug = 'herbs/taxonomy/phylums'
+    url_slug = 'taxonomy/phylums'
     ###
     rows = data.sqlite3__wikidata_powo_get_all()
     rows = [row for row in rows if row[-1] == 'SPECIES']
@@ -7935,7 +7935,7 @@ def taxonomy_phylums_gen():
     cards = ''
     for item in phylums:
         item_slug = polish.sluggify(item)
-        cards += html_card_gen(card_link=f'/{url_slug}/phylums/{item_slug}.html', card_title=f'{item}', card_description='')
+        cards += html_card_gen(card_link=f'/{url_slug}/{item_slug}.html', card_title=f'{item}', card_description='')
     html_article += html_cards_gen(f'Phylums', f'', cards, grid_cols=3)
     ###
     meta_title = f'Taxonomical Phylums of Medicinal Plants'
@@ -7964,7 +7964,7 @@ def taxonomy_phylums_gen():
     print(html_filepath)
 
 def taxonomy_classes_gen():
-    url_slug = 'herbs/taxonomy/classes'
+    url_slug = 'taxonomy/classes'
     ###
     rows = data.sqlite3__wikidata_powo_get_all()
     rows = [row for row in rows if row[-1] == 'SPECIES']
@@ -7977,7 +7977,7 @@ def taxonomy_classes_gen():
     cards = ''
     for item in classes:
         item_slug = polish.sluggify(item)
-        cards += html_card_gen(card_link=f'/{url_slug}/classes/{item_slug}.html', card_title=f'{item}', card_description='')
+        cards += html_card_gen(card_link=f'/{url_slug}/{item_slug}.html', card_title=f'{item}', card_description='')
     html_article += html_cards_gen(f'Classes', f'', cards, grid_cols=3)
     ###
     meta_title = f'Taxonomical Classes of Medicinal Plants'
@@ -8006,7 +8006,7 @@ def taxonomy_classes_gen():
     print(html_filepath)
 
 def taxonomy_subclasses_gen():
-    url_slug = 'herbs/taxonomy/subclasses'
+    url_slug = 'taxonomy/subclasses'
     ###
     rows = data.sqlite3__wikidata_powo_get_all()
     rows = [row for row in rows if row[-1] == 'SPECIES']
@@ -8019,7 +8019,7 @@ def taxonomy_subclasses_gen():
     cards = ''
     for item in subclasses:
         item_slug = polish.sluggify(item)
-        cards += html_card_gen(card_link=f'/{url_slug}/subclasses/{item_slug}.html', card_title=f'{item}', card_description='')
+        cards += html_card_gen(card_link=f'/{url_slug}/{item_slug}.html', card_title=f'{item}', card_description='')
     html_article += html_cards_gen(f'Subclasses', f'', cards, grid_cols=3)
     ###
     meta_title = f'Taxonomical Subclasses of Medicinal Plants'
@@ -8048,7 +8048,7 @@ def taxonomy_subclasses_gen():
     print(html_filepath)
 
 def taxonomy_orders_gen():
-    url_slug = 'herbs/taxonomy/orders'
+    url_slug = 'taxonomy/orders'
     ###
     rows = data.sqlite3__wikidata_powo_get_all()
     rows = [row for row in rows if row[-1] == 'SPECIES']
@@ -8061,7 +8061,7 @@ def taxonomy_orders_gen():
     cards = ''
     for item in orders:
         item_slug = polish.sluggify(item)
-        cards += html_card_gen(card_link=f'/{url_slug}/orders/{item_slug}.html', card_title=f'{item}', card_description='')
+        cards += html_card_gen(card_link=f'/{url_slug}/{item_slug}.html', card_title=f'{item}', card_description='')
     html_article += html_cards_gen(f'Orders', f'', cards, grid_cols=3)
     ###
     meta_title = f'Taxonomical Orders of Medicinal Plants'
@@ -8090,7 +8090,7 @@ def taxonomy_orders_gen():
     print(html_filepath)
 
 def taxonomy_families_gen():
-    url_slug = 'herbs/taxonomy/families'
+    url_slug = 'taxonomy/families'
     ###
     rows = data.sqlite3__wikidata_powo_get_all()
     rows = [row for row in rows if row[-1] == 'SPECIES']
@@ -8103,7 +8103,7 @@ def taxonomy_families_gen():
     cards = ''
     for item in families:
         item_slug = polish.sluggify(item)
-        cards += html_card_gen(card_link=f'/{url_slug}/families/{item_slug}.html', card_title=f'{item}', card_description='')
+        cards += html_card_gen(card_link=f'/{url_slug}/{item_slug}.html', card_title=f'{item}', card_description='')
     html_article += html_cards_gen(f'Families', f'', cards, grid_cols=3)
     ###
     meta_title = f'Taxonomical Families of Medicinal Plants'
@@ -8131,6 +8131,468 @@ def taxonomy_families_gen():
     with open(html_filepath, 'w') as f: f.write(html)
     print(html_filepath)
 
+def taxonomy_kingdoms_kingdom_gen():
+    ###
+    rows = data.sqlite3__wikidata_powo_get_all()
+    rows = [row for row in rows if row[-1] == 'SPECIES']
+    groups = []
+    for row in rows:
+        kingdom = row[3]
+        plant_name = row[-2]
+        found = False
+        for group in groups:
+            if group['kingdom'] == kingdom:
+                group['plants_names'].append(plant_name)
+                found = True
+                break
+        if not found:
+            group = {
+                'kingdom': kingdom,
+                'plants_names': [plant_name],
+            }
+            groups.append(group)
+    for group in groups:
+        kingdom = group['kingdom']
+        kingdom_slug = polish.sluggify(kingdom)
+        url_slug = f'''taxonomy/kingdoms/{kingdom_slug}'''
+        ###
+        html_article = ''
+        html_article += f'''
+            <h1>
+                 Medicinal Plants in {kingdom} Order
+            </h1>
+        '''
+        grid_cols = 5
+        html_cards = ''
+        for plant_name in group['plants_names']:
+            plant_slug = polish.sluggify(plant_name)
+            plant_img_src = f'/images/herbs/{plant_slug}.jpg'
+            html_cards += f'''
+                <article>
+                    <a href="/herbs/{plant_slug}.html" style="text-decoration: none;">
+                        <img src="{plant_img_src}" alt="{plant_name}" style="margin-bottom: 1.6rem;">
+                        <h3>{plant_name}</h3>
+                    </a>
+                </article>
+            '''
+        html_article += f'''
+            <section style="margin-bottom: 9.6rem;">
+                <div class="grid-{grid_cols}" style="gap: 1.6rem; row-gap: 3.2rem;">
+                    {html_cards}
+                </div>
+            </section>
+        '''
+        ###
+        meta_title = f'{kingdom} Family and Its Medicinal Plants'
+        meta_description = ''
+        canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''
+        head_html = components.html_head(
+            meta_title, meta_description, css='/styles.css', canonical=canonical_html
+        )
+        html = textwrap.dedent(f''' 
+            <!DOCTYPE html>
+            <html lang="en">
+            {head_html}
+            <body>
+                {sections.header_default()}
+                {sections.breadcrumbs_new(url_slug)}
+                <main class="container-xl">
+                    {html_article}
+                </main>
+                {sections.footer()}
+            </body>
+            </html>
+        ''').strip()
+        html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
+        os.makedirs(f'{g.website_folderpath}/{url_slug}', exist_ok=True)
+        with open(html_filepath, 'w') as f: f.write(html)
+        print(html_filepath)
+
+def taxonomy_phylums_phylum_gen():
+    ###
+    rows = data.sqlite3__wikidata_powo_get_all()
+    rows = [row for row in rows if row[-1] == 'SPECIES']
+    groups = []
+    for row in rows:
+        phylum = row[4]
+        plant_name = row[-2]
+        found = False
+        for group in groups:
+            if group['phylum'] == phylum:
+                group['plants_names'].append(plant_name)
+                found = True
+                break
+        if not found:
+            group = {
+                'phylum': phylum,
+                'plants_names': [plant_name],
+            }
+            groups.append(group)
+    for group in groups:
+        phylum = group['phylum']
+        phylum_slug = polish.sluggify(phylum)
+        url_slug = f'''taxonomy/phylums/{phylum_slug}'''
+        ###
+        html_article = ''
+        html_article += f'''
+            <h1>
+                 Medicinal Plants in {phylum} Order
+            </h1>
+        '''
+        grid_cols = 5
+        html_cards = ''
+        for plant_name in group['plants_names']:
+            plant_slug = polish.sluggify(plant_name)
+            plant_img_src = f'/images/herbs/{plant_slug}.jpg'
+            html_cards += f'''
+                <article>
+                    <a href="/herbs/{plant_slug}.html" style="text-decoration: none;">
+                        <img src="{plant_img_src}" alt="{plant_name}" style="margin-bottom: 1.6rem;">
+                        <h3>{plant_name}</h3>
+                    </a>
+                </article>
+            '''
+        html_article += f'''
+            <section style="margin-bottom: 9.6rem;">
+                <div class="grid-{grid_cols}" style="gap: 1.6rem; row-gap: 3.2rem;">
+                    {html_cards}
+                </div>
+            </section>
+        '''
+        ###
+        meta_title = f'{phylum} Family and Its Medicinal Plants'
+        meta_description = ''
+        canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''
+        head_html = components.html_head(
+            meta_title, meta_description, css='/styles.css', canonical=canonical_html
+        )
+        html = textwrap.dedent(f''' 
+            <!DOCTYPE html>
+            <html lang="en">
+            {head_html}
+            <body>
+                {sections.header_default()}
+                {sections.breadcrumbs_new(url_slug)}
+                <main class="container-xl">
+                    {html_article}
+                </main>
+                {sections.footer()}
+            </body>
+            </html>
+        ''').strip()
+        html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
+        os.makedirs(f'{g.website_folderpath}/{url_slug}', exist_ok=True)
+        with open(html_filepath, 'w') as f: f.write(html)
+        print(html_filepath)
+
+def taxonomy_classes_class_gen():
+    ###
+    rows = data.sqlite3__wikidata_powo_get_all()
+    rows = [row for row in rows if row[-1] == 'SPECIES']
+    groups = []
+    for row in rows:
+        _class = row[5]
+        plant_name = row[-2]
+        found = False
+        for group in groups:
+            if group['class'] == _class:
+                group['plants_names'].append(plant_name)
+                found = True
+                break
+        if not found:
+            group = {
+                'class': _class,
+                'plants_names': [plant_name],
+            }
+            groups.append(group)
+    for group in groups:
+        _class = group['class']
+        class_slug = polish.sluggify(_class)
+        url_slug = f'''taxonomy/classes/{class_slug}'''
+        ###
+        html_article = ''
+        html_article += f'''
+            <h1>
+                 Medicinal Plants in {_class} Order
+            </h1>
+        '''
+        grid_cols = 5
+        html_cards = ''
+        for plant_name in group['plants_names']:
+            plant_slug = polish.sluggify(plant_name)
+            plant_img_src = f'/images/herbs/{plant_slug}.jpg'
+            html_cards += f'''
+                <article>
+                    <a href="/herbs/{plant_slug}.html" style="text-decoration: none;">
+                        <img src="{plant_img_src}" alt="{plant_name}" style="margin-bottom: 1.6rem;">
+                        <h3>{plant_name}</h3>
+                    </a>
+                </article>
+            '''
+        html_article += f'''
+            <section style="margin-bottom: 9.6rem;">
+                <div class="grid-{grid_cols}" style="gap: 1.6rem; row-gap: 3.2rem;">
+                    {html_cards}
+                </div>
+            </section>
+        '''
+        ###
+        meta_title = f'{_class} Family and Its Medicinal Plants'
+        meta_description = ''
+        canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''
+        head_html = components.html_head(
+            meta_title, meta_description, css='/styles.css', canonical=canonical_html
+        )
+        html = textwrap.dedent(f''' 
+            <!DOCTYPE html>
+            <html lang="en">
+            {head_html}
+            <body>
+                {sections.header_default()}
+                {sections.breadcrumbs_new(url_slug)}
+                <main class="container-xl">
+                    {html_article}
+                </main>
+                {sections.footer()}
+            </body>
+            </html>
+        ''').strip()
+        html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
+        os.makedirs(f'{g.website_folderpath}/{url_slug}', exist_ok=True)
+        with open(html_filepath, 'w') as f: f.write(html)
+        print(html_filepath)
+
+def taxonomy_subclasses_subclass_gen():
+    ###
+    rows = data.sqlite3__wikidata_powo_get_all()
+    rows = [row for row in rows if row[-1] == 'SPECIES']
+    groups = []
+    for row in rows:
+        subclass = row[6]
+        plant_name = row[-2]
+        found = False
+        for group in groups:
+            if group['subclass'] == subclass:
+                group['plants_names'].append(plant_name)
+                found = True
+                break
+        if not found:
+            group = {
+                'subclass': subclass,
+                'plants_names': [plant_name],
+            }
+            groups.append(group)
+    for group in groups:
+        subclass = group['subclass']
+        subclass_slug = polish.sluggify(subclass)
+        url_slug = f'''taxonomy/subclasses/{subclass_slug}'''
+        ###
+        html_article = ''
+        html_article += f'''
+            <h1>
+                 Medicinal Plants in {subclass} Order
+            </h1>
+        '''
+        grid_cols = 5
+        html_cards = ''
+        for plant_name in group['plants_names']:
+            plant_slug = polish.sluggify(plant_name)
+            plant_img_src = f'/images/herbs/{plant_slug}.jpg'
+            html_cards += f'''
+                <article>
+                    <a href="/herbs/{plant_slug}.html" style="text-decoration: none;">
+                        <img src="{plant_img_src}" alt="{plant_name}" style="margin-bottom: 1.6rem;">
+                        <h3>{plant_name}</h3>
+                    </a>
+                </article>
+            '''
+        html_article += f'''
+            <section style="margin-bottom: 9.6rem;">
+                <div class="grid-{grid_cols}" style="gap: 1.6rem; row-gap: 3.2rem;">
+                    {html_cards}
+                </div>
+            </section>
+        '''
+        ###
+        meta_title = f'{subclass} Family and Its Medicinal Plants'
+        meta_description = ''
+        canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''
+        head_html = components.html_head(
+            meta_title, meta_description, css='/styles.css', canonical=canonical_html
+        )
+        html = textwrap.dedent(f''' 
+            <!DOCTYPE html>
+            <html lang="en">
+            {head_html}
+            <body>
+                {sections.header_default()}
+                {sections.breadcrumbs_new(url_slug)}
+                <main class="container-xl">
+                    {html_article}
+                </main>
+                {sections.footer()}
+            </body>
+            </html>
+        ''').strip()
+        html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
+        os.makedirs(f'{g.website_folderpath}/{url_slug}', exist_ok=True)
+        with open(html_filepath, 'w') as f: f.write(html)
+        print(html_filepath)
+
+def taxonomy_orders_order_gen():
+    ###
+    rows = data.sqlite3__wikidata_powo_get_all()
+    rows = [row for row in rows if row[-1] == 'SPECIES']
+    groups = []
+    for row in rows:
+        order = row[7]
+        plant_name = row[-2]
+        found = False
+        for group in groups:
+            if group['order'] == order:
+                group['plants_names'].append(plant_name)
+                found = True
+                break
+        if not found:
+            group = {
+                'order': order,
+                'plants_names': [plant_name],
+            }
+            groups.append(group)
+    for group in groups:
+        order = group['order']
+        order_slug = polish.sluggify(order)
+        url_slug = f'''taxonomy/orders/{order_slug}'''
+        ###
+        html_article = ''
+        html_article += f'''
+            <h1>
+                 Medicinal Plants in {order} Order
+            </h1>
+        '''
+        grid_cols = 5
+        html_cards = ''
+        for plant_name in group['plants_names']:
+            plant_slug = polish.sluggify(plant_name)
+            plant_img_src = f'/images/herbs/{plant_slug}.jpg'
+            html_cards += f'''
+                <article>
+                    <a href="/herbs/{plant_slug}.html" style="text-decoration: none;">
+                        <img src="{plant_img_src}" alt="{plant_name}" style="margin-bottom: 1.6rem;">
+                        <h3>{plant_name}</h3>
+                    </a>
+                </article>
+            '''
+        html_article += f'''
+            <section style="margin-bottom: 9.6rem;">
+                <div class="grid-{grid_cols}" style="gap: 1.6rem; row-gap: 3.2rem;">
+                    {html_cards}
+                </div>
+            </section>
+        '''
+        ###
+        meta_title = f'{order} Family and Its Medicinal Plants'
+        meta_description = ''
+        canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''
+        head_html = components.html_head(
+            meta_title, meta_description, css='/styles.css', canonical=canonical_html
+        )
+        html = textwrap.dedent(f''' 
+            <!DOCTYPE html>
+            <html lang="en">
+            {head_html}
+            <body>
+                {sections.header_default()}
+                {sections.breadcrumbs_new(url_slug)}
+                <main class="container-xl">
+                    {html_article}
+                </main>
+                {sections.footer()}
+            </body>
+            </html>
+        ''').strip()
+        html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
+        os.makedirs(f'{g.website_folderpath}/{url_slug}', exist_ok=True)
+        with open(html_filepath, 'w') as f: f.write(html)
+        print(html_filepath)
+
+def taxonomy_families_family_gen():
+    ###
+    rows = data.sqlite3__wikidata_powo_get_all()
+    rows = [row for row in rows if row[-1] == 'SPECIES']
+    groups = []
+    for row in rows:
+        family = row[8]
+        plant_name = row[-2]
+        found = False
+        for group in groups:
+            if group['family'] == family:
+                group['plants_names'].append(plant_name)
+                found = True
+                break
+        if not found:
+            group = {
+                'family': family,
+                'plants_names': [plant_name],
+            }
+            groups.append(group)
+    for group in groups:
+        family = group['family']
+        family_slug = polish.sluggify(family)
+        url_slug = f'''taxonomy/families/{family_slug}'''
+        ###
+        html_article = ''
+        html_article += f'''
+            <h1>
+                 Medicinal Plants in {family} Family
+            </h1>
+        '''
+        grid_cols = 5
+        html_cards = ''
+        for plant_name in group['plants_names']:
+            plant_slug = polish.sluggify(plant_name)
+            plant_img_src = f'/images/herbs/{plant_slug}.jpg'
+            html_cards += f'''
+                <article>
+                    <a href="/herbs/{plant_slug}.html" style="text-decoration: none;">
+                        <img src="{plant_img_src}" alt="{plant_name}" style="margin-bottom: 1.6rem;">
+                        <h3>{plant_name}</h3>
+                    </a>
+                </article>
+            '''
+        html_article += f'''
+            <section style="margin-bottom: 9.6rem;">
+                <div class="grid-{grid_cols}" style="gap: 1.6rem; row-gap: 3.2rem;">
+                    {html_cards}
+                </div>
+            </section>
+        '''
+        ###
+        meta_title = f'{family} Family and Its Medicinal Plants'
+        meta_description = ''
+        canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''
+        head_html = components.html_head(
+            meta_title, meta_description, css='/styles.css', canonical=canonical_html
+        )
+        html = textwrap.dedent(f''' 
+            <!DOCTYPE html>
+            <html lang="en">
+            {head_html}
+            <body>
+                {sections.header_default()}
+                {sections.breadcrumbs_new(url_slug)}
+                <main class="container-xl">
+                    {html_article}
+                </main>
+                {sections.footer()}
+            </body>
+            </html>
+        ''').strip()
+        html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
+        os.makedirs(f'{g.website_folderpath}/{url_slug}', exist_ok=True)
+        with open(html_filepath, 'w') as f: f.write(html)
+        print(html_filepath)
+
 def gen():
     taxonomy_gen()
     taxonomy_kingdoms_gen()
@@ -8139,6 +8601,13 @@ def gen():
     taxonomy_subclasses_gen()
     taxonomy_orders_gen()
     taxonomy_families_gen()
+
+    taxonomy_kingdoms_kingdom_gen()
+    # taxonomy_phylums_phylum_gen()
+    # taxonomy_classes_class_gen()
+    # taxonomy_subclasses_subclass_gen()
+    # taxonomy_orders_order_gen()
+    # taxonomy_families_family_gen()
 
     url_slug = 'herbs'
     ########################################
@@ -8249,14 +8718,14 @@ def gen():
     '''
     ###
     cards = ''
-    cards += html_card_gen(card_link=f'/herbs/taxonomy/kingdoms.html', card_title=f'Kingdoms', card_description='')
-    cards += html_card_gen(card_link=f'/herbs/taxonomy/phylums.html', card_title=f'Phylums', card_description='')
-    cards += html_card_gen(card_link=f'/herbs/taxonomy/classes.html', card_title=f'Classes', card_description='')
-    cards += html_card_gen(card_link=f'/herbs/taxonomy/subclasses.html', card_title=f'Subclasses', card_description='')
-    cards += html_card_gen(card_link=f'/herbs/taxonomy/orders.html', card_title=f'Orders', card_description='')
-    cards += html_card_gen(card_link=f'/herbs/taxonomy/families.html', card_title=f'Families', card_description='')
+    cards += html_card_gen(card_link=f'/taxonomy/kingdoms.html', card_title=f'Kingdoms', card_description='')
+    cards += html_card_gen(card_link=f'/taxonomy/phylums.html', card_title=f'Phylums', card_description='')
+    cards += html_card_gen(card_link=f'/taxonomy/classes.html', card_title=f'Classes', card_description='')
+    cards += html_card_gen(card_link=f'/taxonomy/subclasses.html', card_title=f'Subclasses', card_description='')
+    cards += html_card_gen(card_link=f'/taxonomy/orders.html', card_title=f'Orders', card_description='')
+    cards += html_card_gen(card_link=f'/taxonomy/families.html', card_title=f'Families', card_description='')
 
-    html_taxonomy = html_cards_gen(f'Taxonomy', f'/{url_slug}/taxonomy.html', cards, grid_cols)
+    html_taxonomy = html_cards_gen(f'Taxonomy', f'/taxonomy.html', cards, grid_cols)
 
     html_article = ''
     html_article += f'''
