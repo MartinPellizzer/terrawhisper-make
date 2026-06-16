@@ -8151,6 +8151,7 @@ def taxonomy_kingdoms_kingdom_gen():
                 'plants_names': [plant_name],
             }
             groups.append(group)
+    ###
     for group in groups:
         kingdom = group['kingdom']
         kingdom_slug = polish.sluggify(kingdom)
@@ -8164,7 +8165,7 @@ def taxonomy_kingdoms_kingdom_gen():
         '''
         grid_cols = 5
         html_cards = ''
-        for plant_name in group['plants_names']:
+        for plant_name in group['plants_names'][:]:
             plant_slug = polish.sluggify(plant_name)
             plant_img_src = f'/images/herbs/{plant_slug}.jpg'
             html_cards += f'''
@@ -8593,22 +8594,7 @@ def taxonomy_families_family_gen():
         with open(html_filepath, 'w') as f: f.write(html)
         print(html_filepath)
 
-def gen():
-    taxonomy_gen()
-    taxonomy_kingdoms_gen()
-    taxonomy_phylums_gen()
-    taxonomy_classes_gen()
-    taxonomy_subclasses_gen()
-    taxonomy_orders_gen()
-    taxonomy_families_gen()
-
-    taxonomy_kingdoms_kingdom_gen()
-    # taxonomy_phylums_phylum_gen()
-    # taxonomy_classes_class_gen()
-    # taxonomy_subclasses_subclass_gen()
-    # taxonomy_orders_order_gen()
-    # taxonomy_families_family_gen()
-
+def herbs_gen():
     url_slug = 'herbs'
     ########################################
     # json
@@ -8761,4 +8747,264 @@ def gen():
     html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
     with open(html_filepath, 'w') as f: f.write(html)
     print(html_filepath)
+
+def groups_gen(items, group_len):
+    pages = []
+    page_cur = []
+    for item_i, item in enumerate(items):
+        if len(page_cur) < group_len:
+            page_cur.append(item)
+        else:
+            pages.append(page_cur)
+            page_cur = [item]
+    if page_cur != []: pages.append(page_cur)
+    return pages
+
+def pagination_gen(group_i, groups, url_slug):
+    ### prev
+    if group_i > 1:
+        prev_html = f'''
+            <a rel="prev" style="text-decoration: none;" href="/{url_slug}/page/{group_i}.html">
+                <p style="font-size: 1.2rem; font-weight: bold; padding: 0.8rem 1.6rem; border: 1px solid #e7e7e7;">
+                    PREV
+                </p>
+            </a>
+        '''
+    elif group_i > 0:
+        prev_html = f'''
+            <a rel="prev" style="text-decoration: none;" href="/{url_slug}.html">
+                <p style="
+                    font-size: 1.2rem; font-weight: bold; padding: 0.8rem 1.6rem; border: 1px solid #e7e7e7;
+                    "
+                >
+                    PREV
+                </p>
+            </a>
+        '''
+    else:
+        prev_html = f''
+    ### numbers
+    numbers_html = ''
+    ### first
+    if group_i != 0:
+        number_html = f'''
+            <a style="text-decoration: none;" href="/{url_slug}.html">
+                <p 
+                    style="
+                        font-size: 1.2rem; font-weight: bold; padding: 0.8rem 1.6rem; border: 1px solid #e7e7e7;
+                    "
+                >
+                    1
+                </p>
+            </a>
+        '''
+        numbers_html += number_html
+    ### current prev ...
+    if group_i > 4:
+        number_html = f'''
+            <p 
+                style="
+                    font-size: 1.2rem; font-weight: bold; padding: 0.8rem 1.6rem; border: 1px solid #e7e7e7;
+                "
+            >
+                ...
+            </p>
+        '''
+        numbers_html += number_html
+    ### current prev
+    for i in range(3, 0, -1):
+        page_index = group_i+1-i
+        if page_index > 1:
+            number_html = f'''
+                <a style="text-decoration: none;" href="/{url_slug}/page/{page_index}.html">
+                    <p 
+                        style="
+                            font-size: 1.2rem; font-weight: bold; padding: 0.8rem 1.6rem; border: 1px solid #e7e7e7;
+                        "
+                    >
+                        {page_index}
+                    </p>
+                </a>
+            '''
+            numbers_html += number_html
+    ### current
+    number_html = f'''
+            <p 
+                style="
+                    font-size: 1.2rem; font-weight: bold; padding: 0.8rem 1.6rem; 
+                    border: 1px solid #e7e7e7; color: #ffffff; background-color: #222222;
+                "
+            >
+                {group_i+1}
+            </p>
+    '''
+    numbers_html += number_html
+    ### current next
+    for i in range(3):
+        page_index = group_i+1+i+1
+        if page_index < len(groups):
+            number_html = f'''
+                <a style="text-decoration: none;" href="/{url_slug}/page/{page_index}.html">
+                    <p 
+                        style="
+                            font-size: 1.2rem; font-weight: bold; padding: 0.8rem 1.6rem; border: 1px solid #e7e7e7;
+                        "
+                    >
+                        {page_index}
+                    </p>
+                </a>
+            '''
+            numbers_html += number_html
+    ### current next ...
+    if group_i < len(groups)-1 - 4:
+        number_html = f'''
+            <p 
+                style="
+                    font-size: 1.2rem; font-weight: bold; padding: 0.8rem 1.6rem; border: 1px solid #e7e7e7;
+                "
+            >
+                ...
+            </p>
+        '''
+        numbers_html += number_html
+    ### last
+    if group_i != len(groups)-1:
+        number_html = f'''
+            <a style="text-decoration: none;" href="/{url_slug}/page/{len(groups)}.html">
+                <p 
+                    style="
+                        font-size: 1.2rem; font-weight: bold; padding: 0.8rem 1.6rem; border: 1px solid #e7e7e7;
+                    "
+                >
+                    {len(groups)}
+                </p>
+            </a>
+        '''
+        numbers_html += number_html
+    ### next
+    if group_i != len(groups)-1:
+        next_html = f'''
+            <a rel="next" style="text-decoration: none;" href="/{url_slug}/page/{group_i+2}.html">
+                <p style="font-size: 1.2rem; font-weight: bold; padding: 0.8rem 1.6rem; border: 1px solid #e7e7e7;">
+                    NEXT
+                </p>
+            </a>
+        '''
+    else:
+        next_html = f''
+    pagination_html = f'''
+        {prev_html}
+        {numbers_html}
+        {next_html}
+    '''
+    return pagination_html
+
+def herbs_all_gen():
+    url_slug = 'herbs/all'
+    ###
+    rows = data.sqlite3__wikidata_powo_get_all()
+    rows = [row for row in rows if row[-1] == 'SPECIES']
+    groups = groups_gen(rows, 30)
+    ###
+    for group_i, group in enumerate(groups):
+        ### page url
+        if group_i == 0:
+            html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
+        else:
+            try: os.makedirs(f'''{g.website_folderpath}/{url_slug}/page''')
+            except: pass
+            html_filepath = f'''{g.website_folderpath}/{url_slug}/page/{group_i+1}.html'''
+        ###
+        html_article = ''
+        html_article += f'''
+            <h1 style="margin-top: 9.6rem;">
+                All Medicinal Herbs
+            </h1>
+        '''
+        grid_cols = 5
+        html_cards = ''
+        for row in group[:]:
+            plant_name = row[-2]
+            plant_slug = polish.sluggify(plant_name)
+            plant_img_src = f'/images/herbs/{plant_slug}.jpg'
+            plant_href = f'/herbs/{plant_slug}.html'
+            plant_img_filepath = f'{g.website_folderpath}/images/herbs/{plant_slug}.jpg'
+            if os.path.exists(plant_img_filepath):
+                html_img = f'''<img src="{plant_img_src}" alt="{plant_name}" style="margin-bottom: 1.6rem;">'''
+            else:
+                html_img = f'''<img src="/images/no-image.jpg" alt="{plant_name}" style="margin-bottom: 1.6rem;">'''
+            html_cards += f'''
+                <article>
+                    <a href="{plant_href}" style="text-decoration: none;">
+                        {html_img}
+                        <h3>{plant_name}</h3>
+                    </a>
+                </article>
+            '''
+        html_article += f'''
+            <section style="margin-bottom: 9.6rem;">
+                <div class="grid-{grid_cols}" style="gap: 1.6rem; row-gap: 3.2rem;">
+                    {html_cards}
+                </div>
+            </section>
+        '''
+        pagination_html = pagination_gen(group_i, groups, url_slug)
+        html_article += f'''
+            <section style="margin-bottom: 9.6rem;">
+                <nav>
+                    <ul style="display: flex; justify-content: center; gap: 0.8rem;">
+                        {pagination_html}
+                    </ul>
+                </nav>
+            </section>
+        '''
+        ###
+        meta_title = f'All Medicinal Herbs'
+        meta_description = ''
+        canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''
+        head_html = components.html_head(
+            meta_title, meta_description, css='/styles.css', canonical=canonical_html
+        )
+        html = textwrap.dedent(f''' 
+            <!DOCTYPE html>
+            <html lang="en">
+            {head_html}
+            <body>
+                {sections.header_default()}
+                {sections.breadcrumbs_new(url_slug)}
+                <main class="container-xl">
+                    {html_article}
+                </main>
+                {sections.footer()}
+            </body>
+            </html>
+        ''').strip()
+        with open(html_filepath, 'w') as f: f.write(html)
+        try: os.makedir(f'{g.website_folderpath}/{url_slub}')
+        except: pass
+        try: os.makedir(f'{g.website_folderpath}/{url_slug}/page')
+        except: pass
+        with open(html_filepath, 'w') as f: f.write(html)
+        print(html_filepath)
+        # quit()
+
+def gen():
+    herbs_gen()
+    herbs_all_gen()
+    quit()
+
+    taxonomy_gen()
+    taxonomy_kingdoms_gen()
+    taxonomy_phylums_gen()
+    taxonomy_classes_gen()
+    taxonomy_subclasses_gen()
+    taxonomy_orders_gen()
+    taxonomy_families_gen()
+
+    taxonomy_kingdoms_kingdom_gen()
+    # taxonomy_phylums_phylum_gen()
+    # taxonomy_classes_class_gen()
+    # taxonomy_subclasses_subclass_gen()
+    # taxonomy_orders_order_gen()
+    # taxonomy_families_family_gen()
 
