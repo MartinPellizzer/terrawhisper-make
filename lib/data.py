@@ -448,3 +448,16 @@ def studies__actions_popular_get(regen=False):
     items = io.json_read(filepath)
     return items
 
+def sqlite3__wcvp_get(taxon_name):
+    DB_PATH = f'{g.SSOT_FOLDERPATH}/datasets/powo/wcvp/wcvp.db'
+    conn = sqlite3.connect(DB_PATH)
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT *
+        FROM wcvp
+        WHERE LOWER(taxon_name) = LOWER(?)
+    """, (taxon_name,))
+    row = cur.fetchone()
+    conn.close()
+    return row
+

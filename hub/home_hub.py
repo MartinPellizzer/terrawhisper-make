@@ -701,6 +701,7 @@ Learning herbal medicine means acquiring structured knowledge and practical skil
                     <img src="/images/home/sage.jpg" alt="Beginner-friendly herbalism setup with medicinal herbs, tinctures, and a mortar and pestle" style="height: 80vh; object-fit: cover;">
                 </div>
             </div>
+
         </section>
     '''
 
@@ -1094,6 +1095,67 @@ Learning herbal medicine means acquiring structured knowledge and practical skil
             <p style="text-align: center; margin-bottom: 4.8rem;">Visit out Materia Medica of more than 10,000 herbs and learn about medicinal plants uses, benefits, and even side-effects.</p>
             <div class="grid-3" style="gap: 1.6rem; row-gap: 3.2rem;">
                 {plants_images}
+            </div>
+        </section>
+    '''
+
+    html_form = r'''
+        <form 
+            style="
+                display: flex;
+                justify-content: center;
+            "
+            id="searchForm"
+        >
+            <input 
+                style="
+                    padding: 1.6rem 3.2rem;
+                    min-width: 51.2rem;
+                    border-radius: 9999px;
+                    border: 1px solid #cdcdcd;
+                    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+                "
+                type="search" id="search" placeholder="Search a herb by latin name...
+            ">
+        </form>
+
+        <script>
+            document.getElementById("searchForm").onsubmit = e => {
+                e.preventDefault();
+                const herb = document.getElementById("search").value
+                    .trim()
+                    .toLowerCase()
+                    .replace(/\s+/g, "-");
+                location.href = `herbs/${herb}.html`;
+            };
+        </script>
+    '''
+
+    opacity = 0.5
+    html_hero = f'''
+        <section style="
+            height: 96vh;
+            display: flex;
+            align-items: center;
+            background-image: linear-gradient(rgba(0, 0, 0, {opacity}), rgba(0, 0, 0, {opacity})), url('https://images.unsplash.com/photo-1531932755987-f95a88affea5?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+            background-position: center; 
+            background-size: cover;
+        
+        ">
+            <div class="container-xl">
+                <h1 
+                    style="
+                        color: white;
+                        margin-bottom: 1.6rem; 
+                        line-height: 1.2;
+                        text-align: center;
+                    ">
+                    Explore medicinal herbs and improve your life
+                </h1>
+                {html_form}
+                <div style="margin-top: 3.2rem; gap: 1.6rem; text-align: center;">
+                    {html_button_primary}
+                </div>
             </div>
         </section>
     '''

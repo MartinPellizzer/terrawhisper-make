@@ -5,13 +5,16 @@ import textwrap
 
 from lib import g
 from lib import io
-from lib import kg
+# from lib import kg
 from lib import llm
 from lib import data
 from lib import polish
-from lib import components
+from lib import zimage
 from lib import sections
+from lib import components
 # from lib import study
+
+datasets_folderpath = f'{g.SSOT_FOLDERPATH}/datasets'
 
 model_filepath = '/home/ubuntu/vault-tmp/llm/gemma-4-26B-A4B-it-UD-Q4_K_XL.gguf'
 
@@ -8988,10 +8991,149 @@ def herbs_all_gen():
         print(html_filepath)
         # quit()
 
+def herb20_directory_json(run=False, regen=False):
+    if run == False: return
+    herb20_data_merged_filepath = f'{datasets_folderpath}/herb20/herbs_validated.json'
+    if regen == False:
+        herb20_data_merged = io.json_read(herb20_data_merged_filepath, create=True, l=True)
+    else:
+        herb20_data_merged = []
+    ###
+    herb20_herbs_filepath = f'{datasets_folderpath}/herb20/original/HERB_herb_info_v2.txt'
+    herb20_herbs_content = io.file_read(herb20_herbs_filepath)
+    herb20_data = io.csv_to_dict(herb20_herbs_filepath, delimiter='\t')
+    ### FILTER HERB20 WITH WCVP
+    for herb20_item in herb20_data[:]:
+        print(json.dumps(herb20_item, indent=4))
+        herb20_herb_latin_name = herb20_item['Herb_latin_name']
+        herb20_herb_latin_name_slug = polish.sluggify(herb20_herb_latin_name)
+        ###
+        wcvp_row = data.sqlite3__wcvp_get(herb20_herb_latin_name)
+        data_merged = herb20_item
+        if wcvp_row != None:
+            data_merged['wcvp'] = json.loads(wcvp_row[2])
+        else:
+            data_merged['wcvp'] = None
+        herb20_data_merged.append(data_merged)
+        ###
+        io.json_write(herb20_data_merged_filepath, herb20_data_merged)
+
+def herbs_directory_json():
+    herb20_directory_json(run=False, regen=False)
+    ###
+    herb20_filepath = f'{datasets_folderpath}/herb20/herbs_validated.json'
+    herb20_data = io.json_read(herb20_filepath)
+    for herb20_i, herb20_item in enumerate(herb20_data):
+        print(f'{herb20_i}/{len(herb20_data)} - {herb20_item}')
+        if herb20_item['wcvp'] == None: continue
+        herb_powo_id = herb20_item['wcvp']['powo_id']
+        herb_taxon_name = herb20_item['wcvp']['taxon_name']
+        herb_taxon_name_slug = polish.sluggify(herb_taxon_name)
+        herb20_en_name = herb20_item['Herb_en_name']
+        herb20_cn_name = herb20_item['Herb_cn_name']
+        herb_taxon_name_slug = polish.sluggify(herb_taxon_name)
+        herb_filepath = f'{g.SSOT_FOLDERPATH}/herbs/json/{herb_taxon_name_slug}.json'
+        herb_item = {
+            'herb_powo_id': herb_powo_id,
+            'herb_taxon_name': herb_taxon_name,
+            'herb_taxon_name_slug': herb_taxon_name_slug,
+            'herb20_en_name': herb20_en_name,
+            'herb20_cn_name': herb20_cn_name,
+            'herb_wcvp_taxon_rank': herb20_item['wcvp']['taxon_rank'],
+            'herb_wcvp_family': herb20_item['wcvp']['family'],
+            'herb_wcvp_genus': herb20_item['wcvp']['genus'],
+            'herb_wcvp_species': herb20_item['wcvp']['species'],
+            'herb_wcvp_geographic_area': herb20_item['wcvp']['geographic_area'],
+            'herb_wcvp_lifeform_description': herb20_item['wcvp']['lifeform_description'],
+            'herb_wcvp_climate_description': herb20_item['wcvp']['climate_description'],
+        }
+        io.json_write(herb_filepath, herb_item)
+        print(json.dumps(herb20_item, indent=4))
+        # quit()
+        ### IMAGE
+        if 1:
+            output_filepath = f'''{g.SSOT_FOLDERPATH}/herbs/images/{herb_taxon_name_slug}.jpg'''
+            if not os.path.exists(output_filepath):
+                prompt = f'''
+                    dry {herb_taxon_name} herb on a wooden table surrounded by other medicinal herbs,
+                    rustic, vintage, boho,
+                '''.replace('  ', ' ')
+                zimage.image_create(
+                    output_filepath=f'{output_filepath}', 
+                    prompt=prompt, width=768, height=768, seed=-1,
+                )
+            print(herb_item)
+            # quit()
+
+def herb_gen(herb_filepath):
+    herb_data = io.json_read(herb_filepath)
+    print(json.dumps(herb_data, indent=4))
+    ###
+    herb_taxon_name = herb_data['herb_taxon_name']
+    herb_taxon_name_slug = herb_data['herb_taxon_name_slug']
+    herb20_en_name = herb_data['herb20_en_name']
+    herb20_cn_name = herb_data['herb20_cn_name']
+    ###
+    ai_image_filepath = f'/{g.WEBSITE_FOLDERPATH}/images/herbs/{herb_taxon_name_slug}.jpg'
+    ai_image_src = f'/images/herbs/{herb_taxon_name_slug}.jpg'
+    ai_image_alt = f'{herb_taxon_name}'
+    ###
+    url_slug = f'herbs/{herb_taxon_name_slug}'
+    ### HTML
+    html_article = f''
+    html_article += f'<h1>{herb_taxon_name}</h1>'
+    html_article += f'<img src="{ai_image_src}" alt="{ai_image_alt}" style="width: 320px; heigh: 320px;">'
+    html_article += f'<p>Latin Name: {herb_taxon_name}</p>'
+    html_article += f'<p>Common English Name: {herb20_en_name}</p>'
+    html_article += f'<p>Official Chinese Name: {herb20_cn_name}</p>'
+    html_article += f'''<p>Taxon Rank: {herb_data['herb_wcvp_taxon_rank']}</p>'''
+    html_article += f'''<p>Family: {herb_data['herb_wcvp_family']}</p>'''
+    html_article += f'''<p>Genus: {herb_data['herb_wcvp_genus']}</p>'''
+    html_article += f'''<p>Species: {herb_data['herb_wcvp_species']}</p>'''
+    html_article += f'''<p>Geographic Area: {herb_data['herb_wcvp_geographic_area']}</p>'''
+    html_article += f'''<p>Lifeform Description: {herb_data['herb_wcvp_lifeform_description']}</p>'''
+    html_article += f'''<p>Climate Description: {herb_data['herb_wcvp_climate_description']}</p>'''
+    ###
+    meta_title = f'{herb_taxon_name}'
+    meta_description = f''
+    canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''
+    head_html = components.html_head(
+        meta_title, meta_description, css='/styles.css', canonical=canonical_html
+    )
+    html = textwrap.dedent(f''' 
+        <!DOCTYPE html>
+        <html lang="en">
+        {head_html}
+        <body>
+            {sections.header_default()}
+            {sections.breadcrumbs_new(url_slug)}
+            <main class="container-xl">
+                {html_article}
+            </main>
+            {sections.footer()}
+        </body>
+        </html>
+    ''').strip()
+    html_filepath = f'{g.website_folderpath}/{url_slug}.html'
+    with open(html_filepath, 'w') as f: f.write(html)
+    print(html_filepath)
+    quit()
+
 def gen():
+    herbs_directory_json()
+
+    herbs_folderpath = f'{g.SSOT_FOLDERPATH}/herbs/json'
+    herbs_filenames = sorted(os.listdir(herbs_folderpath))
+    for herb_i, herb_filename in enumerate(herbs_filenames):
+        print(f'{herb_i}/{len(herbs_filenames)} - {herb_filename}')
+        herb_filepath = f'{herbs_folderpath}/{herb_filename}'
+        herb_gen(herb_filepath)
+
+    quit()
+
+
     herbs_gen()
     herbs_all_gen()
-    quit()
 
     taxonomy_gen()
     taxonomy_kingdoms_gen()
