@@ -9096,29 +9096,21 @@ def herbs_directory_json():
         duke__json_data = io.json_read(duke__json_filepath)
         # print(f'{i}/{len(duke__json_filenames)} - {duke__json_data}')
         print(f'DUKE -- {i}/{len(duke__json_filenames)}')
-        ###
         if duke__json_data['wcvp'] == None: continue
+        print(duke__json_data)
         ###
         herb_name_latin = duke__json_data['herb_name_latin']
         herb_name_latin_slug = polish.sluggify(herb_name_latin)
         herb_url = duke__json_data['herb_url']
-        herb__json_data_filepath = f'{g.SSOT_FOLDERPATH}/herbs/json/{herb_name_latin_slug}.json'
-        herb__json_data = io.json_read(herb__json_data_filepath, create=True)
-        herb__json_data['duke'] = {}
-        try: herb__json_data['duke']['chemicals'] = duke__json_data['chemicals']
-        except: pass
-        try: herb__json_data['duke']['activities'] = duke__json_data['activities']
-        except: pass
-        io.json_write(herb__json_data_filepath, herb__json_data)
-        # print(herb__data_filepath)
-        # print(json.dumps(herb__json_data, indent=4))
-        # quit()
+        herb__data_filepath = f'{g.SSOT_FOLDERPATH}/herbs/json/{herb_name_latin_slug}.json'
+        herb__data = io.json_read(herb__data_filepath)
+        print(herb__data_filepath)
+        print(json.dumps(herb__data, indent=4))
+        quit()
 
 def herb_gen(herb_filepath):
     herb_data = io.json_read(herb_filepath)
-    # print(json.dumps(herb_data, indent=4))
-    # print('here')
-    # quit()
+    print(json.dumps(herb_data, indent=4))
     ###
     herb_taxon_name = herb_data['herb_taxon_name']
     herb_taxon_name_slug = herb_data['herb_taxon_name_slug']
@@ -9137,102 +9129,18 @@ def herb_gen(herb_filepath):
     html_article += f'<p>Latin Name: {herb_taxon_name}</p>'
     html_article += f'<p>Common English Name: {herb20_en_name}</p>'
     html_article += f'<p>Official Chinese Name: {herb20_cn_name}</p>'
-    ### TAXONOMY
-    # html_article += f'''<p>Taxon Rank: {herb_data['herb_wcvp_taxon_rank']}</p>'''
+    html_article += f'''<p>Taxon Rank: {herb_data['herb_wcvp_taxon_rank']}</p>'''
+    html_article += f'''<p>Kingdom: {herb_data['herb_powo_kingdom']}</p>'''
+    html_article += f'''<p>Phylum: {herb_data['herb_powo_phylum']}</p>'''
+    html_article += f'''<p>Class: {herb_data['herb_powo_class']}</p>'''
+    html_article += f'''<p>Subclass: {herb_data['herb_powo_subclass']}</p>'''
+    html_article += f'''<p>Order: {herb_data['herb_powo_order']}</p>'''
+    html_article += f'''<p>Family: {herb_data['herb_wcvp_family']}</p>'''
+    html_article += f'''<p>Genus: {herb_data['herb_wcvp_genus']}</p>'''
+    html_article += f'''<p>Species: {herb_data['herb_wcvp_species']}</p>'''
     html_article += f'''<p>Geographic Area: {herb_data['herb_wcvp_geographic_area']}</p>'''
     html_article += f'''<p>Lifeform Description: {herb_data['herb_wcvp_lifeform_description']}</p>'''
     html_article += f'''<p>Climate Description: {herb_data['herb_wcvp_climate_description']}</p>'''
-
-    html_article += f'''
-        <section>
-            <h2>
-                Classification
-            </h2>
-            <table>
-              <thead>
-                <tr>
-                  <th>Taxonomic Rank</th>
-                  <th>Classification</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Kingdom</td>
-                  <td>{herb_data['herb_powo_kingdom']}</td>
-                </tr>
-                <tr>
-                  <td>Phylum</td>
-                  <td>{herb_data['herb_powo_phylum']}</td>
-                </tr>
-                <tr>
-                  <td>Class</td>
-                  <td>{herb_data['herb_powo_class']}</td>
-                </tr>
-                <tr>
-                  <td>Subclass</td>
-                  <td>{herb_data['herb_powo_subclass']}</td>
-                </tr>
-                <tr>
-                  <td>Order</td>
-                  <td>{herb_data['herb_powo_order']}</td>
-                </tr>
-                <tr>
-                  <td>Family</td>
-                  <td>{herb_data['herb_powo_family']}</td>
-                </tr>
-                <tr>
-                  <td>Genus</td>
-                  <td>{herb_data['herb_powo_genus']}</td>
-                </tr>
-              </tbody>
-            </table>
-        </section>
-    '''
-
-    ### CHEMICALS
-    herb__duke_chemicals = herb_data['duke']['chemicals']
-    herb__duke_chemicals = sorted(herb__duke_chemicals, key=lambda x: int(x['Activity Count']), reverse=True)
-    html_table_body = f''
-    html_table_body += f'''<tbody>'''
-    for item in herb__duke_chemicals[:15]:
-            # <td>{item['Activity Count']}</td>
-        html_table_body += f'''
-        <tr>
-            <td>{item['Chemical Name']}</td>
-            <td>{item['Plant Part']}</td>
-            <td>{item['Low Parts Per Million']}</td>
-            <td>{item['High Parts Per Million']}</td>
-        </tr>'''
-    html_table_body += f'''</tbody>'''
-                  # <th>Activity Count</th>
-    html_article += f'''
-        <section>
-            <h2>
-                Chemicals
-            </h2>
-            <table>
-              <thead>
-                <tr>
-                  <th>Chemical Name</th>
-                  <th>Plant Part</th>
-                  <th>Low Parts Per Million</th>
-                  <th>High Parts Per Million</th>
-                </tr>
-              </thead>
-              {html_table_body}
-            </table>
-        </section>
-    '''
-
-
-    ### ACTIVITIES
-    herb__duke_activities = herb_data['duke']['activities']
-    html_article += f'''<h2>Activities</h2>'''
-    html_article += f'''<ul>'''
-    for item in herb__duke_activities:
-        html_article += f'''<li>{item['Activity']}</li>'''
-    html_article += f'''</ul>'''
-
     ###
     meta_title = f'{herb_taxon_name}'
     meta_description = f''
@@ -9247,7 +9155,7 @@ def herb_gen(herb_filepath):
         <body>
             {sections.header_default()}
             {sections.breadcrumbs_new(url_slug)}
-            <main class="container-xl listing">
+            <main class="container-xl">
                 {html_article}
             </main>
             {sections.footer()}
@@ -9260,7 +9168,7 @@ def herb_gen(herb_filepath):
     quit()
 
 def gen():
-    # herbs_directory_json()
+    herbs_directory_json()
 
     herbs_folderpath = f'{g.SSOT_FOLDERPATH}/herbs/json'
     herbs_filenames = sorted(os.listdir(herbs_folderpath))
