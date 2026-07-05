@@ -1,5 +1,6 @@
 import os
 import json
+import sqlite3
 import textwrap
 
 from neo4j import GraphDatabase
@@ -11,6 +12,7 @@ from lib import llm
 from lib import polish
 
 model_filepath = '/home/ubuntu/vault-tmp/llm/gemma-4-26B-A4B-it-UD-Q4_K_XL.gguf'
+model_filepath = '/home/ubuntu/vault-tmp/llm/gemma-4-12b-it-Q4_K_S.gguf'
 
 neo4j_user = io.file_read(f'{g.DATABASE_FOLDERPATH}/neo4j-user.txt').strip()
 neo4j_pass = io.file_read(f'{g.DATABASE_FOLDERPATH}/neo4j-pass.txt').strip()
@@ -75,6 +77,74 @@ def relationship_extract_raw(output_foldename, node_1, relationship, node_2, rul
     print(len(relationships_found))
     # quit()
 
+def relationship_extract_raw_new(output_foldename, node_1, relationship, node_2, rules):
+    input_foldername = 'medicinal-plant'
+    input_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/studies/pubmed/{input_foldername}/json'
+    extraction_foldername = f'extraction_new'
+    extraction_folderpath = f'{g.SSOT_FOLDERPATH}/studies/{extraction_foldername}'
+    try: os.mkdir(extraction_folderpath)
+    except: pass
+    output_folderpath = f'{extraction_folderpath}/{output_foldername}'
+    try: os.mkdir(output_folderpath)
+    except: pass
+    raw_folderpath = f'{output_folderpath}/raw'
+    try: os.mkdir(raw_folderpath)
+    except: pass
+    relationships_found = []
+    input_filenames = os.listdir(input_folderpath)
+    i = 0
+    for input_filename in input_filenames[i:]:
+        i += 1
+        print(f'{i}/{len(input_filenames)}')
+        raw_filepath = f'{raw_folderpath}/{input_filename}'
+        if os.path.exists(raw_filepath): continue
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        input_data = io.json_read(input_filepath)
+        try: article_data = input_data['PubmedArticle'][0]['MedlineCitation']['Article']
+        except: pass
+        try: input_title = article_data['ArticleTitle']
+        except: input_title = ''
+        try: input_abstract = ' '.join(article_data['Abstract']['AbstractText'])
+        except: continue
+        # print(json.dumps(input_title, indent=4))
+        # print(input_title)
+        # print(input_abstract)
+        # quit()
+        content_to_extract = f'{input_title} {input_abstract}'
+        prompt = textwrap.dedent(f'''
+            From the scientific study ABSTRACT below, extract all the relationships (triples) between {node_1} and {node_2}.
+            Write each relationship using this format: [{node_1}, {relationship}, {node_2}]
+            RULES:
+            {rules}
+            Only reply with the relationships requested.
+            If you can't find any of these relationships, reply with "NONE".
+            ABSTRACT:
+            {content_to_extract}
+        ''').strip()
+        reply = llm.reply(prompt, model_filepath, max_tokens=512)
+        if '</think>' in reply:
+            reply = reply.split('</think>')[1].strip()
+        print('################################################################################')
+        print(reply)
+        print('########################################')
+        # print(prompt)
+        print('################################################################################')
+        if 'NONE'.strip() not in reply.strip():
+            relationships_found.append(reply)
+            raw_data = {
+                'title': input_title,
+                'abstract': input_abstract,
+                'reply': reply,
+            }
+            io.json_write(
+                raw_filepath,
+                raw_data,
+            )
+        # if i > 10:
+            # quit()
+    print(len(relationships_found))
+    # quit()
+
 def relationship_txt_to_json(output_foldername, node_1, relationship, node_2):
     input_foldername = output_foldername
     input_folderpath = f'{g.SSOT_FOLDERPATH}/studies/extraction/{input_foldername}'
@@ -126,6 +196,58 @@ def relationship_txt_to_json(output_foldername, node_1, relationship, node_2):
     print(len(output_items))
     io.json_write(output_filepath, output_items)
 
+def relationship_txt_to_json_new(output_foldername, node_1, relationship, node_2):
+    input_foldername = output_foldername
+    input_folderpath = f'{g.SSOT_FOLDERPATH}/studies/extraction_new/{input_foldername}/raw'
+    input_filenames = os.listdir(input_folderpath)
+    output_filepath = f'{g.SSOT_FOLDERPATH}/studies/extraction_new/{input_foldername}/data.json'
+    output_items = []
+    node1_type = node_1.lower().strip().replace(' ', '_')
+    node2_type = node_2.lower().strip().replace(' ', '_')
+    for i, input_filename in enumerate(input_filenames[:]):
+        print(f'{i}/{len(input_filenames)}')
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        input_data = io.json_read(input_filepath)
+        # print(json.dumps(input_data, indent=4))
+        relationships_text = input_data['reply']
+        relationships_lines = []
+        for line in relationships_text.split('\n'):
+            line = line.strip()
+            if line == '': continue
+            if line.startswith('['): line = line[1:]
+            if line.endswith(','): line = line[:-1]
+            if line.endswith(']'): line = line[:-1]
+            chunks = [chunk.strip() for chunk in line.split(',')]
+            relationships_lines.append(chunks)
+        # print(len(relationships_lines))
+        study_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/studies/pubmed/medicinal-plant/json'
+        study_filepath = f'{study_folderpath}/{input_filename}'
+        study_data = io.json_read(study_filepath)
+        try: article_data = study_data['PubmedArticle'][0]['MedlineCitation']['Article']
+        except: pass
+        try: journal_title = article_data['Journal']['Title']
+        except: pass
+        # print(json.dumps(article_data, indent=4))
+        # print(json.dumps(journal_title, indent=4))
+        ###
+        for line in relationships_lines:
+            # print(line)
+            try: node1, relationship_llm, node2 = line
+            except: continue
+            if relationship_llm == relationship:
+                output_item = {
+                    f'{node1_type}': node1,
+                    f'relationship': relationship_llm,
+                    f'{node2_type}': node2,
+                    f'source_id': input_filename.split('.')[0],
+                    f'journal_title': journal_title,
+                }
+                output_items.append(output_item)
+    for output_item in output_items:
+        print(output_item)
+    print(len(output_items))
+    io.json_write(output_filepath, output_items)
+
 def plant_wcvp_filter(output_foldername):
     input_foldername = output_foldername
     input_filepath = f'{g.SSOT_FOLDERPATH}/studies/extraction/{input_foldername}.json'
@@ -138,6 +260,20 @@ def plant_wcvp_filter(output_foldername):
             print(json.dumps(item, indent=4))
             items_found.append(item)
     output_filepath = f'{g.SSOT_FOLDERPATH}/studies/extraction/{input_foldername}-filter.json'
+    io.json_write(output_filepath, items_found)
+
+def plant_wcvp_filter_new(output_foldername):
+    input_foldername = output_foldername
+    input_filepath = f'{g.SSOT_FOLDERPATH}/studies/extraction_new/{input_foldername}/data.json'
+    input_data = io.json_read(input_filepath)
+    items_found = []
+    for i, item in enumerate(input_data):
+        print(i)
+        row = kg.sqlite3__wcvp_get(item['plant_name'])
+        if row != None:
+            print(json.dumps(item, indent=4))
+            items_found.append(item)
+    output_filepath = f'{g.SSOT_FOLDERPATH}/studies/extraction_new/{input_foldername}/validated.json'
     io.json_write(output_filepath, items_found)
 
 def neo4j__clear():
@@ -165,6 +301,32 @@ def neo4j__clear():
 def neo4j__create(output_filename, neo4j_node_1, neo4j_node_2, node_1_slug_underline, node_2_slug_underline, neo4j_relationship):
     input_filename = f'{output_foldername}-filter'
     rows = io.json_read(f'{g.SSOT_FOLDERPATH}/studies/extraction/{input_filename}.json')
+    ### populate kg
+    driver = GraphDatabase.driver("bolt://localhost:7687", auth=(neo4j_user, neo4j_pass))
+    def execute(tx, rows):
+        tx.run(f"""
+            UNWIND $rows AS row
+            MERGE (s:{neo4j_node_1} {{id: row.{node_1_slug_underline}}})
+            MERGE (o:{neo4j_node_2} {{id: row.{node_2_slug_underline}}})
+            MERGE (s)-[:{neo4j_relationship} {{source_id: row.source_id}}]->(o)
+        """, rows=rows)
+    with driver.session() as session:
+        session.run(f"""
+            CREATE CONSTRAINT {node_1_slug_underline} IF NOT EXISTS
+            FOR (p:{neo4j_node_1})
+            REQUIRE p.id IS UNIQUE
+        """)
+        session.run(f"""
+            CREATE CONSTRAINT {node_2_slug_underline} IF NOT EXISTS
+            FOR (c:{neo4j_node_2})
+            REQUIRE c.id IS UNIQUE
+        """)
+        session.execute_write(execute, rows)
+    driver.close()
+
+def neo4j__create_new(output_filename, neo4j_node_1, neo4j_node_2, node_1_slug_underline, node_2_slug_underline, neo4j_relationship):
+    input_filename = f'{output_foldername}'
+    rows = io.json_read(f'{g.SSOT_FOLDERPATH}/studies/extraction_new/{input_filename}/validated.json')
     ### populate kg
     driver = GraphDatabase.driver("bolt://localhost:7687", auth=(neo4j_user, neo4j_pass))
     def execute(tx, rows):
@@ -462,7 +624,7 @@ if 0:
     neo4j__create(output_foldername, neo4j_node_1, neo4j_node_2, node_1_slug_underline, node_2_slug_underline, neo4j_relationship)
 
 ### SIDE EFFECTS
-if 1:
+if 0:
     node_1 = 'plant name'
     node_2 = 'side effect name'
     relationship = 'has_side_effect'
@@ -502,4 +664,169 @@ print(len(plants))
 
 # for path in paths:
     # print(path)
+
+
+################################################################################
+# EXTRACTION NEW
+################################################################################
+def sqlite__plant_create(output_foldername):
+    input_foldername = output_foldername
+    db_filepath = f'{g.SSOT_FOLDERPATH}/studies/extraction_new/{input_foldername}/database.db'
+    conn = sqlite3.connect(db_filepath)
+    ###
+    conn.execute("DROP TABLE IF EXISTS plants")
+    conn.execute("""PRAGMA journal_mode = WAL;""")
+    conn.execute("""PRAGMA synchronous = NORMAL;""")
+    conn.execute("""PRAGMA temp_store = MEMORY;""")
+    conn.execute("""PRAGMA cache_size = -200000;""")  # ~200MB cache if available
+    conn.execute("""
+    CREATE TABLE IF NOT EXISTS plants (
+        id INTEGER PRIMARY KEY,
+        plant_name TEXT NOT NULL UNIQUE
+    );
+    """)
+
+    input_filepath = f'{g.SSOT_FOLDERPATH}/studies/extraction_new/{input_foldername}/validated.json'
+    input_data = io.json_read(input_filepath)
+    sqlite_data = []
+    for item in input_data[:]:
+        sqlite_data.append(
+            [
+                item['plant_name'],
+            ]
+        )
+
+    conn.execute("BEGIN")
+    conn.executemany("""
+        INSERT OR IGNORE INTO plants
+        (plant_name)
+        VALUES (?)
+    """, sqlite_data)
+    conn.execute("CREATE INDEX IF NOT EXISTS idx_plant ON observations(plant_name);")
+
+    conn.commit()
+
+    cursor = conn.execute("SELECT * FROM plants")
+    for row in cursor.fetchall()[:10]:
+        print(row)
+
+
+def sqlite__plant_chemical_create(output_foldername):
+    input_foldername = output_foldername
+    output_filepath = f'{g.SSOT_FOLDERPATH}/studies/extraction_new/{input_foldername}/database.db'
+    conn = sqlite3.connect(output_filepath)
+
+    conn.execute("DROP TABLE IF EXISTS observations")
+
+    conn.execute("""PRAGMA journal_mode = WAL;""")
+    conn.execute("""PRAGMA synchronous = NORMAL;""")
+    conn.execute("""PRAGMA temp_store = MEMORY;""")
+    conn.execute("""PRAGMA cache_size = -200000;""")  # ~200MB cache if available
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS observations (
+            id INTEGER PRIMARY KEY,
+
+            plant_name TEXT NOT NULL,
+            compound_name TEXT NOT NULL,
+            plant_part TEXT,
+
+            value REAL,
+            unit TEXT,
+
+            source_id INTEGER NOT NULL,
+            source_name TEXT NOT NULL
+        );
+    """)
+
+    input_filepath = f'{g.SSOT_FOLDERPATH}/studies/extraction_new/{input_foldername}/validated.json'
+    input_data = io.json_read(input_filepath)
+    sqlite_data = []
+    for item in input_data[:]:
+        # print(item)
+        # quit()
+        sqlite_data.append(
+            [
+                item['plant_name'],
+                item['chemical_name'],
+                None,
+                None,
+                None,
+                item['source_id'],
+                item['journal_title'],
+            ]
+        )
+    '''
+    data = [
+        ["achillea millefolium", "tannins", "leaf", 2.3, "mg/g", 1001],
+        ["achillea millefolium", "tannins", "leaf", 1.8, "mg/g", 1002],
+        ["achillea millefolium", "tannins", "stem", 0.3, "mg/g", 1003],
+    ]
+    '''
+    conn.execute("BEGIN")
+    conn.executemany("""
+        INSERT INTO observations
+        (plant_name, compound_name, plant_part, value, unit, source_id, source_name)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+    """, sqlite_data)
+    conn.execute("CREATE INDEX IF NOT EXISTS idx_plant ON observations(plant_name);")
+    conn.execute("CREATE INDEX IF NOT EXISTS idx_compound ON observations(compound_name);")
+    conn.execute("CREATE INDEX IF NOT EXISTS idx_part ON observations(plant_part);")
+
+    # composite index for your exact query pattern
+    '''
+    conn.execute("""
+        CREATE INDEX IF NOT EXISTS idx_main
+        ON observations(plant_id, compound_id, plant_part);
+    """)
+    '''
+
+    conn.commit()
+
+            # COUNT(DISTINCT source_id) AS num_sources,
+    query = """
+        SELECT
+            plant_name,
+            compound_name,
+            plant_part,
+            MIN(value) AS min_conc,
+            MAX(value) AS max_conc,
+            source_id,
+            source_name
+        FROM observations
+        WHERE plant_name = ?
+        GROUP BY compound_name, plant_part;
+    """
+
+    # cursor = conn.execute(query, (1,))
+    cursor = conn.execute(query, ('Achillea millefolium',))
+    # cursor = conn.execute(query, ('Zanthoxylum armatum',))
+    results = cursor.fetchall()
+
+    for row in results:
+        print(row)
+
+### CHEMICALS
+if 1:
+    node_1 = 'plant name'
+    node_2 = 'chemical name'
+    relationship = 'contains_chemical'
+    node_1_slug = polish.sluggify(node_1)
+    node_2_slug = polish.sluggify(node_2)
+    node_1_slug_underline = node_1_slug.replace('-', '_')
+    node_2_slug_underline = node_2_slug.replace('-', '_')
+    output_foldername = f'chemicals'
+    rules = f'''
+        Always write the names of the plants in latin binomial scientific name, no common names or abbreviated names.
+        Always write the names of the chemicals of the herbs exactly how you find them in the text, where by chemicals I mean a comprehensive list of all the active compounds, biochemical constituents, and any other chemical substance contained in the plants.
+    '''
+    ### WARNING: next like takes hours
+    # relationship_extract_raw_new(output_foldername, node_1, relationship, node_2, rules)
+    # relationship_txt_to_json_new(output_foldername, node_1, relationship, node_2)
+    # plant_wcvp_filter_new(output_foldername)
+    # neo4j_node_1 = 'PLANT'
+    # neo4j_node_2 = 'CHEMICAL'
+    # neo4j_relationship = 'CONTAINS_CHEMICAL'
+    # neo4j__create_new(output_foldername, neo4j_node_1, neo4j_node_2, node_1_slug_underline, node_2_slug_underline, neo4j_relationship)
+    sqlite__plant_create(output_foldername)
+    # sqlite__plant_chemical_create(output_foldername)
 

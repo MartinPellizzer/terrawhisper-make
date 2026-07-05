@@ -2,6 +2,7 @@ import os
 import time
 import json
 import random
+import sqlite3
 import textwrap
 import requests
 
@@ -15,7 +16,7 @@ from selenium.webdriver.firefox.service import Service
 
 from lib import g
 from lib import io
-# from lib import kg
+from lib import kg
 from lib import llm
 from lib import data
 from lib import polish
@@ -9089,6 +9090,7 @@ def herbs_directory_json():
             # print(herb_item)
             # quit()
 
+
     duke__json_folderpath = f'{g.SSOT_FOLDERPATH}/datasets/duke/json'
     duke__json_filenames = sorted(os.listdir(duke__json_folderpath))
     for i, duke__json_filename in enumerate(duke__json_filenames):
@@ -9224,14 +9226,32 @@ def herb_gen(herb_filepath):
         </section>
     '''
 
-
     ### ACTIVITIES
     herb__duke_activities = herb_data['duke']['activities']
-    html_article += f'''<h2>Activities</h2>'''
-    html_article += f'''<ul>'''
-    for item in herb__duke_activities:
-        html_article += f'''<li>{item['Activity']}</li>'''
-    html_article += f'''</ul>'''
+    herb__duke_activities = sorted(herb__duke_activities, key=lambda x: int(x['Chemical Count']), reverse=True)
+    html_table_body = f''
+    html_table_body += f'''<tbody>'''
+    for item in herb__duke_activities[:15]:
+        html_table_body += f'''
+        <tr>
+            <td>{item['Activity']}</td>
+        </tr>'''
+    html_article += f'''
+        <section>
+            <h2>
+                Activities
+            </h2>
+            <table>
+              <thead>
+                <tr>
+                  <th>Activity</th>
+                </tr>
+              </thead>
+              {html_table_body}
+            </table>
+        </section>
+    '''
+
 
     ###
     meta_title = f'{herb_taxon_name}'
@@ -9259,18 +9279,102 @@ def herb_gen(herb_filepath):
     print(html_filepath)
     quit()
 
+def plant_listing_page_gen(plant_name):
+    plant_taxon_name_slug = polish.sluggify(plant_name)
+
+    output_filepath = f'{g.SSOT_FOLDERPATH}/studies/extraction_new/chemicals/database.db'
+    conn = sqlite3.connect(output_filepath)
+
+    query = """
+        SELECT
+            plant_name,
+            compound_name,
+            plant_part,
+            MIN(value) AS min_conc,
+            MAX(value) AS max_conc,
+            source_id,
+            source_name
+        FROM observations
+        WHERE plant_name = ?
+        GROUP BY compound_name, plant_part;
+    """
+    cursor = conn.execute(query, (plant_name,))
+    rows = cursor.fetchall()
+
+    ###
+    html_article = f''
+    html_article += f'<h1>{plant_name}</h1>'
+    ###
+    html_table_body = f''
+    html_table_body += f'''<tbody>'''
+    for row in rows:
+        print(row)
+        chemical_name = row[1]
+        source_name = row[6]
+        html_table_body += f'''
+        <tr>
+            <td>{chemical_name}</td>
+            <td>{source_name}</td>
+        </tr>'''
+    html_table_body += f'''</tbody>'''
+    html_article += f'''
+        <section>
+            <h2>
+                Chemicals
+            </h2>
+            <table>
+              <thead>
+                <tr>
+                  <th>Chemical Name</th>
+                  <th>Source</th>
+                </tr>
+              </thead>
+              {html_table_body}
+            </table>
+        </section>
+    '''
+
+    url_slug = f'herbs/{plant_taxon_name_slug}'
+    meta_title = f'{plant_name}'
+    meta_description = f''
+    canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''
+    head_html = components.html_head(
+        meta_title, meta_description, css='/styles.css', canonical=canonical_html
+    )
+    html = textwrap.dedent(f''' 
+        <!DOCTYPE html>
+        <html lang="en">
+        {head_html}
+        <body>
+            {sections.header_default()}
+            {sections.breadcrumbs_new(url_slug)}
+            <main class="container-xl listing m-flex">
+                <div style="flex: 2;">
+                {html_article}
+                </div>
+                <div style="flex: 1;">
+                </div>
+            </main>
+            {sections.footer()}
+        </body>
+        </html>
+    ''').strip()
+    html_filepath = f'{g.website_folderpath}/{url_slug}.html'
+    with open(html_filepath, 'w') as f: f.write(html)
+    print(html_filepath)
+
 def gen():
     # herbs_directory_json()
 
-    herbs_folderpath = f'{g.SSOT_FOLDERPATH}/herbs/json'
-    herbs_filenames = sorted(os.listdir(herbs_folderpath))
-    for herb_i, herb_filename in enumerate(herbs_filenames):
-        print(f'{herb_i}/{len(herbs_filenames)} - {herb_filename}')
-        herb_filepath = f'{herbs_folderpath}/{herb_filename}'
-        herb_gen(herb_filepath)
+    db_filepath = f'{g.SSOT_FOLDERPATH}/studies/extraction_new/chemicals/database.db'
+    conn = sqlite3.connect(db_filepath)
+    cursor = conn.execute("SELECT * FROM plants")
+    rows = cursor.fetchall()
+    for row in rows[:1]:
+        plant_name = row[1]
+        plant_listing_page_gen(plant_name)
 
     quit()
-
 
     herbs_gen()
     herbs_all_gen()
