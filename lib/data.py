@@ -461,3 +461,27 @@ def sqlite3__wcvp_get(taxon_name):
     conn.close()
     return row
 
+def sqlite__plants_get():
+    db_filepath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/masterize/master.db'
+    conn = sqlite3.connect(db_filepath)
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT *
+        FROM plants
+    """)
+    row = cur.fetchall()
+    conn.close()
+    return row
+
+def sqlite__plants_chemicals_get(plant_canonical_name):
+    db_filepath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/observe/observations.db'
+    conn = sqlite3.connect(db_filepath)
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT *
+        FROM plants_chemicals
+        WHERE LOWER(plant_canonical_name) = LOWER(?)
+    """, (plant_canonical_name,))
+    row = cur.fetchall()
+    conn.close()
+    return row

@@ -38,9 +38,10 @@ def test():
     output_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/masterize'
     db_filepath = f'{output_folderpath}/master.db'
     conn = sqlite3.connect(db_filepath)
-    rows = conn.execute("SELECT * FROM plants")
-    for row in list(rows)[:10]:
+    rows = conn.execute("SELECT * FROM plants").fetchall()
+    for row in rows[:10]:
         print(row)
+    print(len(rows))
     conn.close()
 
 master_table_plants_create(regen=False)

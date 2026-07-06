@@ -9279,6 +9279,89 @@ def herb_gen(herb_filepath):
     print(html_filepath)
     quit()
 
+def plant_listing_page_gen_new(plant_name):
+    plants_chemicals_rows = data.sqlite__plants_chemicals_get(plant_name)
+    # for plants_chemicals_row in plants_chemicals_rows:
+    #     print(plants_chemicals_row)
+
+    plant_taxon_name_slug = polish.sluggify(plant_name)
+
+    output_filepath = f'{g.SSOT_FOLDERPATH}/studies/extraction_new/chemicals/database.db'
+    conn = sqlite3.connect(output_filepath)
+
+    ###
+    html_article = f''
+    html_article += f'<h1>{plant_name}</h1>'
+    ###
+    html_table_body = f''
+    html_table_body += f'''<tbody>'''
+    for plants_chemicals_row in plants_chemicals_rows:
+        print(plants_chemicals_row)
+        # plant_name = plants_chemicals_row[1]
+        chemical_name = plants_chemicals_row[2]
+        plant_part = plants_chemicals_row[3]
+        concentration = plants_chemicals_row[4]
+        unit = plants_chemicals_row[5]
+        source_name = plants_chemicals_row[6]
+            # <td>{plant_name}</td>
+        html_table_body += f'''
+        <tr>
+            <td>{chemical_name}</td>
+            <td>{plant_part}</td>
+            <td>{concentration}</td>
+            <td>{unit}</td>
+            <td>{source_name}</td>
+        </tr>'''
+    html_table_body += f'''</tbody>'''
+    html_article += f'''
+        <section>
+            <h2>
+                Chemicals
+            </h2>
+            <table>
+              <thead>
+                <tr>
+                  <th>Chemical</th>
+                  <th>Plant Part</th>
+                  <th>Concentration</th>
+                  <th>Unit</th>
+                  <th>Source</th>
+                </tr>
+              </thead>
+              {html_table_body}
+            </table>
+        </section>
+    '''
+
+    url_slug = f'herbs/{plant_taxon_name_slug}'
+    meta_title = f'{plant_name}'
+    meta_description = f''
+    canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''
+    head_html = components.html_head(
+        meta_title, meta_description, css='/styles.css', canonical=canonical_html
+    )
+    html = textwrap.dedent(f''' 
+        <!DOCTYPE html>
+        <html lang="en">
+        {head_html}
+        <body>
+            {sections.header_default()}
+            {sections.breadcrumbs_new(url_slug)}
+            <main class="container-xl listing m-flex">
+                <div style="flex: 2;">
+                {html_article}
+                </div>
+                <div style="flex: 1;">
+                </div>
+            </main>
+            {sections.footer()}
+        </body>
+        </html>
+    ''').strip()
+    html_filepath = f'{g.website_folderpath}/{url_slug}.html'
+    with open(html_filepath, 'w') as f: f.write(html)
+    print(html_filepath)
+
 def plant_listing_page_gen(plant_name):
     plant_taxon_name_slug = polish.sluggify(plant_name)
 
@@ -9366,14 +9449,11 @@ def plant_listing_page_gen(plant_name):
 def gen():
     # herbs_directory_json()
 
-    db_filepath = f'{g.SSOT_FOLDERPATH}/studies/extraction_new/chemicals/database.db'
-    conn = sqlite3.connect(db_filepath)
-    cursor = conn.execute("SELECT * FROM plants")
-    rows = cursor.fetchall()
-    for row in rows[:1]:
-        plant_name = row[1]
-        plant_listing_page_gen(plant_name)
-
+    plants_rows = data.sqlite__plants_get()
+    for plant_row in plants_rows[:10]:
+        print(plant_row)
+        plant_listing_page_gen_new(plant_row[1])
+        
     quit()
 
     herbs_gen()
