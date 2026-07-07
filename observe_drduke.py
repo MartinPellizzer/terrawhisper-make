@@ -95,6 +95,55 @@ def observations_table_plants_chemicals_add():
     conn.commit()
     conn.close()
 
+def observations_table_plants_activities_add():
+    source_foldername = 'drduke'
+    input_foldername = 'resolve'
+    output_foldername = 'observe'
+    ###
+    input_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/{input_foldername}/{source_foldername}/json'
+    output_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/{output_foldername}'
+    input_filenames = os.listdir(input_folderpath)
+    ###
+    all_data = []
+    for i, input_filename in enumerate(input_filenames[:]):
+        print(f'{i}/{len(input_filenames)}')
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        input_data = io.json_read(input_filepath)
+        # print(input_data)
+        # quit()
+        if 'activities' not in input_data: continue
+        for input_item in input_data['activities']:
+            output_items = []
+            output_items.append({
+                'plant_canonical_name': input_data['herb_name_latin'],
+                'activity_canonical_name': input_item['Activity'],
+                'source_name': input_item['Reference'],
+            })
+            for output_item in output_items:
+                all_data.append(output_item)
+                print(output_item)
+    ###
+    db_filepath = f'{output_folderpath}/observations.db'
+    conn = sqlite3.connect(db_filepath)
+    cur = conn.cursor()
+    print('start inserting...')
+    cur.executemany(
+        """
+        INSERT OR IGNORE INTO plants_activities (plant_canonical_name, activity_canonical_name, source_name)
+        VALUES (?, ?, ?)
+        """,
+        [
+            (
+                item.get("plant_canonical_name").capitalize(),
+                item.get("activity_canonical_name"),
+                item.get("source_name"),
+            )
+            for item in all_data
+        ]
+    )
+    conn.commit()
+    conn.close()
+
 def test():
     output_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/observe'
     db_filepath = f'{output_folderpath}/observations.db'
@@ -107,6 +156,9 @@ def test():
 def run():
     print('observe >> pubmed')
 
-    observations_table_plants_chemicals_add()
-    test()
+    # observations_table_plants_chemicals_add()
+    # test()
+
+    observations_table_plants_activities_add()
+
 

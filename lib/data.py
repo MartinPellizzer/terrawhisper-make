@@ -485,3 +485,17 @@ def sqlite__plants_chemicals_get(plant_canonical_name):
     row = cur.fetchall()
     conn.close()
     return row
+
+def sqlite__plants_activities_get(plant_canonical_name):
+    db_filepath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/observe/observations.db'
+    conn = sqlite3.connect(db_filepath)
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT *
+        FROM plants_activities
+        WHERE LOWER(plant_canonical_name) = LOWER(?)
+    """, (plant_canonical_name,))
+    row = cur.fetchall()
+    conn.close()
+    return row
+

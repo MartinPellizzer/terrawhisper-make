@@ -71,7 +71,36 @@ def observations_table_plants_chemicals_create(regen=False):
     conn.commit()
     conn.close()
 
-observations_table_plants_chemicals_create(regen=True)
+def observations_table_plants_activities_create(regen=False):
+    output_foldername = 'observe'
+    output_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/{output_foldername}'
+    # try: shutil.rmtree(output_folderpath)
+    # except: pass
+    os.makedirs(output_folderpath, exist_ok=True)
+    db_filepath = f'{output_folderpath}/observations.db'
+    ###
+    conn = sqlite3.connect(db_filepath)
+    cur = conn.cursor()
+    if regen:
+        cur.execute("DROP TABLE IF EXISTS plants_activities")
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS plants_activities (
+            id INTEGER PRIMARY KEY,
+            plant_canonical_name TEXT NOT NULL,
+            activity_canonical_name TEXT NOT NULL,
+            source_name TEXT NOT NULL
+        );
+    """)
+    conn.execute("PRAGMA journal_mode = WAL;")
+    conn.execute("PRAGMA synchronous = OFF;")
+    conn.execute("PRAGMA temp_store = MEMORY;")
+    cur.execute("CREATE INDEX IF NOT EXISTS idx_plants_activities_plant_canonical_name ON plants_activities(plant_canonical_name)")
+    cur.execute("CREATE INDEX IF NOT EXISTS idx_plants_activities_plant_canonical_name ON plants_activities(activities_canonical_name)")
+    conn.commit()
+    conn.close()
 
-observe_pubmed.run()
+# observations_table_plants_chemicals_create(regen=True)
+observations_table_plants_activities_create(regen=True)
+
+# observe_pubmed.run()
 observe_drduke.run()

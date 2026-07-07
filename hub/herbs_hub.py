@@ -9281,6 +9281,7 @@ def herb_gen(herb_filepath):
 
 def plant_listing_page_gen_new(plant_name):
     plants_chemicals_rows = data.sqlite__plants_chemicals_get(plant_name)
+    plants_activities_rows = data.sqlite__plants_activities_get(plant_name)
     # for plants_chemicals_row in plants_chemicals_rows:
     #     print(plants_chemicals_row)
 
@@ -9292,7 +9293,8 @@ def plant_listing_page_gen_new(plant_name):
     ###
     html_article = f''
     html_article += f'<h1>{plant_name}</h1>'
-    ###
+
+    ### TABLE CHEMICALS
     html_table_body = f''
     html_table_body += f'''<tbody>'''
     for plants_chemicals_row in plants_chemicals_rows:
@@ -9325,6 +9327,36 @@ def plant_listing_page_gen_new(plant_name):
                   <th>Plant Part</th>
                   <th>Concentration</th>
                   <th>Unit</th>
+                  <th>Source</th>
+                </tr>
+              </thead>
+              {html_table_body}
+            </table>
+        </section>
+    '''
+
+    ### TABLE ACTIVITIES
+    html_table_body = f''
+    html_table_body += f'''<tbody>'''
+    for plants_activities_row in plants_activities_rows:
+        print(plants_activities_row)
+        activity_name = plants_activities_row[2]
+        source_name = plants_activities_row[3]
+        html_table_body += f'''
+        <tr>
+            <td>{activity_name}</td>
+            <td>{source_name}</td>
+        </tr>'''
+    html_table_body += f'''</tbody>'''
+    html_article += f'''
+        <section>
+            <h2>
+                Activities
+            </h2>
+            <table>
+              <thead>
+                <tr>
+                  <th>Activity</th>
                   <th>Source</th>
                 </tr>
               </thead>
