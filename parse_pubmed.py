@@ -193,6 +193,60 @@ def observations_activities_raw_to_json():
             output_items.append(output_item)
         io.json_write(output_filepath, output_items)
 
+def observations_diseases_raw_to_json():
+    entity_type = 'diseases'
+    source_name = 'pubmed'
+    input_foldername = f'parse'
+    output_foldername = f'parse'
+    input_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/{input_foldername}/{source_name}/{entity_type}/raw'
+    output_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/{output_foldername}/{source_name}/{entity_type}/json'
+    try: shutil.rmtree(output_folderpath)
+    except: pass
+    io.folders_recursive_gen(output_folderpath)
+    ###
+    input_filenames = os.listdir(input_folderpath)
+    for i, input_filename in enumerate(input_filenames[:]):
+        print(f'{i}/{len(input_filenames)}')
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        output_filepath = f'{output_folderpath}/{input_filename}'
+        ###
+        input_data = io.json_read(input_filepath)
+        # print(json.dumps(input_data, indent=4))
+        relationships_text = input_data['reply']
+        relationships_lines = []
+        for line in relationships_text.split('\n'):
+            line = line.strip()
+            if line == '': continue
+            if line.startswith('['): line = line[1:]
+            if line.endswith(','): line = line[:-1]
+            if line.endswith(']'): line = line[:-1]
+            chunks = [chunk.strip() for chunk in line.split(', ')]
+            relationships_lines.append(chunks)
+        # print(len(relationships_lines))
+        study_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/studies/pubmed/medicinal-plant/json'
+        study_filepath = f'{study_folderpath}/{input_filename}'
+        study_data = io.json_read(study_filepath)
+        try: article_data = study_data['PubmedArticle'][0]['MedlineCitation']['Article']
+        except: pass
+        try: journal_title = article_data['Journal']['Title']
+        except: pass
+        # print(json.dumps(article_data, indent=4))
+        # print(json.dumps(journal_title, indent=4))
+        ###
+        output_items = []
+        for line in relationships_lines:
+            # print(line)
+            try: plant_name, disease_name = line
+            except: continue
+            output_item = {
+                f'plant_name': plant_name,
+                f'disease_name': disease_name,
+                f'source_id': input_filename.split('.')[0],
+                f'journal_title': journal_title,
+            }
+            output_items.append(output_item)
+        io.json_write(output_filepath, output_items)
+
 def observations_diseases_extract_raw():
     output_foldername = 'diseases'
     input_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/fetch/pubmed/medicinal_plant/abstracts'
@@ -326,8 +380,12 @@ def run():
 
     start = time.perf_counter()
     # observations_activities_extract_raw() ### WARNING: takes many many hours (nightly running)
-    observations_activities_raw_to_json()
+    # observations_activities_raw_to_json()
     print(f'observations_activities() - execution time: ', time.perf_counter() - start)
+
+    start = time.perf_counter()
+    # observations_diseases_raw_to_json()
+    print(f'observations_diseases() - execution time: ', time.perf_counter() - start)
 
     start = time.perf_counter()
     # observations_diseases_extract_raw() ### WARNING: takes many many hours (nightly running)

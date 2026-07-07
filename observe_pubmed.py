@@ -53,6 +53,40 @@ def observations_table_plants_chemicals_add():
     conn.commit()
     conn.close()
 
+def observations_table_plants_diseases_add():
+    input_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/resolve/pubmed/diseases/json'
+    output_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/observe'
+    ###
+    db_filepath = f'{output_folderpath}/observations.db'
+    input_filenames = os.listdir(input_folderpath)
+    all_data = []
+    for i, input_filename in enumerate(input_filenames[:]):
+        print(f'{i}/{len(input_filenames)}')
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        input_data = io.json_read(input_filepath)
+        for input_item in input_data:
+            all_data.append(input_item)
+    ###
+    conn = sqlite3.connect(db_filepath)
+    cur = conn.cursor()
+    print('start inserting...')
+    cur.executemany(
+        """
+        INSERT OR IGNORE INTO plants_diseases (plant_canonical_name, disease_canonical_name, source_name)
+        VALUES (?, ?, ?)
+        """,
+        [
+            (
+                item.get("plant_name").capitalize(),
+                item.get("disease_name"),
+                item.get("journal_title"),
+            )
+            for item in all_data
+        ]
+    )
+    conn.commit()
+    conn.close()
+
 def test():
     output_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/observe'
     db_filepath = f'{output_folderpath}/observations.db'
@@ -65,6 +99,8 @@ def test():
 def run():
     print('observe >> pubmed')
 
-    observations_table_plants_chemicals_add()
-    test()
+    # observations_table_plants_chemicals_add()
+    # test()
+
+    observations_table_plants_diseases_add()
 
