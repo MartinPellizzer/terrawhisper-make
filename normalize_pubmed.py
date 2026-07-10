@@ -3,14 +3,15 @@ import json
 import time
 import shutil
 
+import re
+import unicodedata
+
 from lib import g
 from lib import io
 
-def normalize_plant_name(plant_name):
-    plant_name = plant_name.lower()
-    return plant_name
+import normalize_utils
 
-def normalize_chemicals():
+def normalize_plants_chemicals():
     entity_type = 'chemicals'
     input_foldername = f'parse'
     output_foldername = f'normalize'
@@ -32,13 +33,15 @@ def normalize_chemicals():
         for input_item in input_data:
             ### normalize plant_name
             normalized_item = input_item
-            normalized_item['plant_name'] = normalize_plant_name(input_item['plant_name'])
+            normalized_item['plant_name_normalized'] = normalize_utils.normalize_plant_name(input_item['plant_name'])
+            normalized_item['chemical_name_normalized'] = normalize_utils.normalize_chemical_name(input_item['chemical_name'])
             # print(json.dumps(normalized_item, indent=4))
+            # quit()
             normalized_data.append(normalized_item)
         io.json_write(output_filepath, normalized_data)
         # quit()
 
-def normalize_activities():
+def normalize_plants_activities():
     entity_type = 'activities'
     input_foldername = f'parse'
     output_foldername = f'normalize'
@@ -60,14 +63,14 @@ def normalize_activities():
         for input_item in input_data:
             ### normalize plant_name
             normalized_item = input_item
-            normalized_item['plant_name'] = normalize_plant_name(input_item['plant_name'])
+            normalized_item['plant_name_normalized'] = normalize_plant_name(input_item['plant_name'])
             # print(json.dumps(normalized_item, indent=4))
             normalized_data.append(normalized_item)
         io.json_write(output_filepath, normalized_data)
         # quit()
 
 # COPY FOLDER FOR NOW
-def normalize_diseases():
+def normalize_plants_diseases():
     entity_type = 'diseases'
     input_foldername = f'parse'
     output_foldername = f'normalize'
@@ -89,7 +92,7 @@ def normalize_diseases():
         for input_item in input_data:
             ### normalize plant_name
             normalized_item = input_item
-            normalized_item['plant_name'] = normalize_plant_name(input_item['plant_name'])
+            normalized_item['plant_name_normalized'] = normalize_plant_name(input_item['plant_name'])
             # print(json.dumps(normalized_item, indent=4))
             normalized_data.append(normalized_item)
         io.json_write(output_filepath, normalized_data)
@@ -98,14 +101,14 @@ def run():
     print('normalize >> pubmed')
 
     start = time.perf_counter()
-    # normalize_chemicals()
-    print(f'folder_copy() - execution time: ', time.perf_counter() - start)
+    normalize_plants_chemicals()
+    print(f'normalize_plants_chemicals() - execution time: ', time.perf_counter() - start)
 
     start = time.perf_counter()
-    # normalize_activities()
-    print(f'folder_copy() - execution time: ', time.perf_counter() - start)
+    # normalize_plants_activities()
+    print(f'normalize_plants_activities() - execution time: ', time.perf_counter() - start)
 
     start = time.perf_counter()
-    normalize_diseases()
-    print(f'normalize_diseases() - execution time: ', time.perf_counter() - start)
+    # normalize_plants_diseases()
+    print(f'normalize_plants_diseases() - execution time: ', time.perf_counter() - start)
 

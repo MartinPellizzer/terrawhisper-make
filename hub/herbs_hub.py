@@ -9330,15 +9330,15 @@ def plant_listing_page_gen_new(plant_name):
                     Chemicals
                 </h2>
                 <p>
-                    Chamomile has {len(plant_data['chemicals'])} reported phytochemicals identified across databases and scientific publications. The most consistently reported compounds include {chemicals_p_str}.
+                    {plant_name} has {len(plant_data['chemicals'])} reported phytochemicals identified across databases and scientific publications. The most consistently reported compounds include {chemicals_p_str}.
                 </p>
                 <table>
                   <thead>
                     <tr>
                       <th>Chemical</th>
                       <th>Plant Part</th>
-                      <th>Concentration</th>
-                      <th>Unit</th>
+                      <th>Min Concentration</th>
+                      <th>Max Concentration</th>
                       <th>Source</th>
                     </tr>
                   </thead>
