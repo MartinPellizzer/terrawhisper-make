@@ -14,22 +14,6 @@ db_filepath = f'{input_folderpath}/observations.db'
 
 def chemical_summary_get(plant_canonical_name):
     conn = sqlite3.connect(db_filepath)
-
-    '''
-    cursor = conn.execute("""
-        SELECT
-            chemical_canonical_name,
-            plant_part,
-            COUNT(DISTINCT source_name) AS num_sources,
-            MIN(concentration) AS min_concentration,
-            MAX(concentration) AS max_concentration
-        FROM plants_chemicals
-        WHERE plant_canonical_name = ?
-        GROUP BY chemical_canonical_name, plant_part
-        ORDER BY chemical_canonical_name, plant_part
-    """, (plant_canonical_name,))
-    '''
-    ###
     cursor = conn.execute("""
         SELECT
             chemical_canonical_name,
@@ -42,13 +26,28 @@ def chemical_summary_get(plant_canonical_name):
         GROUP BY chemical_canonical_name
         ORDER BY chemical_canonical_name;
     """, (plant_canonical_name,))
+    rows = cursor.fetchall()
+    conn.close()
+    return rows
 
+def summary_activity_get(plant_canonical_name):
+    conn = sqlite3.connect(db_filepath)
+    cursor = conn.execute("""
+        SELECT
+            activity_canonical_name,
+            COUNT(DISTINCT source_name) AS num_sources
+        FROM plants_activities
+        WHERE plant_canonical_name = ?
+        GROUP BY activity_canonical_name
+        ORDER BY activity_canonical_name;
+    """, (plant_canonical_name,))
     rows = cursor.fetchall()
     conn.close()
     return rows
 
 master_plants_rows = data.sqlite__plants_get()
 for master_plant_row in master_plants_rows:
+    ### CHEMICALS
     chemical_summary_rows = chemical_summary_get(master_plant_row[1])
     output_items = []
     for row in chemical_summary_rows:
@@ -66,3 +65,19 @@ for master_plant_row in master_plants_rows:
     io.folder_create_from_filepath(output_filepath)
     io.json_write(output_filepath, output_items)
 
+master_plants_rows = data.sqlite__plants_get()
+for master_plant_row in master_plants_rows:
+    ### ACTIVITIES
+    summary_activity_rows = summary_activity_get(master_plant_row[1])
+    output_items = []
+    for row in summary_activity_rows:
+        output_item = {
+            'plant_canonical_name': master_plant_row[1],
+            'activity_canonical_name': row[0],
+            'num_sources': row[1],
+        }
+        print(json.dumps(output_item, indent=4))
+        output_items.append(output_item)
+    output_filepath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/{output_foldername}/herbs/activities/{master_plant_row[1]}.json'
+    io.folder_create_from_filepath(output_filepath)
+    io.json_write(output_filepath, output_items)

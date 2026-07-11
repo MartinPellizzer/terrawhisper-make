@@ -29,68 +29,6 @@ def plant_listing_page_gen_new(plant_name):
     html_article = f''
     html_article += f'<h1>{plant_name}</h1>'
 
-    ### TABLE CHEMICALS
-    if 0:
-        chemicals = plant_data['chemicals']
-        chemicals = sorted(chemicals, key=lambda x: x['num_sources'], reverse=True)
-        if chemicals != []:
-            html_table_body = f''
-            html_table_body += f'''<tbody>'''
-            table_chemical_num = 10
-            for chemical in chemicals[:table_chemical_num]:
-                print(chemical)
-                # plant_name = plants_chemicals_row[1]
-                chemical_name = chemical['chemical_canonical_name']
-                plant_part = chemical['plant_part']
-                max_concentration = chemical['max_concentration']
-                min_concentration = chemical['min_concentration']
-                num_sources = chemical['num_sources']
-                    # <td>{plant_name}</td>
-                html_table_body += f'''
-                <tr>
-                    <td>{chemical_name}</td>
-                    <td>{num_sources}</td>
-                    <td>{plant_part}</td>
-                    <td>{max_concentration}</td>
-                    <td>{min_concentration}</td>
-                </tr>'''
-            chemicals_p = []
-            for chemical in chemicals[:5]:
-                chemicals_p.append(chemical['chemical_canonical_name'])
-            source_tot = 0 
-            for chemical in chemicals[:]:
-                source_tot += int(chemical['num_sources'])
-            chemicals_p_str = ', '.join(chemicals_p)
-            html_table_body += f'''</tbody>'''
-            html_article += f'''
-                <section>
-                    <h2>
-                        Chemicals
-                    </h2>
-                    <p>
-                        {plant_name} has {len(plant_data['chemicals'])} reported phytochemicals identified across {source_tot} scientific publications and several other databases. The most consistently reported compounds include {chemicals_p_str}.
-                    </p>
-                    <table>
-                      <thead>
-                        <tr>
-                          <th>Chemical</th>
-                          <th>Sources</th>
-                          <th>Plant Parts</th>
-                          <th>Min Concentration</th>
-                          <th>Max Concentration</th>
-                        </tr>
-                      </thead>
-                      {html_table_body}
-                    </table>
-                    <p>
-                        Showing {table_chemical_num} of {len(plant_data['chemicals'])} chemicals
-                    </p>
-                    <p>
-                        View all compounds →
-                    </p>
-                </section>
-            '''
-
     chemicals = plant_data['chemicals']
     chemicals = sorted(chemicals, key=lambda x: x['num_sources'], reverse=True)
     if chemicals != []:
@@ -134,7 +72,7 @@ def plant_listing_page_gen_new(plant_name):
                 <p>
                     {plant_name} has {len(plant_data['chemicals'])} reported phytochemicals identified across {source_tot} scientific publications and several other databases. The most consistently reported compounds include {chemicals_p_str}.
                 </p>
-                <dl class="compound-stats">
+                <dl>
                     <div>
                         <dt>Total compounds</dt>
                         <dd>{len(plant_data['chemicals'])}</dd>
@@ -158,46 +96,67 @@ def plant_listing_page_gen_new(plant_name):
             </section>
         '''
 
-    """
-    ### TABLE ACTIVITIES
+    ### ACTIVITIES
     activities = plant_data['activities']
+    activities = sorted(activities, key=lambda x: x['num_sources'], reverse=True)
     if activities != []:
         html_table_body = f''
         html_table_body += f'''<tbody>'''
-        for activity in activities:
-            print(activity)
-            activity_name = activity[2]
-            source_name = activity[3]
+        table_chemical_num = 10
+        for activity in activities[:table_chemical_num]:
+            activity_name = activity['activity_canonical_name']
+            num_sources = activity['num_sources']
+            confidence = ''
+            if int(num_sources) >= 10: confidence = '★★★★★'
+            elif int(num_sources) >= 7: confidence = '★★★★☆'
+            elif int(num_sources) >= 5: confidence = '★★★☆☆'
+            elif int(num_sources) >= 3: confidence = '★★☆☆☆'
+            elif int(num_sources) >= 1: confidence = '★☆☆☆☆'
             html_table_body += f'''
             <tr>
                 <td>{activity_name}</td>
-                <td>{source_name}</td>
+                <td>{num_sources}</td>
+                <td>{confidence}</td>
             </tr>'''
+        activities_p = []
+        for activity in activities[:5]:
+            activities_p.append(activity['activity_canonical_name'])
+        source_tot = 0 
+        for activity in activities[:]:
+            source_tot += int(activity['num_sources'])
+        activities_p_str = ', '.join(activities_p)
         html_table_body += f'''</tbody>'''
         html_article += f'''
             <section>
                 <h2>
                     Activities
                 </h2>
+                <p>
+                    {plant_name} has {len(plant_data['activities'])} reported activities identified across {source_tot} scientific publications and several other databases. The most consistently reported compounds include {activities_p_str}.
+                </p>
+                <dl>
+                    <div>
+                        <dt>Total activities</dt>
+                        <dd>{len(plant_data['activities'])}</dd>
+                    </div>
+                    <div>
+                        <dt>Scientific sources</dt>
+                        <dd>{source_tot}</dd>
+                    </div>
+                </dl>
+                <h3>Most Reported Activities</h3>
                 <table>
                   <thead>
                     <tr>
                       <th>Activity</th>
-                      <th>Source</th>
+                      <th>Sources</th>
+                      <th>Confidence</th>
                     </tr>
                   </thead>
                   {html_table_body}
                 </table>
             </section>
         '''
-    """
-    html_article += f'''
-        <section>
-            <h2>
-                Activities
-            </h2>
-        </section>
-    '''
 
     """
     ### TABLE DISEASES

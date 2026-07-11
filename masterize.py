@@ -68,8 +68,8 @@ def test():
     print(len(rows))
     conn.close()
 
-master_table_plants_create(regen=True)
-# master_table_activities_create(regen=False)
+# master_table_plants_create(regen=True)
+master_table_activities_create(regen=True)
 # test()
 
 masterize_pubmed.run()

@@ -5,7 +5,7 @@ from lib import g
 from lib import io
 from lib import data
 
-def sqlite__plants_get():
+def sqlite_plants_get():
     db_filepath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/masterize/master.db'
     conn = sqlite3.connect(db_filepath)
     cur = conn.cursor()
@@ -23,17 +23,18 @@ input_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/{input_foldername}/h
 output_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/{output_foldername}/herbs'
 io.folders_recursive_gen(output_folderpath)
 
-plants_rows = sqlite__plants_get()
+plants_rows = sqlite_plants_get()
 for i, plant_row in enumerate(plants_rows):
     print(f'{i}/{len(plants_rows)}')
     plant_canonical_name = plant_row[1]
-    chemicals_filepath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/{input_foldername}/herbs/chemicals/{plant_canonical_name}.json'
     output_filepath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/{output_foldername}/herbs/{plant_canonical_name}.json'
-    print(output_filepath)
-    chemicals_data = io.json_read(chemicals_filepath)
-    # print(json.dumps(chemicals_data, indent=4))
     output_data = {}
     output_data['plant_canonical_name'] = plant_row[1]
+    ### CHEMICALS
+    chemicals_data = io.json_read(
+        f'{g.VAULT_FOLDERPATH}/terrawhisper/data/{input_foldername}/herbs/chemicals/{plant_canonical_name}.json'
+    )
+    # print(json.dumps(chemicals_data, indent=4))
     output_data['chemicals'] = []
     for chemical_item in chemicals_data:
         chemical_item_new = {
@@ -44,6 +45,19 @@ for i, plant_row in enumerate(plants_rows):
             "max_concentration": chemical_item['max_concentration'],
         }
         output_data['chemicals'].append(chemical_item)
+    ### ACTIVITIES
+    activities_data = io.json_read(
+        f'{g.VAULT_FOLDERPATH}/terrawhisper/data/{input_foldername}/herbs/activities/{plant_canonical_name}.json'
+    )
+    # print(json.dumps(chemicals_data, indent=4))
+    output_data['activities'] = []
+    for activity_item in activities_data:
+        activity_item_new = {
+            "activity_canonical_name": activity_item['activity_canonical_name'],
+            "num_sources": chemical_item['num_sources'],
+        }
+        output_data['activities'].append(activity_item)
+    ###
     io.json_write(output_filepath, output_data)
         
     # quit()

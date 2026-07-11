@@ -32,7 +32,7 @@ def master_table_plants_add():
         """,
         [
             (
-                item.get("plant_name").capitalize(), #TODO: remove capitalize in the future when better pipeline and the plant name here already is in canonical format
+                item.get("plant_name")
             )
             for item in all_data
         ]
@@ -51,11 +51,10 @@ def master_table_activities_add():
         print(f'{i}/{len(input_filenames)}')
         input_filepath = f'{input_folderpath}/{input_filename}'
         input_data = io.json_read(input_filepath)
-        all_data.append({
-            'activity_name': input_data['reply']
-        })
-    print(all_data[0])
-    quit()
+        for input_item in input_data:
+            all_data.append({
+                'activity_name': input_item['activity_name']
+            })
     conn = sqlite3.connect(db_filepath)
     cur = conn.cursor()
     print('start inserting...')
@@ -72,6 +71,11 @@ def master_table_activities_add():
         ]
     )
     conn.commit()
+
+    rows = conn.execute("SELECT * FROM activities")
+    for row in list(rows)[:10]:
+        print(row)
+
     conn.close()
 
 def test():
@@ -86,7 +90,6 @@ def test():
 def run():
     print('masterize >> pubmed')
 
-    master_table_plants_add()
-    # master_table_activities_add()
-    test()
+    # master_table_plants_add()
+    master_table_activities_add()
 

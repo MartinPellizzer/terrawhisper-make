@@ -40,10 +40,19 @@ def normalize_plant_name(name):
     return name
 
 def normalize_chemical_name(name):
-    ### NORMALIZE FUNCTION
     spaces = re.compile(r"\s+")
     name = unicodedata.normalize("NFKC", name)
     name = name.lower()
     name = name.replace("-", " ")
+    name = spaces.sub(" ", name)
+    return name.strip()
+
+def normalize_activity_name(name):
+    spaces = re.compile(r"\s+")
+    if not name: return None
+    name = unicodedata.normalize("NFKC", name)
+    name = name.lower()
+    name = name.replace("-", " ")
+    name = re.sub(r"[.,;:]", "", name)
     name = spaces.sub(" ", name)
     return name.strip()

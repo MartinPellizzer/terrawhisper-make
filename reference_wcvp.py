@@ -135,7 +135,7 @@ def test():
 
 
 def run():
-    print(f'PARSE >> wcvp')
+    print(f'REFERENCE >> wcvp')
 
     start = time.perf_counter()
     # wcvp_table_plants_create()
