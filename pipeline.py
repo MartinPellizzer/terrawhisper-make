@@ -8,5 +8,6 @@ observe
 qualify
 derive
 compile
+render
 '''
 

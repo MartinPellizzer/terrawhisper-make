@@ -12,9 +12,10 @@ output_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/{output_foldername}
 db_filepath = f'{input_folderpath}/observations.db'
 ###
 
-def get_chemical_summary(plant_canonical_name):
+def chemical_summary_get(plant_canonical_name):
     conn = sqlite3.connect(db_filepath)
 
+    '''
     cursor = conn.execute("""
         SELECT
             chemical_canonical_name,
@@ -27,6 +28,20 @@ def get_chemical_summary(plant_canonical_name):
         GROUP BY chemical_canonical_name, plant_part
         ORDER BY chemical_canonical_name, plant_part
     """, (plant_canonical_name,))
+    '''
+    ###
+    cursor = conn.execute("""
+        SELECT
+            chemical_canonical_name,
+            COUNT(DISTINCT plant_part) AS num_plant_parts,
+            COUNT(DISTINCT source_name) AS num_sources,
+            MIN(concentration) AS min_concentration,
+            MAX(concentration) AS max_concentration
+        FROM plants_chemicals
+        WHERE plant_canonical_name = ?
+        GROUP BY chemical_canonical_name
+        ORDER BY chemical_canonical_name;
+    """, (plant_canonical_name,))
 
     rows = cursor.fetchall()
     conn.close()
@@ -34,7 +49,7 @@ def get_chemical_summary(plant_canonical_name):
 
 master_plants_rows = data.sqlite__plants_get()
 for master_plant_row in master_plants_rows:
-    chemical_summary_rows = get_chemical_summary(master_plant_row[1])
+    chemical_summary_rows = chemical_summary_get(master_plant_row[1])
     output_items = []
     for row in chemical_summary_rows:
         output_item = {

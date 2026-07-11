@@ -68,9 +68,9 @@ def test():
     print(len(rows))
     conn.close()
 
-# master_table_plants_create(regen=False)
-master_table_activities_create(regen=False)
-test()
+master_table_plants_create(regen=True)
+# master_table_activities_create(regen=False)
+# test()
 
-# masterize_pubmed.run()
-masterize_drduke.run()
+masterize_pubmed.run()
+# masterize_drduke.run()

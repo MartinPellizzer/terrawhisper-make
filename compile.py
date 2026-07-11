@@ -29,6 +29,7 @@ for i, plant_row in enumerate(plants_rows):
     plant_canonical_name = plant_row[1]
     chemicals_filepath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/{input_foldername}/herbs/chemicals/{plant_canonical_name}.json'
     output_filepath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/{output_foldername}/herbs/{plant_canonical_name}.json'
+    print(output_filepath)
     chemicals_data = io.json_read(chemicals_filepath)
     # print(json.dumps(chemicals_data, indent=4))
     output_data = {}

@@ -86,7 +86,7 @@ def test():
 def run():
     print('masterize >> pubmed')
 
-    # master_table_plants_add()
-    master_table_activities_add()
+    master_table_plants_add()
+    # master_table_activities_add()
     test()
 

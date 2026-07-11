@@ -99,8 +99,7 @@ def test():
 def run():
     print('observe >> pubmed')
 
-    # observations_table_plants_chemicals_add()
-    # test()
+    observations_table_plants_chemicals_add()
+    test()
 
-    observations_table_plants_diseases_add()
-
+    # observations_table_plants_diseases_add()

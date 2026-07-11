@@ -1,0 +1,268 @@
+import os
+import time
+import json
+import shutil
+import sqlite3
+
+from lib import g
+from lib import io
+from lib import data
+from lib import polish
+from lib import sections
+from lib import components
+
+shutil.copy2('styles.css', f'{g.website_folderpath}/styles.css')
+
+def plant_listing_page_gen_new(plant_name):
+    plant_data = io.json_read(f'{g.VAULT_FOLDERPATH}/terrawhisper/data/compile/herbs/{plant_name}.json')
+    # plants_activities_rows = data.sqlite__plants_activities_get(plant_name)
+    # plants_diseases_rows = data.sqlite__plants_diseases_get(plant_name)
+    # for plants_chemicals_row in plants_chemicals_rows:
+    #     print(plants_chemicals_row)
+
+    plant_taxon_name_slug = polish.sluggify(plant_name)
+
+    output_filepath = f'{g.SSOT_FOLDERPATH}/studies/extraction_new/chemicals/database.db'
+    conn = sqlite3.connect(output_filepath)
+
+    ###
+    html_article = f''
+    html_article += f'<h1>{plant_name}</h1>'
+
+    ### TABLE CHEMICALS
+    if 0:
+        chemicals = plant_data['chemicals']
+        chemicals = sorted(chemicals, key=lambda x: x['num_sources'], reverse=True)
+        if chemicals != []:
+            html_table_body = f''
+            html_table_body += f'''<tbody>'''
+            table_chemical_num = 10
+            for chemical in chemicals[:table_chemical_num]:
+                print(chemical)
+                # plant_name = plants_chemicals_row[1]
+                chemical_name = chemical['chemical_canonical_name']
+                plant_part = chemical['plant_part']
+                max_concentration = chemical['max_concentration']
+                min_concentration = chemical['min_concentration']
+                num_sources = chemical['num_sources']
+                    # <td>{plant_name}</td>
+                html_table_body += f'''
+                <tr>
+                    <td>{chemical_name}</td>
+                    <td>{num_sources}</td>
+                    <td>{plant_part}</td>
+                    <td>{max_concentration}</td>
+                    <td>{min_concentration}</td>
+                </tr>'''
+            chemicals_p = []
+            for chemical in chemicals[:5]:
+                chemicals_p.append(chemical['chemical_canonical_name'])
+            source_tot = 0 
+            for chemical in chemicals[:]:
+                source_tot += int(chemical['num_sources'])
+            chemicals_p_str = ', '.join(chemicals_p)
+            html_table_body += f'''</tbody>'''
+            html_article += f'''
+                <section>
+                    <h2>
+                        Chemicals
+                    </h2>
+                    <p>
+                        {plant_name} has {len(plant_data['chemicals'])} reported phytochemicals identified across {source_tot} scientific publications and several other databases. The most consistently reported compounds include {chemicals_p_str}.
+                    </p>
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Chemical</th>
+                          <th>Sources</th>
+                          <th>Plant Parts</th>
+                          <th>Min Concentration</th>
+                          <th>Max Concentration</th>
+                        </tr>
+                      </thead>
+                      {html_table_body}
+                    </table>
+                    <p>
+                        Showing {table_chemical_num} of {len(plant_data['chemicals'])} chemicals
+                    </p>
+                    <p>
+                        View all compounds →
+                    </p>
+                </section>
+            '''
+
+    chemicals = plant_data['chemicals']
+    chemicals = sorted(chemicals, key=lambda x: x['num_sources'], reverse=True)
+    if chemicals != []:
+        html_table_body = f''
+        html_table_body += f'''<tbody>'''
+        table_chemical_num = 10
+        for chemical in chemicals[:table_chemical_num]:
+            print(chemical)
+            # plant_name = plants_chemicals_row[1]
+            chemical_name = chemical['chemical_canonical_name']
+            plant_part = chemical['plant_part']
+            max_concentration = chemical['max_concentration']
+            min_concentration = chemical['min_concentration']
+            num_sources = chemical['num_sources']
+                # <td>{plant_name}</td>
+            confidence = ''
+            if int(num_sources) >= 10: confidence = '★★★★★'
+            elif int(num_sources) >= 7: confidence = '★★★★☆'
+            elif int(num_sources) >= 5: confidence = '★★★☆☆'
+            elif int(num_sources) >= 3: confidence = '★★☆☆☆'
+            elif int(num_sources) >= 1: confidence = '★☆☆☆☆'
+            html_table_body += f'''
+            <tr>
+                <td>{chemical_name}</td>
+                <td>{num_sources}</td>
+                <td>{confidence}</td>
+            </tr>'''
+        chemicals_p = []
+        for chemical in chemicals[:5]:
+            chemicals_p.append(chemical['chemical_canonical_name'])
+        source_tot = 0 
+        for chemical in chemicals[:]:
+            source_tot += int(chemical['num_sources'])
+        chemicals_p_str = ', '.join(chemicals_p)
+        html_table_body += f'''</tbody>'''
+        html_article += f'''
+            <section>
+                <h2>
+                    Chemicals
+                </h2>
+                <p>
+                    {plant_name} has {len(plant_data['chemicals'])} reported phytochemicals identified across {source_tot} scientific publications and several other databases. The most consistently reported compounds include {chemicals_p_str}.
+                </p>
+                <dl class="compound-stats">
+                    <div>
+                        <dt>Total compounds</dt>
+                        <dd>{len(plant_data['chemicals'])}</dd>
+                    </div>
+                    <div>
+                        <dt>Scientific sources</dt>
+                        <dd>{source_tot}</dd>
+                    </div>
+                </dl>
+                <h3>Most Reported Compounds</h3>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Compound</th>
+                      <th>Sources</th>
+                      <th>Confidence</th>
+                    </tr>
+                  </thead>
+                  {html_table_body}
+                </table>
+            </section>
+        '''
+
+    """
+    ### TABLE ACTIVITIES
+    activities = plant_data['activities']
+    if activities != []:
+        html_table_body = f''
+        html_table_body += f'''<tbody>'''
+        for activity in activities:
+            print(activity)
+            activity_name = activity[2]
+            source_name = activity[3]
+            html_table_body += f'''
+            <tr>
+                <td>{activity_name}</td>
+                <td>{source_name}</td>
+            </tr>'''
+        html_table_body += f'''</tbody>'''
+        html_article += f'''
+            <section>
+                <h2>
+                    Activities
+                </h2>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Activity</th>
+                      <th>Source</th>
+                    </tr>
+                  </thead>
+                  {html_table_body}
+                </table>
+            </section>
+        '''
+    """
+    html_article += f'''
+        <section>
+            <h2>
+                Activities
+            </h2>
+        </section>
+    '''
+
+    """
+    ### TABLE DISEASES
+    diseases = plant_data['diseases']
+    if diseases != []:
+        html_table_body = f''
+        html_table_body += f'''<tbody>'''
+        for disease in diseases:
+            print(disease)
+            disease_name = disease[2]
+            source_name = disease[3]
+            html_table_body += f'''
+            <tr>
+                <td>{disease_name}</td>
+                <td>{source_name}</td>
+            </tr>'''
+        html_table_body += f'''</tbody>'''
+        html_article += f'''
+            <section>
+                <h2>
+                    Diseases
+                </h2>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Disease</th>
+                      <th>Source</th>
+                    </tr>
+                  </thead>
+                  {html_table_body}
+                </table>
+            </section>
+        '''
+    """
+
+    url_slug = f'herbs/{plant_taxon_name_slug}'
+    meta_title = f'{plant_name}'
+    meta_description = f''
+    canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''
+    head_html = components.html_head(
+        meta_title, meta_description, css='/styles.css', canonical=canonical_html
+    )
+    html = f''' 
+        <!DOCTYPE html>
+        <html lang="en">
+        {head_html}
+        <body>
+            {sections.header_default()}
+            {sections.breadcrumbs_new(url_slug)}
+            <main class="container-xl listing m-flex">
+                <div style="flex: 2;">
+                {html_article}
+                </div>
+                <div style="flex: 1;">
+                </div>
+            </main>
+            {sections.footer()}
+        </body>
+        </html>
+    '''.strip()
+    html_filepath = f'{g.website_folderpath}/{url_slug}.html'
+    with open(html_filepath, 'w') as f: f.write(html)
+    print(html_filepath)
+
+plants_rows = data.sqlite__plants_get()
+for plant_row in plants_rows[:10]:
+    print(plant_row)
+    plant_listing_page_gen_new(plant_row[1])

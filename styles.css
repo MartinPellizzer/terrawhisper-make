@@ -283,11 +283,35 @@ footer span {
     margin-top: 4.8rem;
 }
 
+.listing h1 {
+  margin-top: 4.8rem;
+  margin-bottom: 1.6rem;
+}
+
+.listing h2 {
+  margin-top: 4.8rem;
+  margin-bottom: 1.6rem;
+}
+
+.listing h3 {
+  margin-top: 4.8rem;
+  margin-bottom: 1.6rem;
+}
+
+/*
+.listing p + p {
+  margin-top: 1.6rem;
+}
+*/
+
+.listing p {
+  margin-bottom: 1.6rem;
+}
+
 .listing table {
     width: 100%;
     border-collapse: collapse;
     font-size: 1.4rem;
-    margin-top: 1.6rem;
 }
 
 .listing th {
@@ -303,5 +327,29 @@ footer span {
     padding: 1.6rem;
     border-bottom: 1px solid #e2e8f0;
     vertical-align: top;
+}
+
+.listing dl {
+    margin: 1rem 0;
+    padding: 0;
+}
+
+.listing dl > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #eee;
+}
+
+.listing dt {
+    font-weight: 400;
+    color: #555;
+}
+
+.listing dd {
+    margin: 0;
+    font-size: 1.8rem;
+    font-weight: 700;
 }
 
