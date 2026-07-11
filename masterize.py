@@ -58,6 +58,30 @@ def master_table_activities_create(regen=False):
     conn.commit()
     conn.close()
 
+def master_table_diseases_create(regen=False):
+    output_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/masterize'
+    # try: shutil.rmtree(output_folderpath)
+    # except: pass
+    # os.makedirs(output_folderpath, exist_ok=True)
+    db_filepath = f'{output_folderpath}/master.db'
+    ###
+    conn = sqlite3.connect(db_filepath)
+    cur = conn.cursor()
+    if regen:
+        cur.execute("DROP TABLE IF EXISTS diseases")
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS diseases (
+            id INTEGER PRIMARY KEY,
+            canonical_name TEXT NOT NULL UNIQUE
+        );
+    """)
+    conn.execute("PRAGMA journal_mode = WAL;")
+    conn.execute("PRAGMA synchronous = OFF;")
+    conn.execute("PRAGMA temp_store = MEMORY;")
+    cur.execute("CREATE INDEX IF NOT EXISTS idx_diseases_canonical_name ON diseases(canonical_name)")
+    conn.commit()
+    conn.close()
+
 def test():
     output_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/masterize'
     db_filepath = f'{output_folderpath}/master.db'
@@ -69,7 +93,8 @@ def test():
     conn.close()
 
 # master_table_plants_create(regen=True)
-master_table_activities_create(regen=True)
+# master_table_activities_create(regen=True)
+master_table_diseases_create(regen=True)
 # test()
 
 masterize_pubmed.run()

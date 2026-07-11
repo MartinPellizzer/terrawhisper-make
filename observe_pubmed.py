@@ -116,6 +116,9 @@ def observations_table_plants_diseases_add():
         ]
     )
     conn.commit()
+    rows = conn.execute("SELECT * FROM plants_diseases")
+    for row in list(rows)[:10]:
+        print(row)
     conn.close()
 
 def test():
@@ -131,6 +134,5 @@ def run():
     print('observe >> pubmed')
 
     # observations_table_plants_chemicals_add()
-    observations_table_plants_activities_add()
-
-    # observations_table_plants_diseases_add()
+    # observations_table_plants_activities_add()
+    observations_table_plants_diseases_add()

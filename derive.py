@@ -45,9 +45,24 @@ def summary_activity_get(plant_canonical_name):
     conn.close()
     return rows
 
+def summary_disease_get(plant_canonical_name):
+    conn = sqlite3.connect(db_filepath)
+    cursor = conn.execute("""
+        SELECT
+            disease_canonical_name,
+            COUNT(DISTINCT source_name) AS num_sources
+        FROM plants_diseases
+        WHERE plant_canonical_name = ?
+        GROUP BY disease_canonical_name
+        ORDER BY disease_canonical_name;
+    """, (plant_canonical_name,))
+    rows = cursor.fetchall()
+    conn.close()
+    return rows
+
+### CHEMICALS
 master_plants_rows = data.sqlite__plants_get()
 for master_plant_row in master_plants_rows:
-    ### CHEMICALS
     chemical_summary_rows = chemical_summary_get(master_plant_row[1])
     output_items = []
     for row in chemical_summary_rows:
@@ -65,9 +80,9 @@ for master_plant_row in master_plants_rows:
     io.folder_create_from_filepath(output_filepath)
     io.json_write(output_filepath, output_items)
 
+### ACTIVITIES
 master_plants_rows = data.sqlite__plants_get()
 for master_plant_row in master_plants_rows:
-    ### ACTIVITIES
     summary_activity_rows = summary_activity_get(master_plant_row[1])
     output_items = []
     for row in summary_activity_rows:
@@ -79,5 +94,22 @@ for master_plant_row in master_plants_rows:
         print(json.dumps(output_item, indent=4))
         output_items.append(output_item)
     output_filepath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/{output_foldername}/herbs/activities/{master_plant_row[1]}.json'
+    io.folder_create_from_filepath(output_filepath)
+    io.json_write(output_filepath, output_items)
+
+### DISEASES
+master_plants_rows = data.sqlite__plants_get()
+for master_plant_row in master_plants_rows:
+    summary_disease_rows = summary_disease_get(master_plant_row[1])
+    output_items = []
+    for row in summary_disease_rows:
+        output_item = {
+            'plant_canonical_name': master_plant_row[1],
+            'disease_canonical_name': row[0],
+            'num_sources': row[1],
+        }
+        print(json.dumps(output_item, indent=4))
+        output_items.append(output_item)
+    output_filepath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/{output_foldername}/herbs/diseases/{master_plant_row[1]}.json'
     io.folder_create_from_filepath(output_filepath)
     io.json_write(output_filepath, output_items)

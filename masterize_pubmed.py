@@ -71,11 +71,45 @@ def master_table_activities_add():
         ]
     )
     conn.commit()
-
     rows = conn.execute("SELECT * FROM activities")
     for row in list(rows)[:10]:
         print(row)
+    conn.close()
 
+def master_table_diseases_add():
+    input_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/resolve/pubmed/diseases/json'
+    output_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/masterize'
+    ###
+    db_filepath = f'{output_folderpath}/master.db'
+    input_filenames = os.listdir(input_folderpath)
+    all_data = []
+    for i, input_filename in enumerate(input_filenames[:]):
+        print(f'{i}/{len(input_filenames)}')
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        input_data = io.json_read(input_filepath)
+        for input_item in input_data:
+            all_data.append({
+                'disease_name': input_item['disease_name']
+            })
+    conn = sqlite3.connect(db_filepath)
+    cur = conn.cursor()
+    print('start inserting...')
+    cur.executemany(
+        """
+        INSERT OR IGNORE INTO diseases (canonical_name)
+        VALUES (?)
+        """,
+        [
+            (
+                item.get("disease_name"),
+            )
+            for item in all_data
+        ]
+    )
+    conn.commit()
+    rows = conn.execute("SELECT * FROM diseases")
+    for row in list(rows)[:10]:
+        print(row)
     conn.close()
 
 def test():
@@ -91,5 +125,6 @@ def run():
     print('masterize >> pubmed')
 
     # master_table_plants_add()
-    master_table_activities_add()
+    # master_table_activities_add()
+    master_table_diseases_add()
 

@@ -59,6 +59,20 @@ for i, plant_row in enumerate(plants_rows):
         output_data['activities'].append(activity_item)
     ###
     io.json_write(output_filepath, output_data)
+    ### DISEASES
+    diseases_data = io.json_read(
+        f'{g.VAULT_FOLDERPATH}/terrawhisper/data/{input_foldername}/herbs/diseases/{plant_canonical_name}.json'
+    )
+    # print(json.dumps(chemicals_data, indent=4))
+    output_data['diseases'] = []
+    for disease_item in diseases_data:
+        disease_item_new = {
+            "disease_canonical_name": disease_item['disease_canonical_name'],
+            "num_sources": chemical_item['num_sources'],
+        }
+        output_data['diseases'].append(disease_item)
+    ###
+    io.json_write(output_filepath, output_data)
         
     # quit()
 

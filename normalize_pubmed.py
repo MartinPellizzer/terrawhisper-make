@@ -93,7 +93,8 @@ def normalize_plants_diseases():
         for input_item in input_data:
             ### normalize plant_name
             normalized_item = input_item
-            normalized_item['plant_name_normalized'] = normalize_plant_name(input_item['plant_name'])
+            normalized_item['plant_name_normalized'] = normalize_utils.normalize_plant_name(input_item['plant_name'])
+            normalized_item['disease_name_normalized'] = normalize_utils.normalize_disease_name(input_item['disease_name'])
             # print(json.dumps(normalized_item, indent=4))
             normalized_data.append(normalized_item)
         io.json_write(output_filepath, normalized_data)
@@ -105,11 +106,11 @@ def run():
     # normalize_plants_chemicals()
     # print(f'normalize_plants_chemicals() - execution time: ', time.perf_counter() - start)
 
-    start = time.perf_counter()
-    normalize_plants_activities()
-    print(f'normalize plants_activities() - execution time: ', time.perf_counter() - start)
-
     # start = time.perf_counter()
-    # normalize_plants_diseases()
-    # print(f'normalize_plants_diseases() - execution time: ', time.perf_counter() - start)
+    # normalize_plants_activities()
+    # print(f'normalize plants_activities() - execution time: ', time.perf_counter() - start)
+
+    start = time.perf_counter()
+    normalize_plants_diseases()
+    print(f'normalize plants_diseases() - execution time: ', time.perf_counter() - start)
 

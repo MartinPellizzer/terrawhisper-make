@@ -158,39 +158,67 @@ def plant_listing_page_gen_new(plant_name):
             </section>
         '''
 
-    """
-    ### TABLE DISEASES
+    ### DISEASES
     diseases = plant_data['diseases']
+    diseases = sorted(diseases, key=lambda x: x['num_sources'], reverse=True)
     if diseases != []:
         html_table_body = f''
         html_table_body += f'''<tbody>'''
-        for disease in diseases:
-            print(disease)
-            disease_name = disease[2]
-            source_name = disease[3]
+        table_chemical_num = 10
+        for disease in diseases[:table_chemical_num]:
+            disease_name = disease['disease_canonical_name']
+            num_sources = disease['num_sources']
+            confidence = ''
+            if int(num_sources) >= 10: confidence = '★★★★★'
+            elif int(num_sources) >= 7: confidence = '★★★★☆'
+            elif int(num_sources) >= 5: confidence = '★★★☆☆'
+            elif int(num_sources) >= 3: confidence = '★★☆☆☆'
+            elif int(num_sources) >= 1: confidence = '★☆☆☆☆'
             html_table_body += f'''
             <tr>
                 <td>{disease_name}</td>
-                <td>{source_name}</td>
+                <td>{num_sources}</td>
+                <td>{confidence}</td>
             </tr>'''
+        diseases_p = []
+        for disease in diseases[:5]:
+            diseases_p.append(disease['disease_canonical_name'])
+        source_tot = 0 
+        for disease in diseases[:]:
+            source_tot += int(disease['num_sources'])
+        diseases_p_str = ', '.join(diseases_p)
         html_table_body += f'''</tbody>'''
         html_article += f'''
             <section>
                 <h2>
                     Diseases
                 </h2>
+                <p>
+                    {plant_name} has {len(plant_data['diseases'])} reported diseases identified across {source_tot} scientific publications and several other databases. The most consistently reported compounds include {diseases_p_str}.
+                </p>
+                <dl>
+                    <div>
+                        <dt>Total diseases</dt>
+                        <dd>{len(plant_data['diseases'])}</dd>
+                    </div>
+                    <div>
+                        <dt>Scientific sources</dt>
+                        <dd>{source_tot}</dd>
+                    </div>
+                </dl>
+                <h3>Most Reported Diseases</h3>
                 <table>
                   <thead>
                     <tr>
                       <th>Disease</th>
-                      <th>Source</th>
+                      <th>Sources</th>
+                      <th>Confidence</th>
                     </tr>
                   </thead>
                   {html_table_body}
                 </table>
             </section>
         '''
-    """
 
     url_slug = f'herbs/{plant_taxon_name_slug}'
     meta_title = f'{plant_name}'

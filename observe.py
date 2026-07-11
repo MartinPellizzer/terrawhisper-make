@@ -22,36 +22,6 @@ def observations_table_plants_chemicals_create(regen=False):
     cur = conn.cursor()
     if regen:
         cur.execute("DROP TABLE IF EXISTS plants_chemicals")
-    ### TARGET TABLE (in the future)
-    '''
-    CREATE TABLE observations (
-        id INTEGER PRIMARY KEY,
-        -- What plant?
-        plant_id INTEGER NOT NULL,
-        -- What chemical?
-        compound_id INTEGER NOT NULL,
-        -- Which part of the plant?
-        plant_part TEXT,
-        -- Was the compound detected?
-        detected INTEGER NOT NULL DEFAULT 1,
-        -- Concentration (nullable)
-        concentration REAL,
-        -- Unit (mg/g, %, ppm, etc.)
-        unit TEXT,
-        -- Measurement basis
-        -- e.g. dry_weight, fresh_weight, essential_oil, extract
-        basis TEXT,
-        -- Optional analytical method
-        -- GC-MS, LC-MS, HPLC...
-        method TEXT,
-        -- Source publication
-        source_id INTEGER NOT NULL,
-        -- Optional page/table/figure
-        source_location TEXT,
-        -- Confidence in extraction
-        confidence REAL DEFAULT 1.0
-    );
-    '''
     cur.execute("""
         CREATE TABLE IF NOT EXISTS plants_chemicals (
             id INTEGER PRIMARY KEY,
@@ -129,8 +99,8 @@ def observations_table_plants_diseases_create(regen=False):
 
 ### TODO: do a clean up by destroying db
 # observations_table_plants_chemicals_create(regen=True)
-observations_table_plants_activities_create(regen=True)
-# observations_table_plants_diseases_create(regen=True)
+# observations_table_plants_activities_create(regen=True)
+observations_table_plants_diseases_create(regen=True)
 
 observe_pubmed.run()
 # observe_drduke.run()
