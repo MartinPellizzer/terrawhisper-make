@@ -56,3 +56,14 @@ def normalize_activity_name(name):
     name = re.sub(r"[.,;:]", "", name)
     name = spaces.sub(" ", name)
     return name.strip()
+
+def normalize_disease_name(name):
+    spaces = re.compile(r"\s+")
+    if not name: return None
+    name = unicodedata.normalize("NFKC", name)
+    name = name.lower()
+    name = name.replace("-", " ")
+    name = re.sub(r"[.,;:()]", "", name)
+    name = spaces.sub(" ", name)
+    return name.strip()
+
