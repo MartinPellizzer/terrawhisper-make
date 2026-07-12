@@ -1,60 +1,49 @@
+import os
+import json
+import shutil
+
 from lib import g
 from lib import io
 from lib import data
 from lib import polish
-
 from lib import sections
 from lib import components
 
-def herbs_index():
-    html_article = ''
-    html_article += f'''
-        <h1 style="margin-top: 9.6rem;">
-            Medicinal Herbs
-        </h1>
-    '''
-    ###
-    plants_rows = data.sqlite__plants_get()
-    items_counter = 0
-    num = 48
-    cards = ''
-    for plant_row in plants_rows[:num]:
-        plant_name = plant_row[1]
-        plant_slug = polish.sluggify(plant_name)
-        plant_img_src = f'/images/herbs/{plant_slug}.jpg'
-        plant_filepath = f'{g.WEBSITE_FOLDERPATH}/images/herbs/{plant_slug}.jpg'
-        html_image = f'''
-            <img src="{plant_img_src}" alt="{plant_name}" style="margin-bottom: 1.6rem;">
-        '''
-        cards += f'''
-            <article>
-                <a href="/herbs/{plant_slug}.html" style="text-decoration: none;">
-                    {html_image}
-                    <h3>{plant_name}</h3>
-                </a>
-            </article>
-        '''
-        items_counter += 1
-        if items_counter >= num: break
+shutil.copy2('styles.css', f'{g.website_folderpath}/styles.css')
 
-    li_a_style = f'''text-decoration: none; color: #111; font-size: 1.4rem; display: inline-block;'''
-    html_categories = f'''
-        <div 
-            style=" 
-                background-color: #fff; 
-                padding: 2.4rem;
-box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
-            "
-        >
-            <h2 style="font-size: 1.8rem; letter-spacing: 0.5px; margin-bottom: 3.2rem; padding-bottom: 0.8rem;
+def groups_gen(items, group_len):
+    pages = []
+    page_cur = []
+    for item_i, item in enumerate(items):
+        if len(page_cur) < group_len:
+            page_cur.append(item)
+        else:
+            pages.append(page_cur)
+            page_cur = [item]
+    if page_cur != []: pages.append(page_cur)
+    return pages
+
+def sidebar_html_gen():
+    '''
+            <h2 style="font-size: 1.8rem; margin-bottom: 3.2rem; padding-bottom: 0.8rem;
                 border-bottom: 3px solid #111;
                 display: inline-block;
             ">
                 Categories
             </h2>
-            <h3 style="font-size: 1.4rem; letter-spacing: 0.5px; margin-bottom: 1.4rem;">
+    '''
+    li_a_style = f'''text-decoration: none; color: #111; font-size: 1.4rem; display: inline-block;'''
+    sidebar_html = f'''
+        <div 
+            style=" 
+                background-color: #fff; 
+                padding: 2.4rem;
+                box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
+            "
+        >
+            <h2 style="font-size: 1.4rem; letter-spacing: 0.5px; margin-bottom: 1.4rem;">
                 Explore Herbs
-            </h3>
+            </h2>
             <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.4rem;">
                 <li>
                     <a style="text-decoration: none; color: #111; font-size: 1.4rem;" href="/herbs.html">All Herbs</a>
@@ -67,11 +56,10 @@ box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
                 </li>
             </ul>
             <hr style="border: 0; border-bottom: 1px solid #d8d8d8; margin-top: 2.4rem; margin-bottom: 2.4rem;">
-
             <h3 style="font-size: 1.4rem; letter-spacing: 0.5px; margin-bottom: 1.4rem;">
                 Alphabet
             </h3>
-            <ul style="list-style: none; display: grid; grid-template-columns: repeat(5, 1fr);">
+            <ul style="list-style: none; display: grid; grid-template-columns: repeat(6, 1fr);">
                 <li>
                     <a style="{li_a_style}" href="/herbs/a.html">A</a>
                 </li>
@@ -152,7 +140,6 @@ box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
                 </li>
             </ul>
             <hr style="border: 0; border-bottom: 1px solid #d8d8d8; margin-top: 2.4rem; margin-bottom: 2.4rem;">
-
             <h3 style="font-size: 1.4rem; letter-spacing: 0.5px; margin-bottom: 1.4rem;">
                 Biological Activity
             </h3>
@@ -187,7 +174,6 @@ box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
             </ul>
             <a style="{li_a_style} margin-top: 1.6rem;" href="/herbs.html">View all →</a>
             <hr style="border: 0; border-bottom: 1px solid #d8d8d8; margin-top: 2.4rem; margin-bottom: 2.4rem;">
-
             <h3 style="font-size: 1.4rem; letter-spacing: 0.5px; margin-bottom: 1.4rem;">
                 Bioactive Compounds
             </h3>
@@ -216,7 +202,6 @@ box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
             </ul>
             <a style="{li_a_style} margin-top: 1.6rem;" href="/herbs.html">View all →</a>
             <hr style="border: 0; border-bottom: 1px solid #d8d8d8; margin-top: 2.4rem; margin-bottom: 2.4rem;">
-
             <h3 style="font-size: 1.4rem; letter-spacing: 0.5px; margin-bottom: 1.4rem;">
                 Body Systems
             </h3>
@@ -248,7 +233,6 @@ box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
             </ul>
             <a style="{li_a_style} margin-top: 1.6rem;" href="/herbs.html">View all →</a>
             <hr style="border: 0; border-bottom: 1px solid #d8d8d8; margin-top: 2.4rem; margin-bottom: 2.4rem;">
-
             <h3 style="font-size: 1.4rem; letter-spacing: 0.5px; margin-bottom: 1.4rem;">
                 Plant Parts
             </h3>
@@ -280,7 +264,6 @@ box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
             </ul>
             <a style="{li_a_style} margin-top: 1.6rem;" href="/herbs.html">View all →</a>
             <hr style="border: 0; border-bottom: 1px solid #d8d8d8; margin-top: 2.4rem; margin-bottom: 2.4rem;">
-
             <h3 style="font-size: 1.4rem; letter-spacing: 0.5px; margin-bottom: 1.4rem;">
                 Botanical Families
             </h3>
@@ -306,7 +289,6 @@ box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
             </ul>
             <a style="{li_a_style} margin-top: 1.6rem;" href="/herbs.html">View all →</a>
             <hr style="border: 0; border-bottom: 1px solid #d8d8d8; margin-top: 2.4rem; margin-bottom: 2.4rem;">
-
             <h3 style="font-size: 1.4rem; letter-spacing: 0.5px; margin-bottom: 1.4rem;">
                 Geographic Origin
             </h3>
@@ -332,7 +314,6 @@ box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
             </ul>
             <a style="{li_a_style} margin-top: 1.6rem;" href="/herbs.html">View all →</a>
             <hr style="border: 0; border-bottom: 1px solid #d8d8d8; margin-top: 2.4rem; margin-bottom: 2.4rem;">
-
             <h3 style="font-size: 1.4rem; letter-spacing: 0.5px; margin-bottom: 1.4rem;">
                 Traditional Medicine
             </h3>
@@ -357,54 +338,191 @@ box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
                 </li>
             </ul>
             <a style="{li_a_style} margin-top: 1.6rem;" href="/herbs.html">View all →</a>
-            <hr style="border: 0; border-bottom: 1px solid #d8d8d8; margin-top: 2.4rem; margin-bottom: 2.4rem;">
-
         </div>
     '''
+    return sidebar_html
 
-    html_article += f'''
-        <section style="margin-bottom: 9.6rem;">
-            <div class="m-flex" style="gap: 3.2rem;">
-                <div style="flex: 1;">
-                    {html_categories}
-                </div>
-                <div style="flex: 3;">
-                    <h2>
-                        Discover all herbs
-                    </h2>
-                    <div class="grid-4" style="gap: 1.6rem; row-gap: 3.2rem;">
-                        {cards}
+def cards_html_gen(group):
+    cards_html = ''
+    for plant_row in group[:]:
+        plant_name = plant_row['plant_name_canonical']
+        plant_slug = polish.sluggify(plant_name)
+        plant_img_src = f'/images/herbs/{plant_slug}.jpg'
+        plant_filepath = f'{g.WEBSITE_FOLDERPATH}/images/herbs/{plant_slug}.jpg'
+        html_image = f'''
+            <img src="{plant_img_src}" alt="{plant_name}" style="margin-bottom: 1.6rem;">
+        '''
+        cards_html += f'''
+            <article>
+                <a href="/herbs/{plant_slug}.html" style="text-decoration: none;">
+                    {html_image}
+                    <h3 style="font-size: 1.8rem;">{plant_name}</h3>
+                </a>
+            </article>
+        '''
+    return cards_html
+
+def pagination_html_gen(group_i, groups, url_slug):
+    ### prev
+    if group_i > 1:
+        prev_html = f'''
+            <a rel="prev" href="/{url_slug}/page/{group_i}.html">PREV</a>
+        '''
+    elif group_i > 0:
+        prev_html = f'''
+            <a rel="prev" href="/{url_slug}.html">PREV</a>
+        '''
+    else:
+        prev_html = f''
+    ### numbers
+    numbers_html = ''
+    prev_num = 1
+    next_num = 1
+    ### first
+    if group_i != 0:
+        number_html = f'''
+            <a href="/{url_slug}.html">1</a>
+        '''
+        numbers_html += number_html
+    ### current prev ...
+    if group_i > prev_num + 1:
+        number_html = f'''
+            <span>...</span>
+        '''
+        numbers_html += number_html
+    ### current prev
+    for i in range(prev_num, 0, -1):
+        page_index = group_i+1-i
+        if page_index > 1:
+            number_html = f'''
+                <a href="/{url_slug}/page/{page_index}.html">{page_index}</a>
+            '''
+            numbers_html += number_html
+    ### current
+    number_html = f'''
+        <span class="p-cur">
+            {group_i+1}
+        </span>
+    '''
+    numbers_html += number_html
+    ### current next
+    for i in range(next_num):
+        page_index = group_i+1+i+1
+        if page_index < len(groups):
+            number_html = f'''
+                <a href="/{url_slug}/page/{page_index}.html">{page_index}</a>
+            '''
+            numbers_html += number_html
+    ### current next ...
+    if group_i < len(groups)-1 - next_num+1:
+        number_html = f'''
+            <span>...</span>
+        '''
+        numbers_html += number_html
+    ### last
+    if group_i != len(groups)-1:
+        number_html = f'''
+            <a href="/{url_slug}/page/{len(groups)}.html">{len(groups)}</a>
+        '''
+        numbers_html += number_html
+    ### next
+    if group_i != len(groups)-1:
+        next_html = f'''
+            <a rel="next" href="/{url_slug}/page/{group_i+2}.html">NEXT</a>
+        '''
+    else:
+        next_html = f''
+    pagination_html = f'''
+        {prev_html}
+        {numbers_html}
+        {next_html}
+    '''
+    return pagination_html
+
+def herbs_index():
+    url_slug = 'herbs'
+
+    ### GET ALL PLANTS -> TO LIST OF ITEMS
+    plants_rows = data.sqlite__plants_get()
+    plants_data = [
+        {
+            'plant_id': row[0],
+            'plant_name_canonical': row[1],
+        }
+        for row in plants_rows
+    ]
+
+    ### GROUP PLANTS IN PAGES
+    page_cards_num = 48
+    groups = groups_gen(plants_data, page_cards_num)
+
+    ### GENERATE PAGES
+    for group_i, group in enumerate(groups):
+        print(f'{group_i}/{len(groups)}')
+        ### PAGE URL
+        if group_i == 0:
+            html_filepath = f'''{g.website_folderpath}/herbs.html'''
+        else:
+            os.makedirs(f'''{g.website_folderpath}/herbs/page''', exist_ok=True)
+            html_filepath = f'''{g.website_folderpath}/herbs/page/{group_i+1}.html'''
+
+
+        html_article = ''
+        html_article += f'''
+            <h1 style="margin-top: 9.6rem;">
+                Medicinal Herbs
+            </h1>
+        '''
+
+        sidebar_html = sidebar_html_gen()
+        cards_html = cards_html_gen(group)
+        pagination_html = pagination_html_gen(group_i, groups, url_slug)
+        html_article += f'''
+            <section style="margin-bottom: 9.6rem;">
+                <div class="m-flex" style="gap: 3.2rem;">
+                    <div style="flex: 1;">
+                        {sidebar_html}
+                    </div>
+                    <div style="flex: 3;">
+                        <h2 style="margin-bottom: 2.4rem; font-size: 3.2rem;">
+                           All Herbs
+                        </h2>
+                        <div class="grid-5" style="gap: 1.6rem; row-gap: 3.2rem;">
+                            {cards_html}
+                        </div>
+                        <nav class="pagination">
+                            <ul>
+                                {pagination_html}
+                            </ul>
+                        </nav>
                     </div>
                 </div>
-            </div>
-        </section>
-    '''
+            </section>
+        '''
 
-    ###
-    url_slug = 'herbs'
-    meta_title = f'Medicinal Herbs'
-    meta_description = ''
-    canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''
-    head_html = components.html_head(
-        meta_title, meta_description, css='/styles.css', canonical=canonical_html
-    )
-    html = f''' 
-        <!DOCTYPE html>
-        <html lang="en">
-        {head_html}
-        <body style="background-color: #f4f4f4;">
-            {sections.header_default()}
-            {sections.breadcrumbs_new(url_slug)}
-            <main class="container-xl">
-                {html_article}
-            </main>
-            {sections.footer()}
-        </body>
-        </html>
-    '''.strip()
-    html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
-    with open(html_filepath, 'w') as f: f.write(html)
-    print(html_filepath)
+        ###
+        meta_title = f'Medicinal Herbs'
+        meta_description = ''
+        canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''
+        head_html = components.html_head(
+            meta_title, meta_description, css='/styles.css', canonical=canonical_html
+        )
+        html = f''' 
+            <!DOCTYPE html>
+            <html lang="en">
+            {head_html}
+            <body style="background-color: #f4f4f4;">
+                {sections.header_default()}
+                {sections.breadcrumbs_new(url_slug)}
+                <main class="container-xxl explorer">
+                    {html_article}
+                </main>
+                {sections.footer()}
+            </body>
+            </html>
+        '''.strip()
+        with open(html_filepath, 'w') as f: f.write(html)
+        print(html_filepath)
 
 def run():
     print(f'EXPLORE >> herbs')

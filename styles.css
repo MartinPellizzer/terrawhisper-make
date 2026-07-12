@@ -14,6 +14,13 @@ body {
     font-family: sans-serif;
 }
 
+.container-xxl {
+    max-width: 160.0rem;
+    margin: 0 auto;
+    padding-left: 1.6rem;
+    padding-right: 1.6rem;
+}
+
 .container-xl {
     max-width: 128.0rem;
     margin: 0 auto;
@@ -352,5 +359,41 @@ footer span {
     margin: 0;
     font-size: 1.8rem;
     font-weight: 700;
+}
+
+.explorer .pagination {
+    margin-top: 4.8rem;
+}
+
+.explorer .pagination ul {
+    display: flex; 
+    justify-content: center; 
+    gap: 0.8rem;
+}
+
+.explorer .pagination a {
+    color: #111;
+    text-decoration: none;
+    font-size: 1.2rem; 
+    font-weight: bold; 
+    padding: 0.8rem 1.6rem; 
+    border: 1px solid #e7e7e7;
+    display: inline-block;
+}
+
+.explorer .pagination span {
+    color: #111;
+    text-decoration: none;
+    font-size: 1.2rem; 
+    font-weight: bold; 
+    padding: 0.8rem 1.6rem; 
+    border: 1px solid #e7e7e7;
+    display: inline-block;
+}
+
+
+.explorer .pagination .p-cur {
+    color: #fff; 
+    background-color: #111;
 }
 
