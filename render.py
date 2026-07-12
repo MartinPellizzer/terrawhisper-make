@@ -194,7 +194,7 @@ def plant_listing_page_gen_new(plant_name):
                     Diseases
                 </h2>
                 <p>
-                    {plant_name} has {len(plant_data['diseases'])} reported diseases identified across {source_tot} scientific publications and several other databases. The most consistently reported compounds include {diseases_p_str}.
+                    {plant_name} has {len(plant_data['diseases'])} reported treated diseases identified across {source_tot} scientific publications and several other databases. The most consistently reported compounds include {diseases_p_str}.
                 </p>
                 <dl>
                     <div>

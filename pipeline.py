@@ -11,3 +11,6 @@ compile
 render
 '''
 
+'''
+explore
+'''

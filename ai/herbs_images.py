@@ -74,14 +74,20 @@ def herbs_gen(dispel=False):
         quit()
 
 def herbs_gen_new(dispel=False):
-    rows = data.sqlite3__wikidata_powo_get_all()
-    herbs = [row[-2] for row in rows if row[-1] == 'SPECIES']
+    # rows = data.sqlite3__wikidata_powo_get_all()
+    plants_rows = data.sqlite__plants_get()
+    # print(rows[0])
+    # print(plants_rows[0])
+    # quit()
+    # herbs = [row[-2] for row in rows if row[-1] == 'SPECIES']
+    herbs = [row[1] for row in plants_rows]
     for herb_i, herb in enumerate(herbs):
         print(f'{herb_i}/{len(herbs)} - {herb}')
         herb_name_scientific = herb
         herb_slug = polish.sluggify(herb_name_scientific)
         ###
-        output_folderpath = f'''{g.WEBSITE_FOLDERPATH}/images/herbs/primary'''
+        # output_folderpath = f'''{g.WEBSITE_FOLDERPATH}/images/herbs/primary'''
+        output_folderpath = f'''{g.WEBSITE_FOLDERPATH}/images/herbs'''
         output_filepath = f'''{output_folderpath}/{herb_slug}.jpg'''
         try: os.makedirs(output_folderpath)
         except: pass
