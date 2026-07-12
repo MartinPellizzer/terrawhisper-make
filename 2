@@ -27,29 +27,13 @@ def hero_html_gen():
     html = f'''
         <section
             style="
-                padding-top: 1.6rem;
-                padding-bottom: 1.6rem;
+                padding: 2.4rem;
                 box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
-                margin-bottom: 3.2rem;
             "
         >
-            <div class="container-xxl">
-                <div class="explorer-hero">
-                    <h1 style="font-size: 1.4rem; margin-bottom: 0;">
-                        Explore medicinal herbs: 
-                        <span style="font-weight: 400;">A scientifically curated directory of plants, their bioactive compounds, traditional uses, and research evidence</span>
-                    </h1>
-                    <ul style="list-style: none; display: flex; align-items: center; gap: 1.2rem; font-size: 1.4rem;">
-                        <li>15,420 Plants</li>
-                        <span>|</span>
-                        <li>32,800 Compounds</li>
-                        <span>|</span>
-                        <li>5,600 Studies Indexed</li>
-                        <span>|</span>
-                        <li>180 Botanical Families</li>
-                    </ul>
-                </div>
-            </div>
+            <h1 style="font-size: 1.6rem; margin-bottom: 0;">
+                Explore medicinal herbs
+            </h1>
         </section>
     '''
     return html
@@ -73,6 +57,8 @@ def sidebar_html_gen():
     sidebar_html = f'''
         <div 
             style=" 
+                padding: 2.4rem;
+                box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
             "
         >
             <h2 style="font-size: 1.4rem; letter-spacing: 0.5px; margin-bottom: 1.4rem;">
@@ -93,7 +79,7 @@ def sidebar_html_gen():
             <h3 style="font-size: 1.4rem; letter-spacing: 0.5px; margin-bottom: 1.4rem;">
                 Alphabet
             </h3>
-            <ul style="list-style: none; display: grid; grid-template-columns: repeat(7, 1fr);">
+            <ul style="list-style: none; display: grid; grid-template-columns: repeat(6, 1fr);">
                 <li>
                     <a style="{li_a_style}" href="/herbs/a.html">A</a>
                 </li>
@@ -383,7 +369,7 @@ def cards_header_html_gen(group_i, page_cards_num, total_items_num):
     html = f'''
         <div class="m-flex" style="justify-content: space-between; align-items: center; margin-bottom: 2.4rem;">
             <h2 style="font-size: 2.4rem;">
-               List of all herbs
+               All Herbs
             </h2>
             <span style="font-size: 1.4rem;">Showing {from_num}-{to_num}  out of {total_items_num} results</span>
         </div>
@@ -524,12 +510,11 @@ def herbs_index():
         html_article = ''
         html_article += f'''
             <section style="margin-bottom: 9.6rem;">
-                <div class="m-flex" style="gap: 4.8rem;">
+                <div class="m-flex" style="gap: 3.2rem;">
                     <div style="flex: 1;">
                         {sidebar_html}
                     </div>
                     <div style="flex: 3;">
-                        {sections.breadcrumbs_explorer(url_slug)}
                         {cards_header_html}
                         <div class="grid-5" style="gap: 1.6rem; row-gap: 3.2rem;">
                             {cards_html}

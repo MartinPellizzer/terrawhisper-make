@@ -93,7 +93,6 @@ header {
     align-items: center;
     justify-content: space-between;
     padding: 1.6rem 2.4rem;
-    background-color: #ffffff;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     position: sticky;
     top: 0;
@@ -115,7 +114,6 @@ header .logo img {
 .main-nav .nav-links li a {
     font-weight: 500;
     font-size: 16px;
-    color: #000000;
     text-decoration: none;
     transition: color 0.2s ease;
 }
@@ -144,7 +142,7 @@ header .logo img {
     display: block;
     height: 3px;
     width: 100%;
-    background-color: #333;
+    background-color: #fff;
     border-radius: 2px;
     transition: 0.3s;
 }
@@ -162,11 +160,15 @@ header .logo img {
         top: 100%;
         right: 0;
         width: 100%;
-        background-color: #ffffff;
+        background-color: #fff;
         flex-direction: column;
         padding: 1.6rem 2.4rem;
         gap: 1.6rem;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .main-nav .nav-links li a {
+        color: #111 !important;
     }
 
     #nav-toggle:checked~.main-nav .nav-links {
@@ -200,6 +202,22 @@ footer span {
 .breadcrumbs a {
     color: #000000;
     text-decoration: none;
+}
+
+.breadcrumbs-explorer {
+    padding-bottom: 1.6rem;
+}
+
+.breadcrumbs-explorer span {
+    color: #111;
+    text-decoration: none;
+    font-size: 1.4rem;
+}
+
+.breadcrumbs-explorer a {
+    color: #111;
+    text-decoration: none;
+    font-size: 1.4rem;
 }
 
 /*********************************************/
@@ -361,6 +379,10 @@ footer span {
     font-weight: 700;
 }
 
+.explorer span {
+    color: #111; 
+}
+
 .explorer .pagination {
     margin-top: 4.8rem;
 }
@@ -391,9 +413,22 @@ footer span {
     display: inline-block;
 }
 
-
 .explorer .pagination .p-cur {
     color: #fff; 
     background-color: #111;
+}
+
+.explorer-hero {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2.4rem; 
+    margin-bottom: 0.4rem;
+}
+
+@media screen and (max-width: 768px) {
+    .explorer-hero {
+        flex-direction: column;
+    }
 }
 

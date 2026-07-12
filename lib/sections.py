@@ -55,33 +55,6 @@ def footer():
     '''
     return html
 
-def breadcrumbs(url):
-    breadcrumb_list = url.split('/')
-    breadcrumb_href = f'/'
-    breadcrumb_html = f'<a href="{breadcrumb_href}">Home</a>'
-    for breadcrumb_i, breadcrumb_text in enumerate(breadcrumb_list):
-        breadcrumb_href += '/' + breadcrumb_text
-        breadcrumb_href = breadcrumb_href.replace('//', '/')
-        breadcrumb_text = breadcrumb_text.strip().replace('-', ' ').title()
-        if breadcrumb_i == len(breadcrumb_list)-1:
-            breadcrumb_html += f' > {breadcrumb_text}'
-        else:
-            breadcrumb_html += f' > <a href="{breadcrumb_href}.html">{breadcrumb_text}</a>'
-    if 0:
-        html = f'''
-            <section class="breadcrumbs">
-                <div class="container-xl">
-                    {breadcrumb_html}
-                </div>
-            </section>
-        '''
-    html = f'''
-        <section class="breadcrumbs">
-            {breadcrumb_html}
-        </section>
-    '''
-    return html
-
 def breadcrumbs_new(url):
     breadcrumb_list = url.split('/')
     breadcrumb_href = f'/'
@@ -208,4 +181,53 @@ def toc(html):
 
     return html_out
 
+
+def header_dark():
+    color = '#fff'
+    backgroud_color = '#111'
+    html = f'''
+        <header style="background-color: {backgroud_color};">
+            <!-- Logo -->
+            <div class="logo">
+                <a href="/index.html" style="color: {color}; text-decoration: none;">
+                    Terra Whisper
+                </a>
+            </div>
+            <!-- Hidden checkbox for mobile toggle -->
+            <input type="checkbox" id="nav-toggle" />
+            <!-- Navigation -->
+            <nav class="main-nav" aria-label="Main Navigation">
+                <ul class="nav-links">
+                    <li><a style="color: {color};" href="/herbs.html">Herbs</a></li>
+                    <li><a style="color: {color};" href="/about-us.html">About Us</a></li>
+                </ul>
+            </nav>
+            <!-- Hamburger button -->
+            <label for="nav-toggle" class="hamburger" aria-label="Toggle navigation menu">
+                <span style="color: {color};"></span>
+                <span style="color: {color};"></span>
+                <span style="color: {color};"></span>
+            </label>
+        </header>
+    '''
+    return html
+
+def breadcrumbs_explorer(url):
+    breadcrumb_list = url.split('/')
+    breadcrumb_href = f'/'
+    breadcrumb_html = f'<a href="{breadcrumb_href}">Home</a>'
+    for breadcrumb_i, breadcrumb_text in enumerate(breadcrumb_list):
+        breadcrumb_href += '/' + breadcrumb_text
+        breadcrumb_href = breadcrumb_href.replace('//', '/')
+        breadcrumb_text = breadcrumb_text.strip().replace('-', ' ').title()
+        if breadcrumb_i == len(breadcrumb_list)-1:
+            breadcrumb_html += f' <span>> {breadcrumb_text}</span>'
+        else:
+            breadcrumb_html += f' <span>> <a href="{breadcrumb_href}.html">{breadcrumb_text}</a></span>'
+    html = f'''
+        <div class="breadcrumbs-explorer">
+            {breadcrumb_html}
+        </div>
+    '''
+    return html
 

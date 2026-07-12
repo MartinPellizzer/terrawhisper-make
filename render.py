@@ -250,6 +250,6 @@ def plant_listing_page_gen_new(plant_name):
     print(html_filepath)
 
 plants_rows = data.sqlite__plants_get()
-for plant_row in plants_rows[:10]:
+for plant_row in plants_rows[:]:
     print(plant_row)
     plant_listing_page_gen_new(plant_row[1])
