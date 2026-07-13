@@ -1,6 +1,5 @@
 - do explorer page "popular herbs" >> herbs/popular/
     - query all tables (observation), sum reference counts, order by most references
-- do explorer page "alphabet" >> /herbs/alphabet/a
 - do explorer page "biological activities" >> /herbs/activities?/anti-inflammatory
 - do explorer page "bioactive compounds" >> /herbs/compounds?/alkaoids
 - do explorer page "parts"

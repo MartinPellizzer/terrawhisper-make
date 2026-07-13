@@ -3,6 +3,8 @@ import json
 import shutil
 import sqlite3
 
+from lorem_text import lorem
+
 from lib import g
 from lib import io
 from lib import data
@@ -633,11 +635,43 @@ def herbs_activities_category():
         entries_html = f''
         for row in group[:]:
             entry_name = row[0]
+            entry_slug = polish.sluggify(entry_name)
             entries_html += f'''
-                <article>
-                    <a href="/herbs/activities/{entry_name}.html" style="text-decoration: none;">
-                        <h3 style="font-size: 1.8rem;">{entry_name}</h3>
-                    </a>
+                <article style="border: 1px solid #d8d8d8; margin-bottom: 1.6rem; padding: 1.6rem;">
+                    <div style="display: flex; gap: 4.8rem;">
+                        <div style="flex: 2;">
+                            <a href="/herbs/activities/{entry_slug}.html" style="text-decoration: none;">
+                                <h3 style="font-size: 1.8rem;">{entry_name}</h3>
+                            </a>
+                            <p>{lorem.sentence()}</p>
+                        </div>
+                        <div style="flex: 1;">
+                            <p style="font-size: 1.4rem; font-weight: 700; margin-bottom: 1.6rem;">Occurs naturally in</p>
+                            <div class="grid-3" style="gap: 1.6rem;">
+                                <div>
+                                    <img 
+                                        src="/images/herbs/achillea-millefolium.jpg" 
+                                        style="margin-bottom: 0.8rem; width: 80px; height: 80px;"
+                                    >
+                                    <p style="font-size: 1.4rem;">Acillea millefolium</p>
+                                </div>
+                                <div>
+                                    <img 
+                                        src="/images/herbs/achillea-millefolium.jpg" 
+                                        style="margin-bottom: 0.8rem; width: 80px; height: 80px;"
+                                    >
+                                    <p style="font-size: 1.4rem;">Acillea millefolium</p>
+                                </div>
+                                <div>
+                                    <img 
+                                        src="/images/herbs/achillea-millefolium.jpg" 
+                                        style="margin-bottom: 0.8rem; width: 80px; height: 80px;"
+                                    >
+                                    <p style="font-size: 1.4rem;">Acillea millefolium</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </article>
             '''
         pagination_html = pagination_html_gen(group_i, groups, url_slug)
@@ -652,9 +686,7 @@ def herbs_activities_category():
                     <div style="flex: 3;">
                         {sections.breadcrumbs_explorer(url_slug)}
                         {cards_header_html}
-                        <div class="grid-5" style="gap: 1.6rem; row-gap: 3.2rem;">
-                            {entries_html}
-                        </div>
+                        {entries_html}
                         <nav class="pagination">
                             <ul>
                                 {pagination_html}
