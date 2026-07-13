@@ -60,6 +60,10 @@ def summary_disease_get(plant_canonical_name):
     conn.close()
     return rows
 
+################################################################################
+# JSONS
+################################################################################
+
 ### CHEMICALS
 master_plants_rows = data.sqlite__plants_get()
 for master_plant_row in master_plants_rows:
@@ -113,3 +117,4 @@ for master_plant_row in master_plants_rows:
     output_filepath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/{output_foldername}/herbs/diseases/{master_plant_row[1]}.json'
     io.folder_create_from_filepath(output_filepath)
     io.json_write(output_filepath, output_items)
+

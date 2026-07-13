@@ -512,3 +512,16 @@ def sqlite__plants_diseases_get(plant_canonical_name):
     conn.close()
     return row
 
+def sqlite_activities_get():
+    db_filepath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/observe/observations.db'
+    conn = sqlite3.connect(db_filepath)
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT DISTINCT activity_canonical_name
+        FROM plants_activities
+        ORDER BY activity_canonical_name ASC;
+    """)
+    row = [x[0] for x in cur.fetchall()]
+    conn.close()
+    return row
+

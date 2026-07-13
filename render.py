@@ -15,10 +15,6 @@ shutil.copy2('styles.css', f'{g.website_folderpath}/styles.css')
 
 def plant_listing_page_gen_new(plant_name):
     plant_data = io.json_read(f'{g.VAULT_FOLDERPATH}/terrawhisper/data/compile/herbs/{plant_name}.json')
-    # plants_activities_rows = data.sqlite__plants_activities_get(plant_name)
-    # plants_diseases_rows = data.sqlite__plants_diseases_get(plant_name)
-    # for plants_chemicals_row in plants_chemicals_rows:
-    #     print(plants_chemicals_row)
 
     plant_taxon_name_slug = polish.sluggify(plant_name)
 
