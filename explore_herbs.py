@@ -70,6 +70,20 @@ def sidebar_html_gen():
             "
     '''
     li_a_style = f'''text-decoration: none; color: #111; font-size: 1.4rem; display: inline-block;'''
+    ### ALPHABET
+    letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+    alphabet_html = ''
+    alphabet_html += '<ul style="list-style: none; display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.8rem;">'
+    for letter in letters:
+        alphabet_html += f'''
+            <a style="{li_a_style}" href="/herbs/alphabet/{letter}.html">
+                <li style="border: 1px solid #cdcdcd; display: flex; justify-content: center; align-items: center; padding: 0.4rem 0.8rem;">
+                    {letter.upper()}
+                </li>
+            </a>
+        '''
+    alphabet_html += '</ul>'
+
     sidebar_html = f'''
         <div 
             style=" 
@@ -90,288 +104,209 @@ def sidebar_html_gen():
                 </li>
             </ul>
             <hr style="border: 0; border-bottom: 1px solid #d8d8d8; margin-top: 2.4rem; margin-bottom: 2.4rem;">
-            <h3 style="font-size: 1.4rem; letter-spacing: 0.5px; margin-bottom: 1.4rem;">
-                Alphabet
-            </h3>
-            <ul style="list-style: none; display: grid; grid-template-columns: repeat(7, 1fr);">
-                <li>
-                    <a style="{li_a_style}" href="/herbs/a.html">A</a>
-                </li>
-                <li>
-                    <a style="{li_a_style}" href="/herbs/b.html">B</a>
-                </li>
-                <li>
-                    <a style="{li_a_style}" href="/herbs/c.html">C</a>
-                </li>
-                <li>
-                    <a style="{li_a_style}" href="/herbs/c.html">D</a>
-                </li>
-                <li>
-                    <a style="{li_a_style}" href="/herbs/c.html">E</a>
-                </li>
-                <li>
-                    <a style="{li_a_style}" href="/herbs/c.html">F</a>
-                </li>
-                <li>
-                    <a style="{li_a_style}" href="/herbs/c.html">G</a>
-                </li>
-                <li>
-                    <a style="{li_a_style}" href="/herbs/c.html">H</a>
-                </li>
-                <li>
-                    <a style="{li_a_style}" href="/herbs/c.html">I</a>
-                </li>
-                <li>
-                    <a style="{li_a_style}" href="/herbs/c.html">J</a>
-                </li>
-                <li>
-                    <a style="{li_a_style}" href="/herbs/c.html">K</a>
-                </li>
-                <li>
-                    <a style="{li_a_style}" href="/herbs/c.html">L</a>
-                </li>
-                <li>
-                    <a style="{li_a_style}" href="/herbs/c.html">M</a>
-                </li>
-                <li>
-                    <a style="{li_a_style}" href="/herbs/c.html">N</a>
-                </li>
-                <li>
-                    <a style="{li_a_style}" href="/herbs/c.html">O</a>
-                </li>
-                <li>
-                    <a style="{li_a_style}" href="/herbs/c.html">P</a>
-                </li>
-                <li>
-                    <a style="{li_a_style}" href="/herbs/c.html">Q</a>
-                </li>
-                <li>
-                    <a style="{li_a_style}" href="/herbs/c.html">R</a>
-                </li>
-                <li>
-                    <a style="{li_a_style}" href="/herbs/c.html">S</a>
-                </li>
-                <li>
-                    <a style="{li_a_style}" href="/herbs/c.html">T</a>
-                </li>
-                <li>
-                    <a style="{li_a_style}" href="/herbs/c.html">U</a>
-                </li>
-                <li>
-                    <a style="{li_a_style}" href="/herbs/c.html">V</a>
-                </li>
-                <li>
-                    <a style="{li_a_style}" href="/herbs/c.html">W</a>
-                </li>
-                <li>
-                    <a style="{li_a_style}" href="/herbs/c.html">X</a>
-                </li>
-                <li>
-                    <a style="{li_a_style}" href="/herbs/c.html">Y</a>
-                </li>
-                <li>
-                    <a style="{li_a_style}" href="/herbs/c.html">Z</a>
-                </li>
-            </ul>
+
+            <h3 style="font-size: 1.4rem; letter-spacing: 0.5px; margin-bottom: 1.4rem;">Alphabet</h3>
+            {alphabet_html}
             <hr style="border: 0; border-bottom: 1px solid #d8d8d8; margin-top: 2.4rem; margin-bottom: 2.4rem;">
+
             <h3 style="font-size: 1.4rem; letter-spacing: 0.5px; margin-bottom: 1.4rem;">
-                Biological Activity
+                biological activity
             </h3>
             <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.4rem;">
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">Anti-inflammatory</a>
+                    <a style="{li_a_style}" href="/herbs.html">anti-inflammatory</a>
                 </li>
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">Antioxidant</a>
+                    <a style="{li_a_style}" href="/herbs.html">antioxidant</a>
                 </li>
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">Antimicrobial</a>
+                    <a style="{li_a_style}" href="/herbs.html">antimicrobial</a>
                 </li>
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">Antiviral</a>
+                    <a style="{li_a_style}" href="/herbs.html">antiviral</a>
                 </li>
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">Antifungal</a>
+                    <a style="{li_a_style}" href="/herbs.html">antifungal</a>
                 </li>
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">Adaptogenic</a>
+                    <a style="{li_a_style}" href="/herbs.html">adaptogenic</a>
                 </li>
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">Neuroprotective</a>
+                    <a style="{li_a_style}" href="/herbs.html">neuroprotective</a>
                 </li>
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">Cardioprotective</a>
+                    <a style="{li_a_style}" href="/herbs.html">cardioprotective</a>
                 </li>
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">Hepatoprotective</a>
+                    <a style="{li_a_style}" href="/herbs.html">hepatoprotective</a>
                 </li>
             </ul>
-            <a style="{li_a_style} margin-top: 1.6rem;" href="/herbs.html">View all →</a>
+            <a style="{li_a_style} margin-top: 1.6rem;" href="/herbs.html">view all →</a>
             <hr style="border: 0; border-bottom: 1px solid #d8d8d8; margin-top: 2.4rem; margin-bottom: 2.4rem;">
             <h3 style="font-size: 1.4rem; letter-spacing: 0.5px; margin-bottom: 1.4rem;">
-                Bioactive Compounds
+                bioactive compounds
             </h3>
             <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.4rem;">
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">Alkaoids</a>
+                    <a style="{li_a_style}" href="/herbs.html">alkaoids</a>
                 </li>
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">Flavonoids</a>
+                    <a style="{li_a_style}" href="/herbs.html">flavonoids</a>
                 </li>
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">Terpenes</a>
+                    <a style="{li_a_style}" href="/herbs.html">terpenes</a>
                 </li>
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">Polyphenols</a>
+                    <a style="{li_a_style}" href="/herbs.html">polyphenols</a>
                 </li>
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">Saponins</a>
+                    <a style="{li_a_style}" href="/herbs.html">saponins</a>
                 </li>
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">Essential Oils</a>
+                    <a style="{li_a_style}" href="/herbs.html">essential oils</a>
                 </li>
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">Tannins</a>
+                    <a style="{li_a_style}" href="/herbs.html">tannins</a>
                 </li>
             </ul>
-            <a style="{li_a_style} margin-top: 1.6rem;" href="/herbs.html">View all →</a>
+            <a style="{li_a_style} margin-top: 1.6rem;" href="/herbs.html">view all →</a>
             <hr style="border: 0; border-bottom: 1px solid #d8d8d8; margin-top: 2.4rem; margin-bottom: 2.4rem;">
             <h3 style="font-size: 1.4rem; letter-spacing: 0.5px; margin-bottom: 1.4rem;">
-                Body Systems
+                body systems
             </h3>
             <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.4rem;">
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">Digestive</a>
+                    <a style="{li_a_style}" href="/herbs.html">digestive</a>
                 </li>
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">Immune</a>
+                    <a style="{li_a_style}" href="/herbs.html">immune</a>
                 </li>
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">Nervous</a>
+                    <a style="{li_a_style}" href="/herbs.html">nervous</a>
                 </li>
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">Respiratory</a>
+                    <a style="{li_a_style}" href="/herbs.html">respiratory</a>
                 </li>
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">Cardiovascular</a>
+                    <a style="{li_a_style}" href="/herbs.html">cardiovascular</a>
                 </li>
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">Skin</a>
+                    <a style="{li_a_style}" href="/herbs.html">skin</a>
                 </li>
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">Urinary</a>
+                    <a style="{li_a_style}" href="/herbs.html">urinary</a>
                 </li>
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">Musculoskeletal</a>
+                    <a style="{li_a_style}" href="/herbs.html">musculoskeletal</a>
                 </li>
             </ul>
-            <a style="{li_a_style} margin-top: 1.6rem;" href="/herbs.html">View all →</a>
+            <a style="{li_a_style} margin-top: 1.6rem;" href="/herbs.html">view all →</a>
             <hr style="border: 0; border-bottom: 1px solid #d8d8d8; margin-top: 2.4rem; margin-bottom: 2.4rem;">
             <h3 style="font-size: 1.4rem; letter-spacing: 0.5px; margin-bottom: 1.4rem;">
-                Plant Parts
+                plant parts
             </h3>
             <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.4rem;">
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">Root</a>
+                    <a style="{li_a_style}" href="/herbs.html">root</a>
                 </li>
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">Leaf</a>
+                    <a style="{li_a_style}" href="/herbs.html">leaf</a>
                 </li>
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">Flower</a>
+                    <a style="{li_a_style}" href="/herbs.html">flower</a>
                 </li>
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">Seed</a>
+                    <a style="{li_a_style}" href="/herbs.html">seed</a>
                 </li>
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">Fruit</a>
+                    <a style="{li_a_style}" href="/herbs.html">fruit</a>
                 </li>
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">Bark</a>
+                    <a style="{li_a_style}" href="/herbs.html">bark</a>
                 </li>
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">Rhizome</a>
+                    <a style="{li_a_style}" href="/herbs.html">rhizome</a>
                 </li>
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">Whole Plant</a>
+                    <a style="{li_a_style}" href="/herbs.html">whole plant</a>
                 </li>
             </ul>
-            <a style="{li_a_style} margin-top: 1.6rem;" href="/herbs.html">View all →</a>
+            <a style="{li_a_style} margin-top: 1.6rem;" href="/herbs.html">view all →</a>
             <hr style="border: 0; border-bottom: 1px solid #d8d8d8; margin-top: 2.4rem; margin-bottom: 2.4rem;">
             <h3 style="font-size: 1.4rem; letter-spacing: 0.5px; margin-bottom: 1.4rem;">
-                Botanical Families
+                botanical families
             </h3>
             <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.4rem;">
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">Lamiaceae</a>
+                    <a style="{li_a_style}" href="/herbs.html">lamiaceae</a>
                 </li>
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">Asteraceae</a>
+                    <a style="{li_a_style}" href="/herbs.html">asteraceae</a>
                 </li>
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">Fabaceae</a>
+                    <a style="{li_a_style}" href="/herbs.html">fabaceae</a>
                 </li>
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">Apiaceae</a>
+                    <a style="{li_a_style}" href="/herbs.html">apiaceae</a>
                 </li>
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">Rosaceae</a>
+                    <a style="{li_a_style}" href="/herbs.html">rosaceae</a>
                 </li>
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">Rutaceae</a>
+                    <a style="{li_a_style}" href="/herbs.html">rutaceae</a>
                 </li>
             </ul>
-            <a style="{li_a_style} margin-top: 1.6rem;" href="/herbs.html">View all →</a>
+            <a style="{li_a_style} margin-top: 1.6rem;" href="/herbs.html">view all →</a>
             <hr style="border: 0; border-bottom: 1px solid #d8d8d8; margin-top: 2.4rem; margin-bottom: 2.4rem;">
             <h3 style="font-size: 1.4rem; letter-spacing: 0.5px; margin-bottom: 1.4rem;">
-                Geographic Origin
+                geographic origin
             </h3>
             <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.4rem;">
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">Europe</a>
+                    <a style="{li_a_style}" href="/herbs.html">europe</a>
                 </li>
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">Asia</a>
+                    <a style="{li_a_style}" href="/herbs.html">asia</a>
                 </li>
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">Africa</a>
+                    <a style="{li_a_style}" href="/herbs.html">africa</a>
                 </li>
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">North America</a>
+                    <a style="{li_a_style}" href="/herbs.html">north america</a>
                 </li>
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">South America</a>
+                    <a style="{li_a_style}" href="/herbs.html">south america</a>
                 </li>
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">Oceania</a>
+                    <a style="{li_a_style}" href="/herbs.html">oceania</a>
                 </li>
             </ul>
-            <a style="{li_a_style} margin-top: 1.6rem;" href="/herbs.html">View all →</a>
+            <a style="{li_a_style} margin-top: 1.6rem;" href="/herbs.html">view all →</a>
             <hr style="border: 0; border-bottom: 1px solid #d8d8d8; margin-top: 2.4rem; margin-bottom: 2.4rem;">
             <h3 style="font-size: 1.4rem; letter-spacing: 0.5px; margin-bottom: 1.4rem;">
-                Traditional Medicine
+                traditional medicine
             </h3>
             <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.4rem;">
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">Ayurveda</a>
+                    <a style="{li_a_style}" href="/herbs.html">ayurveda</a>
                 </li>
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">Traditional Chinese Medicine</a>
+                    <a style="{li_a_style}" href="/herbs.html">traditional chinese medicine</a>
                 </li>
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">Western Herbalism</a>
+                    <a style="{li_a_style}" href="/herbs.html">western herbalism</a>
                 </li>
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">Unani</a>
+                    <a style="{li_a_style}" href="/herbs.html">unani</a>
                 </li>
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">Native America</a>
+                    <a style="{li_a_style}" href="/herbs.html">native america</a>
                 </li>
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">African Traditional Medicine</a>
+                    <a style="{li_a_style}" href="/herbs.html">african traditional medicine</a>
                 </li>
             </ul>
-            <a style="{li_a_style} margin-top: 1.6rem;" href="/herbs.html">View all →</a>
+            <a style="{li_a_style} margin-top: 1.6rem;" href="/herbs.html">view all →</a>
         </div>
     '''
     return sidebar_html
@@ -517,7 +452,93 @@ def herbs_index():
 
         hero_html = hero_html_gen()
         sidebar_html = sidebar_html_gen()
-        cards_header_html = cards_header_html_gen(group_i, page_cards_num, len(plants_rows))
+        cards_header_html = cards_header_html_gen(group_i, page_cards_num, len(plants_data))
+        cards_html = cards_html_gen(group)
+        pagination_html = pagination_html_gen(group_i, groups, url_slug)
+
+        html_article = ''
+        html_article += f'''
+            <section style="margin-bottom: 9.6rem;">
+                <div class="m-flex" style="gap: 4.8rem;">
+                    <div style="flex: 1;">
+                        {sidebar_html}
+                    </div>
+                    <div style="flex: 3;">
+                        {sections.breadcrumbs_explorer(url_slug)}
+                        {cards_header_html}
+                        <div class="grid-5" style="gap: 1.6rem; row-gap: 3.2rem;">
+                            {cards_html}
+                        </div>
+                        <nav class="pagination">
+                            <ul>
+                                {pagination_html}
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </section>
+        '''
+
+        ###
+        meta_title = f'Medicinal Herbs'
+        meta_description = ''
+        canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''
+        head_html = components.html_head(
+            meta_title, meta_description, css='/styles.css', canonical=canonical_html
+        )
+                # {sections.breadcrumbs_new(url_slug)}
+        html = f''' 
+            <!DOCTYPE html>
+            <html lang="en">
+            {head_html}
+            <body style="background-color: #fff;">
+                {sections.header_dark()}
+                {hero_html}
+                <main class="container-xxl explorer">
+                    {html_article}
+                </main>
+                {sections.footer()}
+            </body>
+            </html>
+        '''.strip()
+        with open(html_filepath, 'w') as f: f.write(html)
+        print(html_filepath)
+
+def herbs_alphabet(alphabet_letter=''):
+    if alphabet_letter == '': return
+
+    url_slug = f'herbs/alphabet/{alphabet_letter}'
+    io.folders_recursive_gen(f'''{g.website_folderpath}/{url_slug}''')
+
+    ### GET ALL PLANTS -> TO LIST OF ITEMS
+    plants_rows = data.sqlite__plants_get()
+    plants_rows = sorted([row[1] for row in plants_rows])
+    plants_data = [
+        {
+            'plant_name_canonical': name,
+        }
+        for name in plants_rows[:]
+        if name.strip()[0].lower() == f'{alphabet_letter}'
+    ]
+
+    ### GROUP PLANTS IN PAGES
+    page_cards_num = 48
+    groups = groups_gen(plants_data, page_cards_num)
+
+    ### GENERATE PAGES
+    for group_i, group in enumerate(groups):
+        print(f'{group_i}/{len(groups)}')
+        ### PAGE URL
+        if group_i == 0:
+            html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
+        else:
+            os.makedirs(f'''{g.website_folderpath}/{url_slug}/page''', exist_ok=True)
+            html_filepath = f'''{g.website_folderpath}/{url_slug}/page/{group_i+1}.html'''
+
+
+        hero_html = hero_html_gen()
+        sidebar_html = sidebar_html_gen()
+        cards_header_html = cards_header_html_gen(group_i, page_cards_num, len(plants_data))
         cards_html = cards_html_gen(group)
         pagination_html = pagination_html_gen(group_i, groups, url_slug)
 
@@ -572,3 +593,8 @@ def herbs_index():
 def run():
     print(f'EXPLORE >> herbs')
     herbs_index()
+
+    letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+    for letter in letters:
+        herbs_alphabet(letter)
+
