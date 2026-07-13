@@ -228,7 +228,7 @@ def plant_listing_page_gen_new(plant_name):
         <html lang="en">
         {head_html}
         <body>
-            {sections.header_default()}
+            {sections.header_dark()}
             {sections.breadcrumbs_new(url_slug)}
             <main class="container-xl listing m-flex">
                 <div style="flex: 2;">
@@ -245,7 +245,34 @@ def plant_listing_page_gen_new(plant_name):
     with open(html_filepath, 'w') as f: f.write(html)
     print(html_filepath)
 
-plants_rows = data.sqlite__plants_get()
+def sqlite_table_master_plants_get():
+    db_filepath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/masterize/master.db'
+    conn = sqlite3.connect(db_filepath)
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT *
+        FROM plants
+    """)
+    row = cur.fetchall()
+    conn.close()
+    return row
+
+def sqlite_table_observations_plants_activities_get():
+    db_filepath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/qualify/observations.db'
+    conn = sqlite3.connect(db_filepath)
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT *
+        FROM plants_activities
+    """)
+    row = cur.fetchall()
+    conn.close()
+    return row
+
+plants_rows = sqlite_table_master_plants_get()
 for plant_row in plants_rows[:]:
     print(plant_row)
+    # if plant_row[1].lower() == 'acacia caven':
+        # quit() 
     plant_listing_page_gen_new(plant_row[1])
+

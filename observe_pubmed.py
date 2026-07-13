@@ -57,6 +57,9 @@ def observations_table_plants_activities_add():
         input_filepath = f'{input_folderpath}/{input_filename}'
         input_data = io.json_read(input_filepath)
         for input_item in input_data:
+            if input_item['plant_name'].lower() == 'acacia caven':
+                print(input_item)
+                quit() 
             all_data.append(input_item)
     ###
     conn = sqlite3.connect(db_filepath)
@@ -134,5 +137,5 @@ def run():
     print('observe >> pubmed')
 
     # observations_table_plants_chemicals_add()
-    # observations_table_plants_activities_add()
-    observations_table_plants_diseases_add()
+    observations_table_plants_activities_add()
+    # observations_table_plants_diseases_add()

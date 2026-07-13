@@ -100,7 +100,7 @@ def observations_table_plants_diseases_create(regen=False):
 ### TODO: do a clean up by destroying db
 # observations_table_plants_chemicals_create(regen=True)
 # observations_table_plants_activities_create(regen=True)
-observations_table_plants_diseases_create(regen=True)
+# observations_table_plants_diseases_create(regen=True)
 
 observe_pubmed.run()
 # observe_drduke.run()
