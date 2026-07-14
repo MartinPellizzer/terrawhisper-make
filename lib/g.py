@@ -12,6 +12,8 @@ checkpoint_filepath = f'{vault_tmp_folderpath}/stable-diffusion/juggernautXL_rag
 color_carbon_powder = '#101211'
 color_linen = '#f5f1eb'
 
+DATA_FOLDERPATH = f'{vault_folderpath}/terrawhisper/data'
+
 DATABASE_FOLDERPATH = f'{vault_folderpath}/terrawhisper/database'
 WEBSITE_FOLDERPATH = f'{vault_folderpath}/terrawhisper/website/terrawhisper'
 ASSETS_FOLDERPATH = f'{DATABASE_FOLDERPATH}/assets'

@@ -4,6 +4,8 @@ import json
 import shutil
 import sqlite3
 
+from lorem_text import lorem
+
 from lib import g
 from lib import io
 from lib import data
@@ -13,17 +15,85 @@ from lib import components
 
 shutil.copy2('styles.css', f'{g.website_folderpath}/styles.css')
 
+def sqlite_table_master_plants_get():
+    db_filepath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/masterize/master.db'
+    conn = sqlite3.connect(db_filepath)
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT *
+        FROM plants
+    """)
+    row = cur.fetchall()
+    conn.close()
+    return row
+
+def sqlite_table_observations_plants_activities_get():
+    db_filepath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/qualify/observations.db'
+    conn = sqlite3.connect(db_filepath)
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT *
+        FROM plants_activities
+    """)
+    row = cur.fetchall()
+    conn.close()
+    return row
+
 def plant_listing_page_gen_new(plant_name):
     plant_data = io.json_read(f'{g.VAULT_FOLDERPATH}/terrawhisper/data/compile/herbs/{plant_name}.json')
 
     plant_taxon_name_slug = polish.sluggify(plant_name)
+    url_slug = f'herbs/{plant_taxon_name_slug}'
 
     output_filepath = f'{g.SSOT_FOLDERPATH}/studies/extraction_new/chemicals/database.db'
     conn = sqlite3.connect(output_filepath)
 
+    sidebar_html = f'''
+        <div 
+            style="
+                display: flex; flex-direction: column; gap: 1.6rem; position: sticky; top: 0;
+            "
+        >
+            <p>{lorem.sentence()}</p>
+            <img src="/images/herbs/{plant_taxon_name_slug}.jpg">
+            <img src="/images/herbs/{plant_taxon_name_slug}.jpg">
+            <img src="/images/herbs/{plant_taxon_name_slug}.jpg">
+        </div>
+    '''
+
     ###
     html_article = f''
-    html_article += f'<h1>{plant_name}</h1>'
+    html_hero = f'''
+        <section>
+            {sections.breadcrumbs_explorer(url_slug)}
+            <div class="m-flex" style="gap: 3.2rem;">
+                <div style="flex: 2;">
+                    <img 
+                        src="/images/herbs/{plant_taxon_name_slug}.jpg"
+                        style="
+                            height: 100%;
+                            object-fit: cover;
+                            object-position: center;
+                        "
+                    >
+                </div>
+                <div style="flex: 3;">
+                    <h1>{plant_name}</h1>
+                    <p>Common name</p>
+                    <p>{lorem.words(48)}</p>
+                    <p>Scientific resources: Moderate (★★★☆☆)</p>
+                    <ul style="list-style: none;">
+                        <li>Scientific names: {plant_name}</li>
+                        <li>Common names</li>
+                        <li>Family</li>
+                        <li>Native range</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        <hr style="border: 0; border-bottom: 1px solid #d8d8d8; margin-top: 4.8rem; margin-bottom: 4.8rem;">
+    '''
+    html_article += html_hero
 
     chemicals = plant_data['chemicals']
     chemicals = sorted(chemicals, key=lambda x: x['num_sources'], reverse=True)
@@ -216,7 +286,6 @@ def plant_listing_page_gen_new(plant_name):
             </section>
         '''
 
-    url_slug = f'herbs/{plant_taxon_name_slug}'
     meta_title = f'{plant_name}'
     meta_description = f''
     canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''
@@ -229,12 +298,12 @@ def plant_listing_page_gen_new(plant_name):
         {head_html}
         <body>
             {sections.header_dark()}
-            {sections.breadcrumbs_new(url_slug)}
-            <main class="container-xl listing m-flex">
-                <div style="flex: 2;">
-                {html_article}
+            <main class="container-xl listing m-flex" style="gap: 4.8rem; margin-top: 4.8rem;">
+                <div style="flex: 3;">
+                    {html_article}
                 </div>
                 <div style="flex: 1;">
+                    {sidebar_html}
                 </div>
             </main>
             {sections.footer()}
@@ -245,34 +314,8 @@ def plant_listing_page_gen_new(plant_name):
     with open(html_filepath, 'w') as f: f.write(html)
     print(html_filepath)
 
-def sqlite_table_master_plants_get():
-    db_filepath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/masterize/master.db'
-    conn = sqlite3.connect(db_filepath)
-    cur = conn.cursor()
-    cur.execute("""
-        SELECT *
-        FROM plants
-    """)
-    row = cur.fetchall()
-    conn.close()
-    return row
-
-def sqlite_table_observations_plants_activities_get():
-    db_filepath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/qualify/observations.db'
-    conn = sqlite3.connect(db_filepath)
-    cur = conn.cursor()
-    cur.execute("""
-        SELECT *
-        FROM plants_activities
-    """)
-    row = cur.fetchall()
-    conn.close()
-    return row
-
 plants_rows = sqlite_table_master_plants_get()
-for plant_row in plants_rows[:]:
+for plant_row in plants_rows[:1]:
     print(plant_row)
-    # if plant_row[1].lower() == 'acacia caven':
-        # quit() 
     plant_listing_page_gen_new(plant_row[1])
 
