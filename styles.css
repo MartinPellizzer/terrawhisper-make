@@ -301,6 +301,59 @@ footer span {
     border-radius: 9999px;
 }
 
+.explorer span {
+    color: #111; 
+}
+
+.explorer .pagination {
+    margin-top: 4.8rem;
+}
+
+.explorer .pagination ul {
+    display: flex; 
+    justify-content: center; 
+    gap: 0.8rem;
+}
+
+.explorer .pagination a {
+    color: #111;
+    text-decoration: none;
+    font-size: 1.2rem; 
+    font-weight: bold; 
+    padding: 0.8rem 1.6rem; 
+    border: 1px solid #e7e7e7;
+    display: inline-block;
+}
+
+.explorer .pagination span {
+    color: #111;
+    text-decoration: none;
+    font-size: 1.2rem; 
+    font-weight: bold; 
+    padding: 0.8rem 1.6rem; 
+    border: 1px solid #e7e7e7;
+    display: inline-block;
+}
+
+.explorer .pagination .p-cur {
+    color: #fff; 
+    background-color: #111;
+}
+
+.explorer-hero {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2.4rem; 
+    margin-bottom: 0.4rem;
+}
+
+@media screen and (max-width: 768px) {
+    .explorer-hero {
+        flex-direction: column;
+    }
+}
+
 /**************************************/
 /* LISTING */
 /**************************************/
@@ -315,13 +368,15 @@ footer span {
 }
 
 .listing h2 {
-  margin-top: 8.0rem;
-  margin-bottom: 1.6rem;
+    font-size: 3.2rem;
+    margin-top: 8.0rem;
+    margin-bottom: 1.6rem;
 }
 
 .listing h3 {
-  margin-top: 4.8rem;
-  margin-bottom: 1.6rem;
+    font-size: 2.0rem;
+    margin-top: 4.8rem;
+    margin-bottom: 1.6rem;
 }
 
 /*
@@ -378,58 +433,5 @@ footer span {
     margin: 0;
     font-size: 1.8rem;
     font-weight: 700;
-}
-
-.explorer span {
-    color: #111; 
-}
-
-.explorer .pagination {
-    margin-top: 4.8rem;
-}
-
-.explorer .pagination ul {
-    display: flex; 
-    justify-content: center; 
-    gap: 0.8rem;
-}
-
-.explorer .pagination a {
-    color: #111;
-    text-decoration: none;
-    font-size: 1.2rem; 
-    font-weight: bold; 
-    padding: 0.8rem 1.6rem; 
-    border: 1px solid #e7e7e7;
-    display: inline-block;
-}
-
-.explorer .pagination span {
-    color: #111;
-    text-decoration: none;
-    font-size: 1.2rem; 
-    font-weight: bold; 
-    padding: 0.8rem 1.6rem; 
-    border: 1px solid #e7e7e7;
-    display: inline-block;
-}
-
-.explorer .pagination .p-cur {
-    color: #fff; 
-    background-color: #111;
-}
-
-.explorer-hero {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 2.4rem; 
-    margin-bottom: 0.4rem;
-}
-
-@media screen and (max-width: 768px) {
-    .explorer-hero {
-        flex-direction: column;
-    }
 }
 

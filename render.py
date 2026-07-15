@@ -13,6 +13,8 @@ from lib import polish
 from lib import sections
 from lib import components
 
+import normalize_utils
+
 shutil.copy2('styles.css', f'{g.website_folderpath}/styles.css')
 
 def sqlite_table_master_plants_get():
@@ -43,10 +45,9 @@ def plant_listing_page_gen_new(plant_name):
     plant_data = io.json_read(f'{g.VAULT_FOLDERPATH}/terrawhisper/data/compile/herbs/{plant_name}.json')
 
     plant_taxon_name_slug = polish.sluggify(plant_name)
-    url_slug = f'herbs/{plant_taxon_name_slug}'
+    plant_taxon_name_normalized = normalize_utils.normalize_plant_name(plant_name)
 
-    output_filepath = f'{g.SSOT_FOLDERPATH}/studies/extraction_new/chemicals/database.db'
-    conn = sqlite3.connect(output_filepath)
+    url_slug = f'herbs/{plant_taxon_name_slug}'
 
     sidebar_html = f'''
         <div 
@@ -61,12 +62,28 @@ def plant_listing_page_gen_new(plant_name):
         </div>
     '''
 
+    ### TODO: move the data "resolve" -> "compile", pass the data through the entire pipeline
+    # wcvp_plant_data = io.json_read(f'{g.DATA_FOLDERPATH}/resolve/wcvp/json/{plant_taxon_name_normalized}.json')
+
     ###
     html_article = f''
+    '''
+                border-bottom: 1px solid #d8d8d8; 
+                padding-bottom: 4.8rem;
+    '''
     html_hero = f'''
-        <section>
+        <section
+            style="
+            "
+        >
             {sections.breadcrumbs_explorer(url_slug)}
-            <div class="m-flex" style="gap: 3.2rem;">
+            <div class="m-flex" style="
+                gap: 3.2rem;
+box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+                    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+                ">
                 <div style="flex: 2;">
                     <img 
                         src="/images/herbs/{plant_taxon_name_slug}.jpg"
@@ -77,7 +94,7 @@ def plant_listing_page_gen_new(plant_name):
                         "
                     >
                 </div>
-                <div style="flex: 3;">
+                <div style="flex: 3; padding-top: 4.8rem; padding-bottom: 4.8rem;">
                     <h1>{plant_name}</h1>
                     <p>Common name</p>
                     <p>{lorem.words(48)}</p>
@@ -85,16 +102,70 @@ def plant_listing_page_gen_new(plant_name):
                     <ul style="list-style: none;">
                         <li>Scientific names: {plant_name}</li>
                         <li>Common names</li>
-                        <li>Family</li>
+                        <li>Family: {plant_data['taxonomies'][0]['family']}</li>
                         <li>Native range</li>
                     </ul>
                 </div>
             </div>
         </section>
-        <hr style="border: 0; border-bottom: 1px solid #d8d8d8; margin-top: 4.8rem; margin-bottom: 4.8rem;">
     '''
     html_article += html_hero
 
+    ### TAXONOMY
+    taxonomies = plant_data['taxonomies']
+    if taxonomies != []:
+        taxonomy = taxonomies[0]
+        html_table_body = f''
+        html_table_body += f'''<tbody>'''
+        html_table_body += f'''
+            <tr>
+                <td>Kingdom</td>
+                <td>{taxonomy['kingdom']}</td>
+            </tr>
+            <tr>
+                <td>Phylum</td>
+                <td>{taxonomy['phylum']}</td>
+            </tr>
+            <tr>
+                <td>Class</td>
+                <td>{taxonomy['class']}</td>
+            </tr>
+            <tr>
+                <td>Subclass</td>
+                <td>{taxonomy['subclass']}</td>
+            </tr>
+            <tr>
+                <td>Order</td>
+                <td>{taxonomy['order']}</td>
+            </tr>
+            <tr>
+                <td>Family</td>
+                <td>{taxonomy['family']}</td>
+            </tr>
+            <tr>
+                <td>Genus</td>
+                <td>{taxonomy['genus']}</td>
+            </tr>
+        '''
+        html_table_body += f'''</tbody>'''
+        html_article += f'''
+            <section>
+                <h2>
+                    Taxonomical Classification
+                </h2>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Rank</th>
+                      <th>Classification</th>
+                    </tr>
+                  </thead>
+                  {html_table_body}
+                </table>
+            </section>
+        '''
+
+    ### CHEMICALS
     chemicals = plant_data['chemicals']
     chemicals = sorted(chemicals, key=lambda x: x['num_sources'], reverse=True)
     if chemicals != []:

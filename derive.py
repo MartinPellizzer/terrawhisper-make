@@ -12,6 +12,17 @@ output_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/{output_foldername}
 db_filepath = f'{input_folderpath}/observations.db'
 ###
 
+def taxonomy_summary_get(plant_canonical_name):
+    conn = sqlite3.connect(db_filepath)
+    cursor = conn.execute("""
+        SELECT *
+        FROM plants_taxonomies
+        WHERE plant_canonical_name = ?
+    """, (plant_canonical_name,))
+    rows = cursor.fetchall()
+    conn.close()
+    return rows
+
 def chemical_summary_get(plant_canonical_name):
     conn = sqlite3.connect(db_filepath)
     cursor = conn.execute("""
@@ -63,6 +74,29 @@ def summary_disease_get(plant_canonical_name):
 ################################################################################
 # JSONS
 ################################################################################
+
+### TAXONOMIES
+entity_foldername = 'taxonomies'
+master_plants_rows = data.sqlite__plants_get()
+for master_plant_row in master_plants_rows:
+    summary_rows = taxonomy_summary_get(master_plant_row[1])
+    output_items = []
+    for row in summary_rows:
+        output_item = {
+            'plant_canonical_name': master_plant_row[1], ### MANDATORY
+            'kingdom': row[2],
+            'phylum': row[3],
+            'class': row[4],
+            'subclass': row[5],
+            'order': row[6],
+            'family': row[7],
+            'genus': row[8],
+        }
+        print(json.dumps(output_item, indent=4))
+        output_items.append(output_item)
+    output_filepath = f'{g.DATA_FOLDERPATH}/{output_foldername}/herbs/{entity_foldername}/{master_plant_row[1]}.json'
+    io.folder_create_from_filepath(output_filepath)
+    io.json_write(output_filepath, output_items)
 
 ### CHEMICALS
 master_plants_rows = data.sqlite__plants_get()

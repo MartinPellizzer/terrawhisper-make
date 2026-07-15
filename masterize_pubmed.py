@@ -12,6 +12,7 @@ def master_table_plants_add():
     chemicals_input_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/resolve/pubmed/chemicals/json'
     activities_input_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/resolve/pubmed/activities/json'
     output_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/masterize'
+    conn = sqlite3.connect(f"{g.VAULT_FOLDERPATH}/terrawhisper/data/reference/wcvp/wcvp.db")
     ### CHEMICALS > PLANTS
     input_filenames = os.listdir(chemicals_input_folderpath)
     chemicals_data = []
@@ -20,8 +21,34 @@ def master_table_plants_add():
         input_filepath = f'{chemicals_input_folderpath}/{input_filename}'
         input_data = io.json_read(input_filepath)
         for input_item in input_data:
+            cursor = conn.execute("""
+                SELECT *
+                FROM wcvp
+                WHERE taxon_name_normalized = ?
+            """, (input_item['wcvp_taxon_name_normalized'],))
+            row = cursor.fetchone()
+            input_item['ipni_id'] = row[0]
+            input_item['powo_id'] = row[1]
+            input_item['taxon_name'] = row[2]
+            input_item['taxon_name_normalized'] = row[3]
+            input_item['taxon_rank'] = row[4]
+            input_item['taxon_status'] = row[5]
+            input_item['family'] = row[6]
+            input_item['geographic_area'] = row[7]
+            input_item['climate_description'] = row[8]
             chemicals_data.append(input_item)
-    chemicals_data_query = [(item.get("plant_name"),) for item in chemicals_data]
+    chemicals_data_query = [(
+        item.get("plant_name"),
+        item.get("ipni_id"),
+        item.get("powo_id"),
+        item.get("taxon_name"),
+        item.get("taxon_name_normalized"),
+        item.get("taxon_rank"),
+        item.get("taxon_status"),
+        item.get("family"),
+        item.get("geographic_area"),
+        item.get("climate_description"),
+    ) for item in chemicals_data]
     ### ACTIVITIES > PLANTS
     input_filenames = os.listdir(activities_input_folderpath)
     activities_data = []
@@ -30,8 +57,34 @@ def master_table_plants_add():
         input_filepath = f'{activities_input_folderpath}/{input_filename}'
         input_data = io.json_read(input_filepath)
         for input_item in input_data:
+            cursor = conn.execute("""
+                SELECT *
+                FROM wcvp
+                WHERE taxon_name_normalized = ?
+            """, (input_item['wcvp_taxon_name_normalized'],))
+            row = cursor.fetchone()
+            input_item['ipni_id'] = row[0]
+            input_item['powo_id'] = row[1]
+            input_item['taxon_name'] = row[2]
+            input_item['taxon_name_normalized'] = row[3]
+            input_item['taxon_rank'] = row[4]
+            input_item['taxon_status'] = row[5]
+            input_item['family'] = row[6]
+            input_item['geographic_area'] = row[7]
+            input_item['climate_description'] = row[8]
             activities_data.append(input_item)
-    activities_data_query = [(item.get("plant_name"),) for item in activities_data]
+    activities_data_query = [(
+        item.get("plant_name"),
+        item.get("ipni_id"),
+        item.get("powo_id"),
+        item.get("taxon_name"),
+        item.get("taxon_name_normalized"),
+        item.get("taxon_rank"),
+        item.get("taxon_status"),
+        item.get("family"),
+        item.get("geographic_area"),
+        item.get("climate_description"),
+    ) for item in activities_data]
 
     ###
     db_filepath = f'{output_folderpath}/master.db'
@@ -39,14 +92,36 @@ def master_table_plants_add():
     cur = conn.cursor()
     cur.executemany(
         """
-        INSERT OR IGNORE INTO plants (canonical_name)
-        VALUES (?)
+        INSERT OR IGNORE INTO plants (
+            canonical_name,
+            ipni_id,
+            powo_id,
+            taxon_name,
+            taxon_name_normalized,
+            taxon_rank,
+            taxon_status,
+            family,
+            geographic_area,
+            climate_description
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """, chemicals_data_query
     )
     cur.executemany(
         """
-        INSERT OR IGNORE INTO plants (canonical_name)
-        VALUES (?)
+        INSERT OR IGNORE INTO plants (
+            canonical_name,
+            ipni_id,
+            powo_id,
+            taxon_name,
+            taxon_name_normalized,
+            taxon_rank,
+            taxon_status,
+            family,
+            geographic_area,
+            climate_description
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """, activities_data_query
     )
     conn.commit()
@@ -137,15 +212,13 @@ def test():
     cur.execute("""
         SELECT *
         FROM plants
+        LIMIT 10
     """)
     rows = cur.fetchall()
     for row in rows:
         print(row)
-        if row[1].lower() == 'acacia caven':
-            print(row)
-            quit() 
     conn.close()
-    return row
+    return rows
 
 def run():
     print('masterize >> pubmed')
@@ -154,5 +227,5 @@ def run():
     # master_table_activities_add()
     # master_table_diseases_add()
 
-    # test()
+    test()
 

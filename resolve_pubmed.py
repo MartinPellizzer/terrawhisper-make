@@ -59,8 +59,15 @@ def resolve_chemicals():
             """, (chemical_name_normalized,))
             pubchem_row = pubchem_cur.fetchone()
             if wcvp_row and pubchem_row:
-                wcvp_taxon_name = wcvp_row[0]
-                wcvp_taxon_name_normalized = wcvp_row[1]
+                wcvp_ipni_id = wcvp_row[0]
+                wcvp_powo_id = wcvp_row[1]
+                wcvp_taxon_name = wcvp_row[2]
+                wcvp_taxon_name_normalized = wcvp_row[3]
+                wcvp_taxon_rank = wcvp_row[4]
+                wcvp_taxon_status = wcvp_row[5]
+                wcvp_family = wcvp_row[6]
+                wcvp_geographic_area = wcvp_row[7]
+                wcvp_climate_description = wcvp_row[8]
                 pubchem_cid = pubchem_row[0]
                 pubchem_chemical_name = pubchem_row[1]
                 pubchem_chemical_name_normalized = pubchem_row[2]
@@ -127,8 +134,15 @@ def resolve_activities():
             """, (activity_name_normalized,))
             drduke_row = drduke_cur.fetchone()
             if wcvp_row and drduke_row:
-                wcvp_taxon_name = wcvp_row[0]
-                wcvp_taxon_name_normalized = wcvp_row[1]
+                wcvp_ipni_id = wcvp_row[0]
+                wcvp_powo_id = wcvp_row[1]
+                wcvp_taxon_name = wcvp_row[2]
+                wcvp_taxon_name_normalized = wcvp_row[3]
+                wcvp_taxon_rank = wcvp_row[4]
+                wcvp_taxon_status = wcvp_row[5]
+                wcvp_family = wcvp_row[6]
+                wcvp_geographic_area = wcvp_row[7]
+                wcvp_climate_description = wcvp_row[8]
                 drduke_activity_name = drduke_row[0]
                 drduke_activity_name_normalized = drduke_row[1]
                 resolved_item_new = resolved_item
@@ -193,8 +207,15 @@ def resolve_diseases():
             """, (disease_name_normalized,))
             mesh_row = mesh_cur.fetchone()
             if wcvp_row and mesh_row:
-                wcvp_taxon_name = wcvp_row[0]
-                wcvp_taxon_name_normalized = wcvp_row[1]
+                wcvp_ipni_id = wcvp_row[0]
+                wcvp_powo_id = wcvp_row[1]
+                wcvp_taxon_name = wcvp_row[2]
+                wcvp_taxon_name_normalized = wcvp_row[3]
+                wcvp_taxon_rank = wcvp_row[4]
+                wcvp_taxon_status = wcvp_row[5]
+                wcvp_family = wcvp_row[6]
+                wcvp_geographic_area = wcvp_row[7]
+                wcvp_climate_description = wcvp_row[8]
                 mesh_activity_name = mesh_row[0]
                 mesh_activity_name_normalized = mesh_row[1]
                 resolved_item_new = resolved_item
@@ -212,11 +233,11 @@ def run():
     print('RESOLVE >> pubmed')
 
     # start = time.perf_counter()
-    # resolve_chemicals()
+    resolve_chemicals()
     # print(f'resolve chemicals() - execution time: ', time.perf_counter() - start)
 
     # start = time.perf_counter()
-    # resolve_activities()
+    resolve_activities()
     # print(f'resolve activities() - execution time: ', time.perf_counter() - start)
 
     start = time.perf_counter()

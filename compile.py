@@ -30,6 +30,25 @@ for i, plant_row in enumerate(plants_rows):
     output_filepath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/{output_foldername}/herbs/{plant_canonical_name}.json'
     output_data = {}
     output_data['plant_canonical_name'] = plant_row[1]
+
+    ### TAXONOMIES
+    taxonomies_data = io.json_read(
+        f'{g.VAULT_FOLDERPATH}/terrawhisper/data/{input_foldername}/herbs/taxonomies/{plant_canonical_name}.json'
+    )
+    # print(json.dumps(chemicals_data, indent=4))
+    output_data['taxonomies'] = []
+    for item in taxonomies_data:
+        item_new = {
+            "kingdom": item['kingdom'],
+            "phylum": item['phylum'],
+            "class": item['class'],
+            "subclass": item['subclass'],
+            "order": item['order'],
+            "family": item['family'],
+            "genus": item['genus'],
+        }
+        output_data['taxonomies'].append(item)
+
     ### CHEMICALS
     chemicals_data = io.json_read(
         f'{g.VAULT_FOLDERPATH}/terrawhisper/data/{input_foldername}/herbs/chemicals/{plant_canonical_name}.json'

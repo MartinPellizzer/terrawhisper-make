@@ -21,7 +21,16 @@ def master_table_plants_create(regen=False):
     cur.execute("""
         CREATE TABLE IF NOT EXISTS plants (
             id INTEGER PRIMARY KEY,
-            canonical_name TEXT NOT NULL UNIQUE
+            canonical_name TEXT NOT NULL UNIQUE,
+            ipni_id TEXT NOT NULL,
+            powo_id TEXT NOT NULL,
+            taxon_name TEXT NOT NULL,
+            taxon_name_normalized TEXT NOT NULL,
+            taxon_rank TEXT,
+            taxon_status TEXT,
+            family TEXT,
+            geographic_area TEXT,
+            climate_description TEXT
         );
     """)
     conn.execute("PRAGMA journal_mode = WAL;")

@@ -1,4 +1,7 @@
+import fetch_powo
 import fetch_pubmed
+import fetch_drduke
 
-fetch_pubmed.run()
-fetch_drduke.run()
+fetch_powo.run()
+# fetch_pubmed.run()
+# fetch_drduke.run()

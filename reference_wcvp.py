@@ -1,5 +1,6 @@
 import os
 import time
+import json
 
 import sqlite3
 import csv
@@ -10,6 +11,36 @@ import time
 
 from lib import g
 from lib import io
+
+def normalize_plant_name(name):
+    # Common botanical author abbreviations (extend over time)
+    AUTHOR_PATTERNS = [
+        r"\bL\.\b",
+        r"\bLinn\.\b",
+        r"\bDC\.\b",
+        r"\bHook\.?\s*f?\.?\b",
+        r"\bBenth\.\b",
+        r"\bWilld\.\b",
+        r"\bMill\.\b",
+        r"\bLam\.\b",
+        r"\bRoxb\.\b",
+    ]
+    AUTHOR_REGEX = re.compile("|".join(AUTHOR_PATTERNS), re.IGNORECASE)
+    if not name:
+        return ""
+    # Unicode normalization
+    name = unicodedata.normalize("NFKC", name)
+    # lowercase
+    name = name.lower()
+    # normalize hybrid sign
+    name = name.replace("×", " x ")
+    # remove botanical author citations
+    name = AUTHOR_REGEX.sub("", name)
+    # remove punctuation except letters, numbers and spaces
+    name = re.sub(r"[.,;:()\[\]{}]", " ", name)
+    # collapse whitespace
+    name = re.sub(r"\s+", " ", name).strip()
+    return name
 
 def wcvp_table_plants_create():
     source_foldername = 'wcvp'
@@ -30,23 +61,20 @@ def wcvp_table_plants_create():
     DROP TABLE IF EXISTS wcvp;
 
     CREATE TABLE wcvp (
+        ipni_id TEXT NOT NULL,
+        powo_id TEXT NOT NULL,
         taxon_name TEXT NOT NULL,
-        taxon_name_normalized TEXT NOT NULL
+        taxon_name_normalized TEXT NOT NULL,
+        taxon_rank TEXT,
+        taxon_status TEXT,
+        family TEXT,
+        geographic_area TEXT,
+        climate_description TEXT
     );
     """)
 
     conn.commit()
 
-
-    spaces = re.compile(r"\s+")
-
-    def normalize(name):
-        name = unicodedata.normalize("NFKC", name)
-        name = name.lower()
-        name = name.replace("-", " ")
-        name = re.sub(r"[.,]", "", name)
-        name = spaces.sub(" ", name)
-        return name.strip()
 
 
     BATCH_SIZE = 100000
@@ -69,23 +97,49 @@ def wcvp_table_plants_create():
         batch = []
 
         for row in reader:
+            # print(json.dumps(row, indent=4))
+            # quit() 
 
+            ipni_id = row["ipni_id"]
+            powo_id = row["powo_id"]
             taxon_name = row["taxon_name"]
+            taxon_rank = row["taxon_rank"]
+            taxon_status = row["taxon_status"]
+            family = row["family"]
+            geographic_area = row["geographic_area"]
+            climate_description = row["climate_description"]
 
             if not taxon_name:
                 continue
 
             batch.append((
+                ipni_id,
+                powo_id,
                 taxon_name,
-                normalize(taxon_name)
+                normalize_plant_name(taxon_name),
+                taxon_rank,
+                taxon_status,
+                family,
+                geographic_area,
+                climate_description
             ))
 
             if len(batch) >= BATCH_SIZE:
 
                 conn.executemany("""
                     INSERT INTO wcvp
-                    (taxon_name, taxon_name_normalized)
-                    VALUES (?, ?)
+                    (
+                        ipni_id,
+                        powo_id,
+                        taxon_name,
+                        taxon_name_normalized,
+                        taxon_rank,
+                        taxon_status,
+                        family,
+                        geographic_area,
+                        climate_description
+                    )
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """, batch)
 
                 processed += len(batch)
@@ -100,8 +154,18 @@ def wcvp_table_plants_create():
         if batch:
             conn.executemany("""
                 INSERT INTO wcvp
-                (taxon_name, taxon_name_normalized)
-                VALUES (?, ?)
+                (
+                        ipni_id,
+                        powo_id,
+                        taxon_name,
+                        taxon_name_normalized,
+                        taxon_rank,
+                        taxon_status,
+                        family,
+                        geographic_area,
+                        climate_description
+                )
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
             """, batch)
 
 
@@ -110,8 +174,16 @@ def wcvp_table_plants_create():
 
     # Create lookup index AFTER import
     conn.execute("""
-    CREATE INDEX idx_wcvp_taxon_name_normalized
-    ON wcvp(taxon_name_normalized)
+        CREATE INDEX idx_wcvp_powo_id
+        ON wcvp(powo_id)
+    """)
+    conn.execute("""
+        CREATE INDEX idx_wcvp_ipni_id
+        ON wcvp(ipni_id)
+    """)
+    conn.execute("""
+        CREATE INDEX idx_wcvp_taxon_name_normalized
+        ON wcvp(taxon_name_normalized)
     """)
 
     conn.commit()
@@ -128,7 +200,7 @@ def test():
     cursor = conn.execute("""
     SELECT *
     FROM wcvp
-    LIMIT 100
+    LIMIT 10
     """)
     for row in cursor:
         print(row)
