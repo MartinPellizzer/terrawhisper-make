@@ -9,6 +9,7 @@ from lib import io
 from lib import llm
 
 import normalize_utils
+import pipeline_utils
 
 def normalize_plants():
     source_foldername = 'wcvp'
@@ -32,10 +33,41 @@ def normalize_plants():
         io.json_write(output_filepath, input_data)
         # quit()
 
+def normalize_distribution():
+    source_foldername = 'wcvp'
+    input_foldername = 'parse'
+    output_foldername = 'normalize'
+    ###
+    input_folderpath = f'{g.DATA_FOLDERPATH}/{input_foldername}/{source_foldername}/distribution/json'
+    output_folderpath = f'{g.DATA_FOLDERPATH}/{output_foldername}/{source_foldername}/distribution/json'
+    io.folders_recursive_gen(output_folderpath)
+    input_filenames = os.listdir(input_folderpath)
+    i = 0
+    for input_filename in input_filenames[i:]:
+        i += 1
+        print(f'{i}/{len(input_filenames)}')
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        input_data = io.json_read(input_filepath)
+        taxon_name = input_data["taxon_name"]
+        taxon_name_normalized = normalize_utils.normalize_plant_name(taxon_name)
+        input_data['taxon_name_normalized'] = taxon_name_normalized
+        output_filepath = f'{output_folderpath}/{taxon_name_normalized}.json'
+        io.json_write(output_filepath, input_data)
+        # print(json.dumps(input_data, indent=4))
+        # quit()
+
 def run():
     print('NORMALIZE >> wcvp')
 
     start = time.perf_counter()
-    normalize_plants()
+    # normalize_plants()
     print(f'normalize plants() - execution time: ', time.perf_counter() - start)
+
+    ### WCVP DISTRIBUTION
+    start = time.perf_counter()
+    pipeline_utils.folder_copy(
+        input_folderpath = f'{g.DATA_FOLDERPATH}/parse/wcvp/distribution',
+        output_folderpath = f'{g.DATA_FOLDERPATH}/normalize/wcvp/distribution',
+    )
+    print(f'normalize distribution() - execution time: ', time.perf_counter() - start)
 

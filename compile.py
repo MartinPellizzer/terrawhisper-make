@@ -49,6 +49,20 @@ for i, plant_row in enumerate(plants_rows):
         }
         output_data['taxonomies'].append(item)
 
+    ### DISTRIBUTION
+    distribution_data = io.json_read(
+        f'{g.VAULT_FOLDERPATH}/terrawhisper/data/{input_foldername}/herbs/distribution/{plant_canonical_name}.json'
+    )
+    # print(json.dumps(chemicals_data, indent=4))
+    output_data['distribution'] = []
+    for item in distribution_data:
+        item_new = {
+            "continent": item['continent'],
+            "region": item['region'],
+            "area": item['area'],
+        }
+        output_data['distribution'].append(item)
+
     ### CHEMICALS
     chemicals_data = io.json_read(
         f'{g.VAULT_FOLDERPATH}/terrawhisper/data/{input_foldername}/herbs/chemicals/{plant_canonical_name}.json'
@@ -64,6 +78,7 @@ for i, plant_row in enumerate(plants_rows):
             "max_concentration": chemical_item['max_concentration'],
         }
         output_data['chemicals'].append(chemical_item)
+
     ### ACTIVITIES
     activities_data = io.json_read(
         f'{g.VAULT_FOLDERPATH}/terrawhisper/data/{input_foldername}/herbs/activities/{plant_canonical_name}.json'
@@ -78,6 +93,7 @@ for i, plant_row in enumerate(plants_rows):
         output_data['activities'].append(activity_item)
     ###
     io.json_write(output_filepath, output_data)
+
     ### DISEASES
     diseases_data = io.json_read(
         f'{g.VAULT_FOLDERPATH}/terrawhisper/data/{input_foldername}/herbs/diseases/{plant_canonical_name}.json'

@@ -41,6 +41,35 @@ def observations_table_plants_taxonomies_create(regen=False):
     conn.commit()
     conn.close()
 
+def observations_table_plants_distribution_create(regen=False):
+    output_foldername = 'observe'
+    output_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/{output_foldername}'
+    # try: shutil.rmtree(output_folderpath)
+    # except: pass
+    os.makedirs(output_folderpath, exist_ok=True)
+    db_filepath = f'{output_folderpath}/observations.db'
+    ###
+    conn = sqlite3.connect(db_filepath)
+    cur = conn.cursor()
+    if regen:
+        cur.execute("DROP TABLE IF EXISTS plants_distribution")
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS plants_distribution (
+            id INTEGER PRIMARY KEY,
+            plant_canonical_name TEXT NOT NULL,
+            continent TEXT NOT NULL,
+            region TEXT NOT NULL,
+            area TEXT NOT NULL,
+            source TEXT
+        );
+    """)
+    conn.execute("PRAGMA journal_mode = WAL;")
+    conn.execute("PRAGMA synchronous = OFF;")
+    conn.execute("PRAGMA temp_store = MEMORY;")
+    cur.execute("CREATE INDEX IF NOT EXISTS idx_plants_distribution_plant_canonical_name ON plants_distribution(plant_canonical_name)")
+    conn.commit()
+    conn.close()
+
 def observations_table_plants_chemicals_create(regen=False):
     output_foldername = 'observe'
     output_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/{output_foldername}'
@@ -132,7 +161,8 @@ def run():
     print('OBSERVE >> init')
 
     ### TODO: do a clean up by destroying db
-    observations_table_plants_taxonomies_create(regen=True)
+    # observations_table_plants_taxonomies_create(regen=True)
+    observations_table_plants_distribution_create(regen=True)
     # observations_table_plants_chemicals_create(regen=True)
     # observations_table_plants_activities_create(regen=True)
     # observations_table_plants_diseases_create(regen=True)

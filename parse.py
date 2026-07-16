@@ -1,5 +1,9 @@
+import parse_wcvp
+import parse_powo
 import parse_pubmed
 import parse_drduke
 
+parse_wcvp.run()
+# parse_powo.run()
 # parse_pubmed.run()
 # parse_drduke.run()

@@ -6,6 +6,8 @@ from lib import g
 from lib import io
 from lib import llm
 
+import pipeline_utils
+
 def folder_copy():
     source_foldername = 'wcvp'
     input_foldername = 'normalize'
@@ -31,7 +33,15 @@ def run():
     print('RESOLVE >> wcvp')
 
     start = time.perf_counter()
-    ### NO RESOLVE NEEDED FOR NOT (WCVP IS GROUN TRUTH)
-    folder_copy()
+    ### NO RESOLVE NEEDED FOR NOT (WCVP IS GROUND TRUTH)
+    # folder_copy()
     print(f'folder_copy() - execution time: ', time.perf_counter() - start)
+
+    ### WCVP DISTRIBUTION
+    start = time.perf_counter()
+    pipeline_utils.folder_copy(
+        input_folderpath = f'{g.DATA_FOLDERPATH}/normalize/wcvp/distribution',
+        output_folderpath = f'{g.DATA_FOLDERPATH}/resolve/wcvp/distribution',
+    )
+    print(f'wcvp distribution() - execution time: ', time.perf_counter() - start)
 

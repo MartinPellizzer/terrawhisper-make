@@ -61,15 +61,9 @@ def wcvp_table_plants_create():
     DROP TABLE IF EXISTS wcvp;
 
     CREATE TABLE wcvp (
-        ipni_id TEXT NOT NULL,
-        powo_id TEXT NOT NULL,
+        plant_name_id TEXT NOT NULL,
         taxon_name TEXT NOT NULL,
-        taxon_name_normalized TEXT NOT NULL,
-        taxon_rank TEXT,
-        taxon_status TEXT,
-        family TEXT,
-        geographic_area TEXT,
-        climate_description TEXT
+        taxon_name_normalized TEXT NOT NULL
     );
     """)
 
@@ -100,28 +94,31 @@ def wcvp_table_plants_create():
             # print(json.dumps(row, indent=4))
             # quit() 
 
-            ipni_id = row["ipni_id"]
-            powo_id = row["powo_id"]
+            plant_name_id = row["plant_name_id"]
+            # ipni_id = row["ipni_id"]
+            # powo_id = row["powo_id"]
             taxon_name = row["taxon_name"]
-            taxon_rank = row["taxon_rank"]
-            taxon_status = row["taxon_status"]
-            family = row["family"]
-            geographic_area = row["geographic_area"]
-            climate_description = row["climate_description"]
+            taxon_name_normalized = normalize_plant_name(taxon_name)
+            # taxon_rank = row["taxon_rank"]
+            # taxon_status = row["taxon_status"]
+            # family = row["family"]
+            # geographic_area = row["geographic_area"]
+            # climate_description = row["climate_description"]
 
             if not taxon_name:
                 continue
 
             batch.append((
-                ipni_id,
-                powo_id,
+                plant_name_id,
+                # ipni_id,
+                # powo_id,
                 taxon_name,
-                normalize_plant_name(taxon_name),
-                taxon_rank,
-                taxon_status,
-                family,
-                geographic_area,
-                climate_description
+                taxon_name_normalized,
+                # taxon_rank,
+                # taxon_status,
+                # family,
+                # geographic_area,
+                # climate_description
             ))
 
             if len(batch) >= BATCH_SIZE:
@@ -129,17 +126,11 @@ def wcvp_table_plants_create():
                 conn.executemany("""
                     INSERT INTO wcvp
                     (
-                        ipni_id,
-                        powo_id,
+                        plant_name_id,
                         taxon_name,
-                        taxon_name_normalized,
-                        taxon_rank,
-                        taxon_status,
-                        family,
-                        geographic_area,
-                        climate_description
+                        taxon_name_normalized
                     )
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    VALUES (?, ?, ?)
                 """, batch)
 
                 processed += len(batch)
@@ -155,17 +146,11 @@ def wcvp_table_plants_create():
             conn.executemany("""
                 INSERT INTO wcvp
                 (
-                        ipni_id,
-                        powo_id,
+                        plant_name_id,
                         taxon_name,
-                        taxon_name_normalized,
-                        taxon_rank,
-                        taxon_status,
-                        family,
-                        geographic_area,
-                        climate_description
+                        taxon_name_normalized
                 )
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                VALUES (?, ?, ?)
             """, batch)
 
 
@@ -174,12 +159,8 @@ def wcvp_table_plants_create():
 
     # Create lookup index AFTER import
     conn.execute("""
-        CREATE INDEX idx_wcvp_powo_id
-        ON wcvp(powo_id)
-    """)
-    conn.execute("""
-        CREATE INDEX idx_wcvp_ipni_id
-        ON wcvp(ipni_id)
+        CREATE INDEX idx_wcvp_plant_name_id
+        ON wcvp(plant_name_id)
     """)
     conn.execute("""
         CREATE INDEX idx_wcvp_taxon_name_normalized
@@ -187,6 +168,14 @@ def wcvp_table_plants_create():
     """)
 
     conn.commit()
+    cursor = conn.execute("""
+        SELECT *
+        FROM wcvp
+        LIMIT 10
+    """)
+    for row in cursor:
+        print(row)
+    conn.close()
 
     print("Done")
 
@@ -210,8 +199,8 @@ def run():
     print(f'REFERENCE >> wcvp')
 
     start = time.perf_counter()
-    # wcvp_table_plants_create()
-    test()
-    print(f'wcvp_table_plants_create() - execution time: ', time.perf_counter() - start)
+    wcvp_table_plants_create()
+    # test()
+    print(f'wcvp table_plants_create() - execution time: ', time.perf_counter() - start)
 
 

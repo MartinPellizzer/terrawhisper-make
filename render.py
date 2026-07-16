@@ -103,7 +103,7 @@ box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0p
                         <li>Scientific names: {plant_name}</li>
                         <li>Common names</li>
                         <li>Family: {plant_data['taxonomies'][0]['family']}</li>
-                        <li>Native range</li>
+                        <li>Continent (Native Range): {plant_data['distribution'][0]['continent']}</li>
                     </ul>
                 </div>
             </div>
@@ -111,7 +111,9 @@ box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0p
     '''
     html_article += html_hero
 
-    ### TAXONOMY
+    ### CLASSIFICATION
+
+    ### TAXONOMIES
     taxonomies = plant_data['taxonomies']
     if taxonomies != []:
         taxonomy = taxonomies[0]
@@ -151,13 +153,59 @@ box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0p
         html_article += f'''
             <section>
                 <h2>
-                    Taxonomical Classification
+                    Classification
                 </h2>
+                <h3>
+                    Taxonomy
+                </h3>
                 <table>
                   <thead>
                     <tr>
                       <th>Rank</th>
                       <th>Classification</th>
+                    </tr>
+                  </thead>
+                  {html_table_body}
+                </table>
+                <h3>
+                    Names
+                </h3>
+            </section>
+        '''
+
+    ### DISTRIBUTION
+    distributions = plant_data['distribution']
+    if distributions != []:
+        distribution = distributions[0]
+        html_table_body = f''
+        html_table_body += f'''<tbody>'''
+        row_num = 10
+        for distribution in distributions[:row_num]:
+            print(distribution)
+            # plant_name = plants_chemicals_row[1]
+            continent = distribution['continent']
+            region = distribution['region']
+            area = distribution['area']
+            html_table_body += f'''
+            <tr>
+                <td>{continent}</td>
+                <td>{region}</td>
+                <td>{area}</td>
+                <td>WCVP</td>
+            </tr>'''
+        html_table_body += f'''</tbody>'''
+        html_article += f'''
+            <section>
+                <h2>
+                    Distribution
+                </h2>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Continent</th>
+                      <th>Region</th>
+                      <th>Area</th>
+                      <th>Source</th>
                     </tr>
                   </thead>
                   {html_table_body}
@@ -328,7 +376,7 @@ box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0p
         html_article += f'''
             <section>
                 <h2>
-                    Diseases
+                    Medicinal Uses
                 </h2>
                 <p>
                     {plant_name} has {len(plant_data['diseases'])} reported treated diseases identified across {source_tot} scientific publications and several other databases. The most consistently reported compounds include {diseases_p_str}.
@@ -347,7 +395,7 @@ box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0p
                 <table>
                   <thead>
                     <tr>
-                      <th>Disease</th>
+                      <th>Condition</th>
                       <th>Sources</th>
                       <th>Confidence</th>
                     </tr>
