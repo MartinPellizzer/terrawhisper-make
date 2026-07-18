@@ -14,6 +14,7 @@ from lib import sections
 from lib import components
 
 import normalize_utils
+import masterize_utils
 
 shutil.copy2('styles.css', f'{g.website_folderpath}/styles.css')
 
@@ -43,6 +44,11 @@ def sqlite_table_observations_plants_activities_get():
 
 def plant_listing_page_gen_new(plant_name):
     plant_data = io.json_read(f'{g.VAULT_FOLDERPATH}/terrawhisper/data/compile/herbs/{plant_name}.json')
+    if plant_data['plant_canonical_name'] == 'Acaena magellanica':
+        print(plant_data)
+        quit()
+    return
+    # print(json.dumps(plant_data, indent=4))
 
     plant_taxon_name_slug = polish.sluggify(plant_name)
     plant_taxon_name_normalized = normalize_utils.normalize_plant_name(plant_name)
@@ -62,15 +68,13 @@ def plant_listing_page_gen_new(plant_name):
         </div>
     '''
 
-    ### TODO: move the data "resolve" -> "compile", pass the data through the entire pipeline
-    # wcvp_plant_data = io.json_read(f'{g.DATA_FOLDERPATH}/resolve/wcvp/json/{plant_taxon_name_normalized}.json')
-
-    ###
     html_article = f''
-    '''
-                border-bottom: 1px solid #d8d8d8; 
-                padding-bottom: 4.8rem;
-    '''
+    ###
+    if plant_data['distribution'] != []: hero_distribution = plant_data['distribution'][0]['continent'].title()
+    else: hero_distribution = 'Not available'
+    if plant_data['taxonomies'] != []: hero_taxonomy = plant_data['taxonomies'][0]['family'].title()
+    else: hero_taxonomy = 'Not available'
+                    # <p>Scientific resources: Moderate (★★★☆☆)</p>
     html_hero = f'''
         <section
             style="
@@ -78,10 +82,6 @@ def plant_listing_page_gen_new(plant_name):
         >
             {sections.breadcrumbs_explorer(url_slug)}
             <div class="m-flex" style="
-                gap: 3.2rem;
-box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
-box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
                     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
                 ">
                 <div style="flex: 2;">
@@ -94,16 +94,15 @@ box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0p
                         "
                     >
                 </div>
-                <div style="flex: 3; padding-top: 4.8rem; padding-bottom: 4.8rem;">
+                <div style="flex: 3; padding: 4.8rem; 2.4rem;">
                     <h1>{plant_name}</h1>
                     <p>Common name</p>
                     <p>{lorem.words(48)}</p>
-                    <p>Scientific resources: Moderate (★★★☆☆)</p>
                     <ul style="list-style: none;">
-                        <li>Scientific names: {plant_name}</li>
+                        <li><span style="font-weight: 700;">Scientific name:</span> <strong style="font-weight: 400;">{plant_name}</strong></li>
                         <li>Common names</li>
-                        <li>Family: {plant_data['taxonomies'][0]['family']}</li>
-                        <li>Continent (Native Range): {plant_data['distribution'][0]['continent']}</li>
+                        <li><span style="font-weight: 700;">Family:</span> <strong style="font-weight: 400;">{hero_taxonomy}</strong></li>
+                        <li><span style="font-weight: 700;">Native range:</span> <strong style="font-weight: 400;">{hero_distribution}</strong></li>
                     </ul>
                 </div>
             </div>
@@ -181,7 +180,7 @@ box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0p
         html_table_body += f'''<tbody>'''
         row_num = 10
         for distribution in distributions[:row_num]:
-            print(distribution)
+            # print(distribution)
             # plant_name = plants_chemicals_row[1]
             continent = distribution['continent']
             region = distribution['region']
@@ -221,7 +220,7 @@ box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0p
         html_table_body += f'''<tbody>'''
         table_chemical_num = 10
         for chemical in chemicals[:table_chemical_num]:
-            print(chemical)
+            # print(chemical)
             # plant_name = plants_chemicals_row[1]
             chemical_name = chemical['chemical_canonical_name']
             plant_part = chemical['plant_part']
@@ -433,8 +432,8 @@ box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0p
     with open(html_filepath, 'w') as f: f.write(html)
     print(html_filepath)
 
-plants_rows = sqlite_table_master_plants_get()
-for plant_row in plants_rows[:1]:
+plants_rows = masterize_utils.masterize_plants_get_all()
+for plant_row in plants_rows[:]:
     print(plant_row)
     plant_listing_page_gen_new(plant_row[1])
 

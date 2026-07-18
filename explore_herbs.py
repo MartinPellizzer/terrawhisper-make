@@ -13,6 +13,8 @@ from lib import polish
 from lib import sections
 from lib import components
 
+import masterize_utils
+
 shutil.copy2('styles.css', f'{g.website_folderpath}/styles.css')
 
 model_filepath = '/home/ubuntu/vault-tmp/llm/gemma-4-26B-A4B-it-UD-Q4_K_XL.gguf'
@@ -450,7 +452,8 @@ def herbs_index():
     url_slug = 'herbs'
 
     ### GET ALL PLANTS -> TO LIST OF ITEMS
-    plants_rows = data.sqlite__plants_get()
+    # plants_rows = data.sqlite__plants_get()
+    plants_rows = masterize_utils.masterize_plants_get_all()
     plants_data = [
         {
             'plant_id': row[0],
@@ -535,7 +538,8 @@ def herbs_alphabet(alphabet_letter=''):
     io.folders_recursive_gen(f'''{g.website_folderpath}/{url_slug}''')
 
     ### GET ALL PLANTS -> TO LIST OF ITEMS
-    plants_rows = data.sqlite__plants_get()
+    # plants_rows = data.sqlite__plants_get()
+    plants_rows = masterize_utils.masterize_plants_get_all()
     plants_rows = sorted([row[1] for row in plants_rows])
     plants_data = [
         {
@@ -779,24 +783,28 @@ def herbs_activities(activity_name):
     io.folders_recursive_gen(f'''{g.website_folderpath}/{url_slug}''')
 
     ### GET ALL PLANTS -> TO LIST OF ITEMS
-    db_filepath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/observe/observations.db'
+    db_filepath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/qualify/observations.db'
     conn = sqlite3.connect(db_filepath)
     cur = conn.cursor()
     cur.execute("""
-        SELECT DISTINCT activity_canonical_name, plant_canonical_name
+        SELECT DISTINCT plant_canonical_name
         FROM plants_activities
         WHERE activity_canonical_name = ?
     """, (activity_name,))
     plants_rows = cur.fetchall()
     conn.close()
 
-    plants_rows = sorted([row[1] for row in plants_rows])
+    # plants_rows = sorted([row[1] for row in plants_rows])
+    plants_rows = sorted([row[0] for row in plants_rows])
     plants_data = [
         {
             'plant_name_canonical': name,
         }
         for name in plants_rows[:]
     ]
+    # print(plants_data[0])
+    # print(plants_data[1])
+    # quit()
 
     ### GROUP PLANTS IN PAGES
     page_cards_num = 48
@@ -1132,15 +1140,15 @@ def run():
     if 1:
         herbs_index()
 
-    if 0:
+    if 1:
         letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
         for letter in letters:
             herbs_alphabet(letter)
 
-    if 0:
+    if 1:
         herbs_activities_category()
 
-    if 0:
+    if 1:
         for activity in sidebar_activities_rows:
             activity_name = activity[0]
             herbs_activities(activity_name)
@@ -1149,7 +1157,7 @@ def run():
     if 1:
         herbs_chemicals_category()
 
-    if 0:
+    if 1:
         for i, chemical in enumerate(sidebar_chemicals_rows[:1000]):
             print(f'{i}/{len(sidebar_chemicals_rows)}')
             chemical_name = chemical[0]

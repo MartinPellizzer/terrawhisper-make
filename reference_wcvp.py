@@ -42,7 +42,7 @@ def normalize_plant_name(name):
     name = re.sub(r"\s+", " ", name).strip()
     return name
 
-def wcvp_table_plants_create():
+def wcvp_table_plants_names_create():
     source_foldername = 'wcvp'
     input_foldername = 'fetch'
     output_foldername = 'reference'
@@ -58,26 +58,25 @@ def wcvp_table_plants_create():
     PRAGMA temp_store = MEMORY;
     PRAGMA cache_size = -500000;
 
-    DROP TABLE IF EXISTS wcvp;
+    DROP TABLE IF EXISTS plants_names;
 
-    CREATE TABLE wcvp (
+    CREATE TABLE plants_names (
         plant_name_id TEXT NOT NULL,
+        accepted_plant_name_id TEXT NOT NULL,
+        taxon_status TEXT NOT NULL,
         taxon_name TEXT NOT NULL,
-        taxon_name_normalized TEXT NOT NULL
+        taxon_name_normalized TEXT NOT NULL,
+        powo_id TEXT,
+        ipni_id TEXT
     );
     """)
 
     conn.commit()
 
-
-
     BATCH_SIZE = 100000
-
     processed = 0
     start = time.time()
-
     conn.execute("BEGIN")
-
     with open(
         f"{input_folderpath}/wcvp_names.csv",
         "r",
@@ -85,52 +84,45 @@ def wcvp_table_plants_create():
         errors="ignore",
         newline="",
     ) as f:
-
         reader = csv.DictReader(f, delimiter="|")
-
         batch = []
-
         for row in reader:
             # print(json.dumps(row, indent=4))
             # quit() 
 
-            plant_name_id = row["plant_name_id"]
-            # ipni_id = row["ipni_id"]
-            # powo_id = row["powo_id"]
-            taxon_name = row["taxon_name"]
-            taxon_name_normalized = normalize_plant_name(taxon_name)
-            # taxon_rank = row["taxon_rank"]
-            # taxon_status = row["taxon_status"]
-            # family = row["family"]
-            # geographic_area = row["geographic_area"]
-            # climate_description = row["climate_description"]
-
+            plant_name_id =             row["plant_name_id"]
+            accepted_plant_name_id =    row["accepted_plant_name_id"]
+            taxon_status =              row["taxon_status"]
+            taxon_name =                row["taxon_name"]
+            taxon_name_normalized =     normalize_plant_name(taxon_name)
+            powo_id =                   row["powo_id"]
+            ipni_id =                   row["ipni_id"]
             if not taxon_name:
                 continue
 
             batch.append((
                 plant_name_id,
-                # ipni_id,
-                # powo_id,
+                accepted_plant_name_id,
+                taxon_status,
                 taxon_name,
                 taxon_name_normalized,
-                # taxon_rank,
-                # taxon_status,
-                # family,
-                # geographic_area,
-                # climate_description
+                powo_id,
+                ipni_id,
             ))
 
             if len(batch) >= BATCH_SIZE:
-
                 conn.executemany("""
-                    INSERT INTO wcvp
+                    INSERT INTO plants_names
                     (
                         plant_name_id,
+                        accepted_plant_name_id,
+                        taxon_status,
                         taxon_name,
-                        taxon_name_normalized
+                        taxon_name_normalized,
+                        powo_id,
+                        ipni_id
                     )
-                    VALUES (?, ?, ?)
+                    VALUES (?, ?, ?, ?, ?, ?, ?)
                 """, batch)
 
                 processed += len(batch)
@@ -141,36 +133,49 @@ def wcvp_table_plants_create():
 
                 batch.clear()
 
-
         if batch:
             conn.executemany("""
-                INSERT INTO wcvp
+                INSERT INTO plants_names
                 (
                         plant_name_id,
+                        accepted_plant_name_id,
+                        taxon_status,
                         taxon_name,
-                        taxon_name_normalized
+                        taxon_name_normalized,
+                        powo_id,
+                        ipni_id
                 )
-                VALUES (?, ?, ?)
+                VALUES (?, ?, ?, ?, ?, ?, ?)
             """, batch)
-
 
     conn.commit()
 
-
     # Create lookup index AFTER import
     conn.execute("""
-        CREATE INDEX idx_wcvp_plant_name_id
-        ON wcvp(plant_name_id)
+        CREATE INDEX idx_plants_names_plant_name_id
+        ON plants_names(plant_name_id)
     """)
     conn.execute("""
-        CREATE INDEX idx_wcvp_taxon_name_normalized
-        ON wcvp(taxon_name_normalized)
+        CREATE INDEX idx_plants_names_accepted_plant_name_id
+        ON plants_names(accepted_plant_name_id)
+    """)
+    conn.execute("""
+        CREATE INDEX idx_plants_names_taxon_name_normalized
+        ON plants_names(taxon_name_normalized)
+    """)
+    conn.execute("""
+        CREATE INDEX idx_plants_names_powo_id
+        ON plants_names(powo_id)
+    """)
+    conn.execute("""
+        CREATE INDEX idx_plants_names_ipni_id
+        ON plants_names(ipni_id)
     """)
 
     conn.commit()
     cursor = conn.execute("""
         SELECT *
-        FROM wcvp
+        FROM plants_names
         LIMIT 10
     """)
     for row in cursor:
@@ -179,7 +184,7 @@ def wcvp_table_plants_create():
 
     print("Done")
 
-def test():
+def peek():
     source_foldername = 'wcvp'
     output_foldername = 'reference'
     output_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/{output_foldername}/{source_foldername}'
@@ -187,20 +192,33 @@ def test():
     ### TEST PRINT
     conn = sqlite3.connect(f"{output_folderpath}/wcvp.db")
     cursor = conn.execute("""
-    SELECT *
-    FROM wcvp
-    LIMIT 10
+        SELECT *
+        FROM plants_names
+        LIMIT 10
     """)
-    for row in cursor:
-        print(row)
+    rows = cursor.fetchall()
+        # print(row)
 
+    from tabulate import tabulate
+    print(tabulate(rows, 
+        headers=[
+            "PLANT_NAME_ID", 
+            "ACCEPTED_PLANT_NAME_ID", 
+            "TAXON_STATUS", 
+            "TAXON_NAME", 
+            "TAXON_NAME_NORMALIZED",
+            "POWO_ID",
+            "IPNI_ID",
+        ], 
+        tablefmt="plain")
+    )
 
 def run():
     print(f'REFERENCE >> wcvp')
 
     start = time.perf_counter()
-    wcvp_table_plants_create()
-    # test()
-    print(f'wcvp table_plants_create() - execution time: ', time.perf_counter() - start)
+    # wcvp_table_plants_names_create()
+    peek()
+    print(f'wcvp table_plants_names_create() - execution time: ', time.perf_counter() - start)
 
 

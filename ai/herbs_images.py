@@ -11,6 +11,8 @@ from lib import zimage
 # herbs_primary = data.herbs_primary_get()
 # herbs_popular = data.herbs_popular_get('teas', 100)
 
+import masterize_utils
+
 def gen_old():
     herbs = data.herbs_medicinal_get()
     for herb_i, herb in enumerate(herbs):
@@ -75,7 +77,7 @@ def herbs_gen(dispel=False):
 
 def herbs_gen_new(dispel=False):
     # rows = data.sqlite3__wikidata_powo_get_all()
-    plants_rows = data.sqlite__plants_get()
+    plants_rows = masterize_utils.masterize_plants_get_all()
     # print(rows[0])
     # print(plants_rows[0])
     # quit()

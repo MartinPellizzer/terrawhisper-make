@@ -22,6 +22,9 @@ def observations_table_plants_taxonomies_add():
         print(f'{i}/{len(input_filenames)}')
         input_filepath = f'{input_folderpath}/{input_filename}'
         input_data = io.json_read(input_filepath)
+        # if input_data['wcvp_taxon_name'] == 'Tabernaemontana markgrafiana':
+            # print(json.dumps(input_data, indent=4))
+            # quit()
         # print(json.dumps(input_data, indent=4))
         # quit()
         all_data.append(input_data)
@@ -63,6 +66,10 @@ def observations_table_plants_taxonomies_add():
     rows = conn.execute("SELECT * FROM plants_taxonomies")
     for row in list(rows)[:10]:
         print(row)
+        # quit()
+        # if row[1] == 'Tabernaemontana markgrafiana':
+            # print(row)
+            # quit()
     conn.close()
 
 def run():

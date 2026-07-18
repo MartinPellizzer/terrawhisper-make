@@ -21,8 +21,6 @@ def observations_table_plants_chemicals_add():
         input_data = io.json_read(input_filepath)
         for input_item in input_data:
             all_data.append(input_item)
-            print(json.dumps(input_item, indent=4))
-            quit()
     ###
     conn = sqlite3.connect(db_filepath)
     cur = conn.cursor()
@@ -53,13 +51,10 @@ def observations_table_plants_activities_add():
     input_filenames = os.listdir(input_folderpath)
     all_data = []
     for i, input_filename in enumerate(input_filenames[:]):
-        print(f'{i}/{len(input_filenames)}')
+        # print(f'{i}/{len(input_filenames)}')
         input_filepath = f'{input_folderpath}/{input_filename}'
         input_data = io.json_read(input_filepath)
         for input_item in input_data:
-            if input_item['plant_name'].lower() == 'acacia caven':
-                print(input_item)
-                quit() 
             all_data.append(input_item)
     ###
     conn = sqlite3.connect(db_filepath)
@@ -72,7 +67,7 @@ def observations_table_plants_activities_add():
         """,
         [
             (
-                item.get("plant_name").capitalize(),
+                item.get("wcvp_taxon_name").capitalize(),
                 item.get("drduke_activity_name"),
                 item.get("journal_title"),
             )
@@ -80,11 +75,9 @@ def observations_table_plants_activities_add():
         ]
     )
     conn.commit()
-
     rows = conn.execute("SELECT * FROM plants_activities")
     for row in list(rows)[:10]:
         print(row)
-
     conn.close()
 
 def observations_table_plants_diseases_add():
@@ -134,7 +127,7 @@ def test():
     conn.close()
 
 def run():
-    print('observe >> pubmed')
+    print('OBSERVE >> pubmed')
 
     # observations_table_plants_chemicals_add()
     observations_table_plants_activities_add()

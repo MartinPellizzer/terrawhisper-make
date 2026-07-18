@@ -44,7 +44,7 @@ def observations_table_plants_distribution_add():
 
             cursor = conn_wcvp.execute("""
                 SELECT taxon_name
-                FROM wcvp
+                FROM plants_names
                 WHERE plant_name_id = ?
             """, (plant_name_id,))
             row = cursor.fetchone()

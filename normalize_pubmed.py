@@ -102,13 +102,13 @@ def normalize_plants_diseases():
 def run():
     print('normalize >> pubmed')
 
-    # start = time.perf_counter()
-    # normalize_plants_chemicals()
-    # print(f'normalize_plants_chemicals() - execution time: ', time.perf_counter() - start)
+    start = time.perf_counter()
+    normalize_plants_chemicals()
+    print(f'normalize_plants_chemicals() - execution time: ', time.perf_counter() - start)
 
-    # start = time.perf_counter()
-    # normalize_plants_activities()
-    # print(f'normalize plants_activities() - execution time: ', time.perf_counter() - start)
+    start = time.perf_counter()
+    normalize_plants_activities()
+    print(f'normalize plants_activities() - execution time: ', time.perf_counter() - start)
 
     start = time.perf_counter()
     normalize_plants_diseases()

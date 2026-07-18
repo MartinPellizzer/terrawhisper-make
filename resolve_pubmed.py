@@ -10,7 +10,7 @@ from lib import data
 
 import resolve_utils
 
-def resolve_chemicals():
+def pubmed_chemicals():
     input_foldername = f'normalize'
     output_foldername = f'resolve'
     ###
@@ -23,8 +23,8 @@ def resolve_chemicals():
     os.makedirs(output_folderpath, exist_ok=True)
     ###
     wcvp_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/reference/wcvp/wcvp.db'
-    wcvp_conn = sqlite3.connect(wcvp_folderpath)
     pubchem_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/reference/pubchem/pubchem.db'
+    wcvp_conn = sqlite3.connect(wcvp_folderpath)
     pubchem_conn = sqlite3.connect(pubchem_folderpath)
     i = 0
     for input_filename in input_filenames[i:]:
@@ -43,13 +43,7 @@ def resolve_chemicals():
             chemical_name_normalized = input_item['chemical_name_normalized']
             if chemical_name_normalized == 'null': continue
             ### RESOLVE PLANT (WCVP)
-            wcvp_cur = wcvp_conn.cursor()
-            wcvp_cur.execute("""
-                SELECT *
-                FROM wcvp
-                WHERE taxon_name_normalized = ?
-            """, (plant_name_normalized,))
-            wcvp_row = wcvp_cur.fetchone()
+            wcvp_row = resolve_utils.resolve_plant(wcvp_conn, plant_name_normalized)
             ### RESOLVE CHEMICAL (PUBCHEM)
             pubchem_cur = pubchem_conn.cursor()
             pubchem_cur.execute("""
@@ -59,18 +53,16 @@ def resolve_chemicals():
             """, (chemical_name_normalized,))
             pubchem_row = pubchem_cur.fetchone()
             if wcvp_row and pubchem_row:
-                wcvp_ipni_id = wcvp_row[0]
-                wcvp_powo_id = wcvp_row[1]
-                wcvp_taxon_name = wcvp_row[2]
-                wcvp_taxon_name_normalized = wcvp_row[3]
-                wcvp_taxon_rank = wcvp_row[4]
-                wcvp_taxon_status = wcvp_row[5]
-                wcvp_family = wcvp_row[6]
-                wcvp_geographic_area = wcvp_row[7]
-                wcvp_climate_description = wcvp_row[8]
+                wcvp_plant_name_id = wcvp_row[0]
+                wcvp_accepted_plant_name_id = wcvp_row[1]
+                wcvp_taxon_status = wcvp_row[2]
+                wcvp_taxon_name = wcvp_row[3]
+                wcvp_taxon_name_normalized = wcvp_row[4]
+                ###
                 pubchem_cid = pubchem_row[0]
                 pubchem_chemical_name = pubchem_row[1]
                 pubchem_chemical_name_normalized = pubchem_row[2]
+                ###
                 resolved_item_new = resolved_item
                 resolved_item_new['wcvp_taxon_name'] = wcvp_taxon_name
                 resolved_item_new['wcvp_taxon_name_normalized'] = wcvp_taxon_name_normalized
@@ -78,6 +70,8 @@ def resolve_chemicals():
                 resolved_item_new['pubchem_chemical_name'] = pubchem_chemical_name
                 resolved_item_new['pubchem_chemical_name_normalized'] = pubchem_chemical_name_normalized
                 resolved_data.append(resolved_item_new)
+                # print(json.dumps(resolved_item_new, indent=True))
+                # quit()
         if resolved_data != []:
             io.json_write(output_filepath, resolved_data)
     pubchem_conn.close()
@@ -118,13 +112,7 @@ def resolve_activities():
             activity_name_normalized = input_item['activity_name_normalized']
             if activity_name_normalized == 'null': continue
             ### RESOLVE PLANT (WCVP)
-            wcvp_cur = wcvp_conn.cursor()
-            wcvp_cur.execute("""
-                SELECT *
-                FROM wcvp
-                WHERE taxon_name_normalized = ?
-            """, (plant_name_normalized,))
-            wcvp_row = wcvp_cur.fetchone()
+            wcvp_row = resolve_utils.resolve_plant(wcvp_conn, plant_name_normalized)
             ### RESOLVE ACTIVITY (DRDIKE)
             drduke_cur = drduke_conn.cursor()
             drduke_cur.execute("""
@@ -134,15 +122,12 @@ def resolve_activities():
             """, (activity_name_normalized,))
             drduke_row = drduke_cur.fetchone()
             if wcvp_row and drduke_row:
-                wcvp_ipni_id = wcvp_row[0]
-                wcvp_powo_id = wcvp_row[1]
-                wcvp_taxon_name = wcvp_row[2]
-                wcvp_taxon_name_normalized = wcvp_row[3]
-                wcvp_taxon_rank = wcvp_row[4]
-                wcvp_taxon_status = wcvp_row[5]
-                wcvp_family = wcvp_row[6]
-                wcvp_geographic_area = wcvp_row[7]
-                wcvp_climate_description = wcvp_row[8]
+                wcvp_plant_name_id = wcvp_row[0]
+                wcvp_accepted_plant_name_id = wcvp_row[1]
+                wcvp_taxon_status = wcvp_row[2]
+                wcvp_taxon_name = wcvp_row[3]
+                wcvp_taxon_name_normalized = wcvp_row[4]
+                ###
                 drduke_activity_name = drduke_row[0]
                 drduke_activity_name_normalized = drduke_row[1]
                 resolved_item_new = resolved_item
@@ -151,6 +136,12 @@ def resolve_activities():
                 resolved_item_new['drduke_activity_name'] = drduke_activity_name
                 resolved_item_new['drduke_activity_name_normalized'] = drduke_activity_name_normalized
                 resolved_data.append(resolved_item_new)
+                if 'abacopteris' in plant_name_normalized:
+                    print(plant_name_normalized)
+                    print(wcvp_row)
+                    print(json.dumps(resolved_data, indent=4))
+                    # quit()
+                # quit()
         if resolved_data != []:
             io.json_write(output_filepath, resolved_data)
     wcvp_conn.close()
@@ -191,13 +182,7 @@ def resolve_diseases():
             disease_name_normalized = input_item['disease_name_normalized']
             if disease_name_normalized == 'null': continue
             ### RESOLVE PLANT (WCVP)
-            wcvp_cur = wcvp_conn.cursor()
-            wcvp_cur.execute("""
-                SELECT *
-                FROM wcvp
-                WHERE taxon_name_normalized = ?
-            """, (plant_name_normalized,))
-            wcvp_row = wcvp_cur.fetchone()
+            wcvp_row = resolve_utils.resolve_plant(wcvp_conn, plant_name_normalized)
             ### RESOLVE DISEASE (MESH)
             mesh_cur = mesh_conn.cursor()
             mesh_cur.execute("""
@@ -207,15 +192,12 @@ def resolve_diseases():
             """, (disease_name_normalized,))
             mesh_row = mesh_cur.fetchone()
             if wcvp_row and mesh_row:
-                wcvp_ipni_id = wcvp_row[0]
-                wcvp_powo_id = wcvp_row[1]
-                wcvp_taxon_name = wcvp_row[2]
-                wcvp_taxon_name_normalized = wcvp_row[3]
-                wcvp_taxon_rank = wcvp_row[4]
-                wcvp_taxon_status = wcvp_row[5]
-                wcvp_family = wcvp_row[6]
-                wcvp_geographic_area = wcvp_row[7]
-                wcvp_climate_description = wcvp_row[8]
+                wcvp_plant_name_id = wcvp_row[0]
+                wcvp_accepted_plant_name_id = wcvp_row[1]
+                wcvp_taxon_status = wcvp_row[2]
+                wcvp_taxon_name = wcvp_row[3]
+                wcvp_taxon_name_normalized = wcvp_row[4]
+                ###
                 mesh_activity_name = mesh_row[0]
                 mesh_activity_name_normalized = mesh_row[1]
                 resolved_item_new = resolved_item
@@ -232,15 +214,15 @@ def resolve_diseases():
 def run():
     print('RESOLVE >> pubmed')
 
-    # start = time.perf_counter()
-    resolve_chemicals()
-    # print(f'resolve chemicals() - execution time: ', time.perf_counter() - start)
-
-    # start = time.perf_counter()
-    resolve_activities()
-    # print(f'resolve activities() - execution time: ', time.perf_counter() - start)
+    start = time.perf_counter()
+    # pubmed_chemicals()
+    print(f'pubmed chemicals() - execution time: ', time.perf_counter() - start)
 
     start = time.perf_counter()
-    resolve_diseases()
+    resolve_activities()
+    print(f'resolve activities() - execution time: ', time.perf_counter() - start)
+
+    start = time.perf_counter()
+    # resolve_diseases()
     print(f'resolve diseases() - execution time: ', time.perf_counter() - start)
 

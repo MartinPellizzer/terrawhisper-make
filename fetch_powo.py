@@ -15,6 +15,9 @@ from selenium.common.exceptions import TimeoutException
 from lib import g
 from lib import io
 
+import reference_utils
+import masterize_utils
+
 datasets_folderpath = f'{g.SSOT_FOLDERPATH}/datasets'
 
 def sqlite_table_master_plants_get():
@@ -34,10 +37,17 @@ def download_html_form_master():
     driver_service = webdriver.FirefoxService(executable_path=geckodriver_path)
     driver = webdriver.Firefox(service=driver_service)
 
-    plants_rows = sqlite_table_master_plants_get()
+    plants_rows = masterize_utils.masterize_plants_get_all()
     for i, plant_row in enumerate(plants_rows):
         print(f'{i}/{len(plants_rows)}')
-        powo_id = plant_row[3]
+        plant_name_normalized = plant_row[2]
+        wcvp_row = reference_utils.wcvp_plant_name_get_row(plant_name_normalized)
+        powo_id = wcvp_row[5]
+        print(plant_row)
+        print(wcvp_row)
+        print(powo_id)
+        # quit()
+        # powo_id = plant_row[3]
         powo_html_filepath = f'{g.DATA_FOLDERPATH}/fetch/powo/html/{powo_id}.html'
         if not os.path.exists(powo_html_filepath):
             url = f"https://powo.science.kew.org/api/2/taxon/urn:lsid:ipni.org:names:{powo_id}"

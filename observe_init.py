@@ -7,7 +7,6 @@ import sqlite3
 from lib import g
 from lib import io
 
-
 def observations_table_plants_taxonomies_create(regen=False):
     output_foldername = 'observe'
     output_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/{output_foldername}'
@@ -161,8 +160,8 @@ def run():
     print('OBSERVE >> init')
 
     ### TODO: do a clean up by destroying db
-    # observations_table_plants_taxonomies_create(regen=True)
-    observations_table_plants_distribution_create(regen=True)
+    observations_table_plants_taxonomies_create(regen=True)
+    # observations_table_plants_distribution_create(regen=True)
     # observations_table_plants_chemicals_create(regen=True)
     # observations_table_plants_activities_create(regen=True)
     # observations_table_plants_diseases_create(regen=True)

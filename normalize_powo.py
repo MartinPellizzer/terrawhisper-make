@@ -17,6 +17,8 @@ def normalize_plants():
     ###
     input_folderpath = f'{g.DATA_FOLDERPATH}/{input_foldername}/{source_foldername}/json'
     output_folderpath = f'{g.DATA_FOLDERPATH}/{output_foldername}/{source_foldername}/json'
+    try: shutil.rmtree(output_folderpath)
+    except: pass
     io.folders_recursive_gen(output_folderpath)
     input_filenames = os.listdir(input_folderpath)
     i = 0
@@ -30,9 +32,11 @@ def normalize_plants():
         input_data['taxon_name'] = taxon_name
         input_data['taxon_name_normalized'] = taxon_name_normalized
         output_filepath = f'{output_folderpath}/{taxon_name_normalized}.json'
-        # print(json.dumps(input_data, indent=4))
-        # quit()
         io.json_write(output_filepath, input_data)
+        if input_data['taxon_name'] == 'Tabernaemontana markgrafiana':
+            print(output_filepath)
+            print(json.dumps(input_data, indent=4))
+            # quit()
         # quit()
 
 def run():
