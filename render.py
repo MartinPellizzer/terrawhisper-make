@@ -8,6 +8,7 @@ from lorem_text import lorem
 
 from lib import g
 from lib import io
+from lib import llm
 from lib import data
 from lib import polish
 from lib import sections
@@ -17,6 +18,8 @@ import normalize_utils
 import masterize_utils
 
 shutil.copy2('styles.css', f'{g.website_folderpath}/styles.css')
+
+model_filepath = '/home/ubuntu/vault-tmp/llm/gemma-4-26B-A4B-it-UD-Q4_K_XL.gguf'
 
 def sqlite_table_master_plants_get():
     db_filepath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/masterize/master.db'
@@ -44,10 +47,6 @@ def sqlite_table_observations_plants_activities_get():
 
 def plant_listing_page_gen_new(plant_name):
     plant_data = io.json_read(f'{g.VAULT_FOLDERPATH}/terrawhisper/data/compile/herbs/{plant_name}.json')
-    if plant_data['plant_canonical_name'] == 'Acaena magellanica':
-        print(plant_data)
-        quit()
-    return
     # print(json.dumps(plant_data, indent=4))
 
     plant_taxon_name_slug = polish.sluggify(plant_name)
@@ -75,6 +74,30 @@ def plant_listing_page_gen_new(plant_name):
     if plant_data['taxonomies'] != []: hero_taxonomy = plant_data['taxonomies'][0]['family'].title()
     else: hero_taxonomy = 'Not available'
                     # <p>Scientific resources: Moderate (★★★☆☆)</p>
+    ### LLM INTRO
+    json_article_filepath = f'''{g.DATA_FOLDERPATH}/enhance/{plant_taxon_name_slug}.json'''
+    json_article = io.json_read(json_article_filepath, create=True)
+    regen = False
+    key = f'intro'
+    if key not in json_article: json_article[key] = ''
+    if regen: json_article[key] = ''
+    if json_article[key] == '':
+        prompt = f'''
+            Write 50 words for an introduction to the following medicinal plant: {plant_name}.
+            Start the reply with the following words: {plant_name}, commonly known as 
+        '''.strip()
+        print(prompt)
+        # quit()
+        reply = llm.reply(prompt, model_filepath)
+        if '</think>' in reply:
+            reply = reply.split('</think>')[1].strip()
+        reply = polish.vanilla(reply)
+        json_article[key] = reply
+        io.json_write(json_article_filepath, json_article)
+    intro_text = json_article[key]
+                    # box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+                    # <p>Common name</p>
+                    # <li>Common names</li>
     html_hero = f'''
         <section
             style="
@@ -82,7 +105,6 @@ def plant_listing_page_gen_new(plant_name):
         >
             {sections.breadcrumbs_explorer(url_slug)}
             <div class="m-flex" style="
-                    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
                 ">
                 <div style="flex: 2;">
                     <img 
@@ -94,13 +116,11 @@ def plant_listing_page_gen_new(plant_name):
                         "
                     >
                 </div>
-                <div style="flex: 3; padding: 4.8rem; 2.4rem;">
+                <div style="flex: 3; padding: 2.4rem;">
                     <h1>{plant_name}</h1>
-                    <p>Common name</p>
-                    <p>{lorem.words(48)}</p>
+                    <p>{intro_text}</p>
                     <ul style="list-style: none;">
                         <li><span style="font-weight: 700;">Scientific name:</span> <strong style="font-weight: 400;">{plant_name}</strong></li>
-                        <li>Common names</li>
                         <li><span style="font-weight: 700;">Family:</span> <strong style="font-weight: 400;">{hero_taxonomy}</strong></li>
                         <li><span style="font-weight: 700;">Native range:</span> <strong style="font-weight: 400;">{hero_distribution}</strong></li>
                     </ul>
@@ -116,66 +136,123 @@ def plant_listing_page_gen_new(plant_name):
     taxonomies = plant_data['taxonomies']
     if taxonomies != []:
         taxonomy = taxonomies[0]
+        ### llm
+        json_article_filepath = f'''{g.DATA_FOLDERPATH}/enhance/{plant_taxon_name_slug}.json'''
+        json_article = io.json_read(json_article_filepath, create=True)
+        regen = False
+        key = f'taxonomy'
+        if key not in json_article: json_article[key] = ''
+        if regen: json_article[key] = ''
+        if json_article[key] == '':
+            prompt = f'''
+                Write a paragraph in 2-4 sentences about the taxonomy of the following medicinal plant: {plant_name}.
+                Use the following taxonomical classification:
+                Kingdom: {taxonomy['kingdom']}
+                Phylum: {taxonomy['phylum']}
+                Class: {taxonomy['class']}
+                Subclass: {taxonomy['subclass']}
+                Order: {taxonomy['order']}
+                Family: {taxonomy['family']}
+                Genus: {taxonomy['genus']}
+                Start the reply with the following words: This plant 
+            '''.strip()
+            print(prompt)
+            reply = llm.reply(prompt, model_filepath)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            json_article[key] = reply
+            io.json_write(json_article_filepath, json_article)
+        taxonomy_text = json_article[key]
+        ### table
         html_table_body = f''
         html_table_body += f'''<tbody>'''
         html_table_body += f'''
             <tr>
                 <td>Kingdom</td>
                 <td>{taxonomy['kingdom']}</td>
+                <td>WCVP</td>
             </tr>
             <tr>
                 <td>Phylum</td>
                 <td>{taxonomy['phylum']}</td>
+                <td>WCVP</td>
             </tr>
             <tr>
                 <td>Class</td>
                 <td>{taxonomy['class']}</td>
+                <td>WCVP</td>
             </tr>
             <tr>
                 <td>Subclass</td>
                 <td>{taxonomy['subclass']}</td>
+                <td>WCVP</td>
             </tr>
             <tr>
                 <td>Order</td>
                 <td>{taxonomy['order']}</td>
+                <td>WCVP</td>
             </tr>
             <tr>
                 <td>Family</td>
                 <td>{taxonomy['family']}</td>
+                <td>WCVP</td>
             </tr>
             <tr>
                 <td>Genus</td>
                 <td>{taxonomy['genus']}</td>
+                <td>WCVP</td>
             </tr>
         '''
         html_table_body += f'''</tbody>'''
         html_article += f'''
             <section>
                 <h2>
-                    Classification
+                    Taxonomical Classification
                 </h2>
-                <h3>
-                    Taxonomy
-                </h3>
+                <p>{taxonomy_text}</p>
                 <table>
                   <thead>
                     <tr>
                       <th>Rank</th>
                       <th>Classification</th>
+                      <th>Source</th>
                     </tr>
                   </thead>
                   {html_table_body}
                 </table>
-                <h3>
-                    Names
-                </h3>
             </section>
         '''
 
     ### DISTRIBUTION
     distributions = plant_data['distribution']
     if distributions != []:
-        distribution = distributions[0]
+        ### llm
+        json_article_filepath = f'''{g.DATA_FOLDERPATH}/enhance/{plant_taxon_name_slug}.json'''
+        json_article = io.json_read(json_article_filepath, create=True)
+        regen = False
+        key = f'distribution'
+        if key not in json_article: json_article[key] = ''
+        if regen: json_article[key] = ''
+        if json_article[key] == '':
+            distribution_prompt = ''
+            for distribution in distributions[:5]:
+                distribution_prompt += f'''{distribution['region']}: {distribution['area']}\n'''
+            prompt = f'''
+                Write a paragraph in 5 sentences about the geographical distribution of the following medicinal plant: {plant_name}.
+                Use the following geographical distribution:
+                {distribution_prompt}
+                Start the reply with the following words: This plant 
+            '''.strip()
+            print(prompt)
+            reply = llm.reply(prompt, model_filepath)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            json_article[key] = reply
+            io.json_write(json_article_filepath, json_article)
+        distribution_text = json_article[key]
+        ###
         html_table_body = f''
         html_table_body += f'''<tbody>'''
         row_num = 10
@@ -187,7 +264,6 @@ def plant_listing_page_gen_new(plant_name):
             area = distribution['area']
             html_table_body += f'''
             <tr>
-                <td>{continent}</td>
                 <td>{region}</td>
                 <td>{area}</td>
                 <td>WCVP</td>
@@ -198,10 +274,10 @@ def plant_listing_page_gen_new(plant_name):
                 <h2>
                     Distribution
                 </h2>
+                <p>{distribution_text}</p>
                 <table>
                   <thead>
                     <tr>
-                      <th>Continent</th>
                       <th>Region</th>
                       <th>Area</th>
                       <th>Source</th>
@@ -254,11 +330,11 @@ def plant_listing_page_gen_new(plant_name):
                     Chemicals
                 </h2>
                 <p>
-                    {plant_name} has {len(plant_data['chemicals'])} reported phytochemicals identified across {source_tot} scientific publications and several other databases. The most consistently reported compounds include {chemicals_p_str}.
+                    {plant_name} has {len(plant_data['chemicals'])} reported phytochemicals identified across {source_tot} scientific publications and several other databases. The most consistently reported chemicals include {chemicals_p_str}.
                 </p>
                 <dl>
                     <div>
-                        <dt>Total compounds</dt>
+                        <dt>Total chemicals</dt>
                         <dd>{len(plant_data['chemicals'])}</dd>
                     </div>
                     <div>
@@ -316,7 +392,7 @@ def plant_listing_page_gen_new(plant_name):
                     Activities
                 </h2>
                 <p>
-                    {plant_name} has {len(plant_data['activities'])} reported activities identified across {source_tot} scientific publications and several other databases. The most consistently reported compounds include {activities_p_str}.
+                    {plant_name} has {len(plant_data['activities'])} reported activities identified across {source_tot} scientific publications and several other databases. The most consistently reported activities include {activities_p_str}.
                 </p>
                 <dl>
                     <div>
@@ -378,11 +454,11 @@ def plant_listing_page_gen_new(plant_name):
                     Medicinal Uses
                 </h2>
                 <p>
-                    {plant_name} has {len(plant_data['diseases'])} reported treated diseases identified across {source_tot} scientific publications and several other databases. The most consistently reported compounds include {diseases_p_str}.
+                    {plant_name} has {len(plant_data['diseases'])} reported medicinal uses identified across {source_tot} scientific publications and several other databases. The most consistently reported uses include {diseases_p_str}.
                 </p>
                 <dl>
                     <div>
-                        <dt>Total diseases</dt>
+                        <dt>Total uses</dt>
                         <dd>{len(plant_data['diseases'])}</dd>
                     </div>
                     <div>
@@ -390,11 +466,11 @@ def plant_listing_page_gen_new(plant_name):
                         <dd>{source_tot}</dd>
                     </div>
                 </dl>
-                <h3>Most Reported Diseases</h3>
+                <h3>Most Reported Uses</h3>
                 <table>
                   <thead>
                     <tr>
-                      <th>Condition</th>
+                      <th>Use</th>
                       <th>Sources</th>
                       <th>Confidence</th>
                     </tr>
@@ -410,12 +486,8 @@ def plant_listing_page_gen_new(plant_name):
     head_html = components.html_head(
         meta_title, meta_description, css='/styles.css', canonical=canonical_html
     )
-    html = f''' 
-        <!DOCTYPE html>
-        <html lang="en">
-        {head_html}
-        <body>
-            {sections.header_dark()}
+
+    '''
             <main class="container-xl listing m-flex" style="gap: 4.8rem; margin-top: 4.8rem;">
                 <div style="flex: 3;">
                     {html_article}
@@ -423,6 +495,16 @@ def plant_listing_page_gen_new(plant_name):
                 <div style="flex: 1;">
                     {sidebar_html}
                 </div>
+            </main>
+    '''
+    html = f''' 
+        <!DOCTYPE html>
+        <html lang="en">
+        {head_html}
+        <body>
+            {sections.header_dark()}
+            <main class="container-lg listing" style="margin-top: 4.8rem;">
+                {html_article}
             </main>
             {sections.footer()}
         </body>

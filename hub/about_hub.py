@@ -3,38 +3,119 @@ from lib import components
 from lib import sections
 
 def gen():
-    html_article = f'''
-    <section class="container-xl" style="margin-top: 9.6rem; margin-bottom: 9.6rem;">
-        <div class="m-flex" style="gap: 6.4rem;">
-            <div style="flex: 1;">
-                <p>Dear Apothecary,</p>
-                <p>Welcome to Terra Whisper.</p>
-                <p>I write to you from a quiet place among the Alpine Mountains, where wind moves through stone corridors and old pine forests hold more memory than any library I have ever known. My name is Klaus Randell, and I am an apothecary by trade and by calling. For many years I have studied plants not only as medicine, but as language-living systems that speak through chemistry, tradition, and time.</p>
-                <p>Terra Whisper was created as an attempt to gather that language into one place.</p>
-                <p>This website exists as a living materia medica of more than 10,000 medicinal plants. It is not meant to replace traditional knowledge, nor to simplify it. Instead, it is an ever-growing archive designed to collect, compare, and preserve the widest possible range of herbal information available to us today. My goal is simple in intention, though vast in scope: to aggregate as much knowledge about herbs as can responsibly be gathered, across cultures, disciplines, and eras.</p>
-                <p>To achieve this, Terra Whisper draws from sources across the open web. This includes ethnobotanical records, historical apothecary texts, and modern scientific literature such as PubMed, as well as global botanical institutions like Plants of the World Online. Each source is treated as a fragment of a larger mosaic rather than a final authority.</p>
-                <p>Because of this diversity of input, every piece of information you find here is accompanied by a reliability score. This score reflects how consistent, well-supported, and cross-verified we consider the source material to be. It is important to understand that this score does not claim to define absolute truth. Instead, it indicates confidence based on evidence quality, consensus, and traceability. Herbal knowledge is often contextual, and certainty is rarely absolute.</p>
-                <p>In time, I will publish a full editorial guideline explaining exactly how these scores are determined, including the criteria, weighting, and limitations involved. Transparency is essential to the integrity of this work, and I do not wish for Terra Whisper to become a black box of curated belief.</p>
-                <p>This project is not finished, nor will it ever be. It is a growing field rather than a completed structure.</p>
-                <p>If you are reading this, consider yourself part of its early soil.</p>
-                <p>With respect from the mountains,<br>Klaus Randell</p>
-            </div>
-            <div style="flex: 1;">
-                <img src="/images/about-us/klaus-randell.jpg">
-            </div>
-        </div>
-    </section>
-    '''
-
-    meta_title = f'''About Us | Terra Whisper'''
-    meta_description = f''''''
+    meta_title = f'''About Terra Whisper'''
+    meta_description = f'''Learn about Terra Whisper, a growing directory dedicated to documenting medicinal herbs from around the world.'''
     html = f'''
         <!DOCTYPE html>
         <html lang="en">
         {components.html_head(meta_title, meta_description, css='/style.css')}
         <body class="article">
             {sections.header_default()}
-            {html_article}
+
+            <body style="
+            margin:0;
+            font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+            background:#fff;
+            color:#222;
+            line-height:1.7;
+            ">
+
+            <main style="
+            max-width:900px;
+            margin:auto;
+            padding:60px 20px;
+            ">
+
+            <h1 style="
+            font-size:42px;
+            margin-bottom:20px;
+            ">
+            About Terra Whisper
+            </h1>
+
+            <p>
+
+            Terra Whisper is an independent project dedicated to documenting
+            medicinal herbs from around the world. Our goal is to create a
+            comprehensive, well-organized reference covering medicinal plants,
+            their botanical classification, traditional uses, preparation methods,
+            safety information and scientific research.
+
+            </p>
+
+            <h2>Our Mission</h2>
+
+            <p>
+
+            We believe reliable information about medicinal plants should be easy
+            to explore and understand. Terra Whisper aims to become a trusted
+            knowledge base that organizes information into clear, structured herb
+            profiles rather than scattered articles.
+
+            </p>
+
+            <h2>What You'll Find</h2>
+
+            <ul>
+
+            <li>Medicinal herb profiles</li>
+
+            <li>Botanical taxonomy</li>
+
+            <li>Common and scientific names</li>
+
+            <li>Traditional uses across different cultures</li>
+
+            <li>Preparation methods</li>
+
+            <li>Safety information</li>
+
+            <li>Scientific references when available</li>
+
+            </ul>
+
+            <h2>Our Approach</h2>
+
+            <p>
+
+            Each herb is documented using a consistent structure to make information
+            easy to navigate and compare. As the directory grows, new herbs and
+            additional references are continually added to expand the collection.
+
+            </p>
+
+            <h2>Editorial Principles</h2>
+
+            <ul>
+
+            <li>Accuracy over popularity.</li>
+
+            <li>Clear distinction between traditional use and scientific evidence.</li>
+
+            <li>Continuous review and improvement.</li>
+
+            <li>Organized, structured information.</li>
+
+            </ul>
+
+            <h2>Disclaimer</h2>
+
+            <p>
+
+            The information published on Terra Whisper is provided for educational
+            and informational purposes only. It is not intended to diagnose,
+            treat, cure or prevent any disease and should not replace professional
+            medical advice. Always consult a qualified healthcare professional
+            before using medicinal herbs, especially if you are pregnant, nursing,
+            taking medication or managing a medical condition.
+
+            </p>
+
+            </main>
+
+
+            </body>
+            </html>
             {sections.footer()}
         </body>
         </html>

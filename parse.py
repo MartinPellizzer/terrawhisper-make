@@ -6,6 +6,6 @@ import parse_drduke
 
 # parse_wcvp.run()
 # parse_ipni.run()
-parse_powo.run()
-# parse_pubmed.run()
+# parse_powo.run()
+parse_pubmed.run()
 # parse_drduke.run()

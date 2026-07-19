@@ -28,6 +28,20 @@ body {
     padding-right: 1.6rem;
 }
 
+.container-lg {
+    max-width: 99.6rem;
+    margin: 0 auto;
+    padding-left: 1.6rem;
+    padding-right: 1.6rem;
+}
+
+.container-md {
+    max-width: 76.8rem;
+    margin: 0 auto;
+    padding-left: 1.6rem;
+    padding-right: 1.6rem;
+}
+
 h1 {
     font-size: 7.2rem;
     line-height: 1.2;
@@ -58,31 +72,48 @@ img {
 /*********************************************/
 
 @media screen and (min-width: 768px) {
-    .grid-2 {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .grid-3 {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-    }
-
-    .grid-4 {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-    }
-
-    .grid-5 {
-        display: grid;
-        grid-template-columns: repeat(5, 1fr);
-    }
 
     .m-flex {
         display: flex;
     }
+}
 
+.grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}
 
+.grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.grid-4 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.grid-5 {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+}
+
+@media screen and (max-width: 768px) {
+    .grid-2 {
+        grid-template-columns: repeat(1, 1fr);
+    }
+
+    .grid-3 {
+        grid-template-columns: repeat(1, 1fr);
+    }
+
+    .grid-4 {
+        grid-template-columns: repeat(1, 1fr);
+    }
+
+    .grid-5 {
+        grid-template-columns: repeat(1, 1fr);
+    }
 }
 
 /********************************************/
@@ -305,6 +336,16 @@ footer span {
     color: #111; 
 }
 
+.explorer-layout {
+    display: flex;
+}
+
+@media (max-width: 768px) {
+  .explorer-layout {
+    flex-direction: column-reverse;
+  }
+}
+
 .explorer .pagination {
     margin-top: 4.8rem;
 }
@@ -351,6 +392,16 @@ footer span {
 @media screen and (max-width: 768px) {
     .explorer-hero {
         flex-direction: column;
+    }
+}
+
+.explorer-card-title {
+    font-size: 1.8rem;
+}
+
+@media screen and (max-width: 768px) {
+    .explorer-card-title {
+        font-size: 2.4rem;
     }
 }
 
