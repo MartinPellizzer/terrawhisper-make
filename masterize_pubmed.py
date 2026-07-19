@@ -137,6 +137,45 @@ def master_table_activities_add():
         print(row)
     conn.close()
 
+def master_table_chemicals_add():
+    input_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/resolve/pubmed/chemicals/json'
+    output_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/masterize'
+    ###
+    db_filepath = f'{output_folderpath}/master.db'
+    input_filenames = os.listdir(input_folderpath)
+    all_data = []
+    for i, input_filename in enumerate(input_filenames[:]):
+        print(f'{i}/{len(input_filenames)}')
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        input_data = io.json_read(input_filepath)
+        for input_item in input_data:
+            all_data.append({
+                'chemical_name': input_item['chemical_name'],
+                'chemical_name_normalized': input_item['chemical_name_normalized'],
+            })
+    all_data_query = [(
+        item.get("chemical_name"),
+        item.get("chemical_name_normalized"),
+    ) for item in all_data]
+    ###
+    conn = sqlite3.connect(db_filepath)
+    cur = conn.cursor()
+    print('start inserting...')
+    cur.executemany(
+        """
+        INSERT OR IGNORE INTO chemicals (
+            canonical_name,
+            canonical_name_normalized
+        )
+        VALUES (?, ?)
+        """, all_data_query
+    )
+    conn.commit()
+    rows = conn.execute("SELECT * FROM chemicals")
+    for row in list(rows)[:10]:
+        print(row)
+    conn.close()
+
 def master_table_diseases_add():
     input_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/resolve/pubmed/diseases/json'
     output_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/masterize'
@@ -191,8 +230,9 @@ def table_plants_peek():
 def run():
     print('masterize >> pubmed')
 
-    master_table_plants_add()
-    master_table_activities_add()
+    # master_table_plants_add()
+    # master_table_activities_add()
+    master_table_chemicals_add()
     # master_table_diseases_add()
 
     # table_plants_peek()

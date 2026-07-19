@@ -26,12 +26,15 @@ redo hero in homepage (no search bar)
 do categories in homepage
 change about us page, no klaus
 replace dummy data in topbar or /herbs page with real data
+replace h1 and title in topbar or /herbs page with real data
 reverse col direction of sidebar in /herbs page on mobile
 complete /herbs card with more info, not just name
 complete common names of /herbs/herb pages in hero cards from wikidata?
+maybe also "names" sub-section in classification section with wikidata?
 make tables only 3 col max (distribution) because more cols don't work on mobile?
 use llm to make all the intro sections (subordinate text) of headings in each herb (hero and sections)
 do sidebar of each herb with related herbs
+explore page "popular herbs" and "recently added"
 upload new website
 '''
 

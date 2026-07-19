@@ -8,6 +8,8 @@ from lib import polish
 from lib import components
 from lib import sections
 
+import masterize_utils
+
 def paragraph_format_1N1(text):
     sentences = text.strip().split('. ')
     print(sentences)
@@ -1099,6 +1101,7 @@ Learning herbal medicine means acquiring structured knowledge and practical skil
         </section>
     '''
 
+    """
     html_form = r'''
         <form 
             style="
@@ -1130,6 +1133,7 @@ Learning herbal medicine means acquiring structured knowledge and practical skil
             };
         </script>
     '''
+    """
 
     opacity = 0.5
     html_hero = f'''
@@ -1152,14 +1156,92 @@ Learning herbal medicine means acquiring structured knowledge and practical skil
                     ">
                     Explore medicinal herbs and improve your life
                 </h1>
-                {html_form}
                 <div style="margin-top: 3.2rem; gap: 1.6rem; text-align: center;">
                     {html_button_primary}
                 </div>
             </div>
         </section>
+
     '''
 
+    plants_rows = masterize_utils.masterize_plants_get_all()
+    activities_rows = masterize_utils.masterize_activities_get_all()
+    chemicals_rows = masterize_utils.masterize_chemicals_get_all()
+
+    ### STATS
+    plants_num = len(plants_rows)
+    activities_num = len(activities_rows)
+    chemicals_num = len(chemicals_rows)
+    studies_num = len(os.listdir(f'{g.VAULT_FOLDERPATH}/terrawhisper/data/fetch/pubmed/medicinal_plant/abstracts'))
+    stats_html = f'''
+        <ul style="display: flex; justify-content: center; list-style: none; margin-top: 4.8rem; gap: 2.4rem;">
+            <li>{plants_num} Plants</li> <span>|</span>
+            <li>{chemicals_num} Chemicals</li> <span>|</span>
+            <li>{activities_num} Activities</li> <span>|</span>
+            <li>{studies_num} Studies</li>
+        </ul>
+    '''
+
+    ### FEATURED
+    featured_herbs_html = ''
+    plants_data = [
+        {
+            'plant_id': row[0],
+            'plant_name_canonical': row[1],
+        }
+        for row in plants_rows
+    ]
+    cards_html = f''
+    for plant_item in plants_data[:4]:
+        plant_name = plant_item['plant_name_canonical']
+        plant_slug = polish.sluggify(plant_name)
+        plant_img_src = f'/images/herbs/{plant_slug}.jpg'
+        plant_filepath = f'{g.WEBSITE_FOLDERPATH}/images/herbs/{plant_slug}.jpg'
+        html_image = f'''
+            <img src="{plant_img_src}" alt="{plant_name}" style="margin-bottom: 1.6rem;">
+        '''
+        cards_html += f'''
+            <article>
+                <a href="/herbs/{plant_slug}.html" style="text-decoration: none; color: #111;">
+                    {html_image}
+                    <h3 style="font-size: 1.8rem;">{plant_name}</h3>
+                </a>
+            </article>
+        '''
+    featured_herbs_html += f'''
+        <div class="grid-4" style="gap: 2.4rem;">
+            {cards_html}
+        </div>
+    '''
+
+    ### RECENT
+    recent_herbs_html = ''
+    plants_data = [
+        {
+            'plant_id': row[0],
+            'plant_name_canonical': row[1],
+        }
+        for row in plants_rows
+    ]
+    list_html = f''
+    for plant_item in plants_data[:4]:
+        plant_name = plant_item['plant_name_canonical']
+        plant_slug = polish.sluggify(plant_name)
+        plant_filepath = f'{g.WEBSITE_FOLDERPATH}/images/herbs/{plant_slug}.jpg'
+        list_html += f'''
+            <li>
+                <a href="/herbs/{plant_slug}.html" style="text-decoration: none;">
+                    {plant_name}
+                </a>
+            </li>
+        '''
+    recent_herbs_html += f'''
+        <ul>
+            {list_html}
+        </ul>
+    '''
+
+    ### HTML
     meta_title = f'''Herbalism & Herbal Remedies for Natural Healing | Terra Whisper'''
     meta_description = f'''Learn herbalism from the ground up. Discover medicinal herbs, herbal remedies, apothecary methods, and beginner-friendly natural healing guides.'''
     html = f'''
@@ -1171,6 +1253,165 @@ Learning herbal medicine means acquiring structured knowledge and practical skil
             {html_hero}
             {html_article}
             {sections.footer()}
+        </body>
+        </html>
+    '''
+    html = f'''
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Terra Whisper | A Medicinal Herbs Directory With Botanical Information, Uses & Research</title>
+        <meta name="description" content="Browse 10.000+ medicinal herbs with botanical classification, chemical composition, bioactive actions, therapeutic uses and scientific research.">
+        {components.html_head(meta_title, meta_description, css='/style.css')}
+        </head>
+
+        <body style="
+        margin:0;
+        font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+        background:#fff;
+        color:#222;
+        line-height:1.7;
+        ">
+        {sections.header_dark()}
+
+        <main style="
+        max-width:1100px;
+        margin:auto;
+        padding:70px 20px;
+        ">
+
+        <section style="
+        max-width:760px;
+        margin:auto;
+        text-align:center;
+        ">
+
+        <h1 style="
+        font-size:46px;
+        margin-bottom:18px;
+        line-height:1.2;
+        ">
+
+        Medicinal Herbs Directory
+
+        </h1>
+
+        <p style="
+        font-size:20px;
+        color:#555;
+        margin-bottom:40px;
+        ">
+        Explore medicinal herbs from around the world with botanical classification, chemical composition, bioactive actions, therapeutic uses and scientific research.
+
+        </p>
+
+        <a href="/herbs.html"
+        style="
+        display:inline-block;
+        padding:14px 28px;
+        background:#111;
+        color:white;
+        text-decoration:none;
+        border-radius:6px;
+        font-weight:600;
+        ">
+
+        Browse All Herbs →
+
+        </a>
+
+        {stats_html}
+
+        </section>
+
+        <section style="
+        margin-top:90px;
+        ">
+
+        <h2 style="
+        font-size:30px;
+        margin-bottom:30px;
+        ">
+
+        Browse by Letter
+
+        </h2>
+
+        <div style="
+        display:flex;
+        flex-wrap:wrap;
+        gap:12px;
+        ">
+
+        <a href="/herbs/alphabet/a.html" style="text-decoration:none;color:#1d4d2f;">A</a>
+        <a href="/herbs/alphabet/b.html" style="text-decoration:none;color:#1d4d2f;">B</a>
+        <a href="/herbs/alphabet/c.html" style="text-decoration:none;color:#1d4d2f;">C</a>
+        <a href="/herbs/alphabet/d.html" style="text-decoration:none;color:#1d4d2f;">D</a>
+        <a href="/herbs/alphabet/e.html" style="text-decoration:none;color:#1d4d2f;">E</a>
+        <a href="/herbs/alphabet/f.html" style="text-decoration:none;color:#1d4d2f;">F</a>
+        <a href="/herbs/alphabet/g.html" style="text-decoration:none;color:#1d4d2f;">G</a>
+        <a href="/herbs/alphabet/h.html" style="text-decoration:none;color:#1d4d2f;">H</a>
+        <a href="/herbs/alphabet/i.html" style="text-decoration:none;color:#1d4d2f;">I</a>
+        <a href="/herbs/alphabet/j.html" style="text-decoration:none;color:#1d4d2f;">J</a>
+        <a href="/herbs/alphabet/k.html" style="text-decoration:none;color:#1d4d2f;">K</a>
+        <a href="/herbs/alphabet/l.html" style="text-decoration:none;color:#1d4d2f;">L</a>
+        <a href="/herbs/alphabet/m.html" style="text-decoration:none;color:#1d4d2f;">M</a>
+        <a href="/herbs/alphabet/n.html" style="text-decoration:none;color:#1d4d2f;">N</a>
+        <a href="/herbs/alphabet/o.html" style="text-decoration:none;color:#1d4d2f;">O</a>
+        <a href="/herbs/alphabet/p.html" style="text-decoration:none;color:#1d4d2f;">P</a>
+        <a href="/herbs/alphabet/q.html" style="text-decoration:none;color:#1d4d2f;">Q</a>
+        <a href="/herbs/alphabet/r.html" style="text-decoration:none;color:#1d4d2f;">R</a>
+        <a href="/herbs/alphabet/s.html" style="text-decoration:none;color:#1d4d2f;">S</a>
+        <a href="/herbs/alphabet/t.html" style="text-decoration:none;color:#1d4d2f;">T</a>
+        <a href="/herbs/alphabet/u.html" style="text-decoration:none;color:#1d4d2f;">U</a>
+        <a href="/herbs/alphabet/v.html" style="text-decoration:none;color:#1d4d2f;">V</a>
+        <a href="/herbs/alphabet/w.html" style="text-decoration:none;color:#1d4d2f;">W</a>
+        <a href="/herbs/alphabet/x.html" style="text-decoration:none;color:#1d4d2f;">X</a>
+        <a href="/herbs/alphabet/y.html" style="text-decoration:none;color:#1d4d2f;">Y</a>
+        <a href="/herbs/alphabet/z.html" style="text-decoration:none;color:#1d4d2f;">Z</a>
+
+        </div>
+
+        </section>
+
+        <section style="margin-top:90px;">
+            <h2 style="font-size:30px;margin-bottom:30px;">
+                Featured Herbs
+            </h2>
+            {featured_herbs_html}
+        </section>
+
+        <section style="
+            margin-top:90px;
+            max-width:850px;
+        ">
+            <h2>About Terra Whisper</h2>
+            <p style="margin-bottom: 1.6rem;">
+                The Terra Whisper Medicinal Herbs Directory is a comprehensive reference for medicinal
+                plants used in traditional and modern herbal medicine. Each herb profile
+                includes botanical information, taxonomy, common names, traditional uses,
+                preparation methods, safety considerations, active constituents and
+                scientific references where available.
+            </p>
+            <p>
+                Our goal is to build one of the most complete online resources for medicinal
+                herbs by documenting every medicinal plant and organizing reliable
+                information into a structured, interconnected botanical knowledge base.
+            </p>
+        </section>
+
+        <section style="margin-top:90px;">
+            <h2>Recently Added</h2>
+            {recent_herbs_html}
+        </section>
+
+        </main>
+
+        {sections.footer()}
+
         </body>
         </html>
     '''
