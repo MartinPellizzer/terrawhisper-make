@@ -27,35 +27,16 @@ def wikidata_qids():
         claim_taxon = claims['P225'][0]
         claim_taxon_value = claim_taxon['mainsnak']['datavalue']['value']
         ### LABELS (COMMON NAMES)
+        labels_data = []
         labels = input_data['labels']
-        if 'en' in labels:
-            labels_en = labels['en']['value']
-            if labels_en.lower().strip() == claim_taxon_value.lower().strip():
-                labels_en = None
-        else:
-            labels_en = None
+        for key, item in labels.items():
+            labels_data.append(item)
         ### ALIASES (COMMON NAMES)
+        aliases_data = []
         aliases = input_data['aliases']
-        if 'en' in aliases:
-            aliases_en = aliases['en'][0]['value']
-            if aliases_en.lower().strip() == claim_taxon_value.lower().strip():
-                aliases_en = None
-        else:
-            aliases_en = None
-        if 'es' in aliases:
-            aliases_es = aliases['es'][0]['value']
-            if aliases_es.lower().strip() == claim_taxon_value.lower().strip():
-                aliases_es = None
-        else:
-            aliases_es = None
+        for key, item in aliases.items():
+            aliases_data.append(item)
         ###
-        labels_data = [
-            {'language_code': 'en', 'language_name': 'English', 'language_value': labels_en},
-        ]
-        aliases_data = [
-            {'language_code': 'en', 'language_name': 'English', 'language_value': aliases_en},
-            {'language_code': 'es', 'language_name': 'Spanish', 'language_value': aliases_es},
-        ]
         output_filepath = f'{output_folderpath}/{input_filename}'
         output_item = {
             'taxon_name': claim_taxon_value,

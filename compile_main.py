@@ -61,7 +61,6 @@ def run():
             item_new = {
                 "name_type": item['name_type'],
                 "language_code": item['language_code'],
-                "language_name": item['language_name'],
                 "language_value": item['language_value'],
                 "source": item['source'],
             }

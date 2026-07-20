@@ -27,25 +27,36 @@ def observations_table_plants_names_add():
             item = {
                 'wcvp_taxon_name': input_data['wcvp_taxon_name'],
                 'name_type': 'label',
-                'language_code': label['language_code'],
-                'language_name': label['language_name'],
-                'language_value': label['language_value'],
+                'language': label['language'],
+                'value': label['value'],
                 'source': input_data['source'],
             }
             all_data.append(item)
-        for alias in input_data['aliases']:
-            item = {
-                'wcvp_taxon_name': input_data['wcvp_taxon_name'],
-                'name_type': 'alias',
-                'language_code': alias['language_code'],
-                'language_name': alias['language_name'],
-                'language_value': alias['language_value'],
-                'source': input_data['source'],
-            }
-            all_data.append(item)
+        ###
+        for alias_list in input_data['aliases']:
+            for alias in alias_list:
+                item = {
+                    'wcvp_taxon_name': input_data['wcvp_taxon_name'],
+                    'name_type': 'alias',
+                    'language': alias['language'],
+                    'value': alias['value'],
+                    'source': input_data['source'],
+                }
+                all_data.append(item)
     # for item in all_data[:10]:
         # print(json.dumps(item, indent=4))
     # quit()
+    ###
+    all_data_query = [
+        (
+            item.get("wcvp_taxon_name").capitalize(),
+            item.get("name_type"),
+            item.get("language"),
+            item.get("value"),
+            'Wikidata',
+        )
+        for item in all_data
+    ]
     ###
     conn = sqlite3.connect(db_filepath)
     cur = conn.cursor()
@@ -55,23 +66,11 @@ def observations_table_plants_names_add():
             plant_canonical_name, 
             name_type,
             language_code,
-            language_name,
             language_value,
             source
         )
-        VALUES (?, ?, ?, ?, ?, ?)
-        """,
-        [
-            (
-                item.get("wcvp_taxon_name").capitalize(),
-                item.get("name_type"),
-                item.get("language_code"),
-                item.get("language_name"),
-                item.get("language_value"),
-                'Wikidata',
-            )
-            for item in all_data
-        ]
+        VALUES (?, ?, ?, ?, ?)
+        """, all_data_query
     )
     conn.commit()
     rows = conn.execute(f"SELECT * FROM {table_name}")

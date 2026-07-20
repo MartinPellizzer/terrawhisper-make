@@ -58,7 +58,6 @@ def observations_table_plants_names_create(regen=False):
             plant_canonical_name TEXT NOT NULL,
             name_type TEXT,
             language_code TEXT,
-            language_name TEXT,
             language_value TEXT,
             source TEXT
         );

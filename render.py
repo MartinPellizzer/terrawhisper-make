@@ -77,10 +77,12 @@ def plant_listing_page_gen_new(plant_name):
     names_data = plant_data['names']
     hero_plant_common_name_html = ''
     for name_item in names_data:
-        language_value = name_item['language_value']
-        if language_value != None:
-            hero_plant_common_name_html = f'<p><strong>{language_value.capitalize()}</strong></p>'
-            break
+        language_code = name_item['language_code']
+        if language_code == 'en':
+            language_value = name_item['language_value']
+            if language_value.lower().strip() != plant_name.lower().strip():
+                hero_plant_common_name_html = f'<p><strong>{language_value.capitalize()}</strong></p>'
+                break
     ###
     if plant_data['distribution'] != []: hero_distribution = plant_data['distribution'][0]['continent'].title()
     else: hero_distribution = 'Not available'
