@@ -1242,31 +1242,16 @@ Learning herbal medicine means acquiring structured knowledge and practical skil
     '''
 
     ### HTML
-    meta_title = f'''Herbalism & Herbal Remedies for Natural Healing | Terra Whisper'''
-    meta_description = f'''Learn herbalism from the ground up. Discover medicinal herbs, herbal remedies, apothecary methods, and beginner-friendly natural healing guides.'''
+    meta_title = f'''Terra Whisper | A Medicinal Herbs Directory With Botanical Information, Uses & Research'''
+    meta_description = f'''Browse 10.000+ medicinal herbs with botanical classification, chemical composition, bioactive actions, therapeutic uses and scientific research.'''
+    canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com">'''
+    head_html = components.html_head(
+        meta_title, meta_description, css='/styles.css', canonical=canonical_html
+    )
     html = f'''
         <!DOCTYPE html>
         <html lang="en">
-        {components.html_head(meta_title, meta_description, css='/style.css')}
-        <body class="home">
-            {sections.header_default()}
-            {html_hero}
-            {html_article}
-            {sections.footer()}
-        </body>
-        </html>
-    '''
-    html = f'''
-        <!DOCTYPE html>
-        <html lang="en">
-        <head>
-
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Terra Whisper | A Medicinal Herbs Directory With Botanical Information, Uses & Research</title>
-        <meta name="description" content="Browse 10.000+ medicinal herbs with botanical classification, chemical composition, bioactive actions, therapeutic uses and scientific research.">
-        {components.html_head(meta_title, meta_description, css='/style.css')}
-        </head>
+        {head_html}
 
         <body style="
         margin:0;

@@ -21,10 +21,8 @@ explore
 
 '''
 TODOs:
-upload new website
-
-fix home menu
 do page herbs/alphabet
+title tag in explorer pages
 complete common names of /herbs/herb pages in hero cards from wikidata?
 maybe also "names" sub-section in classification section with wikidata?
 explore page "popular herbs" and "recently added"
@@ -91,8 +89,8 @@ if 0:
     import compile_main
     compile_main.run()
 
-if 1:
+if 0:
     import render
 
-if 0:
+if 1:
     import explore
