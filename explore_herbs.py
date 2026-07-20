@@ -594,7 +594,7 @@ def herbs_alphabet_category():
         idx = plants_names_llm.rfind(',')
         if idx != -1:
             plants_names_llm = plants_names_llm[:idx] + ', and' + plants_names_llm[idx + 1:]
-        description_text = f'Browse medicinal herbs starting with the letter "B", such as {plants_names_llm}.'
+        description_text = f'Browse medicinal herbs starting with the letter "{alphabet_letter.upper()}", such as {plants_names_llm}.'
         ###
         plants_count = len(plants_data)
         alphabet_html += f'''
