@@ -42,14 +42,27 @@ def wikidata_qids():
                 aliases_en = None
         else:
             aliases_en = None
+        if 'es' in aliases:
+            aliases_es = aliases['es'][0]['value']
+            if aliases_es.lower().strip() == claim_taxon_value.lower().strip():
+                aliases_es = None
+        else:
+            aliases_es = None
         ###
+        labels_data = [
+            {'language_code': 'en', 'language_name': 'English', 'language_value': labels_en},
+        ]
+        aliases_data = [
+            {'language_code': 'en', 'language_name': 'English', 'language_value': aliases_en},
+            {'language_code': 'es', 'language_name': 'Spanish', 'language_value': aliases_es},
+        ]
         output_filepath = f'{output_folderpath}/{input_filename}'
         output_item = {
             'taxon_name': claim_taxon_value,
             'source': 'wikidata',
             'qid': qid,
-            'labels_en': labels_en,
-            'aliases_en': aliases_en,
+            'labels': labels_data,
+            'aliases': aliases_data,
         }
         io.json_write(output_filepath, output_item)
 

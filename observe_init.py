@@ -56,8 +56,10 @@ def observations_table_plants_names_create(regen=False):
         CREATE TABLE IF NOT EXISTS {table_name} (
             id INTEGER PRIMARY KEY,
             plant_canonical_name TEXT NOT NULL,
-            label_en TEXT,
-            alias_en TEXT,
+            name_type TEXT,
+            language_code TEXT,
+            language_name TEXT,
+            language_value TEXT,
             source TEXT
         );
     """)

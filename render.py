@@ -69,16 +69,18 @@ def plant_listing_page_gen_new(plant_name):
     '''
 
     html_article = f''
+
+    ################################################################################
+    # HERO
+    ################################################################################
     ###
-    if plant_data['names'] != []: 
-        hero_plant_common_name = plant_data['names'][0]['alias_en']
-        if hero_plant_common_name == None:
-            hero_plant_common_name_html = ''
-        else:
-            hero_plant_common_name_html = f'<p><strong>{hero_plant_common_name.capitalize()}</strong></p>'
-    else: 
-        hero_plant_common_name = None
-        hero_plant_common_name_html = f''
+    names_data = plant_data['names']
+    hero_plant_common_name_html = ''
+    for name_item in names_data:
+        language_value = name_item['language_value']
+        if language_value != None:
+            hero_plant_common_name_html = f'<p><strong>{language_value.capitalize()}</strong></p>'
+            break
     ###
     if plant_data['distribution'] != []: hero_distribution = plant_data['distribution'][0]['continent'].title()
     else: hero_distribution = 'Not available'

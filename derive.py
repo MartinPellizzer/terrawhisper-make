@@ -135,9 +135,11 @@ if 1:
         for row in summary_rows:
             output_item = {
                 'plant_canonical_name': master_plant_row[1], ### MANDATORY
-                'label_en': row[2],
-                'alias_en': row[3],
-                'source': row[4],
+                'name_type': row[2],
+                'language_code': row[3],
+                'language_name': row[4],
+                'language_value': row[5],
+                'source': row[6],
             }
             print(json.dumps(output_item, indent=4))
             output_items.append(output_item)

@@ -32,6 +32,7 @@ explore page "popular herbs" and "recently added"
 add one source name on each table row
 get chemicals classes from chemical and pubchem
 add drduke data to pipeline
+synonyms
 '''
 
 if 0:

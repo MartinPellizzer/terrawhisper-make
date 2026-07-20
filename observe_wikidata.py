@@ -23,26 +23,51 @@ def observations_table_plants_names_add():
         print(f'{i}/{len(input_filenames)}')
         input_filepath = f'{input_folderpath}/{input_filename}'
         input_data = io.json_read(input_filepath)
-        all_data.append(input_data)
+        for label in input_data['labels']:
+            item = {
+                'wcvp_taxon_name': input_data['wcvp_taxon_name'],
+                'name_type': 'label',
+                'language_code': label['language_code'],
+                'language_name': label['language_name'],
+                'language_value': label['language_value'],
+                'source': input_data['source'],
+            }
+            all_data.append(item)
+        for alias in input_data['aliases']:
+            item = {
+                'wcvp_taxon_name': input_data['wcvp_taxon_name'],
+                'name_type': 'alias',
+                'language_code': alias['language_code'],
+                'language_name': alias['language_name'],
+                'language_value': alias['language_value'],
+                'source': input_data['source'],
+            }
+            all_data.append(item)
+    # for item in all_data[:10]:
+        # print(json.dumps(item, indent=4))
+    # quit()
     ###
     conn = sqlite3.connect(db_filepath)
     cur = conn.cursor()
-    print('start inserting...')
     cur.executemany(
         f"""
         INSERT OR IGNORE INTO {table_name} (
             plant_canonical_name, 
-            label_en,
-            alias_en,
+            name_type,
+            language_code,
+            language_name,
+            language_value,
             source
         )
-        VALUES (?, ?, ?, ?)
+        VALUES (?, ?, ?, ?, ?, ?)
         """,
         [
             (
                 item.get("wcvp_taxon_name").capitalize(),
-                item.get("labels_en"),
-                item.get("aliases_en"),
+                item.get("name_type"),
+                item.get("language_code"),
+                item.get("language_name"),
+                item.get("language_value"),
                 'Wikidata',
             )
             for item in all_data
@@ -58,3 +83,4 @@ def run():
     print('OBSERVE >> wikidata')
 
     observations_table_plants_names_add()
+

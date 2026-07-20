@@ -59,8 +59,10 @@ def run():
         output_data['names'] = []
         for item in data:
             item_new = {
-                "label_en": item['label_en'],
-                "alias_en": item['alias_en'],
+                "name_type": item['name_type'],
+                "language_code": item['language_code'],
+                "language_name": item['language_name'],
+                "language_value": item['language_value'],
                 "source": item['source'],
             }
             output_data[f'{data_type}'].append(item)
