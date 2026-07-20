@@ -329,7 +329,9 @@ def sidebar_html_gen():
             </ul>
             <hr style="border: 0; border-bottom: 1px solid #d8d8d8; margin-top: 2.4rem; margin-bottom: 2.4rem;">
 
-            <h3 style="font-size: 1.4rem; letter-spacing: 0.5px; margin-bottom: 1.4rem;">Alphabet</h3>
+            <a href="/herbs/alphabet.html">
+                <h3 style="font-size: 1.4rem; letter-spacing: 0.5px; margin-bottom: 1.4rem;">Alphabet</h3>
+            </a>
             {alphabet_html}
             <hr style="border: 0; border-bottom: 1px solid #d8d8d8; margin-top: 2.4rem; margin-bottom: 2.4rem;">
 
@@ -661,7 +663,6 @@ def herbs_alphabet_category():
     '''.strip()
     with open(html_filepath, 'w') as f: f.write(html)
     print(html_filepath)
-    quit()
 
     ### GROUP PLANTS IN PAGES
     page_cards_num = 48
@@ -1447,30 +1448,30 @@ def run():
     if sidebar_chemicals_rows == None:
         sidebar_chemicals_get()
 
-    if 0:
+    if 1:
         herbs_index()
 
     if 1:
         herbs_alphabet_category()
 
-    if 0:
+    if 1:
         letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
         for letter in letters:
             herbs_alphabet(letter)
 
-    if 0:
+    if 1:
         herbs_activities_category()
 
-    if 0:
+    if 1:
         for activity in sidebar_activities_rows:
             activity_name = activity[0]
             herbs_activities(activity_name)
             # quit()
 
-    if 0:
+    if 1:
         herbs_chemicals_category()
 
-    if 0:
+    if 1:
         for i, chemical in enumerate(sidebar_chemicals_rows[:1000]):
             print(f'{i}/{len(sidebar_chemicals_rows)}')
             chemical_name = chemical[0]

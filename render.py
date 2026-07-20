@@ -48,6 +48,7 @@ def sqlite_table_observations_plants_activities_get():
 def plant_listing_page_gen_new(plant_name):
     plant_data = io.json_read(f'{g.VAULT_FOLDERPATH}/terrawhisper/data/compile/herbs/{plant_name}.json')
     # print(json.dumps(plant_data, indent=4))
+    # quit()
 
     plant_taxon_name_slug = polish.sluggify(plant_name)
     plant_taxon_name_normalized = normalize_utils.normalize_plant_name(plant_name)
@@ -68,6 +69,16 @@ def plant_listing_page_gen_new(plant_name):
     '''
 
     html_article = f''
+    ###
+    if plant_data['names'] != []: 
+        hero_plant_common_name = plant_data['names'][0]['alias_en']
+        if hero_plant_common_name == None:
+            hero_plant_common_name_html = ''
+        else:
+            hero_plant_common_name_html = f'<p><strong>{hero_plant_common_name.capitalize()}</strong></p>'
+    else: 
+        hero_plant_common_name = None
+        hero_plant_common_name_html = f''
     ###
     if plant_data['distribution'] != []: hero_distribution = plant_data['distribution'][0]['continent'].title()
     else: hero_distribution = 'Not available'
@@ -96,7 +107,6 @@ def plant_listing_page_gen_new(plant_name):
         io.json_write(json_article_filepath, json_article)
     intro_text = json_article[key]
                     # box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-                    # <p>Common name</p>
                     # <li>Common names</li>
     html_hero = f'''
         <section
@@ -118,6 +128,7 @@ def plant_listing_page_gen_new(plant_name):
                 </div>
                 <div style="flex: 3; padding: 2.4rem;">
                     <h1>{plant_name}</h1>
+                    {hero_plant_common_name_html}
                     <p>{intro_text}</p>
                     <ul style="list-style: none;">
                         <li><span style="font-weight: 700;">Scientific name:</span> <strong style="font-weight: 400;">{plant_name}</strong></li>

@@ -98,12 +98,12 @@ def run():
 
     source_name = 'wikidata'
     output_foldername = f'fetch'
-    output_folderpath = f'{g.DATA_FOLDERPATH}/{output_foldername}/{source_name}/qids_ipni'
+    ipni_output_folderpath = f'{g.DATA_FOLDERPATH}/{output_foldername}/{source_name}/qids_ipni'
     powo_output_folderpath = f'{g.DATA_FOLDERPATH}/{output_foldername}/{source_name}/qids_powo'
     taxon_output_folderpath = f'{g.DATA_FOLDERPATH}/{output_foldername}/{source_name}/qids_taxon'
-    # try: shutil.rmtree(output_folderpath)
+    # try: shutil.rmtree(ipni_output_folderpath)
     # except: pass
-    io.folders_recursive_gen(output_folderpath)
+    io.folders_recursive_gen(ipni_output_folderpath)
     io.folders_recursive_gen(powo_output_folderpath)
     io.folders_recursive_gen(taxon_output_folderpath)
 
@@ -116,7 +116,7 @@ def run():
         ipni_id = wcvp_plant_name_row[5]
         ipni_ids.append(ipni_id)
 
-    ipni_ids_filenames_base = [x.split('.')[0] for x in os.listdir(output_folderpath)]
+    ipni_ids_filenames_base = [x.split('.')[0] for x in os.listdir(ipni_output_folderpath)]
     ipni_ids_new = []
     ipni_ids_old = []
     for ipni_id in ipni_ids:
@@ -164,7 +164,7 @@ def run():
         }
         for key, value in qids.items():
             # print(key, value)
-            io.json_write(f'{output_folderpath}/{key}.json', {'ipni_id': key, 'qid': value})
+            io.json_write(f'{ipni_output_folderpath}/{key}.json', {'ipni_id': key, 'qid': value})
         
         time.sleep(10)
 
@@ -254,6 +254,7 @@ def run():
 
     '''
 
+    '''
     ### WCVP TAXON IDS
     plants_rows = masterize_utils.masterize_plants_get_all()
     taxon_names = []
@@ -321,24 +322,78 @@ def run():
             time.sleep(60)
             tries = 0
     quit()
+    '''
 
-    for ipni, qid in qids.items():
+    ### QIDS JSONS
+    qids_output_folderpath = f'{g.DATA_FOLDERPATH}/{output_foldername}/{source_name}/qids'
+    io.folders_recursive_gen(qids_output_folderpath)
 
-        entity = download_entity(qid)
+    qids = set()
 
-        with open(
-            f"wikidata/{ipni}.json",
-            "w",
-            encoding="utf8"
-        ) as f:
-            json.dump(
-                entity,
-                f,
-                ensure_ascii=False,
-                indent=2
-            )
+    ipni_filenames = sorted(os.listdir(ipni_output_folderpath))
+    for i, ipni_filename in enumerate(ipni_filenames):
+        print(f'{i}/{len(ipni_filenames)}')
+        ipni_filepath = f'{ipni_output_folderpath}/{ipni_filename}'
+        data = io.json_read(ipni_filepath)
+        qid = data['qid']
+        qids.add(qid)
 
-        print(ipni, qid)
+    powo_filenames = sorted(os.listdir(powo_output_folderpath))
+    for i, powo_filename in enumerate(powo_filenames):
+        print(f'{i}/{len(powo_filenames)}')
+        powo_filepath = f'{powo_output_folderpath}/{powo_filename}'
+        data = io.json_read(powo_filepath)
+        qid = data['qid']
+        qids.add(qid)
 
-        time.sleep(0.5)
+    taxon_filenames = sorted(os.listdir(taxon_output_folderpath))
+    for i, taxon_filename in enumerate(taxon_filenames):
+        print(f'{i}/{len(taxon_filenames)}')
+        taxon_filepath = f'{taxon_output_folderpath}/{taxon_filename}'
+        try: data = io.json_read(taxon_filepath)
+        except: continue
+        qid = data['qid']
+        qids.add(qid)
 
+    qids = sorted(list(qids))
+
+    qids_filenames_base = [x.split('.')[0] for x in os.listdir(qids_output_folderpath)]
+    qids_new = []
+    qids_old = []
+    for qid in qids:
+        if qid not in qids_filenames_base:
+            qids_new.append(qid)
+        if qid in qids_filenames_base:
+            qids_old.append(qid)
+
+    print(len(qids_new))
+    print(len(qids_old))
+    print(len(qids_old) + len(qids_new))
+    print(len(qids))
+
+    tries = 0
+    BATCH = 50
+    for i in range(0, len(qids_new), BATCH):
+        print(f'{i}/{len(qids_new)}')
+        batch = qids_new[i:i+BATCH]
+        r = requests.get(
+            "https://www.wikidata.org/w/api.php",
+            params={
+                "action": "wbgetentities",
+                "ids": "|".join(batch),
+                "format": "json"
+            },
+            headers={
+                "User-Agent": "MedicinalPlantsBot/1.0"
+            }
+        )
+        r.raise_for_status()
+        entities = r.json()["entities"]
+        for qid, entity in entities.items():
+            io.json_write(f'{qids_output_folderpath}/{qid}.json', entity)
+
+        time.sleep(10)
+        tries += 1
+        if tries >= 30:
+            time.sleep(60)
+            tries = 0

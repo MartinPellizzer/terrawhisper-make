@@ -50,6 +50,21 @@ def run():
             }
             output_data['taxonomies'].append(item)
 
+        ### NAMES
+        data_type = 'names'
+        data = io.json_read(
+            f'{g.DATA_FOLDERPATH}/{input_foldername}/herbs/{data_type}/{plant_canonical_name}.json'
+        )
+        # print(json.dumps(chemicals_data, indent=4))
+        output_data['names'] = []
+        for item in data:
+            item_new = {
+                "label_en": item['label_en'],
+                "alias_en": item['alias_en'],
+                "source": item['source'],
+            }
+            output_data[f'{data_type}'].append(item)
+
         ### DISTRIBUTION
         distribution_data = io.json_read(
             f'{g.VAULT_FOLDERPATH}/terrawhisper/data/{input_foldername}/herbs/distribution/{plant_canonical_name}.json'
