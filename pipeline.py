@@ -22,17 +22,15 @@ explore
 '''
 DOING:
 complete common names of /herbs/herb pages in hero cards from wikidata?
-did only for one name in hero, do for section names
 
 TODO:
 redo tables in observation db, use variable for tables names (because fix copy/paste errors)
-maybe also "names" sub-section in classification section with wikidata?
-title tag in explorer pages
-explore page "popular herbs" and "recently added"
+!!! title tag in explorer pages
+!!! explore page "popular herbs" and "recently added"
 add one source name on each table row
-get chemicals classes from chemical and pubchem
 add drduke data to pipeline
 synonyms
+get chemicals classes from chemical and pubchem
 '''
 
 if 0:
@@ -107,7 +105,7 @@ if 0:
     import compile_main
     compile_main.run()
 
-if 1:
+if 0:
     import render
 
 if 0:

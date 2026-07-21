@@ -254,7 +254,7 @@ def plant_listing_page_gen_new(plant_name):
             if len(items_filtered) >= row_num:
                 break
         ### llm
-        if 0:
+        if 1:
             json_article_filepath = f'''{g.DATA_FOLDERPATH}/enhance/{plant_taxon_name_slug}.json'''
             json_article = io.json_read(json_article_filepath, create=True)
             regen = False
@@ -395,7 +395,7 @@ def plant_listing_page_gen_new(plant_name):
             items_filtered.append(item)
             if len(items_filtered) >= row_num:
                 break
-        if 0:
+        if 1:
             ### llm
             json_article_filepath = f'''{g.DATA_FOLDERPATH}/enhance/{plant_taxon_name_slug}.json'''
             json_article = io.json_read(json_article_filepath, create=True)
@@ -404,15 +404,14 @@ def plant_listing_page_gen_new(plant_name):
             if key not in json_article: json_article[key] = ''
             if regen: json_article[key] = ''
             if json_article[key] == '':
-                names_prompt = ''
-                for name_item in items_filtered[:5]:
-                    language_code = name_item['language_code']
-                    language_value = name_item['language_value']
-                    names_prompt += f'''{language_code}: {language_value}\n'''
+                list_prompt = ''
+                for item in items_filtered[:5]:
+                    plant_part = item['plant_part_canonical_name']
+                    list_prompt += f'''{plant_part}\n'''
                 prompt = f'''
-                    Write a paragraph about the common names of the following medicinal plant: {plant_name}.
-                    Use the following common names for each language code:
-                    {names_prompt}
+                    Write a paragraph about the plant parts of the following medicinal plant: {plant_name}.
+                    Use the following plant parts:
+                    {list_prompt}
                     Start the reply with the following words: This plant 
                 '''.strip()
                 print(prompt)
@@ -430,12 +429,23 @@ def plant_listing_page_gen_new(plant_name):
         html_table_body += f'''<tbody>'''
         for item in items_filtered:
             plant_part = item['plant_part_canonical_name']
-            source = item['source']
+            num_sources = item['source']
+            confidence = ''
+            if int(num_sources) >= 10: confidence = '★★★★★'
+            elif int(num_sources) >= 7: confidence = '★★★★☆'
+            elif int(num_sources) >= 5: confidence = '★★★☆☆'
+            elif int(num_sources) >= 3: confidence = '★★☆☆☆'
+            elif int(num_sources) >= 1: confidence = '★☆☆☆☆'
             html_table_body += f'''
-            <tr>
-                <td>{plant_part}</td>
-                <td>{source}</td>
-            </tr>'''
+                <tr>
+                    <td>{plant_part}</td>
+                    <td>{num_sources}</td>
+                    <td>{confidence}</td>
+                </tr>
+            '''
+        source_tot = 0 
+        for item in plants_parts_data[:]:
+            source_tot += int(item['source'])
         html_table_body += f'''</tbody>'''
         html_article += f'''
             <section>
@@ -443,11 +453,22 @@ def plant_listing_page_gen_new(plant_name):
                     Plant Parts
                 </h2>
                 {names_text}
+                <dl>
+                    <div>
+                        <dt>Total parts</dt>
+                        <dd>{len(plants_parts_data)}</dd>
+                    </div>
+                    <div>
+                        <dt>Scientific sources</dt>
+                        <dd>{source_tot}</dd>
+                    </div>
+                </dl>
                 <table>
                   <thead>
                     <tr>
                       <th>Plant Part</th>
-                      <th>Source</th>
+                      <th>Sources</th>
+                      <th>Confidence</th>
                     </tr>
                   </thead>
                   {html_table_body}

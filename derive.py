@@ -50,9 +50,13 @@ def distribution_summary_get(plant_canonical_name):
 def plant_part_summary_get(plant_canonical_name):
     conn = sqlite3.connect(db_filepath)
     cursor = conn.execute("""
-        SELECT *
+        SELECT
+            plant_part_canonical_name,
+            COUNT(DISTINCT source) AS num_sources
         FROM plants_parts
         WHERE plant_canonical_name = ?
+        GROUP BY plant_part_canonical_name
+        ORDER BY num_sources DESC;
     """, (plant_canonical_name,))
     rows = cursor.fetchall()
     conn.close()
@@ -190,8 +194,8 @@ if 1:
         for row in summary_rows:
             output_item = {
                 'plant_canonical_name': master_plant_row[1], ### MANDATORY
-                'plant_part_canonical_name': row[2],
-                'source': row[3],
+                'plant_part_canonical_name': row[0],
+                'source': row[1],
             }
             print(json.dumps(output_item, indent=4))
             output_items.append(output_item)
