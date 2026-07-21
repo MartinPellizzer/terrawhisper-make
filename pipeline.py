@@ -59,8 +59,8 @@ if 0:
 
     # normalize_wcvp.run()
     # normalize_powo.run()
-    normalize_wikidata.run()
-    # normalize_pubmed.run()
+    # normalize_wikidata.run()
+    normalize_pubmed.run()
     # normalize_drduke.run()
 
 if 0:
@@ -72,8 +72,8 @@ if 0:
 
     # resolve_wcvp.run()
     # resolve_powo.run()
-    resolve_wikidata.run()
-    # resolve_pubmed.run()
+    # resolve_wikidata.run()
+    resolve_pubmed.run()
     # resolve_drduke.run()
 
 if 0:
@@ -93,8 +93,8 @@ if 0:
 
     observe_init.run()
     # observe_powo.run()
-    observe_wikidata.run()
-    # observe_pubmed.run()
+    # observe_wikidata.run()
+    observe_pubmed.run()
     # observe_drduke.run()
 
 if 0:

@@ -80,6 +80,20 @@ def run():
             }
             output_data['distribution'].append(item)
 
+        ### PLANTS PARTS
+        data_type = 'plants_parts'
+        data = io.json_read(
+            f'{g.DATA_FOLDERPATH}/{input_foldername}/herbs/{data_type}/{plant_canonical_name}.json'
+        )
+        # print(json.dumps(chemicals_data, indent=4))
+        output_data['plants_parts'] = []
+        for item in data:
+            item_new = {
+                "plant_part_canonical_name": item['plant_part_canonical_name'],
+                "source": item['source'],
+            }
+            output_data[f'{data_type}'].append(item)
+
         ### CHEMICALS
         chemicals_data = io.json_read(
             f'{g.VAULT_FOLDERPATH}/terrawhisper/data/{input_foldername}/herbs/chemicals/{plant_canonical_name}.json'

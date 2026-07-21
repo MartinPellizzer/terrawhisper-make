@@ -74,9 +74,8 @@ def plant_listing_page_gen_new(plant_name):
     # HERO
     ################################################################################
     ###
-    names_data = plant_data['names']
     hero_plant_common_name_html = ''
-    for name_item in names_data:
+    for name_item in plant_data['names']:
         language_code = name_item['language_code']
         if language_code == 'en':
             language_value = name_item['language_value']
@@ -145,7 +144,9 @@ def plant_listing_page_gen_new(plant_name):
     '''
     html_article += html_hero
 
+    ################################################################################
     ### CLASSIFICATION
+    ################################################################################
 
     ### TAXONOMIES
     taxonomies = plant_data['taxonomies']
@@ -239,6 +240,82 @@ def plant_listing_page_gen_new(plant_name):
             </section>
         '''
 
+    ### COMMON NAMES
+    names_data = plant_data['names']
+    if names_data != []:
+        ### filter rows
+        row_num = 10
+        items_filtered = []
+        for name_item in names_data:
+            language_code = name_item['language_code']
+            language_value = name_item['language_value']
+            if language_value.lower().strip() != plant_name.lower().strip():
+                items_filtered.append(name_item)
+            if len(items_filtered) >= row_num:
+                break
+        ### llm
+        if 0:
+            json_article_filepath = f'''{g.DATA_FOLDERPATH}/enhance/{plant_taxon_name_slug}.json'''
+            json_article = io.json_read(json_article_filepath, create=True)
+            regen = False
+            key = f'names'
+            if key not in json_article: json_article[key] = ''
+            if regen: json_article[key] = ''
+            if json_article[key] == '':
+                names_prompt = ''
+                for name_item in items_filtered[:5]:
+                    language_code = name_item['language_code']
+                    language_value = name_item['language_value']
+                    names_prompt += f'''{language_code}: {language_value}\n'''
+                prompt = f'''
+                    Write a paragraph about the common names of the following medicinal plant: {plant_name}.
+                    Use the following common names for each language code:
+                    {names_prompt}
+                    Start the reply with the following words: This plant 
+                '''.strip()
+                print(prompt)
+                reply = llm.reply(prompt, model_filepath)
+                if '</think>' in reply:
+                    reply = reply.split('</think>')[1].strip()
+                reply = polish.vanilla(reply)
+                json_article[key] = reply
+                io.json_write(json_article_filepath, json_article)
+            names_text = json_article[key]
+        else:
+            names_text = ''
+        ###
+        html_table_body = f''
+        html_table_body += f'''<tbody>'''
+        for name_item in items_filtered:
+            language_code = name_item['language_code']
+            language_value = name_item['language_value']
+            html_table_body += f'''
+            <tr>
+                <td>{language_code}</td>
+                <td>{language_value}</td>
+                <td>Wikidata</td>
+            </tr>'''
+        html_table_body += f'''</tbody>'''
+                # <p>{distribution_text}</p>
+        html_article += f'''
+            <section>
+                <h2>
+                    Common Names
+                </h2>
+                {names_text}
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Language</th>
+                      <th>Common Name</th>
+                      <th>Source</th>
+                    </tr>
+                  </thead>
+                  {html_table_body}
+                </table>
+            </section>
+        '''
+
     ### DISTRIBUTION
     distributions = plant_data['distribution']
     if distributions != []:
@@ -295,6 +372,81 @@ def plant_listing_page_gen_new(plant_name):
                     <tr>
                       <th>Region</th>
                       <th>Area</th>
+                      <th>Source</th>
+                    </tr>
+                  </thead>
+                  {html_table_body}
+                </table>
+            </section>
+        '''
+
+    ################################################################################
+    ### IDENTIFICATION
+    ################################################################################
+
+    ### PLANT PARTS
+    plants_parts_data = plant_data['plants_parts']
+    if plants_parts_data != []:
+        ### filter rows
+        row_num = 10
+        items_filtered = []
+        for item in plants_parts_data:
+            ### add filter condition here if needed
+            items_filtered.append(item)
+            if len(items_filtered) >= row_num:
+                break
+        if 0:
+            ### llm
+            json_article_filepath = f'''{g.DATA_FOLDERPATH}/enhance/{plant_taxon_name_slug}.json'''
+            json_article = io.json_read(json_article_filepath, create=True)
+            regen = False
+            key = f'plants_parts'
+            if key not in json_article: json_article[key] = ''
+            if regen: json_article[key] = ''
+            if json_article[key] == '':
+                names_prompt = ''
+                for name_item in items_filtered[:5]:
+                    language_code = name_item['language_code']
+                    language_value = name_item['language_value']
+                    names_prompt += f'''{language_code}: {language_value}\n'''
+                prompt = f'''
+                    Write a paragraph about the common names of the following medicinal plant: {plant_name}.
+                    Use the following common names for each language code:
+                    {names_prompt}
+                    Start the reply with the following words: This plant 
+                '''.strip()
+                print(prompt)
+                reply = llm.reply(prompt, model_filepath)
+                if '</think>' in reply:
+                    reply = reply.split('</think>')[1].strip()
+                reply = polish.vanilla(reply)
+                json_article[key] = reply
+                io.json_write(json_article_filepath, json_article)
+            names_text = json_article[key]
+        else:
+            names_text = ''
+        ###
+        html_table_body = f''
+        html_table_body += f'''<tbody>'''
+        for item in items_filtered:
+            plant_part = item['plant_part_canonical_name']
+            source = item['source']
+            html_table_body += f'''
+            <tr>
+                <td>{plant_part}</td>
+                <td>{source}</td>
+            </tr>'''
+        html_table_body += f'''</tbody>'''
+        html_article += f'''
+            <section>
+                <h2>
+                    Plant Parts
+                </h2>
+                {names_text}
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Plant Part</th>
                       <th>Source</th>
                     </tr>
                   </thead>

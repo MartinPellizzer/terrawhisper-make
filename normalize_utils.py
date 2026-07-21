@@ -39,6 +39,16 @@ def normalize_plant_name(name):
     name = re.sub(r"\s+", " ", name).strip()
     return name
 
+def normalize_plant_part_name(name):
+    spaces = re.compile(r"\s+")
+    if not name: return None
+    name = unicodedata.normalize("NFKC", name)
+    name = name.lower()
+    name = name.replace("-", " ")
+    name = re.sub(r"[.,;:()]", "", name)
+    name = spaces.sub(" ", name)
+    return name.strip()
+
 def normalize_chemical_name(name):
     spaces = re.compile(r"\s+")
     name = unicodedata.normalize("NFKC", name)

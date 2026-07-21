@@ -70,7 +70,6 @@ def normalize_plants_activities():
         io.json_write(output_filepath, normalized_data)
         # quit()
 
-# COPY FOLDER FOR NOW
 def normalize_plants_diseases():
     entity_type = 'diseases'
     input_foldername = f'parse'
@@ -99,18 +98,50 @@ def normalize_plants_diseases():
             normalized_data.append(normalized_item)
         io.json_write(output_filepath, normalized_data)
 
+def normalize_plants_parts():
+    entity_type = 'plants_parts'
+    input_foldername = f'parse'
+    output_foldername = f'normalize'
+    input_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/{input_foldername}/pubmed/{entity_type}/json'
+    output_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/{output_foldername}/pubmed/{entity_type}/json'
+    io.folders_recursive_gen(output_folderpath)
+    input_filenames = os.listdir(input_folderpath)
+    ###
+    i = 0
+    for input_filename in input_filenames[i:]:
+        print(input_filename)
+        i += 1
+        print(f'{i}/{len(input_filenames)}')
+        output_filepath = f'{output_folderpath}/{input_filename}'
+        # if os.path.exists(output_filepath): continue
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        input_data = io.json_read(input_filepath)
+        normalized_data = []
+        for input_item in input_data:
+            ### normalize plant_name
+            normalized_item = input_item
+            normalized_item['plant_name_normalized'] = normalize_utils.normalize_plant_name(input_item['plant_name'])
+            normalized_item['plant_part_name_normalized'] = normalize_utils.normalize_plant_part_name(input_item['plant_part_name'])
+            # print(json.dumps(normalized_item, indent=4))
+            normalized_data.append(normalized_item)
+        io.json_write(output_filepath, normalized_data)
+
 def run():
     print('normalize >> pubmed')
 
     start = time.perf_counter()
-    normalize_plants_chemicals()
+    normalize_plants_parts()
+    print(f'normalize plants_parts() - execution time: ', time.perf_counter() - start)
+
+    start = time.perf_counter()
+    # normalize_plants_chemicals()
     print(f'normalize_plants_chemicals() - execution time: ', time.perf_counter() - start)
 
     start = time.perf_counter()
-    normalize_plants_activities()
+    # normalize_plants_activities()
     print(f'normalize plants_activities() - execution time: ', time.perf_counter() - start)
 
     start = time.perf_counter()
-    normalize_plants_diseases()
+    # normalize_plants_diseases()
     print(f'normalize plants_diseases() - execution time: ', time.perf_counter() - start)
 
