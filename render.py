@@ -429,7 +429,7 @@ def plant_listing_page_gen_new(plant_name):
         html_table_body += f'''<tbody>'''
         for item in items_filtered:
             plant_part = item['plant_part_canonical_name']
-            num_sources = item['source']
+            num_sources = item['source_name']
             confidence = ''
             if int(num_sources) >= 10: confidence = '★★★★★'
             elif int(num_sources) >= 7: confidence = '★★★★☆'
@@ -445,7 +445,7 @@ def plant_listing_page_gen_new(plant_name):
             '''
         source_tot = 0 
         for item in plants_parts_data[:]:
-            source_tot += int(item['source'])
+            source_tot += int(item['source_name'])
         html_table_body += f'''</tbody>'''
         html_article += f'''
             <section>

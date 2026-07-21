@@ -7,20 +7,16 @@ import sqlite3
 from lib import g
 from lib import io
 
+output_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/observe'
+db_filepath = f'{output_folderpath}/observations.db'
+
 def observations_table_plants_taxonomies_create(regen=False):
-    output_foldername = 'observe'
-    output_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/{output_foldername}'
-    # try: shutil.rmtree(output_folderpath)
-    # except: pass
-    os.makedirs(output_folderpath, exist_ok=True)
-    db_filepath = f'{output_folderpath}/observations.db'
-    ###
+    table_name = 'plants_taxonomies'
     conn = sqlite3.connect(db_filepath)
     cur = conn.cursor()
-    if regen:
-        cur.execute("DROP TABLE IF EXISTS plants_taxonomies")
-    cur.execute("""
-        CREATE TABLE IF NOT EXISTS plants_taxonomies (
+    if regen: cur.execute(f"DROP TABLE IF EXISTS {table_name}")
+    cur.execute(f"""
+        CREATE TABLE IF NOT EXISTS {table_name} (
             id INTEGER PRIMARY KEY,
             plant_canonical_name TEXT NOT NULL,
             taxon_kingdom TEXT,
@@ -36,22 +32,15 @@ def observations_table_plants_taxonomies_create(regen=False):
     conn.execute("PRAGMA journal_mode = WAL;")
     conn.execute("PRAGMA synchronous = OFF;")
     conn.execute("PRAGMA temp_store = MEMORY;")
-    cur.execute("CREATE INDEX IF NOT EXISTS idx_plants_chemicals_plant_canonical_name ON plants_chemicals(plant_canonical_name)")
+    cur.execute(f"CREATE INDEX IF NOT EXISTS idx_{table_name}_plant_canonical_name ON {table_name}(plant_canonical_name)")
     conn.commit()
     conn.close()
 
 def observations_table_plants_names_create(regen=False):
     table_name = 'plants_names'
-    output_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/observe'
-    # try: shutil.rmtree(output_folderpath)
-    # except: pass
-    os.makedirs(output_folderpath, exist_ok=True)
-    db_filepath = f'{output_folderpath}/observations.db'
-    ###
     conn = sqlite3.connect(db_filepath)
     cur = conn.cursor()
-    if regen:
-        cur.execute(f"DROP TABLE IF EXISTS {table_name}")
+    if regen: cur.execute(f"DROP TABLE IF EXISTS {table_name}")
     cur.execute(f"""
         CREATE TABLE IF NOT EXISTS {table_name} (
             id INTEGER PRIMARY KEY,
@@ -69,20 +58,13 @@ def observations_table_plants_names_create(regen=False):
     conn.commit()
     conn.close()
 
-def observations_table_plants_distribution_create(regen=False):
-    output_foldername = 'observe'
-    output_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/{output_foldername}'
-    # try: shutil.rmtree(output_folderpath)
-    # except: pass
-    os.makedirs(output_folderpath, exist_ok=True)
-    db_filepath = f'{output_folderpath}/observations.db'
-    ###
+def observations_table_plants_distributions_create(regen=False):
+    table_name = 'plants_distributions'
     conn = sqlite3.connect(db_filepath)
     cur = conn.cursor()
-    if regen:
-        cur.execute("DROP TABLE IF EXISTS plants_distribution")
-    cur.execute("""
-        CREATE TABLE IF NOT EXISTS plants_distribution (
+    if regen: cur.execute(f"DROP TABLE IF EXISTS {table_name}")
+    cur.execute(f"""
+        CREATE TABLE IF NOT EXISTS {table_name} (
             id INTEGER PRIMARY KEY,
             plant_canonical_name TEXT NOT NULL,
             continent TEXT NOT NULL,
@@ -94,28 +76,21 @@ def observations_table_plants_distribution_create(regen=False):
     conn.execute("PRAGMA journal_mode = WAL;")
     conn.execute("PRAGMA synchronous = OFF;")
     conn.execute("PRAGMA temp_store = MEMORY;")
-    cur.execute("CREATE INDEX IF NOT EXISTS idx_plants_distribution_plant_canonical_name ON plants_distribution(plant_canonical_name)")
+    cur.execute(f"CREATE INDEX IF NOT EXISTS idx_{table_name}_plant_canonical_name ON {table_name}(plant_canonical_name)")
     conn.commit()
     conn.close()
 
 def observations_table_plants_parts_create(regen=False):
     table_name = 'plants_parts'
-    output_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/observe'
-    # try: shutil.rmtree(output_folderpath)
-    # except: pass
-    os.makedirs(output_folderpath, exist_ok=True)
-    db_filepath = f'{output_folderpath}/observations.db'
-    ###
     conn = sqlite3.connect(db_filepath)
     cur = conn.cursor()
-    if regen:
-        cur.execute(f"DROP TABLE IF EXISTS {table_name}")
+    if regen: cur.execute(f"DROP TABLE IF EXISTS {table_name}")
     cur.execute(f"""
         CREATE TABLE IF NOT EXISTS {table_name} (
             id INTEGER PRIMARY KEY,
             plant_canonical_name TEXT NOT NULL,
             plant_part_canonical_name TEXT NOT NULL,
-            source TEXT
+            source_name TEXT
         );
     """)
     conn.execute("PRAGMA journal_mode = WAL;")
@@ -127,19 +102,12 @@ def observations_table_plants_parts_create(regen=False):
     conn.close()
 
 def observations_table_plants_chemicals_create(regen=False):
-    output_foldername = 'observe'
-    output_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/{output_foldername}'
-    # try: shutil.rmtree(output_folderpath)
-    # except: pass
-    os.makedirs(output_folderpath, exist_ok=True)
-    db_filepath = f'{output_folderpath}/observations.db'
-    ###
+    table_name = 'plants_chemicals'
     conn = sqlite3.connect(db_filepath)
     cur = conn.cursor()
-    if regen:
-        cur.execute("DROP TABLE IF EXISTS plants_chemicals")
-    cur.execute("""
-        CREATE TABLE IF NOT EXISTS plants_chemicals (
+    if regen: cur.execute(f"DROP TABLE IF EXISTS {table_name}")
+    cur.execute(f"""
+        CREATE TABLE IF NOT EXISTS {table_name} (
             id INTEGER PRIMARY KEY,
             plant_canonical_name TEXT NOT NULL,
             chemical_canonical_name TEXT NOT NULL,
@@ -152,25 +120,18 @@ def observations_table_plants_chemicals_create(regen=False):
     conn.execute("PRAGMA journal_mode = WAL;")
     conn.execute("PRAGMA synchronous = OFF;")
     conn.execute("PRAGMA temp_store = MEMORY;")
-    cur.execute("CREATE INDEX IF NOT EXISTS idx_plants_chemicals_plant_canonical_name ON plants_chemicals(plant_canonical_name)")
-    cur.execute("CREATE INDEX IF NOT EXISTS idx_plants_chemicals_plant_canonical_name ON plants_chemicals(chemical_canonical_name)")
+    cur.execute(f"CREATE INDEX IF NOT EXISTS idx_{table_name}_plant_canonical_name ON {table_name}(plant_canonical_name)")
+    cur.execute(f"CREATE INDEX IF NOT EXISTS idx_{table_name}_plant_canonical_name ON {table_name}(chemical_canonical_name)")
     conn.commit()
     conn.close()
 
 def observations_table_plants_activities_create(regen=False):
-    output_foldername = 'observe'
-    output_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/{output_foldername}'
-    # try: shutil.rmtree(output_folderpath)
-    # except: pass
-    os.makedirs(output_folderpath, exist_ok=True)
-    db_filepath = f'{output_folderpath}/observations.db'
-    ###
+    table_name = 'plants_activities'
     conn = sqlite3.connect(db_filepath)
     cur = conn.cursor()
-    if regen:
-        cur.execute("DROP TABLE IF EXISTS plants_activities")
-    cur.execute("""
-        CREATE TABLE IF NOT EXISTS plants_activities (
+    if regen: cur.execute(f"DROP TABLE IF EXISTS {table_name}")
+    cur.execute(f"""
+        CREATE TABLE IF NOT EXISTS {table_name} (
             id INTEGER PRIMARY KEY,
             plant_canonical_name TEXT NOT NULL,
             activity_canonical_name TEXT NOT NULL,
@@ -180,25 +141,18 @@ def observations_table_plants_activities_create(regen=False):
     conn.execute("PRAGMA journal_mode = WAL;")
     conn.execute("PRAGMA synchronous = OFF;")
     conn.execute("PRAGMA temp_store = MEMORY;")
-    cur.execute("CREATE INDEX IF NOT EXISTS idx_plants_activities_plant_canonical_name ON plants_activities(plant_canonical_name)")
-    cur.execute("CREATE INDEX IF NOT EXISTS idx_plants_activities_plant_canonical_name ON plants_activities(activity_canonical_name)")
+    cur.execute(f"CREATE INDEX IF NOT EXISTS idx_{table_name}_plant_canonical_name ON {table_name}(plant_canonical_name)")
+    cur.execute(f"CREATE INDEX IF NOT EXISTS idx_{table_name}_plant_canonical_name ON {table_name}(activity_canonical_name)")
     conn.commit()
     conn.close()
 
 def observations_table_plants_diseases_create(regen=False):
-    output_foldername = 'observe'
-    output_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/{output_foldername}'
-    # try: shutil.rmtree(output_folderpath)
-    # except: pass
-    os.makedirs(output_folderpath, exist_ok=True)
-    db_filepath = f'{output_folderpath}/observations.db'
-    ###
+    table_name = 'plants_diseases'
     conn = sqlite3.connect(db_filepath)
     cur = conn.cursor()
-    if regen:
-        cur.execute("DROP TABLE IF EXISTS plants_diseases")
-    cur.execute("""
-        CREATE TABLE IF NOT EXISTS plants_diseases (
+    if regen: cur.execute(f"DROP TABLE IF EXISTS {table_name}")
+    cur.execute(f"""
+        CREATE TABLE IF NOT EXISTS {table_name} (
             id INTEGER PRIMARY KEY,
             plant_canonical_name TEXT NOT NULL,
             disease_canonical_name TEXT NOT NULL,
@@ -208,20 +162,24 @@ def observations_table_plants_diseases_create(regen=False):
     conn.execute("PRAGMA journal_mode = WAL;")
     conn.execute("PRAGMA synchronous = OFF;")
     conn.execute("PRAGMA temp_store = MEMORY;")
-    cur.execute("CREATE INDEX IF NOT EXISTS idx_plants_diseases_plant_canonical_name ON plants_diseases(plant_canonical_name)")
-    cur.execute("CREATE INDEX IF NOT EXISTS idx_plants_diseases_plant_canonical_name ON plants_diseases(disease_canonical_name)")
+    cur.execute(f"CREATE INDEX IF NOT EXISTS idx_{table_name}_plant_canonical_name ON {table_name}(plant_canonical_name)")
+    cur.execute(f"CREATE INDEX IF NOT EXISTS idx_{table_name}_plant_canonical_name ON {table_name}(disease_canonical_name)")
     conn.commit()
     conn.close()
 
 def run():
     print('OBSERVE >> init')
 
+    # try: shutil.rmtree(output_folderpath)
+    # except: pass
+    os.makedirs(output_folderpath, exist_ok=True)
+
     ### TODO: do a clean up by destroying db
-    # observations_table_plants_taxonomies_create(regen=True)
-    # observations_table_plants_names_create(regen=True)
-    # observations_table_plants_distribution_create(regen=True)
+    observations_table_plants_taxonomies_create(regen=True)
+    observations_table_plants_names_create(regen=True)
+    observations_table_plants_distributions_create(regen=True)
     observations_table_plants_parts_create(regen=True)
-    # observations_table_plants_chemicals_create(regen=True)
-    # observations_table_plants_activities_create(regen=True)
-    # observations_table_plants_diseases_create(regen=True)
+    observations_table_plants_chemicals_create(regen=True)
+    observations_table_plants_activities_create(regen=True)
+    observations_table_plants_diseases_create(regen=True)
 

@@ -89,10 +89,10 @@ if 0:
     import observe_pubmed
     import observe_drduke
 
-    observe_init.run()
+    # observe_init.run()
     # observe_powo.run()
     # observe_wikidata.run()
-    observe_pubmed.run()
+    # observe_pubmed.run()
     # observe_drduke.run()
 
 if 0:
@@ -105,7 +105,7 @@ if 0:
     import compile_main
     compile_main.run()
 
-if 0:
+if 1:
     import render
 
 if 0:

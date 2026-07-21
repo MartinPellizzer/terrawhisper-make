@@ -9,32 +9,24 @@ from lib import io
 from lib import llm
 
 def observations_table_plants_taxonomies_add():
-    source_foldername = 'powo'
-    input_foldername = 'resolve'
-    output_foldername = 'observe'
-    input_folderpath = f'{g.DATA_FOLDERPATH}/{input_foldername}/{source_foldername}/json'
-    output_folderpath = f'{g.DATA_FOLDERPATH}/{output_foldername}'
-    ###
+    table_name = 'plants_taxonomies'
+    input_folderpath = f'{g.DATA_FOLDERPATH}/resolve/powo/json'
+    output_folderpath = f'{g.DATA_FOLDERPATH}/observe'
     db_filepath = f'{output_folderpath}/observations.db'
+    ###
     input_filenames = os.listdir(input_folderpath)
     all_data = []
     for i, input_filename in enumerate(input_filenames[:]):
         print(f'{i}/{len(input_filenames)}')
         input_filepath = f'{input_folderpath}/{input_filename}'
         input_data = io.json_read(input_filepath)
-        # if input_data['wcvp_taxon_name'] == 'Tabernaemontana markgrafiana':
-            # print(json.dumps(input_data, indent=4))
-            # quit()
-        # print(json.dumps(input_data, indent=4))
-        # quit()
         all_data.append(input_data)
     ###
     conn = sqlite3.connect(db_filepath)
     cur = conn.cursor()
-    print('start inserting...')
     cur.executemany(
-        """
-        INSERT OR IGNORE INTO plants_taxonomies (
+        f"""
+        INSERT OR IGNORE INTO {table_name} (
             plant_canonical_name, 
             taxon_kingdom,
             taxon_phylum,
@@ -66,10 +58,6 @@ def observations_table_plants_taxonomies_add():
     rows = conn.execute("SELECT * FROM plants_taxonomies")
     for row in list(rows)[:10]:
         print(row)
-        # quit()
-        # if row[1] == 'Tabernaemontana markgrafiana':
-            # print(row)
-            # quit()
     conn.close()
 
 def run():

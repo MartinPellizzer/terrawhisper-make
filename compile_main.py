@@ -90,7 +90,7 @@ def run():
         for item in data:
             item_new = {
                 "plant_part_canonical_name": item['plant_part_canonical_name'],
-                "source": item['source'],
+                "source_name": item['source_name'],
             }
             output_data[f'{data_type}'].append(item)
 

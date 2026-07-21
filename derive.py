@@ -52,7 +52,7 @@ def plant_part_summary_get(plant_canonical_name):
     cursor = conn.execute("""
         SELECT
             plant_part_canonical_name,
-            COUNT(DISTINCT source) AS num_sources
+            COUNT(DISTINCT source_name) AS num_sources
         FROM plants_parts
         WHERE plant_canonical_name = ?
         GROUP BY plant_part_canonical_name
@@ -115,7 +115,7 @@ def summary_disease_get(plant_canonical_name):
 ################################################################################
 
 ### TAXONOMIES
-if 0:
+if 1:
     entity_foldername = 'taxonomies'
     master_plants_rows = masterize_utils.masterize_plants_get_all()
     for i, master_plant_row in enumerate(master_plants_rows):
@@ -140,7 +140,7 @@ if 0:
         io.json_write(output_filepath, output_items)
 
 ### NAMES
-if 0:
+if 1:
     entity_foldername = 'names'
     master_plants_rows = masterize_utils.masterize_plants_get_all()
     for i, master_plant_row in enumerate(master_plants_rows):
@@ -162,7 +162,7 @@ if 0:
         io.json_write(output_filepath, output_items)
 
 ### DISTRIBUTION
-if 0:
+if 1:
     entity_foldername = 'distribution'
     master_plants_rows = masterize_utils.masterize_plants_get_all()
     for i, master_plant_row in enumerate(master_plants_rows):
@@ -195,7 +195,7 @@ if 1:
             output_item = {
                 'plant_canonical_name': master_plant_row[1], ### MANDATORY
                 'plant_part_canonical_name': row[0],
-                'source': row[1],
+                'source_name': row[1],
             }
             print(json.dumps(output_item, indent=4))
             output_items.append(output_item)
@@ -204,7 +204,7 @@ if 1:
         io.json_write(output_filepath, output_items)
 
 ### CHEMICALS
-if 0:
+if 1:
     master_plants_rows = masterize_utils.masterize_plants_get_all()
     for i, master_plant_row in enumerate(master_plants_rows):
         print(f'{i}/{len(master_plants_rows)}')
@@ -226,7 +226,7 @@ if 0:
         io.json_write(output_filepath, output_items)
 
 ### ACTIVITIES
-if 0:
+if 1:
     master_plants_rows = masterize_utils.masterize_plants_get_all()
     for i, master_plant_row in enumerate(master_plants_rows):
         print(f'{i}/{len(master_plants_rows)}')
@@ -245,7 +245,7 @@ if 0:
         io.json_write(output_filepath, output_items)
 
 ### DISEASES
-if 0:
+if 1:
     master_plants_rows = masterize_utils.masterize_plants_get_all()
     for i, master_plant_row in enumerate(master_plants_rows):
         print(f'{i}/{len(master_plants_rows)}')

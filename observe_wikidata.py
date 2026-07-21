@@ -10,19 +10,17 @@ from lib import llm
 
 def observations_table_plants_names_add():
     table_name = 'plants_names'
-    source_foldername = 'wikidata'
-    input_foldername = 'resolve'
-    output_foldername = 'observe'
-    input_folderpath = f'{g.DATA_FOLDERPATH}/{input_foldername}/{source_foldername}/json'
-    output_folderpath = f'{g.DATA_FOLDERPATH}/{output_foldername}'
-    ###
+    input_folderpath = f'{g.DATA_FOLDERPATH}/resolve/wikidata/json'
+    output_folderpath = f'{g.DATA_FOLDERPATH}/observe'
     db_filepath = f'{output_folderpath}/observations.db'
+    ###
     input_filenames = os.listdir(input_folderpath)
     all_data = []
     for i, input_filename in enumerate(input_filenames[:]):
         print(f'{i}/{len(input_filenames)}')
         input_filepath = f'{input_folderpath}/{input_filename}'
         input_data = io.json_read(input_filepath)
+        ### PROCESS LABELS
         for label in input_data['labels']:
             item = {
                 'wcvp_taxon_name': input_data['wcvp_taxon_name'],
@@ -32,7 +30,7 @@ def observations_table_plants_names_add():
                 'source': input_data['source'],
             }
             all_data.append(item)
-        ###
+        ### PROCESS ALIASES
         for alias_list in input_data['aliases']:
             for alias in alias_list:
                 item = {
@@ -43,10 +41,6 @@ def observations_table_plants_names_add():
                     'source': input_data['source'],
                 }
                 all_data.append(item)
-    # for item in all_data[:10]:
-        # print(json.dumps(item, indent=4))
-    # quit()
-    ###
     all_data_query = [
         (
             item.get("wcvp_taxon_name").capitalize(),
