@@ -81,64 +81,33 @@ def run():
             output_data['distribution'].append(item)
 
         ### PLANTS PARTS
-        data_type = 'plants_parts'
-        data = io.json_read(
-            f'{g.DATA_FOLDERPATH}/{input_foldername}/herbs/{data_type}/{plant_canonical_name}.json'
+        output_data['plants_parts'] = io.json_read(
+            f'{g.DATA_FOLDERPATH}/{input_foldername}/herbs/plants_parts/{plant_canonical_name}.json'
         )
-        # print(json.dumps(chemicals_data, indent=4))
-        output_data['plants_parts'] = []
-        for item in data:
-            item_new = {
-                "plant_part_canonical_name": item['plant_part_canonical_name'],
-                "source_name": item['source_name'],
-            }
-            output_data[f'{data_type}'].append(item)
 
         ### CHEMICALS
-        chemicals_data = io.json_read(
-            f'{g.VAULT_FOLDERPATH}/terrawhisper/data/{input_foldername}/herbs/chemicals/{plant_canonical_name}.json'
+        output_data['chemicals'] = io.json_read(
+            f'{g.DATA_FOLDERPATH}/{input_foldername}/herbs/chemicals/{plant_canonical_name}.json'
         )
-        # print(json.dumps(chemicals_data, indent=4))
-        output_data['chemicals'] = []
-        for chemical_item in chemicals_data:
-            chemical_item_new = {
-                "chemical_canonical_name": chemical_item['chemical_canonical_name'],
-                "plant_part": chemical_item['plant_part'],
-                "num_sources": chemical_item['num_sources'],
-                "min_concentration": chemical_item['min_concentration'],
-                "max_concentration": chemical_item['max_concentration'],
-            }
-            output_data['chemicals'].append(chemical_item)
 
         ### ACTIVITIES
-        activities_data = io.json_read(
-            f'{g.VAULT_FOLDERPATH}/terrawhisper/data/{input_foldername}/herbs/activities/{plant_canonical_name}.json'
+        output_data['activities'] = io.json_read(
+            f'{g.DATA_FOLDERPATH}/{input_foldername}/herbs/activities/{plant_canonical_name}.json'
         )
-        # print(json.dumps(chemicals_data, indent=4))
-        output_data['activities'] = []
-        for activity_item in activities_data:
-            activity_item_new = {
-                "activity_canonical_name": activity_item['activity_canonical_name'],
-                "num_sources": chemical_item['num_sources'],
-            }
-            output_data['activities'].append(activity_item)
-        ###
-        io.json_write(output_filepath, output_data)
 
         ### DISEASES
-        diseases_data = io.json_read(
-            f'{g.VAULT_FOLDERPATH}/terrawhisper/data/{input_foldername}/herbs/diseases/{plant_canonical_name}.json'
+        output_data['diseases'] = io.json_read(
+            f'{g.DATA_FOLDERPATH}/{input_foldername}/herbs/diseases/{plant_canonical_name}.json'
         )
-        # print(json.dumps(chemicals_data, indent=4))
-        output_data['diseases'] = []
-        for disease_item in diseases_data:
-            disease_item_new = {
-                "disease_canonical_name": disease_item['disease_canonical_name'],
-                "num_sources": chemical_item['num_sources'],
-            }
-            output_data['diseases'].append(disease_item)
+
+        ### PREPARATIONS 
+        output_data['preparations'] = io.json_read(
+            f'{g.DATA_FOLDERPATH}/{input_foldername}/herbs/preparations/{plant_canonical_name}.json'
+        )
+
         ###
+
         io.json_write(output_filepath, output_data)
-            
+
         # quit()
 

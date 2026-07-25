@@ -211,6 +211,72 @@ def resolve_diseases():
     wcvp_conn.close()
     mesh_conn.close()
 
+def resolve_preparations():
+    entity_type = 'preparations'
+    ###
+    input_folderpath = f'{g.DATA_FOLDERPATH}/normalize/pubmed/{entity_type}/json'
+    output_folderpath = f'{g.DATA_FOLDERPATH}/resolve/pubmed/{entity_type}/json'
+    io.folders_recursive_gen(output_folderpath)
+    input_filenames = os.listdir(input_folderpath)
+    try: shutil.rmtree(output_folderpath)
+    except: pass
+    os.makedirs(output_folderpath, exist_ok=True)
+    ###
+    wcvp_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/reference/wcvp/wcvp.db'
+    wcvp_conn = sqlite3.connect(wcvp_folderpath)
+    ### TODO: connect to table "plants parts" for canonical resolution
+    i = 0
+    for input_filename in input_filenames[i:]:
+        print(input_filename)
+        i += 1
+        print(f'{i}/{len(input_filenames)}')
+        output_filepath = f'{output_folderpath}/{input_filename}'
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        # if os.path.exists(output_filepath): continue
+        input_data = io.json_read(input_filepath)
+        resolved_data = []
+        for input_item in input_data:
+            # print(json.dumps(input_item, indent=True))
+            # quit()
+            resolved_item = input_item
+            plant_name_normalized = input_item['plant_name_normalized']
+            preparation_name_normalized = input_item['preparation_name_normalized']
+            if preparation_name_normalized == 'null': continue
+            ### RESOLVE PLANT (WCVP)
+            wcvp_row = resolve_utils.resolve_plant_accepted(wcvp_conn, plant_name_normalized)
+            ### TODO: RESOLVE PREPARATIONS
+            terra_preparation_name = input_item['preparation_name']
+            terra_preparation_name_normalized = input_item['preparation_name_normalized']
+            '''
+            mesh_cur = mesh_conn.cursor()
+            mesh_cur.execute("""
+                SELECT *
+                FROM diseases
+                WHERE disease_name_normalized = ?
+            """, (disease_name_normalized,))
+            mesh_row = mesh_cur.fetchone()
+            '''
+            # if wcvp_row and mesh_row:
+            if wcvp_row:
+                wcvp_plant_name_id = wcvp_row[0]
+                wcvp_accepted_plant_name_id = wcvp_row[1]
+                wcvp_taxon_status = wcvp_row[2]
+                wcvp_taxon_name = wcvp_row[3]
+                wcvp_taxon_name_normalized = wcvp_row[4]
+                ###
+                resolved_item_new = resolved_item
+                resolved_item_new['wcvp_taxon_name'] = wcvp_taxon_name
+                resolved_item_new['wcvp_taxon_name_normalized'] = wcvp_taxon_name_normalized
+                resolved_item_new['terra_preparation_name'] = terra_preparation_name
+                resolved_item_new['terra_preparation_name_normalized'] = terra_preparation_name_normalized
+                resolved_data.append(resolved_item_new)
+                # print(json.dumps(resolved_data, indent=True))
+                # quit()
+        if resolved_data != []:
+            io.json_write(output_filepath, resolved_data)
+    wcvp_conn.close()
+    # mesh_conn.close()
+
 def resolve_plants_parts():
     source_name = 'pubmed'
     entity_type = 'plants_parts'
@@ -284,7 +350,7 @@ def run():
     print('RESOLVE >> pubmed')
 
     start = time.perf_counter()
-    resolve_plants_parts()
+    # resolve_plants_parts()
     print(f'resolve plants_parts() - execution time: ', time.perf_counter() - start)
 
     start = time.perf_counter()
@@ -298,4 +364,8 @@ def run():
     start = time.perf_counter()
     # resolve_diseases()
     print(f'resolve diseases() - execution time: ', time.perf_counter() - start)
+
+    start = time.perf_counter()
+    resolve_preparations()
+    print(f'resolve preparations() - execution time: ', time.perf_counter() - start)
 

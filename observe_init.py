@@ -167,6 +167,27 @@ def observations_table_plants_diseases_create(regen=False):
     conn.commit()
     conn.close()
 
+def observations_table_plants_preparations_create(regen=False):
+    table_name = 'plants_preparations'
+    conn = sqlite3.connect(db_filepath)
+    cur = conn.cursor()
+    if regen: cur.execute(f"DROP TABLE IF EXISTS {table_name}")
+    cur.execute(f"""
+        CREATE TABLE IF NOT EXISTS {table_name} (
+            id INTEGER PRIMARY KEY,
+            plant_canonical_name TEXT NOT NULL,
+            preparation_canonical_name TEXT NOT NULL,
+            source_name TEXT
+        );
+    """)
+    conn.execute("PRAGMA journal_mode = WAL;")
+    conn.execute("PRAGMA synchronous = OFF;")
+    conn.execute("PRAGMA temp_store = MEMORY;")
+    cur.execute(f"CREATE INDEX IF NOT EXISTS idx_{table_name}_plant_canonical_name ON {table_name}(plant_canonical_name)")
+    cur.execute(f"CREATE INDEX IF NOT EXISTS idx_{table_name}_preparation_canonical_name ON {table_name}(preparation_canonical_name)")
+    conn.commit()
+    conn.close()
+
 def run():
     print('OBSERVE >> init')
 
@@ -175,11 +196,12 @@ def run():
     os.makedirs(output_folderpath, exist_ok=True)
 
     ### TODO: do a clean up by destroying db
-    observations_table_plants_taxonomies_create(regen=True)
-    observations_table_plants_names_create(regen=True)
-    observations_table_plants_distributions_create(regen=True)
-    observations_table_plants_parts_create(regen=True)
-    observations_table_plants_chemicals_create(regen=True)
-    observations_table_plants_activities_create(regen=True)
-    observations_table_plants_diseases_create(regen=True)
+    # observations_table_plants_taxonomies_create(regen=True)
+    # observations_table_plants_names_create(regen=True)
+    # observations_table_plants_distributions_create(regen=True)
+    # observations_table_plants_parts_create(regen=True)
+    # observations_table_plants_chemicals_create(regen=True)
+    # observations_table_plants_activities_create(regen=True)
+    # observations_table_plants_diseases_create(regen=True)
+    observations_table_plants_preparations_create(regen=True)
 

@@ -24,10 +24,6 @@ DOING:
 complete common names of /herbs/herb pages in hero cards from wikidata?
 
 TODO:
-redo tables in observation db, use variable for tables names (because fix copy/paste errors)
-!!! title tag in explorer pages
-!!! explore page "popular herbs" and "recently added"
-add one source name on each table row
 add drduke data to pipeline
 synonyms
 get chemicals classes from chemical and pubchem
@@ -44,8 +40,8 @@ if 0:
     # parse_wcvp.run()
     # parse_ipni.run()
     # parse_powo.run()
-    parse_wikidata.run()
-    # parse_pubmed.run()
+    # parse_wikidata.run()
+    parse_pubmed.run()
     # parse_drduke.run()
 
 if 0:
@@ -89,10 +85,10 @@ if 0:
     import observe_pubmed
     import observe_drduke
 
-    # observe_init.run()
+    observe_init.run()
     # observe_powo.run()
     # observe_wikidata.run()
-    # observe_pubmed.run()
+    observe_pubmed.run()
     # observe_drduke.run()
 
 if 0:

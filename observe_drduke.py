@@ -15,13 +15,10 @@ def is_number(s):
     except (ValueError, TypeError):
         return False
 
-def observations_table_plants_chemicals_add():
-    source_foldername = 'drduke'
-    input_foldername = 'resolve'
-    output_foldername = 'observe'
+def observations_table_plants_chemicals_add_old():
     ###
-    input_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/{input_foldername}/{source_foldername}/json'
-    output_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/{output_foldername}'
+    input_folderpath = f'{g.DATA_FOLDERPATH}/resolve/drduke/json'
+    output_folderpath = f'{g.DATA_FOLDERPATH}/observe'
     input_filenames = os.listdir(input_folderpath)
     ###
     all_data = []
@@ -95,6 +92,52 @@ def observations_table_plants_chemicals_add():
     conn.commit()
     conn.close()
 
+### TODO: make it so that the resolve data for drduke are formatted equal to pubmed when starting this phase (pydantic?) 
+def observations_table_plants_chemicals_add():
+    ###
+    table_name = 'plants_chemicals'
+    input_folderpath = f'{g.DATA_FOLDERPATH}/resolve/drduke/json'
+    output_folderpath = f'{g.DATA_FOLDERPATH}/observe'
+    db_filepath = f'{output_folderpath}/observations.db'
+    ###
+    input_filenames = os.listdir(input_folderpath)
+    all_data = []
+    for i, input_filename in enumerate(input_filenames[:]):
+        print(f'PLANTS_CHEMICALS - {i}/{len(input_filenames)}')
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        input_data = io.json_read(input_filepath)
+        for input_item in input_data['chemicals']:
+            input_item['herb_name_latin'] = input_data['herb_name_latin']
+            all_data.append(input_item)
+    ###
+    conn = sqlite3.connect(db_filepath)
+    cur = conn.cursor()
+    cur.executemany(
+        f"""
+        INSERT OR IGNORE INTO {table_name} (
+            plant_canonical_name, 
+            chemical_canonical_name, 
+            plant_part, 
+            source_name
+        )
+        VALUES (?, ?, ?, ?)
+        """,
+        [
+            (
+                item.get("herb_name_latin").capitalize(),
+                item.get("Chemical Name"),
+                item.get("Plant Part"),
+                item.get("Reference"),
+            )
+            for item in all_data
+        ]
+    )
+    conn.commit()
+    rows = conn.execute(f"SELECT * FROM {table_name}")
+    for row in list(rows)[:10]:
+        print(row)
+    conn.close()
+
 def observations_table_plants_activities_add():
     source_foldername = 'drduke'
     input_foldername = 'resolve'
@@ -156,9 +199,9 @@ def test():
 def run():
     print('observe >> pubmed')
 
-    # observations_table_plants_chemicals_add()
-    # test()
+    observations_table_plants_chemicals_add()
+    test()
 
-    observations_table_plants_activities_add()
+    # observations_table_plants_activities_add()
 
 

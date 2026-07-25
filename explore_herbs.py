@@ -308,6 +308,11 @@ def sidebar_html_gen():
             <a style="{li_a_style} margin-top: 1.6rem;" href="/herbs.html">view all →</a>
     '''
 
+    '''
+                <li>
+                    <a style="text-decoration: none; color: #111; font-size: 1.4rem;" href="/herbs.html">Recently Added</a>
+                </li>
+    '''
     sidebar_html = f'''
         <div 
             style=" 
@@ -321,10 +326,7 @@ def sidebar_html_gen():
                     <a style="text-decoration: none; color: #111; font-size: 1.4rem;" href="/herbs.html">All Herbs</a>
                 </li>
                 <li>
-                    <a style="text-decoration: none; color: #111; font-size: 1.4rem;" href="/herbs.html">Popular Herbs</a>
-                </li>
-                <li>
-                    <a style="text-decoration: none; color: #111; font-size: 1.4rem;" href="/herbs.html">Recently Added</a>
+                    <a style="text-decoration: none; color: #111; font-size: 1.4rem;" href="/herbs/popular.html">Popular Herbs</a>
                 </li>
             </ul>
             <hr style="border: 0; border-bottom: 1px solid #d8d8d8; margin-top: 2.4rem; margin-bottom: 2.4rem;">
@@ -526,7 +528,7 @@ def herbs_index():
         '''
 
         ###
-        meta_title = f'Medicinal Herbs'
+        meta_title = f'Explore all medicinal herbs'
         meta_description = ''
         canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''
         head_html = components.html_head(
@@ -550,17 +552,149 @@ def herbs_index():
         with open(html_filepath, 'w') as f: f.write(html)
         print(html_filepath)
 
+def herbs_popular_category():
+    io.folders_recursive_gen(f'''{g.website_folderpath}/{url_slug}''')
+    html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
+
+    plants_rows = masterize_utils.masterize_plants_get_all()
+
+    plants_data = []
+    db_filepath = f'{g.DATA_FOLDERPATH}/qualify/observations.db'
+    conn = sqlite3.connect(db_filepath)
+    for plant_row in plants_rows:
+        plant_canonical_name = plant_row[1]
+        rows_num = 0
+        ###
+        cursor = conn.execute("""
+            SELECT COUNT (*)
+            FROM plants_parts
+            WHERE plant_canonical_name = ?
+        """, (plant_canonical_name,))
+        rows_num += int(cursor.fetchone()[0])
+        cursor = conn.execute("""
+            SELECT COUNT (*)
+            FROM plants_chemicals
+            WHERE plant_canonical_name = ?
+        """, (plant_canonical_name,))
+        rows_num += int(cursor.fetchone()[0])
+        cursor = conn.execute("""
+            SELECT COUNT (*)
+            FROM plants_activities
+            WHERE plant_canonical_name = ?
+        """, (plant_canonical_name,))
+        rows_num += int(cursor.fetchone()[0])
+        cursor = conn.execute("""
+            SELECT COUNT (*)
+            FROM plants_diseases
+            WHERE plant_canonical_name = ?
+        """, (plant_canonical_name,))
+        rows_num += int(cursor.fetchone()[0])
+        print(rows_num)
+        ###
+        plant_item = {
+            'plant_canonical_name': plant_canonical_name,
+            'datapoints_num': rows_num,
+        }
+        plants_data.append(plant_item)
+    conn.close()
+    plants_data = sorted(plants_data, key=lambda x: x['datapoints_num'], reverse=True)
+    plants_data = plants_data[:48]
+
+    plants_data = [
+        {
+            'plant_name_canonical': item['plant_canonical_name']
+        }
+        for item in plants_data[:]
+    ]
+    # print(plants_data[0])
+    # print(plants_data[1])
+    # quit()
+
+    ### GROUP PLANTS IN PAGES
+    page_cards_num = 48
+    groups = groups_gen(plants_data, page_cards_num)
+
+    ### GENERATE PAGES
+    for group_i, group in enumerate(groups):
+        print(f'{group_i}/{len(groups)}')
+        ### PAGE URL
+        if group_i == 0:
+            html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
+        else:
+            os.makedirs(f'''{g.website_folderpath}/{url_slug}/page''', exist_ok=True)
+            html_filepath = f'''{g.website_folderpath}/{url_slug}/page/{group_i+1}.html'''
+
+
+        hero_html = hero_html_gen(
+            title=f"Explore popular herbs"
+        )
+        sidebar_html = sidebar_html_gen()
+        cards_header_html = cards_header_html_gen(group_i, page_cards_num, len(plants_data),
+            title=f"List of popular herbs"
+        )
+        cards_html = cards_html_gen(group)
+        pagination_html = pagination_html_gen(group_i, groups, url_slug)
+
+        html_article = ''
+        html_article += f'''
+            <section style="margin-bottom: 9.6rem;">
+                <div class="explorer-layout" style="gap: 4.8rem;">
+                    <div style="flex: 1;">
+                        {sidebar_html}
+                    </div>
+                    <div style="flex: 3;">
+                        {sections.breadcrumbs_explorer(url_slug)}
+                        {cards_header_html}
+                        <div class="grid-5" style="gap: 1.6rem; row-gap: 3.2rem;">
+                            {cards_html}
+                        </div>
+                        <nav class="pagination">
+                            <ul>
+                                {pagination_html}
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </section>
+        '''
+
+        ###
+        meta_title = f"Explore popular herbs"
+        meta_description = ''
+        canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''
+        head_html = components.html_head(
+            meta_title, meta_description, css='/styles.css', canonical=canonical_html
+        )
+                # {sections.breadcrumbs_new(url_slug)}
+        html = f''' 
+            <!DOCTYPE html>
+            <html lang="en">
+            {head_html}
+            <body style="background-color: #fff;">
+                {sections.header_dark()}
+                {hero_html}
+                <main class="container-xxl explorer">
+                    {html_article}
+                </main>
+                {sections.footer()}
+            </body>
+            </html>
+        '''.strip()
+        with open(html_filepath, 'w') as f: f.write(html)
+        print(html_filepath)
+
+
 def herbs_alphabet_category():
     url_slug = f'herbs/alphabet'
     io.folders_recursive_gen(f'''{g.website_folderpath}/{url_slug}''')
     html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
 
     hero_html = hero_html_gen(
-        title='Explore herbs starting with letter'
+        title='Explore herbs alphabetically'
     )
     sidebar_html = sidebar_html_gen()
     cards_header_html = cards_header_html_gen(0, 26, 26,
-        title='List of herbs starting with letter'
+        title='List of herbs sorted alphabetically'
     )
 
     alphabet_html = ''
@@ -640,7 +774,7 @@ def herbs_alphabet_category():
     '''
 
     ###
-    meta_title = f'Medicinal Herbs'
+    meta_title = f'Explore herbs alphabetically'
     meta_description = ''
     canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''
     head_html = components.html_head(
@@ -663,164 +797,6 @@ def herbs_alphabet_category():
     '''.strip()
     with open(html_filepath, 'w') as f: f.write(html)
     print(html_filepath)
-
-    ### GROUP PLANTS IN PAGES
-    page_cards_num = 48
-    groups = groups_gen(sidebar_activities_rows, page_cards_num)
-
-    ### GENERATE PAGES
-    for group_i, group in enumerate(groups):
-        print(f'{group_i}/{len(groups)}')
-        ### PAGE URL
-        if group_i == 0:
-            html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
-        else:
-            os.makedirs(f'''{g.website_folderpath}/{url_slug}/page''', exist_ok=True)
-            html_filepath = f'''{g.website_folderpath}/{url_slug}/page/{group_i+1}.html'''
-
-        hero_html = hero_html_gen(
-            title='Explore herbs biological activities'
-        )
-        sidebar_html = sidebar_html_gen()
-        cards_header_html = cards_header_html_gen(group_i, page_cards_num, len(sidebar_activities_rows),
-            title='List of herbs biological activities'
-        )
-        # cards_header_html = ''
-        # cards_html = cards_html_gen(group)
-        activities_html = f''
-        for i, row in enumerate(group[:]):
-            print(f'{i}/{len(group)}')
-            activity_name = row[0]
-            activity_slug = polish.sluggify(activity_name)
-
-            conn = sqlite3.connect(f'{g.VAULT_FOLDERPATH}/terrawhisper/data/observe/observations.db')
-            cur = conn.cursor()
-
-            ### PLANTS NAMES
-            cur.execute("""
-                SELECT DISTINCT plant_canonical_name
-                FROM plants_activities
-                WHERE activity_canonical_name = ?
-            """, (activity_name,))
-            plants_rows = cur.fetchall()
-
-            ### PLANTS COUNT
-            cur.execute(
-                """
-                SELECT COUNT(DISTINCT plant_canonical_name)
-                FROM plants_activities
-                WHERE activity_canonical_name = ?
-                """, (activity_name,)
-            )
-            plants_count = cur.fetchone()[0]
-
-            conn.close()
-            
-            plants_html = f''
-            for plant_row in plants_rows[:3]:
-                plant_name = plant_row[0]
-                plant_slug = polish.sluggify(plant_name)
-                plants_html += f'''
-                    <div>
-                        <img 
-                            src="/images/herbs/{plant_slug}.jpg" 
-                            style="margin-bottom: 0.8rem; width: 80px; height: 80px;"
-                        >
-                        <p style="font-size: 1.4rem;">{plant_name}</p>
-                    </div>
-                '''
-
-            ### DESCRIPTION
-            json_article_filepath = f'''{g.DATA_FOLDERPATH}/explore/categories/activities.json'''
-            json_article = io.json_read(json_article_filepath, create=True)
-            regen = False
-            key = f'activity_{activity_slug}'
-            if key not in json_article: json_article[key] = ''
-            if regen: json_article[key] = ''
-            if json_article[key] == '':
-                plants_names_llm = ','.join([x[0] for x in plants_rows[:3]])
-                prompt = f'''
-                    Write 2 sentences to explain the following biological activity of medicinal herbs: {activity_name}.
-                    Include a sample on what herbs have this biological activity, like {plants_names_llm}.
-                '''.strip()
-                reply = llm.reply(prompt, model_filepath)
-                if '</think>' in reply:
-                    reply = reply.split('</think>')[1].strip()
-                reply = polish.vanilla(reply)
-                json_article[key] = reply
-                io.json_write(json_article_filepath, json_article)
-            description_text = json_article[key]
-
-            activities_html += f'''
-                <article style="border: 1px solid #d8d8d8; margin-bottom: 1.6rem; padding: 1.6rem;">
-                    <div style="display: flex; gap: 4.8rem;">
-                        <div style="flex: 2;">
-                            <a href="/herbs/activities/{activity_slug}.html" style="text-decoration: none;">
-                                <h3 style="font-size: 1.8rem;">{activity_name}</h3>
-                            </a>
-                            <p style="margin-bottom: 1.6rem;">{description_text}</p>
-                            <p style="font-size: 1.4rem;"><span style="font-weight: 700;">Associated herbs:</span> {plants_count}</p>
-                        </div>
-                        <div style="flex: 1;">
-                            <p style="font-size: 1.4rem; font-weight: 700; margin-bottom: 1.6rem;">Occurs naturally in</p>
-                            <div class="grid-3" style="gap: 1.6rem;">
-                                {plants_html}
-                            </div>
-                            <a 
-                                style="color: #111; text-decoration: none; display: inline-block; margin-top: 1.6rem; font-size: 1.4rem;"
-                                href="/herbs/activities/{activity_slug}.html">View all {activity_name} herbs →
-                            </a>
-                        </div>
-                    </div>
-                </article>
-            '''
-        pagination_html = pagination_html_gen(group_i, groups, url_slug)
-
-        html_article = ''
-        html_article += f'''
-            <section style="margin-bottom: 9.6rem;">
-                <div class="explorer-layout" style="gap: 4.8rem;">
-                    <div style="flex: 1;">
-                        {sidebar_html}
-                    </div>
-                    <div style="flex: 3;">
-                        {sections.breadcrumbs_explorer(url_slug)}
-                        {cards_header_html}
-                        {activities_html}
-                        <nav class="pagination">
-                            <ul>
-                                {pagination_html}
-                            </ul>
-                        </nav>
-                    </div>
-                </div>
-            </section>
-        '''
-
-        ###
-        meta_title = f'Medicinal Herbs'
-        meta_description = ''
-        canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''
-        head_html = components.html_head(
-            meta_title, meta_description, css='/styles.css', canonical=canonical_html
-        )
-                # {sections.breadcrumbs_new(url_slug)}
-        html = f''' 
-            <!DOCTYPE html>
-            <html lang="en">
-            {head_html}
-            <body style="background-color: #fff;">
-                {sections.header_dark()}
-                {hero_html}
-                <main class="container-xxl explorer">
-                    {html_article}
-                </main>
-                {sections.footer()}
-            </body>
-            </html>
-        '''.strip()
-        with open(html_filepath, 'w') as f: f.write(html)
-        print(html_filepath)
 
 def herbs_alphabet(alphabet_letter=''):
     if alphabet_letter == '': return
@@ -855,7 +831,9 @@ def herbs_alphabet(alphabet_letter=''):
             html_filepath = f'''{g.website_folderpath}/{url_slug}/page/{group_i+1}.html'''
 
 
-        hero_html = hero_html_gen(title=f'Explore herbs starting with letter "{alphabet_letter.upper()}"')
+        hero_html = hero_html_gen(
+            title=f'Explore herbs starting with letter "{alphabet_letter.upper()}"'
+        )
         sidebar_html = sidebar_html_gen()
         cards_header_html = cards_header_html_gen(group_i, page_cards_num, len(plants_data),
             title=f'List of herbs starting with letter "{alphabet_letter.upper()}"'
@@ -887,7 +865,7 @@ def herbs_alphabet(alphabet_letter=''):
         '''
 
         ###
-        meta_title = f'Medicinal Herbs'
+        meta_title = f'Explore herbs starting with letter "{alphabet_letter.upper()}"'
         meta_description = ''
         canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''
         head_html = components.html_head(
@@ -1049,7 +1027,7 @@ def herbs_activities_category():
         '''
 
         ###
-        meta_title = f'Medicinal Herbs'
+        meta_title = f'Explore herbs biological activities'
         meta_description = ''
         canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''
         head_html = components.html_head(
@@ -1152,7 +1130,7 @@ def herbs_activities(activity_name):
         '''
 
         ###
-        meta_title = f'Medicinal Herbs'
+        meta_title = f"Explore {activity_name.lower()} herbs"
         meta_description = ''
         canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''
         head_html = components.html_head(
@@ -1195,11 +1173,11 @@ def herbs_chemicals_category():
             html_filepath = f'''{g.website_folderpath}/{url_slug}/page/{group_i+1}.html'''
 
         hero_html = hero_html_gen(
-            title='Explore herbs bioactive compounds'
+            title='Explore herbs chemicals'
         )
         sidebar_html = sidebar_html_gen()
         cards_header_html = cards_header_html_gen(group_i, page_cards_num, len(sidebar_activities_rows),
-            title='List of herbs bioactive compounds'
+            title='List of herbs chemicals'
         )
 
         chemicals_html = f''
@@ -1314,7 +1292,7 @@ def herbs_chemicals_category():
         '''
 
         ###
-        meta_title = f'Medicinal Herbs'
+        meta_title = f'Explore herbs chemicals'
         meta_description = ''
         canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''
         head_html = components.html_head(
@@ -1413,7 +1391,7 @@ def herbs_chemicals(chemical_name):
         '''
 
         ###
-        meta_title = f'Medicinal Herbs'
+        meta_title = f"Explore herbs that contain {chemical_name}"
         meta_description = ''
         canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''
         head_html = components.html_head(
@@ -1448,30 +1426,33 @@ def run():
     if sidebar_chemicals_rows == None:
         sidebar_chemicals_get()
 
-    if 1:
+    if 0:
         herbs_index()
 
     if 1:
+        herbs_popular_category()
+
+    if 0:
         herbs_alphabet_category()
 
-    if 1:
+    if 0:
         letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
         for letter in letters:
             herbs_alphabet(letter)
 
-    if 1:
+    if 0:
         herbs_activities_category()
 
-    if 1:
+    if 0:
         for activity in sidebar_activities_rows:
             activity_name = activity[0]
             herbs_activities(activity_name)
             # quit()
 
-    if 1:
+    if 0:
         herbs_chemicals_category()
 
-    if 1:
+    if 0:
         for i, chemical in enumerate(sidebar_chemicals_rows[:1000]):
             print(f'{i}/{len(sidebar_chemicals_rows)}')
             chemical_name = chemical[0]

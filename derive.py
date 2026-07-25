@@ -62,6 +62,31 @@ def plant_part_summary_get(plant_canonical_name):
     conn.close()
     return rows
 
+def plant_part_summary_get_0000(plant_canonical_name):
+    conn = sqlite3.connect(db_filepath)
+    cursor = conn.execute("""
+SELECT
+    plant_canonical_name,
+    plant_part_canonical_name,
+    COUNT(*) AS num_sources,
+    json_group_array(source_name) AS sources
+FROM (
+    SELECT DISTINCT
+        plant_canonical_name,
+        plant_part_canonical_name,
+        source_name
+    FROM plants_parts
+    WHERE plant_canonical_name = ?
+)
+GROUP BY
+    plant_canonical_name,
+    plant_part_canonical_name
+ORDER BY num_sources DESC;
+    """, (plant_canonical_name,))
+    rows = cursor.fetchall()
+    conn.close()
+    return rows
+
 def chemical_summary_get(plant_canonical_name):
     conn = sqlite3.connect(db_filepath)
     cursor = conn.execute("""
@@ -75,6 +100,31 @@ def chemical_summary_get(plant_canonical_name):
         WHERE plant_canonical_name = ?
         GROUP BY chemical_canonical_name
         ORDER BY chemical_canonical_name;
+    """, (plant_canonical_name,))
+    rows = cursor.fetchall()
+    conn.close()
+    return rows
+
+def chemical_summary_get_0000(plant_canonical_name):
+    conn = sqlite3.connect(db_filepath)
+    cursor = conn.execute("""
+        SELECT
+            plant_canonical_name,
+            chemical_canonical_name,
+            COUNT(*) AS num_sources,
+            json_group_array(source_name) AS sources
+        FROM (
+            SELECT DISTINCT
+                plant_canonical_name,
+                chemical_canonical_name,
+                source_name
+            FROM plants_chemicals
+            WHERE plant_canonical_name = ?
+        )
+        GROUP BY
+            plant_canonical_name,
+            chemical_canonical_name
+        ORDER BY num_sources DESC;
     """, (plant_canonical_name,))
     rows = cursor.fetchall()
     conn.close()
@@ -95,6 +145,31 @@ def summary_activity_get(plant_canonical_name):
     conn.close()
     return rows
 
+def activity_summary_get_0000(plant_canonical_name):
+    conn = sqlite3.connect(db_filepath)
+    cursor = conn.execute("""
+        SELECT
+            plant_canonical_name,
+            activity_canonical_name,
+            COUNT(*) AS num_sources,
+            json_group_array(source_name) AS sources
+        FROM (
+            SELECT DISTINCT
+                plant_canonical_name,
+                activity_canonical_name,
+                source_name
+            FROM plants_activities
+            WHERE plant_canonical_name = ?
+        )
+        GROUP BY
+            plant_canonical_name,
+            activity_canonical_name
+        ORDER BY num_sources DESC;
+    """, (plant_canonical_name,))
+    rows = cursor.fetchall()
+    conn.close()
+    return rows
+
 def summary_disease_get(plant_canonical_name):
     conn = sqlite3.connect(db_filepath)
     cursor = conn.execute("""
@@ -110,12 +185,77 @@ def summary_disease_get(plant_canonical_name):
     conn.close()
     return rows
 
+def disease_summary_get_0000(plant_canonical_name):
+    conn = sqlite3.connect(db_filepath)
+    cursor = conn.execute("""
+        SELECT
+            plant_canonical_name,
+            disease_canonical_name,
+            COUNT(*) AS num_sources,
+            json_group_array(source_name) AS sources
+        FROM (
+            SELECT DISTINCT
+                plant_canonical_name,
+                disease_canonical_name,
+                source_name
+            FROM plants_diseases
+            WHERE plant_canonical_name = ?
+        )
+        GROUP BY
+            plant_canonical_name,
+            disease_canonical_name
+        ORDER BY num_sources DESC;
+    """, (plant_canonical_name,))
+    rows = cursor.fetchall()
+    conn.close()
+    return rows
+
+def preparation_summary_get(plant_canonical_name):
+    conn = sqlite3.connect(db_filepath)
+    cursor = conn.execute("""
+        SELECT
+            preparation_canonical_name,
+            COUNT(DISTINCT source_name) AS num_sources
+        FROM plants_preparations
+        WHERE plant_canonical_name = ?
+        GROUP BY preparation_canonical_name
+        ORDER BY num_sources DESC;
+    """, (plant_canonical_name,))
+    rows = cursor.fetchall()
+    conn.close()
+    return rows
+
+def preparation_summary_get_0000(plant_canonical_name):
+    conn = sqlite3.connect(db_filepath)
+    cursor = conn.execute("""
+        SELECT
+            plant_canonical_name,
+            preparation_canonical_name,
+            COUNT(*) AS num_sources,
+            json_group_array(source_name) AS sources
+        FROM (
+            SELECT DISTINCT
+                plant_canonical_name,
+                preparation_canonical_name,
+                source_name
+            FROM plants_preparations
+            WHERE plant_canonical_name = ?
+        )
+        GROUP BY
+            plant_canonical_name,
+            preparation_canonical_name
+        ORDER BY num_sources DESC;
+    """, (plant_canonical_name,))
+    rows = cursor.fetchall()
+    conn.close()
+    return rows
+
 ################################################################################
 # JSONS
 ################################################################################
 
 ### TAXONOMIES
-if 1:
+if 0:
     entity_foldername = 'taxonomies'
     master_plants_rows = masterize_utils.masterize_plants_get_all()
     for i, master_plant_row in enumerate(master_plants_rows):
@@ -140,7 +280,7 @@ if 1:
         io.json_write(output_filepath, output_items)
 
 ### NAMES
-if 1:
+if 0:
     entity_foldername = 'names'
     master_plants_rows = masterize_utils.masterize_plants_get_all()
     for i, master_plant_row in enumerate(master_plants_rows):
@@ -162,7 +302,7 @@ if 1:
         io.json_write(output_filepath, output_items)
 
 ### DISTRIBUTION
-if 1:
+if 0:
     entity_foldername = 'distribution'
     master_plants_rows = masterize_utils.masterize_plants_get_all()
     for i, master_plant_row in enumerate(master_plants_rows):
@@ -184,18 +324,19 @@ if 1:
         io.json_write(output_filepath, output_items)
 
 ### PLANTS PARTS
-if 1:
+if 0:
     entity_foldername = 'plants_parts'
     master_plants_rows = masterize_utils.masterize_plants_get_all()
     for i, master_plant_row in enumerate(master_plants_rows):
         print(f'{i}/{len(master_plants_rows)}')
-        summary_rows = plant_part_summary_get(master_plant_row[1])
+        summary_rows = plant_part_summary_get_0000(master_plant_row[1])
         output_items = []
         for row in summary_rows:
             output_item = {
                 'plant_canonical_name': master_plant_row[1], ### MANDATORY
-                'plant_part_canonical_name': row[0],
-                'source_name': row[1],
+                'plant_part_canonical_name': row[1],
+                'sources_num': row[2],
+                'sources': json.loads(row[3]),
             }
             print(json.dumps(output_item, indent=4))
             output_items.append(output_item)
@@ -204,20 +345,18 @@ if 1:
         io.json_write(output_filepath, output_items)
 
 ### CHEMICALS
-if 1:
+if 0:
     master_plants_rows = masterize_utils.masterize_plants_get_all()
     for i, master_plant_row in enumerate(master_plants_rows):
         print(f'{i}/{len(master_plants_rows)}')
-        chemical_summary_rows = chemical_summary_get(master_plant_row[1])
+        chemical_summary_rows = chemical_summary_get_0000(master_plant_row[1])
         output_items = []
-        for row in chemical_summary_rows:
+        for row in chemical_summary_rows[:]:
             output_item = {
                 'plant_canonical_name': master_plant_row[1],
-                'chemical_canonical_name': row[0],
-                'plant_part': row[1],
-                'num_sources': row[2],
-                'min_concentration': row[3],
-                'max_concentration': row[3],
+                'chemical_canonical_name': row[1],
+                'sources_num': row[2],
+                'sources': json.loads(row[3]),
             }
             print(json.dumps(output_item, indent=4))
             output_items.append(output_item)
@@ -226,17 +365,18 @@ if 1:
         io.json_write(output_filepath, output_items)
 
 ### ACTIVITIES
-if 1:
+if 0:
     master_plants_rows = masterize_utils.masterize_plants_get_all()
     for i, master_plant_row in enumerate(master_plants_rows):
         print(f'{i}/{len(master_plants_rows)}')
-        summary_activity_rows = summary_activity_get(master_plant_row[1])
+        summary_activity_rows = activity_summary_get_0000(master_plant_row[1])
         output_items = []
         for row in summary_activity_rows:
             output_item = {
                 'plant_canonical_name': master_plant_row[1],
-                'activity_canonical_name': row[0],
-                'num_sources': row[1],
+                'activity_canonical_name': row[1],
+                'sources_num': row[2],
+                'sources': json.loads(row[3]),
             }
             print(json.dumps(output_item, indent=4))
             output_items.append(output_item)
@@ -245,21 +385,42 @@ if 1:
         io.json_write(output_filepath, output_items)
 
 ### DISEASES
-if 1:
+if 0:
     master_plants_rows = masterize_utils.masterize_plants_get_all()
     for i, master_plant_row in enumerate(master_plants_rows):
         print(f'{i}/{len(master_plants_rows)}')
-        summary_disease_rows = summary_disease_get(master_plant_row[1])
+        summary_disease_rows = disease_summary_get_0000(master_plant_row[1])
         output_items = []
         for row in summary_disease_rows:
             output_item = {
                 'plant_canonical_name': master_plant_row[1],
-                'disease_canonical_name': row[0],
-                'num_sources': row[1],
+                'disease_canonical_name': row[1],
+                'sources_num': row[2],
+                'sources': json.loads(row[3]),
             }
             print(json.dumps(output_item, indent=4))
             output_items.append(output_item)
-        output_filepath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/{output_foldername}/herbs/diseases/{master_plant_row[1]}.json'
+        output_filepath = f'{g.DATA_FOLDERPATH}/{output_foldername}/herbs/diseases/{master_plant_row[1]}.json'
+        io.folder_create_from_filepath(output_filepath)
+        io.json_write(output_filepath, output_items)
+
+### PREPARATIONS
+if 1:
+    entity_foldername = 'preparations'
+    master_plants_rows = masterize_utils.masterize_plants_get_all()
+    for i, master_plant_row in enumerate(master_plants_rows):
+        print(f'{i}/{len(master_plants_rows)}')
+        summary_rows = preparation_summary_get_0000(master_plant_row[1])
+        output_items = []
+        for row in summary_rows:
+            output_item = {
+                'plant_canonical_name': master_plant_row[1], ### MANDATORY
+                'preparation_canonical_name': row[1],
+                'sources_num': row[2],
+                'sources': json.loads(row[3]),
+            }
+            output_items.append(output_item)
+        output_filepath = f'{g.DATA_FOLDERPATH}/{output_foldername}/herbs/{entity_foldername}/{master_plant_row[1]}.json'
         io.folder_create_from_filepath(output_filepath)
         io.json_write(output_filepath, output_items)
 

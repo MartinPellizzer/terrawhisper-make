@@ -65,8 +65,8 @@ def csv_to_dict(filepath, delimiter='\\'):
     obj_list = []
     for row in rows_body:
         obj = {}
-        for element_i, e in enumerate(row):
-            obj[row_header[element_i]] = e.strip()
+        for i, e in enumerate(row):
+            obj[row_header[i]] = e.strip()
         obj_list.append(obj)
     return obj_list
 

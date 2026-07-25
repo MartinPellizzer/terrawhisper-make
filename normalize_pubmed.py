@@ -126,11 +126,37 @@ def normalize_plants_parts():
             normalized_data.append(normalized_item)
         io.json_write(output_filepath, normalized_data)
 
+def normalize_plants_preparations():
+    entity_type = 'preparations'
+    input_folderpath = f'{g.DATA_FOLDERPATH}/parse/pubmed/{entity_type}/json'
+    output_folderpath = f'{g.DATA_FOLDERPATH}/normalize/pubmed/{entity_type}/json'
+    io.folders_recursive_gen(output_folderpath)
+    input_filenames = os.listdir(input_folderpath)
+    ###
+    i = 0
+    for input_filename in input_filenames[i:]:
+        print(input_filename)
+        i += 1
+        print(f'{i}/{len(input_filenames)}')
+        output_filepath = f'{output_folderpath}/{input_filename}'
+        # if os.path.exists(output_filepath): continue
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        input_data = io.json_read(input_filepath)
+        normalized_data = []
+        for input_item in input_data:
+            ### normalize plant_name
+            normalized_item = input_item
+            normalized_item['plant_name_normalized'] = normalize_utils.normalize_plant_name(input_item['plant_name'])
+            normalized_item['preparation_name_normalized'] = normalize_utils.normalize_preparation_name(input_item['preparation_name'])
+            # print(json.dumps(normalized_item, indent=4))
+            normalized_data.append(normalized_item)
+        io.json_write(output_filepath, normalized_data)
+
 def run():
     print('normalize >> pubmed')
 
     start = time.perf_counter()
-    normalize_plants_parts()
+    # normalize_plants_parts()
     print(f'normalize plants_parts() - execution time: ', time.perf_counter() - start)
 
     start = time.perf_counter()
@@ -144,4 +170,8 @@ def run():
     start = time.perf_counter()
     # normalize_plants_diseases()
     print(f'normalize plants_diseases() - execution time: ', time.perf_counter() - start)
+
+    start = time.perf_counter()
+    normalize_plants_preparations()
+    print(f'normalize plants_preparations() - execution time: ', time.perf_counter() - start)
 
