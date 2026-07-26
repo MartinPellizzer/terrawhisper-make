@@ -13,8 +13,8 @@ import parse_drduke
 # parse_ipni.run()
 # parse_powo.run()
 # parse_wikidata.run()
-# parse_pubmed.run()
 parse_drduke.run()
+parse_pubmed.run()
 
 ################################################################################
 # ORGANIZATIONS

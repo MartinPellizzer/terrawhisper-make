@@ -11,7 +11,7 @@ import parse_utils
 
 def parse_chemicals():
     input_folderpath = f'{g.DATA_FOLDERPATH}/fetch/drduke/json'
-    output_folderpath = f'{g.DATA_FOLDERPATH}/parse/drduke/json'
+    output_folderpath = f'{g.DATA_FOLDERPATH}/parse/drduke/chemicals/json'
     try: shutil.rmtree(output_folderpath)
     except: pass
     os.makedirs(output_folderpath, exist_ok=True)

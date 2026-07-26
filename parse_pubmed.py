@@ -6,12 +6,10 @@ from lib import g
 from lib import io
 from lib import llm
 
-
 model_filepath = '/home/ubuntu/vault-tmp/llm/gemma-4-12b-it-Q4_K_S.gguf'
-model_filepath = '/home/ubuntu/vault-tmp/llm/gemma-4-26B-A4B-it-UD-Q4_K_XL.gguf'
+# model_filepath = '/home/ubuntu/vault-tmp/llm/gemma-4-26B-A4B-it-UD-Q4_K_XL.gguf'
 
-### TODO: extract plant names exactly as they are. 
-###       do coreference in a separate step by reusing the source text context
+import parse_utils
 
 def observations_chemicals_extract_raw():
     input_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/fetch/pubmed/medicinal_plant/abstracts'
@@ -354,14 +352,14 @@ def observations_chemicals_raw_to_json():
             # print(line)
             try: plant_name, plant_part_name, chemical_name = line
             except: continue
-            output_item = {
-                f'plant_name': plant_name,
-                f'plant_part_name': plant_part_name,
-                f'chemical_name': chemical_name,
-                f'source_id': input_filename.split('.')[0],
-                f'journal_title': journal_title,
-            }
-            output_items.append(output_item)
+            output = parse_utils.chemical_create(
+                plant_name_raw = plant_name,
+                chemical_name_raw = chemical_name,
+                plant_part_name_raw = plant_part_name,
+                source_id = input_filename.split('.')[0], 
+                source_name = journal_title,
+            )
+            output_items.append(output)
         io.json_write(output_filepath, output_items)
     '''
     for output_item in output_items:
@@ -732,7 +730,7 @@ def run():
 
     start = time.perf_counter()
     # observations_chemicals_extract_raw() ### WARNING: takes many many hours (nightly running)
-    # observations_chemicals_raw_to_json()
+    observations_chemicals_raw_to_json()
     print(f'chemicals observations() - execution time: ', time.perf_counter() - start)
 
     start = time.perf_counter()

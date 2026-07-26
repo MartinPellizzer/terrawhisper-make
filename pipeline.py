@@ -91,13 +91,13 @@ if 0:
     observe_pubmed.run()
     # observe_drduke.run()
 
-if 0:
+if 1:
     import qualify
 
-if 0:
+if 1:
     import derive
 
-if 0:
+if 1:
     import compile_main
     compile_main.run()
 
