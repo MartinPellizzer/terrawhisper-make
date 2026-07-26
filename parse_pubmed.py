@@ -13,7 +13,7 @@ model_filepath = '/home/ubuntu/vault-tmp/llm/gemma-4-26B-A4B-it-UD-Q4_K_XL.gguf'
 ### TODO: extract plant names exactly as they are. 
 ###       do coreference in a separate step by reusing the source text context
 
-def observations_extract_raw():
+def observations_chemicals_extract_raw():
     input_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/fetch/pubmed/medicinal_plant/abstracts'
     output_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/parse/pubmed/chemicals/raw'
     # try: shutil.rmtree(output_folderpath)
@@ -313,7 +313,7 @@ def observations_diseases_extract_raw_old():
     print(len(relationships_found))
     # quit()
 
-def observations_raw_to_json():
+def observations_chemicals_raw_to_json():
     input_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/parse/pubmed/chemicals/raw'
     output_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/parse/pubmed/chemicals/json'
     try: shutil.rmtree(output_folderpath)
@@ -731,9 +731,9 @@ def run():
     print('parse >> pubmed')
 
     start = time.perf_counter()
-    # observations_extract_raw() ### WARNING: takes many many hours (nightly running)
-    # observations_raw_to_json()
-    print(f'observations() - execution time: ', time.perf_counter() - start)
+    # observations_chemicals_extract_raw() ### WARNING: takes many many hours (nightly running)
+    # observations_chemicals_raw_to_json()
+    print(f'chemicals observations() - execution time: ', time.perf_counter() - start)
 
     start = time.perf_counter()
     # observations_activities_extract_raw() ### WARNING: takes many many hours (nightly running)
@@ -754,7 +754,7 @@ def run():
     foldername = 'preparation_form'
     entity_1 = 'plant_name'
     entity_2 = 'preparation_name'
-    parse_preparation_form_extract_raw(foldername) ### WARNING: takes many many hours (nightly running)
-    parse_raw_to_json(foldername, entity_1, entity_2)
+    # parse_preparation_form_extract_raw(foldername) ### WARNING: takes many many hours (nightly running)
+    # parse_raw_to_json(foldername, entity_1, entity_2)
     print(f'observations plants_parts() - execution time: ', time.perf_counter() - start)
 

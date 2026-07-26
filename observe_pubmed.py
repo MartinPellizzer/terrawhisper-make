@@ -264,10 +264,10 @@ def run():
     print('OBSERVE >> pubmed')
 
     # observations_table_plants_parts_add()
-    # observations_table_plants_chemicals_add()
+    observations_table_plants_chemicals_add()
     # observations_table_plants_activities_add()
     # observations_table_plants_diseases_add()
-    observations_table_plants_preparations_add()
+    # observations_table_plants_preparations_add()
 
     '''
     folder_name = 'plants_parts'

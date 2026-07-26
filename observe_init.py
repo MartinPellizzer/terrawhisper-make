@@ -121,7 +121,7 @@ def observations_table_plants_chemicals_create(regen=False):
     conn.execute("PRAGMA synchronous = OFF;")
     conn.execute("PRAGMA temp_store = MEMORY;")
     cur.execute(f"CREATE INDEX IF NOT EXISTS idx_{table_name}_plant_canonical_name ON {table_name}(plant_canonical_name)")
-    cur.execute(f"CREATE INDEX IF NOT EXISTS idx_{table_name}_plant_canonical_name ON {table_name}(chemical_canonical_name)")
+    cur.execute(f"CREATE INDEX IF NOT EXISTS idx_{table_name}_chemical_canonical_name ON {table_name}(chemical_canonical_name)")
     conn.commit()
     conn.close()
 
@@ -200,8 +200,8 @@ def run():
     # observations_table_plants_names_create(regen=True)
     # observations_table_plants_distributions_create(regen=True)
     # observations_table_plants_parts_create(regen=True)
-    # observations_table_plants_chemicals_create(regen=True)
+    observations_table_plants_chemicals_create(regen=True)
     # observations_table_plants_activities_create(regen=True)
     # observations_table_plants_diseases_create(regen=True)
-    observations_table_plants_preparations_create(regen=True)
+    # observations_table_plants_preparations_create(regen=True)
 

@@ -18,22 +18,19 @@ def normalize_plants():
     os.makedirs(output_folderpath, exist_ok=True)
     ###
     input_filenames = os.listdir(input_folderpath)
-    for i, input_filename in enumerate(input_filenames[:1]):
+    for i, input_filename in enumerate(input_filenames[:]):
         print(f'{i}/{len(input_filenames)}')
         output_filepath = f'{output_folderpath}/{input_filename}'
         input_filepath = f'{input_folderpath}/{input_filename}'
-        input_data = io.json_read(input_filepath)
-        ###
-        plant_name_latin = input_data['herb_name_latin']
-        input_data['plant_name_normalized'] = normalize_utils.normalize_plant_name(plant_name_latin)
-        ###
-        if 'chemicals' in input_data:
-            for chemical in input_data['chemicals']:
-                chemical['chemical_name_normalized'] = normalize_utils.normalize_plant_name(chemical['Chemical Name'])
-        ###
         if os.path.exists(output_filepath): continue
+        ###
+        input_data = io.json_read(input_filepath)
+        for input_item in input_data:
+            input_item['plant_name_normalized'] = normalize_utils.normalize_plant_name(input_item['plant_name_raw'])
+            input_item['chemical_name_normalized'] = normalize_utils.normalize_plant_name(input_item['chemical_name_raw'])
         io.json_write(output_filepath, input_data)
-        print(json.dumps(input_data, indent=4))
+        # print(json.dumps(input_data, indent=4))
+        # quit()
     
 def run():
     print('NORMALIZE >> drduke')

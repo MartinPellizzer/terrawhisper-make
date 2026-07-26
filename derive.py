@@ -255,7 +255,7 @@ def preparation_summary_get_0000(plant_canonical_name):
 ################################################################################
 
 ### TAXONOMIES
-if 0:
+if 1:
     entity_foldername = 'taxonomies'
     master_plants_rows = masterize_utils.masterize_plants_get_all()
     for i, master_plant_row in enumerate(master_plants_rows):
@@ -280,7 +280,7 @@ if 0:
         io.json_write(output_filepath, output_items)
 
 ### NAMES
-if 0:
+if 1:
     entity_foldername = 'names'
     master_plants_rows = masterize_utils.masterize_plants_get_all()
     for i, master_plant_row in enumerate(master_plants_rows):
@@ -302,7 +302,7 @@ if 0:
         io.json_write(output_filepath, output_items)
 
 ### DISTRIBUTION
-if 0:
+if 1:
     entity_foldername = 'distribution'
     master_plants_rows = masterize_utils.masterize_plants_get_all()
     for i, master_plant_row in enumerate(master_plants_rows):
@@ -324,7 +324,7 @@ if 0:
         io.json_write(output_filepath, output_items)
 
 ### PLANTS PARTS
-if 0:
+if 1:
     entity_foldername = 'plants_parts'
     master_plants_rows = masterize_utils.masterize_plants_get_all()
     for i, master_plant_row in enumerate(master_plants_rows):
@@ -345,7 +345,7 @@ if 0:
         io.json_write(output_filepath, output_items)
 
 ### CHEMICALS
-if 0:
+if 1:
     master_plants_rows = masterize_utils.masterize_plants_get_all()
     for i, master_plant_row in enumerate(master_plants_rows):
         print(f'{i}/{len(master_plants_rows)}')
@@ -365,7 +365,7 @@ if 0:
         io.json_write(output_filepath, output_items)
 
 ### ACTIVITIES
-if 0:
+if 1:
     master_plants_rows = masterize_utils.masterize_plants_get_all()
     for i, master_plant_row in enumerate(master_plants_rows):
         print(f'{i}/{len(master_plants_rows)}')
@@ -385,7 +385,7 @@ if 0:
         io.json_write(output_filepath, output_items)
 
 ### DISEASES
-if 0:
+if 1:
     master_plants_rows = masterize_utils.masterize_plants_get_all()
     for i, master_plant_row in enumerate(master_plants_rows):
         print(f'{i}/{len(master_plants_rows)}')

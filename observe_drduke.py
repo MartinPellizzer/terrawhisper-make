@@ -92,7 +92,6 @@ def observations_table_plants_chemicals_add_old():
     conn.commit()
     conn.close()
 
-### TODO: make it so that the resolve data for drduke are formatted equal to pubmed when starting this phase (pydantic?) 
 def observations_table_plants_chemicals_add():
     ###
     table_name = 'plants_chemicals'
@@ -106,28 +105,35 @@ def observations_table_plants_chemicals_add():
         print(f'PLANTS_CHEMICALS - {i}/{len(input_filenames)}')
         input_filepath = f'{input_folderpath}/{input_filename}'
         input_data = io.json_read(input_filepath)
-        for input_item in input_data['chemicals']:
-            input_item['herb_name_latin'] = input_data['herb_name_latin']
+        # print(json.dumps(input_data, indent=4))
+        # quit()
+        for input_item in input_data:
             all_data.append(input_item)
+            # print(json.dumps(input_item, indent=4))
+            # quit()
     ###
     conn = sqlite3.connect(db_filepath)
     cur = conn.cursor()
     cur.executemany(
         f"""
-        INSERT OR IGNORE INTO {table_name} (
-            plant_canonical_name, 
-            chemical_canonical_name, 
-            plant_part, 
-            source_name
-        )
-        VALUES (?, ?, ?, ?)
+            INSERT OR IGNORE INTO {table_name} (
+                plant_canonical_name, 
+                chemical_canonical_name, 
+                plant_part, 
+                concentration, 
+                unit, 
+                source_name
+            )
+            VALUES (?, ?, ?, ?, ?, ?)
         """,
         [
             (
-                item.get("herb_name_latin").capitalize(),
-                item.get("Chemical Name"),
-                item.get("Plant Part"),
-                item.get("Reference"),
+                item.get("wcvp_taxon_name"),
+                item.get("pubchem_chemical_name"),
+                item.get("plant_part_name_raw"),
+                "",
+                "",
+                item.get("source_name"),
             )
             for item in all_data
         ]
@@ -192,7 +198,7 @@ def test():
     db_filepath = f'{output_folderpath}/observations.db'
     conn = sqlite3.connect(db_filepath)
     rows = conn.execute("SELECT * FROM plants_chemicals")
-    for row in list(rows)[:30]:
+    for row in list(rows)[:10]:
         print(row)
     conn.close()
 
@@ -200,7 +206,7 @@ def run():
     print('observe >> pubmed')
 
     observations_table_plants_chemicals_add()
-    test()
+    # test()
 
     # observations_table_plants_activities_add()
 
