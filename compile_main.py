@@ -32,6 +32,11 @@ def run():
         output_data = {}
         output_data['plant_canonical_name'] = plant_row[1]
 
+        ### SYNONYMS
+        output_data['synonyms'] = io.json_read(
+            f'{g.DATA_FOLDERPATH}/{input_foldername}/herbs/synonyms/{plant_canonical_name}.json'
+        )
+
         ### TAXONOMIES
         taxonomies_data = io.json_read(
             f'{g.VAULT_FOLDERPATH}/terrawhisper/data/{input_foldername}/herbs/taxonomies/{plant_canonical_name}.json'

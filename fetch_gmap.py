@@ -115,10 +115,8 @@ def add_business_to_csv(output_file, label, address, website, phone, name, info)
 	with open(output_file, 'a', encoding="utf-8") as f:
 		f.write(string_to_write)
 
-def scrape_new_business(search_text, continent, country, i):
-    output_file = f'{g.DATA_FOLDERPATH}/organizations/fetch/gmap/{continent}/{country}/{search_industry}__{continent}__{country}.csv'.replace(' ', '_')
-
-    old_businesses = get_old_businesses(output_file)
+def scrape_new_business(output_filepath, search_text, continent, place, i):
+    old_businesses = get_old_businesses(output_filepath)
     business, label = find_new_business(old_businesses)
 
     if not business:
@@ -149,58 +147,78 @@ def scrape_new_business(search_text, continent, country, i):
     print(website)
     print(phone)
 
-    element = card_element.find_element(By.XPATH, './/h1')
-    next_sibling = element.find_element(
-        By.XPATH,
-        "../following-sibling::*[1]"
-    )
-    info = next_sibling.text.split('\n')
+    try:
+        element = card_element.find_element(By.XPATH, './/h1')
+        next_sibling = element.find_element(
+            By.XPATH,
+            "../following-sibling::*[1]"
+        )
+        info = next_sibling.text.split('\n')
+    except:
+        return 'sponsored?'
 
     if name != label:
-        # add_business_to_csv(output_file, label, address, website, phone, name)
+        # add_business_to_csv(output_filepath, label, address, website, phone, name, info)
         return 'name_not_equal_label'
     else:
-        add_business_to_csv(output_file, label, address, website, phone, name, info)
+        add_business_to_csv(output_filepath, label, address, website, phone, name, info)
 
 def fetch_organizations():
-    geckodriver_path = 'geckodriver'
-    driver_service = webdriver.FirefoxService(executable_path=geckodriver_path)
-    driver = webdriver.Firefox(service=driver_service)
-    driver.maximize_window()
-    driver.get('https://www.google.com')
-    sleep(2)
-    driver.find_element(By.XPATH, '//div[text()="Rifiuta tutto"]').click()
-    sleep(2)
+geckodriver_path = 'geckodriver'
+driver_service = webdriver.FirefoxService(executable_path=geckodriver_path)
+driver = webdriver.Firefox(service=driver_service)
+driver.maximize_window()
+driver.get('https://www.google.com')
+sleep(2)
+driver.find_element(By.XPATH, '//div[text()="Rifiuta tutto"]').click()
+sleep(2)
 
 continents = [
     'america',
-    'europe',
 ]
-scrapes_num = 15
+    # 'europe',
+scrapes_num = 10
 
-for continent in continents[:]:
-    rows = io.csv_read(f'{g.DATA_FOLDERPATH}/organizations/fetch/gmap/{continent}.csv')
+for continent_i, continent in enumerate(continents[:]):
+    # rows = io.csv_read(f'{g.DATA_FOLDERPATH}/organizations/fetch/gmap/{continent}.csv')
+    rows = io.csv_to_dict(f'{g.DATA_FOLDERPATH}/organizations/fetch/gmap/2025_Gaz_place_national.txt', delimiter='|')
     print('*********************************')
     print(continent)
-    print(f'{i}/{len(rows)}')
+    print(f'{continent_i}/{len(rows)}')
     print('*********************************')
 
-    for row in rows[:]:
-        country = row[1].strip().lower()
-        output_folder = f'{g.DATA_FOLDERPATH}/organizations/fetch/gmap/{continent}/{country}'.replace(' ', '_')
-        io.folders_recursive_gen(output_folder)
+    search_industry = f'medicinal herb suppliers'
+    search_text = f'{search_industry}, {continent}'
+    driver.get(f'https://www.google.com/maps/search/{search_text}')
+    sleep(2)
+
+    for k, row in enumerate(rows[:1000]):
+        # country = row[1].strip().lower()
+        place = row['NAME'].strip().lower()
+        output_folderpath = f'{g.DATA_FOLDERPATH}/organizations/fetch/gmap/{continent}/places'.replace(' ', '_')
+        io.folders_recursive_gen(output_folderpath)
         print('*********************************')
-        print(continent, '>>', country)
-        print(f'{i}/{len(rows)}')
+        print(continent, '>>', place)
+        print(f'{k}/{len(rows)}')
         print('*********************************')
 
-        search_industry = f'medicinal herb supplier'
-        search_text = f'{search_industry}, {country}'
-        driver.get(f'https://www.google.com/maps/search/{search_text}')
+        output_filepath = f'{output_folderpath}/{search_industry}__{continent}__{place}.csv'.replace(' ', '_')
+        if os.path.exists(output_filepath): continue
+        io.file_write(output_filepath, '')
+
+        search_text = f'{search_industry}, {place}'
+        print(search_text)
+        # driver.get(f'https://www.google.com/maps/search/{search_text}')
+        search_bar_element = driver.find_element(By.XPATH, '//input[@name="q"]')
+        search_bar_element.clear()
+        sleep(2)
+        search_bar_element.send_keys(search_text)
+        sleep(2)
+        search_bar_element.send_keys(Keys.ENTER)
         sleep(10)
 
         for num in range(scrapes_num):
-            err = scrape_new_business(search_text, continent, country, num)
+            err = scrape_new_business(output_filepath, search_text, continent, place, num)
             print(err, '\n')
 
 def run():
@@ -210,8 +228,14 @@ def run():
     fetch_organizations()
     print(f'download html_form_master() - execution time: ', time.perf_counter() - start)
 
+search_bar_element = driver.find_element(By.XPATH, '//input[@name="q"]')
+search_bar_element.clear()
+search_bar_element.send_keys("medicinal herb supplier, abbeville city")
+search_bar_element.send_keys(Keys.ENTER)
+
 '''
 old_businesses = []
+old_businesses = get_old_businesses(output_filepath)
 business, label = find_new_business(old_businesses)
 
 card_element = business.find_elements(By.XPATH, '//div[@role="main"]')[1]

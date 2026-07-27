@@ -73,6 +73,27 @@ def plant_listing_page_gen_new(plant_name):
     ################################################################################
     # HERO
     ################################################################################
+    hero_plant_synonyms_html = f''
+    hero_plant_synonyms_html = f'''<p>Synonyms:</p>'''
+    # hero_plant_synonyms_html = f'''<div style="display: flex;">'''
+    for item in plant_data['synonyms']:
+        hero_plant_synonyms_html += f'''
+            <span 
+                style="
+                    font-size: 1.4rem;
+                    display: inline-block; 
+                    border: 1px solid #111; 
+                    border-radius: 9999px;
+                    padding: 0.2rem 0.8rem; 
+                    margin-top: 0.4rem;
+                    margin-bottom: 0.4rem;
+                "
+            >
+                {item['plant_synonym']}
+            </span>
+        '''
+    # hero_plant_synonyms_html += f'''</div>'''
+    # quit()
     ###
     hero_plant_common_name_html = ''
     for name_item in plant_data['names']:
@@ -117,8 +138,18 @@ def plant_listing_page_gen_new(plant_name):
             "
         >
             {sections.breadcrumbs_explorer(url_slug)}
-            <div class="m-flex" style="
-                ">
+            <div class="m-flex" style="gap: 2.4rem;">
+                <div style="flex: 3;">
+                    <h1>{plant_name}</h1>
+                    {hero_plant_common_name_html}
+                    {hero_plant_synonyms_html}
+                    <p>{intro_text}</p>
+                    <ul style="list-style: none;">
+                        <li><span style="font-weight: 700;">Scientific name:</span> <strong style="font-weight: 400;">{plant_name}</strong></li>
+                        <li><span style="font-weight: 700;">Family:</span> <strong style="font-weight: 400;">{hero_taxonomy}</strong></li>
+                        <li><span style="font-weight: 700;">Native range:</span> <strong style="font-weight: 400;">{hero_distribution}</strong></li>
+                    </ul>
+                </div>
                 <div style="flex: 2;">
                     <img 
                         src="/images/herbs/{plant_taxon_name_slug}.jpg"
@@ -128,16 +159,6 @@ def plant_listing_page_gen_new(plant_name):
                             object-position: center;
                         "
                     >
-                </div>
-                <div style="flex: 3; padding: 2.4rem;">
-                    <h1>{plant_name}</h1>
-                    {hero_plant_common_name_html}
-                    <p>{intro_text}</p>
-                    <ul style="list-style: none;">
-                        <li><span style="font-weight: 700;">Scientific name:</span> <strong style="font-weight: 400;">{plant_name}</strong></li>
-                        <li><span style="font-weight: 700;">Family:</span> <strong style="font-weight: 400;">{hero_taxonomy}</strong></li>
-                        <li><span style="font-weight: 700;">Native range:</span> <strong style="font-weight: 400;">{hero_distribution}</strong></li>
-                    </ul>
                 </div>
             </div>
         </section>
