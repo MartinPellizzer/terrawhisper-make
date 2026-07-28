@@ -1,4 +1,5 @@
 import fetch_powo
+import fetch_col
 import fetch_wikidata
 import fetch_pubmed
 import fetch_drduke
@@ -8,6 +9,7 @@ import fetch_drduke
 ################################################################################
 
 # fetch_powo.run()
+fetch_col.run()
 # fetch_wikidata.run()
 # fetch_pubmed.run()
 # fetch_drduke.run()
@@ -16,4 +18,4 @@ import fetch_drduke
 # ORGANIZATIONS
 ################################################################################
 
-fetch_gmap()
+# fetch_gmap()

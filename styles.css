@@ -462,6 +462,7 @@ footer span {
     vertical-align: top;
 }
 
+/*
 .listing dl {
     margin: 1rem 0;
     padding: 0;
@@ -486,3 +487,16 @@ footer span {
     font-weight: 700;
 }
 
+*/
+
+.quick-facts div {
+  display: flex;
+}
+
+.quick-facts dt::after {
+  content: ":";
+}
+
+.quick-facts dt {
+  margin-right: 0.5rem;
+}

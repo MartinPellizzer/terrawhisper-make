@@ -53,20 +53,10 @@ def plant_listing_page_gen_new(plant_name):
     plant_taxon_name_slug = polish.sluggify(plant_name)
     plant_taxon_name_normalized = normalize_utils.normalize_plant_name(plant_name)
 
-    url_slug = f'herbs/{plant_taxon_name_slug}'
+    plant_parts_data = plant_data['plants_parts']
+    plant_synonyms = plant_data['synonyms']
 
-    sidebar_html = f'''
-        <div 
-            style="
-                display: flex; flex-direction: column; gap: 1.6rem; position: sticky; top: 0;
-            "
-        >
-            <p>{lorem.sentence()}</p>
-            <img src="/images/herbs/{plant_taxon_name_slug}.jpg">
-            <img src="/images/herbs/{plant_taxon_name_slug}.jpg">
-            <img src="/images/herbs/{plant_taxon_name_slug}.jpg">
-        </div>
-    '''
+    url_slug = f'herbs/{plant_taxon_name_slug}'
 
     html_article = f''
 
@@ -76,7 +66,7 @@ def plant_listing_page_gen_new(plant_name):
     hero_plant_synonyms_html = f''
     hero_plant_synonyms_html = f'''<p>Synonyms:</p>'''
     # hero_plant_synonyms_html = f'''<div style="display: flex;">'''
-    for item in plant_data['synonyms']:
+    for item in plant_synonyms[:3]:
         hero_plant_synonyms_html += f'''
             <span 
                 style="
@@ -92,6 +82,21 @@ def plant_listing_page_gen_new(plant_name):
                 {item['plant_synonym']}
             </span>
         '''
+    hero_plant_synonyms_html += f'''
+        <span 
+            style="
+                font-size: 1.4rem;
+                display: inline-block; 
+                border: 1px solid #111; 
+                border-radius: 9999px;
+                padding: 0.2rem 0.8rem; 
+                margin-top: 0.4rem;
+                margin-bottom: 0.4rem;
+            "
+        >
+            +25 more
+        </span>
+    '''
     # hero_plant_synonyms_html += f'''</div>'''
     # quit()
     ###
@@ -109,6 +114,70 @@ def plant_listing_page_gen_new(plant_name):
     if plant_data['taxonomies'] != []: hero_taxonomy = plant_data['taxonomies'][0]['family'].title()
     else: hero_taxonomy = 'Not available'
                     # <p>Scientific resources: Moderate (★★★☆☆)</p>
+
+    ### EVIDENCE CONSENSUS
+    db_filepath = f'{g.DATA_FOLDERPATH}/qualify/observations.db'
+    conn = sqlite3.connect(db_filepath)
+    rows_num = 0
+    ###
+    plant_canonical_name = plant_name
+    cursor = conn.execute("""
+        SELECT COUNT (*)
+        FROM plants_parts
+        WHERE plant_canonical_name = ?
+    """, (plant_canonical_name,))
+    rows_num += int(cursor.fetchone()[0])
+    cursor = conn.execute("""
+        SELECT COUNT (*)
+        FROM plants_chemicals
+        WHERE plant_canonical_name = ?
+    """, (plant_canonical_name,))
+    rows_num += int(cursor.fetchone()[0])
+    cursor = conn.execute("""
+        SELECT COUNT (*)
+        FROM plants_activities
+        WHERE plant_canonical_name = ?
+    """, (plant_canonical_name,))
+    rows_num += int(cursor.fetchone()[0])
+    cursor = conn.execute("""
+        SELECT COUNT (*)
+        FROM plants_diseases
+        WHERE plant_canonical_name = ?
+    """, (plant_canonical_name,))
+    rows_num += int(cursor.fetchone()[0])
+    evidence_consensus_count = rows_num
+    ###
+    if evidence_consensus_count >= 200: 
+        consensus_stars = '★★★★★'
+        consensus_tag = 'Very Extensive'
+    elif evidence_consensus_count >= 150: 
+        consensus_stars = '★★★★☆'
+        consensus_tag = 'Extensive'
+    elif evidence_consensus_count >= 100: 
+        consensus_stars = '★★★☆☆'
+        consensus_tag = 'Moderate'
+    elif evidence_consensus_count >= 50: 
+        consensus_stars = '★★☆☆☆'
+        consensus_tag = 'Sparse'
+    else: 
+        consensus_stars = '★☆☆☆☆'
+        consensus_tag = 'Very Sparse'
+
+    ### PLANTS PARTS
+    hero_plant_parts_list = []
+    for item in plant_parts_data[:2]:
+        hero_plant_parts_list.append(item['plant_part_canonical_name'])
+    hero_plant_parts_html = ' · '.join(hero_plant_parts_list)
+    hero_plant_parts_html = hero_plant_parts_html.title()
+
+    ### PLANTS SYNONYMS
+    hero_synonyms_list = []
+    for item in plant_synonyms[:2]:
+        hero_synonyms_list.append(item['plant_synonym'])
+    hero_synonyms_html = ' · '.join(hero_synonyms_list)
+    hero_synonyms_html = hero_synonyms_html.title()
+    hero_synonyms_count = len(plant_synonyms) - 2
+
     ### LLM INTRO
     json_article_filepath = f'''{g.DATA_FOLDERPATH}/enhance/{plant_taxon_name_slug}.json'''
     json_article = io.json_read(json_article_filepath, create=True)
@@ -163,7 +232,130 @@ def plant_listing_page_gen_new(plant_name):
             </div>
         </section>
     '''
+    html_hero = f'''
+        {sections.breadcrumbs_explorer(url_slug)}
+        <div class="m-flex" 
+            style="
+                gap: 2.4rem;
+                padding-bottom: 4.8rem;
+                border-bottom: 1px solid #dcdcdc;
+            "
+        >
+            <div style="flex: 3;">
+
+              <h1>{hero_plant_common_name_html}</h1>
+
+              <p>
+                <i lang="la">{plant_name}</i> · 
+                <span>Accepted scientific name</span>
+              </p>
+
+              <p>
+                <span>Scientific literature:</span>
+                <span>{consensus_tag}</span>
+                <span>({evidence_consensus_count} studies)</span> · 
+                <span aria-label="{consensus_tag}">{consensus_stars}</span>
+
+              </p>
+
+                <p>{intro_text}</p>
+
+              <dl class="quick-facts">
+
+                <div>
+                  <dt>Family</dt>
+                  <dd>{hero_taxonomy}</dd>
+                </div>
+
+                <div>
+                  <dt>Native range</dt>
+                  <dd>{hero_distribution}</dd>
+                </div>
+
+                <div>
+                  <dt>Parts used</dt>
+                  <dd>{hero_plant_parts_html}</dd>
+                </div>
+
+                <div>
+                  <dt>Scientific synonyms</dt>
+                  <dd>
+                    <i lang="la">{hero_synonyms_html}</i> · 
+                    <a href="#scientific-synonyms">{hero_synonyms_count} more</a>
+                  </dd>
+                </div>
+
+              </dl>
+            </div>
+            <div style="flex: 2;">
+                <img 
+                    src="/images/herbs/{plant_taxon_name_slug}.jpg"
+                    style="
+                        height: 100%;
+                        object-fit: cover;
+                        object-position: center;
+                    "
+                >
+            </div>
+        </div>
+
+    '''
+    '''
+                <div>
+                  <dt>Traditions</dt>
+                  <dd>Ayurveda</dd>
+                </div>
+                <div>
+                  <dt>Also known as</dt>
+                  <dd>
+                    Indian ginseng · Winter cherry ·
+                    <a href="#common-names">25 more</a>
+                  </dd>
+                </div>
+
+    '''
     html_article += html_hero
+
+    ################################################################################
+    ### NAMES
+    ################################################################################
+    html_article += f'''
+        <section id="names-and-synonyms">
+          <h2>Names and Synonyms</h2>
+
+          <h3>Common Names</h3>
+          <ul>
+            <li>{{common_name}}</li>
+          </ul>
+
+          <h3>Scientific Name</h3>
+          <p>
+            <strong>Accepted name:</strong> <i>{{scientific_name}}</i>
+            {{scientific_name_authority}}
+          </p>
+
+          <h3>Scientific Synonyms</h3>
+          <ul>
+            <li><i>{{scientific_synonym}}</i></li>
+          </ul>
+
+          <h3>Regional and Traditional Names</h3>
+          <ul>
+            <li><strong>{{language_or_region}}:</strong> {{regional_name}}</li>
+          </ul>
+
+          <h3>Other Names</h3>
+          <ul>
+            <li>{{other_name}}</li>
+          </ul>
+
+          <h3>Commonly Confused Plants</h3>
+          <ul>
+            <li>{{related_or_confused_species}}</li>
+          </ul>
+        </section>
+    '''
+
 
     ################################################################################
     ### CLASSIFICATION

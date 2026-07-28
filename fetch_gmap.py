@@ -192,7 +192,7 @@ for continent_i, continent in enumerate(continents[:]):
     driver.get(f'https://www.google.com/maps/search/{search_text}')
     sleep(2)
 
-    for k, row in enumerate(rows[:1000]):
+    for k, row in enumerate(rows[:1500]):
         # country = row[1].strip().lower()
         place = row['NAME'].strip().lower()
         output_folderpath = f'{g.DATA_FOLDERPATH}/organizations/fetch/gmap/{continent}/places'.replace(' ', '_')
