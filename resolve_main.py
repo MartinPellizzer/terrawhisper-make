@@ -128,16 +128,40 @@ def resolve_synonyms(source_foldername):
             io.json_write(output_filepath, resolved_data)
     wcvp_conn.close()
 
+def resolve_common_names(source_foldername):
+    input_folderpath = f'{g.DATA_FOLDERPATH}/normalize/{source_foldername}/names/json'
+    output_folderpath = f'{g.DATA_FOLDERPATH}/resolve/{source_foldername}/names/json'
+    try: shutil.rmtree(output_folderpath)
+    except: pass
+    os.makedirs(output_folderpath, exist_ok=True)
+    ###
+    input_filenames = os.listdir(input_folderpath)
+    # print(input_filenames)
+    for i, input_filename in enumerate(input_filenames[:]):
+        print(f'{i}/{len(input_filenames)}')
+        output_filepath = f'{output_folderpath}/{input_filename}'
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        if os.path.exists(output_filepath): continue
+        ### COPY
+        input_data = io.json_read(input_filepath)
+        io.json_write(output_filepath, input_data)
+
 def run():
     print('RESOLVE')
+
+    if 0:
+        start = time.perf_counter()
+        resolve_synonyms(source_foldername='wcvp')
+        print(f'resolve synonyms() - execution time: ', time.perf_counter() - start)
+
+    if 1:
+        start = time.perf_counter()
+        resolve_common_names(source_foldername='col')
+        print(f'resolve common_names() - execution time: ', time.perf_counter() - start)
 
     if 0:
         start = time.perf_counter()
         resolve_chemicals(source_foldername='drduke')
         resolve_chemicals(source_foldername='pubmed')
         print(f'resolve chemicals() - execution time: ', time.perf_counter() - start)
-
-    start = time.perf_counter()
-    resolve_synonyms(source_foldername='wcvp')
-    print(f'resolve synonyms() - execution time: ', time.perf_counter() - start)
 

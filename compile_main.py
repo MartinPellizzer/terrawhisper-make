@@ -71,6 +71,11 @@ def run():
             }
             output_data[f'{data_type}'].append(item)
 
+        ### NAMES COMMON (NEW) -> merge with wikidata
+        output_data['names_common'] = io.json_read(
+            f'{g.DATA_FOLDERPATH}/{input_foldername}/herbs/names_common/{plant_canonical_name}.json'
+        )
+
         ### DISTRIBUTION
         distribution_data = io.json_read(
             f'{g.VAULT_FOLDERPATH}/terrawhisper/data/{input_foldername}/herbs/distribution/{plant_canonical_name}.json'

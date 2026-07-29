@@ -48,6 +48,7 @@ def sqlite_table_observations_plants_activities_get():
 def plant_listing_page_gen_new(plant_name):
     plant_data = io.json_read(f'{g.DATA_FOLDERPATH}/compile/herbs/{plant_name}.json')
     # print(json.dumps(plant_data, indent=4))
+    # print(json.dumps(plant_data['names_common'], indent=4))
     # quit()
 
     plant_taxon_name_slug = polish.sluggify(plant_name)
@@ -99,7 +100,8 @@ def plant_listing_page_gen_new(plant_name):
     '''
     # hero_plant_synonyms_html += f'''</div>'''
     # quit()
-    ###
+    ### COMMON NAME (TODO: preferred, english)
+    '''
     hero_plant_common_name_html = ''
     for name_item in plant_data['names']:
         language_code = name_item['language_code']
@@ -108,6 +110,11 @@ def plant_listing_page_gen_new(plant_name):
             if language_value.lower().strip() != plant_name.lower().strip():
                 hero_plant_common_name_html = f'<p><strong>{language_value.capitalize()}</strong></p>'
                 break
+    '''
+    hero_plant_common_name_html = ''
+    if 'names_common' in plant_data and plant_data['names_common'] != []:
+        hero_plant_common_name_html = plant_data['names_common']['name_common_preferred']
+
     ###
     if plant_data['distribution'] != []: hero_distribution = plant_data['distribution'][0]['continent'].title()
     else: hero_distribution = 'Not available'
@@ -319,13 +326,19 @@ def plant_listing_page_gen_new(plant_name):
     ################################################################################
     ### NAMES
     ################################################################################
+    plant_names_common_html = ''
+    if 'names_common' in plant_data and plant_data['names_common'] != []:
+        plant_names_common_html += '<ul>'
+        for item in plant_data['names_common']['all']:
+            plant_names_common_html += f'''<li>{item['plant_name_common']}'''
+        plant_names_common_html += '</ul>'
     html_article += f'''
         <section id="names-and-synonyms">
           <h2>Names and Synonyms</h2>
 
           <h3>Common Names</h3>
           <ul>
-            <li>{{common_name}}</li>
+            <li>{plant_names_common_html}</li>
           </ul>
 
           <h3>Scientific Name</h3>

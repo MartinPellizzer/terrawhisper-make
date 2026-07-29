@@ -25,6 +25,17 @@ def synonym_summary_get(plant_canonical_name):
     conn.close()
     return rows
 
+def names_common_summary_get(plant_name_scientific_canon):
+    conn = sqlite3.connect(db_filepath)
+    cursor = conn.execute("""
+        SELECT *
+        FROM plants_names_common
+        WHERE plant_name_scientific_canon = ?
+    """, (plant_name_scientific_canon,))
+    rows = cursor.fetchall()
+    conn.close()
+    return rows
+
 def taxonomy_summary_get(plant_canonical_name):
     conn = sqlite3.connect(db_filepath)
     cursor = conn.execute("""
@@ -265,8 +276,8 @@ def preparation_summary_get_0000(plant_canonical_name):
 # JSONS
 ################################################################################
 
-### NAMES
-if 1:
+### SYNONYMS
+if 0:
     entity_foldername = 'synonyms'
     master_plants_rows = masterize_utils.masterize_plants_get_all()
     for i, master_plant_row in enumerate(master_plants_rows):
@@ -281,6 +292,55 @@ if 1:
             }
             print(json.dumps(output_item, indent=4))
             output_items.append(output_item)
+        output_filepath = f'{g.DATA_FOLDERPATH}/{output_foldername}/herbs/{entity_foldername}/{master_plant_row[1]}.json'
+        io.folder_create_from_filepath(output_filepath)
+        io.json_write(output_filepath, output_items)
+
+### NAMES
+if 1:
+    entity_foldername = 'names_common'
+    master_plants_rows = masterize_utils.masterize_plants_get_all()
+    for i, master_plant_row in enumerate(master_plants_rows):
+        print(f'{i}/{len(master_plants_rows)}')
+        plant_name_scientific_canon = master_plant_row[1]
+        ###
+        conn = sqlite3.connect(db_filepath)
+        conn.row_factory = sqlite3.Row
+        cursor = conn.execute("""
+            SELECT *
+            FROM plants_names_common
+            WHERE plant_name_scientific_canon = ?
+        """, (plant_name_scientific_canon,))
+        rows = cursor.fetchall()
+        items = [dict(row) for row in rows]
+        conn.close()
+        ### NAME COMMON PREFERRED (HERO)
+        name_common_preferred = ''
+        if name_common_preferred == '':
+            for item in items:
+                if item['plant_name_common_language'] == 'eng':
+                    name_common_preferred = item['plant_name_common']
+                    break
+        if name_common_preferred == '':
+            for item in items:
+                if item['plant_name_common_language'] == '':
+                    name_common_preferred = item['plant_name_common']
+                    break
+        ###
+        output_items = {
+                'name_common_preferred': name_common_preferred,
+                'all': []
+        }
+        for item in items:
+            print(item)
+            output_item = {
+                'plant_name_scientific_canon': master_plant_row[1], ### MANDATORY
+                'plant_name_common': item['plant_name_common'],
+                'source_name': item['source_name'],
+                'source_acronym': item['source_acronym'],
+            }
+            print(json.dumps(output_item, indent=4))
+            output_items['all'].append(output_item)
         output_filepath = f'{g.DATA_FOLDERPATH}/{output_foldername}/herbs/{entity_foldername}/{master_plant_row[1]}.json'
         io.folder_create_from_filepath(output_filepath)
         io.json_write(output_filepath, output_items)
