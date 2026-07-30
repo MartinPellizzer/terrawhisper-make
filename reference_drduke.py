@@ -30,8 +30,8 @@ def drduke_table_activities_create():
         PRAGMA cache_size = -500000;
         DROP TABLE IF EXISTS {table_name};
         CREATE TABLE {table_name} (
-            activity_name TEXT NOT NULL,
-            activity_name_normalized TEXT NOT NULL
+            activity_name_raw TEXT NOT NULL,
+            activity_name_raw_norm TEXT NOT NULL
         );
     """)
 
@@ -62,7 +62,7 @@ def drduke_table_activities_create():
             if len(batch) >= BATCH_SIZE:
                 conn.executemany(f"""
                     INSERT INTO {table_name}
-                    (activity_name, activity_name_normalized)
+                    (activity_name_raw, activity_name_raw_norm)
                     VALUES (?, ?)
                 """, batch)
                 processed += len(batch)
@@ -73,15 +73,15 @@ def drduke_table_activities_create():
         if batch:
             conn.executemany(f"""
                 INSERT INTO {table_name}
-                (activity_name, activity_name_normalized)
+                    (activity_name_raw, activity_name_raw_norm)
                 VALUES (?, ?)
             """, batch)
     conn.commit()
 
     # Create lookup index AFTER import
     conn.execute(f"""
-        CREATE INDEX idx_{table_name}_activity_name_normalized
-        ON {table_name}(activity_name_normalized)
+        CREATE INDEX idx_{table_name}_activity_name_raw_norm
+        ON {table_name}(activity_name_raw_norm)
     """)
 
     conn.commit()
@@ -104,3 +104,4 @@ def run():
     start = time.perf_counter()
     drduke_table_activities_create()
     print(f'drduke table_activities_create() - execution time: ', time.perf_counter() - start)
+

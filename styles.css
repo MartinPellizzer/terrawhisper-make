@@ -397,6 +397,7 @@ footer span {
 
 .explorer-card-title {
     font-size: 1.8rem;
+    margin-bottom: 1.2rem;
 }
 
 @media screen and (max-width: 768px) {

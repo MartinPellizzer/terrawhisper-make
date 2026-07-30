@@ -141,7 +141,7 @@ def observations_activities_extract_raw():
     print(len(relationships_found))
     # quit()
 
-def observations_activities_raw_to_json():
+def parse_activities_raw_to_json():
     input_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/parse/pubmed/activities/raw'
     output_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/parse/pubmed/activities/json'
     try: shutil.rmtree(output_folderpath)
@@ -183,10 +183,10 @@ def observations_activities_raw_to_json():
             try: plant_name, activity_name = line
             except: continue
             output_item = {
-                f'plant_name': plant_name,
-                f'activity_name': activity_name,
+                f'plant_name_raw': plant_name,
+                f'activity_name_raw': activity_name,
                 f'source_id': input_filename.split('.')[0],
-                f'journal_title': journal_title,
+                f'source_name': journal_title,
             }
             output_items.append(output_item)
         io.json_write(output_filepath, output_items)
@@ -735,8 +735,8 @@ def run():
 
     start = time.perf_counter()
     # observations_activities_extract_raw() ### WARNING: takes many many hours (nightly running)
-    # observations_activities_raw_to_json()
-    print(f'observations_activities() - execution time: ', time.perf_counter() - start)
+    parse_activities_raw_to_json()
+    print(f'parse activities() - execution time: ', time.perf_counter() - start)
 
     start = time.perf_counter()
     # observations_diseases_extract_raw() ### WARNING: takes many many hours (nightly running)

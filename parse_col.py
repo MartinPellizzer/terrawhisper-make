@@ -9,8 +9,9 @@ from lib import g
 from lib import io
 
 import masterize_utils
+import parse_utils
 
-def parse_name():
+def parse_names():
     output_folderpath = f'{g.DATA_FOLDERPATH}/parse/col/names/json'
     try: shutil.rmtree(output_folderpath)
     except: pass
@@ -35,18 +36,19 @@ def parse_name():
 
         output_items = []
         for row in rows:
-            output_item = {
-                'scientific_name': scientific_name,
-                'scientific_name_norm': scientific_name_norm,
-                'common_name': row[1],
-                'common_name_transliteration': row[2],
-                'common_name_language': row[3],
-                'common_name_preferred': row[4],
-                'common_name_country': row[5],
-                'common_name_area': row[6],
-                'source_name': 'Catalogue of Life',
-                'source_acronym': 'COL',
-            }
+            output_item = parse_utils.common_name_create(
+                plant_name_scientific_raw = scientific_name,
+                plant_name_scientific_norm = scientific_name_norm,
+                plant_name_common_raw = row[1],
+                plant_name_common_transliteration = row[2],
+                plant_name_common_language = row[3],
+                plant_name_common_preferred = row[4],
+                plant_name_common_country = row[5],
+                plant_name_common_area = row[6],
+                plant_name_common_type = 'vernacular',
+                source_name = 'Catalogue of Life',
+                source_acronym = 'COL',
+            )
             output_items.append(output_item)
 
         output_filepath = f'{output_folderpath}/{scientific_name}.json'
@@ -59,6 +61,6 @@ def run():
     print(f'''HERBS >> PARSE >> col''')
 
     start = time.perf_counter()
-    parse_name()
-    print(f'wcvp to_jsons() - execution time: ', time.perf_counter() - start)
+    parse_names()
+    print(f'parse names() - execution time: ', time.perf_counter() - start)
 

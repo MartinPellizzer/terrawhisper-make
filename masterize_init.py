@@ -120,8 +120,8 @@ def test():
     conn.close()
 
 def run():
-    # master_table_plants_create(regen=True)
-    master_table_chemicals_create(regen=True)
+    master_table_plants_create(regen=True)
+    # master_table_chemicals_create(regen=True)
     # master_table_activities_create(regen=True)
     # master_table_diseases_create(regen=True)
     # test()

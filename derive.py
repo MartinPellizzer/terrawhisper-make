@@ -296,10 +296,13 @@ if 0:
         io.folder_create_from_filepath(output_filepath)
         io.json_write(output_filepath, output_items)
 
-### NAMES
+### NAMES COMMON
 if 1:
     entity_foldername = 'names_common'
     master_plants_rows = masterize_utils.masterize_plants_get_all()
+    common_names_labels_found_count = 0
+    common_names_aliases_found_count = 0
+    col_common_names_vernacular_found_count = 0
     for i, master_plant_row in enumerate(master_plants_rows):
         print(f'{i}/{len(master_plants_rows)}')
         plant_name_scientific_canon = master_plant_row[1]
@@ -314,6 +317,29 @@ if 1:
         rows = cursor.fetchall()
         items = [dict(row) for row in rows]
         conn.close()
+        ###
+        plant_name_common_preferred = ''
+        if items != []:
+            for item in items:
+                if item['source_name'].lower() == 'wikidata':
+                    if item['plant_name_common_language'].lower() == 'en':
+                        if item['plant_name_common_raw'].lower() != item['plant_name_scientific_canon'].lower():
+                            if item['plant_name_common_type'].lower() == 'label':
+                                if plant_name_common_preferred == '': plant_name_common_preferred = item['plant_name_common_raw']
+                                common_names_labels_found_count += 1
+                                # print(json.dumps(item, indent=4))
+                                # quit()
+                            if item['plant_name_common_type'].lower() == 'alias':
+                                if plant_name_common_preferred == '': plant_name_common_preferred = item['plant_name_common_raw']
+                                common_names_aliases_found_count += 1
+                if item['source_name'].lower() == 'catalogue of life':
+                    if item['plant_name_common_language'].lower() == 'eng':
+                        if item['plant_name_common_raw'].lower() != item['plant_name_scientific_canon'].lower():
+                            if plant_name_common_preferred == '': plant_name_common_preferred = item['plant_name_common_raw']
+                            col_common_names_vernacular_found_count += 1
+                            # print(json.dumps(item, indent=4))
+                            # quit()
+        '''
         ### NAME COMMON PREFERRED (HERO)
         name_common_preferred = ''
         if name_common_preferred == '':
@@ -327,23 +353,29 @@ if 1:
                     name_common_preferred = item['plant_name_common']
                     break
         ###
+        '''
         output_items = {
-                'name_common_preferred': name_common_preferred,
+                'plant_name_common_preferred': plant_name_common_preferred,
                 'all': []
         }
         for item in items:
-            print(item)
+            # print(item)
             output_item = {
                 'plant_name_scientific_canon': master_plant_row[1], ### MANDATORY
-                'plant_name_common': item['plant_name_common'],
+                'plant_name_common': item['plant_name_common_raw'],
                 'source_name': item['source_name'],
                 'source_acronym': item['source_acronym'],
             }
-            print(json.dumps(output_item, indent=4))
+            # print(json.dumps(output_item, indent=4))
             output_items['all'].append(output_item)
         output_filepath = f'{g.DATA_FOLDERPATH}/{output_foldername}/herbs/{entity_foldername}/{master_plant_row[1]}.json'
         io.folder_create_from_filepath(output_filepath)
         io.json_write(output_filepath, output_items)
+        '''
+        '''
+    print(common_names_labels_found_count)
+    print(common_names_aliases_found_count)
+    print(col_common_names_vernacular_found_count)
 
 ### TAXONOMIES
 if 0:
@@ -363,28 +395,6 @@ if 0:
                 'order': row[6],
                 'family': row[7],
                 'genus': row[8],
-            }
-            print(json.dumps(output_item, indent=4))
-            output_items.append(output_item)
-        output_filepath = f'{g.DATA_FOLDERPATH}/{output_foldername}/herbs/{entity_foldername}/{master_plant_row[1]}.json'
-        io.folder_create_from_filepath(output_filepath)
-        io.json_write(output_filepath, output_items)
-
-### NAMES
-if 0:
-    entity_foldername = 'names'
-    master_plants_rows = masterize_utils.masterize_plants_get_all()
-    for i, master_plant_row in enumerate(master_plants_rows):
-        print(f'{i}/{len(master_plants_rows)}')
-        summary_rows = name_summary_get(master_plant_row[1])
-        output_items = []
-        for row in summary_rows:
-            output_item = {
-                'plant_canonical_name': master_plant_row[1], ### MANDATORY
-                'name_type': row[2],
-                'language_code': row[3],
-                'language_value': row[4],
-                'source': row[5],
             }
             print(json.dumps(output_item, indent=4))
             output_items.append(output_item)

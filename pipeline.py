@@ -1,4 +1,34 @@
 '''
+################################################################################
+# GUIDE
+################################################################################
+
+FETCH:
+You start by fetching resources (datasets/studies). Some resources are used to extract plants info, others to create reference table (for fast lookup)
+
+PARSE:
+You take the fetched resources, parse them, and output json files with defined schemas. Each type of info must be formatted with the same schema across different sources. Use "parse_utils" to create coherent output functions.
+
+NORMALIZE:
+You take the parsed jsons, and add the appropriate normalized fields. For example "plant_name_scientific_raw_norm". The normalized fields are used for entity resolution.
+
+RESOLVE:
+### TODO: document "resolve"
+
+OBSERVE:
+### TODO: document "observe"
+
+MASTERIZE:
+### TODO: update masterize tables with "activities" (plants and plants_activities tables?)
+
+### TODO: complete rest of pipeline with "activities"
+
+'''
+
+'''
+################################################################################
+# STEPS
+################################################################################
 fetch
 parse
 normalize
@@ -20,12 +50,8 @@ explore
 '''
 
 '''
-DOING:
-complete common names of /herbs/herb pages in hero cards from wikidata?
-
 TODO:
 add drduke data to pipeline
-synonyms
 get chemicals classes from chemical and pubchem
 '''
 

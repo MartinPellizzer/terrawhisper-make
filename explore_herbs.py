@@ -375,8 +375,17 @@ def cards_html_gen(group):
         plant_slug = polish.sluggify(plant_name)
         plant_img_src = f'/images/herbs/{plant_slug}.jpg'
         plant_filepath = f'{g.WEBSITE_FOLDERPATH}/images/herbs/{plant_slug}.jpg'
+        ###
+        try: plant_data = io.json_read(f'{g.DATA_FOLDERPATH}/compile/herbs/{plant_name}.json')
+        except: plant_data = []
+        plant_common_name_preferred = ''
+        if 'names_common' in plant_data and plant_data['names_common'] != []:
+            plant_common_name_preferred = plant_data['names_common']['plant_name_common_preferred']
+        if plant_common_name_preferred == '':
+            plant_common_name_preferred = plant_name
+        ###
         json_article_filepath = f'''{g.DATA_FOLDERPATH}/enhance/{plant_slug}.json'''
-        try: json_article = io.json_read(json_article_filepath) # TODO: fixe missing/extra? plants
+        try: json_article = io.json_read(json_article_filepath) # TODO: fix missing/extra? plants
         except: continue
         plant_desc = ' '.join(json_article['intro'].split(' ')[:16]).strip()
         if plant_desc[-1] == '.': plant_desc = plant_desc[:-1]
@@ -385,12 +394,37 @@ def cards_html_gen(group):
             <article>
                 <a href="/herbs/{plant_slug}.html" style="text-decoration: none;">
                     <img src="{plant_img_src}" alt="{plant_name}" style="margin-bottom: 1.6rem;">
-                    <h3 class="explorer-card-title">{plant_name}</h3>
+                    <h3 class="explorer-card-title">{plant_common_name_preferred.capitalize()}</h3>
                 </a>
+                <p 
+                    style="
+                        display: inline-block;
+                        font-size: 1.2rem;
+                        background-color: #f2f2f2;
+                        padding: 0.4rem 1.6rem;
+                        border-radius: 9999px;
+                        margin-bottom: 1.6rem;
+                    "
+                >
+                    <i>{plant_name}</i>
+                </p>
                 <p style="font-size: 1.4rem;">{plant_desc}</p>
             </article>
         '''
+        if 0:
+            '''
+                <p
+                    style="
+                        font-size: 1.4rem;
+                        margin-bottom: 1.6rem;
+                    "
+                >
+                    <i>{plant_name}</i>
+                    · <br><span>Accepted scientific name</span>
+                </p>
+            '''
     return cards_html
+
 
 def pagination_html_gen(group_i, groups, url_slug):
     ### prev
@@ -553,6 +587,7 @@ def herbs_index():
         print(html_filepath)
 
 def herbs_popular_category():
+    url_slug = f'herbs/popular'
     io.folders_recursive_gen(f'''{g.website_folderpath}/{url_slug}''')
     html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
 
@@ -1429,7 +1464,7 @@ def run():
     if 0:
         herbs_index()
 
-    if 1:
+    if 0:
         herbs_popular_category()
 
     if 0:

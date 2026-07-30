@@ -65,13 +65,16 @@ def observations_table_plants_names_common_create(regen=False):
         CREATE TABLE IF NOT EXISTS {table_name} (
             id INTEGER PRIMARY KEY,
             plant_name_scientific_canon TEXT NOT NULL,
-            plant_name_scientific_norm TEXT NOT NULL,
-            plant_name_common TEXT NOT NULL,
+            plant_name_scientific_canon_norm TEXT NOT NULL,
+            plant_name_scientific_raw TEXT,
+            plant_name_scientific_raw_norm TEXT,
+            plant_name_common_raw TEXT NOT NULL,
             plant_name_common_transliteration TEXT,
             plant_name_common_language TEXT,
             plant_name_common_preferred TEXT,
             plant_name_common_country TEXT,
             plant_name_common_area TEXT,
+            plant_name_common_type TEXT,
             source_name TEXT NOT NULL,
             source_acronym TEXT
         );
@@ -180,16 +183,21 @@ def observations_table_plants_activities_create(regen=False):
     cur.execute(f"""
         CREATE TABLE IF NOT EXISTS {table_name} (
             id INTEGER PRIMARY KEY,
-            plant_canonical_name TEXT NOT NULL,
-            activity_canonical_name TEXT NOT NULL,
-            source_name TEXT NOT NULL
+            plant_name_scientific_canon TEXT NOT NULL,
+            plant_name_scientific_canon_norm TEXT,
+            activity_name_canon TEXT NOT NULL,
+            activity_name_canon_norm TEXT,
+            source_name TEXT NOT NULL,
+            source_acronym TEXT,
+            reference_name TEXT
         );
     """)
     conn.execute("PRAGMA journal_mode = WAL;")
     conn.execute("PRAGMA synchronous = OFF;")
     conn.execute("PRAGMA temp_store = MEMORY;")
-    cur.execute(f"CREATE INDEX IF NOT EXISTS idx_{table_name}_plant_canonical_name ON {table_name}(plant_canonical_name)")
-    cur.execute(f"CREATE INDEX IF NOT EXISTS idx_{table_name}_plant_canonical_name ON {table_name}(activity_canonical_name)")
+    cur.execute(f"CREATE INDEX IF NOT EXISTS idx_{table_name}_plant_name_scientific_canon ON {table_name}(plant_name_scientific_canon)")
+    cur.execute(f"CREATE INDEX IF NOT EXISTS idx_{table_name}_activity_name_canon ON {table_name}(activity_name_canon)")
+    cur.execute(f"CREATE INDEX IF NOT EXISTS idx_{table_name}_source_name ON {table_name}(source_name)")
     conn.commit()
     conn.close()
 
@@ -244,12 +252,12 @@ def run():
 
     # observations_table_plants_taxonomies_create(regen=True)
     # observations_table_plants_synonyms_create(regen=True)
-    observations_table_plants_names_common_create(regen=True)
+    # observations_table_plants_names_common_create(regen=True)
     # observations_table_plants_names_create(regen=True)
     # observations_table_plants_distributions_create(regen=True)
     # observations_table_plants_parts_create(regen=True)
     # observations_table_plants_chemicals_create(regen=True)
-    # observations_table_plants_activities_create(regen=True)
+    observations_table_plants_activities_create(regen=True)
     # observations_table_plants_diseases_create(regen=True)
     # observations_table_plants_preparations_create(regen=True)
 

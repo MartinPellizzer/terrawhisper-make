@@ -5,8 +5,8 @@ import reference_drduke
 import reference_mesh
 
 # reference_wcvp.run()
-reference_col.run()
+# reference_col.run()
 # reference_pubchem.run()
-# reference_drduke.run()
+reference_drduke.run()
 # reference_mesh.run()
 

@@ -111,9 +111,11 @@ def plant_listing_page_gen_new(plant_name):
                 hero_plant_common_name_html = f'<p><strong>{language_value.capitalize()}</strong></p>'
                 break
     '''
+
+    ### NAMES COMMON
     hero_plant_common_name_html = ''
     if 'names_common' in plant_data and plant_data['names_common'] != []:
-        hero_plant_common_name_html = plant_data['names_common']['name_common_preferred']
+        hero_plant_common_name_html = plant_data['names_common']['plant_name_common_preferred']
 
     ###
     if plant_data['distribution'] != []: hero_distribution = plant_data['distribution'][0]['continent'].title()

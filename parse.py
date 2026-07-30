@@ -13,9 +13,9 @@ import parse_drduke
 # parse_wcvp.run()
 # parse_ipni.run()
 # parse_powo.run()
-parse_col.run()
+# parse_col.run()
 # parse_wikidata.run()
-# parse_drduke.run()
+parse_drduke.run()
 # parse_pubmed.run()
 
 ################################################################################
