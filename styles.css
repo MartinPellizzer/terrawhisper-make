@@ -98,7 +98,16 @@ img {
     grid-template-columns: repeat(5, 1fr);
 }
 
+.flex-auto {
+    display: flex;
+    flex-direction: row;
+}
+
 @media screen and (max-width: 768px) {
+    .flex-auto {
+        flex-direction: column;
+    }
+
     .grid-2 {
         grid-template-columns: repeat(1, 1fr);
     }
@@ -491,15 +500,24 @@ footer span {
 */
 
 .quick-facts div {
-  display: flex;
+  
 }
 
 .quick-facts dt::after {
-  content: ":";
+    content: ":";
 }
 
 .quick-facts dt {
-  margin-right: 0.5rem;
+    display: inline;
+    font-weight: 700;
+}
+
+.quick-facts dd {
+    display: inline;
+}
+
+[id] {
+  scroll-margin-top: 80px;
 }
 
 /**************************************/

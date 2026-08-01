@@ -324,6 +324,7 @@ if 1:
         plant_name_common_en_aliases = []
         plant_name_common_es = []
         plant_name_common_de = []
+        plant_name_common_fr = []
         if items != []:
             for item in items:
                 if item['source_name'].lower() == 'wikidata':
@@ -332,19 +333,15 @@ if 1:
                             if item['plant_name_common_type'].lower() == 'label':
                                 if plant_name_common_preferred == '': plant_name_common_preferred = item['plant_name_common_raw']
                                 plant_name_common_en_labels.append(item['plant_name_common_raw'])
-                                ### DEBUG
-                                common_names_labels_found_count += 1
-                                # print(json.dumps(item, indent=4))
-                                # quit()
                             if item['plant_name_common_type'].lower() == 'alias':
                                 if plant_name_common_preferred == '': plant_name_common_preferred = item['plant_name_common_raw']
                                 common_names_aliases_found_count += 1
                         elif item['plant_name_common_language'].lower() == 'es':
-                            if item['plant_name_common_type'].lower() == 'label':
-                                plant_name_common_es.append(item['plant_name_common_raw'])
+                            plant_name_common_es.append(item['plant_name_common_raw'])
                         elif item['plant_name_common_language'].lower() == 'de':
-                            if item['plant_name_common_type'].lower() == 'label':
-                                plant_name_common_de.append(item['plant_name_common_raw'])
+                            plant_name_common_de.append(item['plant_name_common_raw'])
+                        elif item['plant_name_common_language'].lower() == 'fr':
+                            plant_name_common_fr.append(item['plant_name_common_raw'])
 
                 if item['source_name'].lower() == 'catalogue of life':
                     if item['plant_name_common_raw'].lower() != item['plant_name_scientific_canon'].lower():
@@ -359,6 +356,8 @@ if 1:
                             plant_name_common_es.append(item['plant_name_common_raw'])
                         if item['plant_name_common_language'].lower() == 'deu':
                             plant_name_common_de.append(item['plant_name_common_raw'])
+                        if item['plant_name_common_language'].lower() == 'fra':
+                            plant_name_common_fr.append(item['plant_name_common_raw'])
 
         ###
         output_items = {
@@ -367,6 +366,7 @@ if 1:
                 'en_aliases': plant_name_common_en_aliases,
                 'es_names': plant_name_common_es,
                 'de_names': plant_name_common_de,
+                'fr_names': plant_name_common_fr,
                 'all': [],
         }
         for item in items:

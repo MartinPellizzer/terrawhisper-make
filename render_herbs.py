@@ -64,65 +64,19 @@ def plant_listing_page_gen_new(plant_name):
     ################################################################################
     # HERO
     ################################################################################
-    hero_plant_synonyms_html = f''
-    hero_plant_synonyms_html = f'''<p>Synonyms:</p>'''
-    # hero_plant_synonyms_html = f'''<div style="display: flex;">'''
-    for item in plant_synonyms[:3]:
-        hero_plant_synonyms_html += f'''
-            <span 
-                style="
-                    font-size: 1.4rem;
-                    display: inline-block; 
-                    border: 1px solid #111; 
-                    border-radius: 9999px;
-                    padding: 0.2rem 0.8rem; 
-                    margin-top: 0.4rem;
-                    margin-bottom: 0.4rem;
-                "
-            >
-                {item['plant_synonym']}
-            </span>
-        '''
-    hero_plant_synonyms_html += f'''
-        <span 
-            style="
-                font-size: 1.4rem;
-                display: inline-block; 
-                border: 1px solid #111; 
-                border-radius: 9999px;
-                padding: 0.2rem 0.8rem; 
-                margin-top: 0.4rem;
-                margin-bottom: 0.4rem;
-            "
-        >
-            +25 more
-        </span>
-    '''
-    # hero_plant_synonyms_html += f'''</div>'''
-    # quit()
-    ### COMMON NAME (TODO: preferred, english)
-    '''
-    hero_plant_common_name_html = ''
-    for name_item in plant_data['names']:
-        language_code = name_item['language_code']
-        if language_code == 'en':
-            language_value = name_item['language_value']
-            if language_value.lower().strip() != plant_name.lower().strip():
-                hero_plant_common_name_html = f'<p><strong>{language_value.capitalize()}</strong></p>'
-                break
-    '''
 
-    ### NAMES COMMON
-    hero_plant_common_name_html = ''
-    if 'names_common' in plant_data and plant_data['names_common'] != []:
-        hero_plant_common_name_html = plant_data['names_common']['plant_name_common_preferred']
+    ## H1
+    plant_name_common = plant_data['names_common']['plant_name_common_preferred']
+    if plant_name_common != '': h1_html = f'<h1>{plant_name_common}</h1>'
+    else: h1_html = f'<h1>{plant_name}</h1>'
 
-    ###
-    if plant_data['distribution'] != []: hero_distribution = plant_data['distribution'][0]['continent'].title()
-    else: hero_distribution = 'Not available'
-    if plant_data['taxonomies'] != []: hero_taxonomy = plant_data['taxonomies'][0]['family'].title()
-    else: hero_taxonomy = 'Not available'
-                    # <p>Scientific resources: Moderate (★★★☆☆)</p>
+    ### SCIENTIFIC NAME ACCEPTED
+    name_scientific_accepted = f'''
+        <p>
+            <i lang="la">{plant_name}</i> · 
+            <span>Accepted scientific name</span>
+        </p>
+    '''
 
     ### EVIDENCE CONSENSUS
     db_filepath = f'{g.DATA_FOLDERPATH}/qualify/observations.db'
@@ -172,32 +126,77 @@ def plant_listing_page_gen_new(plant_name):
         consensus_stars = '★☆☆☆☆'
         consensus_tag = 'Very Sparse'
 
+    ### FAMILY
+    if plant_data['taxonomies'] != []: hero_taxonomy = plant_data['taxonomies'][0]['family'].title()
+    else: hero_taxonomy = 'Not available'
+
+    ### NATIVE RANGE
+    if plant_data['distribution'] != []: hero_distribution = plant_data['distribution'][0]['continent'].title()
+    else: hero_distribution = 'Not available'
+
     ### PLANTS PARTS
     hero_plant_parts_list = []
     for item in plant_parts_data[:2]:
         hero_plant_parts_list.append(item['plant_part_canonical_name'])
     hero_plant_parts_html = ' · '.join(hero_plant_parts_list)
     hero_plant_parts_html = hero_plant_parts_html.title()
+    if hero_plant_parts_html == '': hero_plant_parts_html = 'Not available'
 
-    ### PLANTS SYNONYMS
+    ### NAMES COMMON
+    hero_names_common_list = []
+    for value in plant_data['names_common']['en_labels']:
+        hero_names_common_list.append(value)
+    for value in plant_data['names_common']['en_aliases']:
+        hero_names_common_list.append(value)
+    hero_names_common_html = ' · '.join(hero_names_common_list[:2]).title()
+    hero_names_common_count = len(hero_names_common_list) - 2
+    if len(hero_names_common_list) <= 0:
+        hero_names_common_html = f'''Not available'''
+    elif len(hero_names_common_list) <= 2:
+        hero_names_common_html = f'''
+            <i lang="la">{hero_names_common_html}</i>
+        '''
+    else:
+        hero_names_common_html = f'''
+            <i lang="la">{hero_names_common_html}</i> · 
+            <a href="#common-names">{hero_names_common_count} more</a>
+        '''
+
+    ### SYNONYMS
     hero_synonyms_list = []
-    for item in plant_synonyms[:2]:
+    for item in plant_synonyms:
         hero_synonyms_list.append(item['plant_synonym'])
-    hero_synonyms_html = ' · '.join(hero_synonyms_list)
-    hero_synonyms_html = hero_synonyms_html.title()
+    hero_synonyms_html = ' · '.join(hero_synonyms_list[:2]).title()
     hero_synonyms_count = len(plant_synonyms) - 2
+    if len(hero_synonyms_list) <= 0:
+        hero_synonyms_html = f'''Not available'''
+    elif len(hero_synonyms_list) <= 2:
+        hero_synonyms_html = f'''
+            <i lang="la">{hero_synonyms_html}</i>
+        '''
+    else:
+        hero_synonyms_html = f'''
+            <i lang="la">{hero_synonyms_html}</i> · 
+            <a href="#synonyms">{hero_synonyms_count} more</a>
+        '''
 
     ### LLM INTRO
     json_article_filepath = f'''{g.DATA_FOLDERPATH}/enhance/{plant_taxon_name_slug}.json'''
     json_article = io.json_read(json_article_filepath, create=True)
     regen = False
+    dispel = False
     key = f'intro'
     if key not in json_article: json_article[key] = ''
     if regen: json_article[key] = ''
+    if dispel: 
+        json_article[key] = ''
+        io.json_write(json_article_filepath, json_article)
+        return
     if json_article[key] == '':
+        plant_name_common = plant_data['names_common']['plant_name_common_preferred']
         prompt = f'''
             Write 50 words for an introduction to the following medicinal plant: {plant_name}.
-            Start the reply with the following words: {plant_name}, commonly known as 
+            Start the reply with the following words: {plant_name_common}, scientifically known as {plant_name}, is
         '''.strip()
         print(prompt)
         # quit()
@@ -208,42 +207,11 @@ def plant_listing_page_gen_new(plant_name):
         json_article[key] = reply
         io.json_write(json_article_filepath, json_article)
     intro_text = json_article[key]
-                    # box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-                    # <li>Common names</li>
-    html_hero = f'''
-        <section
-            style="
-            "
-        >
-            {sections.breadcrumbs_explorer(url_slug)}
-            <div class="m-flex" style="gap: 2.4rem;">
-                <div style="flex: 3;">
-                    <h1>{plant_name}</h1>
-                    {hero_plant_common_name_html}
-                    {hero_plant_synonyms_html}
-                    <p>{intro_text}</p>
-                    <ul style="list-style: none;">
-                        <li><span style="font-weight: 700;">Scientific name:</span> <strong style="font-weight: 400;">{plant_name}</strong></li>
-                        <li><span style="font-weight: 700;">Family:</span> <strong style="font-weight: 400;">{hero_taxonomy}</strong></li>
-                        <li><span style="font-weight: 700;">Native range:</span> <strong style="font-weight: 400;">{hero_distribution}</strong></li>
-                    </ul>
-                </div>
-                <div style="flex: 2;">
-                    <img 
-                        src="/images/herbs/{plant_taxon_name_slug}.jpg"
-                        style="
-                            height: 100%;
-                            object-fit: cover;
-                            object-position: center;
-                        "
-                    >
-                </div>
-            </div>
-        </section>
-    '''
+
+    ###
     html_hero = f'''
         {sections.breadcrumbs_explorer(url_slug)}
-        <div class="m-flex" 
+        <div class="flex-auto" 
             style="
                 gap: 2.4rem;
                 padding-bottom: 4.8rem;
@@ -251,13 +219,10 @@ def plant_listing_page_gen_new(plant_name):
             "
         >
             <div style="flex: 3;">
-              <h1>{hero_plant_common_name_html}</h1>
+              {h1_html}
+              {name_scientific_accepted}
               <p>
-                <i lang="la">{plant_name}</i> · 
-                <span>Accepted scientific name</span>
-              </p>
-              <p>
-                <span>Scientific literature:</span>
+                <span style="font-weight: 700;">Scientific literature:</span>
                 <span>{consensus_tag}</span>
                 <span>({evidence_consensus_count} studies)</span> · 
                 <span aria-label="{consensus_tag}">{consensus_stars}</span>
@@ -277,11 +242,12 @@ def plant_listing_page_gen_new(plant_name):
                   <dd>{hero_plant_parts_html}</dd>
                 </div>
                 <div>
+                  <dt>Common names</dt>
+                  <dd>{hero_names_common_html}</dd>
+                </div>
+                <div>
                   <dt>Scientific synonyms</dt>
-                  <dd>
-                    <i lang="la">{hero_synonyms_html}</i> · 
-                    <a href="#scientific-synonyms">{hero_synonyms_count} more</a>
-                  </dd>
+                  <dd>{hero_synonyms_html}</dd>
                 </div>
               </dl>
             </div>
@@ -318,17 +284,70 @@ def plant_listing_page_gen_new(plant_name):
     ### NAMES
     ################################################################################
     ### NAMES COMMON
-    plant_names_common_en_tags_html = ''
-    plant_names_common_en_tags_html += f'<ul style="list-style: none;">'
-    for tag in plant_data['names_common']['en_labels']:
-        plant_names_common_en_tags_html += f'''
-            <li class="tag">{tag}</li>
+    if len(plant_data['names_common']['en_labels']) != 0 or len(plant_data['names_common']['en_aliases']) != 0:
+        plant_names_common_en_html = f''
+        plant_names_common_en_html = f'<h3 id="common-names">Common Names</h3>'
+        plant_names_common_en_html += f'<ul style="list-style: none;">'
+        for tag in plant_data['names_common']['en_labels']:
+            plant_names_common_en_html += f'''
+                <li class="tag">{tag}</li>
+            '''
+        for tag in plant_data['names_common']['en_aliases']:
+            plant_names_common_en_html += f'''
+                <li class="tag">{tag}</li>
+            '''
+        plant_names_common_en_html += f'</ul>'
+    else:
+        plant_names_common_en_html = ''
+
+    ### NAMES REGIONAL
+    plant_names_common_regional_html = ''
+    ### SPANISH
+    values_html = ''
+    for value in plant_data['names_common']['es_names']:
+        values_html += f'''
+            <li class="tag">{value}</li>
         '''
-    for tag in plant_data['names_common']['en_aliases']:
-        plant_names_common_en_tags_html += f'''
-            <li class="tag">{tag}</li>
+    if values_html != '':
+        plant_names_common_regional_html += f'<div style="display: flex; gap: 0.8rem;">'
+        plant_names_common_regional_html += f'<h4>Spanish:</h4>' 
+        plant_names_common_regional_html += f'<ul style="list-style: none;">'
+        plant_names_common_regional_html += values_html 
+        plant_names_common_regional_html += f'</ul>'
+        plant_names_common_regional_html += f'</div>'
+    ### GERMAN
+    values_html = ''
+    for value in plant_data['names_common']['de_names']:
+        values_html += f'''
+            <li class="tag">{value}</li>
         '''
-    plant_names_common_en_tags_html += f'</ul>'
+    if values_html != '':
+        plant_names_common_regional_html += f'<div style="display: flex; gap: 0.8rem;">'
+        plant_names_common_regional_html += f'<h4>German:</h4>' 
+        plant_names_common_regional_html += f'<ul style="list-style: none;">'
+        plant_names_common_regional_html += values_html 
+        plant_names_common_regional_html += f'</ul>'
+        plant_names_common_regional_html += f'</div>'
+    ### FRENCH
+    values_html = ''
+    for value in plant_data['names_common']['fr_names']:
+        values_html += f'''
+            <li class="tag">{value}</li>
+        '''
+    if values_html != '':
+        plant_names_common_regional_html += f'<div style="display: flex; gap: 0.8rem;">'
+        plant_names_common_regional_html += f'<h4>French:</h4>' 
+        plant_names_common_regional_html += f'<ul style="list-style: none;">'
+        plant_names_common_regional_html += values_html 
+        plant_names_common_regional_html += f'</ul>'
+        plant_names_common_regional_html += f'</div>'
+    ###
+    if plant_names_common_regional_html != '':
+        plant_names_common_regional_html = f'''
+            <h3>Regional and Traditional Names</h3>
+            {plant_names_common_regional_html}
+        '''
+
     ### SYNONYMS
     synonyms_html = ''
     synonyms_html += f'<ul style="list-style: none;">'
@@ -338,59 +357,42 @@ def plant_listing_page_gen_new(plant_name):
             <li class="tag"><i>{value}</i></li>
         '''
     synonyms_html += f'</ul>'
-    ### NAMES REGIONAL
-    ### SPANISH
-    values_html = ''
-    for value in plant_data['names_common']['es_names']:
-        values_html += f'''
-            <li class="tag">{value}</li>
-        '''
-    plant_names_common_es_tags_html = ''
-    if values_html != '':
-        plant_names_common_es_tags_html += f'<div style="display: flex; gap: 0.8rem;">'
-        plant_names_common_es_tags_html += f'<h4>Spanish:</h4>' 
-        plant_names_common_es_tags_html += f'<ul style="list-style: none;">'
-        plant_names_common_es_tags_html += values_html 
-        plant_names_common_es_tags_html += f'</ul>'
-        plant_names_common_es_tags_html += f'</div>'
-    ### GERMAN
-    values_html = ''
-    for value in plant_data['names_common']['de_names']:
-        values_html += f'''
-            <li class="tag">{value}</li>
-        '''
-    plant_names_common_de_tags_html = ''
-    if values_html != '':
-        plant_names_common_es_tags_html += f'<div style="display: flex; gap: 0.8rem;">'
-        plant_names_common_es_tags_html += f'<h4>German:</h4>' 
-        plant_names_common_es_tags_html += f'<ul style="list-style: none;">'
-        plant_names_common_es_tags_html += values_html 
-        plant_names_common_es_tags_html += f'</ul>'
-        plant_names_common_es_tags_html += f'</div>'
+
+    ### NAMES COMMON
+    if len(plant_data['synonyms']) != 0:
+        synonyms_html = f''
+        synonyms_html = f'<h4 id="synonyms" style="margin-bottom: 1rem;">Synonyms</h4>'
+        synonyms_html += f'<ul style="list-style: none;">'
+        for item in plant_data['synonyms']:
+            value = item['plant_synonym']
+            synonyms_html += f'''
+                <li class="tag"><i>{value}</i></li>
+            '''
+        synonyms_html += f'</ul>'
+    else:
+        synonyms_html = ''
+
     html_article += f'''
         <section id="names-and-synonyms">
-          <h2>Names and Synonyms</h2>
-          <h3>Common Names</h3>
-          {plant_names_common_en_tags_html}
-          <h3>Scientific Name</h3>
-          <p>
-            <strong>Accepted name:</strong> <i>{plant_name}</i>
-          </p>
-          <h3>Scientific Synonyms</h3>
+          <h2>Names</h2>
+          {plant_names_common_en_html}
+          {plant_names_common_regional_html}
+          <h3>Scientific Names</h3>
+          <h4 style="margin-bottom: 1rem;">Accepted name</h4> <span class="tag">{plant_name}</span>
           {synonyms_html}
-          <h3>Regional and Traditional Names</h3>
-          {plant_names_common_es_tags_html}
-          {plant_names_common_de_tags_html}
-          <h3>Other Names</h3>
-          <ul>
-            <li>{{other_name}}</li>
-          </ul>
-          <h3>Commonly Confused Plants</h3>
-          <ul>
-            <li>{{related_or_confused_species}}</li>
-          </ul>
         </section>
     '''
+    if 0:
+        '''
+            <h3>Other Names</h3>
+            <ul>
+            <li>{{other_name}}</li>
+            </ul>
+            <h3>Commonly Confused Plants</h3>
+            <ul>
+            <li>{{related_or_confused_species}}</li>
+            </ul>
+        '''
 
     ################################################################################
     ### CLASSIFICATION
@@ -627,16 +629,6 @@ def plant_listing_page_gen_new(plant_name):
                     Plant Parts
                 </h2>
                 {names_text}
-                <dl>
-                    <div>
-                        <dt>Total parts</dt>
-                        <dd>{len(plants_parts_data)}</dd>
-                    </div>
-                    <div>
-                        <dt>Scientific sources</dt>
-                        <dd>{source_tot}</dd>
-                    </div>
-                </dl>
                 <table>
                   <thead>
                     <tr>
@@ -690,16 +682,6 @@ def plant_listing_page_gen_new(plant_name):
                 <p>
                     {plant_name} has {len(plant_data['chemicals'])} reported phytochemicals identified across {source_tot} scientific publications and several other databases. The most consistently reported chemicals include {chemicals_p_str}.
                 </p>
-                <dl>
-                    <div>
-                        <dt>Total chemicals</dt>
-                        <dd>{len(plant_data['chemicals'])}</dd>
-                    </div>
-                    <div>
-                        <dt>Scientific sources</dt>
-                        <dd>{source_tot}</dd>
-                    </div>
-                </dl>
                 <h3>Most Reported Compounds</h3>
                 <table>
                   <thead>
@@ -754,16 +736,6 @@ def plant_listing_page_gen_new(plant_name):
                 <p>
                     {plant_name} has {len(plant_data['activities'])} reported activities identified across {source_tot} scientific publications and several other databases. The most consistently reported activities include {activities_p_str}.
                 </p>
-                <dl>
-                    <div>
-                        <dt>Total activities</dt>
-                        <dd>{len(plant_data['activities'])}</dd>
-                    </div>
-                    <div>
-                        <dt>Scientific sources</dt>
-                        <dd>{source_tot}</dd>
-                    </div>
-                </dl>
                 <h3>Most Reported Activities</h3>
                 <table>
                   <thead>
@@ -818,16 +790,6 @@ def plant_listing_page_gen_new(plant_name):
                 <p>
                     {plant_name} has {len(plant_data['diseases'])} reported medicinal uses identified across {source_tot} scientific publications and several other databases. The most consistently reported uses include {diseases_p_str}.
                 </p>
-                <dl>
-                    <div>
-                        <dt>Total uses</dt>
-                        <dd>{len(plant_data['diseases'])}</dd>
-                    </div>
-                    <div>
-                        <dt>Scientific sources</dt>
-                        <dd>{source_tot}</dd>
-                    </div>
-                </dl>
                 <h3>Most Reported Uses</h3>
                 <table>
                   <thead>
@@ -913,16 +875,6 @@ def plant_listing_page_gen_new(plant_name):
                     Preparations
                 </h2>
                 {names_text}
-                <dl>
-                    <div>
-                        <dt>Total preparations</dt>
-                        <dd>{len(data)}</dd>
-                    </div>
-                    <div>
-                        <dt>Scientific sources</dt>
-                        <dd>{source_tot}</dd>
-                    </div>
-                </dl>
                 <table>
                   <thead>
                     <tr>
