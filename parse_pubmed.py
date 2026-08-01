@@ -560,7 +560,7 @@ def observations_plants_parts_extract_raw():
     print(len(relationships_found))
     # quit()
 
-def observations_plants_parts_raw_to_json():
+def parse_plants_parts_raw_to_json():
     entity_type = 'plants_parts'
     source_name = 'pubmed'
     input_foldername = f'parse'
@@ -605,14 +605,14 @@ def observations_plants_parts_raw_to_json():
             # print(line)
             try: plant_name, relationship, plant_part_name = line
             except: continue
-            output_item = {
-                f'plant_name': plant_name,
-                f'relationship': relationship,
-                f'plant_part_name': plant_part_name,
-                f'source_id': input_filename.split('.')[0],
-                f'journal_title': journal_title,
-            }
-            output_items.append(output_item)
+            output = parse_utils.plant_part_create(
+                plant_name_raw = plant_name,
+                plant_part_name_raw = plant_part_name,
+                source_name = journal_title,
+                source_acronym = '',
+                reference_name = '',
+            )
+            output_items.append(output)
         io.json_write(output_filepath, output_items)
 
 def observations_preparations_raw_to_json():
@@ -800,7 +800,7 @@ def run():
     # parse_chemicals_raw_to_json()
     print(f'chemicals observations() - execution time: ', time.perf_counter() - start)
 
-    if 1:
+    if 0:
         start = time.perf_counter()
         # observations_diseases_extract_raw() ### WARNING: takes many many hours (nightly running)
         # observations_diseases_raw_to_json()
@@ -812,7 +812,7 @@ def run():
 
     start = time.perf_counter()
     # observations_plants_parts_extract_raw() ### WARNING: takes many many hours (nightly running)
-    # observations_plants_parts_raw_to_json()
+    parse_plants_parts_raw_to_json()
     print(f'observations plants_parts() - execution time: ', time.perf_counter() - start)
 
     start = time.perf_counter()

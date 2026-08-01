@@ -10,6 +10,59 @@ from lib import llm
 
 import resolve_utils
 
+def resolve_plants_parts(source_foldername):
+    input_folderpath = f'{g.DATA_FOLDERPATH}/normalize/{source_foldername}/plants_parts/json'
+    output_folderpath = f'{g.DATA_FOLDERPATH}/resolve/{source_foldername}/plants_parts/json'
+    try: shutil.rmtree(output_folderpath)
+    except: pass
+    os.makedirs(output_folderpath, exist_ok=True)
+    ###
+    wcvp_folderpath = f'{g.DATA_FOLDERPATH}/reference/wcvp/wcvp.db'
+    wcvp_conn = sqlite3.connect(wcvp_folderpath)
+    input_filenames = os.listdir(input_folderpath)
+    for i, input_filename in enumerate(input_filenames[:]):
+        # print(f'{i}/{len(input_filenames)}')
+        output_filepath = f'{output_folderpath}/{input_filename}'
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        if os.path.exists(output_filepath): continue
+        ###
+        input_data = io.json_read(input_filepath)
+        resolved_data = []
+        for input_item in input_data:
+            # print(json.dumps(input_item, indent=True))
+            # quit()
+            plant_name_raw_norm = input_item['plant_name_raw_norm']
+            ### RESOLVE PLANT (WCVP)
+            wcvp_row = resolve_utils.resolve_plant_accepted(wcvp_conn, plant_name_raw_norm)
+            ### RESOLVE PLANT PART (...)
+            plant_parts_canon = [
+                'root',
+                'seed',
+                'leaf',
+            ]
+            plant_part_canon = ''
+            for value in plant_parts_canon:
+                if value in input_item['plant_part_name_raw_norm']:
+                    plant_part_canon = value
+                    break
+            if plant_part_canon == '':
+                plant_part_canon = input_item['plant_part_name_raw_norm']
+            ###
+            if wcvp_row:
+                input_item['plant_name_scientific_canon'] = wcvp_row[3]
+                input_item['plant_name_scientific_canon_norm'] = wcvp_row[4]
+                input_item['plant_part_name_canon'] = plant_part_canon
+                input_item['plant_part_name_canon_norm'] = plant_part_canon
+                resolved_data.append(input_item)
+                # if plant_name_raw_norm == 'panax ginseng':
+                    # print(json.dumps(input_item, indent=True))
+                    # quit()
+                # print(json.dumps(input_item, indent=True))
+                # quit()
+        if resolved_data != []:
+            io.json_write(output_filepath, resolved_data)
+    wcvp_conn.close()
+
 def resolve_activities(source_foldername):
     input_folderpath = f'{g.DATA_FOLDERPATH}/normalize/{source_foldername}/activities/json'
     output_folderpath = f'{g.DATA_FOLDERPATH}/resolve/{source_foldername}/activities/json'
@@ -222,11 +275,16 @@ def run():
 
     if 1:
         start = time.perf_counter()
+        resolve_plants_parts(source_foldername='pubmed')
+        print(f'resolve plant_part() - execution time: ', time.perf_counter() - start)
+
+    if 0:
+        start = time.perf_counter()
         resolve_activities(source_foldername='drduke')
         resolve_activities(source_foldername='pubmed')
         print(f'resolve chemicals() - execution time: ', time.perf_counter() - start)
 
-    if 1:
+    if 0:
         start = time.perf_counter()
         resolve_chemicals(source_foldername='drduke')
         resolve_chemicals(source_foldername='pubmed')

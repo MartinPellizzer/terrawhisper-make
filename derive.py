@@ -297,7 +297,7 @@ if 0:
         io.json_write(output_filepath, output_items)
 
 ### NAMES COMMON
-if 1:
+if 0:
     entity_foldername = 'names_common'
     master_plants_rows = masterize_utils.masterize_plants_get_all()
     common_names_labels_found_count = 0
@@ -437,14 +437,38 @@ if 0:
         io.json_write(output_filepath, output_items)
 
 ### PLANTS PARTS
-if 0:
+if 1:
     entity_foldername = 'plants_parts'
     master_plants_rows = masterize_utils.masterize_plants_get_all()
     for i, master_plant_row in enumerate(master_plants_rows):
         print(f'{i}/{len(master_plants_rows)}')
-        summary_rows = plant_part_summary_get_0000(master_plant_row[1])
+        plant_name_scientific_canon = master_plant_row[1]
+        ###
+        conn = sqlite3.connect(db_filepath)
+        cursor = conn.execute("""
+            SELECT
+                plant_name_scientific_canon,
+                plant_part_name_canon,
+                COUNT(*) AS num_sources,
+                json_group_array(source_name) AS sources
+            FROM (
+                SELECT DISTINCT
+                    plant_name_scientific_canon,
+                    plant_part_name_canon,
+                    source_name
+                FROM plants_plants_parts
+                WHERE plant_name_scientific_canon = ?
+            )
+            GROUP BY
+                plant_name_scientific_canon,
+                plant_part_name_canon
+            ORDER BY num_sources DESC;
+        """, (plant_name_scientific_canon,))
+        rows = cursor.fetchall()
+        conn.close()
+        ###
         output_items = []
-        for row in summary_rows:
+        for row in rows:
             output_item = {
                 'plant_canonical_name': master_plant_row[1], ### MANDATORY
                 'plant_part_canonical_name': row[1],

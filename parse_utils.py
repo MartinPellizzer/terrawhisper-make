@@ -10,6 +10,22 @@ def synonym_create(
     }
     return item
 
+def plant_part_create(
+    plant_name_raw,
+    plant_part_name_raw,
+    source_name,
+    source_acronym,
+    reference_name,
+):
+    item = {
+        'plant_name_raw': plant_name_raw,
+        'plant_part_name_raw': plant_part_name_raw,
+        'source_name': source_name,
+        'source_acronym': source_acronym,
+        'reference_name': reference_name,
+    }
+    return item
+
 def activity_create(
     plant_name_raw,
     activity_name_raw,
