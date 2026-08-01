@@ -19,7 +19,7 @@ OBSERVE:
 ### TODO: document "observe"
 
 MASTERIZE:
-### TODO: update masterize tables with "activities" (plants and plants_activities tables?)
+### TODO: document "masterize"
 
 ### TODO: complete rest of pipeline with "activities"
 
@@ -117,7 +117,7 @@ if 0:
     observe_pubmed.run()
     # observe_drduke.run()
 
-if 1:
+if 0:
     import qualify
 
 if 1:

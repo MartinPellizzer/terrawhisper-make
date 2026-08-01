@@ -44,7 +44,6 @@ def parse_activities():
         io.json_write(output_filepath, items_output)
         # shutil.copy(input_filepath, output_filepath)
         # print(input_filename)
-    
 
 def parse_chemicals():
     input_folderpath = f'{g.DATA_FOLDERPATH}/fetch/drduke/json'
@@ -70,8 +69,9 @@ def parse_chemicals():
                     plant_name_raw = data['herb_name_latin'], 
                     chemical_name_raw = item['Chemical Name'], 
                     plant_part_name_raw = item['Plant Part'], 
-                    source_id = '', 
-                    source_name = item['Reference'],
+                    source_name = 'Dr. Duke',
+                    source_acronym = '',
+                    reference_name = item['Reference'],
                 )
                 items_output.append(item_output)
                 # print(json.dumps(item_output, indent=4))
@@ -79,7 +79,6 @@ def parse_chemicals():
         io.json_write(output_filepath, items_output)
         # shutil.copy(input_filepath, output_filepath)
         # print(input_filename)
-    
 
 def run():
     print('PARSE >> drduke')

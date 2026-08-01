@@ -74,7 +74,6 @@ def resolve_chemicals(source_foldername):
     pubchem_conn = sqlite3.connect(pubchem_folderpath)
     ###
     input_filenames = os.listdir(input_folderpath)
-    print(input_filenames)
     for i, input_filename in enumerate(input_filenames[:]):
         print(f'{i}/{len(input_filenames)}')
         output_filepath = f'{output_folderpath}/{input_filename}'
@@ -86,36 +85,26 @@ def resolve_chemicals(source_foldername):
         for input_item in input_data:
             # print(json.dumps(input_item, indent=True))
             resolved_item = input_item
-            plant_name_normalized = input_item['plant_name_normalized']
-            chemical_name_normalized = input_item['chemical_name_normalized']
-            if chemical_name_normalized == 'null': continue
+            plant_name_raw_norm = input_item['plant_name_raw_norm']
+            chemical_name_raw_norm = input_item['chemical_name_raw_norm']
+            if chemical_name_raw_norm == 'null':
+                continue
             ### RESOLVE PLANT (WCVP)
-            wcvp_row = resolve_utils.resolve_plant_accepted(wcvp_conn, plant_name_normalized)
+            wcvp_row = resolve_utils.resolve_plant_accepted(wcvp_conn, plant_name_raw_norm)
             ### RESOLVE CHEMICAL (PUBCHEM)
             pubchem_cur = pubchem_conn.cursor()
             pubchem_cur.execute("""
                 SELECT *
                 FROM pubchem_cid_synonyms
                 WHERE normalized_alias = ?
-            """, (chemical_name_normalized,))
+            """, (chemical_name_raw_norm,))
             pubchem_row = pubchem_cur.fetchone()
             ###
             if wcvp_row and pubchem_row:
-                wcvp_plant_name_id = wcvp_row[0]
-                wcvp_accepted_plant_name_id = wcvp_row[1]
-                wcvp_taxon_status = wcvp_row[2]
-                wcvp_taxon_name = wcvp_row[3]
-                wcvp_taxon_name_normalized = wcvp_row[4]
-                ###
-                pubchem_cid = pubchem_row[0]
-                pubchem_chemical_name = pubchem_row[1]
-                pubchem_chemical_name_normalized = pubchem_row[2]
-                ###
-                input_item['wcvp_taxon_name'] = wcvp_taxon_name
-                input_item['wcvp_taxon_name_normalized'] = wcvp_taxon_name_normalized
-                input_item['pubchem_cid'] = pubchem_cid
-                input_item['pubchem_chemical_name'] = pubchem_chemical_name
-                input_item['pubchem_chemical_name_normalized'] = pubchem_chemical_name_normalized
+                input_item['plant_name_scientific_canon'] = wcvp_row[3]
+                input_item['plant_name_scientific_canon_norm'] = wcvp_row[4]
+                input_item['chemical_name_canon'] = pubchem_row[1]
+                input_item['chemical_name_canon_norm'] = pubchem_row[2]
                 resolved_data.append(input_item)
                 # print(json.dumps(input_item, indent=True))
                 # quit()
@@ -237,7 +226,7 @@ def run():
         resolve_activities(source_foldername='pubmed')
         print(f'resolve chemicals() - execution time: ', time.perf_counter() - start)
 
-    if 0:
+    if 1:
         start = time.perf_counter()
         resolve_chemicals(source_foldername='drduke')
         resolve_chemicals(source_foldername='pubmed')

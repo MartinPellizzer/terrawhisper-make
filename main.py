@@ -178,7 +178,7 @@ if 0:
     herbs_ai.main()
     quit()
 
-if 0:
+if 1:
     if 1:
         from ai import herbs_images
         herbs_images.gen()

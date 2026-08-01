@@ -131,21 +131,21 @@ def chemical_summary_get_0000(plant_canonical_name):
     conn = sqlite3.connect(db_filepath)
     cursor = conn.execute("""
         SELECT
-            plant_canonical_name,
-            chemical_canonical_name,
+            plant_name_scientific_canon,
+            chemical_name_canon,
             COUNT(*) AS num_sources,
             json_group_array(source_name) AS sources
         FROM (
             SELECT DISTINCT
-                plant_canonical_name,
-                chemical_canonical_name,
+                plant_name_scientific_canon,
+                chemical_name_canon,
                 source_name
             FROM plants_chemicals
-            WHERE plant_canonical_name = ?
+            WHERE plant_name_scientific_canon = ?
         )
         GROUP BY
-            plant_canonical_name,
-            chemical_canonical_name
+            plant_name_scientific_canon,
+            chemical_name_canon
         ORDER BY num_sources DESC;
     """, (plant_canonical_name,))
     rows = cursor.fetchall()
@@ -171,21 +171,21 @@ def activity_summary_get_0000(plant_canonical_name):
     conn = sqlite3.connect(db_filepath)
     cursor = conn.execute("""
         SELECT
-            plant_canonical_name,
-            activity_canonical_name,
+            plant_name_scientific_canon,
+            activity_name_canon,
             COUNT(*) AS num_sources,
             json_group_array(source_name) AS sources
         FROM (
             SELECT DISTINCT
-                plant_canonical_name,
-                activity_canonical_name,
+                plant_name_scientific_canon,
+                activity_name_canon,
                 source_name
             FROM plants_activities
-            WHERE plant_canonical_name = ?
+            WHERE plant_name_scientific_canon = ?
         )
         GROUP BY
-            plant_canonical_name,
-            activity_canonical_name
+            plant_name_scientific_canon,
+            activity_name_canon
         ORDER BY num_sources DESC;
     """, (plant_canonical_name,))
     rows = cursor.fetchall()
@@ -306,7 +306,7 @@ if 1:
     for i, master_plant_row in enumerate(master_plants_rows):
         print(f'{i}/{len(master_plants_rows)}')
         plant_name_scientific_canon = master_plant_row[1]
-        ###
+        ### GET ALL NAMES COMMON
         conn = sqlite3.connect(db_filepath)
         conn.row_factory = sqlite3.Row
         cursor = conn.execute("""
@@ -317,51 +317,63 @@ if 1:
         rows = cursor.fetchall()
         items = [dict(row) for row in rows]
         conn.close()
+
         ###
         plant_name_common_preferred = ''
+        plant_name_common_en_labels = []
+        plant_name_common_en_aliases = []
+        plant_name_common_es = []
+        plant_name_common_de = []
         if items != []:
             for item in items:
                 if item['source_name'].lower() == 'wikidata':
-                    if item['plant_name_common_language'].lower() == 'en':
-                        if item['plant_name_common_raw'].lower() != item['plant_name_scientific_canon'].lower():
+                    if item['plant_name_common_raw'].lower() != item['plant_name_scientific_canon'].lower():
+                        if item['plant_name_common_language'].lower() == 'en':
                             if item['plant_name_common_type'].lower() == 'label':
                                 if plant_name_common_preferred == '': plant_name_common_preferred = item['plant_name_common_raw']
+                                plant_name_common_en_labels.append(item['plant_name_common_raw'])
+                                ### DEBUG
                                 common_names_labels_found_count += 1
                                 # print(json.dumps(item, indent=4))
                                 # quit()
                             if item['plant_name_common_type'].lower() == 'alias':
                                 if plant_name_common_preferred == '': plant_name_common_preferred = item['plant_name_common_raw']
                                 common_names_aliases_found_count += 1
+                        elif item['plant_name_common_language'].lower() == 'es':
+                            if item['plant_name_common_type'].lower() == 'label':
+                                plant_name_common_es.append(item['plant_name_common_raw'])
+                        elif item['plant_name_common_language'].lower() == 'de':
+                            if item['plant_name_common_type'].lower() == 'label':
+                                plant_name_common_de.append(item['plant_name_common_raw'])
+
                 if item['source_name'].lower() == 'catalogue of life':
-                    if item['plant_name_common_language'].lower() == 'eng':
-                        if item['plant_name_common_raw'].lower() != item['plant_name_scientific_canon'].lower():
+                    if item['plant_name_common_raw'].lower() != item['plant_name_scientific_canon'].lower():
+                        if item['plant_name_common_language'].lower() == 'eng':
                             if plant_name_common_preferred == '': plant_name_common_preferred = item['plant_name_common_raw']
+                            plant_name_common_en_aliases.append(item['plant_name_common_raw'])
+                            ### DEBUG
                             col_common_names_vernacular_found_count += 1
                             # print(json.dumps(item, indent=4))
                             # quit()
-        '''
-        ### NAME COMMON PREFERRED (HERO)
-        name_common_preferred = ''
-        if name_common_preferred == '':
-            for item in items:
-                if item['plant_name_common_language'] == 'eng':
-                    name_common_preferred = item['plant_name_common']
-                    break
-        if name_common_preferred == '':
-            for item in items:
-                if item['plant_name_common_language'] == '':
-                    name_common_preferred = item['plant_name_common']
-                    break
+                        if item['plant_name_common_language'].lower() == 'spa':
+                            plant_name_common_es.append(item['plant_name_common_raw'])
+                        if item['plant_name_common_language'].lower() == 'deu':
+                            plant_name_common_de.append(item['plant_name_common_raw'])
+
         ###
-        '''
         output_items = {
                 'plant_name_common_preferred': plant_name_common_preferred,
-                'all': []
+                'en_labels': plant_name_common_en_labels,
+                'en_aliases': plant_name_common_en_aliases,
+                'es_names': plant_name_common_es,
+                'de_names': plant_name_common_de,
+                'all': [],
         }
         for item in items:
-            # print(item)
+            # print(json.dumps(item, indent=4))
+            # quit()
             output_item = {
-                'plant_name_scientific_canon': master_plant_row[1], ### MANDATORY
+                'plant_name_scientific_canon': master_plant_row[1], ### MANDATORY FOR COMPILER
                 'plant_name_common': item['plant_name_common_raw'],
                 'source_name': item['source_name'],
                 'source_acronym': item['source_acronym'],

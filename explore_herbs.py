@@ -84,11 +84,11 @@ def sidebar_activities_get():
     conn = sqlite3.connect(db_filepath)
     cursor = conn.execute("""
         SELECT
-            activity_canonical_name,
+            activity_name_canon,
             COUNT(DISTINCT source_name) AS source_count
         FROM plants_activities
-        GROUP BY activity_canonical_name
-        ORDER BY source_count DESC, activity_canonical_name ASC;
+        GROUP BY activity_name_canon
+        ORDER BY source_count DESC, activity_name_canon ASC;
     """)
     rows = cursor.fetchall()
     conn.close()
@@ -100,11 +100,11 @@ def sidebar_chemicals_get():
     conn = sqlite3.connect(db_filepath)
     cursor = conn.execute("""
         SELECT
-            chemical_canonical_name,
+            chemical_name_canon,
             COUNT(DISTINCT source_name) AS source_count
         FROM plants_chemicals
-        GROUP BY chemical_canonical_name
-        ORDER BY source_count DESC, chemical_canonical_name ASC;
+        GROUP BY chemical_name_canon
+        ORDER BY source_count DESC, chemical_name_canon ASC;
     """)
     rows = cursor.fetchall()
     conn.close()
@@ -376,8 +376,9 @@ def cards_html_gen(group):
         plant_img_src = f'/images/herbs/{plant_slug}.jpg'
         plant_filepath = f'{g.WEBSITE_FOLDERPATH}/images/herbs/{plant_slug}.jpg'
         ###
-        try: plant_data = io.json_read(f'{g.DATA_FOLDERPATH}/compile/herbs/{plant_name}.json')
-        except: plant_data = []
+        # try: plant_data = io.json_read(f'{g.DATA_FOLDERPATH}/compile/herbs/{plant_name}.json')
+        # except: plant_data = []
+        plant_data = io.json_read(f'{g.DATA_FOLDERPATH}/compile/herbs/{plant_name}.json')
         plant_common_name_preferred = ''
         if 'names_common' in plant_data and plant_data['names_common'] != []:
             plant_common_name_preferred = plant_data['names_common']['plant_name_common_preferred']
@@ -397,14 +398,7 @@ def cards_html_gen(group):
                     <h3 class="explorer-card-title">{plant_common_name_preferred.capitalize()}</h3>
                 </a>
                 <p 
-                    style="
-                        display: inline-block;
-                        font-size: 1.2rem;
-                        background-color: #f2f2f2;
-                        padding: 0.4rem 1.6rem;
-                        border-radius: 9999px;
-                        margin-bottom: 1.6rem;
-                    "
+                    class="tag"
                 >
                     <i>{plant_name}</i>
                 </p>
@@ -597,37 +591,37 @@ def herbs_popular_category():
     db_filepath = f'{g.DATA_FOLDERPATH}/qualify/observations.db'
     conn = sqlite3.connect(db_filepath)
     for plant_row in plants_rows:
-        plant_canonical_name = plant_row[1]
+        plant_name_scientific_canon = plant_row[1]
         rows_num = 0
         ###
         cursor = conn.execute("""
             SELECT COUNT (*)
             FROM plants_parts
             WHERE plant_canonical_name = ?
-        """, (plant_canonical_name,))
-        rows_num += int(cursor.fetchone()[0])
-        cursor = conn.execute("""
-            SELECT COUNT (*)
-            FROM plants_chemicals
-            WHERE plant_canonical_name = ?
-        """, (plant_canonical_name,))
+        """, (plant_name_scientific_canon,))
         rows_num += int(cursor.fetchone()[0])
         cursor = conn.execute("""
             SELECT COUNT (*)
             FROM plants_activities
-            WHERE plant_canonical_name = ?
-        """, (plant_canonical_name,))
+            WHERE plant_name_scientific_canon = ?
+        """, (plant_name_scientific_canon,))
+        rows_num += int(cursor.fetchone()[0])
+        cursor = conn.execute("""
+            SELECT COUNT (*)
+            FROM plants_chemicals
+            WHERE plant_name_scientific_canon = ?
+        """, (plant_name_scientific_canon,))
         rows_num += int(cursor.fetchone()[0])
         cursor = conn.execute("""
             SELECT COUNT (*)
             FROM plants_diseases
             WHERE plant_canonical_name = ?
-        """, (plant_canonical_name,))
+        """, (plant_name_scientific_canon,))
         rows_num += int(cursor.fetchone()[0])
         print(rows_num)
         ###
         plant_item = {
-            'plant_canonical_name': plant_canonical_name,
+            'plant_canonical_name': plant_name_scientific_canon,
             'datapoints_num': rows_num,
         }
         plants_data.append(plant_item)
@@ -962,18 +956,18 @@ def herbs_activities_category():
 
             ### PLANTS NAMES
             cur.execute("""
-                SELECT DISTINCT plant_canonical_name
+                SELECT DISTINCT plant_name_scientific_canon
                 FROM plants_activities
-                WHERE activity_canonical_name = ?
+                WHERE activity_name_canon = ?
             """, (activity_name,))
             plants_rows = cur.fetchall()
 
             ### PLANTS COUNT
             cur.execute(
                 """
-                SELECT COUNT(DISTINCT plant_canonical_name)
+                SELECT COUNT(DISTINCT plant_name_scientific_canon)
                 FROM plants_activities
-                WHERE activity_canonical_name = ?
+                WHERE activity_name_canon = ?
                 """, (activity_name,)
             )
             plants_count = cur.fetchone()[0]
@@ -1097,9 +1091,9 @@ def herbs_activities(activity_name):
     conn = sqlite3.connect(db_filepath)
     cur = conn.cursor()
     cur.execute("""
-        SELECT DISTINCT plant_canonical_name
+        SELECT DISTINCT plant_name_scientific_canon
         FROM plants_activities
-        WHERE activity_canonical_name = ?
+        WHERE activity_name_canon = ?
     """, (activity_name,))
     plants_rows = cur.fetchall()
     conn.close()
@@ -1227,18 +1221,18 @@ def herbs_chemicals_category():
 
             ### PLANTS NAMES
             cur.execute("""
-                SELECT DISTINCT plant_canonical_name
+                SELECT DISTINCT plant_name_scientific_canon
                 FROM plants_chemicals
-                WHERE chemical_canonical_name = ?
+                WHERE chemical_name_canon = ?
             """, (chemical_name,))
             plants_rows = cur.fetchall()
 
             ### PLANTS COUNT
             cur.execute(
                 """
-                SELECT COUNT(DISTINCT plant_canonical_name)
+                SELECT COUNT(DISTINCT plant_name_scientific_canon)
                 FROM plants_chemicals
-                WHERE chemical_canonical_name = ?
+                WHERE chemical_name_canon = ?
                 """, (chemical_name,)
             )
             plants_count = cur.fetchone()[0]
@@ -1362,9 +1356,9 @@ def herbs_chemicals(chemical_name):
     conn = sqlite3.connect(db_filepath)
     cur = conn.cursor()
     cur.execute("""
-        SELECT DISTINCT chemical_canonical_name, plant_canonical_name
+        SELECT DISTINCT chemical_name_canon, plant_name_scientific_canon
         FROM plants_chemicals
-        WHERE chemical_canonical_name = ?
+        WHERE chemical_name_canon = ?
     """, (chemical_name,))
     plants_rows = cur.fetchall()
     conn.close()
@@ -1464,7 +1458,7 @@ def run():
     if 0:
         herbs_index()
 
-    if 0:
+    if 1:
         herbs_popular_category()
 
     if 0:

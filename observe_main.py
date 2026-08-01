@@ -183,29 +183,39 @@ def observations_table_plants_chemicals_add(source_foldername):
         input_data = io.json_read(input_filepath)
         for input_item in input_data:
             all_data.append(input_item)
+            # print(json.dumps(input_item, indent=4))
+            # quit()
     ###
     conn = sqlite3.connect(db_filepath)
     cur = conn.cursor()
     cur.executemany(
         f"""
             INSERT OR IGNORE INTO {table_name} (
-                plant_canonical_name, 
-                chemical_canonical_name, 
-                plant_part, 
-                concentration, 
-                unit, 
-                source_name
+                plant_name_scientific_canon,
+                plant_name_scientific_canon_norm,
+                chemical_name_canon,
+                chemical_name_canon_norm,
+                plant_part_name_raw,
+                concentration,
+                unit,
+                source_name,
+                source_acronym,
+                reference_name
             )
-            VALUES (?, ?, ?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """,
         [
             (
-                item.get("wcvp_taxon_name"),
-                item.get("pubchem_chemical_name"),
+                item.get("plant_name_scientific_canon"),
+                item.get("plant_name_scientific_canon_norm"),
+                item.get("chemical_name_canon"),
+                item.get("chemical_name_canon_norm"),
                 item.get("plant_part_name_raw"),
-                "",
-                "",
+                item.get("concentration"),
+                item.get("unit"),
                 item.get("source_name"),
+                item.get("source_acronym"),
+                item.get("reference_nam"),
             )
             for item in all_data
         ]
@@ -239,7 +249,7 @@ def run():
         observations_table_plants_activities_add(source_foldername='drduke')
         observations_table_plants_activities_add(source_foldername='pubmed')
 
-    if 0:
+    if 1:
         observations_table_plants_chemicals_add(source_foldername='drduke')
         observations_table_plants_chemicals_add(source_foldername='pubmed')
     # test()

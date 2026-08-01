@@ -5,6 +5,8 @@ from lib import g
 from lib import io
 from lib import data
 
+import masterize_utils
+
 def sqlite_plants_get():
     db_filepath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/masterize/master.db'
     conn = sqlite3.connect(db_filepath)
@@ -24,7 +26,7 @@ def run():
     output_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/{output_foldername}/herbs'
     io.folders_recursive_gen(output_folderpath)
 
-    plants_rows = sqlite_plants_get()
+    plants_rows = masterize_utils.masterize_plants_get_all()
     for i, plant_row in enumerate(plants_rows):
         print(f'{i}/{len(plants_rows)}')
         plant_canonical_name = plant_row[1]
@@ -55,6 +57,7 @@ def run():
             }
             output_data['taxonomies'].append(item)
 
+        '''
         ### NAMES
         data_type = 'names'
         data = io.json_read(
@@ -71,6 +74,7 @@ def run():
             }
             output_data[f'{data_type}'].append(item)
 
+        '''
         ### NAMES COMMON (NEW) -> merge with wikidata
         output_data['names_common'] = io.json_read(
             f'{g.DATA_FOLDERPATH}/{input_foldername}/herbs/names_common/{plant_canonical_name}.json'

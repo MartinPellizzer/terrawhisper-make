@@ -53,12 +53,12 @@ def normalize_plants_chemicals(source_foldername):
         input_filepath = f'{input_folderpath}/{input_filename}'
         input_data = io.json_read(input_filepath)
         for input_item in input_data:
-            input_item['plant_name_normalized'] = normalize_utils.normalize_plant_name(input_item['plant_name_raw'])
-            input_item['chemical_name_normalized'] = normalize_utils.normalize_chemical_name(input_item['chemical_name_raw'])
+            input_item['plant_name_raw_norm'] = normalize_utils.normalize_plant_name(input_item['plant_name_raw'])
+            input_item['chemical_name_raw_norm'] = normalize_utils.normalize_chemical_name(input_item['chemical_name_raw'])
             # print(json.dumps(normalized_item, indent=4))
             # quit()
         io.json_write(output_filepath, input_data)
-    print(json.dumps(input_data[0], indent=4))
+    # print(json.dumps(input_data[0], indent=4))
     # quit()
 
 def normalize_plants_synonyms(source_foldername):
@@ -126,7 +126,7 @@ def run():
         normalize_plants_activities(source_foldername='pubmed')
         print(f'normalize plants_activities() - execution time: ', time.perf_counter() - start)
 
-    if 0:
+    if 1:
         start = time.perf_counter()
         normalize_plants_chemicals(source_foldername='drduke')
         normalize_plants_chemicals(source_foldername='pubmed')

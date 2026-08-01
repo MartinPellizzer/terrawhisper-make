@@ -30,15 +30,19 @@ def chemical_create(
     plant_name_raw, 
     chemical_name_raw, 
     plant_part_name_raw, 
-    source_id, 
     source_name,
+    source_acronym,
+    reference_name,
 ):
+    if plant_part_name_raw == None: plant_part_name_raw = ''
+    if plant_part_name_raw.lower() == 'null': plant_part_name_raw = ''
     item = {
         'plant_name_raw': plant_name_raw,
         'chemical_name_raw': chemical_name_raw,
         'plant_part_name_raw': plant_part_name_raw,
-        'source_id': source_id,
         'source_name': source_name,
+        'source_acronym': source_acronym,
+        'reference_name': reference_name,
     }
     return item
 
