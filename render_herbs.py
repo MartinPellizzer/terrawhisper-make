@@ -634,7 +634,7 @@ def plant_listing_page_gen_new(plant_name):
                     <tr>
                       <th>Plant Part</th>
                       <th>Sources</th>
-                      <th>Confidence</th>
+                      <th>Consensus</th>
                     </tr>
                   </thead>
                   {html_table_body}
@@ -646,10 +646,12 @@ def plant_listing_page_gen_new(plant_name):
     chemicals = plant_data['chemicals']
     if chemicals != []:
         html_table_body = f''
+        sources_html = f''
         html_table_body += f'''<tbody>'''
         table_chemical_num = 10
         for item in chemicals[:table_chemical_num]:
             chemical_name = item['chemical_canonical_name']
+            chemical_slug = polish.sluggify(chemical_name)
             sources_num = item['sources_num']
             sources = item['sources']
             source = sources[0]
@@ -661,11 +663,64 @@ def plant_listing_page_gen_new(plant_name):
             elif int(sources_num) >= 1: confidence = '★☆☆☆☆'
             html_table_body += f'''
                 <tr>
-                    <td>{chemical_name}</td>
-                    <td>{source} (and other {sources_num} sources)</td>
-                    <td>{confidence}</td>
+                    <th scope="row">{chemical_name}</th>
+
+                    <td>
+                        <a href="#sources-{chemical_slug}">
+                            {sources_num} supporting sources
+                        </a>
+                    </td>
+
+                    <td>
+                        <span>
+                            {confidence}
+                        </span>
+                    </td>
                 </tr>
             '''
+            ### TODO: add this complete consensus instead of the one in the table
+            '''
+                        <span aria-label="Very high source consensus">
+                            {confidence}
+                        </span>
+                        <span>Very high</span>
+            '''
+            ### SOURCES LISTS
+            sources_html += f'''
+                <h3 id="sources-{chemical_slug}">{chemical_name}</h3>
+                <ol class="listing-sources">
+            '''
+            for source in sources[:5]:
+                sources_html += f'''
+                    <li>
+                        <cite>
+                            {source}
+                        </cite>
+                    </li>
+                '''
+            sources_html += f'''
+                </ol>
+            '''
+            if len(sources)-5 > 0:
+                sources_html += f'''
+                    <details>
+                        <summary>
+                            View {len(sources)-5} additional sources
+                        </summary>
+                        <ol class="listing-sources" start="6">
+                '''
+                for source in sources[5:]:
+                    sources_html += f'''
+                        <li>
+                            <cite>
+                                {source}
+                            </cite>
+                        </li>
+                    '''
+                sources_html += f'''
+                        </ol>
+                    </details>
+                '''
         source_tot = 0 
         for item in plants_parts_data[:]:
             source_tot += int(item['sources_num'])
@@ -682,17 +737,26 @@ def plant_listing_page_gen_new(plant_name):
                 <p>
                     {plant_name} has {len(plant_data['chemicals'])} reported phytochemicals identified across {source_tot} scientific publications and several other databases. The most consistently reported chemicals include {chemicals_p_str}.
                 </p>
-                <h3>Most Reported Compounds</h3>
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Compound</th>
-                      <th>Sources</th>
-                      <th>Confidence</th>
-                    </tr>
-                  </thead>
-                  {html_table_body}
+                <table style="margin-top: 3.2rem;">
+                    <caption style="text-align: left; margin-bottom: 0.8rem;">
+                        Chemicals reported in {plant_name}
+                    </caption>
+                    <thead>
+                        <tr>
+                            <th scope="col">Chemical</th>
+                            <th scope="col">Supporting sources</th>
+                            <th scope="col">Consensus</th>
+                        </tr>
+                    </thead>
+                    {html_table_body}
                 </table>
+            </section>
+        '''
+        ###
+
+        html_article += f'''
+            <section aria-labelledby="compounds-heading">
+                {sources_html}
             </section>
         '''
 
@@ -742,7 +806,7 @@ def plant_listing_page_gen_new(plant_name):
                     <tr>
                       <th>Activity</th>
                       <th>Sources</th>
-                      <th>Confidence</th>
+                      <th>Consensus</th>
                     </tr>
                   </thead>
                   {html_table_body}
@@ -796,7 +860,7 @@ def plant_listing_page_gen_new(plant_name):
                     <tr>
                       <th>Use</th>
                       <th>Sources</th>
-                      <th>Confidence</th>
+                      <th>Consensus</th>
                     </tr>
                   </thead>
                   {html_table_body}
@@ -880,7 +944,7 @@ def plant_listing_page_gen_new(plant_name):
                     <tr>
                       <th>Preparations</th>
                       <th>Sources</th>
-                      <th>Confidence</th>
+                      <th>Consensus</th>
                     </tr>
                   </thead>
                   {html_table_body}
