@@ -21,7 +21,7 @@ def resolve_plants_parts(source_foldername):
     wcvp_conn = sqlite3.connect(wcvp_folderpath)
     input_filenames = os.listdir(input_folderpath)
     for i, input_filename in enumerate(input_filenames[:]):
-        # print(f'{i}/{len(input_filenames)}')
+        print(f'{i}/{len(input_filenames)}')
         output_filepath = f'{output_folderpath}/{input_filename}'
         input_filepath = f'{input_folderpath}/{input_filename}'
         if os.path.exists(output_filepath): continue
@@ -36,17 +36,48 @@ def resolve_plants_parts(source_foldername):
             wcvp_row = resolve_utils.resolve_plant_accepted(wcvp_conn, plant_name_raw_norm)
             ### RESOLVE PLANT PART (...)
             plant_parts_canon = [
-                'root',
-                'seed',
-                'leaf',
+                {
+                    'canon': 'root',
+                    'raw': ['root', 'roots'],
+                },
+                {
+                    'canon': 'rhizome',
+                    'raw': ['rhizome', 'rhizomes'],
+                },
+                {
+                    'canon': 'stem',
+                    'raw': ['stem', 'stems'],
+                },
+                {
+                    'canon': 'leaf',
+                    'raw': ['leaf', 'leaves'],
+                },
+                {
+                    'canon': 'flower',
+                    'raw': ['flower', 'flowers'],
+                },
+                {
+                    'canon': 'fruit',
+                    'raw': ['fruit', 'fruits', 'berry', 'berries'],
+                },
+                {
+                    'canon': 'seed',
+                    'raw': ['seed', 'seeds'],
+                },
             ]
             plant_part_canon = ''
-            for value in plant_parts_canon:
-                if value in input_item['plant_part_name_raw_norm']:
-                    plant_part_canon = value
+            for item in plant_parts_canon:
+                found = False
+                for raw_val in item['raw']:
+                    if raw_val in input_item['plant_part_name_raw_norm']:
+                        plant_part_canon = item['canon']
+                        found = True
+                        break
+                if found: 
                     break
             if plant_part_canon == '':
-                plant_part_canon = input_item['plant_part_name_raw_norm']
+                # plant_part_canon = input_item['plant_part_name_raw_norm']
+                continue
             ###
             if wcvp_row:
                 input_item['plant_name_scientific_canon'] = wcvp_row[3]

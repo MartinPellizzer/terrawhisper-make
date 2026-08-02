@@ -875,12 +875,12 @@ def run():
         print(f'observations symptoms() - execution time: ', time.perf_counter() - start)
         ###
         start = time.perf_counter()
-        parse_conditions_extract_raw() ### WARNING: takes many many hours (nightly running)
+        # parse_conditions_extract_raw() ### WARNING: takes many many hours (nightly running)
         print(f'observations symptoms() - execution time: ', time.perf_counter() - start)
 
     start = time.perf_counter()
     # observations_plants_parts_extract_raw() ### WARNING: takes many many hours (nightly running)
-    # parse_plants_parts_raw_to_json()
+    parse_plants_parts_raw_to_json()
     print(f'observations plants_parts() - execution time: ', time.perf_counter() - start)
 
     start = time.perf_counter()
