@@ -9,7 +9,7 @@ import fetch_drduke
 ################################################################################
 
 # fetch_powo.run()
-fetch_col.run()
+# fetch_col.run()
 # fetch_wikidata.run()
 # fetch_pubmed.run()
 # fetch_drduke.run()
@@ -18,4 +18,8 @@ fetch_col.run()
 # ORGANIZATIONS
 ################################################################################
 
+import fetch_website
+
 # fetch_gmap()
+fetch_website.run()
+

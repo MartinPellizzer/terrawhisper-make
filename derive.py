@@ -277,7 +277,7 @@ def preparation_summary_get_0000(plant_canonical_name):
 ################################################################################
 
 ### SYNONYMS
-if 0:
+if 1:
     entity_foldername = 'synonyms'
     master_plants_rows = masterize_utils.masterize_plants_get_all()
     for i, master_plant_row in enumerate(master_plants_rows):
@@ -297,7 +297,7 @@ if 0:
         io.json_write(output_filepath, output_items)
 
 ### NAMES COMMON
-if 0:
+if 1:
     entity_foldername = 'names_common'
     master_plants_rows = masterize_utils.masterize_plants_get_all()
     common_names_labels_found_count = 0
@@ -390,7 +390,7 @@ if 0:
     print(col_common_names_vernacular_found_count)
 
 ### TAXONOMIES
-if 0:
+if 1:
     entity_foldername = 'taxonomies'
     master_plants_rows = masterize_utils.masterize_plants_get_all()
     for i, master_plant_row in enumerate(master_plants_rows):
@@ -415,7 +415,7 @@ if 0:
         io.json_write(output_filepath, output_items)
 
 ### DISTRIBUTION
-if 0:
+if 1:
     entity_foldername = 'distribution'
     master_plants_rows = masterize_utils.masterize_plants_get_all()
     for i, master_plant_row in enumerate(master_plants_rows):
@@ -482,7 +482,7 @@ if 1:
         io.json_write(output_filepath, output_items)
 
 ### CHEMICALS
-if 0:
+if 1:
     master_plants_rows = masterize_utils.masterize_plants_get_all()
     for i, master_plant_row in enumerate(master_plants_rows):
         print(f'{i}/{len(master_plants_rows)}')
@@ -502,7 +502,7 @@ if 0:
         io.json_write(output_filepath, output_items)
 
 ### ACTIVITIES
-if 0:
+if 1:
     master_plants_rows = masterize_utils.masterize_plants_get_all()
     for i, master_plant_row in enumerate(master_plants_rows):
         print(f'{i}/{len(master_plants_rows)}')
@@ -522,7 +522,7 @@ if 0:
         io.json_write(output_filepath, output_items)
 
 ### DISEASES
-if 0:
+if 1:
     master_plants_rows = masterize_utils.masterize_plants_get_all()
     for i, master_plant_row in enumerate(master_plants_rows):
         print(f'{i}/{len(master_plants_rows)}')
@@ -542,7 +542,7 @@ if 0:
         io.json_write(output_filepath, output_items)
 
 ### PREPARATIONS
-if 0:
+if 1:
     entity_foldername = 'preparations'
     master_plants_rows = masterize_utils.masterize_plants_get_all()
     for i, master_plant_row in enumerate(master_plants_rows):

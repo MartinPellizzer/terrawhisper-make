@@ -51,7 +51,8 @@ explore
 
 '''
 TODO:
-add drduke data to pipeline
+parse pubmed for "compounds"
+mention sources on a section level where appropriate 
 get chemicals classes from chemical and pubchem
 '''
 
@@ -83,7 +84,7 @@ if 0:
     normalize_pubmed.run()
     # normalize_drduke.run()
 
-if 1:
+if 0:
     import resolve_wcvp
     import resolve_powo
     import resolve_wikidata
@@ -106,7 +107,7 @@ if 0:
     masterize_pubmed.run()
     # masterize_drduke.run()
 
-if 1:
+if 0:
     import observe_init
     import observe_powo
     import observe_wikidata

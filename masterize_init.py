@@ -81,6 +81,31 @@ def master_table_chemicals_create(regen=False):
     conn.commit()
     conn.close()
 
+def master_table_plants_parts_create(regen=False):
+    output_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/masterize'
+    db_filepath = f'{output_folderpath}/master.db'
+    table_name = 'plants_parts'
+    ###
+    conn = sqlite3.connect(db_filepath)
+    cur = conn.cursor()
+    if regen:
+        cur.execute(f"DROP TABLE IF EXISTS {table_name}")
+    cur.execute(f"""
+        CREATE TABLE IF NOT EXISTS {table_name} (
+            id INTEGER PRIMARY KEY,
+            name_canon TEXT NOT NULL UNIQUE,
+            name_canon_norm TEXT NOT NULL UNIQUE
+        );
+    """)
+    conn.execute("PRAGMA journal_mode = WAL;")
+    conn.execute("PRAGMA synchronous = OFF;")
+    conn.execute("PRAGMA temp_store = MEMORY;")
+    ###
+    cur.execute(f"CREATE INDEX IF NOT EXISTS idx_{table_name}_name_canon ON {table_name}(name_canon)")
+    cur.execute(f"CREATE INDEX IF NOT EXISTS idx_{table_name}_name_canon_norm ON {table_name}(name_canon_norm)")
+    conn.commit()
+    conn.close()
+
 def master_table_diseases_create(regen=False):
     output_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/masterize'
     # try: shutil.rmtree(output_folderpath)
@@ -117,7 +142,9 @@ def test():
 
 def run():
     master_table_plants_create(regen=True)
-    master_table_activities_create(regen=True)
-    master_table_chemicals_create(regen=True)
+    master_table_plants_parts_create(regen=True)
+    # master_table_activities_create(regen=True)
+    # master_table_chemicals_create(regen=True)
+
     # master_table_diseases_create(regen=True)
     # test()

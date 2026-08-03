@@ -1,9 +1,26 @@
-import csv
-import json
-
-from lib import io
+import os
 import re
+import csv
+import ast
+import json
 import unicodedata
+
+from lib import g
+from lib import io
+from lib import sections
+from lib import components
+
+_NON_ALNUM = re.compile(r"[^\w\s-]", re.UNICODE)
+_SEPARATORS = re.compile(r"[-\s]+")
+
+def to_slug(name: str) -> str:
+    """Convert an organization name into a stable, URL-safe slug."""
+    name = unicodedata.normalize("NFKD", name)
+    name = "".join(c for c in name if not unicodedata.combining(c))
+    name = name.replace("&", " and ")
+    name = _NON_ALNUM.sub("", name)
+    return _SEPARATORS.sub("-", name).strip("-").lower()
+
 
 def normalize_name(raw_name: str) -> str:
     """
@@ -252,12 +269,74 @@ def classify_product_domain(record):
         return "PLANT"
     return "UNKNOWN"
 
-def render_listing():
-    url_slug = f'organizations/'
+def render_listing(name, slug):
+    url_slug = f'organizations/{slug}'
+
+    html_article = ''
+    html_article += f'<h1>{name}</h1>'
+    meta_title = f'{name}'
+    meta_description = f''
+    canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''
+    head_html = components.html_head(
+        meta_title, meta_description, css='/styles.css', canonical=canonical_html
+    )
+
+    html = f''' 
+        <!DOCTYPE html>
+        <html lang="en">
+        {head_html}
+        <body>
+            {sections.header_dark()}
+            <main class="container-lg listing" style="margin-top: 4.8rem;">
+                {html_article}
+            </main>
+            {sections.footer()}
+        </body>
+        </html>
+    '''.strip()
+    html_filepath = f'{g.website_folderpath}/{url_slug}.html'
+    with open(html_filepath, 'w') as f: f.write(html)
+    print(html_filepath)
 
 def gen():
     print(f'ORGANIZATIONS >> RENDER >> ALL')
 
+    input_foldername = f'{g.DATA_FOLDERPATH}/organizations/fetch/gmap/america/places'.replace(' ', '_')
+    input_filenames = sorted(os.listdir(input_foldername))
+    for input_filename in input_filenames[:10]:
+        input_filepath = f'{input_foldername}/{input_filename}'
+        with open(input_filepath, encoding="utf-8") as f: rows = f.read().strip().split('\n')
+        for row in rows:
+            values = row.split('~')
+            print(values)
+            if values != [] and values != ['']:
+                label = values[0]
+                address = values[1]
+                website = values[2]
+                phone = values[3]
+                name = values[4]
+                info = values[5]
+                slug = to_slug(label)
+                print(f'label: {label}')
+                print(f'address: {address}')
+                print(f'website: {website}')
+                print(f'phone: {phone}')
+                print(f'name: {name}')
+                print(f'info: {info}')
+                print(f'slug: {slug}')
+                print(f'***************************************')
+                print()
+                print(info)
+
+                lst = ast.literal_eval(info)
+                if 'Erborista' in lst:
+                    # print('found')
+                    slug = to_slug(label)
+                    # print(slug)
+                    render_listing(name, slug)
+                    quit()
+
+    quit()
     filepath = "/home/ubuntu/vault/terrawhisper/data/organizations/fetch/usda_organic/INTEGRITY_Export_20260701.csv"
     items = io.csv_to_dict(filepath, delimiter=',')
     # print(json.dumps(items[0], indent=4))
@@ -295,4 +374,5 @@ def gen():
         for row in csv.reader(f):
             print(row, flush=True)
             quit()
-            render_listing()
+            render_listing(name, slug)
+

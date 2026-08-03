@@ -16,12 +16,16 @@ import parse_drduke
 # parse_col.run()
 # parse_wikidata.run()
 # parse_drduke.run()
-parse_pubmed.run()
+# parse_pubmed.run()
 
 ################################################################################
 # ORGANIZATIONS
 ################################################################################
 
 import parse_usda_organic
+import organizations_parse_main
 
 # parse_usda_organic.run()
+
+organizations_parse_main.run()
+

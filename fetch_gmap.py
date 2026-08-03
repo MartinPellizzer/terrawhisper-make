@@ -9,13 +9,15 @@ from selenium.webdriver.common.by import By
 from lib import g
 from lib import io
 
+delimiter = '~'
+
 def get_old_businesses(output_file):
-	if not os.path.isfile(output_file): 
-		with open(output_file, 'w', encoding="utf-8") as f:
-			return []
-	else:
-		with open(output_file, 'r', encoding="utf-8") as f:
-			return [line.split('\\')[0] for line in f.readlines()]
+    if not os.path.isfile(output_file): 
+        with open(output_file, 'w', encoding="utf-8") as f:
+            return []
+    else:
+        with open(output_file, 'r', encoding="utf-8") as f:
+            return [line.split(delimiter)[0] for line in f.readlines()]
 
 def sanitize(text):
     chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890,.+-()\'&@ '
@@ -29,91 +31,91 @@ def sanitize(text):
     return text
 
 def get_card_element(e):
-	try: return e.find_elements(By.XPATH, '//div[@role="main"]')[1]
-	except: return None
+    try: return e.find_elements(By.XPATH, '//div[@role="main"]')[1]
+    except: return None
 
 
 def scrape_name(e):
-	try: return e.find_element(By.XPATH, './/h1').text
-	except: return ''
-	
+    try: return e.find_element(By.XPATH, './/h1').text
+    except: return ''
+    
 
 def scrape_category(e):
-	try: 
+    try: 
         element = e.find_element(By.XPATH, './/h1').text
         return element
-	except: return ''
-	
+    except: return ''
+    
 
 def scrape_address(e):
-	try: return e.find_element(By.XPATH, './/button[@data-item-id="address"]').text
-	except: return ''
+    try: return e.find_element(By.XPATH, './/button[@data-item-id="address"]').text
+    except: return ''
 
 
 def scrape_district(e):
-	try: return e.find_element(By.XPATH, './/button[@data-item-id="address"]').text.split(' ')[-1]
-	except: return ''
+    try: return e.find_element(By.XPATH, './/button[@data-item-id="address"]').text.split(' ')[-1]
+    except: return ''
 
 
 def scrape_website(e):
-	try: return e.find_element(By.XPATH, './/a[@data-item-id="authority"]').get_attribute("href")
-	except: return ''
+    try: return e.find_element(By.XPATH, './/a[@data-item-id="authority"]').get_attribute("href")
+    except: return ''
 
 
 def scrape_phone(e):
-	try: return e.find_element(By.XPATH, './/button[contains(@data-item-id, "phone")]').text
-	except: return ''
+    try: return e.find_element(By.XPATH, './/button[contains(@data-item-id, "phone")]').text
+    except: return ''
 
 
 def find_new_business(old_businesses):
-	global driver
-	try: feed = driver.find_element(By.XPATH, '//div[@role="feed"]')
-	except: return None, None
-	items = feed.find_elements(By.XPATH, './/a/..')
-	for item in items:
-		a = item.find_element(By.XPATH, './/a')
-		a_href = a.get_attribute('href')
-		if 'support.' in a_href: continue
-		if 'google.' not in a_href: continue
-		if '/maps/' not in a_href: continue
-		label = a.get_attribute('aria-label')
-		label = sanitize(label)
-		label = label.replace('Link visitato', '')
-		if label not in old_businesses:
-			return item, label
-	return None, None
+    global driver
+    try: feed = driver.find_element(By.XPATH, '//div[@role="feed"]')
+    except: return None, None
+    items = feed.find_elements(By.XPATH, './/a/..')
+    for item in items:
+        a = item.find_element(By.XPATH, './/a')
+        a_href = a.get_attribute('href')
+        if 'support.' in a_href: continue
+        if 'google.' not in a_href: continue
+        if '/maps/' not in a_href: continue
+        label = a.get_attribute('aria-label')
+        label = sanitize(label)
+        label = label.replace('Link visitato', '')
+        if label not in old_businesses:
+            return item, label
+    return None, None
 
 def click_on_listing(business):
-	for _ in range(3):
-		try: 
-			business.click()
-			return True
-		except: 
-			print('error click')
-			continue
-	return False
+    for _ in range(3):
+        try: 
+            business.click()
+            return True
+        except: 
+            print('error click')
+            continue
+    return False
 
 def scroll_down_up_down():
-	global driver
-	try: feed = driver.find_element(By.XPATH, '//div[@role="feed"]')
-	except: return
-	feed.send_keys(Keys.PAGE_DOWN)
-	sleep(2)
-	feed.send_keys(Keys.PAGE_UP)
-	sleep(2)
-	feed.send_keys(Keys.PAGE_DOWN)
-	sleep(2)
+    global driver
+    try: feed = driver.find_element(By.XPATH, '//div[@role="feed"]')
+    except: return
+    feed.send_keys(Keys.PAGE_DOWN)
+    sleep(2)
+    feed.send_keys(Keys.PAGE_UP)
+    sleep(2)
+    feed.send_keys(Keys.PAGE_DOWN)
+    sleep(2)
  
 def add_business_to_csv(output_file, label, address, website, phone, name, info):
-	string_to_write = ''
-	string_to_write += f'{label}\\'
-	string_to_write += f'{address}\\'
-	string_to_write += f'{website}\\'
-	string_to_write += f'{phone}\\'
-	string_to_write += f'{name}\\'
-	string_to_write += f'{info}\n'
-	with open(output_file, 'a', encoding="utf-8") as f:
-		f.write(string_to_write)
+    string_to_write = ''
+    string_to_write += f'{label}~'
+    string_to_write += f'{address}~'
+    string_to_write += f'{website}~'
+    string_to_write += f'{phone}~'
+    string_to_write += f'{name}~'
+    string_to_write += f'{info}\n'
+    with open(output_file, 'a', encoding="utf-8") as f:
+        f.write(string_to_write)
 
 def scrape_new_business(output_filepath, search_text, continent, place, i):
     old_businesses = get_old_businesses(output_filepath)
@@ -164,62 +166,73 @@ def scrape_new_business(output_filepath, search_text, continent, place, i):
         add_business_to_csv(output_filepath, label, address, website, phone, name, info)
 
 def fetch_organizations():
-geckodriver_path = 'geckodriver'
-driver_service = webdriver.FirefoxService(executable_path=geckodriver_path)
-driver = webdriver.Firefox(service=driver_service)
-driver.maximize_window()
-driver.get('https://www.google.com')
-sleep(2)
-driver.find_element(By.XPATH, '//div[text()="Rifiuta tutto"]').click()
-sleep(2)
 
-continents = [
-    'america',
-]
-    # 'europe',
-scrapes_num = 10
-
-for continent_i, continent in enumerate(continents[:]):
-    # rows = io.csv_read(f'{g.DATA_FOLDERPATH}/organizations/fetch/gmap/{continent}.csv')
-    rows = io.csv_to_dict(f'{g.DATA_FOLDERPATH}/organizations/fetch/gmap/2025_Gaz_place_national.txt', delimiter='|')
-    print('*********************************')
-    print(continent)
-    print(f'{continent_i}/{len(rows)}')
-    print('*********************************')
-
-    search_industry = f'medicinal herb suppliers'
-    search_text = f'{search_industry}, {continent}'
-    driver.get(f'https://www.google.com/maps/search/{search_text}')
+for cycle_i in range(10):
+    geckodriver_path = 'geckodriver'
+    driver_service = webdriver.FirefoxService(executable_path=geckodriver_path)
+    driver = webdriver.Firefox(service=driver_service)
+    driver.maximize_window()
+    driver.get('https://www.google.com')
+    sleep(2)
+    driver.find_element(By.XPATH, '//div[text()="Rifiuta tutto"]').click()
     sleep(2)
 
-    for k, row in enumerate(rows[:2000]):
-        # country = row[1].strip().lower()
-        place = row['NAME'].strip().lower()
-        output_folderpath = f'{g.DATA_FOLDERPATH}/organizations/fetch/gmap/{continent}/places'.replace(' ', '_')
-        io.folders_recursive_gen(output_folderpath)
+    continents = [
+        'america',
+    ]
+        # 'europe',
+    scrapes_num = 10
+
+    for continent_i, continent in enumerate(continents[:]):
+        # rows = io.csv_read(f'{g.DATA_FOLDERPATH}/organizations/fetch/gmap/{continent}.csv')
+        rows = io.csv_to_dict(f'{g.DATA_FOLDERPATH}/organizations/fetch/gmap/2025_Gaz_place_national.txt', delimiter='|')
         print('*********************************')
-        print(continent, '>>', place)
-        print(f'{k}/{len(rows)}')
+        print(continent)
+        print(f'{continent_i}/{len(rows)}')
         print('*********************************')
 
-        output_filepath = f'{output_folderpath}/{search_industry}__{continent}__{place}.csv'.replace(' ', '_')
-        if os.path.exists(output_filepath): continue
-        io.file_write(output_filepath, '')
-
-        search_text = f'{search_industry}, {place}'
-        print(search_text)
-        # driver.get(f'https://www.google.com/maps/search/{search_text}')
-        search_bar_element = driver.find_element(By.XPATH, '//input[@name="q"]')
-        search_bar_element.clear()
+        search_industry = f'medicinal herb suppliers'
+        search_text = f'{search_industry}, {continent}'
+        driver.get(f'https://www.google.com/maps/search/{search_text}')
         sleep(2)
-        search_bar_element.send_keys(search_text)
-        sleep(2)
-        search_bar_element.send_keys(Keys.ENTER)
-        sleep(10)
 
-        for num in range(scrapes_num):
-            err = scrape_new_business(output_filepath, search_text, continent, place, num)
-            print(err, '\n')
+        operations_num = 0
+        for k, row in enumerate(rows[100:]):
+            # country = row[1].strip().lower()
+            place = row['NAME'].strip().lower()
+            output_folderpath = f'{g.DATA_FOLDERPATH}/organizations/fetch/gmap/{continent}/places'.replace(' ', '_')
+            io.folders_recursive_gen(output_folderpath)
+            print('*********************************')
+            print(continent, '>>', place)
+            print(f'{k}/{len(rows)}')
+            print('*********************************')
+
+            output_filepath = f'{output_folderpath}/{search_industry}__{continent}__{place}.csv'.replace(' ', '_')
+            if os.path.exists(output_filepath): continue
+            io.file_write(output_filepath, '')
+
+            search_text = f'{search_industry}, {place}'
+            print(search_text)
+            # driver.get(f'https://www.google.com/maps/search/{search_text}')
+            search_bar_element = driver.find_element(By.XPATH, '//input[@name="q"]')
+            search_bar_element.clear()
+            sleep(2)
+            search_bar_element.send_keys(search_text)
+            sleep(2)
+            search_bar_element.send_keys(Keys.ENTER)
+            sleep(10)
+
+            for num in range(scrapes_num):
+                err = scrape_new_business(output_filepath, search_text, continent, place, num)
+                print(err, '\n')
+
+            operations_num += 1
+            if operations_num >= 100:
+                operations_num = 0
+                driver.get('https://www.w3schools.com/html/')
+                sleep(600)
+                driver.get(f'https://www.google.com/maps/search/{search_text}')
+                sleep(2)
 
 def run():
     print('ORGANIZATIONS >> FETCH >> gmap')
