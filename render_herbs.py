@@ -64,12 +64,10 @@ def plant_listing_page_gen_new(plant_name):
     ################################################################################
     # HERO
     ################################################################################
-
     ## H1
     plant_name_common = plant_data['names_common']['plant_name_common_preferred']
     if plant_name_common != '': h1_html = f'<h1>{plant_name_common}</h1>'
     else: h1_html = f'<h1>{plant_name}</h1>'
-
     ### SCIENTIFIC NAME ACCEPTED
     name_scientific_accepted = f'''
         <p>
@@ -77,7 +75,6 @@ def plant_listing_page_gen_new(plant_name):
             <span>Accepted scientific name</span>
         </p>
     '''
-
     ### EVIDENCE CONSENSUS
     db_filepath = f'{g.DATA_FOLDERPATH}/qualify/observations.db'
     conn = sqlite3.connect(db_filepath)
@@ -125,15 +122,12 @@ def plant_listing_page_gen_new(plant_name):
     else: 
         consensus_stars = '★☆☆☆☆'
         consensus_tag = 'Very Sparse'
-
     ### FAMILY
     if plant_data['taxonomies'] != []: hero_taxonomy = plant_data['taxonomies'][0]['family'].title()
     else: hero_taxonomy = 'Not available'
-
     ### NATIVE RANGE
     if plant_data['distribution'] != []: hero_distribution = plant_data['distribution'][0]['continent'].title()
     else: hero_distribution = 'Not available'
-
     ### PLANTS PARTS
     hero_plant_parts_list = []
     for item in plant_parts_data[:2]:
@@ -141,7 +135,6 @@ def plant_listing_page_gen_new(plant_name):
     hero_plant_parts_html = ' · '.join(hero_plant_parts_list)
     hero_plant_parts_html = hero_plant_parts_html.title()
     if hero_plant_parts_html == '': hero_plant_parts_html = 'Not available'
-
     ### NAMES COMMON
     hero_names_common_list = []
     for value in plant_data['names_common']['en_labels']:
@@ -161,7 +154,6 @@ def plant_listing_page_gen_new(plant_name):
             <i lang="la">{hero_names_common_html}</i> · 
             <a href="#common-names">{hero_names_common_count} more</a>
         '''
-
     ### SYNONYMS
     hero_synonyms_list = []
     for item in plant_synonyms:
@@ -179,7 +171,6 @@ def plant_listing_page_gen_new(plant_name):
             <i lang="la">{hero_synonyms_html}</i> · 
             <a href="#synonyms">{hero_synonyms_count} more</a>
         '''
-
     ### LLM INTRO
     json_article_filepath = f'''{g.DATA_FOLDERPATH}/enhance/{plant_taxon_name_slug}.json'''
     json_article = io.json_read(json_article_filepath, create=True)
@@ -207,7 +198,6 @@ def plant_listing_page_gen_new(plant_name):
         json_article[key] = reply
         io.json_write(json_article_filepath, json_article)
     intro_text = json_article[key]
-
     ###
     html_hero = f'''
         {sections.breadcrumbs_explorer(url_slug)}
@@ -262,7 +252,6 @@ def plant_listing_page_gen_new(plant_name):
                 >
             </div>
         </div>
-
     '''
     '''
                 <div>
@@ -276,7 +265,6 @@ def plant_listing_page_gen_new(plant_name):
                     <a href="#common-names">25 more</a>
                   </dd>
                 </div>
-
     '''
     html_article += html_hero
 
@@ -299,7 +287,6 @@ def plant_listing_page_gen_new(plant_name):
         plant_names_common_en_html += f'</ul>'
     else:
         plant_names_common_en_html = ''
-
     ### NAMES REGIONAL
     plant_names_common_regional_html = ''
     ### SPANISH
@@ -347,7 +334,6 @@ def plant_listing_page_gen_new(plant_name):
             <h3>Regional and Traditional Names</h3>
             {plant_names_common_regional_html}
         '''
-
     ### SYNONYMS
     synonyms_html = ''
     synonyms_html += f'<ul style="list-style: none;">'
@@ -357,7 +343,6 @@ def plant_listing_page_gen_new(plant_name):
             <li class="tag"><i>{value}</i></li>
         '''
     synonyms_html += f'</ul>'
-
     ### NAMES COMMON
     if len(plant_data['synonyms']) != 0:
         synonyms_html = f''
@@ -371,15 +356,29 @@ def plant_listing_page_gen_new(plant_name):
         synonyms_html += f'</ul>'
     else:
         synonyms_html = ''
-
+    ### SOURCES
+    sources_html = ''
+    if len(plant_data['names_common']['all']) != 0:
+        sources_names = []
+        for plant_item in plant_data['names_common']['all']:
+            if plant_item['source_name'] not in sources_names:
+                sources_names.append(plant_item['source_name'])
+        sources_names_text = ', '.join(sources_names)
+        sources_html = f'''
+            <p style="margin-top: 3.2rem;">
+                Sources: {sources_names_text}
+            </p>
+        '''
+    ###
     html_article += f'''
         <section id="names-and-synonyms">
-          <h2>Names</h2>
-          {plant_names_common_en_html}
-          {plant_names_common_regional_html}
-          <h3>Scientific Names</h3>
-          <h4 style="margin-bottom: 1rem;">Accepted name</h4> <span class="tag">{plant_name}</span>
-          {synonyms_html}
+            <h2>Names and Synonyms</h2>
+            {plant_names_common_en_html}
+            <h3>Scientific Names</h3>
+            <h4 style="margin-bottom: 1rem;">Accepted name</h4> <span class="tag">{plant_name}</span>
+            {synonyms_html}
+            {plant_names_common_regional_html}
+            {sources_html}
         </section>
     '''
     if 0:
@@ -402,6 +401,8 @@ def plant_listing_page_gen_new(plant_name):
     taxonomies = plant_data['taxonomies']
     if taxonomies != []:
         taxonomy = taxonomies[0]
+        # print(json.dumps(taxonomies, indent=4))
+        # quit()
         ### llm
         json_article_filepath = f'''{g.DATA_FOLDERPATH}/enhance/{plant_taxon_name_slug}.json'''
         json_article = io.json_read(json_article_filepath, create=True)
@@ -437,40 +438,40 @@ def plant_listing_page_gen_new(plant_name):
             <tr>
                 <td>Kingdom</td>
                 <td>{taxonomy['kingdom']}</td>
-                <td>WCVP</td>
             </tr>
             <tr>
                 <td>Phylum</td>
                 <td>{taxonomy['phylum']}</td>
-                <td>WCVP</td>
             </tr>
             <tr>
                 <td>Class</td>
                 <td>{taxonomy['class']}</td>
-                <td>WCVP</td>
             </tr>
             <tr>
                 <td>Subclass</td>
                 <td>{taxonomy['subclass']}</td>
-                <td>WCVP</td>
             </tr>
             <tr>
                 <td>Order</td>
                 <td>{taxonomy['order']}</td>
-                <td>WCVP</td>
             </tr>
             <tr>
                 <td>Family</td>
                 <td>{taxonomy['family']}</td>
-                <td>WCVP</td>
             </tr>
             <tr>
                 <td>Genus</td>
                 <td>{taxonomy['genus']}</td>
-                <td>WCVP</td>
             </tr>
         '''
         html_table_body += f'''</tbody>'''
+        ### SOURCES
+        sources_html = f'''
+            <p style="margin-top: 4.8rem;">
+                Sources: The World Checklist of Vascular Plants (WCVP)
+            </p>
+        '''
+        ###
         html_article += f'''
             <section>
                 <h2>
@@ -482,11 +483,11 @@ def plant_listing_page_gen_new(plant_name):
                     <tr>
                       <th>Rank</th>
                       <th>Classification</th>
-                      <th>Source</th>
                     </tr>
                   </thead>
                   {html_table_body}
                 </table>
+                {sources_html}
             </section>
         '''
 
@@ -532,9 +533,15 @@ def plant_listing_page_gen_new(plant_name):
             <tr>
                 <td>{region}</td>
                 <td>{area}</td>
-                <td>WCVP</td>
             </tr>'''
         html_table_body += f'''</tbody>'''
+        ### SOURCES
+        sources_html = f'''
+            <p style="margin-top: 4.8rem;">
+                Sources: The World Checklist of Vascular Plants (WCVP)
+            </p>
+        '''
+        ###
         html_article += f'''
             <section>
                 <h2>
@@ -546,11 +553,11 @@ def plant_listing_page_gen_new(plant_name):
                     <tr>
                       <th>Region</th>
                       <th>Area</th>
-                      <th>Source</th>
                     </tr>
                   </thead>
                   {html_table_body}
                 </table>
+                {sources_html}
             </section>
         '''
 

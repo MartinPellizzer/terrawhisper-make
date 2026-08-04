@@ -52,8 +52,9 @@ explore
 '''
 TODO:
 parse pubmed for "compounds"
-mention sources on a section level where appropriate 
+RENDER: mention sources on a section level where appropriate 
 get chemicals classes from chemical and pubchem
+TRY DATASET (identification layer)
 '''
 
 if 0:
