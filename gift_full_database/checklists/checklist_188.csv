@@ -1,0 +1,252 @@
+ref_ID,list_ID,entity_ID,work_author,work_ID,genus_ID,work_species,questionable,native,quest_native,naturalized,endemic_ref,quest_end_ref,endemic_list,quest_end_list,cons_status
+16,188,186,Blume,439476,6893,Trichomanes minutum,,1,,0,0,,0,,Apparently Secure
+16,188,186,(Desv.) Hovenkamp & Miyam.,30244,4965,Nephrolepis brownii,,0,,1,0,,0,,
+16,188,186,(L.) Schott,30249,4965,Nephrolepis exaltata,,1,,0,1,,0,,Apparently Secure
+16,188,186,Kaulf.,27892,4555,Marsilea villosa,,1,,0,1,,0,,Endangered
+16,188,186,(L.) P.Beauv.,36586,5831,Psilotum nudum,,1,,0,0,,0,,Apparently Secure
+16,188,186,L.,791,1069,Adiantum capillus-veneris,,1,,0,0,,0,,Apparently Secure
+16,188,186,(Hook.) Christenh.,439895,3727,Hemionitis decipiens,,1,,0,1,,0,,Apparently Secure
+16,188,186,Domin,441826,5586,Pityrogramma austroamericana,,0,,1,0,,0,,
+16,188,186,(L.) Link,34719,5586,Pityrogramma calomelanos,,0,,1,0,,0,,
+16,188,186,(Forssk.) E.P.St.John,439278,6763,Thelypteris dentata,,0,,1,0,,0,,
+16,188,186,(L.) G.Don,1665,1186,Alocasia macrorrhizos,,0,,1,0,,0,,
+16,188,186,(L.) Schott,10522,2409,Colocasia esculenta,,0,,1,0,,0,,
+16,188,186,(L.) Engl.,16623,3141,Epipremnum pinnatum,,0,,1,0,,0,,
+16,188,186,L.,10387,2371,Cocos nucifera,,0,,1,0,,0,,
+16,188,186,(Kuntze) Becc.,36243,5764,Pritchardia remota,,1,,0,1,,0,,Endangered
+16,188,186,(L.) A.Chev.,11062,2473,Cordyline fruticosa,,0,,1,0,,0,,
+16,188,186,(L.) Haw.,18987,3383,Furcraea foetida,,0,,1,0,,0,,
+16,188,186,(L.) Palla,5501,1763,Bolboschoenus maritimus,,1,,0,0,,0,,Apparently Secure
+16,188,186,Nees,8010,2026,Carex meyenii,,1,,0,0,,0,,Apparently Secure
+16,188,186,R.Br.,12892,2661,Cyperus gracilis,,0,,1,0,,0,,
+16,188,186,Houtt.,12909,2661,Cyperus javanicus,,1,,0,0,,0,,Apparently Secure
+16,188,186,L.,12912,2661,Cyperus laevigatus,,1,,0,0,,0,,Apparently Secure
+16,188,186,(Nees ex Kunth) H.Mann,12946,2661,Cyperus phleoides,,1,,0,1,,0,,Apparently Secure
+16,188,186,Rottb.,439643,2661,Cyperus polystachyos,,1,,0,0,,0,,Apparently Secure
+16,188,186,L.,12964,2661,Cyperus rotundus,,0,,1,0,,0,,
+16,188,186,Hook. & Arn.,12990,2661,Cyperus trachysanthos,,1,,0,1,,0,,Endangered
+16,188,186,Steud.,126516,3070,Eleocharis erythropoda,,1,,0,0,,0,,Apparently Secure
+16,188,186,R.Br.,18656,3327,Fimbristylis cymosa,,1,,0,0,,0,,Apparently Secure
+16,188,186,R.Br.,18656,3327,Fimbristylis cymosa,,1,,0,0,,0,,Apparently Secure
+16,188,186,(C.A.Mey.) Soják,40456,6238,Schoenoplectus californicus,,0,,1,0,,0,,
+16,188,186,(C.C.Gmel.) Palla,40461,6238,Schoenoplectus tabernaemontani,,1,,0,0,,0,,Apparently Secure
+16,188,186,L.,14432,2867,Dioscorea pentaphylla,,0,,1,0,,0,,
+16,188,186,(L.) Kuntze,43789,6657,Tacca leontopetaloides,,0,,1,0,,0,,
+16,188,186,Parkinson ex Du Roi,31846,5251,Pandanus tectorius,,1,,0,0,,0,,Apparently Secure
+16,188,186,(Lag.) Herter,5583,1788,Bothriochloa barbinodis,,0,,1,0,,0,,
+16,188,186,(L.) A.Camus,5591,1788,Bothriochloa pertusa,,0,,1,0,,0,,
+16,188,186,L.,8696,2103,Cenchrus ciliaris,,0,,1,0,,0,,
+16,188,186,L.,8698,2103,Cenchrus echinatus,,0,,1,0,,0,,
+16,188,186,(Schumach.) Morrone,439148,2103,Cenchrus purpureus,,0,,1,0,,0,,
+16,188,186,Sw.,9428,2236,Chloris barbata,,0,,1,0,,0,,
+16,188,186,R.Br.,9434,2236,Chloris divaricata,,0,,1,0,,0,,
+16,188,186,Kunth,9438,2236,Chloris gayana,,0,,1,0,,0,,
+16,188,186,(L.) Sw.,9442,2236,Chloris radiata,,0,,1,0,,0,,
+16,188,186,Sw.,9447,2236,Chloris virgata,,0,,1,0,,0,,
+16,188,186,(R.Br.) A.Camus,12694,2649,Cymbopogon refractus,,0,,1,0,,0,,
+16,188,186,(L.) Willd.,13226,2700,Dactyloctenium aegyptium,,0,,1,0,,0,,
+16,188,186,(R.Br.) A.Camus,14163,2816,Dichanthium sericeum,,0,,1,0,,0,,
+16,188,186,(R.Br.) A.Camus,14165,2816,Dichanthium tenue,,0,,1,0,,0,,
+16,188,186,(Retz.) Koeler,14304,2853,Digitaria ciliaris,,0,,1,0,,0,,
+16,188,186,(L.) Mez ex Ekman,14323,2853,Digitaria insularis,,0,,1,0,,0,,
+16,188,186,Roth,14346,2853,Digitaria setigera,,1,,0,0,,0,,Apparently Secure
+16,188,186,(L.) Link,337930,3029,Echinochloa colonum,,0,,1,0,,0,,
+16,188,186,(Retz.) Trin.,16724,3146,Eragrostis viscosa,,0,,1,0,,0,,
+16,188,186,(Gaudich.) Steud.,16722,3146,Eragrostis variabilis,,1,,0,1,,0,,Apparently Secure
+16,188,186,(L.) Ham.,16916,3170,Eriochloa punctata,,0,,1,0,,0,,
+16,188,186,(L.) P.Beauv. ex Roem. & Schult.,21545,3770,Heteropogon contortus,,1,,0,0,,0,,Apparently Secure
+16,188,186,(G.Forst.) R.Br.,25511,4269,Lepturus repens,,1,,0,0,,0,,Apparently Secure
+16,188,186,(Willd.) Zizka,28398,4626,Melinis repens,,0,,1,0,,0,,
+16,188,186,Hitchc.,31896,5253,Panicum fauriei,,1,,0,1,,0,,Apparently Secure
+16,188,186,H.St.John,31929,5253,Panicum niihauense,,1,,0,1,,0,,Endangered
+16,188,186,Trin.,31936,5253,Panicum pellitum,,1,,0,1,,0,,Apparently Secure
+16,188,186,Gaudich.,31962,5253,Panicum torridum,,1,,0,1,,0,,Apparently Secure
+16,188,186,(Hildebr.) Hitchc.,31972,5253,Panicum xerophilum,,1,,0,1,,0,,Apparently Secure
+16,188,186,(Trin.) Veldkamp,441622,6341,Setaria distans,,0,,1,0,,0,,
+16,188,186,(L.) P.Beauv.,41382,6341,Setaria verticillata,,0,,1,0,,0,,
+16,188,186,(L.) Kunth,42608,6495,Sporobolus virginicus,,1,,0,0,,0,,Apparently Secure
+16,188,186,(Jacq.) B.K.Simon & S.W.L.Jacobs,441119,19159,Megathyrsus maximus,,0,,1,0,,0,,
+16,188,186,(L.) Börner,43223,6602,Stuckenia pectinata,,0,,1,0,,0,,
+16,188,186,L.,39389,6073,Ruppia maritima,,1,,0,0,,0,,Apparently Secure
+16,188,186,(L.) T.Anderson,4155,1542,Asystasia gangetica,,0,,1,0,,0,,
+16,188,186,Roxb.,45073,6787,Thunbergia fragrans,,0,,1,0,,0,,
+16,188,186,(L.) L.,41345,6340,Sesuvium portulacastrum,,1,,0,0,,0,,Apparently Secure
+16,188,186,Kunth,1838,1202,Alternanthera pungens,,0,,1,0,,0,,
+16,188,186,L.,1959,1216,Amaranthus viridis,,0,,1,0,,0,,
+16,188,186,R.Br.,4316,1560,Atriplex semibaccata,,0,,1,0,,0,,
+16,188,186,"(L.) S.Fuentes, Uotila & Borsch",103395,10933,Chenopodiastrum murale,,0,,1,0,,0,,
+16,188,186,(Meyen) Aellen,9311,2211,Chenopodium oahuense,,1,,0,1,,0,,Apparently Secure
+16,188,186,(R.Br.) Mosyakin & Clemants,48036,3017,Dysphania carinata,,0,,1,0,,0,,
+16,188,186,(A.Gray ex H.Mann) Hillebr.,30455,5035,Nototrichium sandwicense,,1,,0,1,,0,,Apparently Secure
+16,188,186,L.,27694,4519,Mangifera indica,,0,,1,0,,0,,
+16,188,186,(J.R.Forst. & G.Forst.) Roem. & Schult.,1917,1212,Alyxia stellata,,1,,0,0,,0,,Apparently Secure
+16,188,186,L.,3603,1501,Asclepias curassavica,,0,,1,0,,0,,
+16,188,186,E.Mey.,20067,3521,Gomphocarpus physocarpus,,0,,1,0,,0,,
+16,188,186,(Aiton) W.T.Aiton,7177,1953,Calotropis procera,,0,,1,0,,0,,
+16,188,186,(L.) G.Don,8525,2078,Catharanthus roseus,,0,,1,0,,0,,
+16,188,186,A.DC.,37924,5934,Rauvolfia sandwicensis,,1,,0,1,,0,,Apparently Secure
+16,188,186,(L.) Lippold,8326,2054,Cascabela thevetia,,0,,1,0,,0,,
+16,188,186,(Gaudich.) A.Heller,9250,2204,Cheirodendron trigynum,,1,,0,1,,0,,Apparently Secure
+16,188,186,Thunb.,22646,3883,Hydrocotyle verticillata,,0,,1,0,,0,,
+16,188,186,(A.Gray) Lowry & G.M.Plunkett,35703,5708,Polyscias sandwicensis,,1,,0,1,,0,,Rare
+16,188,186,(Endl.) Lowry & G.M.Plunkett,442362,20102,Heptapleurum actinophyllum,,0,,1,0,,0,,
+16,188,186,(Loefl.) Kuntze,361,973,Acanthospermum australe,,0,,1,0,,0,,
+16,188,186,L.,1130,1119,Ageratum conyzoides,,0,,1,0,,0,,
+16,188,186,Less.,3395,1478,Artemisia australis,,1,,0,1,,0,,Apparently Secure
+16,188,186,(L.) DC.,5093,1708,Bidens alba,,0,,1,0,,0,,
+16,188,186,Sherff,5105,1708,Bidens cervicata,,1,,0,1,,0,,Apparently Secure
+16,188,186,L.,5140,1708,Bidens pilosa,,0,,1,0,,0,,
+16,188,186,Less.,7242,1963,Calyptocarpus vialis,,0,,1,0,,0,,
+16,188,186,L.,8738,2104,Centaurea melitensis,,0,,1,0,,0,,
+16,188,186,(Savi) Ten.,9697,2299,Cirsium vulgare,,0,,1,0,,0,,
+16,188,186,L.,16803,3164,Erigeron bonariensis,,0,,1,0,,0,,
+16,188,186,L.,16807,3164,Erigeron canadensis,,0,,1,0,,0,,
+16,188,186,(L.) H.Rob.,12378,2619,Cyanthillium cinereum,,0,,1,0,,0,,
+16,188,186,(L.) L.,15750,3040,Eclipta prostrata,,0,,1,0,,0,,
+16,188,186,Nicolson,16305,3097,Emilia fosbergii,,0,,1,0,,0,,
+16,188,186,(Willd.) Cabrera,440188,3405,Gamochaeta pensylvanica,,0,,1,0,,0,,
+16,188,186,L.,22949,3916,Hypochoeris glabra,,0,,1,0,,0,,
+16,188,186,L.,440626,3916,Hypochoeris radicata,,0,,1,0,,0,,
+16,188,186,(Gaudich.) DC.,26291,4338,Lipochaeta connata,,1,,0,1,,0,,Apparently Secure
+16,188,186,(Gaudich.) DC.,26294,4338,Lipochaeta lobata,,1,,0,1,,0,,Apparently Secure
+16,188,186,(Hook. & Arn.) DC.,26296,4338,Lipochaeta succulenta,,1,,0,1,,0,,Apparently Secure
+16,188,186,(Nutt.) A.Gray,440965,4338,Lipochaeta integrifolia,,1,,0,1,,0,,Apparently Secure
+16,188,186,Sherff,441127,4338,Lipochaeta perdita,,1,,0,1,,1,,Extinct
+16,188,186,(Jacq.) G.Don,35140,5656,Pluchea carolinensis,,0,,1,0,,0,,
+16,188,186,(L.) Less.,35143,5656,Pluchea indica,,0,,1,0,,0,,
+16,188,186,(Gaudich.) Anderb.,36464,5801,Pseudognaphalium sandwicensium,,1,,0,1,,0,,Apparently Secure
+16,188,186,L.,41581,6370,Sigesbeckia orientalis,,0,,1,0,,0,,
+16,188,186,L.,42135,6431,Sonchus oleraceus,,0,,1,0,,0,,
+16,188,186,(L.) Pruski,42487,6472,Sphagneticola trilobata,,0,,1,0,,0,,
+16,188,186,(Poepp. ex Spreng.) G.L.Nesom,43369,6635,Symphyotrichum expansum,,0,,1,0,,0,,
+16,188,186,(L.) Gaertn.,43473,6644,Synedrella nodiflora,,0,,1,0,,0,,
+16,188,186,L.,47400,7155,Xanthium orientale,,0,,1,0,,0,,
+16,188,186,(Ten.) Steenis,2506,1341,Anredera cordifolia,,0,,1,0,,0,,
+16,188,186,L.,4741,1647,Batis maritima,,0,,1,0,,0,,
+16,188,186,D.Don,23799,3999,Jacaranda mimosifolia,,0,,1,0,,0,,
+16,188,186,Lam.,11046,2471,Cordia subcordata,,1,,0,0,,0,,Apparently Secure
+16,188,186,Hook. & Arn.,21319,3712,Heliotropium anomalum,,1,,0,1,,0,,Apparently Secure
+16,188,186,L.,21325,3712,Heliotropium curassavicum,,1,,0,0,,0,,Apparently Secure
+16,188,186,(Blanco) Mabb.,428486,3712,Heliotropium arboreum,,0,,1,0,,0,,
+16,188,186,A.Gray,29988,4877,Nama sandwicensis,,1,,0,1,,0,,Vulnerable
+16,188,186,L.,25268,4228,Lepidium didymum,,0,,1,0,,0,,
+16,188,186,Small,25286,4228,Lepidium oblongum,,0,,1,0,,0,,
+16,188,186,(Haw.) D.R.Hunt,415182,6306,Selenicereus undatus,,0,,1,0,,0,,
+16,188,186,A.Gray,5864,1832,Brighamia insignis,,1,,0,1,,0,,Endangered
+16,188,186,H.St.John,13566,2758,Delissea niihauensis,,1,,0,1,,1,,Extinct
+16,188,186,H.St.John,26527,4356,Lobelia niihauensis,,1,,0,1,,0,,Endangered
+16,188,186,L.,7605,2000,Cannabis sativa,,0,,1,0,,0,,
+16,188,186,DC.,439056,2008,Capparis sandwichiana,,1,,0,1,,0,,Vulnerable
+16,188,186,L.,8489,2071,Casuarina equisetifolia,,0,,1,0,,0,,
+16,188,186,Sieber ex Spreng.,8490,2071,Casuarina glauca,,0,,1,0,,0,,
+16,188,186,Jacq.,9996,2331,Cleome spinosa,,0,,1,0,,0,,
+16,188,186,Choisy,12280,2613,Cuscuta sandwichiana,,1,,0,1,,0,,Apparently Secure
+16,188,186,(L.) Lam.,23386,3957,Ipomoea batatas,,0,,1,0,,0,,
+16,188,186,(L.) Sweet,23391,3957,Ipomoea cairica,,0,,1,0,,0,,
+16,188,186,(Vahl) Griseb.,23423,3957,Ipomoea imperati,,1,,0,0,,0,,Apparently Secure
+16,188,186,(Burm.) Merr.,23426,3957,Ipomoea indica,,1,,0,0,,0,,Apparently Secure
+16,188,186,(L.) R.Br.,23454,3957,Ipomoea pes-caprae,,1,,0,0,,0,,Apparently Secure
+16,188,186,O.Deg. & Ooststr.,23486,3957,Ipomoea tuboides,,1,,0,1,,0,,Apparently Secure
+16,188,186,A.Gray,443237,4003,Jacquemontia sandwicensis,,1,,0,1,,0,,Apparently Secure
+16,188,186,Ehrenb. ex Spach,12113,2596,Cucumis dipsaceus,,0,,1,0,,0,,
+16,188,186,L.,29294,4765,Momordica charantia,,0,,1,0,,0,,
+16,188,186,Cogn.,41450,6362,Sicyos maximowiczii,,1,,0,1,,0,,Apparently Secure
+16,188,186,Hook. & Arn.,41451,6362,Sicyos pachycarpus,,1,,0,1,,0,,Apparently Secure
+16,188,186,(L.) Willd.,1442,1160,Aleurites moluccanus,,0,,1,0,,0,,
+16,188,186,Boiss.,17760,3237,Euphorbia celastroides,,1,,0,1,,0,,Apparently Secure
+16,188,186,Boiss.,17760,3237,Euphorbia celastroides,,1,,0,1,,0,,Apparently Secure
+16,188,186,Boiss.,17760,3237,Euphorbia celastroides,,1,,0,1,,0,,Apparently Secure
+16,188,186,Sherff,17781,3237,Euphorbia degeneri,,1,,0,1,,0,,Apparently Secure
+16,188,186,L.,17830,3237,Euphorbia heterophylla,,0,,1,0,,0,,
+16,188,186,L.,17834,3237,Euphorbia hirta,,0,,1,0,,0,,
+16,188,186,Aiton,17927,3237,Euphorbia prostrata,,0,,1,0,,0,,
+16,188,186,L.,38443,6020,Ricinus communis,,0,,1,0,,0,,
+16,188,186,L.,59,960,Abrus precatorius,,0,,1,0,,0,,
+16,188,186,(L.) Benth.,1381,1150,Albizia lebbeck,,0,,1,0,,0,,
+16,188,186,L.,438834,3583,Guilandina bonduc,,1,,0,0,,0,,Apparently Secure
+16,188,186,(Roth) O.Deg.,438839,19771,Biancaea decapetala,,0,,1,0,,0,,
+16,188,186,(Medik.) Small,438842,3583,Guilandina major,,0,,1,0,,0,,
+16,188,186,(L.) Huth,6495,1905,Cajanus cajan,,0,,1,0,,0,,
+16,188,186,Hook. & Arn.,7594,1997,Canavalia pubescens,,1,,0,1,,0,,Vulnerable
+16,188,186,(L.) Moench,9080,2170,Chamaecrista nictitans,,0,,1,0,,0,,
+16,188,186,L.,11733,2565,Crotalaria incana,,0,,1,0,,0,,
+16,188,186,Aiton,11753,2565,Crotalaria pallida,,0,,1,0,,0,,
+16,188,186,Roth,11768,2565,Crotalaria spectabilis,,0,,1,0,,0,,
+16,188,186,(L.) Thell.,13987,2793,Desmanthus pernambucanus,,0,,1,0,,0,,
+16,188,186,(Jacq.) DC.,14042,2796,Desmodium uncinatum,,0,,1,0,,0,,
+16,188,186,O.Deg.,17102,3194,Erythrina sandwicensis,,1,,0,1,,0,,Apparently Secure
+16,188,186,Mill.,23309,3944,Indigofera suffruticosa,,0,,1,0,,0,,
+16,188,186,(L.) Sweet,24517,4102,Lablab purpureus,,0,,1,0,,0,,
+16,188,186,(Lam.) de Wit,25549,4276,Leucaena leucocephala,,0,,1,0,,0,,
+16,188,186,(DC.) Urb.,27351,4471,Macroptilium atropurpureum,,0,,1,0,,0,,
+16,188,186,(L.) Urb.,27355,4471,Macroptilium lathyroides,,0,,1,0,,0,,
+16,188,186,L.,29141,4732,Mimosa pudica,,0,,1,0,,0,,
+16,188,186,(Wight & Arn.) J.A.Lackey,30165,4943,Neonotonia wightii,,0,,1,0,,0,,
+16,188,186,(Roxb.) Benth.,34599,5582,Pithecellobium dulce,,0,,1,0,,0,,
+16,188,186,(Humb. & Bonpl. ex Willd.) Kunth,36306,5772,Prosopis pallida,,0,,1,0,,0,,
+16,188,186,(Jacq.) Merr.,438255,8633,Samanea saman,,0,,1,0,,0,,
+16,188,186,(L.) Link,41225,6320,Senna occidentalis,,0,,1,0,,0,,
+16,188,186,Hook. & Arn.,41327,6336,Sesbania tomentosa,,1,,0,1,,0,,Endangered
+16,188,186,(L.) Pers.,44450,6714,Tephrosia purpurea,,0,,1,0,,0,,
+16,188,186,Vogel,443094,7072,Vigna owahuensis,,1,,0,1,,0,,Endangered
+16,188,186,Nutt.,40178,6187,Scaevola coriacea,,1,,0,1,,0,,Endangered
+16,188,186,(Gaertn.) Roxb.,40206,6187,Scaevola taccada,,1,,0,0,,0,,Apparently Secure
+16,188,186,L.,30578,5058,Ocimum basilicum,,0,,1,0,,0,,
+16,188,186,L.,30581,5058,Ocimum gratissimum,,0,,1,0,,0,,
+16,188,186,(R.Br.) A.J.Paton,441847,15193,Coleus australis,,1,,0,0,,0,,Apparently Secure
+16,188,186,Sw.,39800,6123,Salvia occidentalis,,0,,1,0,,0,,
+16,188,186,(L.) L.,42639,6502,Stachys arvensis,,0,,1,0,,0,,
+16,188,186,L.f.,443105,7086,Vitex rotundifolia,,1,,0,0,,0,,Apparently Secure
+16,188,186,L.,8418,2061,Cassytha filiformis,,1,,0,0,,0,,Apparently Secure
+16,188,186,(Willd.) Sweet,72,961,Abutilon grandifolium,,0,,1,0,,0,,
+16,188,186,(Link) Sweet,76,961,Abutilon incanum,,1,,0,0,,0,,Apparently Secure
+16,188,186,L.,20233,3545,Gossypium barbadense,,0,,1,0,,0,,
+16,188,186,Nutt. ex Seem.,440284,3545,Gossypium tomentosum,,1,,0,1,,0,,Vulnerable
+16,188,186,L.,422994,3788,Hibiscus tiliaceus,,0,,1,0,,0,,
+16,188,186,L.,27631,4509,Malva parviflora,,0,,1,0,,0,,
+16,188,186,(L.) Garcke,27640,4510,Malvastrum coromandelianum,,0,,1,0,,0,,
+16,188,186,Walp.,41470,6363,Sida fallax,,1,,0,0,,0,,Apparently Secure
+16,188,186,L.,41488,6363,Sida rhombifolia,,0,,1,0,,0,,
+16,188,186,(L.) Sol. ex Corrêa,44977,6770,Thespesia populnea,,1,,0,0,,0,,Apparently Secure
+16,188,186,L.,47202,7110,Waltheria indica,,1,,0,0,,0,,Apparently Secure
+16,188,186,L.,28261,4617,Melia azedarach,,0,,1,0,,0,,
+16,188,186,(L.) DC.,10363,2364,Cocculus orbiculatus,,1,,0,0,,0,,Apparently Secure
+16,188,186,(L.) L'Hér. ex Vent.,5951,1844,Broussonetia papyrifera,,0,,1,0,,0,,
+16,188,186,L.f.,18528,3322,Ficus microcarpa,,0,,1,0,,0,,
+16,188,186,Sabine,424429,5825,Psidium cattleyanum,,0,,1,0,,0,,
+16,188,186,L.,36550,5825,Psidium guajava,,0,,1,0,,0,,
+16,188,186,(Choisy) J.W.Moore,5440,1758,Boerhavia acutifolia,,1,,0,0,,0,,Apparently Secure
+16,188,186,L.,5463,1758,Boerhavia repens,,1,,0,0,,0,,Apparently Secure
+16,188,186,L.,31507,5197,Oxalis corniculata,,1,,0,0,,0,,Apparently Secure
+16,188,186,(Nutt. ex Prain) Pope,3105,1448,Argemone glauca,,1,,0,1,,0,,Apparently Secure
+16,188,186,L.,32324,5316,Passiflora foetida,,0,,1,0,,0,,
+16,188,186,Hook. & Arn.,32740,5382,Peperomia leptostachya,,1,,0,0,,0,,Apparently Secure
+16,188,186,G.Forst.,34461,5565,Piper methysticum,,0,,1,0,,0,,
+16,188,186,(L.) Wettst.,4494,1595,Bacopa monnieri,,1,,0,0,,0,,Apparently Secure
+16,188,186,L.,35160,5658,Plumbago zeylanica,,1,,0,0,,0,,Apparently Secure
+16,188,186,Sol. ex G.Forst.,35944,5733,Portulaca lutea,,1,,0,0,,0,,Apparently Secure
+16,188,186,L.,35951,5733,Portulaca oleracea,,0,,1,0,,0,,
+16,188,186,L.,35954,5733,Portulaca pilosa,,0,,1,0,,0,,
+16,188,186,(L.) U.Manns & Anderb.,438386,4439,Lysimachia arvensis,,0,,1,0,,0,,
+16,188,186,Lam.,27142,4439,Lysimachia mauritiana,,1,,0,0,,0,,Apparently Secure
+16,188,186,R.Br.,20411,3564,Grevillea banksii,,0,,1,0,,0,,
+16,188,186,A.Cunn. ex R.Br.,20426,3564,Grevillea robusta,,0,,1,0,,0,,
+16,188,186,(L.) Brongn.,10529,2414,Colubrina asiatica,,1,,0,0,,0,,Apparently Secure
+16,188,186,L.,29397,4802,Morinda citrifolia,,0,,1,0,,0,,
+16,188,186,A.DC.,18195,3274,Exocarpos gaudichaudii,,1,,0,1,,0,,Rare
+16,188,186,Gaudich.,39918,6136,Santalum ellipticum,,1,,0,1,,0,,Apparently Secure
+16,188,186,L.,7733,2021,Cardiospermum halicacabum,,0,,1,0,,0,,
+16,188,186,Jacq.,14886,2933,Dodonaea viscosa,,1,,0,0,,0,,Apparently Secure
+16,188,186,(A.DC.) A.Gray,29638,4836,Myoporum sandwicense,,1,,0,0,,0,,Apparently Secure
+16,188,186,L.,439059,2011,Capsicum frutescens,,0,,1,0,,0,,
+16,188,186,A.Gray,27003,4421,Lycium sandwicense,,1,,0,0,,0,,Apparently Secure
+16,188,186,L.,30366,4995,Nicotiana tabacum,,0,,1,0,,0,,
+16,188,186,Mill.,41906,6417,Solanum americanum,,1,,0,0,,0,,Apparently Secure
+16,188,186,L.,41975,6417,Solanum lycopersicum,,0,,1,0,,0,,
+16,188,186,Dunal,41993,6417,Solanum nelsonii,,1,,0,1,,0,,Vulnerable
+16,188,186,(L.) Liebm.,33992,5542,Pilea microphylla,,0,,1,0,,0,,
+16,188,186,(Gaudich.) Hook. & Arn.,34017,5542,Pilea peploides,,1,,0,0,,0,,Apparently Secure
+16,188,186,L.,24676,4146,Lantana camara,,0,,1,0,,0,,
+16,188,186,Kunth,46521,7058,Verbena litoralis,,0,,1,0,,0,,
+16,188,186,A.Gray,23602,3974,Isodendrion pyrifolium,,1,,0,1,,0,,Endangered
+16,188,186,L.,45479,6879,Tribulus cistoides,,1,,0,0,,0,,Apparently Secure

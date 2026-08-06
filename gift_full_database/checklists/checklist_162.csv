@@ -1,0 +1,62 @@
+ref_ID,list_ID,entity_ID,work_author,work_ID,genus_ID,work_species,questionable,native,quest_native,naturalized,endemic_ref,quest_end_ref,endemic_list,quest_end_list,cons_status
+15,162,160,(L.) P.Beauv.,36586,5831,Psilotum nudum,0,1,0,0,0,0,0,0,
+15,162,160,(Sw.) Schott,30243,4965,Nephrolepis biserrata,0,1,0,0,0,0,0,0,
+15,162,160,J.Sm.,413652,5634,Pleopeltis tridens,0,1,0,0,1,0,0,0,LC
+15,162,160,(Sw.) Christenh.,439233,3727,Hemionitis microphylla,0,1,0,0,0,0,0,0,
+15,162,160,Domin,441826,5586,Pityrogramma austroamericana,0,1,0,0,0,0,0,0,
+15,162,160,(L.) Link,34719,5586,Pityrogramma calomelanos,0,1,0,0,0,0,0,0,
+15,162,160,(L.) Proctor,34722,5586,Pityrogramma ebenea,0,1,0,0,0,0,0,0,
+15,162,160,(Vahl) Kük. ex Herter,6222,1877,Bulbostylis juncoides,0,1,0,0,0,0,0,0,
+15,162,160,Boeckeler,12831,2661,Cyperus anderssonii,0,1,0,0,1,0,0,0,LC
+15,162,160,Sw.,12843,2661,Cyperus confertus,0,1,0,0,0,0,0,0,
+15,162,160,L.,12915,2661,Cyperus ligularis,0,1,0,0,0,0,0,0,
+15,162,160,L.,12974,2661,Cyperus squarrosus,0,1,0,0,0,0,0,0,
+15,162,160,(L.) Vahl,18657,3327,Fimbristylis dichotoma,0,1,0,0,0,0,0,0,
+15,162,160,Andersson,3218,1465,Aristida divulsa,0,1,0,0,1,0,0,0,NT
+15,162,160,Trin.,3246,1465,Aristida repens,0,1,0,0,1,0,0,0,LC
+15,162,160,Trin. & Rupr.,3254,1465,Aristida subspicata,0,1,0,0,1,0,0,0,LC
+15,162,160,Andersson,8706,2103,Cenchrus platyacanthus,0,1,0,0,1,0,0,0,LC
+15,162,160,(All.) Vignolo ex Janch.,16658,3146,Eragrostis cilianensis,0,0,1,1,0,0,0,0,
+15,162,160,(L.) R.Br.,16659,3146,Eragrostis ciliaris,0,1,0,0,0,0,0,0,
+15,162,160,(Hornem.) Link,16686,3146,Eragrostis mexicana,0,1,0,0,0,0,0,0,
+15,162,160,(Kunth) Trin.,16694,3146,Eragrostis pastoensis,0,1,0,0,0,0,0,0,
+15,162,160,Chase,32239,5315,Paspalum galapageium,0,1,0,0,1,0,0,0,LC
+15,162,160,(Sw.) P.Beauv.,41375,6341,Setaria setosa,0,1,0,0,0,0,0,0,
+15,162,160,(Kunth) Ekman,45594,6894,Trichoneura lindleyana,0,1,0,0,1,0,0,0,LC
+15,162,160,(L.) L.,41345,6340,Sesuvium portulacastrum,0,1,0,0,0,0,0,0,
+15,162,160,K.Schum. ex B.L.Rob.,31108,5127,Opuntia helleri,0,1,0,0,1,0,0,0,VU
+15,162,160,Andersson,29283,4763,Mollugo flavescens,0,1,0,0,1,0,0,0,LC
+15,162,160,Kunth,11958,2578,Cryptocarpus pyriformis,0,1,0,0,0,0,0,0,
+15,162,160,L.,35160,5658,Plumbago zeylanica,0,1,0,0,0,0,0,0,
+15,162,160,(D.Legrand) Eliasson,35941,5733,Portulaca howellii,0,1,0,0,1,0,0,0,LC
+15,162,160,Seberg,264,965,Acalypha abingdonii,0,1,0,0,1,0,0,0,VU
+15,162,160,Hook.f.,11894,2566,Croton scouleri,0,1,0,0,1,0,0,0,LC
+15,162,160,(Sw.) DC.,7596,1997,Canavalia rosea,0,0,0,0,0,0,0,0,
+15,162,160,L.,11733,2565,Crotalaria incana,0,1,0,0,0,0,0,0,
+15,162,160,(Mill.) DC.,14009,2796,Desmodium glabrum,0,0,1,1,0,0,0,0,
+15,162,160,(Mill.) C.L.Hitchc.,14025,2796,Desmodium procumbens,0,1,0,0,0,0,0,0,
+15,162,160,(L.) DC.,38257,6003,Rhynchosia minima,0,1,0,0,0,0,0,0,
+15,162,160,Taub.,43246,6606,Stylosanthes sympodialis,0,1,0,0,0,0,0,0,
+15,162,160,(L.) Benth.,30269,4968,Neptunia plena,0,1,0,0,0,0,0,0,
+15,162,160,(L.) Hitchc.,9354,2225,Chiococca alba,0,1,0,0,0,0,0,0,
+15,162,160,Lam.,11017,2471,Cordia lutea,0,1,0,0,0,0,0,0,
+15,162,160,L.,21325,3712,Heliotropium curassavicum,0,1,0,0,0,0,0,0,
+15,162,160,(Hook.f.) A.T.Richardson,45227,6817,Tiquilia fusca,0,1,0,0,1,0,0,0,LC
+15,162,160,(J.T.Howell) A.T.Richardson,45228,6817,Tiquilia galapagoa,0,1,0,0,1,0,0,0,LC
+15,162,160,Andersson,24697,4146,Lantana peduncularis,0,1,0,0,1,0,0,0,LC
+15,162,160,(Hook.f.) Kearney,443203,5785,Pseudabutilon depauperatum,0,1,0,0,1,0,0,0,LC
+15,162,160,G.Watt,20234,3545,Gossypium darwinii,0,1,0,0,1,0,0,0,LC
+15,162,160,Andersson,20238,3545,Gossypium klotzschianum,0,1,0,0,1,0,0,0,NT
+15,162,160,Cav.,47206,7110,Waltheria ovata,0,1,0,0,0,0,0,0,
+15,162,160,Hook.f.,35474,5695,Polygala galapageia,0,1,0,0,1,0,0,0,LC
+15,162,160,Hook.f.,35474,5695,Polygala galapageia,0,1,0,0,1,0,0,0,VU
+15,162,160,(L.) Nicolson & C.E.Jarvis,9742,2302,Cissus verticillata,0,1,0,0,0,0,0,0,
+15,162,160,(Kunth) Triana & Planch.,6330,1890,Bursera graveolens,0,1,0,0,0,0,0,0,
+15,162,160,(Kunth) Triana & Planch.,6330,1890,Bursera graveolens,0,1,0,0,1,0,0,0,VU
+15,162,160,Hook.f.,8463,2066,Castela galapageia,0,1,0,0,1,0,0,0,LC
+15,162,160,Engelm.,12248,2613,Cuscuta acuta,0,1,0,0,1,0,0,0,LC
+15,162,160,Oliv.,23418,3957,Ipomoea habeliana,0,1,0,0,1,0,0,0,LC
+15,162,160,(L.) R.Br.,23454,3957,Ipomoea pes-caprae,0,1,0,0,0,0,0,0,
+15,162,160,(L.) A.R.Simões & Staples,421041,19634,Distimake aegyptius,0,1,0,0,0,0,0,0,
+15,162,160,(Hook.f.) D'Arcy,18214,3277,Exodeconus miersii,0,1,0,0,1,0,0,0,LC
+15,162,160,L.,33759,5517,Physalis angulata,0,1,0,0,0,0,0,0,

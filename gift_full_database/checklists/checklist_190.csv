@@ -1,0 +1,27 @@
+ref_ID,list_ID,entity_ID,work_author,work_ID,genus_ID,work_species,questionable,native,quest_native,naturalized,endemic_ref,quest_end_ref,endemic_list,quest_end_list,cons_status
+16,190,188,Doty & B.C.Stone,20890,3644,Halophila hawaiiana,,1,,0,1,,0,,Apparently Secure
+16,190,188,L.,8698,2103,Cenchrus echinatus,,0,,1,0,,0,,
+16,190,188,(L.) Pers.,12756,2653,Cynodon dactylon,,0,,1,0,,0,,
+16,190,188,Jedwabn.,16696,3146,Eragrostis paupera,,1,,0,0,,0,,Apparently Secure
+16,190,188,(Gaudich.) Steud.,16722,3146,Eragrostis variabilis,,1,,0,1,,0,,Apparently Secure
+16,190,188,(G.Forst.) R.Br.,25511,4269,Lepturus repens,,1,,0,0,,0,,Apparently Secure
+16,190,188,(L.) P.Beauv.,41382,6341,Setaria verticillata,,0,,1,0,,0,,
+16,190,188,(L.) L.,41345,6340,Sesuvium portulacastrum,,1,,0,0,,0,,Apparently Secure
+16,190,188,Mart. ex Moq.,435,984,Achyranthes splendens,,1,,0,1,,0,,Extinct
+16,190,188,L.,42135,6431,Sonchus oleraceus,,0,,1,0,,0,,
+16,190,188,(Cav.) Benth. & Hook.f. ex A.Gray,46535,7059,Verbesina encelioides,,0,,1,0,,0,,
+16,190,188,(Blanco) Mabb.,428486,3712,Heliotropium arboreum,,0,,1,0,,0,,
+16,190,188,L.,5815,1821,Brassica rapa,,0,,1,0,,0,,
+16,190,188,Montin,25262,4228,Lepidium bidentatum,,1,,0,1,,0,,Vulnerable
+16,190,188,L.,25268,4228,Lepidium didymum,,0,,1,0,,0,,
+16,190,188,DC.,439056,2008,Capparis sandwichiana,,1,,0,1,,0,,Vulnerable
+16,190,188,L.,8489,2071,Casuarina equisetifolia,,0,,1,0,,0,,
+16,190,188,Cogn.,41450,6362,Sicyos maximowiczii,,1,,0,1,,0,,Apparently Secure
+16,190,188,(Gaertn.) Roxb.,40206,6187,Scaevola taccada,,1,,0,0,,0,,Apparently Secure
+16,190,188,(Choisy) J.W.Moore,5440,1758,Boerhavia acutifolia,,1,,0,0,,0,,Apparently Secure
+16,190,188,Fosberg,5457,1758,Boerhavia herbstii,,1,,0,1,,0,,Apparently Secure
+16,190,188,L.,5463,1758,Boerhavia repens,,1,,0,0,,0,,Apparently Secure
+16,190,188,L.,35951,5733,Portulaca oleracea,,0,,1,0,,0,,
+16,190,188,Mill.,41906,6417,Solanum americanum,,1,,0,0,,0,,Apparently Secure
+16,190,188,Dunal,41993,6417,Solanum nelsonii,,1,,0,1,,0,,Vulnerable
+16,190,188,L.,45479,6879,Tribulus cistoides,,1,,0,0,,0,,Apparently Secure

@@ -9,6 +9,7 @@ import parse_col
 import parse_wikidata
 import parse_pubmed
 import parse_drduke
+import parse_usda
 
 # parse_wcvp.run()
 # parse_ipni.run()
@@ -17,6 +18,7 @@ import parse_drduke
 # parse_wikidata.run()
 # parse_drduke.run()
 # parse_pubmed.run()
+parse_usda.run()
 
 ################################################################################
 # ORGANIZATIONS
@@ -27,5 +29,5 @@ import organizations_parse_main
 
 # parse_usda_organic.run()
 
-organizations_parse_main.run()
+# organizations_parse_main.run()
 

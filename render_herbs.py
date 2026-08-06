@@ -45,6 +45,124 @@ def sqlite_table_observations_plants_activities_get():
     conn.close()
     return row
 
+def section_table(plant_data, plant_name, section_name):
+    html_article = f''
+    ### PLANT PARTS
+    plant_parts_data = plant_data[section_name]
+    if plant_parts_data != []:
+        html_table_body = f''
+        sources_html = f''
+        html_table_body += f'''<tbody>'''
+        table_num = 10
+        for item in plant_parts_data[:table_num]:
+            plant_part_name = item['plant_part_canonical_name']
+            plant_part_slug = polish.sluggify(plant_part_name)
+            sources_num = item['sources_num']
+            sources = item['sources']
+            source = sources[0]
+            confidence = ''
+            if int(sources_num) >= 10: confidence = '★★★★★'
+            elif int(sources_num) >= 7: confidence = '★★★★☆'
+            elif int(sources_num) >= 5: confidence = '★★★☆☆'
+            elif int(sources_num) >= 3: confidence = '★★☆☆☆'
+            elif int(sources_num) >= 1: confidence = '★☆☆☆☆'
+            html_table_body += f'''
+                <tr>
+                    <th scope="row">{plant_part_name.capitalize()}</th>
+                    <td>
+                        <a href="#sources-{plant_part_slug}">
+                            {sources_num} supporting sources
+                        </a>
+                    </td>
+                    <td>
+                        <span>
+                            {confidence}
+                        </span>
+                    </td>
+                </tr>
+            '''
+            ### TODO: add this complete consensus instead of the one in the table
+            '''
+                        <span aria-label="Very high source consensus">
+                            {confidence}
+                        </span>
+                        <span>Very high</span>
+            '''
+            ### SOURCES LISTS
+            sources_html += f'''
+                <h3 id="sources-{plant_part_slug}">{plant_part_name.capitalize()}</h3>
+                <ol class="listing-sources">
+            '''
+            for source in sources[:5]:
+                sources_html += f'''
+                    <li>
+                        <cite>
+                            {source}
+                        </cite>
+                    </li>
+                '''
+            sources_html += f'''
+                </ol>
+            '''
+            if len(sources)-5 > 0:
+                sources_html += f'''
+                    <details>
+                        <summary>
+                            View {len(sources)-5} additional sources
+                        </summary>
+                        <ol class="listing-sources" start="6">
+                '''
+                for source in sources[5:]:
+                    sources_html += f'''
+                        <li>
+                            <cite>
+                                {source}
+                            </cite>
+                        </li>
+                    '''
+                sources_html += f'''
+                        </ol>
+                    </details>
+                '''
+        source_tot = 0 
+        for item in plant_parts_data[:]:
+            source_tot += int(item['sources_num'])
+        plant_parts_p = []
+        for plant_part in plant_parts_data[:5]:
+            plant_parts_p.append(plant_part['plant_part_canonical_name'])
+        plant_parts_p_str = ', '.join(plant_parts_p)
+        html_table_body += f'''</tbody>'''
+        html_article += f'''
+            <section>
+                <h2>
+                    Plant Parts
+                </h2>
+                <p>
+                    {plant_name} has {len(plant_parts_data)} reported plant parts identified across {source_tot} scientific publications and several other databases that are studied for medicinal purposes. The most consistently reported plant part include {plant_parts_p_str}.
+                </p>
+                <table style="margin-top: 3.2rem;">
+                    <caption style="text-align: left; margin-bottom: 0.8rem;">
+                        Plant parts reported in {plant_name}
+                    </caption>
+                    <thead>
+                        <tr>
+                            <th scope="col">Plant part</th>
+                            <th scope="col">Supporting sources</th>
+                            <th scope="col">Consensus</th>
+                        </tr>
+                    </thead>
+                    {html_table_body}
+                </table>
+            </section>
+        '''
+        ###
+        html_article += f'''
+            <section aria-labelledby="plant-parts-heading">
+                {sources_html}
+            </section>
+        '''
+    return html_article
+
 def plant_listing_page_gen_new(plant_name):
     plant_data = io.json_read(f'{g.DATA_FOLDERPATH}/compile/herbs/{plant_name}.json')
     # print(json.dumps(plant_data, indent=4))
@@ -565,6 +683,7 @@ def plant_listing_page_gen_new(plant_name):
     ### IDENTIFICATION
     ################################################################################
 
+    """
     ### PLANT PARTS
     plants_parts_data = plant_data['plants_parts']
     if plants_parts_data != []:
@@ -648,6 +767,10 @@ def plant_listing_page_gen_new(plant_name):
                 </table>
             </section>
         '''
+    """
+
+    ### TODO: GENERALIZE THIS FUNCTION FOR ALL SECTIONS LIKE THIS?
+    html_article += section_table(plant_data, plant_name, section_name='plants_parts')
 
     ### CHEMICALS
     chemicals = plant_data['chemicals']
@@ -671,13 +794,11 @@ def plant_listing_page_gen_new(plant_name):
             html_table_body += f'''
                 <tr>
                     <th scope="row">{chemical_name}</th>
-
                     <td>
                         <a href="#sources-{chemical_slug}">
                             {sources_num} supporting sources
                         </a>
                     </td>
-
                     <td>
                         <span>
                             {confidence}
@@ -729,7 +850,7 @@ def plant_listing_page_gen_new(plant_name):
                     </details>
                 '''
         source_tot = 0 
-        for item in plants_parts_data[:]:
+        for item in plant_parts_data[:]:
             source_tot += int(item['sources_num'])
         chemicals_p = []
         for chemical in chemicals[:5]:
@@ -760,7 +881,6 @@ def plant_listing_page_gen_new(plant_name):
             </section>
         '''
         ###
-
         html_article += f'''
             <section aria-labelledby="compounds-heading">
                 {sources_html}
@@ -768,13 +888,17 @@ def plant_listing_page_gen_new(plant_name):
         '''
 
     ### ACTIVITIES
-    activities = plant_data['activities']
-    if activities != []:
+    data_key = 'activities'
+    item_key = 'activity_canonical_name'
+    section_data = plant_data[data_key]
+    if section_data != []:
         html_table_body = f''
+        sources_html = f''
         html_table_body += f'''<tbody>'''
-        table_chemical_num = 10
-        for item in activities[:table_chemical_num]:
-            activity_name = item['activity_canonical_name']
+        table_num = 10
+        for item in section_data[:table_num]:
+            name = item[item_key]
+            slug = polish.sluggify(name)
             sources_num = item['sources_num']
             sources = item['sources']
             source = sources[0]
@@ -786,38 +910,97 @@ def plant_listing_page_gen_new(plant_name):
             elif int(sources_num) >= 1: confidence = '★☆☆☆☆'
             html_table_body += f'''
                 <tr>
-                    <td>{activity_name}</td>
-                    <td>{source} (and other {sources_num} sources)</td>
-                    <td>{confidence}</td>
+                    <th scope="row">{name}</th>
+                    <td>
+                        <a href="#sources-{slug}">
+                            {sources_num} supporting sources
+                        </a>
+                    </td>
+                    <td>
+                        <span>
+                            {confidence}
+                        </span>
+                    </td>
                 </tr>
             '''
+            ### TODO: add this complete consensus instead of the one in the table
+            '''
+                <span aria-label="Very high source consensus">
+                    {confidence}
+                </span>
+                <span>Very high</span>
+            '''
+            ### SOURCES LISTS
+            sources_html += f'''
+                <h3 id="sources-{slug}">{name}</h3>
+                <ol class="listing-sources">
+            '''
+            for source in sources[:5]:
+                sources_html += f'''
+                    <li>
+                        <cite>
+                            {source}
+                        </cite>
+                    </li>
+                '''
+            sources_html += f'''
+                </ol>
+            '''
+            if len(sources)-5 > 0:
+                sources_html += f'''
+                    <details>
+                        <summary>
+                            View {len(sources)-5} additional sources
+                        </summary>
+                        <ol class="listing-sources" start="6">
+                '''
+                for source in sources[5:]:
+                    sources_html += f'''
+                        <li>
+                            <cite>
+                                {source}
+                            </cite>
+                        </li>
+                    '''
+                sources_html += f'''
+                        </ol>
+                    </details>
+                '''
         source_tot = 0 
-        for item in plants_parts_data[:]:
+        for item in plant_parts_data[:]:
             source_tot += int(item['sources_num'])
-        activities_p = []
-        for activity in activities[:5]:
-            activities_p.append(activity['activity_canonical_name'])
-        activities_p_str = ', '.join(activities_p)
+        p = []
+        for item in section_data[:5]:
+            p.append(item[item_key])
+        p_str = ', '.join(p)
         html_table_body += f'''</tbody>'''
         html_article += f'''
             <section>
                 <h2>
-                    Activities
+                    {data_key.capitalize()}
                 </h2>
                 <p>
-                    {plant_name} has {len(plant_data['activities'])} reported activities identified across {source_tot} scientific publications and several other databases. The most consistently reported activities include {activities_p_str}.
+                    {plant_name} has {len(plant_data[data_key])} reported activities identified across {source_tot} scientific publications and several other databases. The most consistently reported activities include {p_str}.
                 </p>
-                <h3>Most Reported Activities</h3>
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Activity</th>
-                      <th>Sources</th>
-                      <th>Consensus</th>
-                    </tr>
-                  </thead>
-                  {html_table_body}
+                <table style="margin-top: 3.2rem;">
+                    <caption style="text-align: left; margin-bottom: 0.8rem;">
+                        {data_key.capitalize()} reported in {plant_name}
+                    </caption>
+                    <thead>
+                        <tr>
+                            <th scope="col">Activity</th>
+                            <th scope="col">Supporting sources</th>
+                            <th scope="col">Consensus</th>
+                        </tr>
+                    </thead>
+                    {html_table_body}
                 </table>
+            </section>
+        '''
+        ###
+        html_article += f'''
+            <section aria-labelledby="compounds-heading">
+                {sources_html}
             </section>
         '''
 
@@ -846,7 +1029,7 @@ def plant_listing_page_gen_new(plant_name):
                 </tr>
             '''
         source_tot = 0 
-        for item in plants_parts_data[:]:
+        for item in plant_parts_data[:]:
             source_tot += int(item['sources_num'])
         diseases_p = []
         for disease in diseases[:5]:
@@ -937,7 +1120,7 @@ def plant_listing_page_gen_new(plant_name):
                 </tr>
             '''
         source_tot = 0 
-        for item in plants_parts_data[:]:
+        for item in plant_parts_data[:]:
             source_tot += int(item['sources_num'])
         html_table_body += f'''</tbody>'''
         html_article += f'''

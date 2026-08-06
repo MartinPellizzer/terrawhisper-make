@@ -1,0 +1,930 @@
+ref_ID,list_ID,entity_ID,work_author,work_ID,genus_ID,work_species,questionable,native,quest_native,naturalized,endemic_ref,quest_end_ref,endemic_list,quest_end_list,cons_status
+22,204,202,Cordem.,29493,4812,Mucuna pallida,,1,,0,1,,1,,EX
+22,204,202,C.F.Gaertn.,18331,3310,Fernelia pedunculata,,1,,0,1,,1,,EX
+22,204,202,(Poir.) Müll.Arg.,9820,2316,Claoxylon grandifolium,,1,,0,0,,0,,EX
+22,204,202,Badré & Cadet,26530,4356,Lobelia parva,,1,,0,1,,1,,EW
+22,204,202,Forssk.,36985,5850,Pteris dentata,,1,,0,0,,0,,EW
+22,204,202,L.,39389,6073,Ruppia maritima,,1,,0,0,,0,,RE
+22,204,202,(Thouars) Schltr.,402446,4974,Nervilia simplex,,1,,0,0,,0,,RE
+22,204,202,Rolfe,961,1090,Aeranthes caudata,,1,,0,0,,0,,RE
+22,204,202,Thouars,2396,1318,Angraecum palmiforme,,1,,0,0,,0,,RE
+22,204,202,H.Perrier,14810,2913,Disperis discifera,,1,,0,0,,0,,RE
+22,204,202,(Blume) Schltr.,30288,4974,Nervilia bicarinata,,1,,0,0,,0,,RE
+22,204,202,DC.,770,1064,Adenostemma mauritianum,,1,,0,0,,0,,RE
+22,204,202,(Willd.) Kuntze,24911,4174,Launaea sarmentosa,,1,,0,0,,0,,RE
+22,204,202,(L.) Vahl,40200,6187,Scaevola plumieri,,1,,0,0,,0,,RE
+22,204,202,(Poir.) Volponi,8897,2133,Cerastium lanceolatum,,1,,0,0,,0,,RE
+22,204,202,A.DC.,4518,1598,Badula crassa,,1,,0,0,,0,,RE
+22,204,202,(L.) DC.,1868,1209,Alysicarpus vaginalis,,1,,0,0,,0,,RE
+22,204,202,Lam.,10171,2345,Clitoria heterophylla,,1,,0,0,,0,,RE
+22,204,202,(Poir.) H.Ohashi & K.Ohashi,439782,17189,Pleurolobus salicifolius,,1,,0,0,,0,,RE
+22,204,202,(Willd.) DC.,29485,4812,Mucuna gigantea,,1,,0,0,,0,,RE
+22,204,202,Baker,22708,3901,Hymenophyllum balfourii,,1,,0,0,,0,,RE
+22,204,202,(L.) G.L.Webster,442341,19335,Synostemon bacciformis,,1,,0,0,,0,,RE
+22,204,202,Cav.,21710,3788,Hibiscus liliiflorus,,1,,0,0,,0,,RE
+22,204,202,L.,46169,7013,Urena lobata,,1,,0,0,,0,,RE
+22,204,202,J.E.Burrows,30984,5116,Ophioglossum convexum,,1,,0,0,,0,,RE
+22,204,202,C.Presl,30993,5116,Ophioglossum lancifolium,,1,,0,0,,0,,RE
+22,204,202,(L.) Kuntze,12855,2661,Cyperus cyperoides,,1,,0,0,,0,,RE
+22,204,202,(A.Camus) A.Camus,442056,20090,Pseudolasiacis leptolomoides,,1,,0,0,,0,,RE
+22,204,202,Bory ex Willd.,3747,1517,Asplenium bipartitum,,1,,0,0,,0,,RE
+22,204,202,Schrad.,3812,1517,Asplenium gemmiferum,,1,,0,0,,0,,RE
+22,204,202,Willd.,3835,1517,Asplenium inaequilaterale,,1,,0,0,,0,,RE
+22,204,202,Hook.,3945,1517,Asplenium sandersonii,,1,,0,0,,0,,RE
+22,204,202,(Desv.) Christ,442677,4368,Lomariopsis tenuifolia,,1,,0,0,,0,,RE
+22,204,202,(Bory) T.Moore,13883,2785,Dennstaedtia anthriscifolia,,1,,0,0,,0,,RE
+22,204,202,(Schrad.) Kuhn,22994,3921,Hypolepis sparsisora,,1,,0,0,,0,,RE
+22,204,202,(L.) T.Moore,28915,4696,Microlepia speluncae,,1,,0,0,,0,,RE
+22,204,202,(Kaulf.) Holttum,439925,4595,Megalastrum lanuginosum,,1,,0,0,,0,,RE
+22,204,202,Dryand.,26142,4327,Lindsaea heterophylla,,1,,0,0,,0,,RE
+22,204,202,(Bory) Thwaites,26174,4327,Lindsaea repens,,1,,0,0,,0,,RE
+22,204,202,(Bonap.) Alston,26618,4368,Lomariopsis cordata,,1,,0,0,,0,,RE
+22,204,202,Fée,26635,4368,Lomariopsis variabilis,,1,,0,0,,0,,RE
+22,204,202,(Desv.) Christ,30241,4965,Nephrolepis acutifolia,,1,,0,0,,0,,RE
+22,204,202,(Mett.) Copel.,20353,3553,Grammitis pygmaea,,1,,0,0,,0,,RE
+22,204,202,(L.) Copel.,28892,4695,Microgramma lycopodioides,,1,,0,0,,0,,RE
+22,204,202,(C.Chr.) Ching,438353,6763,Thelypteris oppositiformis,,1,,0,0,,0,,RE
+22,204,202,(Bory ex Willd.) Schelpe,442054,6763,Thelypteris pulchra,,1,,0,0,,0,,RE
+22,204,202,Lam.,20251,3546,Gouania tiliifolia,,1,,0,0,,0,,RE
+22,204,202,,27889,4555,Marsilea spec.,,1,,0,0,,0,,RE
+22,204,202,(Sm.) Bosser,46023,6990,Turraea rutilans,,1,,0,0,,0,,RE
+22,204,202,Rendle,29981,4876,Najas madagascariensis,,1,,0,0,,0,,CR
+22,204,202,(L.) Börner,43223,6602,Stuckenia pectinata,,1,,0,0,,0,,CR
+22,204,202,Poir.,36001,5738,Potamogeton nodosus,,1,,0,0,,0,,CR
+22,204,202,(Lam.) Baker,35663,5708,Polyscias cutispongia,,1,,0,1,,1,,CR
+22,204,202,Bernardi,35649,5708,Polyscias aemiliguineae,,1,,0,1,,1,,CR
+22,204,202,Bernardi,35700,5708,Polyscias rivalsii,,1,,0,1,,1,,CR
+22,204,202,N.Ludw.,359,972,Acanthophoenix rousselii,,1,,0,1,,1,,CR
+22,204,202,(Bory) Scheff.,14249,2839,Dictyosperma album,,1,,0,0,,0,,CR
+22,204,202,(Gaertn.) H.E.Moore,24853,4171,Latania lontaroides,,1,,0,1,,1,,CR
+22,204,202,Lam.,1680,1187,Aloe purpurea,,1,,0,0,,0,,CR
+22,204,202,Bosser,12812,2659,Cynorkis peyrotii,,1,,0,1,,1,,CR
+22,204,202,(Cordem.) Micheneau,2380,1318,Angraecum corrugatum,,1,,0,1,,1,,CR
+22,204,202,Cordem.,2406,1318,Angraecum viridiflorum,,1,,0,1,,1,,CR
+22,204,202,Bosser,12797,2659,Cynorkis cadetii,,1,,0,1,,1,,CR
+22,204,202,Bosser,17639,3232,Eulophia borbonica,,1,,0,1,,1,,CR
+22,204,202,(Thouars) Kuntze,20381,3557,Graphorkis concolor,,1,,0,0,,0,,CR
+22,204,202,(Lam.) Lindl.,26227,4335,Liparis cespitosa,,1,,0,0,,0,,CR
+22,204,202,Ridl.,26259,4335,Liparis ochracea,,1,,0,0,,0,,CR
+22,204,202,(S. Moore) Frapp. ex Cordem.,441730,5439,Phaius longibracteatus,,1,,0,0,,0,,CR
+22,204,202,Cass.,29314,4771,Monarrhenus salicifolius,,1,,0,0,,0,,CR
+22,204,202,Bory,41162,6319,Senecio ptarmicifolius,,1,,0,1,,1,,CR
+22,204,202,"H.Thomas, Félicité & Adolphe",21534,3764,Heterochaenia fragrans,,1,,0,1,,1,,CR
+22,204,202,(Blanco) Mabb.,428486,3712,Heliotropium arboreum,,1,,0,0,,0,,CR
+22,204,202,(Sm.) Govaerts,442842,3712,Heliotropium velutinum,,1,,0,1,,1,,CR
+22,204,202,(L.) Aug.DC.,19868,3487,Glinus oppositifolius,,1,,0,0,,0,,CR
+22,204,202,(Poir.) E.F.S.Rossetto & Caraballo,441810,2121,Ceodes lanceolata,,1,,0,0,,0,,CR
+22,204,202,(Meisn.) K.L.Wilson,32990,5410,Persicaria poiretii,,1,,0,0,,0,,CR
+22,204,202,Lam.,18774,3347,Foetidia mauritiana,,1,,0,0,,0,,CR
+22,204,202,Bosser & Coode,4520,1598,Badula fragilis,,1,,0,1,,1,,CR
+22,204,202,Poir.,981,1095,Aeschynomene brevifolia,,1,,0,0,,0,,CR
+22,204,202,(L.) DC.,1865,1209,Alysicarpus bupleurifolius,,1,,0,0,,0,,CR
+22,204,202,(DC.) Polhill,440640,3944,Indigofera ammoxylon,,1,,0,1,,1,,CR
+22,204,202,DC.,23276,3944,Indigofera diversifolia,,1,,0,0,,0,,CR
+22,204,202,(Retz.) Alston,43241,6606,Stylosanthes fruticosa,,1,,0,0,,0,,CR
+22,204,202,(Lam.) Pers.,44449,6714,Tephrosia pumila,,1,,0,0,,0,,CR
+22,204,202,(Lam.) Decne.,7526,1984,Camptocarpus mauritianus,,1,,0,0,,0,,CR
+22,204,202,L.,8199,2029,Carissa spinarum,,1,,0,0,,0,,CR
+22,204,202,Jacq.,43783,6656,Tabernaemontana persicariifolia,,1,,0,0,,0,,CR
+22,204,202,J.F.Gmel.,37451,5899,Pyrostria commersonii,,1,,0,1,,1,,CR
+22,204,202,Poir.,42398,6462,Spermacoce flagelliformis,,1,,0,0,,0,,CR
+22,204,202,Poir.,47075,7093,Volkameria heterophylla,,1,,0,0,,0,,CR
+22,204,202,(Molina) R.Morales,314853,4224,Lepechinia chilensis,,1,,0,0,,0,,CR
+22,204,202,(Cordem.) Marais,30314,4979,Nesogenes orerensis,,1,,0,1,,1,,CR
+22,204,202,(L.) Wettst.,4494,1595,Bacopa monnieri,,1,,0,0,,0,,CR
+22,204,202,Lam.,6062,1871,Buddleja indica,,1,,0,0,,0,,CR
+22,204,202,(Meisn.) Kubitzki,21483,3748,Hernandia mascarenensis,,1,,0,0,,0,,CR
+22,204,202,(P.Beauv.) Rothm.,22483,3868,Huperzia obtusifolia,,1,,0,0,,0,,CR
+22,204,202,(L.) Rothm.,22485,3868,Huperzia phlegmaria,,1,,0,0,,0,,CR
+22,204,202,(L.) Bernh. ex Schrank & Mart.,22495,3868,Huperzia selago,,1,,0,0,,0,,CR
+22,204,202,,9114,2181,Chamaesyce goliana,,1,,0,1,,1,,CR
+22,204,202,Coode,9831,2316,Claoxylon setosum,,1,,0,1,,1,,CR
+22,204,202,Lam.,11857,2566,Croton mauritianus,,1,,0,1,,1,,CR
+22,204,202,(Lam.) Müll.Arg.,43067,6566,Stillingia lineata,,1,,0,0,,0,,CR
+22,204,202,(Cav.) Baill.,14909,2942,Dombeya populnea,,1,,0,0,,0,,CR
+22,204,202,Aiton,21464,3745,Heritiera littoralis,,1,,0,0,,0,,CR
+22,204,202,Cav.,21690,3788,Hibiscus columnaris,,1,,0,0,,0,,CR
+22,204,202,(Forssk.) Vahl,440522,3788,Hibiscus ovalifolius,,1,,0,0,,0,,CR
+22,204,202,Cav.,39313,6069,Ruizia cordata,,1,,0,1,,1,,CR
+22,204,202,(Roxb.) Kostel.,44978,6770,Thespesia populneoides,,1,,0,0,,0,,CR
+22,204,202,(L.) L.f.,442762,6717,Terminalia bentzoe,,1,,0,0,,0,,CR
+22,204,202,Desr.,26831,4401,Ludwigia jussiaeoides,,1,,0,0,,0,,CR
+22,204,202,L.,31006,5116,Ophioglossum reticulatum,,1,,0,0,,0,,CR
+22,204,202,(Rottb.) C.B.Clarke,6213,1877,Bulbostylis barbata,,1,,0,0,,0,,CR
+22,204,202,Poir.,12878,2661,Cyperus expansus,,1,,0,1,,1,,CR
+22,204,202,Boeckeler,16157,3070,Eleocharis minuta,,1,,0,0,,0,,CR
+22,204,202,(L.) Kunth,42608,6495,Sporobolus virginicus,,1,,0,0,,0,,CR
+22,204,202,Mett.,3851,1517,Asplenium lividum,,1,,0,0,,0,,CR
+22,204,202,Mett.,3907,1517,Asplenium petiolulatum,,1,,0,0,,0,,CR
+22,204,202,(Labill.) J.Sm.,22993,3921,Hypolepis rugosula,,1,,0,0,,0,,CR
+22,204,202,(Krasser) C.Chr.,15286,2990,Dryopteris pentheri,,1,,0,0,,0,,CR
+22,204,202,(Forssk.) Kuhn,22950,3917,Hypodematium crenatum,,1,,0,0,,0,,CR
+22,204,202,(Kunze) T.Moore,35782,5712,Polystichum luctuosum,,1,,0,0,,0,,CR
+22,204,202,(Christ) Christ,35825,5712,Polystichum sinense,,1,,0,0,,0,,CR
+22,204,202,(Lam.) Alston,5478,1762,Bolbitis auriculata,,1,,0,0,,0,,CR
+22,204,202,Lorence,26627,4368,Lomariopsis mauritiensis,,1,,0,0,,0,,CR
+22,204,202,(Willd.) Proctor,439510,3553,Grammitis cultrata,,1,,0,0,,0,,CR
+22,204,202,Bory,36981,5850,Pteris croesus,,1,,0,0,,0,,CR
+22,204,202,Baker,37040,5850,Pteris nevillei,,1,,0,1,,1,,CR
+22,204,202,Bory ex Willd.,37052,5850,Pteris pseudolonchitis,,1,,0,0,,0,,CR
+22,204,202,(Bory) C.Presl,440374,3658,Haplopteris scolopendrina,,1,,0,0,,0,,CR
+22,204,202,(Willd.) E.H.Crane,440375,3658,Haplopteris zosterifolia,,1,,0,0,,0,,CR
+22,204,202,(L.f.) C.Chr.,44365,6698,Tectaria pica,,1,,0,0,,0,,CR
+22,204,202,(Thouars) Ching,44937,6763,Thelypteris tomentosa,,1,,0,0,,0,,CR
+22,204,202,(Mett.) Schelpe,309233,6763,Thelypteris gueintziana,,1,,0,0,,0,,CR
+22,204,202,(Desv.) Christenh.,371983,5453,Phegopteris aubertii,,1,,0,0,,0,,CR
+22,204,202,Lam.,20247,3546,Gouania mauritiana,,1,,0,0,,0,,CR
+22,204,202,J.F.Gmel.,442002,13260,Poupartia borbonica,,1,,0,0,,0,,CR
+22,204,202,(Cav.) Harms,46020,6990,Turraea oppositifolia,,1,,0,0,,0,,CR
+22,204,202,Blume,23438,3957,Ipomoea littoralis,,1,,0,0,,0,,CR
+22,204,202,(Desr.) Hallier f.,43044,6562,Stictocardia tiliifolia,,1,,0,0,,0,,CR
+22,204,202,Desc.,9703,2302,Cissus anulata,,1,,0,0,,0,,CR
+22,204,202,Schott,46064,6999,Typhonodorum lindleyanum,,1,,0,0,,0,,EN
+22,204,202,(L.f.) Royle,22595,3878,Hydrilla verticillata,,1,,0,0,,0,,EN
+22,204,202,L.,47637,7194,Zannichellia palustris,,1,,0,0,,0,,EN
+22,204,202,A.Rich.,22619,3883,Hydrocotyle grossularioides,,1,,0,1,,1,,EN
+22,204,202,Marais,35655,5708,Polyscias borbonica,,1,,0,1,,1,,EN
+22,204,202,Marais,35707,5708,Polyscias sessiliflora,,1,,0,1,,1,,EN
+22,204,202,Haw.,1676,1187,Aloe macra,,1,,0,1,,1,,EN
+22,204,202,Lam.,19828,3477,Gladiolus luteus,,1,,0,0,,0,,EN
+22,204,202,H.Perrier,959,1090,Aeranthes adenopoda,,1,,0,0,,0,,EN
+22,204,202,Hook.f.,2388,1318,Angraecum germinyanum,,1,,0,0,,0,,EN
+22,204,202,Frapp. ex Cordem.,2404,1318,Angraecum tenuifolium,,1,,0,1,,1,,EN
+22,204,202,Schltr.,193798,5610,Platylepis margaritifera,,1,,0,1,,1,,EN
+22,204,202,(Frapp. ex Cordem.) J.-B.Castillon,440086,5072,Oeceoclades versicolor,,1,,0,1,,1,,EN
+22,204,202,Frapp. ex Cordem.,20839,3625,Habenaria undulata,,1,,0,1,,1,,EN
+22,204,202,Frapp. ex Cordem.,26223,4335,Liparis bernieri,,1,,0,1,,1,,EN
+22,204,202,Frapp. ex Cordem.,26263,4335,Liparis punctilabris,,1,,0,1,,1,,EN
+22,204,202,(Thouars) Summerh.,441227,8754,Microcoelia aphylla,,1,,0,0,,0,,EN
+22,204,202,A.J.Scott,36531,5824,Psiadia rivalsii,,1,,0,1,,1,,EN
+22,204,202,Badré & Cadet,21532,3764,Heterochaenia borbonica,,1,,0,1,,1,,EN
+22,204,202,(A.DC.) Govaerts,442841,3712,Heliotropium acuminatum,,1,,0,1,,1,,EN
+22,204,202,L.,7674,2015,Cardamine africana,,1,,0,0,,0,,EN
+22,204,202,L.,19819,3475,Gisekia pharnaceoides,,1,,0,0,,0,,EN
+22,204,202,(C.F.Gaertn.) Baehni,41554,6367,Sideroxylon majus,,1,,0,1,,1,,EN
+22,204,202,(E.Mey.) Verdc.,27368,4476,Macrotyloma axillare,,1,,0,0,,0,,EN
+22,204,202,Bory,42165,6434,Sophora denudata,,1,,0,1,,1,,EN
+22,204,202,Span.,47817,7215,Zornia gibbosa,,1,,0,0,,0,,EN
+22,204,202,(Hend. & Andr.Hend.) De Block,10930,2465,Coptosperma borbonicum,,1,,0,0,,0,,EN
+22,204,202,Lam.,18330,3310,Fernelia buxifolia,,1,,0,0,,0,,EN
+22,204,202,A.Rich. ex DC.,37452,5899,Pyrostria orbicularis,,1,,0,1,,1,,EN
+22,204,202,(L.) Sm.,19864,3486,Gleichenia polypodioides,,1,,0,0,,0,,EN
+22,204,202,Cordem.,439464,6893,Trichomanes frappieri,,1,,0,0,,0,,EN
+22,204,202,"Eb.Fisch., Schäferh. & Kai Müll.",420977,4326,Lindernia benthamii,,1,,0,0,,0,,EN
+22,204,202,(Herter) Holub,22465,3868,Huperzia dentata,,1,,0,0,,0,,EN
+22,204,202,(Lam.) Trevis.,440592,3868,Huperzia saururus,,1,,0,0,,0,,EN
+22,204,202,Poir.,288,965,Acalypha filiformis,,1,,0,0,,0,,EN
+22,204,202,Cordem. ex Radcl.-Sm.,17990,3237,Euphorbia viridula,,1,,0,1,,1,,EN
+22,204,202,Baill.,9829,2316,Claoxylon racemiflorum,,1,,0,1,,1,,EN
+22,204,202,Lam.,22428,3860,Hugonia serrata,,1,,0,0,,0,,EN
+22,204,202,(Frapp. ex Cordem.) Airy Shaw,15335,2991,Drypetes caustica,,1,,0,0,,0,,EN
+22,204,202,(Lam.) Sleumer,40678,942,Scolopia heterophylla,,1,,0,0,,0,,EN
+22,204,202,(Cav.) G.Don,438115,961,Abutilon exstipulare,,1,,0,1,,1,,EN
+22,204,202,Frapp. ex Cordem.,14902,2942,Dombeya blattiolens,,1,,0,1,,1,,EN
+22,204,202,Cav.,14913,2942,Dombeya umbellata,,1,,0,1,,1,,EN
+22,204,202,L.,422994,3788,Hibiscus tiliaceus,,1,,0,0,,0,,EN
+22,204,202,L.,41469,6363,Sida cordifolia,,1,,0,0,,0,,EN
+22,204,202,(C.Presl) S.A.Graham & Gandhi,421038,1233,Ammannia capitellata,,1,,0,0,,0,,EN
+22,204,202,J.Guého & A.J.Scott,43524,6654,Syzygium borbonicum,,1,,0,1,,1,,EN
+22,204,202,(C.Chr.) Christenh.,439248,5116,Ophioglossum malgassicum,,1,,0,0,,0,,EN
+22,204,202,L.,31390,5176,Osmunda regalis,,1,,0,0,,0,,EN
+22,204,202,Retz.,439648,2661,Cyperus stolonifer,,1,,0,0,,0,,EN
+22,204,202,(L.) Vahl,18662,3327,Fimbristylis ferruginea,,1,,0,0,,0,,EN
+22,204,202,,21301,3706,Helictotrichon spec.,,1,,0,1,,1,,EN
+22,204,202,Kunth,33355,5488,Phragmites mauritianus,,1,,0,0,,0,,EN
+22,204,202,L.,3798,1517,Asplenium erosum,,1,,0,0,,0,,EN
+22,204,202,L.,3882,1517,Asplenium nidus,,1,,0,0,,0,,EN
+22,204,202,(P.J.Bergius) Kunze,3941,1517,Asplenium rutifolium,,1,,0,0,,0,,EN
+22,204,202,(Thunb.) Sw.,3769,1517,Asplenium cordatum,,1,,0,0,,0,,EN
+22,204,202,(Baker) C.Chr.,15200,2990,Dryopteris antarctica,,1,,0,0,,0,,EN
+22,204,202,(Spreng.) Hyl.,15331,2990,Dryopteris wallichiana,,1,,0,0,,0,,EN
+22,204,202,(Kaulf. ex Spreng.) Li Bing Zhang & Yi F.Duan,433406,4595,Megalastrum oppositum,,1,,0,0,,0,,EN
+22,204,202,Sw.,26135,4327,Lindsaea ensifolia,,1,,0,0,,0,,EN
+22,204,202,(Baker) Ching,20276,3553,Grammitis barbatula,,1,,0,0,,0,,EN
+22,204,202,(L.) Copel.,28998,4708,Microsorum punctatum,,1,,0,0,,0,,EN
+22,204,202,L.,633,1021,Acrostichum aureum,,1,,0,0,,0,,EN
+22,204,202,Bory,438204,1069,Adiantum hirsutum,,1,,0,0,,0,,EN
+22,204,202,(Bory ex Willd.) Mett.,2650,1366,Antrophyum immersum,,1,,0,0,,0,,EN
+22,204,202,(P.Beauv.) Le Prieur,8929,2140,Ceratopteris cornuta,,1,,0,0,,0,,EN
+22,204,202,(Desv.) Christenh.,439903,3727,Hemionitis pedatoides,,1,,0,0,,0,,EN
+22,204,202,(Willd.) Christenh.,372694,3727,Hemionitis angulosa,,1,,0,0,,0,,EN
+22,204,202,L.,36980,5850,Pteris cretica,,1,,0,0,,0,,EN
+22,204,202,Poir.,37021,5850,Pteris linearis,,1,,0,0,,0,,EN
+22,204,202,(Desv.) C.Chr.,44371,6698,Tectaria puberula,,1,,0,0,,0,,EN
+22,204,202,(L.) Tardieu,44902,6763,Thelypteris parasitica,,1,,0,0,,0,,EN
+22,204,202,Marais,15122,2973,Droguetia gaudichaudiana,,1,,0,1,,1,,EN
+22,204,202,(Savigny) Gaudich.,30530,5045,Obetia ficifolia,,1,,0,0,,0,,EN
+22,204,202,Marais,33891,5542,Pilea cadetii,,1,,0,1,,1,,EN
+22,204,202,Bosser,46018,6990,Turraea monticola,,1,,0,1,,1,,EN
+22,204,202,(Cordem.) T.G.Hartley,28355,4623,Melicope segregis,,1,,0,1,,1,,EN
+22,204,202,(Lam.) Sm.,47665,7196,Zanthoxylum heterophyllum,,1,,0,0,,0,,EN
+22,204,202,(L.) Sm.,40372,6216,Schizaea dichotoma,,1,,0,0,,0,,EN
+22,204,202,Marais,35659,5708,Polyscias coriacea,,1,,0,1,,1,,VU
+22,204,202,(Bory) H.Wendl.,358,972,Acanthophoenix crinita,,1,,0,1,,1,,VU
+22,204,202,J.Stewart,958,1089,Aerangis punctata,,1,,0,0,,0,,VU
+22,204,202,Bosser,963,1090,Aeranthes tenella,,1,,0,0,,0,,VU
+22,204,202,Thouars,2375,1318,Angraecum calceolus,,1,,0,0,,0,,VU
+22,204,202,(Cordem.) Schltr.,2389,1318,Angraecum hermannii,,1,,0,1,,1,,VU
+22,204,202,Frapp. ex Cordem.,2391,1318,Angraecum liliodorum,,1,,0,1,,1,,VU
+22,204,202,Frapp. ex Cordem.,2399,1318,Angraecum pingue,,1,,0,0,,0,,VU
+22,204,202,Frapp. ex Cordem.,6151,1876,Bulbophyllum macrocarpum,,1,,0,1,,1,,VU
+22,204,202,(Thouars) Lindl.,6912,1913,Calanthe sylvatica,,1,,0,0,,0,,VU
+22,204,202,Thouars,11237,2502,Corymborkis corymbis,,1,,0,0,,0,,VU
+22,204,202,(Frapp. ex Cordem.) Schltr.,12803,2659,Cynorkis discolor,,1,,0,1,,1,,VU
+22,204,202,(Thouars) Lindl.,14814,2913,Disperis tripetaloides,,1,,0,0,,0,,VU
+22,204,202,Bosser,19386,3420,Gastrodia similis,,1,,0,1,,1,,VU
+22,204,202,(Frapp. ex Cordem.) Schltr.,23935,4023,Jumellea divaricata,,1,,0,1,,1,,VU
+22,204,202,(Thouars) Schltr.,23939,4023,Jumellea recurva,,1,,0,0,,0,,VU
+22,204,202,(Frapp. ex Cordem.) Schltr.,23941,4023,Jumellea stenophylla,,1,,0,1,,1,,VU
+22,204,202,(Lindl.) Lindl.,30669,5072,Oeceoclades maculata,,1,,0,0,,0,,VU
+22,204,202,(Thouars) Schltr.,30717,5079,Oeoniella polystachys,,1,,0,0,,0,,VU
+22,204,202,(A.Rich.) Lindl.,441765,2659,Cynorkis boryana,,1,,0,0,,0,,VU
+22,204,202,Cadet,16960,3179,Eriotrix commersonii,,1,,0,1,,1,,VU
+22,204,202,C.Jeffrey,18318,3304,Faujasia cadetiana,,1,,0,1,,1,,VU
+22,204,202,(Bory) C.Jeffrey,18321,3304,Faujasia squamosa,,1,,0,1,,1,,VU
+22,204,202,Cass.,29313,4771,Monarrhenus pinifolius,,1,,0,1,,1,,VU
+22,204,202,(Cordem.) C.Jeffrey,32024,5268,Parafaujasia fontinalis,,1,,0,1,,1,,VU
+22,204,202,DC.,36530,5824,Psiadia retusa,,1,,0,1,,1,,VU
+22,204,202,Cordem.,36533,5824,Psiadia salaziana,,1,,0,1,,1,,VU
+22,204,202,Cordem.,36535,5824,Psiadia sericea,,1,,0,1,,1,,VU
+22,204,202,Tul.,5031,1688,Berenice arguta,,1,,0,1,,1,,VU
+22,204,202,Lam.,26548,4356,Lobelia serpens,,1,,0,0,,0,,VU
+22,204,202,(Lam.) Bory,12768,2654,Cynoglossum borbonicum,,1,,0,1,,1,,VU
+22,204,202,Baker,12769,2654,Cynoglossum cernuum,,1,,0,0,,0,,VU
+22,204,202,E.Mey. ex Arn.,2733,1394,Apodytes dimidiata,,1,,0,0,,0,,VU
+22,204,202,(L.) C.Jeffrey,47628,7190,Zaleya pentandra,,1,,0,0,,0,,VU
+22,204,202,(L.) R.Br. ex DC.,1843,1202,Alternanthera sessilis,,1,,0,0,,0,,VU
+22,204,202,I.Richardson,14460,2868,Diospyros borbonica,,1,,0,1,,1,,VU
+22,204,202,(Cordem.) Coode,4519,1598,Badula decumbens,,1,,0,1,,1,,VU
+22,204,202,(A.DC.) A.DC.,16291,3093,Embelia micrantha,,1,,0,0,,0,,VU
+22,204,202,L.,438834,3583,Guilandina bonduc,,1,,0,0,,0,,VU
+22,204,202,(G.Forst.) Seem.,43193,6593,Strongylodon lucidus,,1,,0,0,,0,,VU
+22,204,202,J.F.Gmel.,30552,5056,Ochrosia borbonica,,1,,0,0,,0,,VU
+22,204,202,(Lam.) Marais,40838,6291,Secamone volubilis,,1,,0,0,,0,,VU
+22,204,202,Decne.,45607,6899,Trichosandra borbonica,,1,,0,1,,1,,VU
+22,204,202,Tardieu,14234,2833,Dicranopteris cadetii,,1,,0,0,,0,,VU
+22,204,202,Kunze,19856,3486,Gleichenia boryi,,1,,0,0,,0,,VU
+22,204,202,C.Chr.,439460,6893,Trichomanes bonapartei,,1,,0,0,,0,,VU
+22,204,202,Christ,439463,6893,Trichomanes fallax,,1,,0,0,,0,,VU
+22,204,202,Bory ex Willd.,442875,6893,Trichomanes giganteum,,1,,0,0,,0,,VU
+22,204,202,L.,36176,5749,Premna serratifolia,,1,,0,0,,0,,VU
+22,204,202,Horne ex Oliv.,439268,5015,Noronhia broomeana,,1,,0,0,,0,,VU
+22,204,202,(L.) Alston,26113,4326,Lindernia rotundifolia,,1,,0,0,,0,,VU
+22,204,202,Lorence,43863,6673,Tambourissa crassa,,1,,0,1,,1,,VU
+22,204,202,(G.Forst.) Trevis.,22498,3868,Huperzia squarrosa,,1,,0,0,,0,,VU
+22,204,202,(L.) Pic.Serm.,27011,4424,Lycopodiella caroliniana,,1,,0,0,,0,,VU
+22,204,202,Lam.,17143,3202,Erythroxylum hypericifolium,,1,,0,0,,0,,VU
+22,204,202,Lam.,17162,3202,Erythroxylum sideroxyloides,,1,,0,0,,0,,VU
+22,204,202,Radcl.-Sm.,17934,3237,Euphorbia reconciliationis,,1,,0,1,,1,,VU
+22,204,202,Cordem.,9817,2316,Claoxylon dolichostachyum,,1,,0,1,,1,,VU
+22,204,202,Müll.Arg.,33469,5501,Phyllanthus consanguineus,,1,,0,1,,1,,VU
+22,204,202,Cav.,14901,2942,Dombeya acutangula,,1,,0,0,,0,,VU
+22,204,202,Arènes,439879,2942,Dombeya delislei,,1,,0,1,,1,,VU
+22,204,202,de Vriese,2353,1313,Angiopteris madagascariensis,,1,,0,0,,0,,VU
+22,204,202,J.R.Forst. & G.Forst.,32594,5352,Pemphis acidula,,1,,0,0,,0,,VU
+22,204,202,Desr.,28477,4635,Memecylon cordatum,,1,,0,0,,0,,VU
+22,204,202,Lam.,17503,3227,Eugenia mespiloides,,1,,0,1,,1,,VU
+22,204,202,(L.) H.Hara,26819,4401,Ludwigia adscendens,,1,,0,0,,0,,VU
+22,204,202,L.,31002,5116,Ophioglossum pendulum,,1,,0,0,,0,,VU
+22,204,202,L.,31009,5116,Ophioglossum vulgatum,,1,,0,0,,0,,VU
+22,204,202,C.DC.,32773,5382,Peperomia pedunculata,,1,,0,1,,1,,VU
+22,204,202,L.,12836,2661,Cyperus articulatus,,1,,0,0,,0,,VU
+22,204,202,,16183,3070,Eleocharis spec.,,1,,0,1,,1,,VU
+22,204,202,(Retz.) Link,18655,3327,Fimbristylis complanata,,1,,0,0,,0,,VU
+22,204,202,A.Rich.,18346,3315,Festuca abyssinica,,1,,0,0,,0,,VU
+22,204,202,(G.Forst.) R.Br.,25511,4269,Lepturus repens,,1,,0,0,,0,,VU
+22,204,202,(Forssk.) Veldkamp,441581,6341,Setaria geminata,,1,,0,0,,0,,VU
+22,204,202,(A.Rich.) Veldkamp,164941,13757,Koordersiochloa longiarista,,1,,0,0,,0,,VU
+22,204,202,(L.) Merr.,47840,7218,Zoysia matrella,,1,,0,0,,0,,VU
+22,204,202,Bory ex Willd.,3797,1517,Asplenium erectum,,1,,0,0,,0,,VU
+22,204,202,L.,3875,1517,Asplenium monanthes,,1,,0,0,,0,,VU
+22,204,202,Schrad.,3920,1517,Asplenium protensum,,1,,0,0,,0,,VU
+22,204,202,(Kunth) Mett.,3983,1517,Asplenium theciferum,,1,,0,0,,0,,VU
+22,204,202,(L.f.) Kuhn,439732,2736,Davallia repens,,1,,0,0,,0,,VU
+22,204,202,(Hook.) Kuntze,441453,2990,Dryopteris squamiseta,,1,,0,0,,0,,VU
+22,204,202,Mett.,26630,4368,Lomariopsis pollicina,,1,,0,0,,0,,VU
+22,204,202,(Cordem.) C.Chr.,3486,1486,Arthropteris monocarpa,,1,,0,0,,0,,VU
+22,204,202,(Afzel. ex Sw.) J.Sm.,30265,4965,Nephrolepis undulata,,1,,0,0,,0,,VU
+22,204,202,(Baker) Christenh.,439531,3553,Grammitis torulosa,,1,,0,0,,0,,VU
+22,204,202,(Baker) Copel.,20290,3553,Grammitis cryptophlebia,,1,,0,0,,0,,VU
+22,204,202,(Sw.) Sw.,440311,3553,Grammitis myosuroides,,1,,0,0,,0,,VU
+22,204,202,Wikstr.,831,1069,Adiantum poiretii,,1,,0,0,,0,,VU
+22,204,202,(Sw.) Christenh.,371342,3727,Hemionitis hirta,,1,,0,0,,0,,VU
+22,204,202,(Sw.) Christenh.,369582,3727,Hemionitis calomelanos,,1,,0,0,,0,,VU
+22,204,202,(Forssk.) Christenh.,370045,3727,Hemionitis quadripinnata,,1,,0,0,,0,,VU
+22,204,202,(Willd.) Hennequin & H.Schneid.,433397,2155,Cerosora argentea,,1,,0,0,,0,,VU
+22,204,202,(Willd.) K.Iwats.,442609,6763,Thelypteris arbuscula,,1,,0,0,,0,,VU
+22,204,202,(L.) Bernh.,13181,2688,Cystopteris fragilis,,1,,0,0,,0,,VU
+22,204,202,G.Forst.,32097,5297,Parietaria debilis,,1,,0,0,,0,,VU
+22,204,202,Marais,33884,5542,Pilea borbonica,,1,,0,1,,1,,VU
+22,204,202,(Lam.) Vahl,30725,5082,Olax psittacorum,,1,,0,0,,0,,VU
+22,204,202,A.J.Scott,46016,6990,Turraea cadetii,,1,,0,1,,1,,VU
+22,204,202,(Cav.) Harms,46021,6990,Turraea ovata,,1,,0,0,,0,,VU
+22,204,202,(Lam.) G.Don,46482,7055,Vepris lanceolata,,1,,0,0,,0,,VU
+22,204,202,J.R.Forst. & G.Forst.,14186,2822,Dichondra repens,,1,,0,0,,0,,VU
+22,204,202,A.M.Venter & A.J.Scott,26999,4421,Lycium mascarenense,,1,,0,0,,0,,VU
+22,204,202,(Baill. ex Drake) R.Vig.,35652,5708,Polyscias bernieri,,1,,0,1,,1,,NT
+22,204,202,Gaertn.,22816,3904,Hyophorbe indica,,1,,0,1,,1,,NT
+22,204,202,Bosser,2374,1318,Angraecum cadetii,,1,,0,0,,0,,NT
+22,204,202,Bory,2386,1318,Angraecum eburneum,,1,,0,0,,0,,NT
+22,204,202,Thouars,2402,1318,Angraecum striatum,,1,,0,1,,1,,NT
+22,204,202,(Thouars) A.Rich.,4824,1663,Beclardia macrostachya,,1,,0,0,,0,,NT
+22,204,202,Thouars,6101,1876,Bulbophyllum caespitosum,,1,,0,0,,0,,NT
+22,204,202,(Thouars) Lindl.,6912,1913,Calanthe sylvatica,,1,,0,0,,0,,NT
+22,204,202,(Thouars) Lindl.,12019,2585,Cryptopus elatus,,1,,0,0,,0,,NT
+22,204,202,(Thouars) Lindl.,17647,3232,Eulophia pulchra,,1,,0,0,,0,,NT
+22,204,202,(Thouars) Rchb.f.,33099,5439,Phaius tetragonus,,1,,0,0,,0,,NT
+22,204,202,Cordem.,36526,5824,Psiadia insignis,,1,,0,1,,1,,NT
+22,204,202,(Cordem.) Cordem.,36529,5824,Psiadia montana,,1,,0,1,,1,,NT
+22,204,202,(Lam.) A.DC.,21533,3764,Heterochaenia ensifolia,,1,,0,1,,1,,NT
+22,204,202,Badré & Cadet,21535,3764,Heterochaenia rivalsii,,1,,0,1,,1,,NT
+22,204,202,(N.E.Br.) Schwantes,13575,2760,Delosperma napiforme,,1,,0,1,,1,,NT
+22,204,202,(Coode) Coode,4522,1598,Badula nitida,,1,,0,1,,1,,NT
+22,204,202,Lam.,27142,4439,Lysimachia mauritiana,,1,,0,0,,0,,NT
+22,204,202,(Sw.) DC.,7596,1997,Canavalia rosea,,1,,0,0,,0,,NT
+22,204,202,Jacq.,43783,6656,Tabernaemontana persicariifolia,,1,,0,0,,0,,NT
+22,204,202,Tardieu,439828,6893,Trichomanes lorencei,,1,,0,0,,0,,NT
+22,204,202,(L.f.) Trevis.,22504,3868,Huperzia verticillata,,1,,0,0,,0,,NT
+22,204,202,Boiss.,17750,3237,Euphorbia borbonica,,1,,0,1,,1,,NT
+22,204,202,Cordem.,45943,6969,Trochetia granulata,,1,,0,1,,1,,NT
+22,204,202,Naudin,28132,4590,Medinilla loranthoides,,1,,0,1,,1,,NT
+22,204,202,J.Guého & A.J.Scott,17370,3227,Eugenia bosseri,,1,,0,1,,1,,NT
+22,204,202,Bory,31845,5251,Pandanus sylvestris,,1,,0,1,,1,,NT
+22,204,202,Vahl,442127,2661,Cyperus intactus,,1,,0,0,,0,,NT
+22,204,202,Retz.,3250,1465,Aristida setacea,,1,,0,0,,0,,NT
+22,204,202,(Cordem.) Tardieu,12059,2590,Ctenitis maritima,,1,,0,0,,0,,NT
+22,204,202,(Cordem.) Tardieu,20330,3553,Grammitis melanoloma,,1,,0,1,,1,,NT
+22,204,202,Bory,2649,1366,Antrophyum giganteum,,1,,0,0,,0,,NT
+22,204,202,(Poir.) Christenh.,439904,3727,Hemionitis pilosa,,1,,0,0,,0,,NT
+22,204,202,Gaudich.,36102,5745,Pouzolzia laevigata,,1,,0,0,,0,,NT
+22,204,202,T.G.Hartley,28290,4623,Melicope coodeana,,1,,0,1,,1,,NT
+22,204,202,(Coode) T.G.Hartley,28310,4623,Melicope irifica,,1,,0,1,,1,,NT
+22,204,202,Welw.,25027,4210,Lemna aequinoctialis,,1,,0,0,,0,,LC
+22,204,202,(Asch.) Dandy,43496,6652,Syringodium isoetifolium,,1,,0,0,,0,,LC
+22,204,202,(L.) Urb.,8775,2107,Centella asiatica,,1,,0,0,,0,,LC
+22,204,202,(DC.) Baker,35699,5708,Polyscias repanda,,1,,0,1,,1,,LC
+22,204,202,Putt.,34694,5584,Pittosporum senacia,,1,,0,0,,0,,LC
+22,204,202,Lam.,15047,2960,Dracaena reflexa,,1,,0,0,,0,,LC
+22,204,202,Bresler,3648,1506,Asparagus umbellulatus,,1,,0,0,,0,,LC
+22,204,202,(Lam.) Kunth,4020,1520,Astelia hemichrysa,,1,,0,0,,0,,LC
+22,204,202,Lam.,23009,3924,Hypoxis angustifolia,,1,,0,0,,0,,LC
+22,204,202,(Lam.) J.F.Macbr.,11064,2473,Cordyline mauritiana,,1,,0,0,,0,,LC
+22,204,202,(Thouars) Lindl.,960,1090,Aeranthes arachnites,,1,,0,0,,0,,LC
+22,204,202,Frapp. ex Cordem.,962,1090,Aeranthes strangulata,,1,,0,1,,1,,LC
+22,204,202,(Thouars) Schltr.,2367,1317,Angraecopsis parviflora,,1,,0,0,,0,,LC
+22,204,202,Frapp. ex Cordem.,2370,1318,Angraecum appendiculatum,,1,,0,1,,1,,LC
+22,204,202,Bosser,2372,1318,Angraecum borbonicum,,1,,0,1,,1,,LC
+22,204,202,Balf.f. & S.Moore,2373,1318,Angraecum bracteosum,,1,,0,1,,1,,LC
+22,204,202,Thouars,2376,1318,Angraecum caulescens,,1,,0,0,,0,,LC
+22,204,202,(Cordem.) Schltr.,165830,1318,Angraecum crassifolium,,1,,0,1,,1,,LC
+22,204,202,Cordem.,2379,1318,Angraecum cornigerum,,1,,0,1,,1,,LC
+22,204,202,Frapp. ex Cordem.,2381,1318,Angraecum costatum,,1,,0,1,,1,,LC
+22,204,202,Thouars,2382,1318,Angraecum cucullatum,,1,,0,0,,0,,LC
+22,204,202,Thouars,2387,1318,Angraecum expansum,,1,,0,0,,0,,LC
+22,204,202,(Poir.) Frapp.,2392,1318,Angraecum mauritianum,,1,,0,0,,0,,LC
+22,204,202,(Ridl.) Schltr.,2403,1318,Angraecum tenellum,,1,,0,1,,1,,LC
+22,204,202,Frapp. ex Cordem.,2395,1318,Angraecum obversifolium,,1,,0,0,,0,,LC
+22,204,202,Frapp. ex Cordem.,2397,1318,Angraecum patens,,1,,0,1,,1,,LC
+22,204,202,Thouars,2398,1318,Angraecum pectinatum,,1,,0,0,,0,,LC
+22,204,202,Thouars,2400,1318,Angraecum ramosum,,1,,0,0,,0,,LC
+22,204,202,(Thouars) Hermans & P.J.Cribb,438518,2659,Cynorkis inermis,,1,,0,0,,0,,LC
+22,204,202,A. Rich.,438718,1684,Benthamia latifolia,,1,,0,0,,0,,LC
+22,204,202,Schltr.,4997,1684,Benthamia nigrescens,,1,,0,0,,0,,LC
+22,204,202,Frapp. ex Cordem.,6113,1876,Bulbophyllum cylindrocarpum,,1,,0,0,,0,,LC
+22,204,202,Thouars,6133,1876,Bulbophyllum incurvum,,1,,0,0,,0,,LC
+22,204,202,Thouars,6146,1876,Bulbophyllum longiflorum,,1,,0,0,,0,,LC
+22,204,202,(Thouars) Thouars,6164,1876,Bulbophyllum nutans,,1,,0,0,,0,,LC
+22,204,202,Ridl.,6166,1876,Bulbophyllum occlusum,,1,,0,0,,0,,LC
+22,204,202,Thouars,6167,1876,Bulbophyllum occultum,,1,,0,0,,0,,LC
+22,204,202,Thouars,6209,1876,Bulbophyllum variegatum,,1,,0,0,,0,,LC
+22,204,202,(Frapp. ex Cordem.) Schltr.,12800,2659,Cynorkis coccinelloides,,1,,0,0,,0,,LC
+22,204,202,(Frapp. ex Cordem.) Schltr.,12801,2659,Cynorkis constellata,,1,,0,1,,1,,LC
+22,204,202,Thouars,12806,2659,Cynorkis fastigiata,,1,,0,0,,0,,LC
+22,204,202,Thouars,12814,2659,Cynorkis purpurascens,,1,,0,0,,0,,LC
+22,204,202,(Thouars) Bosser,12816,2659,Cynorkis rosellata,,1,,0,0,,0,,LC
+22,204,202,Balf.f. & S.Moore,14773,2900,Disa borbonica,,1,,0,1,,1,,LC
+22,204,202,Sw.,14809,2913,Disperis cordata,,1,,0,0,,0,,LC
+22,204,202,Sm.,14813,2913,Disperis oppositifolia,,1,,0,0,,0,,LC
+22,204,202,(Thouars) Bytebier & Pailler,440357,2659,Cynorkis citrina,,1,,0,1,,1,,LC
+22,204,202,(Thouars) Spreng.,20821,3625,Habenaria praealta,,1,,0,0,,0,,LC
+22,204,202,Thouars,20829,3625,Habenaria sigillum,,1,,0,0,,0,,LC
+22,204,202,Cordem.,20833,3625,Habenaria spiraloides,,1,,0,1,,1,,LC
+22,204,202,Lindl.,22242,3827,Holothrix villosa,,1,,0,0,,0,,LC
+22,204,202,(Cordem.) Schltr.,23936,4023,Jumellea exilis,,1,,0,1,,1,,LC
+22,204,202,(Thouars) Schltr.,23938,4023,Jumellea recta,,1,,0,0,,0,,LC
+22,204,202,(Thouars) Schltr.,23942,4023,Jumellea triquetra,,1,,0,1,,1,,LC
+22,204,202,Frapp. ex Cordem.,26226,4335,Liparis caulescens,,1,,0,1,,1,,LC
+22,204,202,Thouars,440956,6561,Stichorkis distichis,,1,,0,0,,0,,LC
+22,204,202,(Thouars) Lindl.,26240,4335,Liparis flavescens,,1,,0,0,,0,,LC
+22,204,202,(Pers.) Summerh.,26265,4335,Liparis salassia,,1,,0,0,,0,,LC
+22,204,202,Frapp. ex Cordem.,26267,4335,Liparis scaposa,,1,,0,1,,1,,LC
+22,204,202,(Lam.) Schltr.,30507,5044,Oberonia disticha,,1,,0,0,,0,,LC
+22,204,202,Ridl.,30715,5078,Oeonia rosea,,1,,0,0,,0,,LC
+22,204,202,Kraenzl.,33095,5439,Phaius pulchellus,,1,,0,0,,0,,LC
+22,204,202,(Thouars) Rchb.f.,34973,5610,Platylepis occulta,,1,,0,0,,0,,LC
+22,204,202,(Thouars) Lindl. ex Spreng.,35726,5711,Polystachya cultriformis,,1,,0,0,,0,,LC
+22,204,202,(Thouars) Lindl.,35731,5711,Polystachya fusiformis,,1,,0,0,,0,,LC
+22,204,202,(Thouars) A.Rich.,40063,6174,Satyrium amoenum,,1,,0,0,,0,,LC
+22,204,202,,46052,6995,Tylostigma spec.,,1,,0,0,,0,,LC
+22,204,202,(Lam.) DC.,16961,3179,Eriotrix lycopodioides,,1,,0,1,,1,,LC
+22,204,202,(Pers.) Cass.,18319,3304,Faujasia pinifolia,,1,,0,1,,1,,LC
+22,204,202,(Pers.) C.Jeffrey,18320,3304,Faujasia salicifolia,,1,,0,1,,1,,LC
+22,204,202,(Lam.) C.Jeffrey,18322,3305,Faujasiopsis flexuosa,,1,,0,0,,0,,LC
+22,204,202,Cordem.,21181,3699,Helichrysum arnicoides,,1,,0,1,,1,,LC
+22,204,202,DC.,21197,3699,Helichrysum heliotropifolium,,1,,0,1,,1,,LC
+22,204,202,Bory,22419,3856,Hubertia ambavilla,,1,,0,0,,0,,LC
+22,204,202,(Klatt) C.Jeffrey,22420,3856,Hubertia multifoliosa,,1,,0,1,,1,,LC
+22,204,202,Bory,22421,3856,Hubertia tomentosa,,1,,0,1,,1,,LC
+22,204,202,(Lam.) C.Jeffrey,22440,3862,Humbertacalia tomentosa,,1,,0,0,,0,,LC
+22,204,202,(L.) Hilliard & B.L.Burtt,440265,5801,Pseudognaphalium luteoalbum,,1,,0,0,,0,,LC
+22,204,202,Cordem.,36519,5824,Psiadia amygdalina,,1,,0,1,,1,,LC
+22,204,202,Cordem.,442064,5824,Psiadia anchusifolia,,1,,0,1,,1,,LC
+22,204,202,Cordem.,36521,5824,Psiadia argentea,,1,,0,1,,1,,LC
+22,204,202,Cordem.,36522,5824,Psiadia aspera,,1,,0,1,,1,,LC
+22,204,202,B.L.Rob.,36523,5824,Psiadia boivinii,,1,,0,1,,1,,LC
+22,204,202,Cordem.,36524,5824,Psiadia callocephala,,1,,0,1,,1,,LC
+22,204,202,(Cass.) DC.,36525,5824,Psiadia dentata,,1,,0,1,,1,,LC
+22,204,202,Cordem.,36527,5824,Psiadia laurifolia,,1,,0,1,,1,,LC
+22,204,202,(Lam.) A.J.Scott,36528,5824,Psiadia melastomatoides,,1,,0,1,,1,,LC
+22,204,202,L.,24566,4119,Lactuca indica,,1,,0,0,,0,,LC
+22,204,202,Lam.,442695,10320,Seriphium passerinoides,,1,,0,1,,1,,LC
+22,204,202,(L.) H.Rob.,12378,2619,Cyanthillium cinereum,,1,,0,0,,0,,LC
+22,204,202,Cass.,443072,3597,Gymnanthemum fimbrilliferum,,1,,0,1,,1,,LC
+22,204,202,(Gaertn.) Roxb.,40206,6187,Scaevola taccada,,1,,0,0,,0,,LC
+22,204,202,A.DC.,12778,2654,Cynoglossum rochelia,,1,,0,0,,0,,LC
+22,204,202,(Burm.f.) R.Br.,45523,6889,Trichodesma zeylanicum,,1,,0,0,,0,,LC
+22,204,202,L.,45478,6878,Trianthema portulacastrum,,1,,0,0,,0,,LC
+22,204,202,L.,430,984,Achyranthes aspera,,1,,0,0,,0,,LC
+22,204,202,(L.) Blume,12510,2625,Cyathula prostrata,,1,,0,0,,0,,LC
+22,204,202,(J.S.Muell.) Stearn,38128,5982,Rhipsalis baccifera,,1,,0,0,,0,,LC
+22,204,202,Mill.,5448,1758,Boerhavia coccinea,,1,,0,0,,0,,LC
+22,204,202,L.,35160,5658,Plumbago zeylanica,,1,,0,0,,0,,LC
+22,204,202,(Meisn.) Soják,32996,5410,Persicaria senegalensis,,1,,0,0,,0,,LC
+22,204,202,L.,35951,5733,Portulaca oleracea,,1,,0,0,,0,,LC
+22,204,202,Jacq.,439115,14890,Elaeodendron orientale,,1,,0,0,,0,,LC
+22,204,202,Tul.,441858,5650,Pleurostylia pachyphloea,,1,,0,1,,1,,LC
+22,204,202,L.,10608,2425,Commelina benghalensis,,1,,0,0,,0,,LC
+22,204,202,Burm.f.,10614,2425,Commelina diffusa,,1,,0,0,,0,,LC
+22,204,202,(Vahl) Benn.,2705,1382,Aphloia theiformis,,1,,0,0,,0,,LC
+22,204,202,(Gaudich.) Warb.,4908,1665,Begonia salaziensis,,1,,0,0,,0,,LC
+22,204,202,(Desv.) R.M.Tryon,433393,1199,Alsophila borbonica,,1,,0,0,,0,,LC
+22,204,202,R.M.Tryon,433394,1199,Alsophila celsa,,1,,0,0,,0,,LC
+22,204,202,R.M.Tryon,433395,1199,Alsophila glaucifolia,,1,,0,1,,1,,LC
+22,204,202,Desf.,16638,3145,Equisetum ramosissimum,,1,,0,0,,0,,LC
+22,204,202,(Lam.) G.Don,438221,1110,Agarista buxifolia,,1,,0,0,,0,,LC
+22,204,202,(Lam.) G.Don,1032,1110,Agarista salicifolia,,1,,0,0,,0,,LC
+22,204,202,(Willd.) E.G.H.Oliv.,16770,3162,Erica arborescens,,1,,0,1,,1,,LC
+22,204,202,Lam.,16777,3162,Erica galioides,,1,,0,1,,1,,LC
+22,204,202,E.G.H.Oliv.,16785,3162,Erica reunionensis,,1,,0,1,,1,,LC
+22,204,202,(Lam.) A.DC.,4516,1598,Badula barthesia,,1,,0,1,,1,,LC
+22,204,202,A.DC.,4517,1598,Badula borbonica,,1,,0,1,,1,,LC
+22,204,202,(Cordem.) Coode,4521,1598,Badula grammisticta,,1,,0,1,,1,,LC
+22,204,202,(A.DC.) A.DC.,16284,3093,Embelia angustifolia,,1,,0,0,,0,,LC
+22,204,202,Cordem.,16289,3093,Embelia demissa,,1,,0,1,,1,,LC
+22,204,202,Bojer,24533,4104,Labourdonnaisia calophylloides,,1,,0,0,,0,,LC
+22,204,202,(Aubl.) C.F.Gaertn.,29161,4734,Mimusops balata,,1,,0,0,,0,,LC
+22,204,202,A.DC.,41538,6367,Sideroxylon borbonicum,,1,,0,1,,1,,LC
+22,204,202,J.F.Gmel.,18793,3355,Forgesia racemosa,,1,,0,1,,1,,LC
+22,204,202,(Lam.) Willd.,148,962,Acacia heterophylla,,1,,0,1,,1,,LC
+22,204,202,L.,11760,2565,Crotalaria retusa,,1,,0,0,,0,,LC
+22,204,202,Lam.,11775,2565,Crotalaria uncinella,,1,,0,0,,0,,LC
+22,204,202,(L.) Benth.,13767,2773,Dendrolobium umbellatum,,1,,0,0,,0,,LC
+22,204,202,(G.Don) H.Ohashi & K.Ohashi,439778,19738,Grona ramosissima,,1,,0,0,,0,,LC
+22,204,202,(Vahl) H.Ohashi & R.R.Mill,22673,3889,Hylodesmum repandum,,1,,0,0,,0,,LC
+22,204,202,L.,43845,6671,Tamarindus indica,,1,,0,0,,0,,LC
+22,204,202,(L.) Pers.,44450,6714,Tephrosia purpurea,,1,,0,0,,0,,LC
+22,204,202,(L.) L.,12748,2651,Cynanchum viminale,,1,,0,0,,0,,LC
+22,204,202,F.Friedmann,40829,6291,Secamone dilapidans,,1,,0,0,,0,,LC
+22,204,202,Bouton ex DC.,440204,3439,Geniostoma angustifolium,,1,,0,0,,0,,LC
+22,204,202,(Lam.) Spreng.,19468,3439,Geniostoma borbonicum,,1,,0,0,,0,,LC
+22,204,202,Bouton,19480,3439,Geniostoma pedunculatum,,1,,0,0,,0,,LC
+22,204,202,J.F.Gmel.,2632,1364,Antirhea borbonica,,1,,0,0,,0,,LC
+22,204,202,A.Rich. ex DC.,5055,1696,Bertiera rufa,,1,,0,1,,1,,LC
+22,204,202,(Cordem.) Verdc.,9174,2194,Chassalia corallioides,,1,,0,1,,1,,LC
+22,204,202,(Cordem.) Verdc.,9178,2194,Chassalia gaertneroides,,1,,0,1,,1,,LC
+22,204,202,Lam.,10450,2389,Coffea mauritiana,,1,,0,0,,0,,LC
+22,204,202,(Lam.) Pers.,13402,2714,Danais fragrans,,1,,0,0,,0,,LC
+22,204,202,Poir.,18997,3384,Gaertnera vaginata,,1,,0,1,,1,,LC
+22,204,202,Poir.,29579,4828,Mussaenda arcuata,,1,,0,0,,0,,LC
+22,204,202,(Poir.) Razafim. & Alejandro,5835,1826,Bremeria landia,,1,,0,0,,0,,LC
+22,204,202,Mouly & B.Bremer,23719,3998,Ixora borboniae,,1,,0,0,,0,,LC
+22,204,202,(DC.) Neupane & N.Wikstr.,440424,20038,Edrastima goreensis,,1,,0,0,,0,,LC
+22,204,202,(J.F.Gmel.) Razafim. & B.Bremer,442047,5840,Psychotria borbonica,,1,,0,0,,0,,LC
+22,204,202,(Burm.f.) Underw.,14239,2833,Dicranopteris linearis,,1,,0,0,,0,,LC
+22,204,202,(Bory ex Willd.) Ching,43023,6560,Sticherus flagellaris,,1,,0,0,,0,,LC
+22,204,202,Poir.,438107,6893,Trichomanes parviflorum,,1,,0,0,,0,,LC
+22,204,202,Jacq.,438109,6893,Trichomanes tamarisciforme,,1,,0,0,,0,,LC
+22,204,202,Poir.,439458,6893,Trichomanes bipunctatum,,1,,0,0,,0,,LC
+22,204,202,(Pic.Serm.) J.E.Burrows,439467,6893,Trichomanes inopinatum,,1,,0,0,,0,,LC
+22,204,202,Willd.,439823,6893,Trichomanes cuspidatum,,1,,0,0,,0,,LC
+22,204,202,Desv.,22716,3901,Hymenophyllum capillare,,1,,0,0,,0,,LC
+22,204,202,(Sw.) Fosberg,22727,3901,Hymenophyllum digitatum,,1,,0,0,,0,,LC
+22,204,202,(L.) Sw.,22742,3901,Hymenophyllum hirsutum,,1,,0,0,,0,,LC
+22,204,202,(Poir.) Desv.,22747,3901,Hymenophyllum hygrometricum,,1,,0,0,,0,,LC
+22,204,202,(Poir.) Desv.,22749,3901,Hymenophyllum inaequale,,1,,0,0,,0,,LC
+22,204,202,(Poir.) Desv.,22775,3901,Hymenophyllum peltatum,,1,,0,0,,0,,LC
+22,204,202,(Bory ex Willd.) Mett.,22797,3901,Hymenophyllum sibthorpioides,,1,,0,0,,0,,LC
+22,204,202,Bory ex Willd.,22740,3901,Hymenophyllum fumarioides,,1,,0,0,,0,,LC
+22,204,202,Kunth,55077,6893,Trichomanes diaphanum,,1,,0,0,,0,,LC
+22,204,202,Baker,45539,6893,Trichomanes barklyanum,,1,,0,0,,0,,LC
+22,204,202,L.,30777,5086,Olea europaea,,1,,0,0,,0,,LC
+22,204,202,Lam.,30779,5086,Olea lancea,,1,,0,0,,0,,LC
+22,204,202,(Vahl) Kuntze,1430,1156,Alectra sessiliflora,,1,,0,0,,0,,LC
+22,204,202,(L.) Kuntze,43159,6587,Striga asiatica,,1,,0,0,,0,,LC
+22,204,202,Lam.,30464,5038,Nuxia verticillata,,1,,0,0,,0,,LC
+22,204,202,L.,8418,2061,Cassytha filiformis,,1,,0,0,,0,,LC
+22,204,202,(Nees) Kosterm.,30615,5060,Ocotea obtusata,,1,,0,0,,0,,LC
+22,204,202,Lorence,29318,4774,Monimia amplexicaulis,,1,,0,1,,1,,LC
+22,204,202,Thouars,29319,4774,Monimia ovalifolia,,1,,0,0,,0,,LC
+22,204,202,Thouars,29320,4774,Monimia rotundifolia,,1,,0,1,,1,,LC
+22,204,202,(Tul.) A.DC.,43864,6673,Tambourissa elliptica,,1,,0,1,,1,,LC
+22,204,202,Willd.,41825,6408,Smilax anceps,,1,,0,0,,0,,LC
+22,204,202,(L.f.) Trevis.,22474,3868,Huperzia gnidioides,,1,,0,0,,0,,LC
+22,204,202,(Lam.) Rothm.,22484,3868,Huperzia ophioglossoides,,1,,0,0,,0,,LC
+22,204,202,(L.) Pic.Serm.,27012,4424,Lycopodiella cernua,,1,,0,0,,0,,LC
+22,204,202,L.,27025,4425,Lycopodium clavatum,,1,,0,0,,0,,LC
+22,204,202,Boivin ex Baill.,47520,7177,Xylopia richardii,,1,,0,0,,0,,LC
+22,204,202,Lam.,20379,3555,Grangeria borbonica,,1,,0,0,,0,,LC
+22,204,202,Willd.,7158,1948,Calophyllum tacamahaca,,1,,0,0,,0,,LC
+22,204,202,Lam.,17146,3202,Erythroxylum laurifolium,,1,,0,0,,0,,LC
+22,204,202,Willd.,300,965,Acalypha integrifolia,,1,,0,0,,0,,LC
+22,204,202,L.,17972,3237,Euphorbia thymifolia,,1,,0,0,,0,,LC
+22,204,202,Boivin ex Baill.,9819,2316,Claoxylon glandulosum,,1,,0,1,,1,,LC
+22,204,202,A.Juss.,9828,2316,Claoxylon parviflorum,,1,,0,0,,0,,LC
+22,204,202,"(Willd.) S.E.C.Sierra, Kulju & Welzen",20924,3651,Hancea integrifolia,,1,,0,0,,0,,LC
+22,204,202,Lam.,22893,3912,Hypericum lanceolatum,,1,,0,0,,0,,LC
+22,204,202,Lam.,2599,1358,Antidesma madagascariense,,1,,0,0,,0,,LC
+22,204,202,P.Willemet,33448,5501,Phyllanthus casticum,,1,,0,0,,0,,LC
+22,204,202,Poir.,33599,5501,Phyllanthus phillyreifolius,,1,,0,0,,0,,LC
+22,204,202,Roxb.,33646,5501,Phyllanthus tenellus,,1,,0,0,,0,,LC
+22,204,202,J.F.Gmel.,40851,6296,Securinega durissima,,1,,0,0,,0,,LC
+22,204,202,Vent.,8336,897,Casearia coriacea,,1,,0,0,,0,,LC
+22,204,202,(Burm.f.) Merr.,18735,904,Flacourtia indica,,1,,0,0,,0,,LC
+22,204,202,(Lam.) Benth.,22275,911,Homalium paniculatum,,1,,0,0,,0,,LC
+22,204,202,Cordem.,14903,2942,Dombeya ciliata,,1,,0,1,,1,,LC
+22,204,202,Cordem.,14905,2942,Dombeya elegans,,1,,0,1,,1,,LC
+22,204,202,Cav.,14906,2942,Dombeya ferruginea,,1,,0,0,,0,,LC
+22,204,202,Baill.,14907,2942,Dombeya ficulnea,,1,,0,1,,1,,LC
+22,204,202,Cordem.,14908,2942,Dombeya pilosa,,1,,0,1,,1,,LC
+22,204,202,Cav.,14910,2942,Dombeya punctata,,1,,0,1,,1,,LC
+22,204,202,Cordem.,14911,2942,Dombeya reclinata,,1,,0,1,,1,,LC
+22,204,202,DC.,440519,3788,Hibiscus boryanus,,1,,0,0,,0,,LC
+22,204,202,(Cav.) Ulbr.,441640,5326,Pavonia calycina,,1,,0,0,,0,,LC
+22,204,202,L.,46169,7013,Urena lobata,,1,,0,0,,0,,LC
+22,204,202,(Sm.) Murdock,78887,5869,Ptisana fraxinea,,1,,0,0,,0,,LC
+22,204,202,J.F.Gmel.,45899,6958,Tristemma mauritianum,,1,,0,0,,0,,LC
+22,204,202,Blume,441146,4635,Memecylon confusum,,1,,0,1,,1,,LC
+22,204,202,Lam.,17380,3227,Eugenia buxifolia,,1,,0,1,,1,,LC
+22,204,202,J.Bosser & Cadet,43549,6654,Syzygium cordemoyi,,1,,0,1,,1,,LC
+22,204,202,(Lam.) DC.,43552,6654,Syzygium cymosum,,1,,0,0,,0,,LC
+22,204,202,(Jacq.) P.H.Raven,26835,4401,Ludwigia octovalvis,,1,,0,0,,0,,LC
+22,204,202,(Bouton ex Hook.f.) Baill.,36588,5832,Psiloxylon mauritianum,,1,,0,0,,0,,LC
+22,204,202,Lam.,10216,2354,Cnestis polyphylla,,1,,0,0,,0,,LC
+22,204,202,D.Don,47242,7118,Weinmannia mauritiana,,1,,0,0,,0,,LC
+22,204,202,Sm.,443139,7118,Weinmannia tinctoria,,1,,0,0,,0,,LC
+22,204,202,Bory,31825,5251,Pandanus montanus,,1,,0,1,,1,,LC
+22,204,202,Thouars,31834,5251,Pandanus purpurascens,,1,,0,1,,1,,LC
+22,204,202,Bory,31849,5251,Pandanus utilis,,1,,0,0,,0,,LC
+22,204,202,Miq.,32674,5382,Peperomia borbonensis,,1,,0,1,,1,,LC
+22,204,202,(Lam.) A.Dietr.,32698,5382,Peperomia elliptica,,1,,0,0,,0,,LC
+22,204,202,Miq.,32712,5382,Peperomia goudotii,,1,,0,0,,0,,LC
+22,204,202,(Lam.) A.Dietr.,32786,5382,Peperomia portulacoides,,1,,0,0,,0,,LC
+22,204,202,(G.Forst.) Hook. & Arn.,32834,5382,Peperomia tetraphylla,,1,,0,0,,0,,LC
+22,204,202,(Miq.) C.DC.,34416,5565,Piper borbonense,,1,,0,0,,0,,LC
+22,204,202,(Roem. & Schult.) Lye ex Veldkamp & Verloove,78101,1877,Bulbostylis thouarsii,,1,,0,0,,0,,LC
+22,204,202,Kük.,7792,2026,Carex balfourii,,1,,0,1,,1,,LC
+22,204,202,Lam.,7806,2026,Carex borbonica,,1,,0,1,,1,,LC
+22,204,202,Schkuhr,7807,2026,Carex boryana,,1,,0,0,,0,,LC
+22,204,202,Thunb.,7812,2026,Carex brunnea,,1,,0,0,,0,,LC
+22,204,202,(Poir.) C.B.Clarke,11277,2514,Costularia melicoides,,1,,0,1,,1,,LC
+22,204,202,L.,12828,2661,Cyperus alternifolius,,1,,0,0,,0,,LC
+22,204,202,L.f.,12862,2661,Cyperus distans,,1,,0,0,,0,,LC
+22,204,202,Poir.,12916,2661,Cyperus longifolius,,1,,0,0,,0,,LC
+22,204,202,L.,12942,2661,Cyperus papyrus,,1,,0,0,,0,,LC
+22,204,202,L.,12964,2661,Cyperus rotundus,,1,,0,0,,0,,LC
+22,204,202,(Delile) Schult.,16124,3070,Eleocharis caduca,,1,,0,0,,0,,LC
+22,204,202,R.Br.,18656,3327,Fimbristylis cymosa,,1,,0,0,,0,,LC
+22,204,202,(L.) R.Br.,23644,3979,Isolepis fluitans,,1,,0,0,,0,,LC
+22,204,202,(L.) H.Pfeiff.,38285,6005,Rhynchospora colorata,,1,,0,0,,0,,LC
+22,204,202,(Nees) Valck.Sur.,440750,2661,Cyperus melanospermus,,1,,0,0,,0,,LC
+22,204,202,(Bory) T.Koyama,27246,4449,Machaerina iridifolia,,1,,0,0,,0,,LC
+22,204,202,Rottb.,12865,2661,Cyperus dubius,,1,,0,0,,0,,LC
+22,204,202,Boeckeler,12919,2661,Cyperus luteus,,1,,0,0,,0,,LC
+22,204,202,Rottb.,439643,2661,Cyperus polystachyos,,1,,0,1,,1,,LC
+22,204,202,Retz.,439636,2661,Cyperus flavidus,,1,,0,0,,0,,LC
+22,204,202,Rottb.,439643,2661,Cyperus polystachyos,,1,,0,0,,0,,LC
+22,204,202,(Vahl) Gale,38348,6005,Rhynchospora rugosa,,1,,0,0,,0,,LC
+22,204,202,Raddi,40601,6258,Scleria gaertneri,,1,,0,0,,0,,LC
+22,204,202,Lam.,16900,3167,Eriocaulon striatum,,1,,0,0,,0,,LC
+22,204,202,L.,18742,3336,Flagellaria indica,,1,,0,0,,0,,LC
+22,204,202,L.,23981,4024,Juncus effusus,,1,,0,0,,0,,LC
+22,204,202,L.,3202,1465,Aristida adscensionis,,1,,0,0,,0,,LC
+22,204,202,(L.) A.Camus,5591,1788,Bothriochloa pertusa,,1,,0,0,,0,,LC
+22,204,202,A.Camus,5752,1809,Brachypodium perrieri,,1,,0,0,,0,,LC
+22,204,202,(Hook. & Arn.) Stapf,12682,2649,Cymbopogon caesius,,1,,0,0,,0,,LC
+22,204,202,(L.) Pers.,12756,2653,Cynodon dactylon,,1,,0,0,,0,,LC
+22,204,202,(L.) Willd.,13226,2700,Dactyloctenium aegyptium,,1,,0,0,,0,,LC
+22,204,202,(Steud.) Bosser,13229,2700,Dactyloctenium ctenoides,,1,,0,0,,0,,LC
+22,204,202,(Retz.) Koeler,14304,2853,Digitaria ciliaris,,1,,0,0,,0,,LC
+22,204,202,(L.) R.Br.,16659,3146,Eragrostis ciliaris,,1,,0,0,,0,,LC
+22,204,202,(Bory) Kunth,17629,3229,Eulalia aurea,,1,,0,0,,0,,LC
+22,204,202,Spreng.,18357,3315,Festuca borbonica,,1,,0,1,,1,,LC
+22,204,202,(L.) P.Beauv. ex Roem. & Schult.,21545,3770,Heteropogon contortus,,1,,0,0,,0,,LC
+22,204,202,(Nees) Stapf,22831,3907,Hyparrhenia rufa,,1,,0,0,,0,,LC
+22,204,202,Kunth,23540,3963,Isachne mauritiana,,1,,0,0,,0,,LC
+22,204,202,(Steud.) Hack.,23561,3965,Ischaemum koleostachys,,1,,0,0,,0,,LC
+22,204,202,J.F.Gmel.,30041,4895,Nastus borbonicus,,1,,0,1,,1,,LC
+22,204,202,L.,31876,5253,Panicum brevifolium,,1,,0,0,,0,,LC
+22,204,202,Bory ex Nees,31923,5253,Panicum lycopodioides,,1,,0,1,,1,,LC
+22,204,202,(Bory) Veldkamp,441667,2103,Cenchrus cafer,,1,,0,1,,1,,LC
+22,204,202,(L.) Chase,39507,6095,Sacciolepis indica,,1,,0,0,,0,,LC
+22,204,202,(Desv.) Stapf,42228,6438,Sorghum arundinaceum,,1,,0,0,,0,,LC
+22,204,202,(L.) Brongn.,42940,6546,Stenotaphrum dimidiatum,,1,,0,0,,0,,LC
+22,204,202,Pers.,46055,6997,Typha domingensis,,1,,0,0,,0,,LC
+22,204,202,L.,3711,1517,Asplenium adiantum-nigrum,,1,,0,0,,0,,LC
+22,204,202,(Burm.f.) Becherer,3715,1517,Asplenium aethiopicum,,1,,0,0,,0,,LC
+22,204,202,Sw.,3716,1517,Asplenium affine,,1,,0,0,,0,,LC
+22,204,202,Hook. ex Schelpe,3750,1517,Asplenium boltonii,,1,,0,0,,0,,LC
+22,204,202,Lam.,438551,1517,Asplenium daucifolium,,1,,0,0,,0,,LC
+22,204,202,Hieron.,438556,1517,Asplenium kassneri,,1,,0,0,,0,,LC
+22,204,202,Sw.,3884,1517,Asplenium nitens,,1,,0,0,,0,,LC
+22,204,202,Lam.,3904,1517,Asplenium pellucidum,,1,,0,0,,0,,LC
+22,204,202,G.Forst.,3913,1517,Asplenium polyodon,,1,,0,0,,0,,LC
+22,204,202,Bory,3968,1517,Asplenium stoloniferum,,1,,0,0,,0,,LC
+22,204,202,(Lam.) Hayata,438572,11096,Hymenasplenium unilaterale,,1,,0,0,,0,,LC
+22,204,202,(Sw.) Mett.,5227,1730,Blechnum attenuatum,,1,,0,0,,0,,LC
+22,204,202,L.,5228,1730,Blechnum australe,,1,,0,0,,0,,LC
+22,204,202,Kuhn,5276,1730,Blechnum marginatum,,1,,0,1,,1,,LC
+22,204,202,(Thunb.) Kuhn,5313,1730,Blechnum tabulare,,1,,0,0,,0,,LC
+22,204,202,(Bory) R.M.Tryon,5340,1742,Blotiella glabra,,1,,0,0,,0,,LC
+22,204,202,(Kaulf.) R.M.Tryon,5346,1742,Blotiella pubescens,,1,,0,0,,0,,LC
+22,204,202,(Thunb.) J.Sm.,22188,3811,Histiopteris incisa,,1,,0,0,,0,,LC
+22,204,202,(L.) Kuhn,36950,5848,Pteridium aquilinum,,1,,0,0,,0,,LC
+22,204,202,(Baker) Tardieu,12038,2590,Ctenitis borbonica,,1,,0,1,,1,,LC
+22,204,202,(Schumach.) Ching,12040,2590,Ctenitis cirrhosa,,1,,0,0,,0,,LC
+22,204,202,(Cordem.) Holttum,12053,2590,Ctenitis humida,,1,,0,1,,1,,LC
+22,204,202,(Desv.) C.Chr.,15202,2990,Dryopteris aquilinoides,,1,,0,0,,0,,LC
+22,204,202,Tardieu,15209,2990,Dryopteris bernieri,,1,,0,1,,1,,LC
+22,204,202,(Hook. & Grev.) Schelpe,15912,3063,Elaphoglossum acrostichoides,,1,,0,0,,0,,LC
+22,204,202,(Blume) T.Moore,15916,3063,Elaphoglossum angulatum,,1,,0,0,,0,,LC
+22,204,202,(Desv.) T.Moore,15922,3063,Elaphoglossum aubertii,,1,,0,0,,0,,LC
+22,204,202,T.Moore,15962,3063,Elaphoglossum heterolepis,,1,,0,0,,0,,LC
+22,204,202,(Bory) Brack.,15968,3063,Elaphoglossum hybridum,,1,,0,0,,0,,LC
+22,204,202,(Desv.) C.V.Morton,15973,3063,Elaphoglossum lancifolium,,1,,0,0,,0,,LC
+22,204,202,T.Moore,15978,3063,Elaphoglossum lepervanchii,,1,,0,0,,0,,LC
+22,204,202,T.Moore,15984,3063,Elaphoglossum macropodium,,1,,0,0,,0,,LC
+22,204,202,(Bory ex Fée) Christ,16018,3063,Elaphoglossum richardii,,1,,0,1,,1,,LC
+22,204,202,(Willd.) C.Chr.,439983,3063,Elaphoglossum rufidulum,,1,,0,0,,0,,LC
+22,204,202,(Bory) T.Moore,368780,3063,Elaphoglossum spatulatum,,1,,0,0,,0,,LC
+22,204,202,Brack.,16033,3063,Elaphoglossum splendens,,1,,0,0,,0,,LC
+22,204,202,(Bory) T.Moore,16036,3063,Elaphoglossum stipitatum,,1,,0,1,,1,,LC
+22,204,202,(Fée) Holttum,28151,4595,Megalastrum lanatum,,1,,0,1,,1,,LC
+22,204,202,C.Chr.,35744,5712,Polystichum ammifolium,,1,,0,0,,0,,LC
+22,204,202,(G.Forst.) Ching,39378,6071,Rumohra adiantiformis,,1,,0,0,,0,,LC
+22,204,202,(L.) J.Sm.,30662,5071,Odontosoria chinensis,,1,,0,0,,0,,LC
+22,204,202,(Gmel.) Posth.,3488,1486,Arthropteris orientalis,,1,,0,0,,0,,LC
+22,204,202,(Bory) Mett.,30240,4965,Nephrolepis abrupta,,1,,0,0,,0,,LC
+22,204,202,(Sw.) Schott,30243,4965,Nephrolepis biserrata,,1,,0,0,,0,,LC
+22,204,202,(L.) C.Presl,30245,4965,Nephrolepis cordifolia,,1,,0,0,,0,,LC
+22,204,202,Kunze,30787,5087,Oleandra distenta,,1,,0,0,,0,,LC
+22,204,202,(L.f.) Li Wang,353961,4242,Lepisorus spicatus,,1,,0,0,,0,,LC
+22,204,202,(Sw.) Sw.,439351,3553,Grammitis serrulata,,1,,0,0,,0,,LC
+22,204,202,(Bojer) Christenh.,439516,3553,Grammitis leucosora,,1,,0,0,,0,,LC
+22,204,202,(Bory ex Willd.) C.V.Morton,439521,3553,Grammitis parvula,,1,,0,0,,0,,LC
+22,204,202,(Poir.) C.V.Morton,20299,3553,Grammitis flabelliformis,,1,,0,0,,0,,LC
+22,204,202,(Willd.) C.V.Morton,20270,3553,Grammitis argyrata,,1,,0,0,,0,,LC
+22,204,202,(Baker) Ching,20276,3553,Grammitis barbatula,,1,,0,0,,0,,LC
+22,204,202,Willd.,20342,3553,Grammitis obtusa,,1,,0,0,,0,,LC
+22,204,202,(Bory ex Willd.) Ching,25359,4242,Lepisorus excavatus,,1,,0,0,,0,,LC
+22,204,202,(Sw.) C.Presl,26804,4394,Loxogramme lanceolata,,1,,0,0,,0,,LC
+22,204,202,(Burm.f.) Copel.,441248,4708,Microsorum scolopendria,,1,,0,0,,0,,LC
+22,204,202,(Willd.) Kaulf.,35050,5634,Pleopeltis macrocarpa,,1,,0,0,,0,,LC
+22,204,202,(L.) Farw.,37471,5902,Pyrrosia lanceolata,,1,,0,0,,0,,LC
+22,204,202,(L.f.) Link,676,1029,Actiniopteris australis,,1,,0,0,,0,,LC
+22,204,202,Pic.Serm.,679,1029,Actiniopteris semiflabellata,,1,,0,0,,0,,LC
+22,204,202,L.,791,1069,Adiantum capillus-veneris,,1,,0,0,,0,,LC
+22,204,202,Sw.,809,1069,Adiantum hispidulum,,1,,0,0,,0,,LC
+22,204,202,L.,837,1069,Adiantum reniforme,,1,,0,0,,0,,LC
+22,204,202,Sw.,838,1069,Adiantum rhizophorum,,1,,0,0,,0,,LC
+22,204,202,(Willd.) Spreng.,2643,1366,Antrophyum boryanum,,1,,0,0,,0,,LC
+22,204,202,(Forssk.) Christenh.,369667,3727,Hemionitis farinosa,,1,,0,0,,0,,LC
+22,204,202,(Poir.) Schkuhr,29329,4780,Monogramma graminea,,1,,0,0,,0,,LC
+22,204,202,Mett.,433396,5850,Pteris pallens,,1,,0,0,,0,,LC
+22,204,202,(Willd.) Christenh.,369666,3727,Hemionitis dura,,1,,0,0,,0,,LC
+22,204,202,(Forssk.) Christenh.,369583,3727,Hemionitis viridis,,1,,0,0,,0,,LC
+22,204,202,Bory ex Willd.,37061,5850,Pteris scabra,,1,,0,0,,0,,LC
+22,204,202,L.,37076,5850,Pteris vittata,,1,,0,0,,0,,LC
+22,204,202,Bory ex Willd.,37079,5850,Pteris woodwardioides,,1,,0,0,,0,,LC
+22,204,202,(Sw.) E.H.Crane,440373,3658,Haplopteris ensiformis,,1,,0,0,,0,,LC
+22,204,202,Bory,47060,7090,Vittaria isoetifolia,,1,,0,0,,0,,LC
+22,204,202,(Schltdl.) Ching,438350,6763,Thelypteris bergiana,,1,,0,0,,0,,LC
+22,204,202,(Desv.) Tardieu,438351,6763,Thelypteris heteroptera,,1,,0,1,,1,,LC
+22,204,202,(Holttum) Holttum,1969,1219,Amauropelta salazica,,1,,0,1,,1,,LC
+22,204,202,(Willd.) Tardieu,438354,6763,Thelypteris strigosa,,1,,0,0,,0,,LC
+22,204,202,(Forssk.) E.P.St.John,439278,6763,Thelypteris dentata,,1,,0,0,,0,,LC
+22,204,202,(Decne.) C.F.Reed,68677,6763,Thelypteris hispidula,,1,,0,0,,0,,LC
+22,204,202,(Willd.) K.Iwats.,439585,6763,Thelypteris interrupta,,1,,0,0,,0,,LC
+22,204,202,(Gaudich.) Ching,27366,4475,Macrothelypteris torresiana,,1,,0,0,,0,,LC
+22,204,202,(Willd.) Mett.,442058,5453,Phegopteris cruciata,,1,,0,0,,0,,LC
+22,204,202,(C.Chr.) C.F.Reed,442613,6763,Thelypteris mauritiana,,1,,0,0,,0,,LC
+22,204,202,(L.) Morton,439600,6763,Thelypteris unita,,1,,0,0,,0,,LC
+22,204,202,(Willd.) C.Presl,4228,1554,Athyrium scandicinum,,1,,0,0,,0,,LC
+22,204,202,(Willd.) M.Kato,13908,2788,Deparia boryana,,1,,0,0,,0,,LC
+22,204,202,(Kunze) M.Kato,13926,2788,Deparia petersenii,,1,,0,0,,0,,LC
+22,204,202,(Bory) Sw.,438591,2878,Diplazium arborescens,,1,,0,0,,0,,LC
+22,204,202,(Lam.) Kaulf.,14660,2878,Diplazium proliferum,,1,,0,0,,0,,LC
+22,204,202,(L.) P.Beauv.,36586,5831,Psilotum nudum,,1,,0,0,,0,,LC
+22,204,202,L.,9699,2301,Cissampelos pareira,,1,,0,0,,0,,LC
+22,204,202,Lam.,9950,2330,Clematis mauritiana,,1,,0,0,,0,,LC
+22,204,202,Biria,442160,5927,Ranunculus petroselinus,,1,,0,1,,1,,LC
+22,204,202,Miq.,18470,3322,Ficus densifolia,,1,,0,0,,0,,LC
+22,204,202,Vahl,18513,3322,Ficus lateriflora,,1,,0,0,,0,,LC
+22,204,202,Lam.,18525,3322,Ficus mauritiana,,1,,0,0,,0,,LC
+22,204,202,Thunb.,18565,3322,Ficus reflexa,,1,,0,0,,0,,LC
+22,204,202,Vahl,18569,3322,Ficus rubra,,1,,0,0,,0,,LC
+22,204,202,Duch.,441031,4489,Maillardia borbonica,,1,,0,1,,1,,LC
+22,204,202,Lam.,33391,5496,Phylica nitida,,1,,0,0,,0,,LC
+22,204,202,(Burm.f.) Kurz,40806,6282,Scutia myrtina,,1,,0,0,,0,,LC
+22,204,202,Poir.,38835,6065,Rubus apetalus,,1,,0,0,,0,,LC
+22,204,202,(G.Forst.) Guill.,5433,1754,Boehmeria virgata,,1,,0,0,,0,,LC
+22,204,202,(Hook. & Arn.) A.Heller,5419,1754,Boehmeria grandis,,1,,0,1,,1,,LC
+22,204,202,(Juss. ex Pers.) Wedd.,15123,2973,Droguetia leptostachys,,1,,0,1,,1,,LC
+22,204,202,(Poir.) Gaudich.,16063,3066,Elatostema fagifolium,,1,,0,0,,0,,LC
+22,204,202,(Savigny) Wedd.,33980,5542,Pilea lucens,,1,,0,0,,0,,LC
+22,204,202,(Savigny) Wedd.,34053,5542,Pilea sessilifolia,,1,,0,1,,1,,LC
+22,204,202,(Bory) Wedd.,34085,5542,Pilea umbellata,,1,,0,1,,1,,LC
+22,204,202,(L.f.) Blume,34087,5542,Pilea urticifolia,,1,,0,1,,1,,LC
+22,204,202,(J.R.Forst. & G.Forst.) Wedd.,36260,5767,Procris pedunculata,,1,,0,0,,0,,LC
+22,204,202,(L.) Eichler,13846,2779,Dendrophthora opuntioides,,1,,0,0,,0,,LC
+22,204,202,DC.,46986,7084,Viscum triflorum,,1,,0,0,,0,,LC
+22,204,202,(Lam.) Vahl,30725,5082,Olax psittacorum,,1,,0,0,,0,,LC
+22,204,202,(Bory) T.G.Hartley,28284,4623,Melicope borbonica,,1,,0,1,,1,,LC
+22,204,202,(Cordem.) T.G.Hartley,28331,4623,Melicope obscura,,1,,0,1,,1,,LC
+22,204,202,(DC.) T.G.Hartley,28332,4623,Melicope obtusifolia,,1,,0,0,,0,,LC
+22,204,202,"(L.) Appelhans, Groppo & J.Wen",442831,7196,Zanthoxylum asiaticum,,1,,0,0,,0,,LC
+22,204,202,(J.F.Gmel.) F.Friedmann,1604,1179,Allophylus borbonicus,,1,,0,0,,0,,LC
+22,204,202,Comm. ex Lam.,11269,2513,Cossinia pinnata,,1,,0,0,,0,,LC
+22,204,202,Jacq.,14886,2933,Dodonaea viscosa,,1,,0,0,,0,,LC
+22,204,202,(Poir.) Radlk.,14929,2949,Doratoxylon apetalum,,1,,0,0,,0,,LC
+22,204,202,Willd.,441299,4760,Molinaea alternifolia,,1,,0,0,,0,,LC
+22,204,202,(Bory) Schindl.,24917,4177,Laurembergia veronicifolia,,1,,0,0,,0,,LC
+22,204,202,(Sav.) Christenh.,433392,1302,Anemia marginalis,,1,,0,0,,0,,LC
+22,204,202,Cordem.,442456,6304,Selaginella distachya,,1,,0,0,,0,,LC
+22,204,202,(P.Beauv.) Spring,40990,6304,Selaginella obtusa,,1,,0,0,,0,,LC
+22,204,202,(Desv.) Alston,442459,6304,Selaginella sinuosa,,1,,0,1,,1,,LC
+22,204,202,(Bory ex Willd.) Spring,442460,6304,Selaginella viridula,,1,,0,0,,0,,LC
+22,204,202,Jacq.,23441,3957,Ipomoea mauritiana,,1,,0,0,,0,,LC
+22,204,202,(L.) R.Br.,23454,3957,Ipomoea pes-caprae,,1,,0,0,,0,,LC
+22,204,202,(L.) A.R.Simões & Staples,421497,19636,Decalobanthus peltatus,,1,,0,0,,0,,LC
+22,204,202,L.,9731,2302,Cissus quadrangularis,,1,,0,0,,0,,LC
+22,204,202,G.Don,24990,4198,Leea guineensis,,1,,0,0,,0,,LC
+22,204,202,L.,45479,6879,Tribulus cistoides,,1,,0,0,,0,,LC
+22,204,202,(Forssk.) Asch.,20894,3644,Halophila stipulacea,,1,,0,0,,0,,DD
+22,204,202,L.,29983,4876,Najas marina,,1,,0,0,,0,,DD
+22,204,202,(Bory) H.Wendl.,360,972,Acanthophoenix rubra,,1,,0,0,,0,,DD
+22,204,202,(L.) Redouté,14083,2806,Dianella ensifolia,,1,,0,0,,0,,DD
+22,204,202,Schltr.,2368,1318,Angraecum alleizettei,,1,,0,0,,0,,DD
+22,204,202,(Cordem.) Schltr.,2377,1318,Angraecum cilaosianum,,1,,0,1,,1,,DD
+22,204,202,Frapp. ex Cordem.,2393,1318,Angraecum minutum,,1,,0,1,,1,,DD
+22,204,202,Thouars,2394,1318,Angraecum multiflorum,,1,,0,0,,0,,DD
+22,204,202,(Ridl.) Schltr.,2403,1318,Angraecum tenellum,,1,,0,1,,1,,DD
+22,204,202,(Cordem.) Schltr.,2405,1318,Angraecum undulatum,,1,,0,1,,1,,DD
+22,204,202,(Frapp. ex Cordem.) Hermans & P.J.Cribb,438517,2659,Cynorkis imbellis,,1,,0,1,,1,,DD
+22,204,202,(Thouars) Hermans & P.J.Cribb,438518,2659,Cynorkis inermis,,1,,0,0,,0,,DD
+22,204,202,(Lindl.) Hermans,222698,1684,Benthamia africana,,1,,0,0,,0,,DD
+22,204,202,Thouars,6105,1876,Bulbophyllum clavatum,,1,,0,0,,0,,DD
+22,204,202,Thouars,6105,1876,Bulbophyllum clavatum,,1,,0,1,,1,,DD
+22,204,202,Thouars,6115,1876,Bulbophyllum densum,,1,,0,0,,0,,DD
+22,204,202,Frapp. ex Cordem.,6128,1876,Bulbophyllum herbula,,1,,0,1,,1,,DD
+22,204,202,Thouars,6161,1876,Bulbophyllum minutum,,1,,0,0,,0,,DD
+22,204,202,Thouars,6177,1876,Bulbophyllum pendulum,,1,,0,0,,0,,DD
+22,204,202,Thouars,6179,1876,Bulbophyllum prismaticum,,1,,0,0,,0,,DD
+22,204,202,Rolfe,438820,1876,Bulbophyllum elliotii,,1,,0,0,,0,,DD
+22,204,202,(Thouars) Ormerod,9278,2208,Cheirostylis nuda,,1,,0,1,,1,,DD
+22,204,202,(Frapp. ex Cordem.) Schltr.,12796,2659,Cynorkis breviplectra,,1,,0,1,,1,,DD
+22,204,202,(Frapp. ex Cordem.) Schltr.,12798,2659,Cynorkis calcaripotens,,1,,0,1,,1,,DD
+22,204,202,(Frapp. ex Cordem.) Schltr.,12801,2659,Cynorkis constellata,,1,,0,1,,1,,DD
+22,204,202,(Frapp. ex Cordem.) Schltr.,12804,2659,Cynorkis exilis,,1,,0,1,,1,,DD
+22,204,202,(Frapp. ex Cordem.) Schltr.,12805,2659,Cynorkis falcata,,1,,0,1,,1,,DD
+22,204,202,(A.Rich.) Kraenzl.,174132,2659,Cynorkis commersoniana,,1,,0,1,,1,,DD
+22,204,202,(Thouars) Schltr.,12809,2659,Cynorkis graminea,,1,,0,0,,0,,DD
+22,204,202,(Frapp. ex Cordem.) Schltr.,12810,2659,Cynorkis nervilabris,,1,,0,1,,1,,DD
+22,204,202,(Frapp. ex Cordem.) Schltr.,12811,2659,Cynorkis paradoxa,,1,,0,1,,1,,DD
+22,204,202,(Frapp. ex Cordem.) Schltr.,12810,2659,Cynorkis nervilabris,,1,,0,1,,1,,DD
+22,204,202,(Poir.) Lindl.,12819,2659,Cynorkis squamosa,,1,,0,1,,1,,DD
+22,204,202,T.Durand & Schinz,12815,2659,Cynorkis ridleyi,,1,,0,0,,0,,DD
+22,204,202,(Poir.) Lindl.,12819,2659,Cynorkis squamosa,,1,,0,0,,0,,DD
+22,204,202,,12820,2659,Cynorkis thouarsii,,1,,0,0,,0,,DD
+22,204,202,(Thouars) T.Durand & Schinz,439625,2659,Cynorkis calcarata,,1,,0,1,,1,,DD
+22,204,202,(Thouars) Ormerod,9278,2208,Cheirostylis nuda,,1,,0,0,,0,,DD
+22,204,202,J.-B.Castillon & P.Bernet,440356,3625,Habenaria frappieri,,1,,0,1,,1,,DD
+22,204,202,(Thouars) Schltr.,23937,4023,Jumellea fragrans,,1,,0,0,,0,,DD
+22,204,202,Senghas,23940,4023,Jumellea rossii,,1,,0,1,,1,,DD
+22,204,202,Lindl.,440957,4335,Liparis foliosa,,1,,0,1,,1,,DD
+22,204,202,Frapp. ex Cordem.,26256,4335,Liparis nectarina,,1,,0,1,,1,,DD
+22,204,202,(R.Br.) Lindl.,26264,4335,Liparis reflexa,,1,,0,0,,0,,DD
+22,204,202,Rolfe,34969,5610,Platylepis densiflora,,1,,0,1,,1,,DD
+22,204,202,(Jacq.) Garay & H.R.Sweet,35724,5711,Polystachya concreta,,1,,0,0,,0,,DD
+22,204,202,Ridl.,35736,5711,Polystachya rosea,,1,,0,0,,0,,DD
+22,204,202,Schult. & Schult.f.,15035,2960,Dracaena fontanesiana,,1,,0,0,,0,,DD
+22,204,202,(Jacq.) Beauverd,24905,4174,Launaea intybacea,,1,,0,0,,0,,DD
+22,204,202,L.f.,26475,4356,Lobelia anceps,,1,,0,0,,0,,DD
+22,204,202,Lam.,26501,4356,Lobelia filiformis,,1,,0,0,,0,,DD
+22,204,202,(C.Presl) A.DC.,26555,4356,Lobelia telephioides,,1,,0,0,,0,,DD
+22,204,202,Hook.f.,42787,6523,Stellaria mannii,,1,,0,0,,0,,DD
+22,204,202,(R.Br.) D.Q.Lu,401380,2121,Ceodes grandis,,1,,0,0,,0,,DD
+22,204,202,R.Br.,35564,5698,Polygonum plebeium,,1,,0,0,,0,,DD
+22,204,202,L.,59,960,Abrus precatorius,,1,,0,0,,0,,DD
+22,204,202,Poir.,991,1095,Aeschynomene patula,,1,,0,0,,0,,DD
+22,204,202,(Lam.) Baill.,19025,3386,Gagnebina pterocarpa,,1,,0,0,,0,,DD
+22,204,202,A.Rich. ex DC.,5050,1696,Bertiera borbonica,,1,,0,1,,1,,DD
+22,204,202,Verdc.,9172,2194,Chassalia bosseri,,1,,0,1,,1,,DD
+22,204,202,L.,29397,4802,Morinda citrifolia,,1,,0,0,,0,,DD
+22,204,202,Schltdl.,439475,6893,Trichomanes melanotrichum,,1,,0,0,,0,,DD
+22,204,202,Blume,439476,6893,Trichomanes minutum,,1,,0,0,,0,,DD
+22,204,202,Poir.,442878,6893,Trichomanes parvulum,,1,,0,0,,0,,DD
+22,204,202,(Retz.) Santapau,33144,5450,Phaulopsis dorsiflora,,1,,0,0,,0,,DD
+22,204,202,(Lam.) Poir.,30401,5015,Noronhia emarginata,,1,,0,0,,0,,DD
+22,204,202,L.,46686,7064,Veronica serpyllifolia,,1,,0,0,,0,,DD
+22,204,202,(Desv.) Spring,41013,6304,Selaginella tereticaulis,,1,,0,0,,0,,DD
+22,204,202,Lam.,17787,3237,Euphorbia dracunculoides,,1,,0,0,,0,,DD
+22,204,202,(Roxb. ex Willd.) Royle,18771,3345,Flueggea virosa,,1,,0,0,,0,,DD
+22,204,202,Cav.,32420,5326,Pavonia columella,,1,,0,0,,0,,DD
+22,204,202,(L.) Sol. ex Corrêa,44977,6770,Thespesia populnea,,1,,0,0,,0,,DD
+22,204,202,L.,44480,6717,Terminalia catappa,,1,,0,0,,0,,DD
+22,204,202,(L.) Kunth,32806,5382,Peperomia rotundifolia,,1,,0,0,,0,,DD
+22,204,202,L.,34501,5565,Piper umbellatum,,1,,0,0,,0,,DD
+22,204,202,,4061,1524,Asterochaete borbonica,,1,,0,1,,1,,DD
+22,204,202,(Kunth) Kük.,8259,2038,Carpha nitens,,1,,0,1,,1,,DD
+22,204,202,Steud.,439094,2026,Carex musei,,1,,0,1,,1,,DD
+22,204,202,Willd.,8084,2026,Carex ramosa,,1,,0,1,,1,,DD
+22,204,202,,8091,2026,Carex reunionis,,1,,0,1,,1,,DD
+22,204,202,,8126,2026,Carex spec.,,1,,0,1,,1,,DD
+22,204,202,Boott,8188,2026,Carex wahlenbergiana,,1,,0,1,,1,,DD
+22,204,202,L.,12842,2661,Cyperus compressus,,1,,0,0,,0,,DD
+22,204,202,L.,12857,2661,Cyperus difformis,,1,,0,0,,0,,DD
+22,204,202,L.,12908,2661,Cyperus iria,,1,,0,0,,0,,DD
+22,204,202,Vahl,12965,2661,Cyperus rubicundus,,1,,0,0,,0,,DD
+22,204,202,(L.) Vahl,18657,3327,Fimbristylis dichotoma,,1,,0,0,,0,,DD
+22,204,202,Steud.,440748,2661,Cyperus richardii,,1,,0,0,,0,,DD
+22,204,202,(Steud.) Huygh,440753,2661,Cyperus mindorensis,,1,,0,0,,0,,DD
+22,204,202,(Poir.) Bojer,27229,4449,Machaerina anceps,,1,,0,0,,0,,DD
+22,204,202,(A.Camus) Clayton,590,1014,Acroceras hubbardii,,1,,0,0,,0,,DD
+22,204,202,C.Cordem.,1256,1130,Agrostis salaziensis,,1,,0,1,,1,,DD
+22,204,202,L.,1210,1130,Agrostis capillaris,,1,,0,1,,1,,DD
+22,204,202,C.Cordem.,1256,1130,Agrostis salaziensis,,1,,0,1,,1,,DD
+22,204,202,(Benth.) Stapf,1637,1181,Alloteropsis paniculata,,1,,0,0,,0,,DD
+22,204,202,(Forssk.) Stapf,14159,2816,Dichanthium annulatum,,1,,0,0,,0,,DD
+22,204,202,(Poir.) C.E.Hubb.,14160,2816,Dichanthium aristatum,,1,,0,0,,0,,DD
+22,204,202,Willd.,14308,2853,Digitaria didactyla,,1,,0,0,,0,,DD
+22,204,202,(Poir.) Stapf & C.E.Hubb.,21384,3720,Hemarthria altissima,,1,,0,0,,0,,DD
+22,204,202,J.Presl,23569,3965,Ischaemum polystachyum,,1,,0,0,,0,,DD
+22,204,202,(Steud.) A.Camus,25510,4269,Lepturus radicans,,1,,0,0,,0,,DD
+22,204,202,(Willd.) Zizka,28398,4626,Melinis repens,,1,,0,0,,0,,DD
+22,204,202,(Retz.) P.Beauv.,31070,5124,Oplismenus burmanni,,1,,0,0,,0,,DD
+22,204,202,(L.) P.Beauv.,31071,5124,Oplismenus compositus,,1,,0,0,,0,,DD
+22,204,202,Mez,31971,5253,Panicum voeltzkowii,,1,,0,0,,0,,DD
+22,204,202,Kunth,31957,5253,Panicum subalbidum,,1,,0,0,,0,,DD
+22,204,202,(Trin.) Clayton,5690,1799,Brachiaria umbellata,,1,,0,0,,0,,DD
+22,204,202,Sw.,32291,5315,Paspalum vaginatum,,1,,0,0,,0,,DD
+22,204,202,Kunth,35209,5661,Poa borbonica,,1,,0,1,,1,,DD
+22,204,202,(Desv.) C.E.Hubb.,42942,6546,Stenotaphrum micranthum,,1,,0,0,,0,,DD
+22,204,202,(Trin.) Stapf & C.E.Hubb.,45526,6891,Tricholaena monachne,,1,,0,0,,0,,DD
+22,204,202,L.,36971,5850,Pteris biaurita,,1,,0,1,,1,,DD
+22,204,202,C.Chr.,3811,1517,Asplenium friesiorum,,1,,0,0,,0,,DD
+22,204,202,(Burm.f.) Mett.,13489,2736,Davallia denticulata,,1,,0,0,,0,,DD
+22,204,202,(Fée) Holttum,12044,2590,Ctenitis cyclochlamys,,1,,0,1,,1,,DD
+22,204,202,Bonap.,15936,3063,Elaphoglossum coriaceum,,1,,0,0,,0,,DD
+22,204,202,Tardieu,15937,3063,Elaphoglossum coursii,,1,,0,0,,0,,DD
+22,204,202,Pic.Serm.,677,1029,Actiniopteris dimorpha,,1,,0,0,,0,,DD
+22,204,202,(Willd.) K.Iwats.,439585,6763,Thelypteris interrupta,,1,,0,0,,0,,DD
+22,204,202,(Baker) Balle,4541,1606,Bakerella hoyifolia,,1,,0,0,,0,,DD
+22,204,202,(Willd.) Spring,40954,6304,Selaginella cataphracta,,1,,0,1,,1,,DD
+22,204,202,(Sw.) Spring,40956,6304,Selaginella concinna,,1,,0,0,,0,,DD
+22,204,202,(Bory ex Willd.) Spring,40967,6304,Selaginella fruticulosa,,1,,0,0,,0,,DD
+22,204,202,(Kunze) A.Braun,40974,6304,Selaginella kraussiana,,1,,0,0,,0,,DD
+22,204,202,Vahl,9736,2302,Cissus rotundifolia,,1,,0,0,,0,,DD
+22,204,202,Sm.,14813,2913,Disperis oppositifolia,,1,,0,0,,0,,CR
+22,204,202,Kunze,19856,3486,Gleichenia boryi,,1,,0,1,,1,,CR
+22,204,202,Cav.,14901,2942,Dombeya acutangula,,1,,0,1,,1,,CR
+22,204,202,Lam.,438551,1517,Asplenium daucifolium,,1,,0,0,,0,,CR
+22,204,202,(DC.) T.G.Hartley,28332,4623,Melicope obtusifolia,,1,,0,0,,0,,CR
+22,204,202,A.DC.,4517,1598,Badula borbonica,,1,,0,1,,1,,EN
+22,204,202,A.Rich. ex DC.,5050,1696,Bertiera borbonica,,1,,0,1,,1,,EN
+22,204,202,(J.F.Gmel.) Razafim. & B.Bremer,442047,5840,Psychotria borbonica,,1,,0,1,,1,,EN
+22,204,202,Cordem.,14905,2942,Dombeya elegans,,1,,0,1,,1,,EN
+22,204,202,Lam.,438551,1517,Asplenium daucifolium,,1,,0,0,,0,,EN
+22,204,202,Lam.,438551,1517,Asplenium daucifolium,,1,,0,0,,0,,EN
+22,204,202,Poir.,38835,6065,Rubus apetalus,,1,,0,1,,1,,EN
+22,204,202,A.DC.,41538,6367,Sideroxylon borbonicum,,1,,0,1,,1,,VU
+22,204,202,Kunze,19856,3486,Gleichenia boryi,,1,,0,0,,0,,VU
+22,204,202,Cav.,14901,2942,Dombeya acutangula,,1,,0,0,,0,,VU
+22,204,202,(DC.) T.G.Hartley,28332,4623,Melicope obtusifolia,,1,,0,1,,1,,VU
+22,204,202,A.DC.,4517,1598,Badula borbonica,,1,,0,1,,1,,LC
+22,204,202,A.DC.,41538,6367,Sideroxylon borbonicum,,1,,0,1,,1,,LC
+22,204,202,(J.F.Gmel.) Razafim. & B.Bremer,442047,5840,Psychotria borbonica,,1,,0,1,,1,,LC
+22,204,202,(J.F.Gmel.) Razafim. & B.Bremer,442047,5840,Psychotria borbonica,,1,,0,1,,1,,LC
+22,204,202,Lam.,438551,1517,Asplenium daucifolium,,1,,0,0,,0,,LC
+22,204,202,(DC.) T.G.Hartley,28332,4623,Melicope obtusifolia,,1,,0,0,,0,,LC
+22,204,202,(DC.) T.G.Hartley,28332,4623,Melicope obtusifolia,,1,,0,1,,1,,LC
+22,204,202,A.Rich. ex DC.,5050,1696,Bertiera borbonica,,1,,0,1,,1,,DD

@@ -1,0 +1,45 @@
+ref_ID,list_ID,entity_ID,work_author,work_ID,genus_ID,work_species,questionable,native,quest_native,naturalized,endemic_ref,quest_end_ref,endemic_list,quest_end_list,cons_status
+16,179,177,L.,10387,2371,Cocos nucifera,,0,,1,0,,0,,
+16,179,177,L.,12912,2661,Cyperus laevigatus,,1,,0,0,,0,,Apparently Secure
+16,179,177,Kük.,12944,2661,Cyperus pennatiformis,,1,,0,1,,1,,Endangered
+16,179,177,R.Br.,18656,3327,Fimbristylis cymosa,,1,,0,0,,0,,Apparently Secure
+16,179,177,R.Br.,18656,3327,Fimbristylis cymosa,,1,,0,0,,0,,Apparently Secure
+16,179,177,Trin.,8692,2103,Cenchrus agrimonioides,,1,,0,1,,0,,Extinct
+16,179,177,L.,8698,2103,Cenchrus echinatus,,0,,1,0,,0,,
+16,179,177,(L.) Pers.,12756,2653,Cynodon dactylon,,0,,1,0,,0,,
+16,179,177,(Gaudich.) Steud.,16722,3146,Eragrostis variabilis,,1,,0,1,,0,,Apparently Secure
+16,179,177,(G.Forst.) R.Br.,25511,4269,Lepturus repens,,1,,0,0,,0,,Apparently Secure
+16,179,177,(Lam.) Hitchc.,42600,6495,Sporobolus pyramidatus,,0,,1,0,,0,,
+16,179,177,(L.) Kunth,42608,6495,Sporobolus virginicus,,1,,0,0,,0,,Apparently Secure
+16,179,177,(L.) L.,41345,6340,Sesuvium portulacastrum,,1,,0,0,,0,,Apparently Secure
+16,179,177,L.,430,984,Achyranthes aspera,,0,,1,0,,0,,
+16,179,177,Mart. ex Moq.,435,984,Achyranthes splendens,,1,,0,1,,0,,Extinct
+16,179,177,L.,1959,1216,Amaranthus viridis,,0,,1,0,,0,,
+16,179,177,(Meyen) Aellen,9311,2211,Chenopodium oahuense,,1,,0,1,,0,,Apparently Secure
+16,179,177,L.,16803,3164,Erigeron bonariensis,,0,,1,0,,0,,
+16,179,177,(Nutt.) A.Gray,440965,4338,Lipochaeta integrifolia,,1,,0,1,,0,,Apparently Secure
+16,179,177,(L.) Less.,35143,5656,Pluchea indica,,0,,1,0,,0,,
+16,179,177,L.,21325,3712,Heliotropium curassavicum,,1,,0,0,,0,,Apparently Secure
+16,179,177,(Blanco) Mabb.,428486,3712,Heliotropium arboreum,,0,,1,0,,0,,
+16,179,177,A.Gray,29988,4877,Nama sandwicensis,,1,,0,1,,0,,Vulnerable
+16,179,177,Montin,25262,4228,Lepidium bidentatum,,1,,0,1,,0,,Vulnerable
+16,179,177,L.,25268,4228,Lepidium didymum,,0,,1,0,,0,,
+16,179,177,DC.,439056,2008,Capparis sandwichiana,,1,,0,1,,0,,Vulnerable
+16,179,177,L.,8489,2071,Casuarina equisetifolia,,0,,1,0,,0,,
+16,179,177,(Burm.) Merr.,23426,3957,Ipomoea indica,,1,,0,0,,0,,Apparently Secure
+16,179,177,(L.) R.Br.,23454,3957,Ipomoea pes-caprae,,1,,0,0,,0,,Apparently Secure
+16,179,177,Cogn.,41450,6362,Sicyos maximowiczii,,1,,0,1,,0,,Apparently Secure
+16,179,177,Hook. & Arn.,41451,6362,Sicyos pachycarpus,,1,,0,1,,0,,Apparently Secure
+16,179,177,H.St.John,442519,6362,Sicyos semitonsus,,1,,0,1,,1,,Rare
+16,179,177,L.,438834,3583,Guilandina bonduc,,1,,0,0,,0,,Apparently Secure
+16,179,177,(Gaertn.) Roxb.,40206,6187,Scaevola taccada,,1,,0,0,,0,,Apparently Secure
+16,179,177,Bitter,33723,5511,Phyllostegia variabilis,,1,,0,1,,0,,Extinct
+16,179,177,(Choisy) J.W.Moore,5440,1758,Boerhavia acutifolia,,1,,0,0,,0,,Apparently Secure
+16,179,177,L.,5463,1758,Boerhavia repens,,1,,0,0,,0,,Apparently Secure
+16,179,177,Sol. ex G.Forst.,35944,5733,Portulaca lutea,,1,,0,0,,0,,Apparently Secure
+16,179,177,L.,35951,5733,Portulaca oleracea,,0,,1,0,,0,,
+16,179,177,Gaudich.,39918,6136,Santalum ellipticum,,1,,0,1,,0,,Apparently Secure
+16,179,177,L.,30366,4995,Nicotiana tabacum,,0,,1,0,,0,,
+16,179,177,Mill.,41906,6417,Solanum americanum,,1,,0,0,,0,,Apparently Secure
+16,179,177,Dunal,41993,6417,Solanum nelsonii,,1,,0,1,,0,,Vulnerable
+16,179,177,L.,45479,6879,Tribulus cistoides,,1,,0,0,,0,,Apparently Secure

@@ -1,0 +1,4049 @@
+entity_ID,geo_entity,suit_geo,entity_class,entity_type,TDWG_lvl3_ID,country
+1,Ashmore Reef,1,Island,,,0
+2,Cartier Island,1,Island,,,0
+3,Christmas Island,1,Island,,XMS,1
+4,Coral Sea Islands Territory,1,Island,,,0
+5,West Wallabi Island,1,Island,,,0
+6,Wann Island,1,Island,,,0
+7,Turnstone Island,1,Island,,,0
+8,Traitor Islet 6,1,Island,,,0
+9,Traitor Islet 5,1,Island,,,0
+10,Traitor Islet 4,1,Island,,,0
+11,Traitor Islet 3,1,Island,,,0
+12,Traitor Islet 2,1,Island,,,0
+13,Traitor Islet 1,1,Island,,,0
+14,Traitors Island,1,Island,,,0
+15,Third Sister,1,Island,,,0
+16,Tectus Island,1,Island,,,0
+17,Tattler Island,1,Island,,,0
+18,Short Island,1,Island,,,0
+19,Shag Rock 1,1,Island,,,0
+20,Shag Rock 2,1,Island,,,0
+21,Second Sister,1,Island,,,0
+22,Seal Island,1,Island,,,0
+23,Seagull Island,1,Island,,,0
+24,Saville-Kent Island,1,Island,,,0
+25,Plover Island,1,Island,,,0
+26,Pigeon Island,1,Island,,,0
+27,Pelican Island,1,Island,,,0
+28,Oystercatcher Island,1,Island,,,0
+29,"North Island, Houtman Abrolhos",1,Island,,,0
+30,Naturalist Island,1,Island,,,0
+31,Marinula Island,1,Island,,,0
+32,Mangrove Island,1,Island,,,0
+33,"Long Island, Houtman Abrolhos",1,Island,,,0
+34,Little Pigeon Island,1,Island,,,0
+35,Hall Island,1,Island,,,0
+36,G Island,1,Island,,,0
+37,First Sister Islet,1,Island,,,0
+38,First Sister,1,Island,,,0
+39,Far Island,1,Island,,,0
+40,East Wallabi Island,1,Island,,,0
+41,East Mangrove Island,1,Island,,,0
+42,Eastern Island,1,Island,,,0
+43,Eagle Point Islet,1,Island,,,0
+44,Dick Island,1,Island,,,0
+45,Dakin Island,1,Island,,,0
+46,Beacon Island,1,Island,,,0
+47,Barge Rock,1,Island,,,0
+48,Alcatraz Island,1,Island,,,0
+49,Akerstorm Island,1,Island,,,0
+50,Wooded Island,1,Island,,,0
+51,White Island,1,Island,,,0
+52,White Bank,1,Island,,,0
+53,Tapani Island,1,Island,,,0
+54,Suomi Island,1,Island,,,0
+55,Stokes Island,1,Island,,,0
+56,Shearwater Islet,1,Island,,,0
+57,Shearwater Island,1,Island,,,0
+58,Serventy Island,1,Island,,,0
+59,"Sandy Island, Easter Group",1,Island,,,0
+60,Roma Island,1,Island,,,0
+61,Rat Island,1,Island,,,0
+62,Nitraria Island,1,Island,,,0
+63,Morley Island,1,Island,,,0
+64,Little Stokes Island,1,Island,,,0
+65,Little Roma Island,1,Island,,,0
+66,Little Rat Island,1,Island,,,0
+67,Little North Island,1,Island,,,0
+68,Leo Islet 2,1,Island,,,0
+69,Leo Islet 1,1,Island,,,0
+70,Leo Island,1,Island,,,0
+71,Landscope Island,1,Island,,,0
+72,Keru Island,1,Island,,,0
+73,Joe Smith Island,1,Island,,,0
+74,Helms Islet 2,1,Island,,,0
+75,Helms Island,1,Island,,,0
+76,Gilbert Island,1,Island,,,0
+77,Gibson Island,1,Island,,,0
+78,Dry Island,1,Island,,,0
+79,Crake Island,1,Island,,,0
+80,"Campbell Island, Houtman",1,Island,,,0
+81,Bynoe Island,1,Island,,,0
+82,Bushby Island,1,Island,,,0
+83,Alexander Island,1,Island,,,0
+84,Uncle Margie Island,1,Island,,,0
+85,Two Island,1,Island,,,0
+86,Travia island,1,Island,,,0
+87,Three Island,1,Island,,,0
+88,The Coral Patch,1,Island,,,0
+89,Sweet Island,1,Island,,,0
+90,Stick Island,1,Island,,,0
+91,Square Island,1,Island,,,0
+92,Sid Liddon Island,1,Island,,,0
+93,Ship rock,1,Island,,,0
+94,Seven Islet,1,Island,,,0
+95,Seven Island,1,Island,,,0
+96,"Sandy Island, Pelsaert Group",1,Island,,,0
+97,Rotondella Island,1,Island,,,0
+98,Robertson Island,1,Island,,,0
+99,Post office Island,1,Island,,,0
+100,Pelsaert Island,1,Island,,,0
+101,One Island,1,Island,,,0
+102,Nook Island,1,Island,,,0
+103,Newman Island,1,Island,,,0
+104,Murray Island,1,Island,,,0
+105,Middle Island,1,Island,,,0
+106,Little Jackson Island,1,Island,,,0
+107,Lagoon Island,1,Island,,,0
+108,Jon Jim Island,1,Island,,,0
+109,Jackson Island,1,Island,,,0
+110,Iris Refuge Island,1,Island,,,0
+111,Hummock Island,1,Island,,,0
+112,Gun Islet,1,Island,,,0
+113,Gun Island,1,Island,,,0
+114,Gregory Island,1,Island,,,0
+115,Gaze Islet 1,1,Island,,,0
+116,Gaze Island,1,Island,,,0
+117,Foale Island,1,Island,,,0
+118,Eight Island,1,Island,,,0
+119,Davis Island,1,Island,,,0
+120,Coronation Island,1,Island,,,0
+121,Burton Island,1,Island,,,0
+122,Burnett Rock,1,Island,,,0
+123,Basile Island,1,Island,,,0
+124,Arthur Island,1,Island,,,0
+125,Cocos (Keeling) Main Atoll,1,Island,,,0
+126,Cocos (Keeling) North Keeling Island,1,Island,,,0
+127,Lord Howe Island,1,Island,,,0
+128,Norfolk Island,1,Island,,,1
+129,Macquarie Island,1,Island,,MAQ,0
+130,Heard and McDonald Islands,1,Island,,HMD,1
+131,Corvo,1,Island,,,0
+132,Flores,1,Island,,,0
+133,Faial,1,Island,,,0
+134,Pico,1,Island,,,0
+135,Graciosa,1,Island,,,0
+136,São Jorge,1,Island,,,0
+137,Terceira,1,Island,,,0
+138,São Miguel,1,Island,,,0
+139,Santa Maria,1,Island,,,0
+140,San Miguel,1,Island,,,0
+141,Santa Rosa,1,Island,,,0
+142,"Santa Cruz, Channel Islands",1,Island,,,0
+143,Anacapa,1,Island,,,0
+144,"Santa Barbara, Channel Islands",1,Island,,,0
+145,El Hierro,1,Island,,,0
+146,La Palma,1,Island,,,0
+147,La Gomera,1,Island,,,0
+148,Tenerife,1,Island,,,0
+149,Gran Canaria,1,Island,,,0
+150,Fuerteventura,1,Island,,,0
+151,Lanzarote,1,Island,,,0
+152,West Falkland,1,Island,,,0
+153,East Falkland,1,Island,,,0
+154,Darwin,1,Island,,,0
+155,Española,1,Island,,,0
+156,Fernandina,1,Island,,,0
+157,Floreana,1,Island,,,0
+158,Genovesa,1,Island,,,0
+159,Isabela,1,Island,,,0
+160,Marchena,1,Island,,,0
+161,Pinta,1,Island,,,0
+162,Pinzón,1,Island,,,0
+163,San Cristóbal,1,Island,,,0
+164,"Santa Cruz, Galapagos",1,Island,,,0
+165,Santa Fé,1,Island,,,0
+166,"Santiago, Galapagos",1,Island,,,0
+167,Wolf,1,Island,,,0
+168,Elizabeth Bay Islands,1,Island,,,0
+169,French Frigate Shoals (incl. Tern and other islands),1,Island,,,0
+170,Gardner Pinnacles,1,Island,,,0
+171,Hawai'i Island,1,Island,,,0
+172,Kaua'i Island,1,Island,,,0
+173,Kaho'olawe Island,1,Island,,,0
+174,Ka'ula Island,1,Island,,,0
+175,Kure Atoll (incl. Sand and Green Islands),1,Island,,,0
+176,Lana'i Island,1,Island,,,0
+177,Laysan Island,1,Island,,,0
+178,Lehua Island,1,Island,,,0
+179,Lisianski Island,1,Island,,,0
+180,Maui Island,1,Island,,,0
+181,Midway Atoll (incl. Sand and Eastern Islands),1,Island,,,0
+182,Molokini Island,0,Island,,,0
+183,Moloka'i Island,1,Island,,,0
+184,Nihoa Island,1,Island,,,0
+185,Necker Island,1,Island,,,0
+186,Ni'ihau Island,1,Island,,,0
+187,O'ahu Island (incl. Mokoli'i Islet),1,Island,,,0
+188,Pearl and Hermes Atoll,1,Island,,,0
+189,Iceland,1,Island,,ICE,1
+190,Ilha dos Franceses,0,Island,,,0
+191,Flinders Island,1,Island,,,0
+192,East Waldegrave Island,1,Island,,,0
+193,West Waldegrave Island,1,Island,,,0
+194,Topgallant Island,1,Island,,,0
+195,Ward Island,1,Island,,,0
+196,South Ward Island,1,Island,,,1
+197,Pearson Island,1,Island,,,0
+198,North Veteran Island,1,Island,,,0
+199,Dorothee Island,1,Island,,,0
+200,Ireland incl. North Ireland,1,Island,,IRE,0
+201,Kangaroo Island,1,Island,,,0
+202,La Réunion,1,Island,,REU,1
+203,Eiao,1,Island,,,0
+204,Fatu Hiva,1,Island,,,0
+205,Fatu Huku,1,Island,,,0
+206,Hatutaa,1,Island,,,0
+207,Hiva Oa,1,Island,,,0
+208,Mohotani,1,Island,,,0
+209,Hatu Iti (Motu Iti),1,Island,,,0
+210,Motu One,0,Island,,,0
+211,Nuku Hiva,1,Island,,,0
+212,Tahuata,1,Island,,,0
+213,Ua Huka,1,Island,,,0
+214,Ua Pou,1,Island,,,0
+215,New Zealand,1,Island,,,1
+216,Pitcairn,1,Island,,,0
+217,Henderson,1,Island,,,0
+218,Oeno,1,Island,,,0
+219,Ducie,1,Island,,,0
+220,Rongelap Atoll,1,Island,,,0
+221,Ailinginae Atoll,1,Island,,,0
+222,Arbar,0,Island,,,0
+223,Bokanrokut,0,Island,,,0
+224,Enealo,0,Island,,,0
+225,Looj,0,Island,,,0
+226,Rongelap Island,0,Island,,,0
+227,Tufa,0,Island,,,0
+228,Eneaetok,0,Island,,,0
+229,Lukotoke,0,Island,,,0
+230,Bokjelto,0,Island,,,0
+231,Takeshima,1,Island,,,0
+232,Ioujima,1,Island,,,0
+233,Kuroshima,1,Island,,,0
+234,Tanegashima,1,Island,,,0
+235,Yakushima,1,Island,,,0
+236,Kuchinoerabujima,1,Island,,,0
+237,Kuchinoshima,1,Island,,,0
+238,Nakanoshima,1,Island,,,0
+239,Gajajima,1,Island,,,0
+240,Tairajima,1,Island,,,0
+241,Suwanosejima,1,Island,,,0
+242,Akusekijima,1,Island,,,0
+243,Kodakarajima,1,Island,,,0
+244,Takarajima,1,Island,,,0
+245,Yokoatejima,1,Island,,,0
+246,Amamioshima,1,Island,,,0
+247,Kikaijima,1,Island,,,0
+248,Tokunoshima,1,Island,,,0
+249,Okinoerabujima,1,Island,,,0
+250,Yoronjima,1,Island,,,0
+251,Okinawajima,1,Island,,,0
+252,Kumejima,1,Island,,,0
+253,Miyakojima,1,Island,,,0
+254,Ishigakijima,1,Island,,,0
+255,Iriomotejima,1,Island,,,0
+256,Yonagunijima,1,Island,,,0
+257,Bjornoya,1,Island,,,0
+258,Sorkappoya,1,Island,,,0
+259,Hopen,1,Island,,,0
+260,Edgeoya,1,Island,,,0
+261,Barentsoya,1,Island,,,0
+262,Svenskoya,1,Island,,,0
+263,Prins Karls Forland,1,Island,,,0
+264,Kongeoya,1,Island,,,0
+265,Danskoya,1,Island,,,0
+266,Amsterdamoya,1,Island,,,0
+267,Moffen,1,Island,,,0
+268,Spitsbergen,1,Island,,,0
+269,Storoya,1,Island,,,0
+270,Island in Lady Franklinfjord,1,Island,,,0
+271,Kvitoya,1,Island,,,0
+272,Lagoya,1,Island,,,0
+273,Nordaustlandet,1,Island,,,0
+274,Sjuoyane South Island,1,Island,,,0
+275,Karl XII-oya,1,Island,,,0
+276,Sjuoyane North Island,1,Island,,,0
+277,Aldabra,1,Island,,,0
+278,Assumption,1,Island,,,0
+279,Cosmoledo,1,Island,,,0
+280,Astove,1,Island,,,0
+281,St Pierre,1,Island,,,0
+282,Providence,1,Island,,,0
+283,Farquhar,1,Island,,,0
+284,Agalega,1,Island,,,0
+285,Cargardos Carajos,1,Island,,,0
+286,African Banks,1,Island,,,0
+287,Remire,1,Island,,,0
+288,Desroches,1,Island,,,0
+289,Coetivy,1,Island,,,0
+290,Darros,1,Island,,,0
+291,Lesser Antilles,1,Island,,,0
+292,Virgin Islands,1,Island,,,0
+293,Anegada,1,Island,,,0
+294,Anguilla,1,Island,,,1
+295,Antigua,1,Island,,,0
+296,Bahama Archipelago,1,Island,,BAH,1
+297,Barbados,1,Island,,,1
+298,Barbuda,1,Island,,,0
+299,Beata,1,Island,,,0
+300,Caja de Muertos,1,Island,,,0
+301,Cayman Islands,1,Island,,CAY,1
+302,Cayo Santiago,1,Island,,,0
+303,Cuba,1,Island,,CUB,1
+304,Culebra,1,Island,,,0
+305,Culebrita,0,Island,,,0
+306,Desecheo,1,Island,,,0
+307,Dominica,1,Island,,,1
+308,Gonave,1,Island,,,0
+309,Grande Cayemite,0,Island,,,0
+310,Grenada,1,Island,,,0
+311,Guadeloupe,1,Island,,,0
+312,Guana Island,1,Island,,,0
+313,Hispaniola,1,Island,,,0
+314,Icacos,1,Island,,,0
+315,Jamaica,1,Island,,JAM,1
+316,Jost van Dyke,1,Island,,,0
+317,Magueyes,1,Island,,,0
+318,Maria Galante,1,Island,,,0
+319,Martinique,1,Island,,,1
+320,Mona,1,Island,,,0
+321,Monito,1,Island,,,0
+322,"Monserrat, Lesser Antilles",1,Island,,,1
+323,Navassa,1,Island,,,0
+324,Nevis,1,Island,,,0
+325,Palomino,1,Island,,,0
+326,Puerto Rico,1,Island,,PUE,1
+327,Saba,1,Island,,,0
+328,Saona,0,Island,,,0
+329,St. Barthelemy,1,Island,,,1
+330,St. Croix,1,Island,,,0
+331,St. Eustatius,1,Island,,,0
+332,St. John,1,Island,,,0
+333,St. Kitts,1,Island,,,0
+334,St. Lucia,1,Island,,,1
+335,St. Martin,1,Island,,,1
+336,St. Thomas,1,Island,,,0
+337,St. Vincent,1,Island,,,0
+338,The Grenadines,1,Island,,,0
+339,Tortola,1,Island,,,0
+340,Tortue,1,Island,,,0
+341,Vache,0,Island,,,0
+342,Vieques,1,Island,,,0
+343,Virgin Gorda,1,Island,,,0
+344,Hainan,1,Island,,CHH,0
+345,Hong Kong (State),1,Mainland,,,1
+346,Macao (State),1,Mainland,,,0
+347,Taiwan,1,Island,,TAI,1
+348,Socorro,1,Island,,,0
+349,San Benedicto,1,Island,,,0
+350,Clarion,1,Island,,,0
+351,Guadalupe Island (Mexico),1,Island,,,0
+352,Antipodes Islands,1,Island,,,0
+353,Bounty Islands,1,Island,,,0
+354,Tabueran,1,Island,,,0
+355,Namonuito and Hall Islands,1,Island,,,0
+356,Gough Island,1,Island,,,0
+357,Soqotra,1,Island,,SOC,0
+358,Caroline Atoll,1,Island,,,0
+359,Niue,1,Island,,NUE,1
+360,Kapingamarangi Atoll,1,Island,,,0
+361,Cocos Island (Costa Rica),1,Island,,,0
+362,Kermadec Islands,1,Island,,KER,0
+363,Principe,1,Island,,,0
+364,Sao Tomé,1,Island,,,0
+365,Annobon,1,Island,,,0
+366,Prince Edward Island,1,Island,,,0
+367,Marion Island,1,Island,,,0
+368,Rarotonga,1,Island,,,0
+369,St. Helena,1,Island,,STH,0
+370,Ascension,1,Island,,ASC,0
+371,Palau,1,Island,,,1
+372,Gambier Islands,1,Island,,,0
+373,Tonga,1,Island,,TON,1
+374,Johnston Island,1,Island,,,0
+375,Wake Island,1,Island,,WAK,0
+376,Aruba,1,Island,,ARU,1
+377,Bonaire,1,Island,,,0
+378,Curacao,1,Island,,,1
+379,Aitutaki,1,Island,,,0
+380,Atiu,1,Island,,,0
+381,Mangaia,1,Island,,,0
+382,Manihiki,1,Island,,,0
+383,Manuae,1,Island,,,0
+384,Mauke,1,Island,,,0
+385,Mitiaro,1,Island,,,0
+386,Nassau,1,Island,,,0
+387,Palmerston,1,Island,,,0
+388,Rakahanga,1,Island,,,0
+389,Pukapuka Cook,1,Island,,,0
+390,Suwarrow,1,Island,,,0
+391,Takutea,1,Island,,,0
+392,Penrhyn (Tongareva),1,Island,,,0
+393,Juan Fernandez Islands,0,Island,,JNF,0
+394,Tristan da Cunha,1,Island,,,0
+395,Inaccessible Island,1,Island,,,0
+396,Nightingale,1,Island,,,0
+397,South Georgia,1,Island,,SGE,0
+398,Iles Crozet,1,Island,,CRZ,0
+399,Iles Kerguelen,1,Island,,KEG,0
+400,McDonald Islands,1,Island,,,0
+401,Heard Island,1,Island,,,0
+402,Jan Mayen,1,Island,,,0
+404,Trindade and Martin Vaz,1,Island,,,0
+405,Urup,1,Island,,,0
+406,Shimushir,1,Island,,,0
+407,Ketoi,1,Island,,,0
+408,Ushishir,1,Island,,,0
+409,Rashuwa,1,Island,,,0
+410,Matuwa,1,Island,,,0
+411,Majuro Atoll,1,Island,,,0
+412,Great Barrier Island,1,Island,,,0
+413,Chirpoi,1,Island,,,0
+414,Madeira,1,Island,,,0
+415,Desertas,1,Island,,,0
+416,Porto Santo,1,Island,,,0
+417,Savage Islands,1,Island,,SEL,0
+418,Santo Antao,1,Island,,,0
+419,Sao Vicente,1,Island,,,0
+420,Santa Luzia (incl. Ilheu Branco and Ilheu Raso),1,Island,,,0
+421,Sao Nicolau,1,Island,,,0
+422,Sal,1,Island,,,0
+423,Boavista,1,Island,,,0
+424,Maio,1,Island,,,0
+425,"Santiago, Cape Verde",1,Island,,,0
+426,Fogo,1,Island,,,0
+427,Brava,1,Island,,,0
+428,Bermuda,1,Island,,BER,1
+429,Santa Luzia,1,Island,,,0
+430,Branco,1,Island,,,0
+431,Raso,1,Island,,,0
+432,Sable Island,1,Island,,,0
+433,Newfoundland,1,Island,,NFL,0
+434,Guarita,1,Island,,,0
+435,"Santa Barbara, Abrolhos",1,Island,,,0
+436,Sueste,1,Island,,,0
+437,Redonda,1,Island,,,0
+438,Siriba,1,Island,,,0
+439,Agakauitai,0,Island,,,0
+440,Ahe,0,Island,,,0
+441,Ahunui,0,Island,,,0
+442,Akamaru,0,Island,,,0
+443,Akiaki,0,Island,,,0
+444,Anaa,0,Island,,,0
+446,Apataki,0,Island,,,0
+447,Aratika,0,Island,,,0
+448,Arutua,0,Island,,,0
+449,Aukena,0,Island,,,0
+450,"Bellingshausen, French Polynesia",0,Island,,,0
+451,Bora Bora,1,Island,,,0
+452,Faaite,0,Island,,,0
+453,Fakahina,0,Island,,,0
+454,Fakarava,0,Island,,,0
+455,Fangatau,0,Island,,,0
+456,Fangataufa,0,Island,,,0
+457,Hao,0,Island,,,0
+458,Hereheretue,0,Island,,,0
+459,Hiti,0,Island,,,0
+460,Huahine,1,Island,,,0
+461,Kamaka,0,Island,,,0
+462,Katiu,0,Island,,,0
+463,Kauehi,0,Island,,,0
+464,Kaukura,0,Island,,,0
+465,Maiao,1,Island,,,0
+466,Makaroa,0,Island,,,0
+467,Makatea,0,Island,,,0
+468,Makemo,0,Island,,,0
+469,Mangareva,0,Island,,,0
+470,Manihi,0,Island,,,0
+471,Maria,0,Island,,,0
+472,Maria Australes,0,Island,,,0
+473,Marotiri,0,Island,,,0
+474,Marotiri Nui,0,Island,,,0
+475,Marutea Nord,0,Island,,,0
+476,Marutea Sud,0,Island,,,0
+477,Mataiva,0,Island,,,0
+478,Matureivavao,0,Island,,,0
+479,Maupiti,1,Island,,,0
+480,Mehetia,1,Island,,,0
+481,Moorea,1,Island,,,0
+482,Mopelia,1,Island,,,0
+483,Morane,0,Island,,,0
+484,Moruroa,0,Island,,,0
+485,Motutunga,0,Island,,,0
+486,Napuka,0,Island,,,0
+487,Nengonengo,0,Island,,,0
+488,Niau,0,Island,,,0
+489,Nukutavake,0,Island,,,0
+490,Nukutipipi,1,Island,,,0
+491,Paraoa,0,Island,,,0
+492,Pinaki,0,Island,,,0
+493,Pukapuka Tuamotu,0,Island,,,0
+494,Raiatea,1,Island,,,0
+495,Raivavae,0,Island,,,0
+496,Rangiroa,1,Island,,,0
+497,Rapa,0,Island,,,0
+498,Raraka,0,Island,,,0
+499,Raroia,1,Island,,,0
+500,Reao,0,Island,,,0
+501,Rimatara,0,Island,,,0
+502,Rurutu,0,Island,,,0
+503,Scilly,1,Island,,,0
+504,Taenga,0,Island,,,0
+505,Tahaa,1,Island,,,0
+506,Tahanea,0,Island,,,0
+507,Tahiti,1,Island,,,0
+508,Taiaro,0,Island,,,0
+509,Takapoto,1,Island,,,0
+510,Takaroa,0,Island,,,0
+511,Takume,0,Island,,,0
+512,Tarauru-Roa,0,Island,,,0
+513,Taravai,0,Island,,,0
+514,Tatakoto,0,Island,,,0
+515,Tauna,0,Island,,,0
+516,Tekava,0,Island,,,0
+517,Temoe,0,Island,,,0
+518,Tenararo,0,Island,,,0
+519,Tenarunga,0,Island,,,0
+520,Tepoto Nord,0,Island,,,0
+521,Tetiaroa,1,Island,,,0
+522,Tikehau,0,Island,,,0
+523,Tikei,0,Island,,,0
+524,Toau,0,Island,,,0
+525,Totegegie,0,Island,,,0
+526,Tuanake,0,Island,,,0
+527,Tubuai,0,Island,,,0
+528,Tupai,1,Island,,,0
+529,Tureia,0,Island,,,0
+530,Vahanga,0,Island,,,0
+531,Vahitahi,0,Island,,,0
+532,Vaiatekeue,0,Island,,,0
+533,Vanavana,0,Island,,,0
+534,Zavodovski,1,Island,,,0
+535,Leskov,1,Island,,,0
+536,Visokoi,1,Island,,,0
+537,Candlemas,1,Island,,,0
+538,Vindication,1,Island,,,0
+539,Saunders,1,Island,,,0
+540,Montagu,1,Island,,,0
+541,Bristol,1,Island,,,0
+542,"Bellingshausen, South Sandwich Islands",1,Island,,,0
+543,Cook,1,Island,,,0
+544,Thule,1,Island,,,0
+545,Alboran,1,Island,,,0
+546,Singapore,1,Island,,,1
+547,Cabrera,1,Island,,,0
+548,Dragonera,1,Island,,,0
+549,Formentera,1,Island,,,0
+550,Ibiza,1,Island,,,0
+551,Mallorca,1,Island,,,0
+552,Menorca,1,Island,,,0
+553,Auckland Islands,1,Island,,,0
+554,Kent Island,1,Island,,,0
+555,Unalaska,1,Island,,,0
+557,Magnetic Island,1,Island,,,0
+558,Masatierra,1,Island,,,0
+559,Masafuera,1,Island,,,0
+560,Santa Clara,1,Island,,,0
+561,Nuutele,1,Island,,,0
+562,Nuulua,1,Island,,,0
+563,Namua,1,Island,,,0
+564,Fanuatapu,1,Island,,,0
+565,American Samoa,0,Island,,,1
+566,Tutuila,1,Island,,,0
+567,Aunuu,1,Island,,,0
+568,Ofu,1,Island,,,0
+569,Olosega,1,Island,,,0
+570,Tau,1,Island,,,0
+571,Swains,1,Island,,,0
+572,Rose,1,Island,,,0
+573,North Andaman Islands,0,Island,,,0
+574,Clipperton Island,1,Island,,,0
+575,Diego Garcia,1,Island,,,0
+576,Chirinkotan,1,Island,,,0
+577,Gilbert Islands,0,Island,,GIL,0
+578,Wallis and Futuna,0,Island,,WAL,1
+579,Anuchina,1,Island,,,0
+580,Iuriy,1,Island,,,0
+581,Polonskogo,1,Island,,,0
+582,Tanfilyeva,1,Island,,,0
+583,Zelenyj,1,Island,,,0
+584,Demina,1,Island,,,0
+585,Storozhevoy,1,Island,,,0
+586,Ischia,1,Island,,,0
+587,Tasmania,1,Island,,TAS,0
+588,Macarios Island,1,Island,,,0
+589,Campionna Island,1,Island,,,0
+590,Reulino Island,1,Island,,,0
+591,Figarolo,1,Island,,,0
+592,Molara,1,Island,,,0
+593,Kharimkotan,1,Island,,,0
+594,Kiritimati,1,Island,,,0
+595,Kunashir,1,Island,,,0
+596,Shikotan,1,Island,,,0
+597,Iturup,1,Island,,,0
+598,Paramushir,1,Island,,,0
+599,Shumushu,1,Island,,,0
+600,Atlasov,1,Island,,,0
+601,Nayau,0,Island,,,0
+602,Lakeba,0,Island,,,0
+603,Aiwa,0,Island,,,0
+604,Nauru,1,Island,,NRU,1
+605,Raikoke,1,Island,,,0
+606,Rotuma,1,Island,,,0
+607,Bird,1,Island,,,0
+608,Conception,1,Island,,,0
+609,Cousin,1,Island,,,0
+610,Curieuse,1,Island,,,0
+611,Denis,1,Island,,,0
+612,Felicite,1,Island,,,0
+613,Grande Soeur,1,Island,,,0
+614,Marianne,1,Island,,,0
+615,"North Island, Seychelles",1,Island,,,0
+616,Therese,1,Island,,,0
+617,St Francis Island,1,Island,,,0
+618,Smooth Island,1,Island,,,0
+619,Egg Island,1,Island,,,0
+620,Dog Island,1,Island,,,0
+621,Freeling Island,1,Island,,,0
+622,West Island,1,Island,,,0
+623,Masillon Island,1,Island,,,0
+624,Fenelon Island,1,Island,,,0
+625,Hart Island,1,Island,,,0
+626,Signy,1,Island,,,0
+627,Chatham Islands,1,Island,,CTM,0
+628,Great Gull Island,1,Island,,,0
+629,Fisherman Island,1,Island,,,0
+630,North Carolinas Outer Banks,1,Island,,,0
+631,Turtle Island,1,Island,,,0
+632,South Stradbroke Island,1,Island,,,0
+633,Cousine,1,Island,,,0
+634,Prasonisi,1,Island,,,0
+635,Antidragonera,1,Island,,,0
+636,Megali Dragonera,1,Island,,,0
+637,Kapelo,1,Island,,,0
+638,Avgo,1,Island,,,0
+639,Megalo Strongilo,1,Island,,,0
+640,Lidia,1,Island,,,0
+641,Motumahanga,1,Island,,,0
+642,Moturoa,1,Island,,,0
+643,Whareumu,1,Island,,,0
+644,Motuotamatea,1,Island,,,0
+645,Pararaki,1,Island,,,0
+646,Mataora,1,Island,,,0
+647,Andros,0,Island,,,0
+648,Aorangi,1,Island,,,0
+649,Huggins Island,1,Island,,,0
+650,Assateague Island,1,Island,,,0
+651,"Long Island, New Guinea",1,Island,,,0
+652,Espiritu Santo,1,Island,,,0
+653,Makaro Island,1,Island,,,0
+654,Taputeranga Island,1,Island,,,0
+655,Matui Island,1,Island,,,0
+656,Mokopuna Island,1,Island,,,0
+659,Komodo National Park,1,Island,,,0
+660,Little Talbot Island,1,Island,,,0
+661,Fire Island,1,Island,,,0
+662,Eagle Island,1,Island,,,0
+663,Burgess Island,1,Island,,,0
+664,Trig Island,1,Island,,,0
+665,Lizard Island,1,Island,,,0
+666,Fanal Island,1,Island,,,0
+667,Hokoromea Island,1,Island,,,0
+668,Motupapa Island,1,Island,,,0
+669,"Island 2, Mokohinau Islands",1,Island,,,0
+670,New Zealand Botanical Region,0,Island,,,0
+671,Hauturu,1,Island,,,0
+672,British Isles,0,Island,,,0
+673,St. Catherines Island,1,Island,,,0
+674,Robins Island,1,Island,,,0
+675,Gyali Island,1,Island,,,0
+676,Bonin Islands,1,Island,,OGA,0
+677,Great Britain,1,Island,,GRB,0
+678,Buldir,1,Island,,,0
+679,Northern Mariannas,1,Island,,,0
+680,Pagan,1,Island,,,0
+681,Wadden Sea Islands Netherlands,0,Island,,,0
+682,Wadden Sea Islands Lower Saxony,0,Island,,,0
+683,Wadden Sea Islands Schleswig-Holstein,0,Island,,,0
+684,Wadden Sea Islands Denmark,0,Island,,,0
+685,Hirta,1,Island,,,0
+686,North Rona,1,Island,,,0
+687,Eua,0,Island,,,0
+688,Vavau,0,Island,,,0
+689,Tongatapu,0,Island,,,0
+690,Big Pelican Cay,1,Island,,,0
+691,Vostok,1,Island,,,0
+692,Satawal,1,Island,,,0
+693,Heron Island,1,Island,,,0
+694,Turneffe Islands,1,Island,,,0
+695,Lighthouse Reef,1,Island,,,0
+696,Glovers Reef,1,Island,,,0
+697,Barrier Reef Cays,1,Island,,,0
+698,Lagoon Cays,1,Island,,,0
+699,Namoluk,1,Island,,,0
+700,Little Cayman,1,Island,,,0
+702,Lady Musgrave Island,1,Island,,,0
+703,Bushy Island,1,Island,,,0
+704,Redbill Island,1,Island,,,0
+705,Palmyra,1,Island,,,0
+706,Teraina,1,Island,,,0
+707,Pingelap,1,Island,,,0
+708,Eniwetok,1,Island,,,0
+709,Romonum,1,Island,,,0
+710,Nasoata,1,Island,,,0
+711,Thera,1,Island,,,0
+712,Therasia,1,Island,,,0
+713,Nea Kaimeni,1,Island,,,0
+714,Palaea Kaimeni,1,Island,,,0
+715,Christiani,1,Island,,,0
+716,Askani,1,Island,,,0
+717,Guernsey,1,Island,,,0
+718,Alderney,1,Island,,,0
+719,Sark,1,Island,,,0
+720,Herm,1,Island,,,0
+721,Jethou,1,Island,,,0
+722,Lihou,1,Island,,,0
+723,Crevichon,1,Island,,,0
+724,Burhou,1,Island,,,0
+725,Jersey,1,Island,,,1
+726,Fiji,1,Island,,FIJ,1
+727,Isle of Wight,1,Island,,,0
+728,Anglesey,1,Island,,,0
+729,Isle of Man,1,Island,,,1
+730,Orkney,1,Island,,,0
+731,Shetland,1,Island,,,0
+732,Channel Islands,1,Island,,,0
+733,Clyde Islands,1,Island,,,0
+734,Outer Hebrides,1,Island,,,0
+735,"Great Britain excl Isle of Wight, Anglesey, Orkney, Shetland, Clyde Islands, Outer Hebrides",0,Island,,,0
+736,Corsica,1,Island,,COR,0
+737,"Crete, Karpathos, Kasos, Saria",1,Island,,KRI,0
+738,Sicily,1,Island,,,0
+739,Sardinia,1,Island,,SAR,0
+740,Abaiang,0,Island,,,0
+741,Abemama,0,Island,,,0
+742,Agrihan,1,Island,,,0
+743,Aguijan,1,Island,,,0
+744,Ailinginae,0,Island,,,0
+745,Ailinglaplap,0,Island,,,0
+746,Ailuk,0,Island,,,0
+747,Alamagan,1,Island,,,0
+748,Anatahan,1,Island,,,0
+749,Ant,0,Island,,,0
+750,Alanuka,0,Island,,,0
+751,Arno,0,Island,,,0
+752,Arorae,0,Island,,,0
+753,Asuncion Island,1,Island,,,0
+754,Aur,0,Island,,,0
+755,Babeldaob,0,Island,,,0
+756,Bablomekang,0,Island,,,0
+757,Banaba Island,0,Island,,,0
+758,Beliliou,0,Island,,,0
+759,Beru,0,Island,,,0
+760,Bikar,0,Island,,,0
+761,Bikini,0,Island,,,0
+762,Bokaak,0,Island,,,0
+763,Chelbacheb,0,Island,,,0
+764,Dublon,0,Island,,,0
+765,Eauripik,0,Island,,,0
+766,Ebon,0,Island,,,0
+767,Elato,0,Island,,,0
+768,Enewetak,0,Island,,,0
+769,Erikub,0,Island,,,0
+770,Etal,0,Island,,,0
+771,Etten,0,Island,,,0
+772,Fais,0,Island,,,0
+773,Fana,0,Island,,,0
+774,Farallon de Medinilla,0,Island,,,0
+775,Farallon de Pajaros,1,Island,,,0
+776,Faraulep,0,Island,,,0
+777,Fefan,0,Island,,,0
+778,Gaferut,0,Island,,,0
+779,Gagil Tamil,0,Island,,,0
+780,Guam,1,Island,,,1
+781,Guguan,1,Island,,,0
+782,Helen,0,Island,,,0
+783,Ifalik,0,Island,,,0
+784,Jabwot,0,Island,,,0
+785,Jaluit,0,Island,,,0
+786,Jemo,0,Island,,,0
+787,Kapingamarangi,0,Island,,,0
+788,Kili,0,Island,,,0
+789,Kosrae,0,Island,,,0
+790,Kuria,0,Island,,,0
+791,Kwajalein,0,Island,,,0
+792,Lae,0,Island,,,0
+793,Lamotrek,0,Island,,,0
+794,Likiep,0,Island,,,0
+795,Lasop,0,Island,,,0
+796,Lukunor,0,Island,,,0
+797,Maiana,0,Island,,,0
+798,Makin,0,Island,,,0
+799,Maloelap,0,Island,,,0
+800,Mapia,0,Island,,,0
+801,Marakai,0,Island,,,0
+802,Marcus,0,Island,,,0
+803,Maug Islands,1,Island,,,0
+804,Mecherchar,0,Island,,,0
+805,Mejit,0,Island,,,0
+806,Merir,0,Island,,,0
+807,Mili,0,Island,,,0
+808,Moen,0,Island,,,0
+809,Murilo,0,Island,,,0
+810,Mwokil,0,Island,,,0
+811,Nama,0,Island,,,0
+812,Namonuito,0,Island,,,0
+813,Namorik,0,Island,,,0
+814,Namu,0,Island,,,0
+815,Neoch,0,Island,,,0
+816,Ngcheangel,0,Island,,,0
+817,Ngeanges,0,Island,,,0
+818,Ngeaur,0,Island,,,0
+819,Ngedbus,0,Island,,,0
+820,Ngemelachel,0,Island,,,0
+821,Ngemlis,0,Island,,,0
+822,Ngerechong,0,Island,,,0
+823,Ngerekebesang,0,Island,,,0
+824,Ngerukeuid,0,Island,,,0
+825,Ngeruktabel,0,Island,,,0
+826,Ngetik,0,Island,,,0
+827,Ngulu,0,Island,,,0
+828,Nikunau,0,Island,,,0
+829,Nomwin,0,Island,,,0
+830,Nonouti,0,Island,,,0
+831,Nukuoro,0,Island,,,0
+832,Onotoa,0,Island,,,0
+833,Oreor,0,Island,,,0
+834,Parem,0,Island,,,0
+835,Pis,0,Island,,,0
+836,Pohnpei,0,Island,,,0
+837,Poll,0,Island,,,0
+838,Pulap,0,Island,,,0
+839,Pulo Anna,0,Island,,,0
+840,Pulusuk,0,Island,,,0
+841,Puluwat,0,Island,,,0
+842,Rongelap,0,Island,,,0
+843,Rongrik,0,Island,,,0
+844,Rota,1,Island,,,0
+845,Saipan,1,Island,,,0
+846,Sarigan,1,Island,,,0
+847,Satawan,0,Island,,,0
+848,Sonsorol,0,Island,,,0
+849,Sorol,0,Island,,,0
+850,Tabiteuea,0,Island,,,0
+851,Taka,0,Island,,,0
+852,Tamana,0,Island,,,0
+853,Tarawa,0,Island,,,0
+854,Tinian,1,Island,,,0
+855,Tobi,0,Island,,,0
+856,Tol,0,Island,,,0
+857,Totiu,0,Island,,,0
+858,Udot,0,Island,,,0
+859,Ujae,0,Island,,,0
+860,Ujelang,0,Island,,,0
+861,Ulebsechel,0,Island,,,0
+862,Ulithi,0,Island,,,0
+863,Ulong,0,Island,,,0
+864,Uman,0,Island,,,0
+865,Utrik,0,Island,,,0
+866,Wake,0,Island,,,0
+867,Woleai,0,Island,,,0
+868,Wotho,0,Island,,,0
+869,Wotje,0,Island,,,0
+870,Yap,0,Island,,,0
+871,Agathonisi,1,Island,,,0
+872,Pitta,1,Island,,,0
+873,Strongyli,1,Island,,,0
+874,Prassonisi,1,Island,,,0
+875,Neronisi,1,Island,,,0
+876,Katsagani,1,Island,,,0
+877,Katsaganaki,1,Island,,,0
+878,Kounelonisi,1,Island,,,0
+879,Pharmakonisi,1,Island,,,0
+880,Leros,0,Island,,,0
+881,Patelidi,0,Island,,,0
+882,Megali Tripiti,0,Island,,,0
+883,Mikri Tripiti,0,Island,,,0
+884,Plakousa,0,Island,,,0
+885,Stroggili,0,Island,,,0
+886,Agia Kiriaki,1,Island,,,0
+887,Peganousa,1,Island,,,0
+888,Belona,1,Island,,,0
+889,Graronisi North,1,Island,,,0
+890,Graronisi South,1,Island,,,0
+891,Gourna East,0,Island,,,0
+892,Gourna West,0,Island,,,0
+893,Faradonisi Southwest,0,Island,,,0
+894,Faradonisi NorthWest,0,Island,,,0
+895,Faradonisi Mikro,0,Island,,,0
+896,Faradonisi Megalo,0,Island,,,0
+897,Archaggelos,0,Island,,,0
+898,Oinousa,1,Island,,,0
+899,Pasas,1,Island,,,0
+900,Pontikonisos,1,Island,,,0
+901,Vatopoula,1,Island,,,0
+902,Vatos,1,Island,,,0
+903,Canton,1,Island,,,0
+904,Gardner,1,Island,,,0
+905,Hull,1,Island,,,0
+906,Birnie,1,Island,,,0
+907,McKean,1,Island,,,0
+908,Enderbury,1,Island,,,0
+909,Phoenix,1,Island,,,0
+910,Sydney,1,Island,,,0
+911,Siberut,0,Island,,,0
+912,Sipora,0,Island,,,0
+913,Pagai,0,Island,,,0
+914,Fernando de Noronha,1,Island,,,0
+915,Ilha da Rata,1,Island,,,0
+916,Ilha Sela Gineta,1,Island,,,0
+917,Ilha Sao Jose,1,Island,,,0
+918,Ilha Rasa,1,Island,,,0
+919,Halvmaneoya,1,Island,,,0
+920,Ikaria,1,Island,,,0
+921,Nisyros,1,Island,,,0
+922,Wrangel Island,1,Island,,,0
+923,Yioura,1,Island,,,0
+924,Ángel de la Guarda,1,Island,,,0
+925,San Lorenzo,1,Island,,,0
+926,Tiburón,1,Island,,,0
+927,San Estéban,1,Island,,,0
+928,San Pedro Mártir,1,Island,,,0
+929,San Pedro Nolasco,1,Island,,,0
+930,Tortuga,1,Island,,,0
+931,San Marcos,1,Island,,,0
+932,San Ildefonso,1,Island,,,0
+933,Coronado,1,Island,,,0
+934,Carmen,1,Island,,,0
+935,Danzante,1,Island,,,0
+936,Monserrat (Sea of Cortés),1,Island,,,0
+937,Santa Catalina,1,Island,,,0
+938,Santa Cruz,1,Island,,,0
+939,San Diego,1,Island,,,0
+940,San José,1,Island,,,0
+941,San Francisco,1,Island,,,0
+942,Espíritu Santo,1,Island,,,0
+943,Cerralvo,1,Island,,,0
+944,Alcatraz,1,Island,,,0
+945,Cholludo,1,Island,,,0
+946,Datíl,1,Island,,,0
+947,Granito,1,Island,,,0
+948,Las Ánimas,1,Island,,,0
+949,La Víbora,1,Island,,,0
+950,Mejía,1,Island,,,0
+951,Partida Norte,1,Island,,,0
+952,Patos,1,Island,,,0
+953,Rasa,1,Island,,,0
+954,Salsipuedes,1,Island,,,0
+955,San Luis,1,Island,,,0
+956,Santa Ines,1,Island,,,0
+957,Smith,1,Island,,,0
+958,Ventana,1,Island,,,0
+959,Cabeza de Caballo,1,Island,,,0
+960,Piojo,1,Island,,,0
+961,Mitlan,1,Island,,,0
+962,Pata,1,Island,,,0
+963,Flecha,1,Island,,,0
+964,Bota,1,Island,,,0
+965,Coronadito,1,Island,,,0
+966,Gemelito East,1,Island,,,0
+967,Jorobado,1,Island,,,0
+968,Cerraja,1,Island,,,0
+969,Llave,1,Island,,,0
+970,Gemelito West,1,Island,,,0
+971,Ile aux Cochons,1,Island,,,0
+972,Ile de la Possession,1,Island,,,0
+973,Ile Amsterdam,1,Island,,,0
+974,St. Paul,1,Island,,,0
+975,Campbell Island,1,Island,,,0
+976,Snares Islands,1,Island,,,0
+977,Brat Chirpoev,0,Island,,,0
+978,Broutona,0,Island,,,0
+979,Ekarma,0,Island,,,0
+980,Makanrushi,0,Island,,,0
+981,Antsiferova,0,Island,,,0
+982,Onekotan,1,Island,,,0
+983,Shiashkotan,1,Island,,,0
+984,New Caledonia,1,Island,,NWC,1
+985,Rhodos,1,Island,,,0
+986,Mahe,1,Island,,,0
+987,Hodoul,1,Island,,,0
+988,"Ile Ronde, Mahe",1,Island,,,0
+989,Ile St Anne,1,Island,,,0
+990,Ile au Cerf,1,Island,,,0
+991,Ile Cachee,1,Island,,,0
+992,Ile Longue,1,Island,,,0
+993,Ile Moyenne,1,Island,,,0
+994,Ile Anonyme,1,Island,,,0
+995,Ile aux Rats,1,Island,,,0
+996,Ile Seche,1,Island,,,0
+998,"Beacon Island, Seychelles",1,Island,,,0
+999,Ile aux Vaches Marines,1,Island,,,0
+1000,Islette,1,Island,,,0
+1001,Souris,1,Island,,,0
+1002,Ilot,1,Island,,,0
+1003,Praslin,1,Island,,,0
+1004,La Digue,1,Island,,,0
+1005,Booby Island,1,Island,,,0
+1006,"Chauve Souris, Praslin",1,Island,,,0
+1007,"Ile Ronde, Praslin",1,Island,,,0
+1008,Ave Maria,1,Island,,,0
+1009,Fouche,1,Island,,,0
+1010,Cocos,1,Island,,,0
+1011,Petit Soeur,1,Island,,,0
+1012,Mamelles,1,Island,,,0
+1013,Recifs,1,Island,,,0
+1014,Fregate,1,Island,,,0
+1015,Ilot Fregates,1,Island,,,0
+1016,"St Pierre, Praslin",1,Island,,,0
+1017,Aride,1,Island,,,0
+1020,Platte,1,Island,,,0
+1021,St Joseph,1,Island,,,0
+1022,Poivre,1,Island,,,0
+1023,Marie-Louise,1,Island,,,0
+1024,Desnoefs,1,Island,,,0
+1025,Alphonse,1,Island,,,0
+1026,Bijoutier,1,Island,,,0
+1027,St Francois,1,Island,,,0
+1028,Fouquet,1,Island,,,0
+1029,"Chauve Souris, Mahe",1,Island,,,0
+1030,Silhouette,1,Island,,,0
+1031,Marpi,1,Island,,,0
+1032,Andaman Islands,1,Island,,AND,0
+1033,Baleares,1,Island,,BAL,0
+1034,Bismarck Archipelago,0,Island,,BIS,0
+1035,Borneo,1,Island,,BOR,0
+1036,Canary Islands,1,Island Group,,CNY,0
+1037,Cook Islands,0,Island,,COO,0
+1038,Central American Pacific Islands,0,Island,,CPI,0
+1039,Caroline Islands,0,Island,,CRL,0
+1040,Cape Verde,0,Island,,CVI,1
+1041,East Aegean Islands,1,Island Group,,EAI,0
+1042,Gulf of Guinea Islands,0,Island,,GGI,0
+1043,Hawaii,0,Island,,,0
+1044,Japan,1,Island,,JAP,1
+1045,Jawa,1,Island,,JAW,0
+1046,Leeward Islands,0,Island,,LEE,0
+1047,Lesser Sunda Islands,0,Island,,LSI,0
+1048,Mauritius,1,Island,,,1
+1049,Madagascar,1,Island,,MDG,1
+1050,Maluku,0,Island,,MOL,0
+1051,Marianas,0,Island,,MRN,0
+1052,Marquesas,0,Island,,MRQ,0
+1053,Mexican Pacific Islands,0,Island,,MXI,0
+1054,Nicobar Islands,1,Island,,NCB,0
+1055,Ryukyu,0,Island,,NNS,0
+1056,New Guinea,0,Island,,NWG,0
+1058,Philippines,1,Island,,PHI,1
+1059,Rodrigues,1,Island,,ROD,0
+1060,Samoa,0,Island,,SAM,0
+1061,Santa Cruz Islands,0,Island,,SCZ,0
+1062,Seychelles,0,Island,,SEY,1
+1063,Solomon Islands,0,Island,,SOL,0
+1064,Sri Lanka,1,Island,,SRL,1
+1065,Sulawesi,1,Island,,SUL,0
+1066,Sumatra,0,Island,,SUM,0
+1067,Turks and Caicos Islands,0,Island,,TCI,1
+1068,Tokelau Manihiki,0,Island,,TOK,0
+1069,Trinidad and Tobago,1,Island,,TRT,1
+1070,Tuamotu,0,Island,,TUA,0
+1071,Vanuatu,1,Island,,VAN,1
+1072,Windward Islands,0,Island,,WIN,0
+1073,Grand Comore,0,Island,,,0
+1074,Anjouan,0,Island,,,0
+1075,Mayotte,1,Island,,,1
+1085,Hokkaido,1,Island,,,0
+1086,Honshu,1,Island,,,0
+1096,Kyushu,1,Island,,,0
+1104,Shikoku,1,Island,,,0
+1200,"Alexander Island, Antarctica",0,Island,,,0
+1203,Victoria Island,0,Island,,,0
+1204,Banks Island,0,Island,,,0
+1205,Devon Island,0,Island,,,0
+1207,Baffin Island,0,Island,,,0
+1208,Ellesmere Island,0,Island,,,0
+1209,Sakhalin,1,Island,,SAK,0
+1220,Mindanao,0,Island,,,0
+1222,"South Island incl. Steward, New Zealand",0,Island,,NZS,0
+1223,Luzon,0,Island,,,0
+1224,"North Island, New Zealand",1,Island,,NZN,0
+1225,Round Island (Mauritius),1,Island,,,0
+1226,Ile aux Aigrettes,1,Island,,,0
+1227,Northern Marianas,0,Island,,,0
+1228,Southern Marianas,0,Island,,,0
+1229,Western Carolines,0,Island,,,0
+1230,Eastern Carolines,0,Island,,,0
+1231,Chuuk,0,Island,,,0
+1232,Marshall Islands,0,Island,,,0
+1233,Micronesia,0,Island,,,0
+1234,Bacon Island,0,Island,,,0
+1235,Exploring Isles,0,Island,,,0
+1236,Fulanga,1,Island,,,0
+1237,Kambara,0,Island,,,0
+1238,Kanathea,0,Island,,,0
+1239,Kandavu,0,Island,,,0
+1240,Karoni,0,Island,,,0
+1241,Katafanga,0,Island,,,0
+1242,Kimboro Islet,0,Island,,,0
+1243,Komo,0,Island,,,0
+1244,Komo Ndriki,0,Island,,,0
+1245,Koro,0,Island,,,0
+1246,Late-I-Viti,0,Island,,,0
+1247,Makondronga,0,Island,,,0
+1248,Makongai,0,Island,,,0
+1249,Mamanuthas,0,Island Group,,,0
+1250,Mango,0,Island,,,0
+1251,Marambo,0,Island,,,0
+1252,Matuku,0,Island,,,0
+1253,Mbengga,0,Island,,,0
+1254,Moala,1,Island,,,0
+1255,Mothe,0,Island,,,0
+1256,Moturiki,0,Island,,,0
+1257,Munia,0,Island,,,0
+1258,Nairai,0,Island,,,0
+1259,Naitamba,0,Island,,,0
+1260,Namuka-i-Lau,0,Island,,,0
+1261,Nangingia,0,Island,,,0
+1262,Navutu-I-Loma,0,Island,,,0
+1263,Navutu-I-Ra,0,Island,,,0
+1264,Nayambo,0,Island,,,0
+1265,Gau,0,Island,,,0
+1266,Nggamea,0,Island,,,0
+1267,Oneata,0,Island,,,0
+1268,Ongea Levu,0,Island,,,0
+1269,Ongea Ndriki,0,Island,,,0
+1270,Ono,0,Island,,,0
+1271,Ono-I-Lau,0,Island,,,0
+1272,Ovalau,1,Island,,,0
+1273,Rambi,0,Island,,,0
+1274,Taveuni,0,Island,,,0
+1275,Tavunasithi,0,Island,,,0
+1276,Thikombia,0,Island,,,0
+1277,Thimkombia-I-Lau,0,Island,,,0
+1278,Thithia,0,Island,,,0
+1279,Totoya,0,Island,,,0
+1280,Tuvutha,0,Island,,,0
+1281,Vanua Levu,1,Island,,,0
+1282,Vanua Masi,1,Island,,,0
+1283,Vanua Mbalavu,1,Island,,,0
+1284,Vanua Vatu,0,Island,,,0
+1285,Vatu Vara,1,Island,,,0
+1286,Vatuelle,0,Island,,,0
+1287,Viti Levu,1,Island,,,0
+1288,Vuanggava,0,Island,,,0
+1289,Wailangilala,0,Island,,,0
+1290,Wakaya,0,Island,,,0
+1291,Yangasa Levu,0,Island,,,0
+1292,Yanutha,0,Island,,,0
+1293,Yanutha Levu,0,Island,,,0
+1294,Yasawa Islands,0,Island Group,,,0
+1295,Yathata,0,Island,,,0
+1296,Torres Strait Islands,1,Island,,,0
+1297,Warraber Island,1,Island,,,0
+1298,Saibai Island,1,Island,,,0
+1299,Poruma Island,1,Island,,,0
+1300,Mua Island,1,Island,,,0
+1301,Masig Island,1,Island,,,0
+1302,Mabuiag Island,1,Island,,,0
+1303,Iama Island,1,Island,,,0
+1304,Erub Island,1,Island,,,0
+1305,Dauan Island,1,Island,,,0
+1306,Boigu Island,1,Island,,,0
+1307,Badu Island,1,Island,,,0
+1308,Ugar Island,1,Island,,,0
+1309,Mer Island,1,Island,,,0
+1310,"Otok Zecevo, Croatia",1,Island,,,0
+1311,"Bijagós Archipelago, Guinea-Bissau",1,Island,,,0
+1312,"Isla de Pascua, Chile",1,Island,,,0
+1313,"Islas Desventurados, Chile",1,Island,,DSV,0
+1314,Ionian Islands,1,Island Group,,,0
+1315,"North Aegean Islands, Greece",1,Island,,,0
+1317,"Kiklades, Greece",1,Island Group,,,0
+1318,"West Aegean Islands, Greece",1,Island Group,,,0
+1319,Andros,1,Island,,,0
+1320,Tinos,1,Island,,,0
+1321,Mikonos,1,Island,,,0
+1322,Rinia,1,Island,,,0
+1323,Siros,1,Island,,,0
+1324,Giaros,1,Island,,,0
+1325,Kea,1,Island,,,0
+1326,Kithnos,1,Island,,,0
+1327,Serifos,1,Island,,,0
+1328,Sifnos,1,Island,,,0
+1329,Milos,1,Island,,,0
+1330,Kimolos,1,Island,,,0
+1331,Polyaigos,1,Island,,,0
+1332,Folegandros,1,Island,,,0
+1333,Sikinos,1,Island,,,0
+1334,Ios,1,Island,,,0
+1335,Anafi,1,Island,,,0
+1336,Astipalea,1,Island,,,0
+1337,Zafora,1,Island,,,0
+1338,Sirina,1,Island,,,0
+1339,Amorgos,1,Island,,,0
+1340,Denousa,1,Island,,,0
+1341,Keros,1,Island,,,0
+1342,Schinoussa,1,Island,,,0
+1343,Iraklia,1,Island,,,0
+1344,Andiparos,1,Island,,,0
+1345,Paros,1,Island,,,0
+1346,Naxos,1,Island,,,0
+1347,Kinaros,1,Island,,,0
+1348,Levitha,1,Island,,,0
+1349,Limnos,1,Island,,,0
+1350,Agios Evstratios,1,Island,,,0
+1351,Lesbos,1,Island,,,0
+1352,Chios,1,Island,,,0
+1353,Psara,1,Island,,,0
+1354,Samos,1,Island,,,0
+1356,Fournoi,1,Island,,,0
+1358,Lipsi,1,Island,,,0
+1359,Patmos,1,Island,,,0
+1361,Kalimnos,1,Island,,,0
+1362,Pserimos,1,Island,,,0
+1363,Kos,1,Island,,,0
+1365,Tilos,1,Island,,,0
+1367,Simi,1,Island,,,0
+1368,Chalki,1,Island,,,0
+1369,Alimia,1,Island,,,0
+1370,Kasos,1,Island,,,0
+1371,Karpathos,1,Island,,,0
+1372,Saria,1,Island,,,0
+1373,Crete,1,Island,,,0
+1374,Gavdopoula,1,Island,,,0
+1375,Gavdos,1,Island,,,0
+1376,Chrisi,1,Island,,,0
+1377,Koufonisi,1,Island,,,0
+1378,Dragonada,1,Island,,,0
+1379,Elafonisos,1,Island,,,0
+1380,Kithira,1,Island,,,0
+1381,Antikithira,1,Island,,,0
+1382,Salamina,1,Island,,,0
+1383,Aegina,1,Island,,,0
+1384,Methana,1,Mainland,Landscape/Region,,0
+1385,Idra,1,Island,,,0
+1386,Spetses,1,Island,,,0
+1387,Evvia,1,Island,,,0
+1388,Skiathos,1,Island,,,0
+1389,Skopelos,1,Island,,,0
+1390,Alonnisos,1,Island,,,0
+1391,Kyra Panagia,1,Island,,,0
+1393,Skatzoura,1,Island,,,0
+1394,Skyros,1,Island,,,0
+1395,Thasos,1,Island,,,0
+1396,Samothraki,1,Island,,,0
+1397,Kastelorizo,1,Island,,,0
+1398,Tourleta,1,Island,,,0
+1399,Plati,1,Island,,,0
+1400,Makedhona,1,Island,,,0
+1401,Akramatis,1,Island,,,0
+1402,Stakala Vrakhos,1,Island,,,0
+1403,Kilandra Vrakhos,1,Island,,,0
+1404,Theotokos Vrakhos East,1,Island,,,0
+1405,Theotokos Vrakhos West,1,Island,,,0
+1406,Thalia,1,Island,,,0
+1407,St. Phokas East,1,Island,,,0
+1408,St. Phokas West,1,Island,,,0
+1409,North East Skiropoula,1,Island,,,0
+1410,Vrikolakonisi,1,Island,,,0
+1411,Ormos Akhili West,1,Island,,,0
+1412,Prassou,1,Island,,,0
+1413,Prasonisi,1,Island,,,0
+1414,Antidragonera,1,Island,,,0
+1415,Megali Dragonera,1,Island,,,0
+1416,"Lidia, Makronisi",1,Island,,,0
+1417,Megalo Strongilo,1,Island,,,0
+1418,Greece Islet 28,1,Island,,,0
+1419,Greece Islet 60,1,Island,,,0
+1420,Greece Islet 66,1,Island,,,0
+1421,Greece Islet 67,1,Island,,,0
+1422,Greece Islet 93,1,Island,,,0
+1423,Greece Islet 95,1,Island,,,0
+1424,Aegean Islet 1,1,Island,,,0
+1425,Aegean Islet 2,1,Island,,,0
+1426,Aegean Islet 3,1,Island,,,0
+1427,Aegean Islet 4,1,Island,,,0
+1430,Aegean Islet 7,1,Island,,,0
+1433,Aegean Islet 10,1,Island,,,0
+1434,Aegean Islet 11,1,Island,,,0
+1435,Aegean Islet 12,1,Island,,,0
+1436,Aegean Islet 13,1,Island,,,0
+1439,Aegean Islet 17,1,Island,,,0
+1442,Aegean Islet 20,1,Island,,,0
+1445,Aegean Islet 23,1,Island,,,0
+1446,Aegean Islet 24,1,Island,,,0
+1447,Aegean Islet 25,1,Island,,,0
+1448,Aegean Islet 26,1,Island,,,0
+1449,Aegean Islet 27,1,Island,,,0
+1450,Aegean Islet 28,1,Island,,,0
+1451,Aegean Islet 29,1,Island,,,0
+1452,Aegean Islet 30,1,Island,,,0
+1453,Aegean Islet 31,1,Island,,,0
+1454,Aegean Islet 32,1,Island,,,0
+1455,Aegean Islet 33,1,Island,,,0
+1456,Aegean Islet 34,1,Island,,,0
+1457,Aegean Islet 36,1,Island,,,0
+1458,Aegean Islet 37,1,Island,,,0
+1459,Aegean Islet 38,1,Island,,,0
+1460,Aegean Islet 39,1,Island,,,0
+1461,Aegean Islet 40,1,Island,,,0
+1462,Aegean Islet 41,1,Island,,,0
+1463,Aegean Islet 42,1,Island,,,0
+1464,Aegean Islet 43,1,Island,,,0
+1465,Aegean Islet 44,1,Island,,,0
+1466,Aegean Islet 45,1,Island,,,0
+1467,Aegean Islet 46,1,Island,,,0
+1468,Aegean Islet 47,1,Island,,,0
+1469,Aegean Islet 48,1,Island,,,0
+1470,Aegean Islet 49,1,Island,,,0
+1471,Aegean Islet 50,1,Island,,,0
+1472,Aegean Islet 51,1,Island,,,0
+1473,Aegean Islet 52,1,Island,,,0
+1474,Aegean Islet 53,1,Island,,,0
+1475,Aegean Islet 54,1,Island,,,0
+1476,Aegean Islet 55,1,Island,,,0
+1477,Aegean Islet 56,1,Island,,,0
+1478,Aegean Islet 57,1,Island,,,0
+1479,Aegean Islet 58,1,Island,,,0
+1480,Aegean Islet 59,1,Island,,,0
+1482,Aegean Islet 61,1,Island,,,0
+1483,Aegean Islet 62,1,Island,,,0
+1488,Aegean Islet 67,1,Island,,,0
+1489,Aegean Islet 68,1,Island,,,0
+1490,Aegean Islet 69,1,Island,,,0
+1491,Aegean Islet 70,1,Island,,,0
+1492,Aegean Islet 71,1,Island,,,0
+1493,Aegean Islet 72,1,Island,,,0
+1494,Aegean Islet 73,1,Island,,,0
+1495,Aegean Islet 74,1,Island,,,0
+1496,Aegean Islet 75,1,Island,,,0
+1498,Pulau Babi Tengah,1,Island,,,0
+1499,"L’Esperance Rock, Southern Kermadec Islands",0,Island,,,0
+1500,"Department of San Andrés, Providencia y Santa Catalina, Colombia",1,Island,,,0
+1501,"Kilaka Reserve, Vanua Levu",1,Island Part,Protected Area,,0
+1502,"Sabah and Sarawak, Borneo",1,Island Part,Political Unit,,0
+1503,Deokjeokdo,1,Island,,,0
+1504,Mungapdo,1,Island,,,0
+1505,Commander Islands,0,Island Group,Political Unit,,0
+1506,"Hallasan Natural Reserve, South Korea",0,Island Part,Protected Area,,0
+1507,Soyado,1,Island,,,0
+1508,"Morro Juanango, Juan Fernandez",0,Island,,,0
+1509,"Morro El Verdugo, Juan Fernandez",0,Island,,,0
+1510,"Baltra, Galapagos",0,Island,,,0
+1511,"Campion, Galapagos",0,Island,,,0
+1512,"Albany, Galapagos",0,Island,,,0
+1513,"Eden, Galapagos",0,Island,,,0
+1514,"Mao, Galapagos",0,Island,,,0
+1515,"Osborn, Galapagos",0,Island,,,0
+1516,"Punta Bowditch Norte, Galapagos",0,Island,,,0
+1517,"Rabida, Galapagos",0,Island,,,0
+1518,"Seymour Norte, Galapagos",0,Island,,,0
+1519,"Venecia, Galapagos",0,Island,,,0
+1520,"Mosquera, Galapagos",0,Island,,,0
+1521,"Daphne Mayor, Galapagos",0,Island,,,0
+1522,"Gardner por Floreana, Galapagos",0,Island,,,0
+1523,"Gardner por Espanola, Galapagos",0,Island,,,0
+1524,"Punta Bowditch Oeste, Galapagos",0,Island,,,0
+1525,"Plaza Norte, Galapagos",0,Island,,,0
+1526,"Bainbridge #6, Galapagos",0,Island,,,0
+1527,"Punta Bowditch Sur, Galapagos",0,Island,,,0
+1528,"Bartolome, Galapagos",0,Island,,,0
+1529,"Plaza Sur, Galapagos",0,Island,,,0
+1530,"Caldwell, Galapagos",0,Island,,,0
+1531,"Bainbridge #3, Galapagos",0,Island,,,0
+1532,"Bainbridge #4, Galapagos",0,Island,,,0
+1533,"Beagle Oeste, Galapagos",0,Island,,,0
+1534,"Enderby, Galapagos",0,Island,,,0
+1535,"Guy Fawkes Oeste largest, SW, Galapagos",0,Island,,,0
+1536,"Guy Fawkes Sur 2nd largest, SE, Galapagos",0,Island,,,0
+1537,"Cowley, Galapagos",0,Island,,,0
+1538,"Bacon, Lau",0,Island,,,0
+1539,"Fulaga, Lau",0,Island,,,0
+1540,"Yacata, Lau",0,Island,,,0
+1541,"Olorua, Lau",0,Island,,,0
+1542,"Yanuca, Lau",0,Island,,,0
+1543,"Batiki, Lomaiviti",0,Island,,,0
+1544,"Uea, Rotuma",0,Island,,,0
+1545,Yasawa,0,Island,,,0
+1546,"Totegegie, Gambier",0,Island,,,0
+1547,"Scilly, Society",0,Island,,,0
+1548,"Fakaofo, Tokelau",0,Island,,,0
+1549,"Nukunonu, Tokelau",0,Island,,,0
+1550,"Tepoto, Tuamotu",0,Island,,,0
+1551,"Hull, Tubuai",0,Island,,,0
+1552,"Tern, NW Hawaiian",0,Island,,,0
+1553,"Mokapu, Hawaiian",0,Island,,,0
+1554,"French Frigate Shoals, NW Hawaiian",0,Island,,,0
+1555,"Chichi-jima, Bonin",1,Island,,,0
+1556,"Farallon de Medinilla, Mariana",0,Island,,,0
+1557,"Jaluit, Ralik",0,Island,,,0
+1558,"Kwajalein, Ralik",0,Island,,,0
+1559,"Ebon, Ralik",0,Island,,,0
+1560,"Kili, Ralik",0,Island,,,0
+1561,"Lae, Ralik",0,Island,,,0
+1562,"Namu, Ralik",0,Island,,,0
+1563,"Ujelang, Ralik",0,Island,,,0
+1564,"Bikini, Ralik",0,Island,,,0
+1565,"Namorik, Ralik",0,Island,,,0
+1566,"Ailinglaplap, Ralik",0,Island,,,0
+1567,"Ujae, Ralik",0,Island,,,0
+1568,"Wotho, Ralik",0,Island,,,0
+1569,"Jabat, Ralik",0,Island,,,0
+1570,"Rongerik, Ralik",0,Island,,,0
+1571,"Arno, Ratak",0,Island,,,0
+1572,"Jemo, Ratak",0,Island,,,0
+1573,"Likiep, Ratak",0,Island,,,0
+1574,"Mili, Ratak",0,Island,,,0
+1575,"Ailuk, Ratak",0,Island,,,0
+1576,"Mejit, Ratak",0,Island,,,0
+1577,"Wotje, Ratak",0,Island,,,0
+1578,"Utirik, Ratak",0,Island,,,0
+1579,"Maloelap, Ratak",0,Island,,,0
+1580,"Aur, Ratak",0,Island,,,0
+1581,"Toke, Ratak",0,Island,,,0
+1582,Banaba,0,Island,,,0
+1583,"Dublon, Chuuk",0,Island,,,0
+1584,"Fefan, Chuuk",0,Island,,,0
+1585,"Tol, Chuuk",0,Island,,,0
+1586,"Uman, Chuuk",0,Island,,,0
+1587,"Weno, Chuuk",0,Island,,,0
+1588,"Yanagi, Chuuk",0,Island,,,0
+1589,"Parem, Chuuk",0,Island,,,0
+1590,"Puluwat, Chuuk",0,Island,,,0
+1591,"Etal, Chuuk",0,Island,,,0
+1592,"Lukunor, Chuuk",0,Island,,,0
+1593,"Murilo, Chuuk",0,Island,,,0
+1594,"Namonuito, Chuuk",0,Island,,,0
+1595,"Nomwin, Chuuk",0,Island,,,0
+1596,"Pulusuk, Chuuk",0,Island,,,0
+1597,"Satawan, Chuuk",0,Island,,,0
+1598,"Udot, Chuuk",0,Island,,,0
+1599,"Pis, Chuuk",0,Island,,,0
+1600,"Fano, Chuuk",0,Island,,,0
+1601,"Losap, Chuuk",0,Island,,,0
+1602,"Nama, Chuuk",0,Island,,,0
+1603,"Siis, Chuuk",0,Island,,,0
+1604,"Etten, Chuuk",0,Island,,,0
+1605,"Fanurmot, Chuuk",0,Island,,,0
+1606,Kosrae,0,Island,,,0
+1607,"Malden, Line",0,Island,,,0
+1608,"Flint, Line",0,Island,,,0
+1609,"Starbuck, Line",0,Island,,,0
+1610,Pohnpei,0,Island,,,0
+1611,"Nukuoro, Pohnpei",0,Island,,,0
+1612,"Ant, Pohnpei",0,Island,,,0
+1613,"Mokil, Pohnpei",0,Island,,,0
+1614,"Tarawa, Tungaru",0,Island,,,0
+1615,"Butaritari, Tungaru",0,Island,,,0
+1616,"Abaiang, Tungaru",0,Island,,,0
+1617,"Abemama, Tungaru",0,Island,,,0
+1618,"Arorei, Tungaru",0,Island,,,0
+1619,"Nikunau, Tungaru",0,Island,,,0
+1620,"Marakei, Tungaru",0,Island,,,0
+1621,"Tabiteuea, Tungaru",0,Island,,,0
+1622,"Nonouti, Tungaru",0,Island,,,0
+1623,"Onotoa, Tungaru",0,Island,,,0
+1624,"Maiana, Tungaru",0,Island,,,0
+1625,"Tamana, Tungaru",0,Island,,,0
+1626,"Aranuka, Tungaru",0,Island,,,0
+1627,"Beru, Tungaru",0,Island,,,0
+1628,"Makin, Tungaru",0,Island,,,0
+1629,"Fais, Yap",0,Island,,,0
+1630,"Ifalik, Yap",0,Island,,,0
+1631,"Ulithi, Yap",0,Island,,,0
+1632,Yap,0,Island,,,0
+1633,"Sorol, Yap",0,Island,,,0
+1634,"Woleai, Yap",0,Island,,,0
+1635,"Eauripik, Yap",0,Island,,,0
+1636,"Faraulep, Yap",0,Island,,,0
+1637,"Lamotrek, Yap",0,Island,,,0
+1638,"Pulap, Yap",0,Island,,,0
+1639,"Tomil, Yap",0,Island,,,0
+1640,"Elato, Yap",0,Island,,,0
+1641,"Pott, Belep",0,Island,,,0
+1642,"Surprise, D'Entrecasteaux Reefs",0,Island,,,0
+1643,"Huon, D'Entrecasteaux Reefs",0,Island,,,0
+1644,"Hunter, Hunter and Matthew",0,Island,,,0
+1645,"Matthew, Hunter and Matthew",0,Island,,,0
+1646,"Walpole, Loyaute",0,Island,,,0
+1647,"Tiga, Loyaute",0,Island,,,0
+1648,"Amere, New Caledonia",0,Island,,,0
+1649,"Nou, New Caledonia",0,Island,,,0
+1650,"Balabio, New Caledonia",0,Island,,,0
+1651,"Lepredour, New Caledonia",0,Island,,,0
+1652,"Yande, New Caledonia",0,Island,,,0
+1653,"Baaba, New Caledonia",0,Island,,,0
+1654,"Ouen, New Caledonia",0,Island,,,0
+1655,"Neba, New Caledonia",0,Island,,,0
+1656,"Raoul, Kermadec",0,Island,,,0
+1657,Angaur,0,Island,,,0
+1658,Babeldaob,0,Island,,,0
+1659,"Tobi, Hatohobei",0,Island,,,0
+1660,"Helen Reef, Hatohobei",0,Island,,,0
+1661,Kayangel,0,Island,,,0
+1662,"Kayangelet, Kayangel Atoll",0,Island,,,0
+1663,"Ngeriungs, Kayangel Atoll",0,Island,,,0
+1664,Koror,0,Island,,,0
+1665,"Ngerkebesang, Koror",0,Island,,,0
+1666,"Ngerchong, Koror",0,Island,,,0
+1667,"Ngeruktabel, Koror",0,Island,,,0
+1668,"Mecherchar, Koror",0,Island,,,0
+1669,Peleliu,0,Island,,,0
+1670,"Ngercheu, Peleliu",0,Island,,,0
+1671,"Ngedbus, Peleliu",0,Island,,,0
+1672,Ngchus,0,Island,,,0
+1673,Ngeanges,0,Island,,,0
+1674,Aulupse'el,0,Island,,,0
+1675,Ngchelobel,0,Island,,,0
+1676,Ngemelis,0,Island,,,0
+1677,Ngerukuid,0,Island,,,0
+1679,Chelbacheb,0,Island,,,0
+1680,Bab el Omekang,0,Island,,,0
+1681,Ulong,0,Island,,,0
+1682,Sonsorol,0,Island,,,0
+1683,"Merir, Sonsorol",0,Island,,,0
+1684,"Pulo Ana, Sonsorol",0,Island,,,0
+1685,"Fanna, Sonsorol",0,Island,,,0
+1686,"Los Negros, Admiralty",0,Island,,,0
+1687,"New Britain, Bismarck",0,Island,,,0
+1688,"New Ireland, Bismarck",0,Island,,,0
+1689,New Guinea Island,0,Island,,,0
+1690,"Anuta, Solomon",0,Island,,,0
+1691,"Mbanika, Russell",0,Island,,,0
+1692,"Ontong Java, Solomon",0,Island,,,0
+1693,"Vanikolo, Solomon",0,Island,,,0
+1694,"Uiha, Ha'apai",0,Island,,,0
+1695,"Lifuka, Ha'apai",0,Island,,,0
+1696,"Lifuka and Foa, Ha'apai",0,Island,,,0
+1697,"Ha'ano, Ha'apai",0,Island,,,0
+1698,"Ha'afeva, Ha'apai",0,Island,,,0
+1699,"Nomuka, Ha'apai",0,Island,,,0
+1700,"Kotu, Ha'apai",0,Island,,,0
+1701,"Fafa, Tongatapu",0,Island,,,0
+1702,"Velitoa, Tongatapu",0,Island,,,0
+1703,"Atata, Tongatapu",0,Island,,,0
+1704,Baker,0,Island,,,0
+1705,Jarvis,0,Island,,,0
+1706,"Sand, Midway",0,Island,,,0
+1707,"Spit, Midway",0,Island,,,0
+1708,"Wallis, Wallis and Futuna",0,Island,,,0
+1709,"Futuna, Wallis and Futuna",0,Island,,,0
+1710,"Alofi, Wallis and Futuna",0,Island,,,0
+10001,"Mamora Forest, Marocco",0,Mainland,Landscape/Region,,0
+10002,Jordan,1,Mainland,Political Unit,,1
+10003,"Río Ilo-Moquegua y Lomas de Ilo, Peru",0,Mainland,Landscape/Region,,0
+10004,"Alligator Rivers Region, Australia",1,Mainland,Landscape/Region,,0
+10005,"Keoladeo National Park, India",0,Mainland,Protected Area,,0
+10006,"Parque Nacional Pali Aike, Chile",1,Mainland,Protected Area,,0
+10007,"Department of Ñeembucú, Paraguay",1,Mainland,Political Unit,,0
+10008,"Gebel Elba National Park, Egypt",0,Mainland,Protected Area,,0
+10009,"Loango National Park, Gabon",1,Mainland,Protected Area,,0
+10010,"Kaieteur National Park, Guyana",1,Mainland,Protected Area,,0
+10011,"Región de Coquimbo, Chile",1,Mainland,Political Unit,,0
+10012,"Binalood Mountain range, Iran",0,Mainland,Landscape/Region,,0
+10013,Qatar,1,Mainland,Political Unit,,1
+10014,"Theog Forest Division, India",1,Mainland,Landscape/Region,,0
+10015,"Region Rhône-Alpes, France",1,Mainland,Political Unit,,0
+10016,"Parque Nacional Cumbres de Monterrey, Mexico",0,Mainland,Protected Area,,0
+10017,"Burke, QLD, Australia",1,Mainland,Political Unit,,0
+10018,"Burnett, QLD, Australia",1,Mainland,Political Unit,,0
+10019,"Cook, QLD, Australia",1,Mainland,Political Unit,,0
+10020,"Darling Downs, QLD, Australia",1,Mainland,Political Unit,,0
+10021,"Gregory North, QLD, Australia",1,Mainland,Political Unit,,0
+10022,"Gregory South, QLD, Australia",1,Mainland,Political Unit,,0
+10023,"Leichhardt, QLD, Australia",1,Mainland,Political Unit,,0
+10024,"Maranoa, QLD, Australia",1,Mainland,Political Unit,,0
+10025,"Mitchell, QLD, Australia",1,Mainland,Political Unit,,0
+10026,"Moreton, QLD, Australia",1,Mainland,Political Unit,,0
+10027,"North Kennedy, QLD, Australia",1,Mainland,Political Unit,,0
+10028,"Port Curtis, QLD, Australia",1,Mainland,Political Unit,,0
+10029,"South Kennedy, QLD, Australia",1,Mainland,Political Unit,,0
+10030,"Warrego, QLD, Australia",1,Mainland,Political Unit,,0
+10031,"Wide Bay, QLD, Australia",1,Mainland,Political Unit,,0
+10032,"Sachsen, Germany",1,Mainland,Political Unit,,0
+10033,"Cuenca Alta del Río Lerma, Mexico",0,Mainland,Landscape/Region,,0
+10034,"Tuscan Maremma, Italy",1,Mainland,Political Unit,,0
+10035,"Reserva de Uso Múltiple Guaraní, Argentina",0,Mainland,Protected Area,,0
+10036,Gabon,0,Mainland,Political Unit,GAB,1
+10037,"Serra de São José, Brazil",0,Mainland,Landscape/Region,,0
+10038,"Mata dos Godoy State Park, Brazil",1,Mainland,Protected Area,,0
+10039,"Danube Delta, Romania",1,Mainland,Protected Area,,0
+10040,"Kakamega Forest, Kenya",1,Mainland,Protected Area,,0
+10041,"Machiara National Park, Pakistan",0,Mainland,Protected Area,,0
+10042,"Comoé-Léraba, Burkina Faso",0,Mainland,Protected Area,,0
+10043,"Pilbara region, Australia",1,Mainland,Landscape/Region,,0
+10044,"Emas National Park, Brazil",0,Mainland,Protected Area,,0
+10045,"Chiquibul Forest, Belize",0,Mainland,Protected Area,,0
+10046,"Ladakh, India",0,Mainland,Political Unit,,0
+10047,"North Lorma National Park, Loberia",0,Mainland,Protected Area,,0
+10048,"Gola National Forest, Liberia",0,Mainland,Protected Area,,0
+10049,"Grebo National Forest, Liberia",0,Mainland,Protected Area,,0
+10050,"Pan de Azúcur NP, Chile",1,Mainland,Protected Area,,0
+10051,"Alto Paraguay, Paraguay",1,Mainland,Political Unit,,0
+10052,"Boquerón, Paraguay",1,Mainland,Political Unit,,0
+10053,"Presidente Hayes, Paraguay",1,Mainland,Political Unit,,0
+10054,"Madidi National Park, Bolivia",0,Mainland,Protected Area,,0
+10055,"Kamchatka, Russian Federation",0,Island/Mainland,Landscape/Region,KAM,0
+10056,Switzerland,1,Mainland,Political Unit,SWI,1
+10057,"Tatacoa Desert, Colombia",1,Mainland,Landscape/Region,,0
+10058,"Thal Desert, Pakistan",0,Mainland,Landscape/Region,,0
+10059,Chad,1,Mainland,Political Unit,CHA,1
+10060,"Chirinda Forest, Zimbabwe",1,Mainland,Protected Area,,0
+10061,"Wadi Al-Noman, Saudi Arabia",0,Mainland,Landscape/Region,,0
+10062,"Tank District, Pakistan",0,Mainland,Political Unit,,0
+10063,"Parque provincial Tromen, Argentina",1,Mainland,Protected Area,,0
+10064,"Grampians National Park, Australia",1,Mainland,Protected Area,,0
+10065,"Murray Sunset National Park, Australia",1,Mainland,Protected Area,,0
+10066,"Snowy River National Park, Australia",1,Mainland,Protected Area,,0
+10067,"Kinnaur, Himachal Pradesh, India",0,Mainland,Political Unit,,0
+10068,"Pongara National Park, Gabon",0,Mainland,Protected Area,,0
+10069,"Tocantins River Middle Basin, Brazil",0,Mainland,Landscape/Region,,0
+10070,"Parque Nacional Cañón del Sumidero, Mexico",0,Mainland,Protected Area,,0
+10071,Spain mainland,1,Mainland,Political Unit,SPA,0
+10072,Portugal mainland,1,Mainland,Political Unit,POR,0
+10073,"Guaribas Biological Reserve, Brazil",0,Mainland,Protected Area,,0
+10074,"Jatun Sacha Biological Reserve, Ecuador",0,Mainland,Protected Area,,0
+10075,Lebanon,1,Mainland,Political Unit,,1
+10076,"Bhagwan Mahavir National Park, India",0,Mainland,Protected Area,,0
+10077,"Virunga Volcanoes, Rwanda/Uganda/DRC",0,Mainland,Protected Area,,0
+10078,"Marmarica, Libya & Egypt",1,Mainland,Landscape/Region,,0
+10079,"Drawa National Park, Poland",0,Mainland,Protected Area,,0
+10080,"Mbaracayú Forest Nature Reserve, Paraguay",1,Mainland,Protected Area,,0
+10081,Burkina Faso,1,Mainland,Political Unit,BKN,1
+10082,Botswana,1,Mainland,Political Unit,BOT,1
+10083,"Eastern Cape Province, South Africa",1,Mainland,Political Unit,,0
+10084,"Free State Province, South Africa",1,Mainland,Political Unit,OFS,0
+10085,"Gauteng Province, South Africa",1,Mainland,Political Unit,,0
+10086,"KwaZulu-Natal Province, South Africa",1,Mainland,Political Unit,NAT,0
+10087,Lesotho,1,Mainland,Political Unit,LES,1
+10088,"Limpopo Province, South Africa",1,Mainland,Political Unit,,0
+10089,"Mpumalanga Province, South Africa",1,Mainland,Political Unit,,0
+10090,Namibia,1,Mainland,Political Unit,,1
+10091,"Northern Cape Province, South Africa",1,Mainland,Political Unit,,0
+10092,"Northwest Province, South Africa",1,Mainland,Political Unit,,0
+10093,Swaziland,1,Mainland,Political Unit,SWZ,1
+10094,"Western Cape Province, South Africa",1,Mainland,Political Unit,,0
+10095,"Parque Nacional da Gorongosa, Moçambique",1,Mainland,Protected Area,,0
+10096,"Bogdinsko Baskunchaksky Reserve, Russian Federation",0,Mainland,Protected Area,,0
+10097,"Denezhkin Kamen Reserve, Russian Federation",0,Mainland,Protected Area,,0
+10098,"Gyzyl-Agach Nature Reserve, Azerbaijan",0,Mainland,Protected Area,,0
+10099,"Baikalsky Reserve, Russian Federation",0,Mainland,Protected Area,,0
+10100,"Runctia Sal Forest, Bangladesh",0,Mainland,Landscape/Region,,0
+10101,"Nationalpark Eifel, Germany",1,Mainland,Protected Area,,0
+10102,"Bukačka Nature Reserve, Czech Republic",0,Mainland,Protected Area,,0
+10103,"Zona serrana de Córdoba, Argentina",1,Mainland,Landscape/Region,,0
+10104,"Haute-Garonne, France",1,Mainland,Political Unit,,0
+10105,"El Rodeo, Costa Rica",1,Mainland,Landscape/Region,,0
+10106,"Province of Buenos Aires, Argentina",1,Mainland,Political Unit,,0
+10107,"Province of Catamarca, Argentina",1,Mainland,Political Unit,,0
+10108,"Province of Chaco, Argentina",1,Mainland,Political Unit,,0
+10109,"Province of Chubut, Argentina",1,Mainland,Political Unit,,0
+10110,"Province of Corrientes, Argentina",1,Mainland,Political Unit,,0
+10111,"Province of Córdoba, Argentina",1,Mainland,Political Unit,,0
+10112,"Distrito Federal, Argentina",1,Mainland,Political Unit,,0
+10113,"Province of Entre Ríos, Argentina",1,Mainland,Political Unit,,0
+10114,"Province of Formosa, Argentina",1,Mainland,Political Unit,,0
+10115,"Province of Jujuy, Argentina",1,Mainland,Political Unit,,0
+10116,"Province of La Pampa, Argentina",1,Mainland,Political Unit,,0
+10117,"Province of La Rioja, Argentina",1,Mainland,Political Unit,,0
+10118,"Province of Mendoza, Argentina",1,Mainland,Political Unit,,0
+10119,"Province of Misiones, Argentina",1,Mainland,Political Unit,,0
+10120,"Province of Neuquén, Argentina",1,Mainland,Political Unit,,0
+10121,"Province of Río Negro, Argentina",1,Mainland,Political Unit,,0
+10122,"Province of Salta, Argentina",1,Mainland,Political Unit,,0
+10123,"Province of Santa Cruz, Argentina",1,Mainland,Political Unit,,0
+10124,"Province of Santiago del Estero, Argentina",1,Mainland,Political Unit,,0
+10125,"Province of Santa Fe, Argentina",1,Mainland,Political Unit,,0
+10126,"Province of San Juan, Argentina",1,Mainland,Political Unit,,0
+10127,"Province of San Luis, Argentina",1,Mainland,Political Unit,,0
+10128,"Province of Tierra del Fuego, Argentina",1,Island Part,Political Unit,,0
+10129,"Province of Tucamán, Argentina",1,Mainland,Political Unit,,0
+10130,"Province of Parana, Brazil",1,Mainland,Political Unit,,0
+10131,Province of Rio Grande Do Sul,1,Mainland,Political Unit,,0
+10132,Province of Santa Catarina,1,Mainland,Political Unit,,0
+10133,"Región de Tarapacá, Chile",1,Mainland,Political Unit,,0
+10134,"Región de Antofagasta, Chile",1,Mainland,Political Unit,,0
+10135,"Región de Atacama, Chile",1,Mainland,Political Unit,,0
+10136,"Región de Valparaíso, Chile",1,Mainland,Political Unit,,0
+10137,"Región del Libertador General Bernardo O'Higgins, Chile",1,Mainland,Political Unit,,0
+10138,"Región del Maule, Chile",1,Mainland,Political Unit,,0
+10139,"Región del Bío-Bío, Chile",1,Island/Mainland,Political Unit,,0
+10140,"Región de la Araucanía, Chile",1,Mainland,Political Unit,,0
+10141,"Región de Los Lagos, Chile",1,Island/Mainland,Political Unit,,0
+10142,"Región Aisén del General Carlos Ibáñez del Campo, Chile",1,Island/Mainland,Political Unit,,0
+10143,"Región de Magallanes y de la Antártica Chilena, Chile",1,Island/Mainland,Political Unit,,0
+10144,"Región Metropolitana de Santiago, Chile",1,Mainland,Political Unit,,0
+10145,"Department of Amambay, Paraguay",1,Mainland,Political Unit,,0
+10146,"Department of Alto Paraná, Paraguay",1,Mainland,Political Unit,,0
+10147,"Department of Caazapá, Paraguay",1,Mainland,Political Unit,,0
+10148,"Department of Canindeyú, Paraguay",1,Mainland,Political Unit,,0
+10149,"Department of Caaguazú, Paraguay",1,Mainland,Political Unit,,0
+10150,"Department of Central, Paraguay",1,Mainland,Political Unit,,0
+10151,"Department of Cordillera, Paraguay",1,Mainland,Political Unit,,0
+10152,"Department of Conceptión, Paraguay",1,Mainland,Political Unit,,0
+10153,"Department of Guairá, Paraguay",1,Mainland,Political Unit,,0
+10154,"Department of Itapúa, Paraguay",1,Mainland,Political Unit,,0
+10155,"Department of Misiones, Paraguay",1,Mainland,Political Unit,,0
+10156,"Department of Paraguarí, Paraguay",1,Mainland,Political Unit,,0
+10157,"Department of San Pedro, Paraguay",1,Mainland,Political Unit,,0
+10158,"Department of Artigas, Uruguay",1,Mainland,Political Unit,,0
+10159,"Department of Canelones, Uruguay",1,Mainland,Political Unit,,0
+10160,"Department of Cerro Largo, Uruguay",1,Mainland,Political Unit,,0
+10161,"Department of Colonia, Uruguay",1,Mainland,Political Unit,,0
+10162,"Department of Durazno, Uruguay",1,Mainland,Political Unit,,0
+10163,"Department of Florida, Uruguay",1,Mainland,Political Unit,,0
+10164,"Department of Flores, Uruguay",1,Mainland,Political Unit,,0
+10165,"Department of Lavelleja, Uruguay",1,Mainland,Political Unit,,0
+10166,"Department of Maldonado, Uruguay",1,Mainland,Political Unit,,0
+10167,"Department of Montevideo, Uruguay",1,Mainland,Political Unit,,0
+10168,"Department of Paysandú, Uruguay",1,Mainland,Political Unit,,0
+10169,"Department of Rivera, Uruguay",1,Mainland,Political Unit,,0
+10170,"Department of Río Negro, Uruguay",1,Mainland,Political Unit,,0
+10171,"Department of Rocha, Uruguay",1,Mainland,Political Unit,,0
+10172,"Department of Salto, Uruguay",1,Mainland,Political Unit,,0
+10173,"Department of San José, Uruguay",1,Mainland,Political Unit,,0
+10174,"Department of Soriano, Uruguay",1,Mainland,Political Unit,,0
+10175,"Department of Tacuarembó, Uruguay",1,Mainland,Political Unit,,0
+10176,"Department of T.y. T. Orientales, Uruguay",1,Mainland,Political Unit,,0
+10177,"Bontebok National Park, South Africa",1,Mainland,Protected Area,,0
+10178,"State of Amazonas, Venezuela",1,Mainland,Political Unit,,0
+10179,"State of Bolívar, Venezuela",1,Mainland,Political Unit,,0
+10180,State of Delta Amacuro,1,Mainland,Political Unit,,0
+10181,French Guiana,1,Mainland,Political Unit,FRG,1
+10182,Guyana,1,Mainland,Political Unit,GUY,1
+10183,Suriname,1,Mainland,Political Unit,SUR,1
+10184,"Parco Nazionale delle Foreste Casentinesi, Monte Falterona e Campigna, Italy",1,Mainland,Protected Area,,0
+10185,"Ayeyarwady Region, Myanmar",0,Mainland,Political Unit,,0
+10186,"Bago Region, Myanmar",0,Mainland,Political Unit,,0
+10187,"Chin Region, Myanmar",0,Mainland,Political Unit,,0
+10188,"Kachin Region, Myanmar",0,Mainland,Political Unit,,0
+10189,"Kayah Region, Myanmar",0,Mainland,Political Unit,,0
+10190,"Kayin Region, Myanmar",0,Mainland,Political Unit,,0
+10191,"Magway Region, Myanmar",0,Mainland,Political Unit,,0
+10192,"Mandalay Region, Myanmar",0,Mainland,Political Unit,,0
+10193,"Mon Region, Myanmar",0,Mainland,Political Unit,,0
+10194,"Rakhine Region, Myanmar",0,Mainland,Political Unit,,0
+10195,"Sagaing Region, Myanmar",0,Mainland,Political Unit,,0
+10196,"Shan Region, Myanmar",0,Mainland,Political Unit,,0
+10197,"Taninthayi Region, Myanmar",0,Mainland,Political Unit,,0
+10198,"Yangon Region, Myanmar",0,Mainland,Political Unit,,0
+10199,"Ponor Special Protection Area, Bulgaria",0,Mainland,Protected Area,,0
+10200,"Chilgapsan Provincial Park, South Korea",1,Mainland,Protected Area,,0
+10201,"Gyeongju National Park, South Korea",0,Mainland,Protected Area,,0
+10202,"Ruvubu National Park, Burundi",1,Mainland,Protected Area,,0
+10203,"Taï National Park (southern part), Côte d'Ivoire",0,Mainland,Protected Area,,0
+10204,"Ben En National Park, Vietnam",0,Mainland,Protected Area,,0
+10205,"Cuc Phuong National Park, Vietnam",0,Mainland,Protected Area,,0
+10206,"Tinjure-Milke-Jaljale, Nepal",0,Mainland,Landscape/Region,,0
+10207,"Aniakchak National Monument and Preserve, USA",1,Mainland,Protected Area,,0
+10208,"Maeshchera National Park, Russian Federation",0,Mainland,Protected Area,,0
+10209,"Arches National Park, USA",1,Mainland,Protected Area,,0
+10210,"Baca National Wildlife Refuge, USA",0,Mainland,Protected Area,,0
+10211,"Canyon de Chelly National Monument, USA",0,Mainland,Protected Area,,0
+10212,"Chicago Region, USA",0,Mainland,Landscape/Region,,0
+10213,"Chiricahua National Monument, USA",0,Mainland,Protected Area,,0
+10214,"Coronado National Forest, USA",0,Mainland,Protected Area,,0
+10215,"Grand Canyon National Park, USA",1,Mainland,Protected Area,,0
+10216,"Petrified Forest National Park, USA",1,Mainland,Protected Area,,0
+10217,"Pipe Spring National Monument, USA",0,Mainland,Protected Area,,0
+10218,"San Pedro Riparian National Conservation Area, USA",0,Mainland,Protected Area,,0
+10219,"Tonto National Forest, USA",0,Mainland,Protected Area,,0
+10220,"White Sands National Monument, USA",0,Mainland,Protected Area,,0
+10221,"Zion National Park, USA",1,Mainland,Protected Area,,0
+10222,"Badlands National Park, USA",1,Mainland,Protected Area,,0
+10223,"Big Bend National Park, USA",1,Mainland,Protected Area,,0
+10224,"Black Canyon of the Gunnison National Park, USA",1,Mainland,Protected Area,,0
+10225,"Bryce Canyon National Park, USA",1,Mainland,Protected Area,,0
+10226,"Canyonlands National Park, USA",1,Mainland,Protected Area,,0
+10227,"Capitol Reef National Park, USA",1,Mainland,Protected Area,,0
+10228,"Carlsbad Caverns National Park, USA",1,Mainland,Protected Area,,0
+10229,"Congaree National Park, USA",1,Mainland,Protected Area,,0
+10230,"Crater Lake National Park, USA",1,Mainland,Protected Area,,0
+10231,"Cuyahoga Valley National Park, USA",1,Mainland,Protected Area,,0
+10232,"Death Valley National Park, USA",1,Mainland,Protected Area,,0
+10233,"Denali National Park and Preserve, USA",1,Mainland,Protected Area,,0
+10234,"Everglades National Park, USA",1,Mainland,Protected Area,,0
+10235,"Gates of the Arctic National Park and Preserve, USA",1,Mainland,Protected Area,,0
+10236,"Glacier Bay National Park and Preserve, USA",1,Mainland,Protected Area,,0
+10237,"Glacier National Park, USA",1,Mainland,Protected Area,,0
+10238,"Grand Teton National Park, USA",1,Mainland,Protected Area,,0
+10239,"Great Basin National Park, USA",1,Mainland,Protected Area,,0
+10240,"Great Sand Dunes National Park and Preserve, USA",1,Mainland,Protected Area,,0
+10241,"Great Smoky Mountains National Park, USA",1,Mainland,Protected Area,,0
+10242,"Guadalupe Mountains National Park, USA",1,Mainland,Protected Area,,0
+10243,"Hot Springs National Park, USA",1,Mainland,Protected Area,,0
+10244,"Joshua Tree National Park, USA",1,Mainland,Protected Area,,0
+10245,"Katmai National Park and Preserve, USA",1,Mainland,Protected Area,,0
+10246,"Kenai Fjords National Park, USA",1,Mainland,Protected Area,,0
+10247,"Kobuk Valley National Park, USA",1,Mainland,Protected Area,,0
+10248,"Lake Clark National Park and Preserve, USA",1,Mainland,Protected Area,,0
+10249,"Lassen Volcanic National Park, USA",1,Mainland,Protected Area,,0
+10250,"Mammoth Cave National Park, USA",1,Mainland,Protected Area,,0
+10251,"Mesa Verde National Park, USA",1,Mainland,Protected Area,,0
+10252,"Mount Rainier National Park, USA",1,Mainland,Protected Area,,0
+10253,"North Cascades National Park, USA",1,Mainland,Protected Area,,0
+10254,"Olympic National Park, USA",1,Mainland,Protected Area,,0
+10255,"Pinnacles National Park, USA",1,Mainland,Protected Area,,0
+10256,"Redwood National and State Parks, USA",1,Mainland,Protected Area,,0
+10257,"Rocky Mountain National Park, USA",1,Mainland,Protected Area,,0
+10258,"Saguaro National Park, USA",1,Mainland,Protected Area,,0
+10259,"Sequoia and Kings Canyon National Parks, USA",1,Mainland,Protected Area,,0
+10260,"Shenandoah National Park, USA",1,Mainland,Protected Area,,0
+10261,"Voyageurs National Park, USA",1,Mainland,Protected Area,,0
+10262,"Wind Cave National Park, USA",1,Mainland,Protected Area,,0
+10263,"Wrangell - Saint Elias National Park & Preserve, USA",1,Mainland,Protected Area,,0
+10264,"Yellowstone National Park, USA",1,Mainland,Protected Area,,0
+10265,"Yosemite National Park, USA",1,Mainland,Protected Area,,0
+10266,"Pendjari Biosphere Reserve, Benin",0,Mainland,Protected Area,,0
+10267,"Rajshahi District, Bangladesh",0,Mainland,Political Unit,,0
+10268,"Shimba Hills National Reserve, Kenya",1,Mainland,Protected Area,,0
+10269,"Sierra de la Giganta, Mexico",0,Mainland,Landscape/Region,,0
+10270,"Banff National Park, Canada",1,Mainland,Protected Area,,0
+10271,"Bruce Peninsula National Park, Canada",1,Mainland,Protected Area,,0
+10272,"Glacier National Park, Canada",1,Mainland,Protected Area,,0
+10273,"Grasslands National Park, Canada",1,Mainland,Protected Area,,0
+10274,"Ivvavik National Park, Canada",1,Mainland,Protected Area,,0
+10275,"Jasper National Park, Canada",1,Mainland,Protected Area,,0
+10276,"Kejimkujik National Park, Canada",1,Mainland,Protected Area,,0
+10277,"Kluane National Park, Canada",1,Mainland,Protected Area,,0
+10278,"Kootenay National Park, Canada",1,Mainland,Protected Area,,0
+10279,"Kouchibouguac National Park, Canada",1,Mainland,Protected Area,,0
+10280,"La Mauricie National Park, Canada",1,Mainland,Protected Area,,0
+10281,"Mingan Archipelago National Park, Canada",1,Island Group,Protected Area,,0
+10282,"Mt. Revelstoke National Park, Canada",1,Mainland,Protected Area,,0
+10283,"Nahanni National Park, Canada",1,Mainland,Protected Area,,0
+10284,"Prince Albert National Park, Canada",1,Mainland,Protected Area,,0
+10285,"Riding Mountain National Park, Canada",1,Mainland,Protected Area,,0
+10286,"Tuktut Nogait National Park, Canada",1,Mainland,Protected Area,,0
+10287,"Ukkusiksalik National Park, Canada",1,Mainland,Protected Area,,0
+10288,"Vuntut National Park, Canada",1,Mainland,Protected Area,,0
+10289,"Wapusk National Park, Canada",1,Mainland,Protected Area,,0
+10290,"Yoho National Park, Canada",1,Mainland,Protected Area,,0
+10291,"Izmir Province, Turkey",0,Mainland,Political Unit,,0
+10292,"Kastamonu Province, Turkey",0,Mainland,Political Unit,,0
+10293,"Hakkari Province, Turkey",0,Mainland,Political Unit,,0
+10294,"Hatay Province, Turkey",0,Mainland,Political Unit,,0
+10295,"Artvin Province, Turkey",0,Mainland,Political Unit,,0
+10296,"Amboró National Park, Bolivia",0,Mainland,Protected Area,,0
+10297,"Maquipucuna Reserve, Ecuador",0,Mainland,Protected Area,,0
+10298,"Gaoligongshan Nature Reserve, China",0,Mainland,Protected Area,,0
+10299,"Kanchanjunga Conservation Area, Nepal",0,Mainland,Protected Area,,0
+10300,"Khangchendzonga National Park, India",0,Mainland,Protected Area,,0
+10301,"Neora Valley National Park, India",0,Mainland,Protected Area,,0
+10302,"Singalila National Park, India",0,Mainland,Protected Area,,0
+10303,"Parque Natural Sierra Mariola, Spain",0,Mainland,Protected Area,,0
+10304,"Taï National Park, Côte d'Ivoire",0,Mainland,Protected Area,,0
+10305,"Bale Mountains National Park (northern part), Ethiopia",0,Mainland,Protected Area,,0
+10306,"National Reserve Lago Peñuelas, Chile",1,Mainland,Protected Area,,0
+10307,"Kronotsky Nature Reserve, Russian Federation",0,Mainland,Protected Area,,0
+10308,"Valdaisky Nature Reserve, Russian Federation",0,Mainland,Protected Area,,0
+10309,"Dzanga-Sangha Reserve, Central African Republic",1,Mainland,Protected Area,,0
+10310,"Guinea-Bissau, East",1,Mainland,Landscape/Region,,0
+10311,"Guinea-Bissau, North",1,Mainland,Landscape/Region,,0
+10312,"Guinea-Bissau, South",1,Mainland,Landscape/Region,,0
+10313,"Norsky Nature Reserve, Russian Federation",0,Mainland,Protected Area,,0
+10314,"Arroyo Agua Fria, Municipio Minatitlan, Colima, Mexico",0,Mainland,Landscape/Region,,0
+10315,"Bosques subandinos de la Cuchilla el Fara, Colombia",0,Mainland,Landscape/Region,,0
+10316,"Sundarban Mangrove Forest, Bangladesh",0,Mainland,Protected Area,,0
+10317,"Tsentralno-Sibirsky Nature Reserve, Russian Federation",0,Mainland,Protected Area,,0
+10318,"Kora National Park, Kenya",0,Mainland,Protected Area,,0
+10319,"Katerniaghat Wildlife Sanctuary, India",1,Mainland,Protected Area,,0
+10320,"Greater San Quintín, Mexico",1,Mainland,Landscape/Region,,0
+10321,"Mache-Chindul Mountains, Ecuador",1,Mainland,Landscape/Region,,0
+10322,"Ussuriysky Nature Reserve, Russian Federation",0,Mainland,Protected Area,,0
+10323,"Frakto Virgin Forest, Greece",0,Mainland,Protected Area,,0
+10324,"Bryansk Nature Reserve, Russian Federation",1,Mainland,Protected Area,,0
+10325,"Eglone Nature Reserve, Latvia",1,Mainland,Protected Area,,0
+10326,"Atanasovsko Lake Nature Reserve, Bulgaria",0,Mainland,Protected Area,,0
+10327,"Papuk Nature Park, Croatia",1,Mainland,Protected Area,,0
+10328,"Rilomanastirska Gora Nature Reserve, Bulgaria",1,Mainland,Protected Area,,0
+10329,"Northern Kyrgyzstan, Kyrgyzstan",1,Mainland,Landscape/Region,,0
+10330,"Issyk-Kul Basin, Kyrgyzstan",1,Mainland,Landscape/Region,,0
+10331,"Central Tien Shan, Kyrgyzstan",1,Mainland,Landscape/Region,,0
+10332,"Western Tien Shan, Kyrgyzstan",1,Mainland,Landscape/Region,,0
+10333,"Eastern Fergana Valley, Kyrgyzstan",1,Mainland,Landscape/Region,,0
+10334,"Tien Shan main massive, Kyrgyzstan",1,Mainland,Landscape/Region,,0
+10335,"Alay valley, Kyrgyzstan",1,Mainland,Landscape/Region,,0
+10336,Nicaragua,1,Island/Mainland,Political Unit,NIC,1
+10337,"Region del Beni, Bolivia",1,Mainland,Political Unit,,0
+10338,Bolivia,1,Mainland,Political Unit,BOL,1
+10339,"Region de Chuquisaca, Bolivia",1,Mainland,Political Unit,,0
+10340,"Region de Cochabamba, Bolivia",1,Mainland,Political Unit,,0
+10341,"Region de La Paz, Bolivia",1,Mainland,Political Unit,,0
+10342,"Region de Oruro, Bolivia",1,Mainland,Political Unit,,0
+10343,"Region de Pando, Bolivia",1,Mainland,Political Unit,,0
+10344,"Region de Potosí, Bolivia",1,Mainland,Political Unit,,0
+10345,"Region de Santa Cruz, Bolivia",1,Mainland,Political Unit,,0
+10346,"Region de Tarija, Bolivia",1,Mainland,Political Unit,,0
+10347,"Department of Antioquia, Colombia",1,Mainland,Political Unit,,0
+10348,Ecuador,1,Island/Mainland,Political Unit,,1
+10349,"Department of Azuay, Ecuador",1,Mainland,Political Unit,,0
+10350,"Department of Bolívar, Ecuador",1,Mainland,Political Unit,,0
+10351,"Department of Cañar, Ecuador",1,Mainland,Political Unit,,0
+10352,"Department of Carchi, Ecuador",1,Mainland,Political Unit,,0
+10353,"Department of Chimborazo, Ecuador",1,Mainland,Political Unit,,0
+10354,"Department of Cotopaxi, Ecuador",1,Mainland,Political Unit,,0
+10355,"Department of El.Oro, Ecuador",1,Mainland,Political Unit,,0
+10356,"Department of Esmeraldas, Ecuador",1,Mainland,Political Unit,,0
+10357,"Department of Galapagos, Ecuador",1,Island Group,Political Unit,GAL,0
+10358,"Department of Guayas, Ecuador",1,Mainland,Political Unit,,0
+10359,"Department of Imbabura, Ecuador",1,Mainland,Political Unit,,0
+10360,"Department of Loja, Ecuador",1,Mainland,Political Unit,,0
+10361,"Department of Los.Ríos, Ecuador",1,Mainland,Political Unit,,0
+10362,"Department of Manabí, Ecuador",1,Mainland,Political Unit,,0
+10363,"Department of Morona.Santiago, Ecuador",1,Mainland,Political Unit,,0
+10364,"Department of Napo, Ecuador",1,Mainland,Political Unit,,0
+10365,"Department of Pastaza, Ecuador",1,Mainland,Political Unit,,0
+10366,"Department of Pichincha, Ecuador",1,Mainland,Political Unit,,0
+10367,"Department of Sucumbíos, Ecuador",1,Mainland,Political Unit,,0
+10368,"Department of Tungurahua, Ecuador",1,Mainland,Political Unit,,0
+10369,"Department of Zamora.Chinchipe, Ecuador",1,Mainland,Political Unit,,0
+10370,Panama,1,Island/Mainland,Political Unit,PAN,1
+10371,"Department of Bocas del Toro, Panama",1,Mainland,Political Unit,,0
+10372,"Department of Canal Area, Panama",1,Mainland,Political Unit,,0
+10373,"Department of Chiriquí, Panama",1,Mainland,Political Unit,,0
+10374,"Department of Coclé, Panama",1,Mainland,Political Unit,,0
+10375,"Department of Colón, Panama",1,Mainland,Political Unit,,0
+10376,"Department of Darién, Panama",1,Mainland,Political Unit,,0
+10377,"Department of Herrera, Panama",1,Mainland,Political Unit,,0
+10378,"Department of Los Santos, Panama",1,Mainland,Political Unit,,0
+10379,"Department of Panamá, Panama",1,Island/Mainland,Political Unit,,0
+10380,"Department of San Blas, Panama",1,Mainland,Political Unit,,0
+10381,"Department of Veraguas, Panama",1,Island/Mainland,Political Unit,,0
+10382,"Department of Amazonas, Peru",0,Mainland,Political Unit,,0
+10383,"Department of Ancash, Peru",0,Mainland,Political Unit,,0
+10384,"Department of Apurí, Peru",0,Mainland,Political Unit,,0
+10385,"Department of Arequipa, Peru",0,Mainland,Political Unit,,0
+10386,"Department of Ayacucho, Peru",0,Mainland,Political Unit,,0
+10387,"Department of Cajamarca, Peru",0,Mainland,Political Unit,,0
+10388,"Department of Cuzco, Peru",0,Mainland,Political Unit,,0
+10389,"Department of Huancavelica, Peru",0,Mainland,Political Unit,,0
+10390,"Department of Huánuco, Peru",0,Mainland,Political Unit,,0
+10391,"Department of Ica, Peru",0,Mainland,Political Unit,,0
+10392,"Department of Junín, Peru",0,Mainland,Political Unit,,0
+10393,"Department of La Libertad, Peru",0,Mainland,Political Unit,,0
+10394,"Department of Lambayeque, Peru",0,Mainland,Political Unit,,0
+10395,"Department of Lima, Peru",0,Mainland,Political Unit,,0
+10396,"Department of Loreto, Peru",0,Mainland,Political Unit,,0
+10397,"Department of Madre de Dios, Peru",0,Mainland,Political Unit,,0
+10398,"Department of Moquegua, Peru",0,Mainland,Political Unit,,0
+10399,"Department of Pasco, Peru",0,Mainland,Political Unit,,0
+10400,"Department of Piura, Peru",0,Mainland,Political Unit,,0
+10401,"Department of Puno, Peru",0,Mainland,Political Unit,,0
+10402,"Department of San Martín, Peru",0,Mainland,Political Unit,,0
+10403,"Department of Tacna, Peru",0,Mainland,Political Unit,,0
+10404,"Department of Tumbes, Peru",0,Mainland,Political Unit,,0
+10405,"Department of Ucayali, Peru",0,Mainland,Political Unit,,0
+10406,Peru,1,Mainland,Political Unit,PER,1
+10407,"Northern Pindos, Greece",1,Mainland,Landscape/Region,,0
+10408,"Southern Pindos, Greece",1,Mainland,Landscape/Region,,0
+10409,Peloponnese,1,Mainland,Landscape/Region,,0
+10410,"Sterea Ellas, Greece",1,Mainland,Landscape/Region,,0
+10411,"East Central, Greece",1,Mainland,Landscape/Region,,0
+10412,"North Central, Greece",1,Mainland,Landscape/Region,,0
+10413,"North East, Greece",1,Mainland,Landscape/Region,,0
+10414,"Katunsky Biosphere Reserve, Russian Federation",0,Mainland,Protected Area,,0
+10415,"Bashkiria National Park, Russian Federation",0,Mainland,Protected Area,,0
+10416,"Chuvash Republic, Russian Federation",0,Mainland,Political Unit,,0
+10417,"Kharkiv, Ukraine",1,Mainland,Political Unit,,0
+10418,"Zavidovo Nature Reserve, Russian Federation",1,Mainland,Protected Area,,0
+10419,"Romodanovsky District, Mordova, Russian Federation",1,Mainland,Political Unit,,0
+10420,"Ulyanovsk Oblast, Russian Federation",1,Mainland,Political Unit,,0
+10421,Kuwait,0,Mainland,Political Unit,KUW,1
+10422,"Abruzzo, Lazio and Molise NP, Italy",1,Mainland,Protected Area,,0
+10423,"Krasnoyarsk Forest Steppe, Russian Federation",0,Mainland,Landscape/Region,,0
+10424,"Kan Forest Steppe, Russian Federation",0,Mainland,Landscape/Region,,0
+10425,"Achinskoy Forest Steppe, Russian Federation",0,Mainland,Landscape/Region,,0
+10426,"Pé-de-Gigante Reserve, Brazil",0,Mainland,Protected Area,,0
+10427,"Tapi District, Gujarat, India",0,Mainland,Political Unit,,0
+10428,Korea Peninsula,1,Island/Mainland,Landscape/Region,KOR,0
+10429,Israel,1,Mainland,Political Unit,,1
+10430,"Trara Mounts, Algeria",1,Mainland,Landscape/Region,,0
+10431,Mongolia,0,Mainland,Political Unit,MON,1
+10432,East Gobi,1,Mainland,Landscape/Region,,0
+10433,Khobdo,1,Mainland,Landscape/Region,,0
+10434,Depression of Great Lakes,1,Mainland,Landscape/Region,,0
+10435,Dzungarian Gobi,1,Mainland,Landscape/Region,,0
+10436,Mongolian Altai,1,Mainland,Landscape/Region,,0
+10437,Khubsgul,1,Mainland,Landscape/Region,,0
+10438,Valley of great Lakes,1,Mainland,Landscape/Region,,0
+10439,Khangai,1,Mainland,Landscape/Region,,0
+10440,Khentei,1,Mainland,Landscape/Region,,0
+10441,Mongol-Daurian,1,Mainland,Landscape/Region,,0
+10442,Middle Kkalkha,1,Mainland,Landscape/Region,,0
+10443,Great Khingan,1,Mainland,Landscape/Region,,0
+10444,East Mongolia,1,Mainland,Landscape/Region,,0
+10445,Alashan Gobi,1,Mainland,Landscape/Region,,0
+10446,Gobi Altai,1,Mainland,Landscape/Region,,0
+10447,Transaltai Gobi,1,Mainland,Landscape/Region,,0
+10448,Beijing,1,Mainland,Political Unit,,0
+10449,Tianjin,1,Mainland,Political Unit,,0
+10450,Hebei,1,Mainland,Political Unit,,0
+10451,Shanxi,1,Mainland,Political Unit,,0
+10452,Neimenggu,1,Mainland,Political Unit,CHI,0
+10453,Liaoning,1,Mainland,Political Unit,,0
+10454,Jilin,1,Mainland,Political Unit,,0
+10455,Heilongjiang,1,Mainland,Political Unit,,0
+10456,Shanghai,1,Mainland,Political Unit,,0
+10457,Jiangsu,1,Mainland,Political Unit,,0
+10458,Zhejiang,1,Mainland,Political Unit,,0
+10459,Anhui,1,Mainland,Political Unit,,0
+10460,Fujian,1,Mainland,Political Unit,,0
+10461,Jiangxi,1,Mainland,Political Unit,,0
+10462,Shandong,1,Mainland,Political Unit,,0
+10463,Henan,1,Mainland,Political Unit,,0
+10464,Hubei,1,Mainland,Political Unit,,0
+10465,Hunan,1,Mainland,Political Unit,,0
+10466,Guangdong,1,Mainland,Political Unit,,0
+10467,Guangxi,1,Mainland,Political Unit,,0
+10469,Chongqin,1,Mainland,Political Unit,,0
+10470,Sichuan,1,Mainland,Political Unit,,0
+10471,Guizhou,1,Mainland,Political Unit,,0
+10472,Yunnan,1,Mainland,Political Unit,,0
+10473,Xizang,1,Mainland,Political Unit,CHT,0
+10474,Shaanxi,1,Mainland,Political Unit,,0
+10475,Gansu,1,Mainland,Political Unit,,0
+10476,Qinghai,1,Mainland,Political Unit,CHQ,0
+10477,Ningxia,1,Mainland,Political Unit,,0
+10478,Xinjiang,1,Mainland,Political Unit,CHX,0
+10482,Ecuatorial Guinea,1,Island/Mainland,Political Unit,,1
+10483,"Department of Amazonas, Colombia",1,Mainland,Political Unit,,0
+10484,"Department of Atlántico, Colombia",1,Mainland,Political Unit,,0
+10485,"Department of Arauca, Colombia",1,Mainland,Political Unit,,0
+10486,"Department of Bolívar, Colombia",1,Mainland,Political Unit,,0
+10487,"Department of Boyacá, Colombia",1,Mainland,Political Unit,,0
+10488,"Department of Caldas, Colombia",1,Mainland,Political Unit,,0
+10489,"Department of Caquetá, Colombia",1,Mainland,Political Unit,,0
+10490,"Department of Casanare, Colombia",1,Mainland,Political Unit,,0
+10491,"Department of Cauca, Colombia",1,Mainland,Political Unit,,0
+10492,"Department of Cesar, Colombia",1,Mainland,Political Unit,,0
+10493,"Department of Chocó, Colombia",1,Mainland,Political Unit,,0
+10494,"Department of Córdoba, Colombia",1,Mainland,Political Unit,,0
+10495,"Department of Cundinamarca, Colombia",1,Mainland,Political Unit,,0
+10496,"Department of Guainía, Colombia",1,Mainland,Political Unit,,0
+10497,"Department of Guaviare, Colombia",1,Mainland,Political Unit,,0
+10498,"Department of Huila, Colombia",1,Mainland,Political Unit,,0
+10499,"Department of La Guajira, Colombia",1,Mainland,Political Unit,,0
+10500,"Department of Magdalena, Colombia",1,Mainland,Political Unit,,0
+10501,"Department of Meta, Colombia",1,Mainland,Political Unit,,0
+10502,"Department of Nariño, Colombia",1,Mainland,Political Unit,,0
+10503,"Department of Norte de Santander, Colombia",1,Mainland,Political Unit,,0
+10504,"Department of Putumayo, Colombia",1,Mainland,Political Unit,,0
+10505,"Department of Quindío, Colombia",1,Mainland,Political Unit,,0
+10506,"Department of Risaralda, Colombia",1,Mainland,Political Unit,,0
+10507,"Department of Santander, Colombia",1,Mainland,Political Unit,,0
+10508,"Department of Sucre, Colombia",1,Mainland,Political Unit,,0
+10509,"Department of Tolima, Colombia",1,Mainland,Political Unit,,0
+10510,"Department of Valle del Cauca, Colombia",1,Island/Mainland,Political Unit,,0
+10511,"Department of Vaupés, Colombia",1,Mainland,Political Unit,,0
+10512,"Department of Vichada, Colombia",1,Mainland,Political Unit,,0
+10513,Colombia,1,Island/Mainland,Political Unit,CLM,1
+10514,Northern Europe,0,Island/Mainland,Botanical Country,,0
+10515,Middle Europe,0,Mainland,Botanical Country,,0
+10516,Southwestern Europe,0,Island/Mainland,Botanical Country,,0
+10517,Southeastern Europe,0,Island/Mainland,Botanical Country,,0
+10518,Eastern Europe,0,Island/Mainland,Botanical Country,,0
+10519,Northern Africa,0,Mainland,Botanical Country,,0
+10520,Macaronesia,0,Island Group,Botanical Country,,0
+10521,West Tropical Africa,0,Mainland,Botanical Country,,0
+10522,West-Central Tropical Africa,0,Island/Mainland,Botanical Country,,0
+10523,Northeast Tropical Africa,0,Island/Mainland,Botanical Country,,0
+10524,East Tropical Africa,0,Island/Mainland,Botanical Country,,0
+10525,South Tropical Africa,0,Mainland,Botanical Country,,0
+10526,Southern Africa,0,Mainland,Botanical Country,,0
+10527,Middle Atlantic Ocean,0,Island Group,Botanical Country,,0
+10528,Western Indian Ocean,0,Island Group,Botanical Country,,0
+10529,Siberia,0,Island/Mainland,Botanical Country,,0
+10530,Russian Far East,0,Island/Mainland,Botanical Country,,0
+10531,Middle Asia,0,Mainland,Botanical Country,,0
+10532,Caucasus,0,Mainland,Botanical Country,,0
+10533,Western Asia,0,Island/Mainland,Botanical Country,,0
+10534,Arabian Peninsula,0,Island/Mainland,Botanical Country,,0
+10535,China,0,Island/Mainland,Botanical Country,,1
+10537,Eastern Asia,0,Island/Mainland,Botanical Country,,0
+10538,Indian Subcontinent,0,Island/Mainland,Botanical Country,,0
+10539,Indo-China,0,Island/Mainland,Botanical Country,,0
+10540,Malesia,0,Island/Mainland,Botanical Country,,0
+10541,Papuasia,0,Island Group,Botanical Country,,0
+10542,Australia,1,Island/Mainland,Botanical Country,,1
+10543,New Zealand Botanical Region excl. Macquarie,0,Island Group,Botanical Country,,0
+10544,Southwestern Pacific,0,Island Group,Botanical Country,,0
+10545,South-Central Pacific,0,Island Group,Botanical Country,,0
+10546,Northwestern Pacific,0,Island Group,Botanical Country,,0
+10548,Subarctic America,0,Island/Mainland,Botanical Country,,0
+10549,Western Canada,0,Island/Mainland,Botanical Country,,0
+10550,Eastern Canada,0,Island/Mainland,Botanical Country,,0
+10551,Northwestern U.S.A.,0,Mainland,Botanical Country,,0
+10552,North-Central U.S.A.,0,Mainland,Botanical Country,,0
+10553,Northeastern U.S.A.,0,Mainland,Botanical Country,,0
+10554,Southwestern U.S.A.,0,Island/Mainland,Botanical Country,,0
+10555,South-Central U.S.A.,0,Mainland,Botanical Country,,0
+10556,Southeastern U.S.A.,0,Mainland,Botanical Country,,0
+10557,Mexico,1,Island/Mainland,Botanical Country,,1
+10558,Central America,1,Island/Mainland,Botanical Country,,0
+10559,Caribbean,0,Island Group,Botanical Country,,0
+10560,Northern South America,0,Mainland,Botanical Country,,0
+10561,Western South America,0,Island/Mainland,Botanical Country,,0
+10562,Brazil,1,Island/Mainland,Botanical Country,,1
+10563,Southern South America,1,Island/Mainland,Botanical Country,,0
+10564,Subantarctic Islands,0,Island Group,Botanical Country,,0
+10566,Alberta,1,Mainland,Botanical Country,ABT,0
+10567,Afghanistan,1,Mainland,Botanical Country,AFG,1
+10568,Argentina Northeast,0,Mainland,Botanical Country,AGE,0
+10569,Argentina South,0,Island/Mainland,Botanical Country,AGS,0
+10570,Argentina Northwest,0,Mainland,Botanical Country,AGW,0
+10571,Alabama,1,Mainland,Botanical Country,ALA,0
+10572,Albania,1,Mainland,Botanical Country,ALB,1
+10573,Aldabra and Assumption,0,Island Group,Botanical Country,ALD,0
+10574,Algeria,1,Mainland,Botanical Country,ALG,1
+10575,Altay,0,Mainland,Botanical Country,ALT,0
+10576,Aleutian Is.,0,Island Group,Botanical Country,ALU,0
+10577,Amur,0,Mainland,Botanical Country,AMU,0
+10579,"Angola, excl. Cabinda",0,Mainland,Botanical Country,ANG,0
+10580,Antarctica,0,Island/Mainland,Botanical Country,ANT,1
+10581,Arizona,1,Mainland,Botanical Country,ARI,0
+10582,Arkansas,1,Mainland,Botanical Country,ARK,0
+10585,Alaska,1,Island/Mainland,Botanical Country,ASK,0
+10586,Amsterdam-St.Paul Is.,0,Island Group,Botanical Country,ASP,0
+10587,Assam,0,Mainland,Botanical Country,ASS,0
+10588,Antipodean Is.,1,Island Group,Botanical Country,ATP,0
+10589,Austria incl. Liechtenstein,1,Mainland,Botanical Country,AUT,1
+10590,Azores,1,Island Group,Botanical Country,AZO,0
+10593,Bangladesh,0,Mainland,Botanical Country,BAN,1
+10594,Benin,1,Mainland,Botanical Country,BEN,1
+10596,Belgium incl. Luxembourg,1,Mainland,Botanical Country,BGM,0
+10599,Belarus,1,Mainland,Botanical Country,BLR,1
+10600,Baltic States,1,Island/Mainland,Botanical Country,BLT,0
+10601,Belize,0,Mainland,Botanical Country,BLZ,1
+10605,Bouvet I.,0,Island,Botanical Country,BOU,1
+10606,British Columbia,1,Island/Mainland,Botanical Country,BRC,0
+10607,Buryatiya,0,Mainland,Botanical Country,BRY,0
+10608,Bulgaria,1,Mainland,Botanical Country,BUL,1
+10609,Burundi,1,Mainland,Botanical Country,BUR,1
+10610,Brazil West-Central,0,Mainland,Botanical Country,BZC,0
+10611,Brazil Northeast,0,Island/Mainland,Botanical Country,BZE,0
+10612,Brazil Southeast,0,Island/Mainland,Botanical Country,BZL,0
+10613,Brazil North,0,Mainland,Botanical Country,BZN,0
+10614,Brazil South,0,Mainland,Botanical Country,BZS,0
+10615,Cabinda,0,Mainland,Botanical Country,CAB,0
+10616,Central African Republic,0,Mainland,Botanical Country,CAF,1
+10617,California,1,Island/Mainland,Botanical Country,CAL,0
+10619,Cambodia,0,Mainland,Botanical Country,CBD,1
+10620,Chagos Archipelago,0,Island Group,Botanical Country,CGS,0
+10622,China South-Central,0,Mainland,Botanical Country,CHC,0
+10625,Manchuria,0,Mainland,Botanical Country,CHM,0
+10626,China North-Central,0,Mainland,Botanical Country,CHN,0
+10628,China Southeast,0,Mainland,Botanical Country,CHS,0
+10631,Cocos (Keeling) I.,0,Island,Botanical Country,CKI,0
+10632,Chile Central,0,Mainland,Botanical Country,CLC,0
+10634,Chile North,0,Mainland,Botanical Country,CLN,0
+10635,Chile South,0,Island/Mainland,Botanical Country,CLS,0
+10636,Cameroon,1,Mainland,Botanical Country,CMN,1
+10637,Connecticut,1,Mainland,Botanical Country,CNT,0
+10639,Colorado,1,Mainland,Botanical Country,COL,0
+10640,Comoros,0,Island Group,Botanical Country,COM,0
+10641,Congo,0,Mainland,Botanical Country,CON,1
+10644,Costa Rica,1,Island/Mainland,Botanical Country,COS,1
+10646,Cape Provinces,0,Mainland,Botanical Country,CPP,0
+10647,Caprivi Strip,0,Mainland,Botanical Country,CPV,0
+10650,Chita,0,Mainland,Botanical Country,CTA,0
+10654,Cyprus,1,Island,Botanical Country,CYP,1
+10655,Czechoslovakia,0,Mainland,Botanical Country,CZE,0
+10656,Delaware,1,Mainland,Botanical Country,DEL,0
+10657,Denmark,1,Island/Mainland,Botanical Country,DEN,1
+10658,Djibouti,0,Mainland,Botanical Country,DJI,1
+10659,Dominican Republic,0,Island Part,Botanical Country,DOM,1
+10662,Easter Island and Sala y Gómez,0,Island Group,Botanical Country,EAS,0
+10663,Ecuador excl. Galapagos,0,Mainland,Botanical Country,ECU,0
+10664,Egypt without Sinai,1,Mainland,Botanical Country,EGY,0
+10665,East Himalaya,0,Mainland,Botanical Country,EHM,0
+10666,El Salvador,0,Mainland,Botanical Country,ELS,1
+10667,Equatorial Guinea excl. Bioko,1,Mainland,Botanical Country,EQG,0
+10668,Eritrea,0,Island/Mainland,Botanical Country,ERI,1
+10669,Ethiopia,0,Mainland,Botanical Country,ETH,1
+10670,Falkland Is.,1,Island Group,Botanical Country,FAL,1
+10672,Finland,1,Island/Mainland,Botanical Country,FIN,1
+10673,Florida,1,Mainland,Botanical Country,FLA,0
+10674,Føroyar,1,Island Group,Botanical Country,FOR,1
+10675,France incl. Channel Islands and Monaco excl. Corse,1,Mainland,Botanical Country,FRA,0
+10679,"Gambia, The",1,Mainland,Botanical Country,GAM,1
+10680,Georgia,1,Mainland,Botanical Country,GEO,0
+10681,Germany,1,Mainland,Botanical Country,GER,1
+10683,Ghana,1,Mainland,Botanical Country,GHA,1
+10685,Guinea-Bissau,1,Island/Mainland,Botanical Country,GNB,1
+10686,Greenland,1,Island Group,Botanical Country,GNL,1
+10688,Greece excl. Crete and East Aegean,1,Island/Mainland,Botanical Country,GRC,0
+10689,Gulf States,0,Mainland,Botanical Country,GST,0
+10690,Guatemala,0,Mainland,Botanical Country,GUA,1
+10691,Guinea,1,Mainland,Botanical Country,GUI,1
+10693,Haiti,0,Island Part,Botanical Country,HAI,1
+10694,Hawaii incl. Johnston Island,1,Island Group,Botanical Country,HAW,0
+10695,Howland-Baker Is.,0,Island Group,Botanical Country,HBI,0
+10697,Honduras,0,Mainland,Botanical Country,HON,1
+10698,Hungary,1,Mainland,Botanical Country,HUN,1
+10700,Idaho,1,Mainland,Botanical Country,IDA,0
+10701,Illinois,1,Mainland,Botanical Country,ILL,0
+10702,India,0,Mainland,Botanical Country,IND,0
+10703,Indiana,1,Mainland,Botanical Country,INI,0
+10704,Iowa,1,Mainland,Botanical Country,IOW,0
+10706,Irkutsk,0,Mainland,Botanical Country,IRK,0
+10707,Iran,0,Mainland,Botanical Country,IRN,1
+10708,Iraq,0,Mainland,Botanical Country,IRQ,1
+10709,Italy excl. Sardinia and Sicily,1,Island/Mainland,Botanical Country,ITA,0
+10710,Ivory Coast,1,Mainland,Botanical Country,IVO,1
+10716,Kansas,1,Mainland,Botanical Country,KAN,0
+10717,Kazakhstan,0,Mainland,Botanical Country,KAZ,1
+10719,Kenya,0,Mainland,Botanical Country,KEN,1
+10721,Kirgizistan,0,Mainland,Botanical Country,KGZ,1
+10722,Khabarovsk,0,Mainland,Botanical Country,KHA,0
+10724,Krasnoyarsk and Khakass,0,Island/Mainland,Botanical Country,KRA,0
+10726,Krym,1,Mainland,Botanical Country,KRY,0
+10727,Kentucky,1,Mainland,Botanical Country,KTY,0
+10728,Kuril Is.,0,Island Group,Botanical Country,KUR,0
+10730,Kazan-retto,0,Island Group,Botanical Country,KZN,0
+10731,Labrador,1,Mainland,Botanical Country,LAB,0
+10732,Laos,1,Mainland,Botanical Country,LAO,1
+10733,Liberia,1,Mainland,Botanical Country,LBR,1
+10734,Lebanon-Syria,1,Mainland,Botanical Country,LBS,0
+10735,Libya,1,Mainland,Botanical Country,LBY,1
+10736,Laccadive Is.,0,Island Group,Botanical Country,LDV,0
+10739,Line Is.,0,Island Group,Botanical Country,LIN,0
+10740,Louisiana,1,Mainland,Botanical Country,LOU,0
+10742,Magadan and Chukotka,0,Island/Mainland,Botanical Country,MAG,0
+10743,Maine,1,Mainland,Botanical Country,MAI,0
+10744,Manitoba,1,Mainland,Botanical Country,MAN,0
+10746,Massachusetts,1,Mainland,Botanical Country,MAS,0
+10747,Mauritius incl. Agelaga,0,Island Group,Botanical Country,MAU,0
+10748,Mozambique Channel Is.,0,Island Group,Botanical Country,MCI,0
+10749,Marcus I.,0,Island,Botanical Country,MCS,0
+10751,Madeira Archipelago,1,Island Group,Botanical Country,MDR,0
+10752,Maldives,0,Island Group,Botanical Country,MDV,1
+10753,Michigan,1,Mainland,Botanical Country,MIC,0
+10754,Minnesota,1,Mainland,Botanical Country,MIN,0
+10755,Mali,1,Mainland,Botanical Country,MLI,1
+10756,Malawi,1,Mainland,Botanical Country,MLW,1
+10757,Malaya,1,Mainland,Botanical Country,MLY,0
+10758,Montana,1,Mainland,Botanical Country,MNT,0
+10761,Morocco,1,Mainland,Botanical Country,MOR,1
+10762,Mozambique,1,Mainland,Botanical Country,MOZ,1
+10763,Marion-Prince Edward Is.,1,Island Group,Botanical Country,MPE,0
+10766,Marshall Is.,0,Island Group,Botanical Country,MRS,1
+10767,Maryland,1,Mainland,Botanical Country,MRY,0
+10768,Mississippi,1,Mainland,Botanical Country,MSI,0
+10769,Missouri,1,Mainland,Botanical Country,MSO,0
+10770,Mauritania,0,Mainland,Botanical Country,MTN,1
+10771,Mexico Central,0,Mainland,Botanical Country,MXC,0
+10772,Mexico Northeast,0,Mainland,Botanical Country,MXE,0
+10773,Mexico Gulf,0,Mainland,Botanical Country,MXG,0
+10775,Mexico Northwest,0,Island/Mainland,Botanical Country,MXN,0
+10776,Mexico Southwest,0,Mainland,Botanical Country,MXS,0
+10777,Mexico Southeast,0,Mainland,Botanical Country,MXT,0
+10778,Myanmar,0,Mainland,Botanical Country,MYA,1
+10779,Namibia excl. Caprivi Strip,0,Mainland,Botanical Country,NAM,0
+10781,New Brunswick,1,Mainland,Botanical Country,NBR,0
+10782,North Carolina,1,Mainland,Botanical Country,NCA,0
+10784,North Caucasus,1,Mainland,Botanical Country,NCS,0
+10785,North Dakota,1,Mainland,Botanical Country,NDA,0
+10786,Nebraska,1,Mainland,Botanical Country,NEB,0
+10787,Nepal,0,Mainland,Botanical Country,NEP,1
+10788,Netherlands,1,Mainland,Botanical Country,NET,1
+10789,Nevada,1,Mainland,Botanical Country,NEV,0
+10790,Norfolk Is.,0,Island Group,Botanical Country,NFK,0
+10792,Nigeria,0,Mainland,Botanical Country,NGA,1
+10793,Niger,0,Mainland,Botanical Country,NGR,1
+10795,Netherlands Antilles,0,Island Group,Botanical Country,NLA,0
+10797,Norway,1,Mainland,Botanical Country,NOR,1
+10799,Nova Scotia,1,Island/Mainland,Botanical Country,NSC,0
+10800,New South Wales,0,Mainland,Botanical Country,NSW,0
+10801,Northern Territory,1,Island/Mainland,Botanical Country,NTA,0
+10803,Nunavut,1,Island/Mainland,Botanical Country,NUN,0
+10806,New Hampshire,1,Mainland,Botanical Country,NWH,0
+10807,New Jersey,1,Mainland,Botanical Country,NWJ,0
+10808,New Mexico,1,Mainland,Botanical Country,NWM,0
+10809,Northwest Territories,1,Island/Mainland,Botanical Country,NWT,0
+10810,New York,1,Mainland,Botanical Country,NWY,0
+10815,Ohio,1,Mainland,Botanical Country,OHI,0
+10816,Oklahoma,1,Mainland,Botanical Country,OKL,0
+10817,Oman,0,Mainland,Botanical Country,OMA,1
+10818,Ontario,1,Mainland,Botanical Country,ONT,0
+10819,Oregon,1,Mainland,Botanical Country,ORE,0
+10820,Pakistan,0,Mainland,Botanical Country,PAK,0
+10821,Palestine,1,Mainland,Botanical Country,PAL,0
+10823,Paraguay,0,Mainland,Botanical Country,PAR,1
+10824,Prince Edward I.,1,Island,Botanical Country,PEI,0
+10825,Pennsylvania,1,Mainland,Botanical Country,PEN,0
+10828,Phoenix Is.,0,Island Group,Botanical Country,PHX,0
+10829,Pitcairn Is.,0,Island Group,Botanical Country,PIT,1
+10830,Poland,1,Mainland,Botanical Country,POL,1
+10832,Primorye,0,Mainland,Botanical Country,PRM,0
+10834,Queensland,0,Mainland,Botanical Country,QLD,0
+10835,Québec,1,Island/Mainland,Botanical Country,QUE,0
+10837,Rhode I.,1,Mainland,Botanical Country,RHO,0
+10839,Romania,1,Mainland,Botanical Country,ROM,1
+10840,Central European Russia,1,Mainland,Botanical Country,RUC,0
+10841,East European Russia,1,Mainland,Botanical Country,RUE,0
+10842,North European Russia,1,Island/Mainland,Botanical Country,RUN,0
+10843,South European Russia,1,Mainland,Botanical Country,RUS,0
+10844,Northwest European Russia,1,Mainland,Botanical Country,RUW,0
+10845,Rwanda,0,Mainland,Botanical Country,RWA,1
+10849,Saskatchewan,1,Mainland,Botanical Country,SAS,0
+10850,Saudi Arabia,1,Island/Mainland,Botanical Country,SAU,1
+10851,South Carolina,1,Mainland,Botanical Country,SCA,0
+10852,Society Is.,0,Island Group,Botanical Country,SCI,0
+10853,South China Sea,0,Island Group,Botanical Country,SCS,0
+10855,South Dakota,1,Mainland,Botanical Country,SDA,0
+10857,Senegal,1,Mainland,Botanical Country,SEN,1
+10860,Sicilia incl. Pantelleria and Malta,1,Island Group,Botanical Country,SIC,0
+10861,Sierra Leone,1,Mainland,Botanical Country,SIE,1
+10862,Sinai,1,Mainland,Botanical Country,SIN,0
+10863,South Australia,0,Mainland,Botanical Country,SOA,0
+10866,Somalia,0,Mainland,Botanical Country,SOM,1
+10869,South Sandwich Is.,0,Island Group,Botanical Country,SSA,0
+10871,Sudan,0,Mainland,Botanical Country,SUD,0
+10875,Svalbard,1,Island Group,Botanical Country,SVA,1
+10876,Southwest Caribbean,0,Island Group,Botanical Country,SWC,0
+10877,Sweden,1,Island/Mainland,Botanical Country,SWE,1
+10881,Tanzania,1,Island/Mainland,Botanical Country,TAN,1
+10884,Transcaucasus,0,Mainland,Botanical Country,TCS,0
+10885,Tristan da Cunha and Gough Island,0,Island Group,Botanical Country,TDC,0
+10886,Tennessee,1,Mainland,Botanical Country,TEN,0
+10887,Texas,1,Mainland,Botanical Country,TEX,0
+10888,Thailand,1,Mainland,Botanical Country,THA,1
+10889,Turkmenistan,0,Mainland,Botanical Country,TKM,1
+10890,Togo,0,Mainland,Botanical Country,TOG,1
+10895,Tubuai Is.,0,Island Group,Botanical Country,TUB,0
+10896,Turkey-in-Europe,1,Mainland,Botanical Country,TUE,0
+10897,Tunisia,1,Mainland,Botanical Country,TUN,1
+10898,Turkey asiatic,0,Mainland,Botanical Country,TUR,0
+10899,Tuvalu,0,Island Group,Botanical Country,TUV,1
+10900,Tuva,0,Mainland,Botanical Country,TVA,0
+10901,Northern Provinces,0,Mainland,Botanical Country,TVL,0
+10902,Tadzhikistan,0,Mainland,Botanical Country,TZK,1
+10903,Uganda,0,Mainland,Botanical Country,UGA,1
+10904,Ukraine,0,Mainland,Botanical Country,UKR,0
+10905,Uruguay,0,Mainland,Botanical Country,URU,1
+10906,Utah,1,Mainland,Botanical Country,UTA,0
+10907,Uzbekistan,0,Mainland,Botanical Country,UZB,1
+10909,Venezuela,1,Mainland,Botanical Country,VEN,1
+10910,Vermont,1,Mainland,Botanical Country,VER,0
+10911,Victoria,1,Mainland,Botanical Country,VIC,0
+10912,Vietnam,1,Island/Mainland,Botanical Country,VIE,1
+10913,Venezuelan Antilles,0,Island Group,Botanical Country,VNA,0
+10914,Virginia,1,Mainland,Botanical Country,VRG,0
+10917,Washington,1,Mainland,Botanical Country,WAS,0
+10918,Western Australia,1,Mainland,Botanical Country,WAU,0
+10919,District of Columbia,0,Mainland,Botanical Country,WDC,0
+10920,West Himalaya,0,Mainland,Botanical Country,WHM,0
+10922,Wisconsin,1,Mainland,Botanical Country,WIS,0
+10923,Western Sahara,0,Mainland,Botanical Country,WSA,1
+10924,West Siberia,0,Island/Mainland,Botanical Country,WSB,0
+10925,West Virginia,1,Mainland,Botanical Country,WVA,0
+10926,Wyoming,1,Mainland,Botanical Country,WYO,0
+10928,Yakutskiya,0,Island/Mainland,Botanical Country,YAK,0
+10929,Yemen,0,Mainland,Botanical Country,YEM,1
+10930,Yugoslavia,1,Mainland,Botanical Country,YUG,0
+10931,Yukon,1,Mainland,Botanical Country,YUK,0
+10932,Zaïre,1,Mainland,Botanical Country,ZAI,1
+10933,Zambia,1,Mainland,Botanical Country,ZAM,1
+10934,Zimbabwe,1,Mainland,Botanical Country,ZIM,1
+10935,Acre,1,Mainland,Political Unit,,0
+10936,Alagoas,1,Mainland,Political Unit,,0
+10937,Amapá,1,Mainland,Political Unit,,0
+10938,Amazonas,1,Mainland,Political Unit,,0
+10939,Bahia,1,Mainland,Political Unit,,0
+10940,Ceará,1,Mainland,Political Unit,,0
+10941,Distrito Federal,1,Mainland,Political Unit,,0
+10942,Espírito Santo,1,Island/Mainland,Political Unit,,0
+10943,Goiás,1,Mainland,Political Unit,,0
+10944,Maranhão,1,Mainland,Political Unit,,0
+10945,Mato Grosso,1,Mainland,Political Unit,,0
+10946,Mato Grosso do Sul,1,Mainland,Political Unit,,0
+10947,Minas Gerais,1,Mainland,Political Unit,,0
+10948,Pará,1,Mainland,Political Unit,,0
+10949,Paraíba,1,Mainland,Political Unit,,0
+10950,Pernambuco,1,Mainland,Political Unit,,0
+10951,Piauí,1,Mainland,Political Unit,,0
+10952,Rio de Janeiro,1,Mainland,Political Unit,,0
+10953,Rio Grande do Norte,1,Island/Mainland,Political Unit,,0
+10954,Rondônia,1,Mainland,Political Unit,,0
+10955,Roraima,1,Mainland,Political Unit,,0
+10956,São Paulo,1,Mainland,Political Unit,,0
+10957,Sergipe,1,Mainland,Political Unit,,0
+10958,Tocantins,1,Mainland,Political Unit,,0
+10959,Southeast Brazil,1,Island/Mainland,Political Unit,,0
+10960,Czech Republic,1,Mainland,Political Unit,,1
+10961,Croatia,1,Mainland,Political Unit,,1
+10962,Magadan,0,Mainland,Political Unit,,0
+10964,Kemerovo Oblast,0,Mainland,Political Unit,,0
+10965,Tomsk Oblast,0,Mainland,Political Unit,,0
+10966,Altay Oblast,0,Mainland,Political Unit,,0
+10967,Altai Republic,0,Mainland,Political Unit,,0
+10968,Krasnoyarsk,0,Island/Mainland,Political Unit,,0
+10969,Chukotka,0,Island/Mainland,Political Unit,,0
+10970,Kamchatskii krai excl. Commander islands,0,Mainland,Political Unit,,0
+10971,Khakass Republic,0,Mainland,Political Unit,,0
+10972,Novosibirsk Oblast,0,Mainland,Political Unit,,0
+10973,Omsk Oblast,0,Mainland,Political Unit,,0
+10974,"Tyumen, Khanty-Mansiy, Yamal-Nenets",0,Mainland,Political Unit,,0
+10978,Sierra Nevada ,1,Mainland,Landscape/Region,,0
+10979,Kuram,0,Mainland,Landscape/Region,,0
+10980,Mogoltausian,0,Mainland,Landscape/Region,,0
+10981,Prisyrdarian,0,Mainland,Landscape/Region,,0
+10982,Turkestanian A,0,Mainland,Landscape/Region,,0
+10983,Turkestanian B,0,Mainland,Landscape/Region,,0
+10985,Zeravshanian A,0,Mainland,Landscape/Region,,0
+10986,Zeravshanian B,0,Mainland,Landscape/Region,,0
+10987,Zeravshanian C,0,Mainland,Landscape/Region,,0
+10989,Hissaro-Darvasian A ,0,Mainland,Landscape/Region,,0
+10990,Hissaro-Darvasian B ,0,Mainland,Landscape/Region,,0
+10991,Hissaro-Darvasian C,0,Mainland,Landscape/Region,,0
+10992,Hissaro-Darvasian D,0,Mainland,Landscape/Region,,0
+10993,Hissaro-Darvasian E,0,Mainland,Landscape/Region,,0
+10994,Hissaro-Darvasian F,0,Mainland,Landscape/Region,,0
+10996,South Tajikistanian A ,0,Mainland,Landscape/Region,,0
+10997,South Tajikistanian B,0,Mainland,Landscape/Region,,0
+10998,South Tajikistanian C,0,Mainland,Landscape/Region,,0
+10999,South Tajikistanian D,0,Mainland,Landscape/Region,,0
+11001,Eastern Tajikistanian A,0,Mainland,Landscape/Region,,0
+11002,Eastern Tajikistanian B,0,Mainland,Landscape/Region,,0
+11003,Eastern Tajikistanian C,0,Mainland,Landscape/Region,,0
+11005,Western Pamirian A,0,Mainland,Landscape/Region,,0
+11006,Western Pamirian B,0,Mainland,Landscape/Region,,0
+11007,Western Pamirian C,0,Mainland,Landscape/Region,,0
+11009,Eastern Pamirian ,0,Mainland,Landscape/Region,,0
+11010,Alayan,0,Mainland,Landscape/Region,,0
+11011,North Western,1,Mainland,Political Unit,,0
+11012,Lake Eyre,1,Mainland,Political Unit,,0
+11013,Nallarbor,1,Mainland,Political Unit,,0
+11014,Gairdner-Torrens,1,Mainland,Political Unit,,0
+11015,Flinders Ranges,1,Mainland,Political Unit,,0
+11016,Eastern,1,Mainland,Political Unit,,0
+11017,Eyre Peninsula,1,Mainland,Political Unit,,0
+11018,Northern Lofty,1,Mainland,Political Unit,,0
+11019,Murray,1,Mainland,Political Unit,,0
+11020,Yorke Peninsula,1,Mainland,Political Unit,,0
+11021,Southern Lofty,1,Mainland,Political Unit,,0
+11022,South Eastern,1,Mainland,Political Unit,,0
+11023,"Beli Lom Nature Reserve, Bulgaria",0,Mainland,Protected Area,,0
+11024,"San Luis Biological Reserve, Costa Rica",1,Mainland,Protected Area,,0
+11025,"Banaras Hindu University Main Campus, India",1,Mainland,Urban Area,,0
+11026,"Smolny National Park, Russian Federation",1,Mainland,Protected Area,,0
+11027,"Östergötland Province, Sweden",0,Mainland,Political Unit,,0
+11028,"Riserva Naturalle ""La Pietra""",0,Mainland,Protected Area,,0
+11029,"Valle d'Aosta Province, Italy",1,Mainland,Political Unit,,0
+11030,"Piemonte Province, Italy",1,Mainland,Political Unit,,0
+11031,"Lombardia Province, Italy",1,Mainland,Political Unit,,0
+11032,"Trentino-Alto Adige Province, Italy",1,Mainland,Political Unit,,0
+11033,"Veneto Province, Italy",1,Mainland,Political Unit,,0
+11034,"Friuli-Venezia Giulia Province, Italy",1,Mainland,Political Unit,,0
+11035,"Liguria Province, Italy",1,Mainland,Political Unit,,0
+11036,"Emilia-Romagna Province, Italy",1,Mainland,Political Unit,,0
+11037,"Toscana Province, Italy",1,Island/Mainland,Political Unit,,0
+11038,"Marche Province, Italy",1,Mainland,Political Unit,,0
+11039,"Umbria Province, Italy",1,Mainland,Political Unit,,0
+11040,"Lazio Province, Italy",1,Mainland,Political Unit,,0
+11041,"Abruzzo Province, Italy",1,Mainland,Political Unit,,0
+11042,"Molise Province, Italy",1,Mainland,Political Unit,,0
+11043,"Campania Province, Italy",1,Mainland,Political Unit,,0
+11044,"Puglia Province, Italy",1,Mainland,Political Unit,,0
+11045,"Basilicata Province, Italy",1,Mainland,Political Unit,,0
+11046,"Calabria Province, Italy",1,Mainland,Political Unit,,0
+11047,"Schleswig-Holstein, Germany",1,Mainland,Political Unit,,0
+11048,"Mecklenburg-Vorpommern, Germany",1,Mainland,Political Unit,,0
+11049,"Niedersachsen, Germany",1,Mainland,Political Unit,,0
+11050,"Hamburg, Germany",1,Mainland,Political Unit,,0
+11051,"Brandenburg, Germany",1,Mainland,Political Unit,,0
+11052,"Sachsen-Anhalt, Germany",1,Mainland,Political Unit,,0
+11053,"Nordrhein-Westfalen, Germany",1,Mainland,Political Unit,,0
+11054,"Hessen, Germany",1,Mainland,Political Unit,,0
+11055,"Thüringen, Germany",1,Mainland,Political Unit,,0
+11056,"Rheinland-Pfalz, Germany",1,Mainland,Political Unit,,0
+11057,"Bayern, Germany",1,Mainland,Political Unit,,0
+11058,"Baden-Württemberg, Germany",1,Mainland,Political Unit,,0
+11059,"Saarland, Germany",1,Mainland,Political Unit,,0
+11060,"Bremen, Germany",1,Mainland,Political Unit,,0
+11061,"Berlin, Germany",1,Mainland,Political Unit,,0
+11062,"Saadani NP, Tanzania",1,Mainland,Protected Area,,0
+11063,Botswana SW,0,Mainland,Landscape/Region,,0
+11064,Botswana SE,0,Mainland,Landscape/Region,,0
+11065,Botswana N,0,Mainland,Landscape/Region,,0
+11066,Zambia B,1,Mainland,Landscape/Region,,0
+11067,Zambia S,1,Mainland,Landscape/Region,,0
+11068,Zambia W,1,Mainland,Landscape/Region,,0
+11069,Zambia C,1,Mainland,Landscape/Region,,0
+11070,Zambia N,1,Mainland,Landscape/Region,,0
+11071,Zambia E,1,Mainland,Landscape/Region,,0
+11072,Zimbabwe S,1,Mainland,Landscape/Region,,0
+11073,Zimbabwe W,1,Mainland,Landscape/Region,,0
+11074,Zimbabwe C,1,Mainland,Landscape/Region,,0
+11075,Zimbabwe E,1,Mainland,Landscape/Region,,0
+11076,Zimbabwe N,1,Mainland,Landscape/Region,,0
+11078,Mozambique M,1,Mainland,Landscape/Region,,0
+11079,Mozambique GI,1,Mainland,Landscape/Region,,0
+11080,Mozambique MS,1,Mainland,Landscape/Region,,0
+11081,Mozambique T,1,Mainland,Landscape/Region,,0
+11082,Mozambique Z,1,Mainland,Landscape/Region,,0
+11083,Mozambique N,1,Mainland,Landscape/Region,,0
+11084,Malawi S,1,Mainland,Landscape/Region,,0
+11085,Malawi C,1,Mainland,Landscape/Region,,0
+11086,Malawi N,1,Mainland,Landscape/Region,,0
+11087,"Mount Mulanje, Malawi",1,Mainland,Protected Area,,0
+11088,"Caprivi Strip, Namibia",1,Mainland,Landscape/Region,,0
+11089,"Burgenland, Austria",1,Mainland,Political Unit,,0
+11090,"Wien, Austria",1,Mainland,Political Unit,,0
+11091,"Niederöstereich, Austria",1,Mainland,Political Unit,,0
+11092,"Oberöstereich, Austria",1,Mainland,Political Unit,,0
+11093,"Steiermark, Austria",1,Mainland,Political Unit,,0
+11094,"Kärnten, Austria",1,Mainland,Political Unit,,0
+11095,"Salzburg, Austria",1,Mainland,Political Unit,,0
+11096,"Tirol, Austria",1,Mainland,Political Unit,,0
+11097,"Voralberg, Austria",1,Mainland,Political Unit,,0
+11098,Südtirol,1,Mainland,Political Unit,,0
+11099,Lichtenstein,1,Mainland,Political Unit,,1
+11100,"Austria, Lichtenstein and South Tyrol",1,Mainland,Political Unit,,0
+11101,North-Korea,1,Mainland,Landscape/Region,,1
+11102,South-Korea,1,Island/Mainland,Landscape/Region,,1
+11103,"Aguascalientes, Mexico",1,Mainland,Political Unit,,0
+11104,"Baja California, Mexico",1,Island/Mainland,Political Unit,,0
+11105,"Baja California Sur, Mexico",1,Island/Mainland,Political Unit,,0
+11106,"Campeche, Mexico",1,Mainland,Political Unit,,0
+11107,"Chiapas, Mexico",1,Mainland,Political Unit,,0
+11108,"Chihuahua, Mexico",1,Mainland,Political Unit,,0
+11109,"Coahuila, Mexico",1,Mainland,Political Unit,,0
+11110,"Colima, Mexico",1,Mainland,Political Unit,,0
+11111,"Distrito Federal, Mexico",1,Mainland,Political Unit,,0
+11112,"Durango, Mexico",1,Mainland,Political Unit,,0
+11113,"Estado de México, Mexico",1,Mainland,Political Unit,,0
+11114,"Guanajuato, Mexico",1,Mainland,Political Unit,,0
+11115,"Guerrero, Mexico",1,Mainland,Political Unit,,0
+11116,"Hidalgo, Mexico",1,Mainland,Political Unit,,0
+11117,"Jalisco, Mexico",1,Mainland,Political Unit,,0
+11118,"Michoacán, Mexico",1,Mainland,Political Unit,,0
+11119,"Morelos, Mexico",1,Mainland,Political Unit,,0
+11120,"Nayarit, Mexico",1,Island/Mainland,Political Unit,,0
+11121,"Nuevo León, Mexico",1,Mainland,Political Unit,,0
+11122,"Oaxaca, Mexico",1,Mainland,Political Unit,,0
+11123,"Puebla, Mexico",1,Mainland,Political Unit,,0
+11124,"Querétaro, Mexico",1,Mainland,Political Unit,,0
+11125,"Quintana Roo, Mexico",1,Mainland,Political Unit,,0
+11126,"San Luis Potosí, Mexico",1,Mainland,Political Unit,,0
+11127,"Sinaloa, Mexico",1,Mainland,Political Unit,,0
+11128,"Sonora, Mexico",1,Mainland,Political Unit,,0
+11129,"Tabasco, Mexico",1,Mainland,Political Unit,,0
+11130,"Tamaulipas, Mexico",1,Mainland,Political Unit,,0
+11131,"Tlaxcala, Mexico",1,Mainland,Political Unit,,0
+11132,"Veracruz, Mexico",1,Mainland,Political Unit,,0
+11133,"Yucatán, Mexico",1,Mainland,Political Unit,,0
+11134,"Zacatecas, Mexico",1,Mainland,Political Unit,,0
+11135,St. Pierre and Miquelon,1,Island,Political Unit,,1
+11136,"Fenua Tapu, Nui Atoll",1,Island,Island,,0
+11137,"Motipuakaka, Nui Atoll",1,Island,Island,,0
+11138,"Pongalei, Nui Atoll",1,Island,Island,,0
+11139,"Kokole, Nui Atoll",1,Island,Island,,0
+11140,"Unimai, Nui Atoll",1,Island,Island,,0
+11141,"Unimai 2, Nui Atoll",1,Island,Island,,0
+11142,"Tenamoitoka, Nui Atoll",1,Island,Island,,0
+11143,"Piliaieve, Nui Atoll",1,Island,Island,,0
+11144,"Pakantou, Nui Atoll",1,Island,Island,,0
+11145,"Sikiana, Nui Atoll",1,Island,Island,,0
+11146,"Motuliki, Nui Atoll",1,Island,Island,,0
+11147,"Motuliki 2, Nui Atoll",1,Island,Island,,0
+11148,"Motulikiliki, Nui Atoll",1,Island,Island,,0
+11149,"Talalolae, Nui Atoll",1,Island,Island,,0
+11150,"Teitai, Nui Atoll",1,Island,Island,,0
+11151,"Tokinivae, Nui Atoll",1,Island,Island,,0
+11152,"Meang, Nui Atoll",1,Island,Island,,0
+11153,"Nusafe, Nui Atoll",1,Island,Island,,0
+11154,"Tokinivae 2, Nui Atoll",1,Island,Island,,0
+11155,"Tokinivae3, Nui Atoll",1,Island,Island,,0
+11156,"Chanaral, Humboldt Current System",1,Island,Island,,0
+11157,"Damas, Humboldt Current System",1,Island,Island,,0
+11158,"Choros, Humboldt Current System",1,Island,Island,,0
+11159,"Chungungo, Humboldt Current System",1,Island,Island,,0
+11160,"Tilgo, Humboldt Current System",1,Island,Island,,0
+11161,"Pajaros 1, Humboldt Current System",1,Island,Island,,0
+11162,"Pajaros 2, Humboldt Current System",1,Island,Island,,0
+11163,"Bare East, Hawaii Sandy Islands",1,Island,Island,,0
+11164,"Gin, Hawaii Sandy Islands",1,Island,Island,,0
+11165,"Disappearing, Hawaii Sandy Islands",1,Island,Island,,0
+11166,"Little Gin, Hawaii Sandy Islands",1,Island,Island,,0
+11167,"Mullet, Hawaii Sandy Islands",1,Island,Island,,0
+11168,"Near, Hawaii Sandy Islands",1,Island,Island,,0
+11169,"Round, Hawaii Sandy Islands",1,Island,Island,,0
+11170,"Shark, Hawaii Sandy Islands",1,Island,Island,,0
+11171,"Trig, Hawaii Sandy Islands",1,Island,Island,,0
+11172,"Whale-Skate, Hawaii Sandy Islands",1,Island,Island,,0
+11173,"Bird, Hawaii Sandy Islands",1,Island,Island,,0
+11174,"Grass, Hawaii Sandy Islands",1,Island,Island,,0
+11175,"Kittery, Hawaii Sandy Islands",1,Island,Island,,0
+11176,"Little North, Hawaii Sandy Islands",1,Island,Island,,0
+11177,"North, Hawaii Sandy Islands",1,Island,Island,,0
+11178,"Planetree, Hawaii Sandy Islands",1,Island,Island,,0
+11179,"Sand, Hawaii Sandy Islands",1,Island,Island,,0
+11180,"Seal, Hawaii Sandy Islands",1,Island,Island,,0
+11181,"Northeast, Glovers Reef",0,Island,Island,,0
+11182,"Long-N, Glovers Reef",0,Island,Island,,0
+11183,"Long, Glovers Reef",0,Island,Island,,0
+11184,"Middle, Glovers Reef",0,Island,Island,,0
+11185,"Southwest I, Glovers Reef",0,Island,Island,,0
+11186,"Southwest II, Glovers Reef",0,Island,Island,,0
+11187,Islets near Perth 9,1,Island,Island,,0
+11188,Islets near Perth 10,1,Island,Island,,0
+11189,Islets near Perth 11,1,Island,Island,,0
+11190,Islets near Perth 12,1,Island,Island,,0
+11191,Islets near Perth 13,1,Island,Island,,0
+11192,Islets near Perth 14,1,Island,Island,,0
+11193,Islets near Perth 15,1,Island,Island,,0
+11194,Islets near Perth 16,1,Island,Island,,0
+11195,Islets near Perth 17,1,Island,Island,,0
+11196,Islets near Perth 18,1,Island,Island,,0
+11197,Islets near Perth 19,1,Island,Island,,0
+11198,Islets near Perth 20,1,Island,Island,,0
+11199,Islets near Perth 21,1,Island,Island,,0
+11200,Islets near Perth 22,1,Island,Island,,0
+11201,Islets near Perth 23,1,Island,Island,,0
+11202,Islets near Perth 24,1,Island,Island,,0
+11203,Islets near Perth 25,1,Island,Island,,0
+11204,Islets near Perth 26,1,Island,Island,,0
+11205,Islets near Perth 27,1,Island,Island,,0
+11206,Islets near Perth 28,1,Island,Island,,0
+11207,Islets near Perth 29,1,Island,Island,,0
+11208,Islets near Perth 30,1,Island,Island,,0
+11209,Islets near Perth 31,1,Island,Island,,0
+11210,Islets near Perth 32,1,Island,Island,,0
+11211,Islets near Perth 33,1,Island,Island,,0
+11212,Islets near Perth 34,1,Island,Island,,0
+11213,Islets near Perth 35,1,Island,Island,,0
+11214,Islets near Perth 36,1,Island,Island,,0
+11215,Islets near Perth 37,1,Island,Island,,0
+11216,Islets near Perth 37a,1,Island,Island,,0
+11217,Islets near Perth 38,1,Island,Island,,0
+11218,Islets near Perth 39,1,Island,Island,,0
+11219,Islets near Perth 39a,1,Island,Island,,0
+11220,Islets near Perth 40,1,Island,Island,,0
+11221,Islets near Perth 41,1,Island,Island,,0
+11222,Islets near Perth 42,1,Island,Island,,0
+11223,Islets near Perth 43,1,Island,Island,,0
+11224,Islets near Perth 47,1,Island,Island,,0
+11225,Islets near Perth 60,1,Island,Island,,0
+11226,Islets near Perth 65,1,Island,Island,,0
+11227,Islets near Perth 72,1,Island,Island,,0
+11228,Islets near Perth 84,1,Island,Island,,0
+11229,Islets near Perth 85,1,Island,Island,,0
+11230,Islets near Perth 86,1,Island,Island,,0
+11231,Islets near Perth 87,1,Island,Island,,0
+11232,Islets near Perth 88,1,Island,Island,,0
+11233,Islets near Perth 89,1,Island,Island,,0
+11234,Islets near Perth 90,1,Island,Island,,0
+11235,Islets near Perth 91,1,Island,Island,,0
+11236,Islets near Perth 92,1,Island,Island,,0
+11237,Islets near Perth 93,1,Island,Island,,0
+11238,Islets near Perth 94,1,Island,Island,,0
+11239,Islets near Perth 95,1,Island,Island,,0
+11240,Islets near Perth 96,1,Island,Island,,0
+11241,Islets near Perth 97,1,Island,Island,,0
+11242,Islets near Perth 98,1,Island,Island,,0
+11243,Islets near Perth 99,1,Island,Island,,0
+11244,Islets near Perth 100,1,Island,Island,,0
+11245,Islets near Perth 101,1,Island,Island,,0
+11246,Islets near Perth 102,1,Island,Island,,0
+11247,Islets near Perth 103,1,Island,Island,,0
+11248,Islets near Perth 104,1,Island,Island,,0
+11249,Islets near Perth 105,1,Island,Island,,0
+11250,Islets near Perth 106,1,Island,Island,,0
+11251,Islets near Perth 107,1,Island,Island,,0
+11252,Islets near Perth 108,1,Island,Island,,0
+11253,Islets near Perth 109,1,Island,Island,,0
+11254,Islets near Perth 110,1,Island,Island,,0
+11255,Islets near Perth 111,1,Island,Island,,0
+11256,Islets near Perth 112,1,Island,Island,,0
+11257,Islets near Perth 113,1,Island,Island,,0
+11258,Islets near Perth 114,1,Island,Island,,0
+11259,Islets near Perth 115,1,Island,Island,,0
+11260,Islets near Perth 116,1,Island,Island,,0
+11261,Islets near Perth 117,1,Island,Island,,0
+11262,Islets near Perth 118,1,Island,Island,,0
+11263,Islets near Perth 119,1,Island,Island,,0
+11264,Islets near Perth 120,1,Island,Island,,0
+11265,Islets near Perth 121,1,Island,Island,,0
+11266,Islets near Perth 121a,1,Island,Island,,0
+11267,"Goljak, Adria",1,Island,Island,,0
+11268,"Srednjak, Adria",1,Island,Island,,0
+11269,"Gospin Skolj, Adria",1,Island,Island,,0
+11270,"Kakan, Adria",1,Island,Island,,0
+11271,"Mali Borovnjak, Adria",1,Island,Island,,0
+11272,"Veliki Borovnjak, Adria",1,Island,Island,,0
+11273,"Tijat, Adria",1,Island,Island,,0
+11274,"Zmajan, Adria",1,Island,Island,,0
+11275,"Logorun, Adria",1,Island,Island,,0
+11276,"Kamenica, Adria",1,Island,Island,,0
+11277,"Sovljak, Adria",1,Island,Island,,0
+11278,"Prinjak, Adria",1,Island,Island,,0
+11279,"Lukovnik, Adria",1,Island,Island,,0
+11280,"Burna Sestrica, Adria",1,Island,Island,,0
+11281,"Dona Sestrica, Adria",1,Island,Island,,0
+11282,"Velika Jarta, Adria",1,Island,Island,,0
+11283,"Jartica, Adria",1,Island,Island,,0
+11284,"Mali Gubavac, Adria",1,Island,Island,,0
+11285,"Veliki Gubavac, Adria",1,Island,Island,,0
+11286,"Prisnak Gorni, Adria",1,Island,Island,,0
+11287,"Maslinak, Adria",1,Island,Island,,0
+11288,"Visovac, Adria",1,Island,Island,,0
+11289,"Prisnak, Adria",1,Island,Island,,0
+11290,"Radej, Adria",1,Island,Island,,0
+11291,"Zminak, Adria",1,Island,Island,,0
+11292,"Tegina, Adria",1,Island,Island,,0
+11293,"Veliki Vinik, Adria",1,Island,Island,,0
+11294,"Mali Vinik, Adria",1,Island,Island,,0
+11295,"Mostir, Adria",1,Island,Island,,0
+11296,"Skojic u Kosirini, Adria",1,Island,Island,,0
+11297,"Lutac, Adria",1,Island,Island,,0
+11298,"Bronik, Adria",1,Island,Island,,0
+11299,"Skolic, Adria",1,Island,Island,,0
+11300,"Mimonak, Adria",1,Island,Island,,0
+11301,"Bisaga, Adria",1,Island,Island,,0
+11302,"Frbosnak, Adria",1,Island,Island,,0
+11303,"Maslinak, Adria",1,Island,Island,,0
+11304,"Mali Drazimeski, Adria",1,Island,Island,,0
+11305,"Veliki Drazimeski, Adria",1,Island,Island,,0
+11306,"Kamicic, Adria",1,Island,Island,,0
+11307,"Babulak, Adria",1,Island,Island,,0
+11308,"Vodenak, Adria",1,Island,Island,,0
+11309,"Cerigul, Adria",1,Island,Island,,0
+11310,"Duzac, Adria",1,Island,Island,,0
+11311,"Cavlin, Adria",1,Island,Island,,0
+11312,"Veliki Tetevisnak, Adria",1,Island,Island,,0
+11313,"Mali Tetevisnak, Adria",1,Island,Island,,0
+11314,"Zirje, Adria",1,Island,Island,,0
+11315,"Koromasna, Adria",1,Island,Island,,0
+11316,"Gusteranski, Adria",1,Island,Island,,0
+11317,"Hrbosnjak, Adria",1,Island,Island,,0
+11318,"Mazirina, Adria",1,Island,Island,,0
+11319,"Bakul, Adria",1,Island,Island,,0
+11320,"Skrvada, Adria",1,Island,Island,,0
+11321,"Mikavica, Adria",1,Island,Island,,0
+11322,"Kosmerka, Adria",1,Island,Island,,0
+11323,"Proklandica, Adria",1,Island,Island,,0
+11324,"Vrtlac, Adria",1,Island,Island,,0
+11325,"Babuljak, Adria",1,Island,Island,,0
+11326,"Blitvenica, Adria",1,Island,Island,,0
+11327,"Nozdra, Adria",1,Island,Island,,0
+11328,"Raparaznjak, Adria",1,Island,Island,,0
+11329,"Sedlo, Adria",1,Island,Island,,0
+11330,"Vrtlic, Adria",1,Island,Island,,0
+11331,"Samograd, Adria",1,Island,Island,,0
+11332,"Babuljaš, Adria",1,Island,Island,,0
+11333,"Veliki Školj, Adria",1,Island,Island,,0
+11334,"St. Justina, Adria",1,Island,Island,,0
+11335,"Žavinac Mali, Adria",1,Island,Island,,0
+11336,"Žavinac Veliki, Adria",1,Island,Island,,0
+11337,"Vrtlic, Adria",1,Island,Island,,0
+11338,"Veliki Skoljic, Adria",1,Island,Island,,0
+11339,"Mali Skoljic, Adria",1,Island,Island,,0
+11340,"Gira, Adria",1,Island,Island,,0
+11341,"Kamicic, Adria",1,Island,Island,,0
+11342,"Kamicic, Adria",1,Island,Island,,0
+11343,"Kozina, Adria",1,Island,Island,,0
+11344,"Murvenjak, Adria",1,Island,Island,,0
+11345,"Obrovanj, Adria",1,Island,Island,,0
+11346,"Rakita, Adria",1,Island,Island,,0
+11347,"Sipnata, Adria",1,Island,Island,,0
+11348,"Oblik, Adria",1,Island,Island,,0
+11349,"Artina, Adria",1,Island,Island,,0
+11350,"Loncaric, Adria",1,Island,Island,,0
+11351,"Mali Lagan, Adria",1,Island,Island,,0
+11352,"Veliki Lagan, Adira",1,Island,Island,,0
+11353,"Naqelelevu, Ringgold Islands, Fiji",1,Island,Island,,0
+11354,"Tauraria, Ringgold Islands, Fiji",1,Island,Island,,0
+11355,"Tainibeka, Ringgold Islands, Fiji",1,Island,Island,,0
+11356,"Vetau'ua, Ringgold Islands, Fiji",1,Island,Island,,0
+11357,"Nukubasaga, Ringgold Islands, Fiji",1,Island,Island,,0
+11358,"Nukupureti, Ringgold Islands, Fiji",1,Island,Island,,0
+11359,"Nukusemanu, Ringgold Islands, Fiji",1,Island,Island,,0
+11361,"Badakhshan, Afghanistan",0,Mainland,Political Unit,,0
+11362,"Badakhshan (Wakhan), Afghanistan",0,Mainland,Political Unit,,0
+11363,"Badghis, Afghanistan",0,Mainland,Political Unit,,0
+11364,"Baghlan, Afghanistan",0,Mainland,Political Unit,,0
+11365,"Balkh, Afghanistan",0,Mainland,Political Unit,,0
+11366,"Bamyan, Afghanistan",0,Mainland,Political Unit,,0
+11367,"Farah, Afghanistan",0,Mainland,Political Unit,,0
+11368,"Faryab, Afghanistan",0,Mainland,Political Unit,,0
+11369,"Ghazni, Afghanistan",0,Mainland,Political Unit,,0
+11370,"Ghor, Afghanistan",0,Mainland,Political Unit,,0
+11371,"Helmand, Afghanistan",0,Mainland,Political Unit,,0
+11372,"Herat, Afghanistan",0,Mainland,Political Unit,,0
+11373,"Jowzjan, Afghanistan",0,Mainland,Political Unit,,0
+11374,"Kabul, Afghanistan",0,Mainland,Political Unit,,0
+11375,"Kandahar, Afghanistan",0,Mainland,Political Unit,,0
+11376,"Kunar, Afghanistan",0,Mainland,Political Unit,,0
+11377,"Laghman, Afghanistan",0,Mainland,Political Unit,,0
+11378,"Logar, Afghanistan",0,Mainland,Political Unit,,0
+11379,"Maidan Wardak, Afghanistan",0,Mainland,Political Unit,,0
+11380,"Nangarhar, Afghanistan",0,Mainland,Political Unit,,0
+11381,"Nimruz, Afghanistan",0,Mainland,Political Unit,,0
+11382,"Urozgan, Afghanistan",0,Mainland,Political Unit,,0
+11383,"Paktika, Afghanistan",0,Mainland,Political Unit,,0
+11384,"Parwan, Afghanistan",0,Mainland,Political Unit,,0
+11385,"Kunduz, Afghanistan",0,Mainland,Political Unit,,0
+11386,"Samangan, Afghanistan",0,Mainland,Political Unit,,0
+11387,"Takhar, Afghanistan",0,Mainland,Political Unit,,0
+11388,"Zabul, Afghanistan",0,Mainland,Political Unit,,0
+11389,Central European Russia,1,Mainland,Political Unit,,0
+11390,"Malaysian Peninsular, excl. Singapore",1,Mainland,Political Unit,,0
+11391,"Eremaean Province, Australia",1,Mainland,Landscape/Region,,0
+11392,"Northern Province, Australia",1,Mainland,Landscape/Region,,0
+11393,"South West Province, Australia",1,Mainland,Landscape/Region,,0
+11394,"Central Kimberley, Australia",1,Mainland,Landscape/Region,,0
+11395,"Geraldton Sandplains, Australia",1,Mainland,Landscape/Region,,0
+11396,"Northern Kimberley, Australia",1,Mainland,Landscape/Region,,0
+11397,"Ord Victoria Plain, Australia",1,Mainland,Landscape/Region,,0
+11398,"Pilbara (IBRA), Australia",1,Mainland,Landscape/Region,,0
+11399,"Victoria Bonaparte, Australia",1,Mainland,Landscape/Region,,0
+11400,"Avon Wheatbelt, Australia",1,Mainland,Landscape/Region,,0
+11401,"Esperance Plains, Australia",1,Mainland,Landscape/Region,,0
+11402,"Jarrah Forest, Australia",1,Mainland,Landscape/Region,,0
+11403,"Mallee, Australia",1,Mainland,Landscape/Region,,0
+11404,"Swan Coastal Plain, Australia",1,Mainland,Landscape/Region,,0
+11405,"Warren, Australia",1,Mainland,Landscape/Region,,0
+11406,"Coolgardie, Australia",1,Mainland,Landscape/Region,,0
+11407,"Murchison, Australia",1,Mainland,Landscape/Region,,0
+11408,"Yalgoo, Australia",1,Mainland,Landscape/Region,,0
+11409,"Great Victoria Desert, Australia",1,Mainland,Landscape/Region,,0
+11410,"Central Ranges, Australia",1,Mainland,Landscape/Region,,0
+11411,"Carnarvon, Australia",1,Mainland,Landscape/Region,,0
+11412,"Gibson Desert, Australia",1,Mainland,Landscape/Region,,0
+11413,"Dampierland, Australia",1,Mainland,Landscape/Region,,0
+11414,"Gascoyne, Australia",1,Mainland,Landscape/Region,,0
+11415,"Little Sandy Desert, Australia",1,Mainland,Landscape/Region,,0
+11416,"Tanami, Australia",1,Mainland,Landscape/Region,,0
+11417,"Great Sandy Desert, Australia",1,Mainland,Landscape/Region,,0
+11418,"Hampton, Australia",1,Mainland,Landscape/Region,,0
+11419,"Nullarbor, Australia",1,Mainland,Landscape/Region,,0
+11420,"North Coast, Australia",1,Mainland,Landscape/Region,,0
+11421,"Central Coast, Australia",1,Mainland,Landscape/Region,,0
+11422,"South Coast, Australia",1,Mainland,Landscape/Region,,0
+11423,"Northern Tablelands, Australia",1,Mainland,Landscape/Region,,0
+11424,"Central Tablelands, Australia",1,Mainland,Landscape/Region,,0
+11425,"Southern Tablelands, Australia",1,Mainland,Landscape/Region,,0
+11426,"North Western Slopes, Australia",1,Mainland,Landscape/Region,,0
+11427,"Central Western Slopes, Australia",1,Mainland,Landscape/Region,,0
+11428,"South Western Slopes, Australia",1,Mainland,Landscape/Region,,0
+11429,"North Western Plains, Australia",1,Mainland,Landscape/Region,,0
+11430,"South Western Plains, Australia",1,Mainland,Landscape/Region,,0
+11431,"North Far Western Plains, Australia",1,Mainland,Landscape/Region,,0
+11432,"South Far Western Plains, Australia",1,Mainland,Landscape/Region,,0
+11433,Aland,0,Island,Political Unit,,1
+11434,Andorra,1,Mainland,Political Unit,,1
+11435,Angola,0,Mainland,Political Unit,,1
+11436,Antigua and Barbuda,0,Island Group,Political Unit,,1
+11437,Argentina,0,Island/Mainland,Political Unit,,1
+11438,Armenia,1,Mainland,Political Unit,,1
+11439,Azerbaijan,1,Mainland,Political Unit,,1
+11440,Bahrain,0,Mainland,Political Unit,,1
+11441,Belgium,1,Mainland,Political Unit,,1
+11442,Bhutan,1,Mainland,Political Unit,,1
+11443,Bosnia and Herzegovina,1,Mainland,Political Unit,,1
+11444,British Indian Ocean Territory,0,Island Group,Political Unit,,1
+11445,British Virgin Islands,0,Island Group,Political Unit,,1
+11446,Brunei,1,Island Part,Political Unit,,1
+11447,Canada,0,Island/Mainland,Political Unit,,1
+11448,Chile,0,Island/Mainland,Political Unit,,1
+11449,Cocos Islands,0,Island Group,Political Unit,,1
+11450,Comoros,0,Island Group,Political Unit,,1
+11451,Cook Islands,0,Island Group,Political Unit,,1
+11452,Egypt,0,Mainland,Political Unit,,1
+11453,Ireland,1,Island Part,Political Unit,,1
+11454,Italy,0,Island/Mainland,Political Unit,,1
+11455,Spain,0,Island/Mainland,Political Unit,,1
+11456,Estonia,1,Mainland,Political Unit,,1
+11457,France,0,Island/Mainland,Political Unit,,1
+11458,French Polynesia,0,Island Group,Political Unit,,1
+11459,French Southern Territories,0,Island Group,Political Unit,,1
+11460,Georgia,1,Mainland,Political Unit,,1
+11461,Gibraltar,1,Mainland,Political Unit,,1
+11462,Grenada,0,Mainland,Political Unit,,1
+11463,Guadeloupe,0,Island,Political Unit,,1
+11464,Guernsey,0,Island,Political Unit,,1
+11465,Greece,0,Island/Mainland,Political Unit,,1
+11466,India,0,Island/Mainland,Political Unit,,1
+11467,Indonesia,0,Island Group,Political Unit,,1
+11468,Kiribati,0,Island Group,Political Unit,,1
+11469,Latvia,1,Mainland,Political Unit,,1
+11470,Lithuania,1,Mainland,Political Unit,,1
+11471,Luxembourg,1,Mainland,Political Unit,,1
+11472,Macedonia,1,Mainland,Political Unit,,1
+11473,Malaysia,1,Island/Mainland,Political Unit,,1
+11474,Malta,1,Island,Political Unit,,1
+11475,Micronesia,0,Island Group,Political Unit,,1
+11476,Moldova,1,Mainland,Political Unit,,1
+11477,Monaco,1,Mainland,Political Unit,,1
+11478,Montenegro,1,Mainland,Political Unit,,1
+11479,Northern Mariana Islands,0,Island Group,Political Unit,,1
+11480,Pakistan,0,Mainland,Political Unit,,1
+11481,Palestina,0,Mainland,Political Unit,,1
+11482,Papua New Guinea,0,Island Part,Political Unit,,1
+11483,Portugal,0,Island/Mainland,Political Unit,,1
+11485,"Bonaire, Sint Eustatius and Saba",0,Island Group,Political Unit,,1
+11487,Russia,0,Island/Mainland,Political Unit,,1
+11488,"Saint Helena, Ascension and Tristan da Cunha",0,Island Group,Political Unit,,1
+11489,Saint Kitts and Nevis,0,Island Group,Political Unit,,1
+11490,South Africa,0,Island/Mainland,Political Unit,,1
+11491,Syria,1,Mainland,Political Unit,,1
+11492,East Timor,1,Island,Political Unit,,1
+11493,Tokelau,0,Island,Political Unit,,1
+11494,Turkey,0,Mainland,Political Unit,,1
+11495,Ukraine,1,Mainland,Political Unit,,1
+11496,United Arab Emirates,1,Mainland,Political Unit,,1
+11497,United Kingdom,0,Island Group,Political Unit,,1
+11498,United States,0,Island/Mainland,Political Unit,,1
+11499,United States Minor Outlying Islands,0,Island Group,Political Unit,,1
+11500,"Virgin Islands, U.S.",0,Island Group,Political Unit,,1
+11501,Saint Vincent and the Grenadines,0,Island Group,Political Unit,,1
+11502,Samoa,0,Island Group,Political Unit,,1
+11503,San Marino,0,Mainland,Political Unit,,1
+11504,Sao Tome and Principe,1,Island Group,Political Unit,,1
+11505,Serbia,0,Mainland,Political Unit,,0
+11506,Slovakia,1,Mainland,Political Unit,,1
+11507,Slovenia,1,Mainland,Political Unit,,1
+11508,Solomon Islands,0,Island Group,Political Unit,,1
+11509,North Sudan,0,Mainland,Political Unit,,1
+11510,South Sudan,0,Mainland,Political Unit,,1
+11511,"Balbalasang-Balbalan National Park, Northern Luzon",0,Island Part,Protected Area,,0
+11512,"Parque Estadual Serra Ricardo Franco, Mato Grosso, Brazil",0,Mainland,Protected Area,,0
+11513,"Rajah Sikatuna National Park, Bohol, Philippines",0,Island Part,Protected Area,,0
+11514,"Sierra De La Macarena, Colombia",0,Mainland,Protected Area,,0
+11515,"Western Ghats, India",0,Mainland,Protected Area,,0
+11516,"La Selva Biological Station, Costa Rica",0,Mainland,Protected Area,,0
+11517,"Floresta Nacional de Caxiuana, Para, Brazil",0,Mainland,Protected Area,,0
+11518,"Parque Metropolitano de Pituaçu, Salvador, Bahia",0,Mainland,Protected Area,,0
+11519,"Parque Estadual do Guartela, Parana, Brazil",0,Mainland,Protected Area,,0
+11520,"Parque Estadual Turistico do Alto Ribeira, Iporanga, Sao Paulo",0,Mainland,Protected Area,,0
+11521,"Reserva Biologica Do Uatuma, Amazonas, Brazil",0,Mainland,Protected Area,,0
+11522,"Parque Nacional Carrasco, Bolivia",0,Mainland,Protected Area,,0
+11523,"Reserva Florestal Adolpho Ducke, Amazonas, Brazil",0,Mainland,Protected Area,,0
+11524,"RPPN Serra Bonita, Bahia, Brazil",0,Mainland,Protected Area,,0
+11525,"Serra da Jiboia, Santa Teresinha, Bahia, Brazil",0,Mainland,Landscape/Region,,0
+11526,"Serra do Itauajuri, Monte Alegre, Para, Brazil",0,Mainland,Landscape/Region,,0
+11527,"Xarxili Nature Reserve, Xinjiang, China",0,Mainland,Protected Area,,0
+11528,"Bosque Esquinas, Golfito, Costa Rica",0,Mainland,Protected Area,,0
+11529,"Saint Elie and surrounding areas, French Guyana",0,Mainland,Landscape/Region,,0
+11530,"Elbrus Mountains, Iran",0,Mainland,Landscape/Region,,0
+11531,"Sumatra incl. Mentawai, Enggano, Nias, Simeulue, Lingga, Anambas, Krakatau, Bangka, Batu",0,Island Group,Political Unit,,0
+11532,European Russia excl. Caucasus,0,Island/Mainland,Landscape/Region,,0
+11533,"Crocker Range NP, Sabah, Borneo",0,Island Part,Protected Area,,0
+11534,Russia Asian Side,0,Island/Mainland,Landscape/Region,,0
+11535,Kalaweit Research Station and surrounding,0,Island Part,Protected Area,,0
+11536,"Mount Kinabalu, Borneo",0,Island Part,Landscape/Region,,0
+11537,"Mount Kilimanjaro, Tanzania",0,Mainland,Landscape/Region,,0
+11538,"Mount Makulot, Luzon",0,Island Part,Landscape/Region,,0
+11539,"Mount Burnay and vicinity, Northern Luzon",0,Island Part,Landscape/Region,,0
+11540,India excl. Jammu-Kashmir and Andaman-Nicobar Islands,0,Mainland,Political Unit,,0
+11541,"Mount Jaya, south slope above 3000 m, New Guinea",0,Island Part,Landscape/Region,,0
+11542,"Danum Valley, Sabah, Borneo",0,Island Part,Landscape/Region,,0
+11543,"Mount Hamiguitan NP, Mindanao",0,Island Part,Protected Area,,0
+11544,"Mount Makiling NP, Luzon",0,Island Part,Protected Area,,0
+11545,"Mount Banahaw de Lucban, Luzon",0,Island Part,Protected Area,,0
+11546,"Nokrek Biosphere Reserve, Meghalaya, India",0,Mainland,Protected Area,,0
+11547,"Rio Preto State Park, Minas Gerais, Brazil",0,Mainland,Protected Area,,0
+11549,"Australian Capital Territory, Australia",0,Mainland,Political Unit,,0
+11550,"Sabah, Borneo",0,Island Part,Political Unit,,0
+11551,"Sarawak, Borneo",0,Island Part,Political Unit,,0
+11552,"Jammu & Kashmir, India",0,Mainland,Political Unit,,0
+11553,"Kameng District, Arunachal Pradesh, India",0,Mainland,Political Unit,,0
+11554,"Eastern Vogelkop, New Guinea",0,Island Part,Political Unit,,0
+11555,"Kanton Tessin, Switzerland",0,Mainland,Political Unit,,0
+11556,"Kanton Zurich, Switzerland",0,Mainland,Political Unit,,0
+11557,"Anzoategui, Venezuela",0,Mainland,Political Unit,,0
+11558,"Apure, Venezuela",0,Mainland,Political Unit,,0
+11559,"Aragua, Venezuela",0,Mainland,Political Unit,,0
+11560,"Barinas, Venezuela",0,Mainland,Political Unit,,0
+11561,"Carabobo, Venezuela",0,Mainland,Political Unit,,0
+11562,"Cojedes, Venezuela",0,Mainland,Political Unit,,0
+11563,"Distrito Capital, Venezuela",0,Mainland,Political Unit,,0
+11564,"Falcon, Venezuela",0,Mainland,Political Unit,,0
+11565,"Guarico, Venezuela",0,Mainland,Political Unit,,0
+11566,"Lara, Venezuela",0,Mainland,Political Unit,,0
+11567,"Merida, Venezuela",0,Mainland,Political Unit,,0
+11568,"Miranda, Venezuela",0,Mainland,Political Unit,,0
+11569,"Monagas, Venezuela",0,Mainland,Political Unit,,0
+11570,"Nueva Esparta, Venezuela",0,Mainland,Political Unit,,0
+11571,"Portuguesa, Venezuela",0,Mainland,Political Unit,,0
+11572,"Sucre, Venezuela",0,Mainland,Political Unit,,0
+11573,"Tachira, Venezuela",0,Mainland,Political Unit,,0
+11574,"Trujillo, Venezuela",0,Mainland,Political Unit,,0
+11575,"Yaracuy, Venezuela",0,Mainland,Political Unit,,0
+11576,"Zulia, Venezuela",0,Mainland,Political Unit,,0
+11577,"Pauri District, Uttarakand, India",0,Mainland,Political Unit,,0
+11578,"Uttarakashi District, Uttarakhand, India",0,Mainland,Political Unit,,0
+11579,"Seram, Moluccas",0,Island,Island,,0
+11581,"Batan Island, Philippines",0,Island,Island,,0
+11582,"Panay, Philippines",0,Island,Island,,0
+11583,"Isla Margarita, Venezuela",0,Island,Island,,0
+11584,"Bellona, Solomon Islands",0,Island,Island,,0
+11585,"Bougainville, Solomon Islands",0,Island,Island,,0
+11586,"Choiseul, Solomon Islands",0,Island,Island,,0
+11587,"Guadalcanal, Solomon Islands",0,Island,Island,,0
+11588,"Kolombangara, Solomon Islands",0,Island,Island,,0
+11589,"Makira, Solomon Islands",0,Island,Island,,0
+11590,"Malaita, Solomon Islands",0,Island,Island,,0
+11591,"New Georgia, Solomon Islands",0,Island,Island,,0
+11592,"Ranongga, Solomon Islands",0,Island,Island,,0
+11593,"Rendova, Solomon Islands",0,Island,Island,,0
+11594,"Rennell, Solomon Islands",0,Island,Island,,0
+11595,"Santa Ana, Solomon Islands",0,Island,Island,,0
+11596,"Santa Isabel, Solomon Islands",0,Island,Island,,0
+11597,"Nendo, Solomon Islands",0,Island,Island,,0
+11598,"Ambae, Vanuatu",0,Island,Island,,0
+11599,"Aneityum, Vanuatu",0,Island,Island,,0
+11600,"VanuaLava, Vanuatu",0,Island,Island,,0
+11601,"Efate, Vanuatu",0,Island,Island,,0
+11602,"Erromango, Vanuatu",0,Island,Island,,0
+11603,"Maewo, Vanuatu",0,Island,Island,,0
+11604,"Malekula, Vanuatu",0,Island,Island,,0
+11605,"Pentecost, Vanuatu",0,Island,Island,,0
+11606,"Tanna, Vanuatu",0,Island,Island,,0
+11607,"TerraGrande, New Caledonia",0,Island,Island,,0
+11608,"IleArt, New Caledonia",0,Island,Island,,0
+11609,"IleDesPines, New Caledonia",0,Island,Island,,0
+11610,"Lifou, New Caledonia",0,Island,Island,,0
+11611,"Mare, New Caledonia",0,Island,Island,,0
+11612,"Ile Haute Bagao, New Caledonia",0,Island,Island,,0
+11623,"Waya, Fiji",0,Island,Island,,0
+11624,"Savai'i, Samoa",0,Island,Island,,0
+11625,"Upolu, Samoa",0,Island,Island,,0
+11626,"Apolima, Samoa",0,Island,Island,,0
+11627,"Kao, Tonga",0,Island,Island,,0
+11628,"Tofua, Tonga",0,Island,Island,,0
+11629,"Niuatoputapu, Tonga",0,Island,Island,,0
+11630,"Late, Tonga",1,Island,Island,,0
+11631,"Niuafo'ou, Tonga",0,Island,Island,,0
+11632,"Tafahi, Tonga",0,Island,Island,,0
+11634,"Yaqaga, Fiji",0,Island,Island,,0
+11635,"Yadua Taba, Fiji",1,Island,Island,,0
+11636,"Mabualau, Fiji",0,Island,Island,,0
+11638,"Macuata Island, Fiji",0,Island,Island,,0
+11639,Great Island,0,Island,,,0
+11640,Sadoga-shima,1,Island,,,0
+11641,Itsuku-shima,0,Island,,,0
+11642,Haha-jima,1,Island,,,0
+11643,Urano Island,0,Island,,,0
+11645,Normanby Island,0,Island,,,0
+11646,Tetepare Island,0,Island,,,0
+11647,Tavewa Island,0,Island,,,0
+11648,Nanuya Mbalavu Island,0,Island,,,0
+11649,Nanuya Levu Island,0,Island,,,0
+11650,Naviti Island,0,Island,,,0
+11651,Monu Island,0,Island,,,0
+11652,`Eua Iki Island,0,Island,,,0
+11653,Vaka`eitu,0,Island,,,0
+11654,unnamed plot island 1,0,Island,,,0
+11655,Hunga Island,0,Island,,,0
+11656,`Euakafa,0,Island,,,0
+11657,`Eueiki,0,Island,,,0
+11658,Kapa Island,0,Island,,,0
+11659,Foelifuka,0,Island,,,0
+11660,Foeata,0,Island,,,0
+11661,Mafana,0,Island,,,0
+11662,Waiheke Island,0,Island,,,0
+11663,Motuhora,0,Island,,,0
+11664,Stewart Island,1,Island,,,0
+11665,Motunau Island,0,Island,,,0
+11666,Secretary Island,0,Island,,,0
+11667,D'Urville Island,0,Island,,,0
+11668,Resolution Island,0,Island,,,0
+11669,Mayor Island,0,Island,,,0
+11670,Kapiti Island,0,Island,,,0
+11671,Ulva Island,0,Island,,,0
+11672,Bench Island,0,Island,,,0
+11673,unnamed plot island 2,0,Island,,,0
+11674,Urupukapuka,0,Island,,,0
+11675,Moturua,0,Island,,,0
+11676,Anchor Island,0,Island,,,0
+11677,Taranga,0,Island,,,0
+11678,Long Island,0,Island,,,0
+11679,Little Barrier Island,0,Island,,,0
+11680,Negros,0,Island,,,0
+11682,Koror,0,Island,,,0
+11683,Reberaber,0,Island,,,0
+11684,Mecherchar,0,Island,,,0
+11685,unnamed plot island 3,0,Island,,,0
+11686,Ngeruktabel,0,Island,,,0
+11687,Peleliu,0,Island,,,0
+11688,Olngeuaol,0,Island,,,0
+11689,Uchel A Rois,0,Island,,,0
+11690,Ngeaur,0,Island,,,0
+11691,"Ruamahua-nui, New Zealand",1,Island,Island,,0
+11692,"Ruamahua-iti, New Zealand",1,Island,Island,,0
+11693,"Hongiora, New Zealand",1,Island,Island,,0
+11694,"Middle Island, New Zealand",1,Island,Island,,0
+11695,"Half Island, New Zealand",1,Island,Island,,0
+11696,"Hernia, New Zealand",1,Island,Island,,0
+11697,"Green, New Zealand",1,Island,Island,,0
+11698,"Flat, New Zealand",1,Island,Island,,0
+11700,"Otawhanga, New Zealand",1,Island,Island,,0
+11701,"Black Rocks, New Zealand",1,Island,Island,,0
+11702,"Old Man Rock, New Zealand",1,Island,Island,,0
+11703,"Motuwharariki, New Zealand",1,Island,Island,,0
+11704,"Little Otawhanga, New Zealand",1,Island,Island,,0
+11705,"Stack W of Green Is, New Zealand",1,Island,Island,,0
+11706,"Lady Alice, New Zealand",1,Island,Island,,0
+11707,"Whatupuke, New Zealand",1,Island,Island,,0
+11708,"Coppermine, New Zealand",1,Island,Island,,0
+11709,"Great Mercury Island, New Zealand",1,Island,Island,,0
+11710,"Red Mercury Island, New Zealand",1,Island,Island,,0
+11711,"Gannet Island, New Zealand",1,Island,Island,,0
+11712,"Sentinel Rock, New zealand",1,Island,Island,,0
+11713,"Tatapihi Island, New Zealand",1,Island,Island,,0
+11714,"Paratahi Island, New Zealand",0,Island,Island,,0
+11715,"Matapia Island, New Zealand",1,Island,Island,,0
+11716,"Kauwahaia Island, New Zealand",1,Island,Island,,0
+11717,"Needle Rock, New Zealand",1,Island,Island,,0
+11718,"Burgess, New Zealand",1,Island,Island,,0
+11719,"Hokoromea, New Zealand",1,Island,Island,,0
+11720,"Atihau, New Zealand",1,Island,Island,,0
+11721,"Lizard, New Zealand",1,Island,Island,,0
+11722,"Tarahiki, New Zealand",1,Island,Island,,0
+11723,"Rotoroa, New Zealand",1,Island,Island,,0
+11724,"Ruthe, New Zealand",1,Island,Island,,0
+11725,"Ponui, New Zealand",1,Island,Island,,0
+11726,"Pakihi, New Zealand",1,Island,Island,,0
+11727,"Karamuramu Islands, New Zealand",1,Island,Island,,0
+11728,"Goat Island, New Zealand",1,Island,Island,,0
+11729,"Happy Jack Island, New Zealand",1,Island,Island,,0
+11730,"Rabbit Island, New Zealand",1,Island,Island,,0
+11731,"Bush Island, New Zealand",1,Island,Island,,0
+11732,"Pauls Island, New Zealand",1,Island,Island,,0
+11733,"Rat Island, New Zealand",1,Island,Island,,0
+11734,"Tern Islet, New Zealand",1,Island,Island,,0
+11735,"Mid Stack, New Zealand",1,Island,Island,,0
+11736,"Tall Stack, New Zealand",1,Island,Island,,0
+11737,"East Pillar, New Zealand",1,Island,Island,,0
+11738,"West Pillar, New Zealand",1,Island,Island,,0
+11739,"East Stack, New Zealand",1,Island,Island,,0
+11740,"Second Stack, New Zealand",1,Island,Island,,0
+11741,"Holey Stack, New Zealand",1,Island,Island,,0
+11742,"Unclassified Islet, Cape Brett, New Zealand",1,Island,Island,,0
+11743,"Stanley Island, New Zealand",1,Island,Island,,0
+11744,"Inner Stack, New Zealand",1,Island,Island,,0
+11745,"Outer Stack, New Zealand",1,Island,Island,,0
+11746,"Sail rock, New Zealand",1,Island,Island,,0
+11747,"Northern Island, New Zealand",1,Island,Island,,0
+11748,"Southern Island, New Zealand",1,Island,Island,,0
+11749,"A, New Zealand",1,Island,Island,,0
+11750,"B, New Zealand",1,Island,Island,,0
+11751,"C, New Zealand",1,Island,Island,,0
+11752,"D, New Zealand",1,Island,Island,,0
+11753,"E, New Zealand",1,Island,Island,,0
+11754,"F, New Zealand",1,Island,Island,,0
+11755,"Qaruh, Kuwait",1,Island,Island,,0
+11756,"Umm Al-Namil, Kuwait",1,Island,Island,,0
+11757,"Maskan, Kuwait",1,Island,Island,,0
+11758,"Awhah, Kuwait",1,Island,Island,,0
+11759,"Kubbar, Kuwait",1,Island,Island,,0
+11760,"Umm Al-Maradem, Kuwait",1,Island,Island,,0
+11761,"Failaka Island, Kuwait",0,Island,Island,,0
+11762,"Bikini, Bikini Atoll",1,Island,Island,,0
+11763,"Eneu, Bikini Atoll",1,Island,Island,,0
+11764,"Bwikor, Bikini Atoll",1,Island,Island,,0
+11765,"Nam, Bikini Atoll",1,Island,Island,,0
+11766,"Lomilik, Bikini Atoll",1,Island,Island,,0
+11767,"Aomen, Bikini Atoll",1,Island,Island,,0
+11768,"Oroken, Bikini Atoll",1,Island,Island,,0
+11769,"Aerokojlol, Bikini Atoll",1,Island,Island,,0
+11770,"Enidrik, Bikini Atoll",1,Island,Island,,0
+11771,"Lukuoj, Bikini Atoll",1,Island,Island,,0
+11772,"Jalete, Bikini Atoll",1,Island,Island,,0
+11773,"Bokaetoktok, Bikini Atoll",1,Island,Island,,0
+11774,"Bokdrolul, Bikini Atoll",1,Island,Island,,0
+11775,"Bokantuak, Bikini Atoll",1,Island,Island,,0
+11776,"Enaelo, Bikini Atoll",1,Island,Island,,0
+11777,"Rojkora, Bikini Atoll",1,Island,Island,,0
+11778,"Bokonjebi, Bikini Atoll",1,Island,Island,,0
+11779,"Odrik, Bikini Atoll",1,Island,Island,,0
+11780,"East Marin, California",1,Island,Island,,0
+11781,"West Marin, California",1,Island,Island,,0
+11782,"North Reef, Capricornia Cays",1,Island,Island,,0
+11783,"Tryon, Capricornia Cays",1,Island,Island,,0
+11784,"North West, Capricornia Cays",1,Island,Island,,0
+11785,"Wilson, Capricornia Cays",1,Island,Island,,0
+11786,"Wreck, Capricornia Cays",1,Island,Island,,0
+11787,"Heron, Capricornia Cays",1,Island,Island,,0
+11788,"Erskine, Capricornia Cays",1,Island,Island,,0
+11789,"Masthead, Capricornia Cays",1,Island,Island,,0
+11790,"One Tree, Capricornia Cays",1,Island,Island,,0
+11791,"Hoskyn West, Capricornia Cays",1,Island,Island,,0
+11792,"Hoskyn East, Capricornia Cays",1,Island,Island,,0
+11793,"Fairfax West, Capricornia Cays",1,Island,Island,,0
+11794,"Fairfax East, Capricornia Cays",1,Island,Island,,0
+11796,"Lady Elliot, Capricornia Cays",1,Island,Island,,0
+11797,"NE Herald Cay, Australia",1,Island,Island,,0
+11798,"SW Herald Cay, Australia",1,Island,Island,,0
+11799,"Chilcott Islet, Australia",1,Island,Island,,0
+11800,"SW Coringa Islet, Australia",1,Island,Island,,0
+11801,"SE Magdelaine Cay, Australia",1,Island,Island,,0
+11802,"Willis Island, Australia",1,Island,Island,,0
+11803,"Eagle Island, Australia",1,Island,Island,,0
+11805,"Redbill Island, Australia",1,Island,Island,,0
+11806,"Cayo Ahogado, Puerto Rico",0,Island,Island,,0
+11807,"Cayo Enmedio, Puerto Rico",0,Island,Island,,0
+11808,"Cayo Enrique, Puerto Rico",0,Island,Island,,0
+11809,"Cayo Majimo, Puerto Rico",0,Island,Island,,0
+11810,"Cayo Turremotecito, Puerto Rico",0,Island,Island,,0
+11811,"Double Key, Puerto Rico",0,Island,Island,,0
+11812,"East Farallon, Puerto Rico",0,Island,Island,,0
+11813,"Island O, Puerto Rico",0,Island,Island,,0
+11814,"Island R, Puerto Rico",0,Island,Island,,0
+11815,"Island Q, Puerto Rico",0,Island,Island,,0
+11816,"Levins Rock, Puerto Rico",0,Island,Island,,0
+11817,"PALOMINITOS, Puerto Rico",0,Island,Island,,0
+11818,"Sail Rock, Puerto Rico",0,Island,Island,,0
+11819,"SAN CRISTOBAL, Puerto Rico",0,Island,Island,,0
+11820,"Sheila Rock, Puerto Rico",0,Island,Island,,0
+11821,"Solito, Puerto Rico",0,Island,Island,,0
+11822,"Spiny Butte, Puerto Rico",0,Island,Island,,0
+11823,"West Farallon, Puerto Rico",0,Island,Island,,0
+11824,"Bell, Swain Reef, Australia",0,Island,Island,,0
+11825,"Frigate, Swain Reef, Australia",0,Island,Island,,0
+11826,"Gannet, Swain Reef, Australia",0,Island,Island,,0
+11827,"Price, Swain Reef, Australia",0,Island,Island,,0
+11828,"Bylund, Swain Reef, Australia",0,Island,Island,,0
+11829,"Bacchi, Swain Reef, Australia",0,Island,Island,,0
+11831,"Baker, Maine, US",0,Island,Island,,0
+11832,"Bald Porcupine, Maine, US",0,Island,Island,,0
+11833,"Bar 59 194, Maine, US",0,Island,Island,,0
+11834,"Bar 59 265, Maine, US",0,Island,Island,,0
+11835,"Big Roberts, Maine, US",0,Island,Island,,0
+11836,"Crane, Maine, US",0,Island,Island,,0
+11837,"Eastern, Maine, US",0,Island,Island,,0
+11838,"Egg Rock, Maine, US",0,Island,Island,,0
+11839,"Franklin, Maine, US",0,Island,Island,,0
+11840,"Hart, Maine, US",0,Island,Island,,0
+11841,"Heron, Maine, US",0,Island,Island,,0
+11842,"Inner Sand, Maine, US",0,Island,Island,,0
+11843,"Johns, Maine, US",0,Island,Island,,0
+11844,"Jordans Delight, Maine, US",0,Island,Island,,0
+11845,"Little Duck, Maine, US",0,Island,Island,,0
+11846,"Little Moose, Maine, US",0,Island,Island,,0
+11847,"Little Roberts, Maine, US",0,Island,Island,,0
+11848,"Little Spoon, Maine, US",0,Island,Island,,0
+11849,"Little Thrumcap, Maine, US",0,Island,Island,,0
+11850,"Matinicus rock, Maine, US",0,Island,Island,,0
+11851,"Outer White, Maine, US",0,Island,Island,,0
+11852,"Ram, Maine, US",0,Island,Island,,0
+11853,"Schoodic, Maine, US",0,Island,Island,,0
+11854,"Seal, Maine, US",0,Island,Island,,0
+11855,"Sheep Porcupine, Maine, US",0,Island,Island,,0
+11856,"The Hop, Maine, US",0,Island,Island,,0
+11857,"Trumpet, Maine, US",0,Island,Island,,0
+11858,"Upper Flag, Maine, US",0,Island,Island,,0
+11859,"West Pond, Maine, US",0,Island,Island,,0
+11860,"Western Ear, Maine, US",0,Island,Island,,0
+11861,"Aisen, Chile",0,Island/Mainland,Political Unit,,0
+11862,"Antartica chilena, Chile",0,Island Group,Political Unit,,0
+11863,"Antofagasta, Chile",0,Mainland,Political Unit,,0
+11864,"Arauco, Chile",0,Island/Mainland,Political Unit,,0
+11865,"Arica, Chile",0,Mainland,Political Unit,,0
+11866,"Biobío, Chile",0,Mainland,Political Unit,,0
+11867,"Cachapoal, Chile",0,Mainland,Political Unit,,0
+11868,"Capitan Prat, Chile",0,Island/Mainland,Political Unit,,0
+11869,"Cardenal Caro, Chile",0,Mainland,Political Unit,,0
+11870,"Cauquenes, Chile",0,Mainland,Political Unit,,0
+11871,"Cautin, Chile",0,Mainland,Political Unit,,0
+11872,"Chacabuco, Chile",0,Mainland,Political Unit,,0
+11873,"Chanaral, Chile",0,Mainland,Political Unit,,0
+11874,"Chiloe, Chile",0,Island Group,Political Unit,,0
+11875,"Choapa, Chile",0,Mainland,Political Unit,,0
+11876,"Coihaique, Chile",0,Mainland,Political Unit,,0
+11877,"Colchagua, Chile",0,Mainland,Political Unit,,0
+11878,"Concepcion, Chile",0,Mainland,Political Unit,,0
+11879,"Copiapo, Chile",0,Mainland,Political Unit,,0
+11880,"Cordillera, Chile",0,Mainland,Political Unit,,0
+11881,"Curico, Chile",0,Mainland,Political Unit,,0
+11882,"El Loa, Chile",0,Mainland,Political Unit,,0
+11883,"Elqui, Chile",0,Mainland,Political Unit,,0
+11884,"General Carrera, Chile",0,Mainland,Political Unit,,0
+11885,"Huasco, Chile",0,Mainland,Political Unit,,0
+11886,"Iquique, Chile",0,Mainland,Political Unit,,0
+11887,"Limari, Chile",0,Mainland,Political Unit,,0
+11888,"Linares, Chile",0,Mainland,Political Unit,,0
+11889,"Llanquihue, Chile",0,Mainland,Political Unit,,0
+11890,"Los andes, Chile",0,Mainland,Political Unit,,0
+11891,"Magallanes, Chile",0,Island/Mainland,Political Unit,,0
+11892,"Maipo, Chile",0,Mainland,Political Unit,,0
+11893,"Malleco, Chile",0,Mainland,Political Unit,,0
+11894,"Melipilla, Chile",0,Mainland,Political Unit,,0
+11895,"Nuble, Chile",0,Mainland,Political Unit,,0
+11896,"Osorno, Chile",0,Mainland,Political Unit,,0
+11897,"Palena, Chile",0,Mainland,Political Unit,,0
+11898,"Parinacota, Chile",0,Mainland,Political Unit,,0
+11899,"Petorca, Chile",0,Mainland,Political Unit,,0
+11900,"Quillota, Chile",0,Mainland,Political Unit,,0
+11901,"Ranco, Chile",0,Mainland,Political Unit,,0
+11902,"San Antonio, Chile",0,Mainland,Political Unit,,0
+11903,"San Felipe de Aconcagu, Chile",0,Mainland,Political Unit,,0
+11904,"Santiago, Chile",0,Mainland,Political Unit,,0
+11905,"Talagante, Chile",0,Mainland,Political Unit,,0
+11906,"Talca, Chile",0,Mainland,Political Unit,,0
+11907,"Tamarugal, Chile",0,Mainland,Political Unit,,0
+11908,"Tierra del Fuego, Chile",0,Island Part,Political Unit,,0
+11909,"Tocopilla, Chile",0,Mainland,Political Unit,,0
+11910,"Ultima Esperanza, Chile",0,Island/Mainland,Political Unit,,0
+11911,"Valdivia, Chile",0,Mainland,Political Unit,,0
+11912,"Valparaiso, Chile",0,Mainland,Political Unit,,0
+11913,Pangaimotu Island,0,Island,Island,,0
+11914,Kulo Island,0,Island,Island,,0
+11915,Ernest Islands North,0,Island,Island,,0
+11916,Zapadno-Predkavkazskii,0,Mainland,Political Unit,,0
+11917,Prikaspiiskii Kavkaz,0,Mainland,Political Unit,,0
+11918,Kabristanskii,0,Mainland,Political Unit,,0
+11919,Kartalinskii,0,Mainland,Political Unit,,0
+11920,Iberiiskii,0,Mainland,Political Unit,,0
+11921,Cherkesskii,0,Mainland,Political Unit,,0
+11922,Abkhazskii,0,Mainland,Political Unit,,0
+11923,Kutaisskii,0,Mainland,Political Unit,,0
+11924,Adzharistanskii,0,Mainland,Political Unit,,0
+11925,Somkhetskii,0,Mainland,Political Unit,,0
+11926,Karabakhskii,0,Mainland,Political Unit,,0
+11927,Vostochno-Predkavkazskii,0,Mainland,Political Unit,,0
+11928,Dzhavakhetskii,0,Mainland,Political Unit,,0
+11929,Armianskii,0,Mainland,Political Unit,,0
+11930,Nakhichevanskii,1,Mainland,Political Unit,,0
+11931,Diabarskii,0,Mainland,Political Unit,,0
+11932,Talyshinskii,0,Mainland,Political Unit,,0
+11933,Apsheronskii,0,Mainland,Political Unit,,0
+11934,Kubanskii,0,Mainland,Political Unit,,0
+11935,Terskii,0,Mainland,Political Unit,,0
+11936,Dagestanskii,0,Mainland,Political Unit,,0
+11937,Eastern Inner Mongolia,0,Mainland,Political Unit,,0
+11938,Amginskii,0,Mainland,Political Unit,,0
+11939,Aniuiskii,0,Mainland,Political Unit,,0
+11940,Anadyrsko-Penzhinskii,0,Mainland,Political Unit,,0
+11941,Bureinskii,0,Mainland,Political Unit,,0
+11942,Daurskii,0,Mainland,Political Unit,,0
+11943,Kamchatskii,0,Mainland,Political Unit,,0
+11944,Kolymskii,0,Mainland,Political Unit,,0
+11945,Nizhne-Zeiskii,0,Mainland,Political Unit,,0
+11946,Niukzhinskii,0,Mainland,Political Unit,,0
+11947,Severo-Kurilskii,0,Island,Political Unit,,0
+11948,Severo-Sakhalinskii,0,Island,Political Unit,,0
+11949,Okhotskii,0,Mainland,Political Unit,,0
+11950,Yuzhno-Kurilskii,0,Island Group,Political Unit,,0
+11951,Yuzhno-Sakhalinskii,0,Island,Political Unit,,0
+11952,Ussuriiskii,0,Mainland,Political Unit,,0
+11953,Verkhne-Zeiskii,0,Mainland,Political Unit,,0
+11958,Chollanam-do,0,Mainland,Political Unit,,0
+11959,Chungchongnam-do,0,Mainland,Political Unit,,0
+11960,Hwanghae-do,0,Mainland,Political Unit,,0
+11961,Hamgyongnam-do,0,Mainland,Political Unit,,0
+11962,Kyongsangbuk-do,0,Mainland,Political Unit,,0
+11963,Kyonggi-do,0,Mainland,Political Unit,,0
+11964,Kyongsangnam-do,0,Mainland,Political Unit,,0
+11965,Kangwon-do,0,Mainland,Political Unit,,0
+11966,Pyonganbuk-do,0,Mainland,Political Unit,,0
+11967,Pyongannam-do,0,Mainland,Political Unit,,0
+11968,Ullung-do,0,Island,Political Unit,,0
+11969,Bolshoi Syrt,0,Mainland,Political Unit,,0
+11970,Zapadnii Melkosopochnik,0,Mainland,Political Unit,,0
+11971,Vostochnii Melkosopochnik,0,Mainland,Political Unit,,0
+11972,Zaisanskii,0,Mainland,Political Unit,,0
+11973,Severnii Ust-Urt,0,Mainland,Political Unit,,0
+11974,Priaralskii,0,Mainland,Political Unit,,0
+11975,Kyzyl-Ordynskii,0,Mainland,Political Unit,,0
+11976,Betpakdolinskii,0,Mainland,Political Unit,,0
+11977,Muiun-Kumskii,0,Mainland,Political Unit,,0
+11978,Balkhash-Alakulskii,0,Mainland,Political Unit,,0
+11979,Yuzhnii Ust-Urt,0,Mainland,Political Unit,,0
+11980,Tobolsko-Ishimskii,0,Mainland,Political Unit,,0
+11981,Kyzyl-Kumskii,0,Mainland,Political Unit,,0
+11982,Turkestanskii,0,Mainland,Political Unit,,0
+11983,Altai,0,Mainland,Political Unit,,0
+11984,Tatbagatai,0,Mainland,Political Unit,,0
+11985,Dzhungarskii Alatau,0,Mainland,Political Unit,,0
+11986,Zailiiskii Alatau,0,Mainland,Political Unit,,0
+11987,Chu-Iliiskie Gory,0,Mainland,Political Unit,,0
+11988,Kyrgyzskii Alatau,0,Mainland,Political Unit,,0
+11989,Karatau,0,Mainland,Political Unit,,0
+11990,Zapadnii Tian-Shan,0,Mainland,Political Unit,,0
+11991,Irtyshskii,0,Mainland,Political Unit,,0
+11992,Semipalatinskii borovoi,0,Mainland,Political Unit,,0
+11993,Kokchetavskii,0,Mainland,Political Unit,,0
+11994,Prikaspiiskii,0,Mainland,Political Unit,,0
+11995,Aktiubinskii,0,Mainland,Political Unit,,0
+11996,Embenskii,0,Mainland,Political Unit,,0
+11997,Turgaiskii,0,Mainland,Political Unit,,0
+11998,Buriatskii Severobaikalskii,0,Mainland,Political Unit,,0
+11999,Buriatskii Yuzhnobaikalskii,0,Mainland,Political Unit,,0
+12000,Chitinskii Kalarskii,0,Mainland,Political Unit,,1
+12001,Chitinskii Shilko-Argunskii,0,Mainland,Political Unit,,0
+12002,Irkutskii Angaro-Sayanskii,0,Mainland,Political Unit,,0
+12003,Irkutskii Prilensko-Katangskii,0,Mainland,Political Unit,,0
+12004,Krasnoyarskii Putoranskii,0,Mainland,Political Unit,,0
+12005,Krasnoyarskii Taimyrskii,0,Mainland,Political Unit,,0
+12006,Krasnoyarskii Tungusskii,0,Mainland,Political Unit,,0
+12007,Vostochno Pamirskiii,0,Mainland,Political Unit,,0
+12008,Vostochno-Tadzhikistanskii,0,Mainland,Political Unit,,0
+12009,Gissaro-Darvazskii,0,Mainland,Political Unit,,0
+12010,Kuraminskii,0,Mainland,Political Unit,,0
+12011,Mogoltavskii,0,Mainland,Political Unit,,0
+12012,Prisyrdariinskii,0,Mainland,Political Unit,,0
+12013,Yuzhno-Tadzhikistanskii,0,Mainland,Political Unit,,0
+12014,Turkestanskii,0,Mainland,Political Unit,,0
+12015,Zapadno-Pamirskii,0,Mainland,Political Unit,,0
+12016,Zeravshanskii,0,Mainland,Political Unit,,0
+12017,Dzhizakskaia,0,Mainland,Political Unit,,0
+12018,Samarkand,0,Mainland,Political Unit,,0
+12019,Tashkentskaia,0,Mainland,Political Unit,,0
+12020,Aral sea,0,Mainland,Political Unit,,0
+12021,Shekinskii,0,Mainland,Political Unit,,0
+12022,Vostochno-Zakavkazskii,0,Mainland,Political Unit,,0
+12023,Chukotskii,0,Mainland,Political Unit,,0
+12025,Koriakskii,0,Mainland,Political Unit,,0
+12026,Yakutskii Aldanskii,0,Mainland,Political Unit,,0
+12027,Yakutskii Arcticheskii,0,Mainland,Political Unit,,0
+12028,Yakutskii Kolymskii,0,Mainland,Political Unit,,0
+12029,Yakutskii Oleneksko-Nizhnelenskii,0,Mainland,Political Unit,,0
+12030,Yakutskii Viliuisko-Verkhnelenskii,0,Mainland,Political Unit,,0
+12031,Yakutskii Yano-Indigirskii,0,Mainland,Political Unit,,0
+12032,Chungchongbuk-do,0,Mainland,Political Unit,,0
+12033,Jeju-do,0,Island,Political Unit,,0
+12034,Chollabuk-do,0,Mainland,Political Unit,,0
+12035,Hamgyongbuk-do,0,Mainland,Political Unit,,0
+12036,Tiumenskii Hanty-Mansiiskii,0,Mainland,Political Unit,,0
+12037,Krasnoyarskii Verkhneyenisseiskii,0,Mainland,Political Unit,,0
+12038,Kurganskii,0,Mainland,Political Unit,,0
+12039,Tiumenskii Tobolskii,0,Mainland,Political Unit,,0
+12040,Tiumenskii Yamalo-Nenetskii,0,Mainland,Political Unit,,0
+12041,Andizhanskaia,0,Mainland,Political Unit,,0
+12042,Buharskaia,0,Mainland,Political Unit,,0
+12043,Ferganskaia,0,Mainland,Political Unit,,0
+12044,Karakalpakstan,0,Mainland,Political Unit,,0
+12045,Kashdariinskaya,0,Mainland,Political Unit,,0
+12046,Horezmskaya,0,Mainland,Political Unit,,0
+12047,Namanganskaia,0,Mainland,Political Unit,,0
+12048,Navoiiskaia,0,Mainland,Political Unit,,0
+12049,Syrdariinskaia,0,Mainland,Political Unit,,0
+12050,Surhandariinskaia,0,Mainland,Political Unit,,0
+12051,"Region de Tarapaca, Chile",0,Mainland,Political Unit,,0
+12052,"Region de los Lagos, Chile",0,Island/Mainland,Political Unit,,0
+12053,"Region de los Rios, Chile",0,Mainland,Political Unit,,0
+12054,"Region de Arica y Parinacota, Chile",0,Mainland,Political Unit,,0
+12055,"Colón (excl. Canal Area), Panama",1,Mainland,Political Unit,,0
+12056,"Panamá (excl. Canal Area), Panama",1,Mainland,Political Unit,,0
+12057,"South Island, New Zealand",1,Island,Island,,0
+12058,"Subantartic Island, New Zealand",1,Island,Island,,0
+12060,Far East Aldanskii,0,Mainland,Political Unit,,0
+12061,Azerbaijan excl. Nakhichevan,1,Mainland,Political Unit,,0
+12062,Greek East Aegean Islands,1,Island Group,Island,,0
+12063,"Bozcaada Island, Turkish East Aegean",0,Island,Island,,0
+12064,Austria,1,Mainland,Political Unit,,0
+12065,Ibiza incl. Formentera,1,Island,Island,,0
+12066,France excl. Corse,1,Mainland,Political Unit,,0
+12067,"Abkhazia, Georgia",1,Mainland,Political Unit,,0
+12068,"Ajaria, Georgia",1,Mainland,Political Unit,,0
+12069,Georgia excl. Abkhazia and Ajaria,1,Mainland,Political Unit,,0
+12070,Northern Ireland,1,Island Part,Political Unit,,0
+12071,Spain mainland incl. Gibraltar and Andorra,1,Mainland,Political Unit,,0
+12072,Israel incl. Palestinian territories,1,Mainland,Political Unit,,0
+12073,Novaya Zemlya and Franz-Joseph Land,1,Island Group,Island,,0
+12074,Kaliningrad,1,Mainland,Political Unit,,0
+12075,Turkey excl. East Agean Islands,1,Mainland,Political Unit,,0
+12076,Asiatic Turkey excl. East Agean Islands,1,Mainland,Political Unit,,0
+12077,Ukraine excl. Crimea,1,Mainland,Political Unit,,0
+12078,Andalusia,0,Mainland,Political Unit,,0
+12079,"Bukit Nanas Forest Reserve, Kuala Lumpur, Malaysia",1,Mainland,Protected Area,,0
+12080,"Catimbau National Park, Pernambuco, Brazil",0,Mainland,Protected Area,,0
+12081,Unimak,1,Island,Island,,0
+12082,Akutan,1,Island,Island,,0
+12083,Umnak,1,Island,Island,,0
+12084,Adak Island,1,Island,Island,,0
+12085,Atka Island,1,Island,Island,,0
+12086,Agattu Island,1,Island,Island,,0
+12087,Attu Island,1,Island,Island,,0
+12088,Alaid Island,1,Island,Island,,0
+12089,Amchitka Island,1,Island,Island,,0
+12091,Kiska Island,1,Island,Island,,0
+12092,Rat Island,1,Island,Island,,0
+12093,Guianas,1,Mainland,Landscape/Region,,0
+12094,North America,1,Island/Mainland,Landscape/Region,,0
+12095,West Indies excl. Trinidad and Tobago,1,Island Group,Landscape/Region,,0
+12096,Baja California incl. Baja California Sur,1,Island/Mainland,Landscape/Region,,0
+12097,Bioko,1,Island,Island,,0
+12098,North Nigeria,1,Mainland,Landscape/Region,,0
+12099,South Nigeria,1,Mainland,Landscape/Region,,0
+12100,Antananarivo,0,Island Part,Political Unit,,0
+12101,Antsiranana,0,Island Part,Political Unit,,0
+12102,Fianarantsoa,0,Island Part,Political Unit,,0
+12103,Mahajanga,0,Island Part,Political Unit,,0
+12104,Toamasina,0,Island Part,Political Unit,,0
+12105,Toliara,0,Island Part,Political Unit,,0
+12106,"Bio-Bio excl. Nuble, Chile",0,Island/Mainland,Political Unit,,0
+12107,Mountains North Oman,0,Mainland,Landscape/Region,,0
+12108,Mountains South Oman,0,Mainland,Landscape/Region,,0
+12109,Amazon,0,Mainland,Landscape/Region,,0
+12110,Miombo,0,Mainland,Landscape/Region,,0
+12111,Tropical West Africa excl. Mauritania incl. Bioko and Cameroon,0,Island/Mainland,Landscape/Region,,0
+12112,"Ha'apai group Tonga, excl. Tofua and Kao",1,Island,Island,,0
+12113,"Jambi, Sumatra",0,Island Part,Political Unit,,0
+12114,Othonoi,1,Island,Island,,0
+12115,Ereikoussa,1,Island,Island,,0
+12116,Mathraki,1,Island,Island,,0
+12117,Corfu,1,Island,Island,,0
+12118,Paxos,1,Island,Island,,0
+12119,Antipaxos,1,Island,Island,,0
+12120,Lefkada,1,Island,Island,,0
+12121,Meganisi,1,Island,Island,,0
+12122,Kalamos,1,Island,Island,,0
+12123,Kastos,1,Island,Island,,0
+12124,Atokos,1,Island,Island,,0
+12125,Ithaca,1,Island,Island,,0
+12126,Echinades,1,Island Group,Island,,0
+12127,Oxeia,1,Island,Island,,0
+12128,Makropoula,1,Island,Island,,0
+12129,Makri,1,Island,Island,,0
+12130,Modi,1,Island,Island,,0
+12131,Apasa,1,Island,Island,,0
+12132,Soros,1,Island,Island,,0
+12133,Gravaris,1,Island,Island,,0
+12134,Kalogeros,1,Island,Island,,0
+12135,Tsakalonisi,1,Island,Island,,0
+12136,Filippos,1,Island,Island,,0
+12137,Bistros,1,Island,Island,,0
+12138,Pontikos,1,Island,Island,,0
+12139,Lamprino,1,Island,Island,,0
+12140,Sofia,1,Island,Island,,0
+12141,Provati,1,Island,Island,,0
+12142,Prasso,1,Island,Island,,0
+12143,Karlonisi,1,Island,Island,,0
+12144,Petalas,1,Island,Island,,0
+12145,Dragonera,1,Island,Island,,0
+12146,Cephalonia,1,Island,Island,,0
+12147,Zakynthos,1,Island,Island,,0
+12148,Strofades,1,Island,Island,,0
+12149,Lake Kastoria Peninsula,1,Mainland,Landscape/Region,,0
+12150,New Guinea incl. Bismarck,1,Island Group,Island,,0
+12151,Indonesian New Guinea,1,Island Part,Island,,0
+12152,Papua New Guinea,1,Island Part,Island,,0
+12153,Namuku,0,Island,Island,,0
+12154,Nukulevu,0,Island,Island,,0
+12155,Yanucalailai,0,Island,Island,,0
+12156,Nukulau,0,Island,Island,,0
+12157,Mabualau,0,Island,Island,,0
+12158,Makaluva,0,Island,Island,,0
+12159,Leluvia,0,Island,Island,,0
+12160,Sunda shelf,0,Island/Mainland,Landscape/Region,,0
+12161,Sahul shelf,0,Island/Mainland,Landscape/Region,,0
+12162,Wallacea,0,Island Group,Landscape/Region,,0
+12163,"Adelaide, Australia",1,Mainland,Landscape/Region,,0
+12164,"Arnhem Land, Australia",1,Mainland,Landscape/Region,,0
+12165,"Atherton Plateau, Australia",1,Mainland,Landscape/Region,,0
+12166,"Cape York Peninsula, Australia",1,Mainland,Landscape/Region,,0
+12167,"Central Desert, Australia",1,Mainland,Landscape/Region,,0
+12168,"Central Queensland, Australia",1,Mainland,Landscape/Region,,0
+12169,"Eastern Desert, Australia",1,Mainland,Landscape/Region,,0
+12170,"Eastern Queensland, Australia",1,Mainland,Landscape/Region,,0
+12171,"Eyre Peninsula, Australia",1,Mainland,Landscape/Region,,0
+12172,"Great Sandy Desert Interzone, Australia",1,Mainland,Landscape/Region,,0
+12173,"Hampton, Australia",1,Mainland,Landscape/Region,,0
+12174,"Kimberley Plateau, Australia",1,Mainland,Landscape/Region,,0
+12175,"Nullarbor, Australia",1,Mainland,Landscape/Region,,0
+12176,Southeastern Australia,1,Mainland,Landscape/Region,,0
+12177,"Southwest Interzone, Australia",1,Mainland,Landscape/Region,,0
+12178,Southwestern Australia,1,Mainland,Landscape/Region,,0
+12179,"Victoria, Australia",1,Mainland,Landscape/Region,,0
+12180,"Western Desert, Australia",1,Mainland,Landscape/Region,,0
+12181,Andaman & Nicobar,0,Mainland,Political Unit,,0
+12182,Assam,0,Mainland,Political Unit,,0
+12183,Bihar,0,Mainland,Political Unit,,0
+12184,Chattisgarh,0,Mainland,Political Unit,,0
+12185,Dadar Nagar & Daman Diu,0,Mainland,Political Unit,,0
+12186,Delhi,0,Mainland,Political Unit,,0
+12187,Goa,0,Mainland,Political Unit,,0
+12188,Haryana,0,Mainland,Political Unit,,0
+12189,Himachal Pradesh,0,Mainland,Political Unit,,0
+12190,Jharkhand,0,Mainland,Political Unit,,0
+12191,Karnataka,0,Mainland,Political Unit,,0
+12192,Madhaya Pradesh,0,Mainland,Political Unit,,0
+12193,Maharashtra,0,Mainland,Political Unit,,0
+12194,Mizoram,0,Mainland,Political Unit,,0
+12195,Nagaland,0,Mainland,Political Unit,,0
+12196,Punjab,0,Mainland,Political Unit,,0
+12197,Sikkim,0,Mainland,Political Unit,,0
+12198,Tripura,0,Mainland,Political Unit,,0
+12199,Uttar Pradesh,0,Mainland,Political Unit,,0
+12200,Serbia & Kosovo,1,Mainland,Political Unit,,0
+12201,Revillagigedo Islands,0,Island Group,Island,,0
+12202,"Eastern Aegean Islands (incl. Karpathos, Kasos, Rhodos, Kos, Symi, Samos, Lesvos, Chios, Ikaria, Limnos)",0,Island Group,Island,,0
+12203,Siberia excl. Novaya Zemlya and Franz-Joseph Land,0,Island/Mainland,Landscape/Region,,0
+12204,Chile (excl. Juan Fernandez and Easter Island),0,Island/Mainland,Landscape/Region,,0
+12205,"European Russia (excl. Caucasus, incl. Kaliningrad)",0,Island/Mainland,Landscape/Region,,0
+12206,Svalbard (excl. Jan Mayen),1,Island Group,Island,,0
+12207,Arctic Islands,1,Island Group,Island,,0
+12208,Grand Cayman,1,Island,Island,,0
+12209,Cayman Brac,1,Island,Island,,0
+12210,Mohéli,0,Island,Island,,0
+12211,King island,1,Island,Island,,0
+12212,Europa Island,1,Island,Island,,0
+12213,Juan de Nova,1,Island,Island,,0
+12214,Grande Glorieuse,1,Island,Island,,0
+12215,Ile aux Crabes,1,Island,Island,,0
+12216,Ile du Lys,1,Island,Island,,0
+12217,Ile aux Roches Vert,1,Island,Island,,0
+12218,Tromelin,1,Island,Island,,0
+12219,St Lawrence Island,1,Island,Island,,0
+12222,Tioman,0,Island,Island,,0
+12223,Tiwi Islands,1,Island Group,Island,,0
+12224,Wrangel and Herold Islands,1,Island Group,Island,,0
+12225,Addu Atoll,1,Island Group,Island,,0
+12227,Mafia Island,0,Island,Island,,0
+12228,Mindoro,0,Island,Island,,0
+12229,Pemba,0,Island,Island,,0
+12230,Tuscan Archipelago,0,Island Group,Island,,0
+12231,Gorgona,0,Island,Island,,0
+12232,Capraia,0,Island,Island,,0
+12233,Elba,0,Island,Island,,0
+12234,Hare,1,Island,Island,,0
+12235,Hepepa,1,Island,Island,,0
+12236,Herekoro,1,Island,Island,,0
+12237,Huhuhenua,1,Island,Island,,0
+12238,Hukuniu,1,Island,Island,,0
+12239,Matawhei,1,Island,Island,,0
+12240,Matiro,1,Island,Island,,0
+12241,Matukerekere,1,Island,Island,,0
+12242,Matuketuke,1,Island,Island,,0
+12243,Nukuhatu,1,Island,Island,,0
+12244,Nunakita,1,Island,Island,,0
+12245,Parakahi,1,Island,Island,,0
+12246,Pepeio,1,Island,Island,,0
+12247,Pumatahati,1,Island,Island,,0
+12248,Pungupungu,1,Island,Island,,0
+12249,Ramotu,1,Island,Island,,0
+12250,Rikumanu,1,Island,Island,,0
+12251,Ringutoru,1,Island,Island,,0
+12252,Sakenge,1,Island,Island,,0
+12253,Takairongo,1,Island,Island,,0
+12254,Tangawaka,1,Island,Island,,0
+12255,Tariha,1,Island,Island,,0
+12256,Taringa,1,Island,Island,,0
+12257,Tetau,1,Island,Island,,0
+12258,Tiahu,1,Island,Island,,0
+12259,Tipae,1,Island,Island,,0
+12260,Tirakau,1,Island,Island,,0
+12261,Tirakume,1,Island,Island,,0
+12262,Tokongo,1,Island,Island,,0
+12263,Toronhahai,1,Island,Island,,0
+12264,Touhou,1,Island,Island,,0
+12265,Turuaimu,1,Island,Island,,0
+12266,Werua,1,Island,Island,,0
+12269,Adriatic Islands,0,Island Group,Island,,0
+12270,Aldabra Archipelago,0,Island Group,Island,,0
+12272,Borneo and adjacent islands,0,Island Group,Island,,0
+12273,California Channel Islands,0,Island Group,Island,,0
+12274,Santa Catalina,0,Island,Island,,0
+12275,San Clemente,0,Island,Island,,0
+12276,San Nicholas,0,Island,Island,,0
+12277,Chuuk,0,Island,Island,,0
+12278,Haida Gwaii,0,Island,Island,,0
+12279,Moresby,0,Island,Island,,0
+12280,Iberian Peninsula,0,Mainland,Landscape/Region,,0
+12281,East Southern Ocean Islands,0,Island Group,Island,,0
+12282,Smaller Lesser Sunda Islands,0,Island Group,Island,,0
+12283,West Sub-Antarctic Islands,0,Island Group,Island,,0
+12284,Mascarene Islands,0,Island Group,Island,,0
+12285,"Norfolk, Philip and Nepean Islands",0,Island Group,Island,,0
+12286,Puerto Rico,0,Island,Island,,0
+12287,Siberia & Far East,0,Island/Mainland,Landscape/Region,,0
+12288,"Lesser Sundas, Java & Christmas island",0,Island Group,Island,,0
+12289,Sri Lanka and Maldive,0,Island Group,Island,,0
+12290,Sulawesi,0,Island,Island,,0
+12291,Tobago,0,Island,Island,,0
+12292,Trinidad,0,Island,Island,,0
+12293,"Tristan da Cunha, Inaccesible, Nightingale and Gough Islands",0,Island,Island,,0
+12294,Bali,0,Island,Island,,0
+12295,Flores,0,Island,Island,,0
+12296,Leti,0,Island,Island,,0
+12297,Lombock,0,Island,Island,,0
+12298,Sumba,0,Island,Island,,0
+12299,Sumbawa,0,Island,Island,,0
+12300,Timor,0,Island,Island,,0
+12301,Wetar,0,Island,Island,,0
+12302,Himaka-jima,1,Island,Island,,0
+12303,Saku-shima,1,Island,Island,,0
+12304,Shino-jima,1,Island,Island,,0
+12305,Hutagami-jima,0,Island,Island,,0
+12306,Ikina-jima,0,Island,Island,,0
+12307,Iwagi-jima,0,Island,Island,,0
+12308,Ku-shima,0,Island,Island,,0
+12309,Naka-jima,0,Island,Island,,0
+12310,Ni-o-shima,0,Island,Island,,0
+12311,Nuwa-jima,0,Island,Island,,0
+12312,Sa-shima,0,Island,Island,,0
+12313,To-jima,0,Island,Island,,0
+12314,Tsuwaji-jima,0,Island,Island,,0
+12315,Yuge-shima,0,Island,Island,,0
+12316,Aino-shima,1,Island,Island,,0
+12317,Nokono-shima,0,Island,Island,,0
+12318,"O-shima, Fukuoka",0,Island,Island,,0
+12319,Atata-jima,0,Island,Island,,0
+12320,Hashiri-jima,0,Island,Island,,0
+12321,Ikuchi-jima,0,Island,Island,,0
+12322,Ikuno-shima,0,Island,Island,,0
+12323,Inno-shima,0,Island,Island,,0
+12324,Koune-shima,0,Island,Island,,0
+12325,Mukai-shima,0,Island,Island,,0
+12326,Nino-shima,0,Island,Island,,0
+12327,Osakikami-jima,0,Island,Island,,0
+12328,Sagi-shima,0,Island,Island,,0
+12329,Ta-shima,0,Island,Island,,0
+12334,Okushiri-to,1,Island,Island,,0
+12335,Oshima-ko-jima,0,Island,Island,,0
+12336,Oshima-o-shima,0,Island,Island,,0
+12337,Rebun-to,1,Island,Island,,0
+12338,Rishiri-to,1,Island,Island,,0
+12343,Teuri-to,0,Island,Island,,0
+12344,Yagishiri-to,0,Island,Island,,0
+12346,Awaji-shima,1,Island,Island,,0
+12347,Boze-jima,0,Island,Island,,0
+12348,Ie-shima,1,Island,Island,,0
+12349,"Nishi-jima, Hyogo",1,Island,Island,,0
+12350,Nu-shima,1,Island,Island,,0
+12351,Tanga-shima,0,Island,Island,,0
+12352,Noto-shima,0,Island,Island,,0
+12353,Hiro-shima,0,Island,Island,,0
+12354,Hon-jima,0,Island,Island,,0
+12355,Nao-shima,0,Island,Island,,0
+12356,Syodo-shima,1,Island,Island,,0
+12357,Te-shima,0,Island,Island,,0
+12360,Edateku-jima,0,Island,Island,,0
+12363,Kakeroma-jima,0,Island,Island,,0
+12364,Kamikoshiki-jima,1,Island,Island,,0
+12365,Kaminone-jima,0,Island,Island,,0
+12368,Kogajya-jima,0,Island,Island,,0
+12371,Mage-shima,0,Island,Island,,0
+12372,"Naga-shima, Kagoshima",0,Island,Island,,0
+12373,Nakakoshiki-shima,0,Island,Island,,0
+12377,Shimokoshiki-jima,1,Island,Island,,0
+12378,Shishi-jima,0,Island,Island,,0
+12385,Uji-mukae-jima,0,Island,Island,,0
+12386,Uke-shima,0,Island,Island,,0
+12390,Yoro-shima,0,Island,Island,,0
+12391,"Okino-shima, Kochi",0,Island,Island,,0
+12392,Amakusashimo-shima,0,Island,Island,,0
+12393,Gosyoura-jima,0,Island,Island,,0
+12394,Hino-shima,0,Island,Island,,0
+12395,Iwa-jima,0,Island,Island,,0
+12396,Maki-shima,0,Island,Island,,0
+12397,Nagaura-jima,0,Island,Island,,0
+12398,Oyano-jima,0,Island,Island,,0
+12399,Tobase-jima,0,Island,Island,,0
+12400,Ubu-shima,0,Island,Island,,0
+12401,Yoko-shima,0,Island,Island,,0
+12402,Suga-shima,0,Island,Island,,0
+12403,Toushi-jima,0,Island,Island,,0
+12404,Aji-shima,0,Island,Island,,0
+12405,Izu-shima,0,Island,Island,,0
+12406,Kinkasan,1,Island,Island,,0
+12407,"O-shima, Mayagi",0,Island,Island,,0
+12408,Tashiro-jima,0,Island,Island,,0
+12409,"O-shima, Miyazaki",0,Island,Island,,0
+12410,Shimaura-to,0,Island,Island,,0
+12411,Azuchi-o-shima,0,Island,Island,,0
+12412,Fuku-shima,0,Island,Island,,0
+12413,Hirado-jima,1,Island,Island,,0
+12414,"Hira-shima, Nagasaki",0,Island,Island,,0
+12415,Hisaka-jima,0,Island,Island,,0
+12416,Hukue-jima,0,Island,Island,,0
+12417,Ikino-shima,0,Island,Island,,0
+12418,Ikitsuki-shima,0,Island,Island,,0
+12419,Kaba-shima,0,Island,Island,,0
+12420,Matsu-shima,0,Island,Island,,0
+12421,Nakadori-jima,0,Island,Island,,0
+12422,Naru-shima,0,Island,Island,,0
+12423,Nozaki-jima,0,Island,Island,,0
+12424,Ojika-jima,0,Island,Island,,0
+12425,"Okino-shima, Nagasaki",0,Island,Island,,0
+12426,"O-shima, Nagasaki",0,Island,Island,,0
+12427,Sagano-shima,0,Island,Island,,0
+12428,Saikai-city-o-shima,0,Island,Island,,0
+12429,Sasebo-city-kuro-shima,0,Island,Island,,0
+12430,Shimayama-jima,0,Island,Island,,0
+12431,Taka-shima,0,Island,Island,,0
+12432,Taku-shima,0,Island,Island,,0
+12433,Tsushima-to,1,Island,Island,,0
+12434,Uku-jima,0,Island,Island,,0
+12435,Wakamatu-jima,0,Island,Island,,0
+12436,Awa-shima,0,Island,Island,,0
+12438,Hime-shima,0,Island,Island,,0
+12439,Onyu-jima,0,Island,Island,,0
+12440,I-sjima,0,Island,Island,,0
+12441,Kakui-jima,0,Island,Island,,0
+12442,Kitagi-shima,0,Island,Island,,0
+12443,Ko-jima,0,Island,Island,,0
+12444,Mae-jima,0,Island,Island,,0
+12445,"Naga-shima, Okayama",0,Island,Island,,0
+12446,Shiraishi-jima,0,Island,Island,,0
+12447,Aguni-jima,1,Island,Island,,0
+12448,Aka-shima,1,Island,Island,,0
+12449,Fukaji-shima,1,Island,Island,,0
+12450,Geruma-jima,1,Island,Island,,0
+12451,Hamahiga-jima,1,Island,Island,,0
+12452,Hateruma-jima,1,Island,Island,,0
+12453,Hatoma-jima,1,Island,Island,,0
+12454,Henza-jima,0,Island,Island,,0
+12455,Ie-jima,0,Island,Island,,0
+12456,Iheya-jima,1,Island,Island,,0
+12457,Ikei-jima,0,Island,Island,,0
+12458,Ikema-jima,1,Island,Island,,0
+12459,Ioutori-shima,1,Island,Island,,0
+12460,Irabu-jima,1,Island,Island,,0
+12463,Izena-jima,1,Island,Island,,0
+12464,Kitadaito-jima,1,Island,Island,,0
+12465,Kohama-jima,1,Island,Island,,0
+12466,Kouri-jima,1,Island,Island,,0
+12467,Kuba-shima,1,Island,Island,,0
+12468,Kudaka-jima,1,Island,Island,,0
+12470,Kurima-jima,0,Island,Island,,0
+12471,Kuro-shima,1,Island,Island,,0
+12472,Mae-shima,1,Island,Island,,0
+12473,Minamidaito-jima,1,Island,Island,,0
+12474,Minna-shima motobu,1,Island,Island,,0
+12475,Minna-shima tarama,0,Island,Island,,0
+12477,Noho-jima,0,Island,Island,,0
+12478,Ogami-jima,1,Island,Island,,0
+12479,Oha-jima,0,Island,Island,,0
+12480,O-shima kume,0,Island,Island,,0
+12481,Sesoko-jima,1,Island,Island,,0
+12482,Shimoji-shima,0,Island,Island,,0
+12483,Taketomi-jima,1,Island,Island,,0
+12484,Tarama-jima,1,Island,Island,,0
+12485,Tokashiki-jima,1,Island,Island,,0
+12486,Tonaki-jima,1,Island,Island,,0
+12487,Tsuken-jima,1,Island,Island,,0
+12488,Uotsuri-shima,0,Island,Island,,0
+12489,Yagaji-shima,1,Island,Island,,0
+12490,Yakabi-jima,1,Island,Island,,0
+12491,Yanaha-jima,0,Island,Island,,0
+12493,Zamami-jima,1,Island,Island,,0
+12494,Kabe-shima,0,Island,Island,,0
+12495,Kakara-shima,0,Island,Island,,0
+12496,Madara-shima,0,Island,Island,,0
+12497,Chiburi-jima,1,Island,Island,,0
+12498,Dogo,1,Island,Island,,0
+12499,Nakano-shima,1,Island,Island,,0
+12500,Nishino-shima,1,Island,Island,,0
+12501,Hatsu-shima,1,Island,Island,,0
+12502,I-shima,1,Island,Island,,0
+12503,Oge-jima,0,Island,Island,,0
+12504,"O-shima, Tokushima",1,Island,Island,,0
+12505,Ane-jima,0,Island,Island,,0
+12506,Ani-jima,1,Island,Island,,0
+12507,Aoga-shima,0,Island,Island,,0
+12508,Hachijo-jima,1,Island,Island,,0
+12510,HIgashi-jima,0,Island,Island,,0
+12511,"Hira-shima, Tokyo",0,Island,Island,,0
+12512,Imouto-jima,0,Island,Island,,0
+12513,Io-to,0,Island,Island,,0
+12514,Izu-O-shima,1,Island,Island,,0
+12515,Kitaio-to,0,Island,Island,,0
+12516,Kitano-shima,1,Island,Island,,0
+12517,Kouzu-shima,1,Island,Island,,0
+12518,Mei-jima,0,Island,Island,,0
+12519,Mikura-jima,1,Island,Island,,0
+12520,Minamiio-to,0,Island,Island,,0
+12521,Minami-jima,0,Island,Island,,0
+12522,Miyake-jima,1,Island,Island,,0
+12523,Muko-jima 1,1,Island,Island,,0
+12524,Muko-jima 2,1,Island,Island,,0
+12525,Nakoudo-jima,0,Island,Island,,0
+12526,Nii-jima,1,Island,Island,,0
+12527,"Nishi-jima, Tokyo",0,Island,Island,,0
+12528,Otouto-jima,0,Island,Island,,0
+12529,Shikine-jima,0,Island,Island,,0
+12530,To-shima,0,Island,Island,,0
+12531,Yome-jima,0,Island,Island,,0
+12532,Kii-o-shima,0,Island,Island,,0
+12533,Tobi-shima,1,Island,Island,,0
+12534,Hashira-jima,0,Island,Island,,0
+12535,Heigun-to,0,Island,Island,,0
+12536,Hutaoi-jima,0,Island,Island,,0
+12537,Iwai-shima,0,Island,Island,,0
+12538,Mi-shima,0,Island,Island,,0
+12539,Muko-shima,0,Island,Island,,0
+12540,Ozu-shima,0,Island,Island,,0
+12541,Tsuno-shima,0,Island,Island,,0
+12542,U-shima,0,Island,Island,,0
+12543,Ya-shima,0,Island,Island,,0
+12544,Japan (incl. some south Kuril Islands),1,Island Group,Island,,0
+12545,Ronde Island,0,Island,Island,,0
+12546,Les Saintes,0,Island Group,Island,,0
+12547,La Desirade,0,Island,Island,,0
+12548,Malpelo,1,Island,Island,,0
+12549,"Dogotuki, Vanua Levu",1,Island Part,Island,,0
+12550,"Monuriki, Fiji",0,Island,Island,,0
+12551,Madeira and Selvagens,0,Island Group,Island,,0
+12552,Borkum,1,Island,Island,,0
+12553,Lütttje Hörn,1,Island,Island,,0
+12554,Memmert,1,Island,Island,,0
+12555,Juist,1,Island,Island,,0
+12556,Norderney,1,Island,Island,,0
+12557,Baltrum,1,Island,Island,,0
+12558,Langeoog,1,Island,Island,,0
+12559,Spiekeroog,1,Island,Island,,0
+12560,Wangerooge,1,Island,Island,,0
+12561,Minsener Oog,1,Island,Island,,0
+12562,Mellum,1,Island,Island,,0
+12563,Romo,0,Island,Island,,0
+12564,Fano,0,Island,Island,,0
+12565,Mando,0,Island,Island,,0
+12566,Indian Thar desert,0,Mainland,Landscape/Region,,0
+12567,Isla Coamaño,0,Island,Island,,0
+12568,Isla Daphne Minor (Daphne Chica),0,Island,Island,,0
+12569,Islas Guy Fawkes,0,Island,Island,,0
+12570,Las Plazas,0,Island,Island,,0
+12571,Isla Lobos,0,Island,Island,,0
+12572,Los Hermanos (Islas Los Hermanos),0,Island,Island,,0
+12573,Isla Onslow,0,Island,Island,,0
+12574,Isla Sin Nombre,0,Island,Island,,0
+12575,Isla Tortuga,0,Island,Island,,0
+12576,Isla Watson,0,Island,Island,,0
+12577,Rocas Bainbridge,0,Island,Island,,0
+12578,Roca Blanca,0,Island,Island,,0
+12579,Rocas Dalrymple,0,Island,Island,,0
+12580,Rocas Gordon,0,Island,Island,,0
+12581,Roca Kicker (León Dormiente),0,Island,Island,,0
+12582,Roca Redonda,0,Island,Island,,0
+12583,Altai region,1,Mainland,Landscape/Region,,0
+12584,Irtysh,1,Mainland,Landscape/Region,,0
+12585,Upper Tobol,1,Mainland,Landscape/Region,,0
+12586,Ob region,1,Mainland,Landscape/Region,,0
+12587,Amu Darya foothills,1,Mainland,Landscape/Region,,0
+12588,Aral-Caspian region,1,Mainland,Landscape/Region,,0
+12589,Lake Balkhash area,1,Mainland,Landscape/Region,,0
+12590,Dzungaria-Tarbatagai,1,Mainland,Landscape/Region,,0
+12591,Kara-Kum,1,Mainland,Landscape/Region,,0
+12592,Kazyl-Kum,1,Mainland,Landscape/Region,,0
+12593,Montane Turkmenistan,1,Mainland,Landscape/Region,,0
+12594,Pamir-Alai,1,Mainland,Landscape/Region,,0
+12595,Syr Darya foothills,1,Mainland,Landscape/Region,,0
+12596,Tien Shan,1,Mainland,Landscape/Region,,0
+12597,Anadyr,1,Mainland,Landscape/Region,,0
+12598,Arctic European Russia,1,Island/Mainland,Landscape/Region,,0
+12599,Arctic Siberia,1,Island/Mainland,Landscape/Region,,0
+12600,Chukchi (Chukotka excl. southern part),1,Island/Mainland,Landscape/Region,,0
+12601,Novaya Zemlya,1,Island,Landscape/Region,,0
+12602,Angara River-Sayans,1,Mainland,Landscape/Region,,0
+12603,Dauria,1,Mainland,Landscape/Region,,0
+12604,Lena-Kolyma,1,Mainland,Landscape/Region,,0
+12605,Yenisei,1,Mainland,Landscape/Region,,0
+12606,Bessarabia,1,Mainland,Landscape/Region,,0
+12607,Black Sea Area,1,Mainland,Landscape/Region,,0
+12608,Dvina-Pechora,1,Mainland,Landscape/Region,,0
+12609,Karelia-Lapland,1,Mainland,Landscape/Region,,0
+12610,Lower Don,1,Mainland,Landscape/Region,,0
+12611,Lower Volga,1,Mainland,Landscape/Region,,0
+12612,Ladoga-Ilmen,1,Mainland,Landscape/Region,,0
+12613,Middle Dnieper,1,Mainland,Landscape/Region,,0
+12614,Transvolga Area,1,Mainland,Landscape/Region,,0
+12615,Upper Dnieper,1,Mainland,Landscape/Region,,0
+12616,Upper Dniester,1,Mainland,Landscape/Region,,0
+12617,Upper Volga,1,Mainland,Landscape/Region,,0
+12618,Volga-Don,1,Mainland,Landscape/Region,,0
+12619,Volga-Kama,1,Mainland,Landscape/Region,,0
+12620,Ciscaucasia,1,Mainland,Landscape/Region,,0
+12621,Dagestan,1,Mainland,Landscape/Region,,0
+12622,Eastern Transcaucasia,1,Mainland,Landscape/Region,,0
+12623,Southern Transcaucasia,1,Mainland,Landscape/Region,,0
+12624,Talysh,1,Mainland,Landscape/Region,,0
+12625,Western Transcaucasia,1,Mainland,Landscape/Region,,0
+12626,Kamchatka incl. Kuriles and Commander Islands,1,Island/Mainland,Landscape/Region,,0
+12627,Okhotsk,1,Island/Mainland,Landscape/Region,,0
+12628,Uda River Area,1,Mainland,Landscape/Region,,0
+12629,Ussuri region,1,Mainland,Landscape/Region,,0
+12630,Zeya-Bureya,1,Mainland,Landscape/Region,,0
+12631,former USSR,0,Mainland,Landscape/Region,,0
+12632,Montecristo,0,Island,Island,,0
+12633,Giglio,0,Island,Island,,0
+12634,Giannutri,0,Island,Island,,0
+12635,Formica Grande di Grosseto,0,Island,Island,,0
+12636,"Micronesia incl. Caroline Islands, Palau, Pohnpei, Mariana Islands, Guam, Marshall Islands, Gilbert Islands, Ellice Islands, Phoenix Islands, Tokelau Islands, Baker Island, Banaba Island, Howland Island, Nauru Island and Wake Island",0,Island Group,Island,,0
+12637,Paama,0,Island,Island,,0
+12638,"Torres Islands, Hiw",0,Island,Island,,0
+12639,"Torres Islands, Lo",0,Island,Island,,0
+12640,"Torres Islands, Tegua",0,Island,Island,,0
+12641,Ambrym,0,Island,Island,,0
+12642,Aniwa,0,Island,Island,,0
+12643,"Banks Islands, Gaua",0,Island,Island,,0
+12644,Epi,0,Island,Island,,0
+12645,Stradbroke Island,1,Island,Island,,0
+12646,Fraser Island,1,Island,Island,,0
+12647,Moreton Island,1,Island,Island,,0
+12648,Bribie Island,1,Island,Island,,0
+12649,"Takht Bhai District, Pakistan",0,Mainland,Political Unit,,0
+12650,"Alabna escarpment, Saudi Arabia",0,Mainland,Landscape/Region,,0
+12651,"Assaba, Mauritania",0,Mainland,Landscape/Region,,0
+12652,"Augrabies Fall National Park, South Africa",0,Mainland,Protected Area,,0
+12653,"Binalood Mountain, Iran",0,Mainland,Landscape/Region,,0
+12654,"El-Rawakeeb, Sudan",0,Mainland,Landscape/Region,,0
+12655,"Gobabeb, Namibia",0,Mainland,Landscape/Region,,0
+12656,"Great Basin National Park, USA",0,Mainland,Landscape/Region,,0
+12657,"Heydari Wildlife refuge, Iran",0,Mainland,Landscape/Region,,0
+12658,"Aran and Bidghol deserts, Iran",0,Mainland,Landscape/Region,,0
+12659,"Kabal valley, Pakistan",0,Mainland,Landscape/Region,,0
+12660,"Kalahari Gemsbok National Park, South Africa",0,Mainland,Landscape/Region,,0
+12661,"Kavir Protected Region, Iran",0,Mainland,Landscape/Region,,0
+12662,"Mountain Zebra National Park, South Africa",0,Mainland,Landscape/Region,,0
+12663,"Musandam Peninsula, United Arab Emirates",0,Mainland,Landscape/Region,,0
+12664,"Pashat Valley, Pakistan",0,Mainland,Landscape/Region,,0
+12665,"Air mountains, Sahara",0,Mainland,Landscape/Region,,0
+12666,"Sathan Gali, Pakistan",0,Mainland,Landscape/Region,,0
+12667,"Sierra de la Paila, Mexico",0,Mainland,Landscape/Region,,0
+12668,"Sierra San Pedro Martir, Mexico",0,Mainland,Landscape/Region,,0
+12669,"Lut desert, Iran",0,Mainland,Landscape/Region,,0
+12670,"Tankwa Karoo, South Africa",0,Mainland,Political Unit,,0
+12671,"Yahya Abad, Iran",0,Mainland,Landscape/Region,,0
+12672,"Sierra de Zapaliname, Mexico",0,Mainland,Landscape/Region,,0
+12673,"Sistan Baluchestan, Iran",0,Mainland,Landscape/Region,,0
+12674,"Tengger desert, China",0,Mainland,Landscape/Region,,0
+12675,"Touran protected area, Iran",0,Mainland,Landscape/Region,,0
+12676,"Vaalbos National Park, South Africa",0,Mainland,Landscape/Region,,0
+12677,"Jabal Feyfa, Saudi Arabia",0,Mainland,Landscape/Region,,0
+12678,"Tibesti mountains, Sahara",0,Mainland,Landscape/Region,,0
+12679,"Tanezzuft, Libya",0,Mainland,Landscape/Region,,0
+12680,"Wind River Range, USA",0,Mainland,Landscape/Region,,0
+12681,"Jebel Uweinat, Libya",0,Mainland,Landscape/Region,,0
+12682,"Vozrozhdeniya Island, Uzbekistan",0,Mainland,Landscape/Region,,0
+12683,"Wadi Allaqi Biosphere Reserve, Egypt",0,Mainland,Landscape/Region,,0
+12684,Sahara,0,Mainland,Landscape/Region,,0
+12685,Central Namib desert,0,Mainland,Landscape/Region,,0
+12686,"Gobi desert Heihe River Basin, China",0,Mainland,Landscape/Region,,0
+12687,Farasan Al Kabir,0,Island Group,Island,,0
+12688,Sajid,0,Island,Island,,0
+12689,Zifaf,0,Island,Island,,0
+12690,Qummah,0,Island,Island,,0
+12691,Dumsuq,0,Island,Island,,0
+12692,Dushak,0,Island,Island,,0
+12693,Alps,0,Mainland,Landscape/Region,,0
+12694,Sonoran desert,0,Mainland,Landscape/Region,,0
+12695,Jaljala mountain,0,Mainland,Landscape/Region,,0
+12696,"Ladakh region, India",0,Mainland,Landscape/Region,,0
+12697,"Panchase protected forest, Nepal",0,Mainland,Landscape/Region,,0
+12698,"Baekdudaegan Mountains, South Korea",0,Mainland,Landscape/Region,,0
+12699,Mount Kenya,0,Mainland,Landscape/Region,,0
+12700,Bahrain protected area,0,Mainland,Landscape/Region,,0
+12701,"Hail region, Saudi Arabia",0,Mainland,Landscape/Region,,0
+12702,"Jandaf mountain, Saudi Arabia",0,Mainland,Landscape/Region,,0
+12703,Deserts of China,0,Mainland,Landscape/Region,,0
+12704,Pyrenees,0,Mainland,Landscape/Region,,0
+12705,Sino-Himalayan mountains,0,Mainland,Landscape/Region,,0
+12706,Aberdare Kenya,0,Mainland,Landscape/Region,,0

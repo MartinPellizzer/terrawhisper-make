@@ -51,7 +51,11 @@ explore
 
 '''
 TODO:
+GIFT database create from scraped data (check all data downloaded successfully)
+check USDA PLANTS database for morphological characteristics
+check gemini for other traits datasources
 parse pubmed for "compounds"
+fetch/parse powo
 RENDER: mention sources on a section level where appropriate 
 get chemicals classes from chemical and pubchem
 TRY DATASET (identification layer)

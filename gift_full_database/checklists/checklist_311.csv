@@ -1,0 +1,13 @@
+ref_ID,list_ID,entity_ID,work_author,work_ID,genus_ID,work_species,questionable,native,quest_native,naturalized,endemic_ref,quest_end_ref,endemic_list,quest_end_list,cons_status
+30,311,309,Urb.,1825,1202,Alternanthera geniculata,0,1,0,,1,0,0,0,
+30,311,309,(L.) L.,45181,6809,Tillandsia recurvata,0,1,0,,0,0,0,0,
+30,311,309,(Griseb.) Urb.,9164,2190,Chascotheca neopeltandra,0,1,0,,1,0,0,0,
+30,311,309,(Urb. & Ekman) G.L.Webster,27791,4542,Margaritaria hotteana,0,1,0,,1,0,0,0,
+30,311,309,Urb. & Ekman,19068,3390,Galactia caimitensis,0,1,0,,1,0,0,0,
+30,311,309,Urb. & Ekman,22846,3911,Hyperbaena undulata,0,1,0,,1,0,0,0,
+30,311,309,Lam.,20522,3581,Guettarda argentea,0,1,0,,0,0,0,0,
+30,311,309,Sw.,36717,5840,Psychotria glabrata,0,1,0,,1,0,0,0,
+30,311,309,L.,2115,1267,Amyris balsamifera,0,1,0,,0,0,0,0,
+30,311,309,(Desv.) P.M.Peterson,439273,20011,Stapfochloa elata,0,1,0,,0,0,0,0,
+30,311,309,O.C.Schmidt,10263,2361,Coccoloba hotteana,0,1,0,,1,0,0,0,
+30,311,309,Urb.,20590,3581,Guettarda saxicola,0,1,0,,1,0,0,0,

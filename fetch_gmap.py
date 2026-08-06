@@ -197,7 +197,7 @@ for cycle_i in range(10):
         sleep(2)
 
         operations_num = 0
-        for k, row in enumerate(rows[100:]):
+        for k, row in enumerate(rows[5000:]):
             # country = row[1].strip().lower()
             place = row['NAME'].strip().lower()
             output_folderpath = f'{g.DATA_FOLDERPATH}/organizations/fetch/gmap/{continent}/places'.replace(' ', '_')

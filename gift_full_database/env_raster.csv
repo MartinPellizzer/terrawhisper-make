@@ -1,0 +1,187 @@
+citavi_ID,dataset,layer_name,layer,description,unit,coord_system,resolution,extent,version
+{Fick #3528},WorldClim 2.0 bioclimatic variables,wc2.0_bio_30s_01,Annual Mean Temperature,,°C,WGS84,30 arc-seconds,global,2.0
+{Fick #3528},WorldClim 2.0 bioclimatic variables,wc2.0_bio_30s_02,Mean Diurnal Range,Mean of monthly (max temp - min temp),°C,WGS84,30 arc-seconds,global,2.0
+{Fick #3528},WorldClim 2.0 bioclimatic variables,wc2.0_bio_30s_03,Isothermality,(BIO2/BIO7) (* 100),,WGS84,30 arc-seconds,global,2.0
+{Fick #3528},WorldClim 2.0 bioclimatic variables,wc2.0_bio_30s_04,Temperature Seasonality,standard deviation *100,°C,WGS84,30 arc-seconds,global,2.0
+{Fick #3528},WorldClim 2.0 bioclimatic variables,wc2.0_bio_30s_05,Max Temperature of Warmest Month,,°C,WGS84,30 arc-seconds,global,2.0
+{Fick #3528},WorldClim 2.0 bioclimatic variables,wc2.0_bio_30s_06,Min Temperature of Coldest Month,,°C,WGS84,30 arc-seconds,global,2.0
+{Fick #3528},WorldClim 2.0 bioclimatic variables,wc2.0_bio_30s_07,Temperature Annual Range,BIO5-BIO6,°C,WGS84,30 arc-seconds,global,2.0
+{Fick #3528},WorldClim 2.0 bioclimatic variables,wc2.0_bio_30s_08,Mean Temperature of Wettest Quarter,,°C,WGS84,30 arc-seconds,global,2.0
+{Fick #3528},WorldClim 2.0 bioclimatic variables,wc2.0_bio_30s_09,Mean Temperature of Driest Quarter,,°C,WGS84,30 arc-seconds,global,2.0
+{Fick #3528},WorldClim 2.0 bioclimatic variables,wc2.0_bio_30s_10,Mean Temperature of Warmest Quarter,,°C,WGS84,30 arc-seconds,global,2.0
+{Fick #3528},WorldClim 2.0 bioclimatic variables,wc2.0_bio_30s_11,Mean Temperature of Coldest Quarter,,°C,WGS84,30 arc-seconds,global,2.0
+{Fick #3528},WorldClim 2.0 bioclimatic variables,wc2.0_bio_30s_12,Annual Precipitation,,mm,WGS84,30 arc-seconds,global,2.0
+{Fick #3528},WorldClim 2.0 bioclimatic variables,wc2.0_bio_30s_13,Precipitation of Wettest Month,,mm,WGS84,30 arc-seconds,global,2.0
+{Fick #3528},WorldClim 2.0 bioclimatic variables,wc2.0_bio_30s_14,Precipitation of Driest Month,,mm,WGS84,30 arc-seconds,global,2.0
+{Fick #3528},WorldClim 2.0 bioclimatic variables,wc2.0_bio_30s_15,Precipitation Seasonality,Coefficient of Variation,,WGS84,30 arc-seconds,global,2.0
+{Fick #3528},WorldClim 2.0 bioclimatic variables,wc2.0_bio_30s_16,Precipitation of Wettest Quarter,,mm,WGS84,30 arc-seconds,global,2.0
+{Fick #3528},WorldClim 2.0 bioclimatic variables,wc2.0_bio_30s_17,Precipitation of Driest Quarter,,mm,WGS84,30 arc-seconds,global,2.0
+{Fick #3528},WorldClim 2.0 bioclimatic variables,wc2.0_bio_30s_18,Precipitation of Warmest Quarter,,mm,WGS84,30 arc-seconds,global,2.0
+{Fick #3528},WorldClim 2.0 bioclimatic variables,wc2.0_bio_30s_19,Precipitation of Coldest Quarter,,mm,WGS84,30 arc-seconds,global,2.0
+{Weiss 2018 #3551},Accessibility to cities,access_cities_2015,Accessibility to cities,land-based travel time to the nearest densely-populated area for all areas between 85 degrees north and 60 degrees south for a nominal year 2015,min,WGS84,30 arc-seconds,global,1.0
+{Wilson 2016 #3534},Global cloud cover,MODCF_meanannual,Mean annual cloud frequency,frequency over 2000-2014,%,WGS84,30 arc-seconds,global,
+{Wilson 2016 #3534},Global cloud cover,MODCF_intraannualSD,Within-year seasonality in cloud cover,"standard deviation of mean 2000-2014 monthly
+cloud frequencies",%,WGS84,30 arc-seconds,global,
+{Wilson 2016 #3534},Global cloud cover,MODCF_interannualSD,Between-year seasonality in cloud cover,"mean of the 2000-2014 monthly
+standard deviations
+mean annual cloud frequency within a one-degree, %110 km, circular moving window",%,WGS84,30 arc-seconds,global,
+{Wilson 2016 #3534},Global cloud cover,MODCF_spatialSD_1deg,Spatial variability of mean annual cloud cover,"standard deviation of
+mean annual cloud frequency within a one-degree, %110 km, circular moving window",%,WGS84,30 arc-seconds,global,
+{Wilson 2016 #3534},Global cloud cover,MODCF_seasonality_concentration,Seasonal cloud concentration index,"ranging from 0 (all
+months equally cloudy) to 100 (all clouds are observed in a single month)",,WGS84,30 arc-seconds,global,
+{Wilson 2016 #3534},Global cloud cover,MODCF_seasonality_theta,Timing of peak seasonal cloud concentration,"angle (degrees) ranging from 0 (peak cloudiness observed on January 1st) to 360
+(peak cloudiness observed on December 31st)",°,WGS84,30 arc-seconds,global,
+{Wilson 2016 #3534},Global cloud cover,MODCF_CloudForestPrediction,Tropical montane cloud forests,Relative occurrence rate of tropical montane cloud forests,,WGS84,30 arc-seconds,global,
+{Tuanmu 2014 #3533},Consensus land cover,consensus_full_class_1,Evergreen/Deciduous Needleleaf Trees,Prevalence of Evergreen/Deciduous Needleleaf Trees,%,WGS84,30 arc-seconds,global,
+{Tuanmu 2014 #3533},Consensus land cover,consensus_full_class_2,Evergreen Broadleaf Trees,Prevalence of Evergreen Broadleaf Trees,%,WGS84,30 arc-seconds,global,
+{Tuanmu 2014 #3533},Consensus land cover,consensus_full_class_3,Deciduous Broadleaf Trees,Prevalence of Deciduous Broadleaf Trees,%,WGS84,30 arc-seconds,global,
+{Tuanmu 2014 #3533},Consensus land cover,consensus_full_class_4,Mixed/Other Trees,Prevalence of Mixed/Other Trees,%,WGS84,30 arc-seconds,global,
+{Tuanmu 2014 #3533},Consensus land cover,consensus_full_class_5,Shrubs,Prevalence of Shrubs,%,WGS84,30 arc-seconds,global,
+{Tuanmu 2014 #3533},Consensus land cover,consensus_full_class_6,Herbaceous Vegetation,Prevalence of Herbaceous Vegetation,%,WGS84,30 arc-seconds,global,
+{Tuanmu 2014 #3533},Consensus land cover,consensus_full_class_7,Cultivated and Managed Vegetation,Prevalence of Cultivated and Managed Vegetation,%,WGS84,30 arc-seconds,global,
+{Tuanmu 2014 #3533},Consensus land cover,consensus_full_class_8,Regularly Flooded Vegetation,Prevalence of Regularly Flooded Vegetation,%,WGS84,30 arc-seconds,global,
+{Tuanmu 2014 #3533},Consensus land cover,consensus_full_class_9,Urban/Built-up,Prevalence of Urban/Built-up,%,WGS84,30 arc-seconds,global,
+{Tuanmu 2014 #3533},Consensus land cover,consensus_full_class_10,Snow/Ice,Prevalence of Snow/Ice,%,WGS84,30 arc-seconds,global,
+{Tuanmu 2014 #3533},Consensus land cover,consensus_full_class_11,Barren,Prevalence of Barren Land,%,WGS84,30 arc-seconds,global,
+{Tuanmu 2014 #3533},Consensus land cover,consensus_full_class_12,Open Water,Prevalence of Open Water,%,WGS84,30 arc-seconds,global,
+{Ghosh 2010 #3552},GDP from satellite,GDP_satellite,Gross Domestic Product,Estimate of Gross Domestic Product (GDP) Derived From Satellite Data,mio $,WGS84,30 arc-seconds,global,
+{Zomer 2008 #3590},Global aridity and potential evapotranspiration,pet_he_yr,Potential Evapo-Transpiration,Annual Potential Evapo-Transpiration over 1950-2000,mm,WGS84,30 arc-seconds,global,
+{Zomer 2008 #3590},Global aridity and potential evapotranspiration,ai_yr,Global Aridity Index,"Aridity expressed as a generalized function of precipitation, temperature and potential evapo-transpiration (PET) (UNEP, 1997): Aridity Index (AI) = MAP / MAE",,WGS84,30 arc-seconds,global,
+{Doxsey-Whitfield 2015 #3531},Gridded population of the world 4,gpw-v4_popdensity_UN_2015,Population Density 2015,UN-Adjusted Population Density 2015,humans/km²,WGS84,30 arc-seconds,global,v4
+{Doxsey-Whitfield 2015 #3531},Gridded population of the world 4,gpw-v4_popcount_UN_2015,Population Count 2015,UN-Adjusted Population Count  2015,humans,WGS84,30 arc-seconds,global,v4
+{Tuanmu 2015 #3532},Global habitat heterogeneity,cv_01_05_1km_uint16,Coefficient of variation (first order),Normalized dispersion of Enhanced Vegetation Index,,WGS84,30 arc-seconds,global,
+{Tuanmu 2015 #3532},Global habitat heterogeneity,evenness_01_05_1km_uint16,Evenness (first order),Evenness of Enhanced Vegetation Index,,WGS84,30 arc-seconds,global,
+{Tuanmu 2015 #3532},Global habitat heterogeneity,Contrast_01_05_1km_uint32,Contrast (second order),Exponentially weighted difference in Enhanced Vegetation Index between adjacent pixels,,WGS84,30 arc-seconds,global,
+{Tuanmu 2015 #3532},Global habitat heterogeneity,Dissimilarity_01_05_1km_uint32,Dissimilarity (second order),Difference in Enhanced Vegetation Index between adjacent pixels,,WGS84,30 arc-seconds,global,
+{Tuanmu 2015 #3532},Global habitat heterogeneity,Entropy_01_05_1km_uint16,Entropy (second order),Disorderliness of Enhanced Vegetation Index,,WGS84,30 arc-seconds,global,
+{Tuanmu 2015 #3532},Global habitat heterogeneity,Homogeneity_01_05_1km_uint16,Homogeneity (second order),Similarity of Enhanced Vegetation Index between adjacent pixels,,WGS84,30 arc-seconds,global,
+{WCS 2005 #3553},Last of the wild human influence,hf_v2geo,Human Footprint,Human Influence Index normalized by biome and realm,,WGS84,30 arc-seconds,global,v2
+{WCS 2005 #3554},Last of the wild human influence,hii_v2geo,Human Influence Index,"Global Human Influence Index created from nine global data layers covering human population pressure, human land use and infrastructure, and human access",,WGS84,30 arc-seconds,global,v2
+{Trabucco 2010 #3591},Global soil water balance,aet_yr,Actual EvapoTranspiration,Average (1950-2000 period) annual evapotranspiration of reference vegetation,mm,WGS84,30 arc-seconds,global,
+{Trabucco 2010 #3591},Global soil water balance,alpha,Priestley-Taylor alpha coefficient,"Dimensionless ratio of annual AET over PET (as alpha coefficient approaches 1, vegetation is uninfluenced by water stress",,WGS84,30 arc-seconds,global,
+{Simard 2011 #3592},Canopy height,3DGlobalVeg_L3C,Canopy Height,Canopy height based on radar and lidar remote sensing,m,WGS84,30 arc-seconds,global,
+{Hijmans 2005 #41},WorldClim 1.4 last glacial maximum climate,bio1_m_rs,LGM Annual Mean Temperature,"Last Glacial Maximum (LGM) Annual Mean Temperature 21,000 years before present derived as the mean from the CCSM3 and MIROC3.2 models downscaled to 30 arc-seconds",°C,WGS84,30 arc-seconds,global,
+{Hijmans 2005 #41},WorldClim 1.4 last glacial maximum climate,bio12_m_rs,LGM Annual Precipitation,"Last Glacial Maximum (LGM) Annual Precipitation 21,000 years before present derived as the mean from the CCSM3 and MIROC3.2 models downscaled to 30 arc-seconds",mm,WGS84,30 arc-seconds,global,
+"{Weigelt 2013 #3502}, {Hijmans 2005 #41}",Past climate change velocity,b1_v0,Past Climate Change Velocity in temperature,"Climate Change Velocity in temperature since the LGM 21,000 y BP as the ratio between temporal change and contemporary spatial change in temperature",m/a,WGS84,30 arc-seconds,global,
+"{Weigelt 2013 #3502}, {Hijmans 2005 #41}",Past climate change velocity,b12_v0,Past Climate Change Velocity in precipitation,"Climate Change Velocity in precipitation since the LGM 21,000 y BP as the ratio between temporal change and contemporary spatial change in precipitation",m/a,WGS84,30 arc-seconds,global,
+{Zhao 2010 #3593},MODIS gross and net primary productivity,MOD17A3_GPP_mean_00_14_0,Gross Primary Productivity,Annual Gross Primary Production total for 2000 - 2013 or 14 (65535(NA) replaced by 0),g carbon m²,WGS84,30 arc-seconds,global,
+{Zhao 2010 #3593},MODIS gross and net primary productivity,MOD17A3_NPP_mean_00_14_0,Net Primary Productivity,Annual Net Primary Production for 2000 - 2013 or 14 (65535(NA) replaced by 0),g carbon m²,WGS84,30 arc-seconds,global,
+{Crowther 2015 #3510},Tree density,Crowther_Nature_Biome_Revision_01,Tree density,,trees,WGS84,30 arc-seconds,global,revision 1
+{USGS 2011 #3530},Global multi-resolution terrain elevation data,mn30_grd,Mean Altitude,Mean elevation per gridcell,m,WGS84,30 arc-seconds,global,
+{Hengl 2017 #3543},Global gridded soil information,TAXNWRB_1km_ll,Soil classes WRB,"Predicted most probable soil classes based on the
+World Reference Base (WRB; also available in 15 arc-seconds)",,WGS84,30 arc-seconds,global,1
+{Hengl 2017 #3543},Global gridded soil information,TAXOUSDA_1km_ll,Soil classes USDA,Predicted most probable soil classes based on USDA (also available in 15 arc-seconds),,WGS84,30 arc-seconds,global,1
+{Hengl 2017 #3543},Global gridded soil information,CECSOL_M_sl2_1km_ll,Cation exchange capacity 5 cm,Cation exchange capacity of soil in cmolc/kg (5 cm depth; also available in 15 arc-seconds),cmolc/kg,WGS84,30 arc-seconds,global,1
+{Venter 2016 #3547},Human footprint,HFP1993_unproj,Human Footprint 1993,Human Footprint Index for 1993,,WGS84,30 arc-seconds,global,
+{Venter 2016 #3547},Human footprint,HFP2009_unproj,Human Footprint 2009,Human Footprint Index for 2009,,WGS84,30 arc-seconds,global,
+{USGS 2011 #3530},Global multi-resolution terrain elevation data,mn30_grd_slope,Slope,Slope calculated on GMTED 2010,radians,WGS84,30 arc-seconds,global,
+{USGS 2011 #3530},Global multi-resolution terrain elevation data,mn30_grd_TPI,Topographic position index,Topographic position index calculated on GMTED 2010: difference between the value of a cell and the mean value of its 8 surrounding cells,m,WGS84,30 arc-seconds,global,
+{USGS 2011 #3530},Global multi-resolution terrain elevation data,mn30_grd_TRI,Terrain ruggedness index,Terrain ruggedness index  calculated on GMTED 2010: mean of the absolute differences between the value of a cell and the value of its 8 surrounding cells,m,WGS84,30 arc-seconds,global,
+{USGS 2011 #3530},Global multi-resolution terrain elevation data,mn30_grd_roughness,Roughness,Roughness calculated on GMTED 2010: difference between the maximum and the minimum value of a cell and its 8 surrounding cells,m,WGS84,30 arc-seconds,global,
+{USGS 2011 #3530},Global multi-resolution terrain elevation data,mx30_grd,Max Altitude,Maximum elevation per gridcell,m,WGS84,30 arc-seconds,global,
+{USGS 2011 #3530},Global multi-resolution terrain elevation data,mi30_grd,Min Altitude,Minimum elevation per gridcell,m,WGS84,30 arc-seconds,global,
+{USGS 2011 #3530},Global multi-resolution terrain elevation data,mn15_grd_TRI,Terrain ruggedness index,Terrain ruggedness index  calculated on GMTED 2010: mean of the absolute differences between the value of a cell and the value of its 8 surrounding cells,m,WGS84,15 arc-seconds,global,
+{Kummu 2018 #3601},Gridded global GDP and Human Development Index,GDP_PPP_2015,Gross Domestic Production 2015,Gross Domestic Production (purchasing power parity) 2015 in constant 2011 international USD,$,WGS84,30 arc-seconds,global,
+{Karger 2017 #3511},Chelsa derived,CHELSA_NFD,Number of frost days,Number of days at which tmin < 0°C,days,WGS84,30 arc-seconds,global,1.2
+{Fournier 2020 #3758},Spatial frequency of climatic conditions,Global_CFI,Climate frequency,Spatial frequency (CFI) of a given set of climatic conditions at the global scale for any desired geographic cell size,,WGS84,reprojected from 50by50 km² grid,global,
+{Fournier 2020 #3758},Spatial frequency of climatic conditions,Global_ClimateHetero,Climate heterogeneity,Spatial heterogeneity measured as the mean Euclidean distance to the multivariate climate centroid,,WGS84,reprojected from 50by50 km² grid,global,
+{Otto-Bliesner 2006 #3838},PaleoClim 1.0,PaleoClim_LIG_v1_2_5m_bio_1,Annual Mean Temperature in Pleistocene: Last Interglacial (~130 ka),°C * 10,°C,WGS84,2.5 arc-minutes,global,1.0
+{Otto-Bliesner 2006 #3838},PaleoClim 1.0,PaleoClim_LIG_v1_2_5m_bio_12,Annual Precipitation in Pleistocene: Last Interglacial (~130 ka),mm,mm,WGS84,2.5 arc-minutes,global,1.0
+{Otto-Bliesner 2006 #3838},PaleoClim 1.0,PaleoClim_LIG_v1_2_5m_bio_15,Precipitation Seasonality in Pleistocene: Last Interglacial (~130 ka),Coefficient of variation,,WGS84,2.5 arc-minutes,global,1.0
+{Otto-Bliesner 2006 #3838},PaleoClim 1.0,PaleoClim_LIG_v1_2_5m_bio_4,Temperature Seasonality in Pleistocene: Last Interglacial (~130 ka),standard deviation *100,°C,WGS84,2.5 arc-minutes,global,1.0
+{Brown 2018 #3836},PaleoClim 1.0,PaleoClim_M2_v1_2_5m_bio_1,Annual Mean Temperature in Marine Isotope State M2 (~3.3 Ma),°C * 10,°C,WGS84,2.5 arc-minutes,global,1.0
+{Brown 2018 #3836},PaleoClim 1.0,PaleoClim_M2_v1_2_5m_bio_12,Annual Precipitation in Marine Isotope State M2 (~3.3 Ma),,mm,WGS84,2.5 arc-minutes,global,1.0
+{Brown 2018 #3836},PaleoClim 1.0,PaleoClim_M2_v1_2_5m_bio_15,Precipitation Seasonality in Marine Isotope State M2 (~3.3 Ma),Coefficient of variation,,WGS84,2.5 arc-minutes,global,1.0
+{Brown 2018 #3836},PaleoClim 1.0,PaleoClim_M2_v1_2_5m_bio_4,Temperature Seasonality in Marine Isotope State M2 (~3.3 Ma),standard deviation * 100,°C,WGS84,2.5 arc-minutes,global,1.0
+{Brown 2018 #3836},PaleoClim 1.0,PaleoClim_MIS19_v1_2_5m_bio_1,Annual Mean Temperature in Marine Isotope Stage 19 (~785 ka),°C * 10,°C,WGS84,2.5 arc-minutes,global,1.0
+{Brown 2018 #3836},PaleoClim 1.0,PaleoClim_MIS19_v1_2_5m_bio_12,Annual Precipitation in Marine Isotope Stage 19 (~785 ka),,mm,WGS84,2.5 arc-minutes,global,1.0
+{Brown 2018 #3836},PaleoClim 1.0,PaleoClim_MIS19_v1_2_5m_bio_15,Precipitation Seasonality in Marine Isotope Stage 19 (~785 ka),Coefficient of variation,,WGS84,2.5 arc-minutes,global,1.0
+{Brown 2018 #3836},PaleoClim 1.0,PaleoClim_MIS19_v1_2_5m_bio_4,Temperature Seasonality in Marine Isotope Stage 19 (~785 ka),standard deviation * 100,°C,WGS84,2.5 arc-minutes,global,1.0
+{Brown 2018 #3836},PaleoClim 1.0,PaleoClim_mPWP_v1_2_5m_bio_1,Annual Mean Temperature in mid Pliocene Warm Period (~3.264-3.025 Ma),°C * 10,°C,WGS84,2.5 arc-minutes,global,1.0
+{Brown 2018 #3836},PaleoClim 1.0,PaleoClim_mPWP_v1_2_5m_bio_12,Annual Precipitation in mid Pliocene Warm Period (~3.264-3.025 Ma),,mm,WGS84,2.5 arc-minutes,global,1.0
+{Brown 2018 #3836},PaleoClim 1.0,PaleoClim_mPWP_v1_2_5m_bio_15,Precipitation Seasonality in mid Pliocene Warm Period (~3.264-3.025 Ma),Coefficient of variation,,WGS84,2.5 arc-minutes,global,1.0
+{Brown 2018 #3836},PaleoClim 1.0,PaleoClim_mPWP_v1_2_5m_bio_4,Temperature Seasonality in mid Pliocene Warm Period (~3.264-3.025 Ma),standard deviation * 100,°C,WGS84,2.5 arc-minutes,global,1.0
+{Karger 2021 #3839},CHELSA-TraCE21k,CHELSA_TraCE21k_bio01_-200_V1.0,Annual Mean Temperature at 22k BP (-20100 to -200001),,°C,WGS84,30 arc-seconds,global,1.0
+{Karger 2021 #3839},CHELSA-TraCE21k,CHELSA_TraCE21k_bio03_-200_V1.0,Isothermality at 22k BP (-20100 to -200001),(BIO2/BIO7),°C,WGS84,30 arc-seconds,global,1.0
+{Karger 2021 #3839},CHELSA-TraCE21k,CHELSA_TraCE21k_bio04_-200_V1.0,Temperature Seasonality at 22k BP (-20100 to -200001),standard deviation,,WGS84,30 arc-seconds,global,1.0
+{Karger 2021 #3839},CHELSA-TraCE21k,CHELSA_TraCE21k_bio07_-200_V1.0,Temperature Annual Range at 22k BP (-20100 to -200001),BIO5-BIO6,°C,WGS84,30 arc-seconds,global,1.0
+{Karger 2021 #3839},CHELSA-TraCE21k,CHELSA_TraCE21k_bio12_-200_V1.0,Annual Precipitation at 22k BP (-20100 to -200001),,mm,WGS84,30 arc-seconds,global,1.0
+{Karger 2021 #3839},CHELSA-TraCE21k,CHELSA_TraCE21k_bio15_-200_V1.0,Precipitation Seasonality at 22k BP (-20100 to -200001),Coefficient of variation,,WGS84,30 arc-seconds,global,1.0
+{Karger 2017 #3511},Chelsa 2.1 bioclimatic variables 1981-2010,CHELSA_bio1_1981-2010_V.2.1,Mean annual air temperature,Mean annual daily mean air temperatures averaged over 1 year,°C,WGS84,30 arc-seconds,global,2.1
+{Karger 2017 #3511},Chelsa 2.1 bioclimatic variables 1981-2010,CHELSA_bio10_1981-2010_V.2.1,Mean daily mean air temperatures of the warmest quarter,The warmest quarter of the year is determined (to the nearest month),°C,WGS84,30 arc-seconds,global,2.1
+{Karger 2017 #3511},Chelsa 2.1 bioclimatic variables 1981-2010,CHELSA_bio11_1981-2010_V.2.1,Mean daily mean air temperatures of the coldest quarter,The coldest quarter of the year is determined (to the nearest month),°C,WGS84,30 arc-seconds,global,2.1
+{Karger 2017 #3511},Chelsa 2.1 bioclimatic variables 1981-2010,CHELSA_bio12_1981-2010_V.2.1,Annual precipitation amount,Accumulated precipitation amount over 1 year,kg/(m²*yr),WGS84,30 arc-seconds,global,2.1
+{Karger 2017 #3511},Chelsa 2.1 bioclimatic variables 1981-2010,CHELSA_bio13_1981-2010_V.2.1,Precipitation amount of the wettest month,The precipitation of the wettest month,kg/(m²*month),WGS84,30 arc-seconds,global,2.1
+{Karger 2017 #3511},Chelsa 2.1 bioclimatic variables 1981-2010,CHELSA_bio14_1981-2010_V.2.1,Precipitation amount of the driest month,The precipitation of the driest month,kg/(m²*month),WGS84,30 arc-seconds,global,2.1
+{Karger 2017 #3511},Chelsa 2.1 bioclimatic variables 1981-2010,CHELSA_bio15_1981-2010_V.2.1,Precipitation seasonality,The Coefficient of Variation is the standard deviation of the monthly precipitation estimates expressed as a percentage of the mean of those estimates (i.e. the annual mean),kg/m²,WGS84,30 arc-seconds,global,2.1
+{Karger 2017 #3511},Chelsa 2.1 bioclimatic variables 1981-2010,CHELSA_bio16_1981-2010_V.2.1,Mean monthly precipitation amount of the wettest quarter,The wettest quarter of the year is determined (to the nearest month),kg/(m²*month),WGS84,30 arc-seconds,global,2.1
+{Karger 2017 #3511},Chelsa 2.1 bioclimatic variables 1981-2010,CHELSA_bio17_1981-2010_V.2.1,Mean monthly precipitation amount of the driest quarter,The driest quarter of the year is determined (to the nearest month),kg/(m²*month),WGS84,30 arc-seconds,global,2.1
+{Karger 2017 #3511},Chelsa 2.1 bioclimatic variables 1981-2010,CHELSA_bio18_1981-2010_V.2.1,Mean monthly precipitation amount of the warmest quarter,The warmest quarter of the year is determined (to the nearest month),kg/(m²*month),WGS84,30 arc-seconds,global,2.1
+{Karger 2017 #3511},Chelsa 2.1 bioclimatic variables 1981-2010,CHELSA_bio19_1981-2010_V.2.1,Mean monthly precipitation amount of the coldest quarter,The coldest quarter of the year is determined (to the nearest month),kg/(m²*month),WGS84,30 arc-seconds,global,2.1
+{Karger 2017 #3511},Chelsa 2.1 bioclimatic variables 1981-2010,CHELSA_bio2_1981-2010_V.2.1,Mean diurnal air temperature range,mean diurnal range of temperatures averaged over 1 year,°C,WGS84,30 arc-seconds,global,2.1
+{Karger 2017 #3511},Chelsa 2.1 bioclimatic variables 1981-2010,CHELSA_bio3_1981-2010_V.2.1,Isothermality,ratio of diurnal variation to annual variation in temperatures,°C,WGS84,30 arc-seconds,global,2.1
+{Karger 2017 #3511},Chelsa 2.1 bioclimatic variables 1981-2010,CHELSA_bio4_1981-2010_V.2.1,Temperature seasonality,standard deviation of the monthly mean temperatures,°C/100,WGS84,30 arc-seconds,global,2.1
+{Karger 2017 #3511},Chelsa 2.1 bioclimatic variables 1981-2010,CHELSA_bio5_1981-2010_V.2.1,Mean daily maximum air temperature of the warmest month,The highest temperature of any monthly daily mean maximum temperature,°C,WGS84,30 arc-seconds,global,2.1
+{Karger 2017 #3511},Chelsa 2.1 bioclimatic variables 1981-2010,CHELSA_bio6_1981-2010_V.2.1,Mean daily minimum air temperature of the coldest month,The lowest temperature of any monthly daily mean maximum temperature,°C,WGS84,30 arc-seconds,global,2.1
+{Karger 2017 #3511},Chelsa 2.1 bioclimatic variables 1981-2010,CHELSA_bio7_1981-2010_V.2.1,Annual range of air temperature,The difference between the Maximum Temperature of Warmest month and the Minimum Temperature of Coldest month,°C,WGS84,30 arc-seconds,global,2.1
+{Karger 2017 #3511},Chelsa 2.1 bioclimatic variables 1981-2010,CHELSA_bio8_1981-2010_V.2.1,Mean daily mean air temperatures of the wettest quarter,The wettest quarter of the year is determined (to the nearest month),°C,WGS84,30 arc-seconds,global,2.1
+{Karger 2017 #3511},Chelsa 2.1 bioclimatic variables 1981-2010,CHELSA_bio9_1981-2010_V.2.1,Mean daily mean air temperatures of the driest quarter,The driest quarter of the year is determined (to the nearest month),°C,WGS84,30 arc-seconds,global,2.1
+{Brun 2022 #3841},Chelsa 2.1 bioclim+ 1981-2010,CHELSA_clt_mean_1981-2010_V.2.1,Mean monthly total cloud cover,Average monthly total cloud cover over 1 year,%,WGS84,30 arc-seconds,global,2.1
+{Brun 2022 #3841},Chelsa 2.1 bioclim+ 1981-2010,CHELSA_clt_range_1981-2010_V.2.1,Annual range of monthly total cloud cover,Difference between maximum and minimum monthly total cloud cover,%,WGS84,30 arc-seconds,global,2.1
+{Brun 2022 #3841},Chelsa 2.1 bioclim+ 1981-2010,CHELSA_cmi_mean_1981-2010_V.2.1,Mean monthly climate moisture index,Average monthly climate moisture index over 1 year,kg/(m²*month),WGS84,30 arc-seconds,global,2.1
+{Brun 2022 #3841},Chelsa 2.1 bioclim+ 1981-2010,CHELSA_cmi_range_1981-2010_V.2.1,Annual range of monthly climate moisture index,Difference between maximum and minimum monthly climate moisture index,kg/(m²*month),WGS84,30 arc-seconds,global,2.1
+{Brun 2022 #3841},Chelsa 2.1 bioclim+ 1981-2010,CHELSA_fcf_1981-2010_V.2.1,Frost change frequency,"Number of events in which tmin or tmax go above, or below 0°C",count,WGS84,30 arc-seconds,global,2.1
+{Brun 2022 #3841},Chelsa 2.1 bioclim+ 1981-2010,CHELSA_fgd_1981-2010_V.2.1,First day of the growing season,First day of the growing season according to TREELIM (https://doi.org/10.1007/s00035-014-0124-0),julian day,WGS84,30 arc-seconds,global,2.1
+{Brun 2022 #3841},Chelsa 2.1 bioclim+ 1981-2010,CHELSA_gdd5_1981-2010_V.2.1,Growing degree days heat sum above 5°C,Heat sum of all days above the 5°C temperature accumulated over 1 year,°C,WGS84,30 arc-seconds,global,2.1
+{Brun 2022 #3841},Chelsa 2.1 bioclim+ 1981-2010,CHELSA_gddlgd5_1981-2010_V.2.1,Last growing degree day above 5°C,Last day of the year above 5°C,julian day,WGS84,30 arc-seconds,global,2.1
+{Brun 2022 #3841},Chelsa 2.1 bioclim+ 1981-2010,CHELSA_gdgfgd5_1981-2010_V.2.1,First growing degree day above 5°C,First day of the year above 5°C,julian day,WGS84,30 arc-seconds,global,2.1
+{Brun 2022 #3841},Chelsa 2.1 bioclim+ 1981-2010,CHELSA_gsl_1981-2010_V.2.1,Growing season length,Length of the growing season based on TREELIM (https://doi.org/10.1007/s00035-014-0124-0),number of days,WGS84,30 arc-seconds,global,2.1
+{Brun 2022 #3841},Chelsa 2.1 bioclim+ 1981-2010,CHELSA_gsp_1981-2010_V.2.1_NA,Accumulated precipitation amount on growing season days,Precipitation sum accumulated on all days during the growing season based on TREELIM (https://doi.org/10.1007/s00035-014-0124-0); NA values replaced,kg/(m²*gsl),WGS84,30 arc-seconds,global,2.1
+{Brun 2022 #3841},Chelsa 2.1 bioclim+ 1981-2010,CHELSA_gst_1981-2010_V.2.1,Mean temperature of the growing season,Mean temperature of all growing season days based on TREELIM (https://doi.org/10.1007/s00035-014-0124-0),°C,WGS84,30 arc-seconds,global,2.1
+{Brun 2022 #3841},Chelsa 2.1 bioclim+ 1981-2010,CHELSA_hurs_mean_1981-2010_V.2.1,Mean monthly near-surface relative humidity,Average monthly near-surface relative humidity,%,WGS84,30 arc-seconds,global,2.1
+{Brun 2022 #3841},Chelsa 2.1 bioclim+ 1981-2010,CHELSA_hurs_range_1981-2010_V.2.1,Annual range of monthly near-surface relative humidity,Difference between maximum and minimum near-surface relative humidity,%,WGS84,30 arc-seconds,global,2.1
+{Brun 2022 #3841},Chelsa 2.1 bioclim+ 1981-2010,CHELSA_kg0_1981-2010_V.2.1,Köppen-Geiger climate classification,"Climate classification after Koeppen, W., Geiger, R. (1936): Handbuch der Klimatologie. Gebrüder Borntraeger, Berlin.",31 categories,WGS84,30 arc-seconds,global,2.1
+{Brun 2022 #3841},Chelsa 2.1 bioclim+ 1981-2010,CHELSA_kg2_1981-2010_V.2.1,Köppen-Geiger climate classification after Peel et al. 2007,"Köppen Geiger after Peel, M. C., Finlayson, B. L., McMahon, T. A. (2007): Updated world map of the Koeppen-Geiger climate classification. Hydrology and earth system sciences discussions, 4(2), 439-473.",31 categories,WGS84,30 arc-seconds,global,2.1
+{Brun 2022 #3841},Chelsa 2.1 bioclim+ 1981-2010,CHELSA_lgd_1981-2010_V.2.1,Last day of the growing season,Last day of the growing season according to TREELIM (https://doi.org/10.1007/s00035-014-0124-0),julian day,WGS84,30 arc-seconds,global,2.1
+{Brun 2022 #3841},Chelsa 2.1 bioclim+ 1981-2010,CHELSA_ngd5_1981-2010_V.2.1,Number of growing degree days above 5°C,Number of days at which tas > 5°C,number of days,WGS84,30 arc-seconds,global,2.1
+{Brun 2022 #3841},Chelsa 2.1 bioclim+ 1981-2010,CHELSA_npp_1981-2010_V.2.1,Net primary productivity,"Calculated based on the ‘Miami model’, Lieth, H., 1972. Modelling the primary productivity of the earth. Nature and resources, UNESCO, VIII, 2:5-10.",gC/(m²*yr),WGS84,30 arc-seconds,global,2.1
+{Brun 2022 #3841},Chelsa 2.1 bioclim+ 1981-2010,CHELSA_pet_penman_mean_1981-2010_V.2.1,Mean monthly potential evapotranspiration,Average monthly potential evaporation over 1 year calculated with the Penman-Monteith equation,kg/(m²*month),WGS84,30 arc-seconds,global,2.1
+{Brun 2022 #3841},Chelsa 2.1 bioclim+ 1981-2010,CHELSA_pet_penman_range_1981-2010_V.2.1,Annual range of monthly potential evapotranspiration,Difference between maximum and minimum monthly potential evapotranspiration calculated with the Penman-Monteith equation,kg/m²,WGS84,30 arc-seconds,global,2.1
+{Brun 2022 #3841},Chelsa 2.1 bioclim+ 1981-2010,CHELSA_rsds_1981-2010_mean_V.2.1,Mean monthly surface downwelling shortwave flux in air,Average monthly surface downwelling shortwave flux in air over 1 year,MJ/(m²*d),WGS84,30 arc-seconds,global,2.1
+{Brun 2022 #3841},Chelsa 2.1 bioclim+ 1981-2010,CHELSA_rsds_1981-2010_range_V.2.1,Annual range of monthly surface downwelling shortwave flux in air,Difference between maximum and minimum monthly surface downwelling shortwave flux in air,MJ/(m²*d),WGS84,30 arc-seconds,global,2.1
+{Brun 2022 #3841},Chelsa 2.1 bioclim+ 1981-2010,CHELSA_scd_1981-2010_V.2.1,Snow cover days,Number of days with snowcover calculated using the snowpack model implementation in TREELIM (https://doi.org/10.1007/s00035-014-0124-0),count,WGS84,30 arc-seconds,global,2.1
+{Brun 2022 #3841},Chelsa 2.1 bioclim+ 1981-2010,CHELSA_sfcWind_mean_1981-2010_V.2.1,Mean monthly near-surface wind speed,Average monthly near-surface wind speed 10 m above ground,m/s,WGS84,30 arc-seconds,global,2.1
+{Brun 2022 #3841},Chelsa 2.1 bioclim+ 1981-2010,CHELSA_sfcWind_range_1981-2010_V.2.1,Annual range of monthly near-surface wind speed,Difference between maximum and minimum monthly near-surface wind speed 10 m above ground,m/s,WGS84,30 arc-seconds,global,2.1
+{Brun 2022 #3841},Chelsa 2.1 bioclim+ 1981-2010,CHELSA_swb_1981-2010_V.2.1,Soil water balance,Cumulative amount of water available throughout the year. Its maximum is given by available water holding capacity of the soil. Minimum values indicate that evaportranspiration has exceeded precipitation minus runoff.,kg/(m²*yr),WGS84,30 arc-seconds,global,2.1
+{Brun 2022 #3841},Chelsa 2.1 bioclim+ 1981-2010,CHELSA_swe_1981-2010_V.2.1,Snow water equivalent,Amount of liquid water if snow is melted,kg/(m²*yr),WGS84,30 arc-seconds,global,2.1
+{Brun 2022 #3841},Chelsa 2.1 bioclim+ 1981-2010,CHELSA_vpd_mean_1981-2010_V.2.1,Mean monthly vapor pressure deficit,Average monthly vapor pressure deficit,Pa,WGS84,30 arc-seconds,global,2.1
+{Brun 2022 #3841},Chelsa 2.1 bioclim+ 1981-2010,CHELSA_vpd_range_1981-2010_V.2.1,Annual range of monthly vapor pressure deficit,Difference between maximum and minimum monthly vapor pressure deficit,Pa,WGS84,30 arc-seconds,global,2.1
+{Lembrechts 2022 #3840},Global soil bioclimatic variables,SBIO1_0_5cm_Annual_Mean_Temperature,Annual Mean Temperature (0-5cm soil),SBIO1 (0-5cm soil),°C,WGS84,30 arc-seconds,global,2
+{Lembrechts 2022 #3840},Global soil bioclimatic variables,SBIO1_5_15cm_Annual_Mean_Temperature,Annual Mean Temperature (1-15cm soil),SBIO1 (5-15cm soil),°C,WGS84,30 arc-seconds,global,2
+{Lembrechts 2022 #3840},Global soil bioclimatic variables,SBIO10_5_15cm_meanT_warmestQ,Mean Temperature of Warmest Quarter (5-15cm soil),SBIO10 (5-15cm soil),°C,WGS84,30 arc-seconds,global,2
+{Lembrechts 2022 #3840},Global soil bioclimatic variables,SBIO11_5_15cm_meanT_coldestQ,Mean Temperature of Coldest Quarter (5-15cm soil),SBIO11 (5-15cm soil),°C,WGS84,30 arc-seconds,global,2
+{Lembrechts 2022 #3840},Global soil bioclimatic variables,SBIO2_5_15cm_mean_diurnal_range,Mean Diurnal Range (5-15cm soil),SBIO2 (5-15cm soil) = Mean of monthly (max temp - min temp),°C,WGS84,30 arc-seconds,global,2
+{Lembrechts 2022 #3840},Global soil bioclimatic variables,SBIO3_5_15cm_Isothermality_NA,Isothermality (5-15cm soil),SBIO3 (5-15cm soil) = (BIO2/BIO7) ×100; Trimmed to be within [0:100],°C,WGS84,30 arc-seconds,global,2
+{Lembrechts 2022 #3840},Global soil bioclimatic variables,SBIO4_5_15cm_Temperature_Seasonality,Temperature Seasonality (5-15cm soil),SBIO4 (5-15cm soil) = standard deviation ×100,°C/100,WGS84,30 arc-seconds,global,2
+{Lembrechts 2022 #3840},Global soil bioclimatic variables,SBIO5_5_15cm_MaxT_warmestMonth,Max Temperature of Warmest Month (5-15cm soil),SBIO5 (5-15cm soil),°C,WGS84,30 arc-seconds,global,2
+{Lembrechts 2022 #3840},Global soil bioclimatic variables,SBIO6_5_15cm_MinT_coldestMonth,Min Temperature of Coldest Month (5-15cm soil),SBIO6 (5-15cm soil),°C,WGS84,30 arc-seconds,global,2
+{Lembrechts 2022 #3840},Global soil bioclimatic variables,SBIO7_0_5cm_annual_range,Temperature Annual Range (0-5cm soil),SBIO7 (0-5cm soil) = SBIO5-SBIO6,°C,WGS84,30 arc-seconds,global,2
+{Lembrechts 2022 #3840},Global soil bioclimatic variables,SBIO7_5_15cm_annual_range,Temperature Annual Range (5-15cm soil),SBIO7 (5-15cm soil) = SBIO5-SBIO6,°C,WGS84,30 arc-seconds,global,2
+{Lembrechts 2022 #3840},Global soil bioclimatic variables,SBIO8_5_15cm_meanT_wettestQ,Mean Temperature of Wettest Quarter (5-15cm soil),SBIO8 (5-15cm soil),°C,WGS84,30 arc-seconds,global,2
+{Lembrechts 2022 #3840},Global soil bioclimatic variables,SBIO9_5_15cm_meanT_driestQ,Mean Temperature of Driest Quarter (5-15cm soil),SBIO9 (5-15cm soil),°C,WGS84,30 arc-seconds,global,2
+{Cai 2023 #3842},Global plant diversity predictions,SR_Ensemble_rasterized,Species richness based on model ensemble,Species richness of vascular plants per 7774 km² rasterized from global hexagon grid,count,WGS84,30 arc-seconds,global,
+{Cai 2023 #3842},Global plant diversity predictions,SR_XGBoost_geocoord_rasterized,Species richness based on XGBoost with cubic polynomial trend surface,Species richness of vascular plants per 7774 km² rasterized from global hexagon grid,count,WGS84,30 arc-seconds,global,
+{Cai 2023 #3842},Global plant diversity predictions,PR_Ensemble_rasterized,Phylogenetic richness based on model ensemble,Phylogenetic richness of vascular per 7774 km² rasterized from global hexagon grid,Million years,WGS84,30 arc-seconds,global,
+{Cai 2023 #3842},Global plant diversity predictions,PR_XGBoost_geocoord_rasterized,Phylogenetic richness based on XGBoost with cubic polynomial trend surface,Phylogenetic richness of vascular plants per 7774 km² rasterized from global hexagon grid,Million years,WGS84,30 arc-seconds,global,
+{Zomer 2022 #3843},Global aridity Index and potential evapotranspiration Database,et0_v3_yr,Potential Evapo-Transpiration,Reference Evapo-transpiration over 1970-2000 based on Penman-Monteith equation in mm per year,mm,WGS84,30 arc-seconds,global,3/6
+{Zomer 2022 #3843},Global aridity Index and potential evapotranspiration Database,et0_v3_yr_sd,Standard deviation in Potential Evapo-Transpiration,Standard deviation of the mean annual reference Evapo-transpiration over 1970-2000 based on Penman-Monteith equation in mm per year,mm,WGS84,30 arc-seconds,global,3/6
+{Zomer 2022 #3843},Global aridity Index and potential evapotranspiration Database,ai_v3_yr_NAs,Aridity Index,"Aridity expressed as the ratio
+of precipitation over PET between 1970 and 2000: Al = MA_Prec/MA_ET0; Layer clipped for NAs in et0_v3_yr",mm,WGS84,30 arc-seconds,global,3/6
+{Fluet-Chouinard 2023 #3844},Global wetland loss,wetland_1700_ensemblemean_v10,Remaining natural wetland area in 1700,Ensemble average from 12 reconstructions of  simulated natural wetland area in 1700,km²,WGS84,0.5 degrees,global,10
+{Fluet-Chouinard 2023 #3844},Global wetland loss,wetland_2020_ensemblemean_v10,Remaining natural wetland area in 2020,Ensemble average from 12 reconstructions of  simulated natural wetland area in 2020,km²,WGS84,0.5 degrees,global,10
+{Owens 2019 #3845},Climate stability,TempStability,Temperature stability since 20000 BP,Inverse of the mean of the standard deviations of Temperature for 20 100 year intervalls divided the length of the interval; scaled to min 0 and max 1,,WGS84,2.5 degrees,global,1
+{Owens 2019 #3845},Climate stability,PrecipStability,Precipitation stability since 20000 BP,Inverse of the mean of the standard deviations of Precipitation for 20 100 year intervalls divided the length of the interval; scaled to min 0 and max 1,,WGS84,2.5 degrees,global,1
+{Owens 2019 #3845},Climate stability,climateStability,Climate stability since 20000 BP,Precipitation stability times Temperature stability; scaled to min 0 and max 1,,WGS84,2.5 degrees,global,1
+{Hengl 2017 #3543},Global gridded soil information,sand05_1km,Sand 0-5cm, 	Proportion of sand particles (> 0.05 mm) in the fine earth fraction,g/kg,WGS84,30 arc-seconds,global,1
+{Hengl 2017 #3543},Global gridded soil information,cfvo05_1km,Coarse fragments 0-5cm,Volumetric fraction of coarse fragments (> 2 mm),cm3/dm3 (vol‰),WGS84,30 arc-seconds,global,1
+{Karger 2017 #3511},Chelsa 2.1 bioclimatic variables 1981-2010,CHELSA_interannualP_1981-2010_V.2.1,Interannual standard deviation of precipitations,Standard deviation of precipitation over the years 1981-2010 (calculated from monthly layers),kg/(m²*yr),WGS84,30 arc-seconds,global,2.1

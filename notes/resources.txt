@@ -1,0 +1,17 @@
+################################################################################
+Appearance and Identification
+################################################################################
+
+GIFT
+Name:    Global Inventory of Floras and Traits
+Url:     https://gift.uni-goettingen.de/home
+License: CC BY 4.0 [OK] -> *** to verify ***
+Fetch:   API, Gemini script?
+
+WFO
+World Flora Online
+
+USDA PLANTS
+bulk download: https://plants.sc.egov.usda.gov/downloads
+
+Flora of North America (FNA)

@@ -1,0 +1,224 @@
+ref_ID,list_ID,entity_ID,work_author,work_ID,genus_ID,work_species,questionable,native,quest_native,naturalized,endemic_ref,quest_end_ref,endemic_list,quest_end_list,cons_status
+15,163,161,(Jacq.) Trevis.,22466,3868,Huperzia dichotoma,0,1,0,0,0,0,0,0,
+15,163,161,(O.J.Hamann) Holub,22473,3868,Huperzia galapagensis,0,1,0,0,1,0,0,0,VU
+15,163,161,(Sw.) Trevis.,22502,3868,Huperzia taxifolia,0,1,0,0,0,0,0,0,
+15,163,161,(L.) Pic.Serm.,27012,4424,Lycopodiella cernua,0,1,0,0,0,0,0,0,
+15,163,161,(L.) P.Beauv.,36586,5831,Psilotum nudum,0,1,0,0,0,0,0,0,
+15,163,161,Raddi,5302,1730,Blechnum polypodioides,0,1,0,0,0,0,0,0,
+15,163,161,(Sodiro) A.Rojas,5304,1730,Blechnum puberulum,0,1,0,0,0,0,0,0,
+15,163,161,(Humb. & Bonpl. ex Willd.) Ching,44896,6763,Thelypteris oligocarpa,0,1,0,0,0,0,0,0,
+15,163,161,(Hook.) M.Kessler & A.R.Sm.,76964,6763,Thelypteris schizotis,0,1,0,0,0,0,0,0,
+15,163,161,(Sw.) Small,44934,6763,Thelypteris tetragona,0,1,0,0,1,0,0,0,LC
+15,163,161,(Poepp. ex Spreng.) C.V.Morton,12073,2590,Ctenitis sloanei,0,1,0,0,0,0,0,0,
+15,163,161,Christ,15950,3063,Elaphoglossum engelii,0,1,0,0,0,0,0,0,
+15,163,161,Christ,48039,3063,Elaphoglossum hoffmannii,0,1,0,0,0,0,0,0,
+15,163,161,(Pohl ex Fée) T.Moore,15994,3063,Elaphoglossum minutum,0,1,0,0,0,0,0,0,
+15,163,161,(Sw.) Sw.,439351,3553,Grammitis serrulata,0,1,0,0,0,0,0,0,
+15,163,161,(Hook.f.) A.R.Sm. & R.C.Moran,28152,4595,Megalastrum pleiosoros,0,1,0,0,1,0,0,0,VU
+15,163,161,(G.Forst.) Ching,39378,6071,Rumohra adiantiformis,0,1,0,0,0,0,0,0,
+15,163,161,L.,31000,5116,Ophioglossum palmatum,0,1,0,0,0,0,0,0,
+15,163,161,(Burm.f.) Becherer,3715,1517,Asplenium aethiopicum,0,1,0,0,0,0,0,0,
+15,163,161,L.,3798,1517,Asplenium erosum,0,1,0,0,0,0,0,0,
+15,163,161,Lam.,3774,1517,Asplenium cristatum,0,1,0,0,0,0,0,0,
+15,163,161,Kunze ex Fée,3801,1517,Asplenium feei,0,1,0,0,0,0,0,0,
+15,163,161,Willd.,3810,1517,Asplenium formosum,0,1,0,0,1,0,0,0,LC
+15,163,161,Sw.,3929,1517,Asplenium pumilum,0,1,0,0,0,0,0,0,
+15,163,161,Langsd. & Fisch.,3958,1517,Asplenium serra,0,1,0,0,0,0,0,0,
+15,163,161,(Sw.) Schott,30243,4965,Nephrolepis biserrata,0,1,0,0,0,0,0,0,
+15,163,161,(L.) C.Presl,30245,4965,Nephrolepis cordifolia,0,0,0,0,0,0,0,0,
+15,163,161,(Willd.) Schott,30256,4965,Nephrolepis pectinata,0,1,0,0,0,0,0,0,
+15,163,161,(Thunb.) J.Sm.,22188,3811,Histiopteris incisa,0,1,0,0,0,0,0,0,
+15,163,161,(Kunze) C.Presl,22979,3921,Hypolepis hostilis,0,1,0,0,0,0,0,0,
+15,163,161,(Kaulf.) Maxon,36951,5848,Pteridium arachnoideum,0,1,0,0,0,0,0,0,
+15,163,161,(Sw.) Sw.,22781,3901,Hymenophyllum polyanthos,0,1,0,0,0,0,0,0,
+15,163,161,Sw.,439829,6893,Trichomanes reptans,0,1,0,0,0,0,0,0,
+15,163,161,(L.) C.Presl,7542,1988,Campyloneurum phyllitidis,0,1,0,0,0,0,0,0,
+15,163,161,(A.M.Evans) M.G.Price,32448,5328,Pecluma dispersa,0,1,0,0,0,0,0,0,
+15,163,161,(Cav.) Lellinger,33246,5470,Phlebodium pseudoaureum,0,1,0,0,0,0,0,0,
+15,163,161,(Willd.) Kaulf.,35050,5634,Pleopeltis macrocarpa,0,1,0,0,0,0,0,0,
+15,163,161,(C.V.Morton) A.R.Sm.,413651,5634,Pleopeltis insularum,0,1,0,0,1,0,0,0,NT
+15,163,161,J.Sm.,413652,5634,Pleopeltis tridens,0,1,0,0,1,0,0,0,LC
+15,163,161,Christenh.,439901,3727,Hemionitis achariorum,0,1,0,0,0,0,0,0,
+15,163,161,Christenh.,439901,3727,Hemionitis achariorum,0,1,0,0,0,0,0,0,
+15,163,161,Humb. & Bonpl. ex Willd.,795,1069,Adiantum concinnum,0,1,0,0,0,0,0,0,
+15,163,161,Hook.f.,808,1069,Adiantum henslovianum,0,1,0,0,0,0,0,0,
+15,163,161,(Sw.) Christenh.,439233,3727,Hemionitis microphylla,0,1,0,0,0,0,0,0,
+15,163,161,Domin,441826,5586,Pityrogramma austroamericana,0,1,0,0,0,0,0,0,
+15,163,161,(L.) Link,34719,5586,Pityrogramma calomelanos,0,1,0,0,0,0,0,0,
+15,163,161,(L.) Proctor,34722,5586,Pityrogramma ebenea,0,1,0,0,0,0,0,0,
+15,163,161,Retz.,37056,5850,Pteris quadriaurita,0,1,0,0,0,0,0,0,
+15,163,161,(Hook.) J.Sm.,442861,3727,Hemionitis aureonitens,0,1,0,0,0,0,0,0,
+15,163,161,L.,23011,3924,Hypoxis decumbens,0,1,0,0,0,0,0,0,
+15,163,161,Burm.f.,10614,2425,Commelina diffusa,0,1,0,0,0,0,0,0,
+15,163,161,(Vahl) Kük. ex Herter,6222,1877,Bulbostylis juncoides,0,1,0,0,0,0,0,0,
+15,163,161,Boeckeler,12831,2661,Cyperus anderssonii,0,1,0,0,1,0,0,0,LC
+15,163,161,Sw.,12843,2661,Cyperus confertus,0,1,0,0,0,0,0,0,
+15,163,161,L.,12915,2661,Cyperus ligularis,0,1,0,0,0,0,0,0,
+15,163,161,L.,12974,2661,Cyperus squarrosus,0,1,0,0,0,0,0,0,
+15,163,161,Andersson,3218,1465,Aristida divulsa,0,1,0,0,1,0,0,0,NT
+15,163,161,Trin.,3246,1465,Aristida repens,0,1,0,0,1,0,0,0,LC
+15,163,161,Trin. & Rupr.,3254,1465,Aristida subspicata,0,1,0,0,1,0,0,0,LC
+15,163,161,(Kunth) Benth.,5658,1796,Bouteloua disticha,0,0,1,1,0,0,0,0,
+15,163,161,(Andersson) Morrone & Zuloaga,443208,7015,Urochloa multiculma,0,1,0,0,1,0,0,0,LC
+15,163,161,Andersson,8706,2103,Cenchrus platyacanthus,0,1,0,0,1,0,0,0,LC
+15,163,161,Willd.,14322,2853,Digitaria horizontalis,0,0,0,1,0,0,0,0,
+15,163,161,(All.) Vignolo ex Janch.,16658,3146,Eragrostis cilianensis,0,0,1,1,0,0,0,0,
+15,163,161,(L.) R.Br.,16659,3146,Eragrostis ciliaris,0,1,0,0,0,0,0,0,
+15,163,161,(Hornem.) Link,16686,3146,Eragrostis mexicana,0,1,0,0,0,0,0,0,
+15,163,161,(Kunth) Trin.,16694,3146,Eragrostis pastoensis,0,1,0,0,0,0,0,0,
+15,163,161,(Sw.) Döll,23072,3931,Ichnanthus nemorosus,0,0,1,1,0,0,0,0,
+15,163,161,(Michx.) Kunth,25451,4251,Leptochloa mucronata,0,0,1,1,0,0,0,0,
+15,163,161,P.J.Bergius,32221,5315,Paspalum conjugatum,0,0,1,1,0,0,0,0,
+15,163,161,Chase,32239,5315,Paspalum galapageium,0,1,0,0,1,0,0,0,LC
+15,163,161,Chase,32239,5315,Paspalum galapageium,0,1,0,0,1,0,0,0,LC
+15,163,161,(Sw.) P.Beauv.,41375,6341,Setaria setosa,0,1,0,0,0,0,0,0,
+15,163,161,(L.) R.Br.,42591,6495,Sporobolus indicus,0,1,0,0,0,0,0,0,
+15,163,161,(Kunth) Ekman,45594,6894,Trichoneura lindleyana,0,1,0,0,1,0,0,0,LC
+15,163,161,(Kunth) Ekman,45594,6894,Trichoneura lindleyana,0,1,0,0,1,0,0,0,LC
+15,163,161,Hook.f.,16512,3135,Epidendrum spicatum,0,1,0,0,1,0,0,0,VU
+15,163,161,(Sw.) Lindl.,20255,3548,Govenia utriculata,0,1,0,0,0,0,0,0,
+15,163,161,(Sw.) Lindl.,23372,3954,Ionopsis utricularioides,0,1,0,0,0,0,0,0,
+15,163,161,(Thunb.) Lindl.,26257,4335,Liparis nervosa,0,1,0,0,0,0,0,0,
+15,163,161,Lindl.,35880,5724,Ponthieva maculata,0,1,0,0,0,0,0,0,
+15,163,161,(Sw.) Lindl.,36182,5751,Prescottia oligantha,0,1,0,0,0,0,0,0,
+15,163,161,(Sw.) Ames,45964,6976,Tropidia polystachya,0,1,0,0,0,0,0,0,
+15,163,161,(DC.) Constance,12631,2640,Cyclospermum laciniatum,0,1,0,0,0,0,0,0,
+15,163,161,(Pers.) Sprague ex Britton & P.Wilson,12632,2640,Cyclospermum leptophyllum,0,0,1,1,0,0,0,0,
+15,163,161,Parodi,3302,1466,Aristolochia littoralis,0,0,0,0,0,0,0,0,
+15,163,161,(D.M.Porter) R.K.Jansen,552,1000,Acmella darwinii,0,1,0,0,1,0,0,0,VU
+15,163,161,(Hieron.) R.K.Jansen,560,1000,Acmella sodiroi,0,0,0,1,0,0,0,0,
+15,163,161,Cass.,771,1064,Adenostemma platyphyllum,0,0,0,1,0,0,0,0,
+15,163,161,L.,1130,1119,Ageratum conyzoides,0,1,0,0,0,0,0,0,
+15,163,161,(Murray) Stewart,347683,1725,Blainvillea dichotoma,0,1,0,0,0,0,0,0,
+15,163,161,Hook.f.,439724,3164,Erigeron tenuifolius,0,1,0,0,1,0,0,0,NE
+15,163,161,(Hook.f.) Kuntze,13560,2757,Delilia repens,0,1,0,0,1,0,0,0,VU
+15,163,161,Hook.f.,27329,4461,Macraea laricifolia,0,1,0,0,1,0,0,0,LC
+15,163,161,L.,32471,5330,Pectis linifolia,0,0,1,1,0,0,0,0,
+15,163,161,Sch.Bip.,32484,5330,Pectis subsquarrosa,0,1,0,0,1,0,0,0,LC
+15,163,161,Sch.Bip.,32487,5330,Pectis tenuifolia,0,1,0,0,1,0,0,0,LC
+15,163,161,(Jacq.) Cass.,35916,5730,Porophyllum ruderale,0,0,0,1,0,0,0,0,
+15,163,161,B.L.Rob. & Greenm.,40214,6189,Scalesia baurii,0,1,0,0,1,0,0,0,VU
+15,163,161,B.L.Rob. & Greenm.,40214,6189,Scalesia baurii,0,1,0,0,1,0,0,0,VU
+15,163,161,(L.) Philipson,5214,1725,Blainvillea acmella,1,0,1,0,0,0,0,0,
+15,163,161,Kunth,26562,4356,Lobelia xalapensis,0,1,0,0,0,0,0,0,
+15,163,161,L.,10001,2331,Cleome viscosa,0,0,0,1,0,0,0,0,
+15,163,161,Hook.f.,41342,6340,Sesuvium edmonstonei,0,1,0,0,1,1,0,0,LC
+15,163,161,(L.) L.,41345,6340,Sesuvium portulacastrum,0,1,0,0,0,0,0,0,
+15,163,161,L.,45478,6878,Trianthema portulacastrum,0,1,0,0,0,0,0,0,
+15,163,161,(Hook.f.) Christoph.,1819,1202,Alternanthera echinocephala,0,1,0,0,0,0,0,0,
+15,163,161,(Hook.f.) J.T.Howell,1821,1202,Alternanthera filifolia,0,1,0,0,1,0,1,0,VU
+15,163,161,(Lam.) Standl. ex Pittier,1827,1202,Alternanthera halimifolia,0,1,0,0,0,0,0,0,
+15,163,161,L.,1941,1216,Amaranthus hybridus,0,0,0,1,0,0,0,0,
+15,163,161,(Andersson) Andersson,1952,1216,Amaranthus scleranthoides,0,1,0,0,1,0,0,0,LC
+15,163,161,L.,1959,1216,Amaranthus viridis,0,0,0,1,0,0,0,0,
+15,163,161,(K.Schum. ex B.L.Rob.) Backeb.,5698,1802,Brachycereus nesioticus,0,1,0,0,1,0,0,0,LC
+15,163,161,Hensl.,31107,5127,Opuntia galapageia,0,1,0,0,1,0,0,0,EN
+15,163,161,(L.) Thulin,422702,10191,Hypertelis cerviana,0,1,0,0,0,0,0,0,
+15,163,161,Andersson,29283,4763,Mollugo flavescens,0,1,0,0,1,0,0,0,LC
+15,163,161,(B.L.Rob.) J.T.Howell,29284,4763,Mollugo floriana,0,1,0,0,1,0,0,0,VU
+15,163,161,B.L.Rob.,29288,4763,Mollugo snodgrassii,0,1,0,0,1,0,0,0,VU
+15,163,161,Mill.,5448,1758,Boerhavia coccinea,0,1,0,0,0,0,0,0,
+15,163,161,L.,5453,1758,Boerhavia erecta,0,1,0,0,0,0,0,0,
+15,163,161,Kunth,11958,2578,Cryptocarpus pyriformis,0,1,0,0,0,0,0,0,
+15,163,161,(Hook.f.) Lundell,441807,3576,Guapira floribunda,0,1,0,0,1,0,0,0,LC
+15,163,161,L.,35160,5658,Plumbago zeylanica,0,1,0,0,0,0,0,0,
+15,163,161,(D.Legrand) Eliasson,35941,5733,Portulaca howellii,0,1,0,0,1,0,0,0,LC
+15,163,161,L.,35951,5733,Portulaca oleracea,0,0,1,1,0,0,0,0,
+15,163,161,Seberg,264,965,Acalypha abingdonii,0,1,0,0,1,0,0,0,VU
+15,163,161,B.L.Rob. & Greenm.,17806,3237,Euphorbia galapageia,0,1,0,0,1,0,0,0,DD
+15,163,161,Hook.f.,11894,2566,Croton scouleri,0,1,0,0,1,0,0,0,DD
+15,163,161,Hook.f.,11894,2566,Croton scouleri,0,1,0,0,1,0,0,0,LC
+15,163,161,Walter,33446,5501,Phyllanthus caroliniensis,0,1,0,0,0,0,0,0,
+15,163,161,(Sw.) DC.,7596,1997,Canavalia rosea,0,0,0,0,0,0,0,0,
+15,163,161,L.,11733,2565,Crotalaria incana,0,1,0,0,0,0,0,0,
+15,163,161,Ortega,11756,2565,Crotalaria pumila,0,1,0,0,0,0,0,0,
+15,163,161,(Mill.) DC.,14009,2796,Desmodium glabrum,0,0,1,1,0,0,0,0,
+15,163,161,(Sw.) DC.,14014,2796,Desmodium incanum,0,0,1,1,0,0,0,0,
+15,163,161,(Mill.) C.L.Hitchc.,14025,2796,Desmodium procumbens,0,1,0,0,0,0,0,0,
+15,163,161,(Jacq.) Urb.,19108,3390,Galactia striata,0,1,0,0,0,0,0,0,
+15,163,161,(Jacq.) Urb.,19108,3390,Galactia striata,0,0,1,1,0,0,0,0,
+15,163,161,Hook.f.,33141,5449,Phaseolus mollis,0,1,0,0,1,0,0,0,NT
+15,163,161,(L.) DC.,38257,6003,Rhynchosia minima,0,1,0,0,0,0,0,0,
+15,163,161,Taub.,43246,6606,Stylosanthes sympodialis,0,1,0,0,0,0,0,0,
+15,163,161,Benth. ex Oerst.,48233,6714,Tephrosia decumbens,0,1,0,0,0,0,0,0,
+15,163,161,(Jacq.) Benth.,46827,7072,Vigna luteola,0,1,0,0,0,0,0,0,
+15,163,161,(L.) Willd.,13989,2793,Desmanthus virgatus,0,1,0,0,0,0,0,0,
+15,163,161,(L.) Benth.,30269,4968,Neptunia plena,0,1,0,0,0,0,0,0,
+15,163,161,(Sw.) DC.,36305,5772,Prosopis juliflora,0,1,0,0,0,0,0,0,
+15,163,161,(Andersson) E.Fourn.,442331,9211,Funastrum angustissimum,0,1,0,0,1,0,0,0,LC
+15,163,161,(Hook.f.) Kuntze,42392,6462,Spermacoce divaricata,0,1,0,0,1,0,0,0,DD
+15,163,161,(L.) Hitchc.,9354,2225,Chiococca alba,0,1,0,0,0,0,0,0,
+15,163,161,Hook.f.,36864,5840,Psychotria rufipes,0,1,0,0,1,0,0,0,VU
+15,163,161,A.St.-Hil.,31512,5197,Oxalis dombeyi,0,1,0,0,0,0,0,0,
+15,163,161,Jacq.,31526,5197,Oxalis megalorrhiza,0,1,0,0,0,0,0,0,
+15,163,161,Andersson,439406,7041,Varronia canescens,0,1,0,0,1,0,0,0,DD
+15,163,161,Lam.,11017,2471,Cordia lutea,0,1,0,0,0,0,0,0,
+15,163,161,(Hook.f.) Andersson,439416,7041,Varronia scouleri,0,1,0,0,1,0,0,0,DD
+15,163,161,Murray,21318,3712,Heliotropium angiospermum,0,1,0,0,0,0,0,0,
+15,163,161,L.,21325,3712,Heliotropium curassavicum,0,1,0,0,0,0,0,0,
+15,163,161,(Hook.f.) A.T.Richardson,45227,6817,Tiquilia fusca,0,1,0,0,1,0,0,0,LC
+15,163,161,(J.T.Howell) A.T.Richardson,45228,6817,Tiquilia galapagoa,0,1,0,0,1,0,0,0,LC
+15,163,161,(Kunth) Diane & Hilger,442851,4854,Myriopus psilostachya,0,1,0,0,0,0,0,0,
+15,163,161,Hook.f.,442854,6845,Tournefortia rufosericea,0,1,0,0,1,0,0,0,VU
+15,163,161,Sw.,39800,6123,Salvia occidentalis,0,1,0,0,0,0,0,0,
+15,163,161,Andersson,24697,4146,Lantana peduncularis,0,1,0,0,1,0,0,0,LC
+15,163,161,Andersson,26303,4339,Lippia rosmarinifolia,0,1,0,0,1,0,0,0,CR
+15,163,161,Andersson,26303,4339,Lippia rosmarinifolia,0,1,0,0,1,0,0,0,EN
+15,163,161,Andersson,26303,4339,Lippia rosmarinifolia,0,1,0,0,1,0,0,0,EN
+15,163,161,Kunth,46521,7058,Verbena litoralis,0,0,1,1,0,0,0,0,
+15,163,161,Svenson,46527,7058,Verbena townsendii,0,1,0,0,1,0,0,0,DD
+15,163,161,(Hook.f.) Kearney,443203,5785,Pseudabutilon depauperatum,0,1,0,0,1,0,0,0,LC
+15,163,161,(L.) Dorr,297116,961,Abutilon viscosum,0,1,0,0,0,0,0,0,
+15,163,161,G.Watt,20234,3545,Gossypium darwinii,0,1,0,0,1,0,0,0,LC
+15,163,161,(L.) Brizicky,21460,3744,Herissantia crispa,0,1,0,0,0,0,0,0,
+15,163,161,(Burm.f.) Borss.Waalk.,41468,6363,Sida cordata,0,1,0,0,0,0,0,0,
+15,163,161,Cav.,41475,6363,Sida hederifolia,0,1,0,0,0,0,0,0,
+15,163,161,C.Presl,41490,6363,Sida salviifolia,0,1,0,0,0,0,0,0,
+15,163,161,L.,41493,6363,Sida spinosa,0,1,0,0,0,0,0,0,
+15,163,161,Cav.,47206,7110,Waltheria ovata,0,1,0,0,0,0,0,0,
+15,163,161,Kunth,10948,2470,Corchorus orinocensis,0,1,0,0,0,0,0,0,
+15,163,161,L.,10705,2444,Conocarpus erectus,0,1,0,0,0,0,0,0,
+15,163,161,(L.) C.F.Gaertn.,24643,4137,Laguncularia racemosa,0,1,0,0,0,0,0,0,
+15,163,161,Mart. ex DC.,36564,5825,Psidium oligospermum,0,1,0,0,1,0,0,0,VU
+15,163,161,Kunth,32709,5382,Peperomia galioides,0,1,0,0,0,0,0,0,
+15,163,161,Ruiz & Pav.,32729,5382,Peperomia inaequalifolia,0,1,0,0,0,0,0,0,LC
+15,163,161,Hook.f.,32780,5382,Peperomia petiolata,0,1,0,0,1,0,0,0,LC
+15,163,161,Hook.f.,35474,5695,Polygala galapageia,0,1,0,0,1,0,0,0,VU
+15,163,161,L.Riley,35503,5695,Polygala sancti-georgii,0,1,0,0,1,0,0,0,VU
+15,163,161,L.,9699,2301,Cissampelos pareira,0,1,0,0,0,0,0,0,
+15,163,161,(DC.) Griseb.,33310,5485,Phoradendron berteroanum,0,1,0,0,1,0,0,0,LC
+15,163,161,(Kunth) Triana & Planch.,6330,1890,Bursera graveolens,0,1,0,0,0,0,0,0,
+15,163,161,(L.) Sarg.,47659,7196,Zanthoxylum fagara,0,1,0,0,0,0,0,0,
+15,163,161,Jacq.,14886,2933,Dodonaea viscosa,0,1,0,0,1,0,0,0,NT
+15,163,161,Hook.f.,8463,2066,Castela galapageia,0,1,0,0,1,0,0,0,LC
+15,163,161,(Andersson) B.L.Rob.,24211,4033,Kallstroemia adscendens,0,1,0,0,1,0,0,0,LC
+15,163,161,L.,45479,6879,Tribulus cistoides,0,0,1,1,0,0,0,0,
+15,163,161,L.,438731,6068,Ruellia blechum,0,1,0,0,0,0,0,0,
+15,163,161,Lindau ex B.L.Rob.,24112,4027,Justicia galapagana,0,1,0,0,1,0,0,0,NT
+15,163,161,(Hallier f.) Fabris,14184,2822,Dichondra microcalyx,0,1,0,0,0,0,0,0,
+15,163,161,(Willd. ex Schult.) Stearn,18160,3267,Evolvulus convolvuloides,0,1,0,0,0,0,0,0,
+15,163,161,Oliv.,23418,3957,Ipomoea habeliana,0,1,0,0,1,0,0,0,LC
+15,163,161,(Vahl) Choisy,23424,3957,Ipomoea incarnata,0,1,0,0,0,0,0,0,LC
+15,163,161,(L.) Roth,23448,3957,Ipomoea nil,0,0,0,1,0,0,0,0,
+15,163,161,(L.) R.Br.,23454,3957,Ipomoea pes-caprae,0,1,0,0,0,0,0,0,
+15,163,161,L.,23483,3957,Ipomoea triloba,0,1,0,0,0,0,0,0,
+15,163,161,(L.) A.R.Simões & Staples,421041,19634,Distimake aegyptius,0,1,0,0,0,0,0,0,
+15,163,161,(Hook.f.) D'Arcy,18214,3277,Exodeconus miersii,0,1,0,0,1,0,0,0,LC
+15,163,161,L.f.,440287,4421,Lycium boerhaviifolium,0,1,0,0,0,0,0,0,
+15,163,161,C.L.Hitchc.,27001,4421,Lycium minimum,0,1,0,0,1,0,0,0,LC
+15,163,161,L.,33759,5517,Physalis angulata,0,1,0,0,0,0,0,0,
+15,163,161,L.,33775,5517,Physalis pubescens,0,1,0,0,0,0,0,0,
+15,163,161,Mill.,41906,6417,Solanum americanum,0,0,1,1,0,0,0,0,
+15,163,161,(L.Riley) Fosberg,41926,6417,Solanum cheesmaniae,0,1,0,0,1,0,0,0,LC
+15,163,161,D.Don,41944,6417,Solanum erianthum,0,1,0,0,0,0,0,0,
+15,163,161,S.C.Darwin & Peralta,48216,6417,Solanum galapagense,0,1,0,0,1,0,0,0,
+15,163,161,(L.) Blume,442867,6870,Trema micranthum,0,0,1,1,0,0,0,0,
+15,163,161,(L.) Chew,24721,4150,Laportea aestuans,0,1,0,0,0,0,0,0,
+15,163,161,G.Forst.,32097,5297,Parietaria debilis,0,1,0,0,0,0,0,0,
+15,163,161,B.L.Rob.,33879,5542,Pilea baurii,0,1,0,0,1,0,0,0,LC
+15,163,161,(Jacq.) H.Schaef. & S.S.Renner,443224,2629,Cyclanthera carthagenensis,0,1,0,0,0,0,0,0,
+15,163,161,(Jacq.) H.Schaef. & S.S.Renner,443224,2629,Cyclanthera carthagenensis,0,1,0,0,1,0,0,0,EN
+15,163,161,(C.Presl) Poston,24289,4061,Klaprothia fasciculata,0,1,0,0,0,0,0,0,
+15,163,161,L.,28524,4638,Mentzelia aspera,0,1,0,0,0,0,0,0,
+15,163,161,L.,32365,5316,Passiflora suberosa,0,1,0,0,0,0,0,0,
+15,163,161,Hook.f.,441635,5316,Passiflora tridactylites,0,1,0,0,1,0,0,0,VU
