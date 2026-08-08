@@ -1004,6 +1004,60 @@ def plant_listing_page_gen_new(plant_name):
             </section>
         '''
 
+    ### ACTIVITIES
+    activities = plant_data['activities']
+    if activities != []:
+        html_table_body = f''
+        html_table_body += f'''<tbody>'''
+        table_chemical_num = 10
+        for item in activities[:table_chemical_num]:
+            activity_name = item['activity_canonical_name']
+            sources_num = item['sources_num']
+            sources = item['sources']
+            source = sources[0]
+            confidence = ''
+            if int(sources_num) >= 10: confidence = '★★★★★'
+            elif int(sources_num) >= 7: confidence = '★★★★☆'
+            elif int(sources_num) >= 5: confidence = '★★★☆☆'
+            elif int(sources_num) >= 3: confidence = '★★☆☆☆'
+            elif int(sources_num) >= 1: confidence = '★☆☆☆☆'
+            html_table_body += f'''
+                <tr>
+                    <td>{activity_name}</td>
+                    <td>{source} (and other {sources_num} sources)</td>
+                    <td>{confidence}</td>
+                </tr>
+            '''
+        source_tot = 0 
+        for item in plant_parts_data[:]:
+            source_tot += int(item['sources_num'])
+        activities_p = []
+        for activity in activities[:5]:
+            activities_p.append(activity['activity_canonical_name'])
+        activities_p_str = ', '.join(activities_p)
+        html_table_body += f'''</tbody>'''
+        html_article += f'''
+            <section>
+                <h2>
+                    Activities
+                </h2>
+                <p>
+                    {plant_name} has {len(plant_data['activities'])} reported activities identified across {source_tot} scientific publications and several other databases. The most consistently reported activities include {activities_p_str}.
+                </p>
+                <h3>Most Reported Activities</h3>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Activity</th>
+                      <th>Sources</th>
+                      <th>Consensus</th>
+                    </tr>
+                  </thead>
+                  {html_table_body}
+                </table>
+            </section>
+        '''
+
     ### DISEASES
     diseases = plant_data['diseases']
     if diseases != []:
