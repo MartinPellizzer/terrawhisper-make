@@ -130,6 +130,38 @@ def observations_table_plants_distributions_create(regen=False):
     conn.commit()
     conn.close()
 
+def observations_table_plants_traits_create(regen=False):
+    table_name = 'plants_traits'
+    conn = sqlite3.connect(db_filepath)
+    cur = conn.cursor()
+    if regen: cur.execute(f"DROP TABLE IF EXISTS {table_name}")
+    cur.execute(f"""
+        CREATE TABLE IF NOT EXISTS {table_name} (
+            id INTEGER PRIMARY KEY,
+            plant_name_scientific_canon TEXT NOT NULL,
+            plant_name_scientific_canon_norm TEXT NOT NULL,
+            trait_category TEXT NOT NULL,
+            trait_1 TEXT NOT NULL,
+            trait_2 TEXT NOT NULL,
+            trait_units TEXT NOT NULL,
+            trait_type TEXT NOT NULL,
+            trait_value TEXT NOT NULL,
+            trait_agreement TEXT,
+            trait_coeff_var TEXT,
+            trait_n TEXT,
+            trait_refs TEXT,
+            source_name TEXT NOT NULL,
+            source_acronym TEXT
+        );
+    """)
+    conn.execute("PRAGMA journal_mode = WAL;")
+    conn.execute("PRAGMA synchronous = OFF;")
+    conn.execute("PRAGMA temp_store = MEMORY;")
+    cur.execute(f"CREATE INDEX IF NOT EXISTS idx_{table_name}_plant_name_scientific_canon ON {table_name}(plant_name_scientific_canon)")
+    cur.execute(f"CREATE INDEX IF NOT EXISTS idx_{table_name}_source_name ON {table_name}(source_name)")
+    conn.commit()
+    conn.close()
+
 def observations_table_plants_plants_parts_create(regen=False):
     table_name = 'plants_plants_parts'
     conn = sqlite3.connect(db_filepath)
@@ -266,7 +298,8 @@ def run():
     # observations_table_plants_names_common_create(regen=True)
     # observations_table_plants_names_create(regen=True)
     # observations_table_plants_distributions_create(regen=True)
-    observations_table_plants_plants_parts_create(regen=True)
+    observations_table_plants_traits_create(regen=True)
+    # observations_table_plants_plants_parts_create(regen=True)
     # observations_table_plants_activities_create(regen=True)
     # observations_table_plants_chemicals_create(regen=True)
     # observations_table_plants_diseases_create(regen=True)

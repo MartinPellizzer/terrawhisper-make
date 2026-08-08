@@ -419,5 +419,5 @@ def run():
     if 0:
         start = time.perf_counter()
         table_traits_meta_create()
-        print(f'table traits_create() - execution time: ', time.perf_counter() - start)
+        print(f'table traits_meta_create() - execution time: ', time.perf_counter() - start)
 

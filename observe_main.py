@@ -1,4 +1,3 @@
-
 import os
 import time
 import json
@@ -113,6 +112,71 @@ def observations_table_plants_names_common_add(source_foldername):
     )
     conn.commit()
     rows = conn.execute(f"SELECT * FROM {table_name}")
+    for row in list(rows)[:10]:
+        print(row)
+    conn.close()
+
+def observations_table_plants_traits_add(source_foldername):
+    table_name = 'plants_traits'
+    input_folderpath = f'{g.DATA_FOLDERPATH}/resolve/{source_foldername}/traits/json'
+    output_folderpath = f'{g.DATA_FOLDERPATH}/observe'
+    db_filepath = f'{output_folderpath}/observations.db'
+    ###
+    input_filenames = os.listdir(input_folderpath)
+    all_data = []
+    for i, input_filename in enumerate(input_filenames[:]):
+        print(f'PLANTS_TRAITS - {i}/{len(input_filenames)}')
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        input_data = io.json_read(input_filepath)
+        for input_item in input_data:
+            all_data.append(input_item)
+            # print(json.dumps(input_item, indent=4))
+            # quit()
+    ###
+    conn = sqlite3.connect(db_filepath)
+    cur = conn.cursor()
+    cur.executemany(
+        f"""
+            INSERT OR IGNORE INTO {table_name} (
+                plant_name_scientific_canon,
+                plant_name_scientific_canon_norm,
+                trait_category,
+                trait_1,
+                trait_2,
+                trait_units,
+                trait_type,
+                trait_value,
+                trait_agreement,
+                trait_coeff_var,
+                trait_n,
+                trait_refs,
+                source_name,
+                source_acronym
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """,
+        [
+            (
+                item.get("wcvp_name_taxon"),
+                item.get("wcvp_name_taxon_norm"),
+                item.get("trait_category"),
+                item.get("trait_1"),
+                item.get("trait_2"),
+                item.get("trait_units"),
+                item.get("trait_type"),
+                item.get("trait_value"),
+                item.get("trait_agreement"),
+                item.get("trait_coeff_var"),
+                item.get("trait_n"),
+                item.get("trait_refs"),
+                item.get("source_name"),
+                item.get("source_acrony"),
+            )
+            for item in all_data
+        ]
+    )
+    conn.commit()
+    rows = conn.execute(f'SELECT * FROM {table_name}')
     for row in list(rows)[:10]:
         print(row)
     conn.close()
@@ -298,6 +362,9 @@ def run():
 
 
     if 1:
+        observations_table_plants_traits_add(source_foldername='gift')
+
+    if 0:
         observations_table_plants_plants_parts_add(source_foldername='pubmed')
 
     if 0:

@@ -91,3 +91,41 @@ def common_name_create(
     }
     return item
 
+def trait_create(
+    plant_name_scientific_raw,
+    plant_name_scientific_norm,
+    plant_genus,
+    plant_author,
+    trait_category,
+    trait_1,
+    trait_2,
+    trait_units,
+    trait_type,
+    trait_value,
+    trait_agreement,
+    trait_coeff_var,
+    trait_n,
+    trait_refs,
+    source_name,
+    source_acronym,
+):
+    item = {
+        'plant_name_scientific_raw': plant_name_scientific_raw,
+        'plant_name_scientific_norm': plant_name_scientific_norm,
+        'plant_genus': plant_genus,
+        'plant_author': plant_author,
+        'trait_category': trait_category,
+        'trait_1': trait_1,
+        'trait_2': trait_2,
+        'trait_units': trait_units,
+        'trait_type': trait_type,
+        'trait_value': trait_value,
+        'trait_agreement': trait_agreement,
+        'trait_coeff_var': trait_coeff_var,
+        'trait_n': trait_n,
+        'trait_refs': trait_refs,
+        'source_name': source_name,
+        'source_acronym': source_acronym,
+    }
+    return item
+
