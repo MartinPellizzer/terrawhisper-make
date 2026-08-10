@@ -7,23 +7,11 @@ from lib import data
 
 import masterize_utils
 
-def sqlite_plants_get():
-    db_filepath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/masterize/master.db'
-    conn = sqlite3.connect(db_filepath)
-    cur = conn.cursor()
-    cur.execute("""
-        SELECT *
-        FROM plants
-    """)
-    row = cur.fetchall()
-    conn.close()
-    return row
-
 def run():
-    input_foldername = 'derive'
+    input_foldername = 'augment'
     output_foldername = 'compile'
-    input_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/{input_foldername}/herbs/chemicals'
-    output_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/{output_foldername}/herbs'
+    input_folderpath = f'{g.DATA_FOLDERPATH}/{input_foldername}/herbs/chemicals'
+    output_folderpath = f'{g.DATA_FOLDERPATH}/{output_foldername}/herbs'
     io.folders_recursive_gen(output_folderpath)
 
     plants_rows = masterize_utils.masterize_plants_get_all()
@@ -118,6 +106,15 @@ def run():
         output_data['preparations'] = io.json_read(
             f'{g.DATA_FOLDERPATH}/{input_foldername}/herbs/preparations/{plant_canonical_name}.json'
         )
+
+        ### TRAITS 
+        ### TODO: remove condition after making all jsons have the 'traits' field
+        try: 
+            filepath = f'{g.DATA_FOLDERPATH}/{input_foldername}/herbs/traits/{plant_canonical_name}.json'
+            traits = io.json_read(filepath)
+            output_data['traits'] = traits
+        except:
+            output_data['traits'] = []
 
         ###
 

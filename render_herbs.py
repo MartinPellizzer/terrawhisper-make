@@ -682,6 +682,86 @@ def plant_listing_page_gen_new(plant_name):
     ################################################################################
     ### IDENTIFICATION
     ################################################################################
+    traits_data = plant_data['traits']
+    if traits_data != []:
+        # print(traits_data)
+        # quit()
+        html_categories = ''
+        for trait_item in traits_data:
+            # print(json.dumps(trait_item, indent=4))
+            # quit()
+            category = trait_item['trait_category']
+            ### TODO: REMOVE when all "trait_item" have 'llm' field
+            try: 
+                trait_llm = trait_item['llm']
+                trait_llm_html = f'''<p>{trait_item['llm']}</p>'''
+            except: 
+                trait_llm_html = f''
+            html_categories += f'''
+                <h3>{category}</h3>
+                {trait_llm_html}
+            '''
+            traits = trait_item['traits']
+            traits_done = []
+            traits_formatted = []
+            for trait in traits:
+                found = False
+                for trait_done in traits_done:
+                    if (
+                        trait_done['trait_1'] == trait['trait_1'] and
+                        trait_done['trait_value'] == trait['trait_value']
+                    ):
+                        found = True
+                        break
+                if found:
+                    continue
+                traits_done.append(
+                    {
+                       'trait_1': trait['trait_1'],
+                       'trait_value': trait['trait_value'],
+                    }
+                )
+                ###
+                if 'mean' in trait['trait_2'] or 'max' in trait['trait_2'] or 'min' in trait['trait_2']:
+                    unit = trait['trait_units']
+                    if 'mean' in trait['trait_2']:
+                        descriptor = 'mean'
+                    elif 'max' in trait['trait_2']:
+                        descriptor = 'max'
+                    elif 'min' in trait['trait_2']:
+                        descriptor = 'min'
+                    else:
+                        descriptor = ''
+                else:
+                    unit = ''
+                    descriptor = ''
+                traits_formatted.append(
+                    {
+                        'trait_name': f'''{trait['trait_1']} {descriptor}''',
+                        'trait_value': f'''{trait['trait_value']} {unit}''',
+                    }
+                )
+            traits_formatted = sorted(traits_formatted, key=lambda x: x['trait_name'], reverse=False)
+            for trait in traits_formatted:
+                html_categories += f''' 
+                    <dl>
+                        <dt style="display: inline;">{trait['trait_name']}:</dt>
+                        <dd class="tag">{trait['trait_value']}</dd>
+                    </dl>
+                '''
+        ### SOURCES
+        sources_html = f'''
+            <p style="margin-top: 4.8rem;">
+                Sources: Global Inventory of Floras and Traits (GIFT)
+            </p>
+        '''
+        html_article += f'''
+            <section>
+                <h2>Botanical Identification</h2>
+                {html_categories}
+                {sources_html}
+            </section>
+        '''
 
     """
     ### PLANT PARTS
@@ -1001,60 +1081,6 @@ def plant_listing_page_gen_new(plant_name):
         html_article += f'''
             <section aria-labelledby="compounds-heading">
                 {sources_html}
-            </section>
-        '''
-
-    ### ACTIVITIES
-    activities = plant_data['activities']
-    if activities != []:
-        html_table_body = f''
-        html_table_body += f'''<tbody>'''
-        table_chemical_num = 10
-        for item in activities[:table_chemical_num]:
-            activity_name = item['activity_canonical_name']
-            sources_num = item['sources_num']
-            sources = item['sources']
-            source = sources[0]
-            confidence = ''
-            if int(sources_num) >= 10: confidence = '★★★★★'
-            elif int(sources_num) >= 7: confidence = '★★★★☆'
-            elif int(sources_num) >= 5: confidence = '★★★☆☆'
-            elif int(sources_num) >= 3: confidence = '★★☆☆☆'
-            elif int(sources_num) >= 1: confidence = '★☆☆☆☆'
-            html_table_body += f'''
-                <tr>
-                    <td>{activity_name}</td>
-                    <td>{source} (and other {sources_num} sources)</td>
-                    <td>{confidence}</td>
-                </tr>
-            '''
-        source_tot = 0 
-        for item in plant_parts_data[:]:
-            source_tot += int(item['sources_num'])
-        activities_p = []
-        for activity in activities[:5]:
-            activities_p.append(activity['activity_canonical_name'])
-        activities_p_str = ', '.join(activities_p)
-        html_table_body += f'''</tbody>'''
-        html_article += f'''
-            <section>
-                <h2>
-                    Activities
-                </h2>
-                <p>
-                    {plant_name} has {len(plant_data['activities'])} reported activities identified across {source_tot} scientific publications and several other databases. The most consistently reported activities include {activities_p_str}.
-                </p>
-                <h3>Most Reported Activities</h3>
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Activity</th>
-                      <th>Sources</th>
-                      <th>Consensus</th>
-                    </tr>
-                  </thead>
-                  {html_table_body}
-                </table>
             </section>
         '''
 

@@ -1,32 +1,5 @@
 '''
 ################################################################################
-# GUIDE
-################################################################################
-
-FETCH:
-You start by fetching resources (datasets/studies). Some resources are used to extract plants info, others to create reference table (for fast lookup)
-
-PARSE:
-You take the fetched resources, parse them, and output json files with defined schemas. Each type of info must be formatted with the same schema across different sources. Use "parse_utils" to create coherent output functions.
-
-NORMALIZE:
-You take the parsed jsons, and add the appropriate normalized fields. For example "plant_name_scientific_raw_norm". The normalized fields are used for entity resolution.
-
-RESOLVE:
-### TODO: document "resolve"
-
-OBSERVE:
-### TODO: document "observe"
-
-MASTERIZE:
-### TODO: document "masterize"
-
-### TODO: complete rest of pipeline with "activities"
-
-'''
-
-'''
-################################################################################
 # STEPS
 ################################################################################
 fetch
@@ -51,9 +24,16 @@ explore
 
 '''
 TODO:
-GIFT database create from scraped data (check all data downloaded successfully)
+
+Complete Diseases and Preparations sections wiht references in monographs
+
+GIFT: 
+    complete database with other tables
+    model the tables and relationships in the pygame program
+
 check USDA PLANTS database for morphological characteristics
 check gemini for other traits datasources
+
 parse pubmed for "compounds"
 fetch/parse powo
 RENDER: mention sources on a section level where appropriate 
@@ -127,7 +107,7 @@ if 0:
     # observe_drduke.run()
     observe_main.run()
 
-if 1:
+if 0:
     import qualify
 
 if 1:

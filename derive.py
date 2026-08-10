@@ -1,5 +1,6 @@
 import json
 import sqlite3
+from collections import defaultdict
 
 from lib import g
 from lib import io
@@ -272,12 +273,81 @@ def preparation_summary_get_0000(plant_canonical_name):
     conn.close()
     return rows
 
+def traits_gen():
+    entity_foldername = 'traits'
+    master_plants_rows = masterize_utils.masterize_plants_get_all()
+    for i, master_plant_row in enumerate(master_plants_rows):
+        print(f'{i}/{len(master_plants_rows)}')
+        plant_name_scientific_canon = master_plant_row[1]
+        ###
+        conn = sqlite3.connect(db_filepath)
+        conn.row_factory = sqlite3.Row
+        cursor = conn.execute("""
+            SELECT *
+            FROM plants_traits
+            WHERE plant_name_scientific_canon = ?
+            ORDER BY trait_category;
+        """, (plant_name_scientific_canon,))
+        rows = cursor.fetchall()
+        items = [dict(row) for row in rows]
+        conn.close()
+        ###
+        output_items = []
+        '''
+        grouped_traits = defaultdict(list)
+        for row in rows:
+            category = row["trait_category"] or "General"
+            grouped_traits[category].append({
+                "trait_1": row["trait_1"],
+                "trait_2": row["trait_2"],
+                "value": row["trait_value"],
+                "units": row["trait_units"]
+            })
+            output_item = dict(grouped_traits)
+            # print(json.dumps(output_item, indent=4))
+            # quit()
+            output_items.append(output_item)
+        '''
+        traits_groups = []
+        for item in items:
+            found = False
+            for trait_group in traits_groups:
+                if trait_group['trait_category'] == item['trait_category']:
+                    item_new = {
+                        'trait_1': item['trait_1'],
+                        'trait_2': item['trait_2'],
+                        'trait_value': item['trait_value'],
+                        'trait_units': item['trait_units'],
+                    }
+                    trait_group['traits'].append(item_new)
+                    found = True
+                    pass
+                pass
+            if not found:
+                item_new = {
+                    'trait_category': item['trait_category'],
+                    'traits': [{
+                        'trait_1': item['trait_1'],
+                        'trait_2': item['trait_2'],
+                        'trait_value': item['trait_value'],
+                        'trait_units': item['trait_units'],
+                    }],
+                }
+                traits_groups.append(item_new)
+        output_items = traits_groups
+        print(json.dumps(traits_groups, indent=4))
+        # quit()
+        ###
+        output_filepath = f'{g.DATA_FOLDERPATH}/{output_foldername}/herbs/{entity_foldername}/{master_plant_row[1]}.json'
+        io.folder_create_from_filepath(output_filepath)
+        io.json_write(output_filepath, output_items)
+
 ################################################################################
 # JSONS
 ################################################################################
 
 ### SYNONYMS
-if 1:
+if 0:
     entity_foldername = 'synonyms'
     master_plants_rows = masterize_utils.masterize_plants_get_all()
     for i, master_plant_row in enumerate(master_plants_rows):
@@ -297,7 +367,7 @@ if 1:
         io.json_write(output_filepath, output_items)
 
 ### NAMES COMMON
-if 1:
+if 0:
     entity_foldername = 'names_common'
     master_plants_rows = masterize_utils.masterize_plants_get_all()
     common_names_labels_found_count = 0
@@ -390,7 +460,7 @@ if 1:
     print(col_common_names_vernacular_found_count)
 
 ### TAXONOMIES
-if 1:
+if 0:
     entity_foldername = 'taxonomies'
     master_plants_rows = masterize_utils.masterize_plants_get_all()
     for i, master_plant_row in enumerate(master_plants_rows):
@@ -415,7 +485,7 @@ if 1:
         io.json_write(output_filepath, output_items)
 
 ### DISTRIBUTION
-if 1:
+if 0:
     entity_foldername = 'distribution'
     master_plants_rows = masterize_utils.masterize_plants_get_all()
     for i, master_plant_row in enumerate(master_plants_rows):
@@ -437,7 +507,7 @@ if 1:
         io.json_write(output_filepath, output_items)
 
 ### PLANTS PARTS
-if 1:
+if 0:
     entity_foldername = 'plants_parts'
     master_plants_rows = masterize_utils.masterize_plants_get_all()
     for i, master_plant_row in enumerate(master_plants_rows):
@@ -482,7 +552,7 @@ if 1:
         io.json_write(output_filepath, output_items)
 
 ### CHEMICALS
-if 1:
+if 0:
     master_plants_rows = masterize_utils.masterize_plants_get_all()
     for i, master_plant_row in enumerate(master_plants_rows):
         print(f'{i}/{len(master_plants_rows)}')
@@ -502,7 +572,7 @@ if 1:
         io.json_write(output_filepath, output_items)
 
 ### ACTIVITIES
-if 1:
+if 0:
     master_plants_rows = masterize_utils.masterize_plants_get_all()
     for i, master_plant_row in enumerate(master_plants_rows):
         print(f'{i}/{len(master_plants_rows)}')
@@ -522,7 +592,7 @@ if 1:
         io.json_write(output_filepath, output_items)
 
 ### DISEASES
-if 1:
+if 0:
     master_plants_rows = masterize_utils.masterize_plants_get_all()
     for i, master_plant_row in enumerate(master_plants_rows):
         print(f'{i}/{len(master_plants_rows)}')
@@ -542,7 +612,7 @@ if 1:
         io.json_write(output_filepath, output_items)
 
 ### PREPARATIONS
-if 1:
+if 0:
     entity_foldername = 'preparations'
     master_plants_rows = masterize_utils.masterize_plants_get_all()
     for i, master_plant_row in enumerate(master_plants_rows):
@@ -561,3 +631,6 @@ if 1:
         io.folder_create_from_filepath(output_filepath)
         io.json_write(output_filepath, output_items)
 
+### TRAITS
+if 0:
+    traits_gen()
