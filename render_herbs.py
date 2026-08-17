@@ -1084,14 +1084,18 @@ def plant_listing_page_gen_new(plant_name):
             </section>
         '''
 
-    ### DISEASES
-    diseases = plant_data['diseases']
-    if diseases != []:
+    ### CONDITIONS
+    data_key = 'diseases'
+    item_key = 'disease_canonical_name'
+    section_data = plant_data[data_key]
+    if section_data != []:
         html_table_body = f''
+        sources_html = f''
         html_table_body += f'''<tbody>'''
-        table_chemical_num = 10
-        for item in diseases[:table_chemical_num]:
-            disease_name = item['disease_canonical_name']
+        table_num = 10
+        for item in section_data[:table_num]:
+            name = item[item_key].capitalize()
+            slug = polish.sluggify(name)
             sources_num = item['sources_num']
             sources = item['sources']
             source = sources[0]
@@ -1103,86 +1107,112 @@ def plant_listing_page_gen_new(plant_name):
             elif int(sources_num) >= 1: confidence = '★☆☆☆☆'
             html_table_body += f'''
                 <tr>
-                    <td>{disease_name}</td>
-                    <td>{source} (and other {sources_num} sources)</td>
-                    <td>{confidence}</td>
+                    <th scope="row">{name}</th>
+                    <td>
+                        <a href="#sources-{slug}">
+                            {sources_num} supporting sources
+                        </a>
+                    </td>
+                    <td>
+                        <span>
+                            {confidence}
+                        </span>
+                    </td>
                 </tr>
             '''
+            ### TODO: add this complete consensus instead of the one in the table
+            '''
+                <span aria-label="Very high source consensus">
+                    {confidence}
+                </span>
+                <span>Very high</span>
+            '''
+            ### SOURCES LISTS
+            sources_html += f'''
+                <h3 id="sources-{slug}">{name}</h3>
+                <ol class="listing-sources">
+            '''
+            for source in sources[:5]:
+                sources_html += f'''
+                    <li>
+                        <cite>
+                            {source}
+                        </cite>
+                    </li>
+                '''
+            sources_html += f'''
+                </ol>
+            '''
+            if len(sources)-5 > 0:
+                sources_html += f'''
+                    <details>
+                        <summary>
+                            View {len(sources)-5} additional sources
+                        </summary>
+                        <ol class="listing-sources" start="6">
+                '''
+                for source in sources[5:]:
+                    sources_html += f'''
+                        <li>
+                            <cite>
+                                {source}
+                            </cite>
+                        </li>
+                    '''
+                sources_html += f'''
+                        </ol>
+                    </details>
+                '''
         source_tot = 0 
         for item in plant_parts_data[:]:
             source_tot += int(item['sources_num'])
-        diseases_p = []
-        for disease in diseases[:5]:
-            diseases_p.append(disease['disease_canonical_name'])
-        diseases_p_str = ', '.join(diseases_p)
+        p = []
+        for item in section_data[:5]:
+            p.append(item[item_key])
+        p_str = ', '.join(p)
         html_table_body += f'''</tbody>'''
         html_article += f'''
             <section>
                 <h2>
-                    Medicinal Uses
+                    Conditions
                 </h2>
                 <p>
-                    {plant_name} has {len(plant_data['diseases'])} reported medicinal uses identified across {source_tot} scientific publications and several other databases. The most consistently reported uses include {diseases_p_str}.
+                    {plant_name} has {len(plant_data[data_key])} reported investigations on conditions identified across {source_tot} scientific publications and several other databases. The most consistently reported conditions include {p_str}.
                 </p>
-                <h3>Most Reported Uses</h3>
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Use</th>
-                      <th>Sources</th>
-                      <th>Consensus</th>
-                    </tr>
-                  </thead>
-                  {html_table_body}
+                <table style="margin-top: 3.2rem;">
+                    <caption style="text-align: left; margin-bottom: 0.8rem;">
+                        Conditions investigated for {plant_name}
+                    </caption>
+                    <thead>
+                        <tr>
+                            <th scope="col">Condition</th>
+                            <th scope="col">Supporting sources</th>
+                            <th scope="col">Consensus</th>
+                        </tr>
+                    </thead>
+                    {html_table_body}
                 </table>
+            </section>
+        '''
+        ###
+        html_article += f'''
+            <section aria-labelledby="conditions-heading">
+                {sources_html}
             </section>
         '''
 
     ### PREPARATIONS
-    data = plant_data['preparations']
-    if data != []:
-        ### filter rows
-        row_num = 10
-        items_filtered = []
-        for item in data:
-            ### add filter condition here if needed
-            items_filtered.append(item)
-            if len(items_filtered) >= row_num:
-                break
-        if 0:
-            ### llm
-            json_article_filepath = f'''{g.DATA_FOLDERPATH}/enhance/{plant_taxon_name_slug}.json'''
-            json_article = io.json_read(json_article_filepath, create=True)
-            regen = False
-            key = f'preparations'
-            if key not in json_article: json_article[key] = ''
-            if regen: json_article[key] = ''
-            if json_article[key] == '':
-                list_prompt = ''
-                for item in items_filtered[:5]:
-                    list_item = item['preparation_canonical_name']
-                    list_prompt += f'''{list_item}\n'''
-                prompt = f'''
-                    Write a paragraph about the herbal preparations of the following medicinal plant: {plant_name}.
-                    Use the following plant parts:
-                    {list_prompt}
-                    Start the reply with the following words: This plant 
-                '''.strip()
-                print(prompt)
-                reply = llm.reply(prompt, model_filepath)
-                if '</think>' in reply:
-                    reply = reply.split('</think>')[1].strip()
-                reply = polish.vanilla(reply)
-                json_article[key] = reply
-                io.json_write(json_article_filepath, json_article)
-            names_text = json_article[key]
-        else:
-            names_text = ''
-        ###
+    data_key = 'preparations'
+    item_key = 'preparation_canonical_name'
+    section_data = plant_data[data_key]
+    if section_data != []:
         html_table_body = f''
+        sources_html = f''
         html_table_body += f'''<tbody>'''
-        for item in items_filtered:
-            preparation = item['preparation_canonical_name']
+        table_num = 10
+        for item in section_data[:table_num]:
+            name = item[item_key].capitalize()
+            slug = polish.sluggify(name)
             sources_num = item['sources_num']
             sources = item['sources']
             source = sources[0]
@@ -1194,31 +1224,97 @@ def plant_listing_page_gen_new(plant_name):
             elif int(sources_num) >= 1: confidence = '★☆☆☆☆'
             html_table_body += f'''
                 <tr>
-                    <td>{preparation}</td>
-                    <td>{source} (and other {sources_num} sources)</td>
-                    <td>{confidence}</td>
+                    <th scope="row">{name}</th>
+                    <td>
+                        <a href="#sources-{slug}">
+                            {sources_num} supporting sources
+                        </a>
+                    </td>
+                    <td>
+                        <span>
+                            {confidence}
+                        </span>
+                    </td>
                 </tr>
             '''
+            ### TODO: add this complete consensus instead of the one in the table
+            '''
+                <span aria-label="Very high source consensus">
+                    {confidence}
+                </span>
+                <span>Very high</span>
+            '''
+            ### SOURCES LISTS
+            sources_html += f'''
+                <h3 id="sources-{slug}">{name}</h3>
+                <ol class="listing-sources">
+            '''
+            for source in sources[:5]:
+                sources_html += f'''
+                    <li>
+                        <cite>
+                            {source}
+                        </cite>
+                    </li>
+                '''
+            sources_html += f'''
+                </ol>
+            '''
+            if len(sources)-5 > 0:
+                sources_html += f'''
+                    <details>
+                        <summary>
+                            View {len(sources)-5} additional sources
+                        </summary>
+                        <ol class="listing-sources" start="6">
+                '''
+                for source in sources[5:]:
+                    sources_html += f'''
+                        <li>
+                            <cite>
+                                {source}
+                            </cite>
+                        </li>
+                    '''
+                sources_html += f'''
+                        </ol>
+                    </details>
+                '''
         source_tot = 0 
         for item in plant_parts_data[:]:
             source_tot += int(item['sources_num'])
+        p = []
+        for item in section_data[:5]:
+            p.append(item[item_key])
+        p_str = ', '.join(p)
         html_table_body += f'''</tbody>'''
         html_article += f'''
             <section>
                 <h2>
                     Preparations
                 </h2>
-                {names_text}
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Preparations</th>
-                      <th>Sources</th>
-                      <th>Consensus</th>
-                    </tr>
-                  </thead>
-                  {html_table_body}
+                <p>
+                    {plant_name} has {len(plant_data[data_key])} reported preparations identified across {source_tot} scientific publications and several other databases. The most consistently reported preparations include {p_str}.
+                </p>
+                <table style="margin-top: 3.2rem;">
+                    <caption style="text-align: left; margin-bottom: 0.8rem;">
+                        Preparations reported for {plant_name}
+                    </caption>
+                    <thead>
+                        <tr>
+                            <th scope="col">Preparation</th>
+                            <th scope="col">Supporting sources</th>
+                            <th scope="col">Consensus</th>
+                        </tr>
+                    </thead>
+                    {html_table_body}
                 </table>
+            </section>
+        '''
+        ###
+        html_article += f'''
+            <section aria-labelledby="conditions-heading">
+                {sources_html}
             </section>
         '''
 
@@ -1245,7 +1341,7 @@ def plant_listing_page_gen_new(plant_name):
         {head_html}
         <body>
             {sections.header_dark()}
-            <main class="container-lg listing" style="margin-top: 4.8rem;">
+            <main class="container-lg listing" style="margin-top: 4.8rem; margin-bottom: 4.8rem;">
                 {html_article}
             </main>
             {sections.footer()}

@@ -21,7 +21,7 @@ import parse_gift
 # parse_pubmed.run()
 
 # parse_usda.run()
-parse_gift.run()
+# parse_gift.run()
 
 ################################################################################
 # ORGANIZATIONS
@@ -31,6 +31,5 @@ import parse_usda_organic
 import organizations_parse_main
 
 # parse_usda_organic.run()
-
-# organizations_parse_main.run()
+organizations_parse_main.run()
 

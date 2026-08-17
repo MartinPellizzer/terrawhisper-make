@@ -41,11 +41,17 @@ def scrape_homepage(url):
 
     # Check robots.txt
     robots_url = f"{parsed.scheme}://{parsed.netloc}/robots.txt"
-    rp = RobotFileParser(robots_url)
+    rp = RobotFileParser()
 
     try:
-        rp.read()
-    except Exception:
+        r = requests.get(
+            robots_url,
+            headers={"User-Agent": user_agent},
+            timeout=(5, 10),  # 5s connect, 10s read
+        )
+        if r.status_code == 200:
+            rp.parse(r.text.splitlines())
+    except requests.RequestException:
         # If robots.txt cannot be read, skip scraping
         return None
 
@@ -58,7 +64,7 @@ def scrape_homepage(url):
         response = requests.get(
             url,
             headers={"User-Agent": user_agent},
-            timeout=10
+            timeout=(5, 10),  # 5s connect, 10s read
         )
         response.raise_for_status()
         return response.text
@@ -70,13 +76,16 @@ def fetch_websites():
     input_folderpath = f'{g.DATA_FOLDERPATH}/organizations/fetch/gmap/america/places'.replace(' ', '_')
     output_folderpath = f'{g.DATA_FOLDERPATH}/organizations/fetch/websites/america/places'.replace(' ', '_')
     input_filenames = sorted(os.listdir(input_folderpath))
-    for input_filename in input_filenames[:100]:
+    start_i = 700
+    end_i = 1000
+    for input_filename_i, input_filename in enumerate(input_filenames[start_i:end_i]):
         input_filename_base = input_filename.split('.')[0].strip()
         input_filepath = f'{input_folderpath}/{input_filename}'
         place_folderpath = f'{output_folderpath}/{input_filename_base}'
         io.folders_recursive_gen(place_folderpath)
         with open(input_filepath, encoding="utf-8") as f: rows = f.read().strip().split('\n')
         for row in rows:
+            print(f'{input_filename_i+start_i}/{len(input_filenames[:end_i])}')
             values = row.split('~')
             print(values)
             if values != [] and values != ['']:

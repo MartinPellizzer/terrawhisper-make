@@ -34,7 +34,6 @@ def get_card_element(e):
     try: return e.find_elements(By.XPATH, '//div[@role="main"]')[1]
     except: return None
 
-
 def scrape_name(e):
     try: return e.find_element(By.XPATH, './/h1').text
     except: return ''
@@ -164,75 +163,81 @@ def scrape_new_business(output_filepath, search_text, continent, place, i):
         return 'name_not_equal_label'
     else:
         add_business_to_csv(output_filepath, label, address, website, phone, name, info)
+        ###
+        card_element_html = card_element.get_attribute("innerHTML")
+        html_filepath = f'{g.DATA_FOLDERPATH}/organizations/fetch/gmap/{continent}/htmls/{name}.html'
+        io.file_write(html_filepath, card_element_html)
+        print(html_filepath)
 
 def fetch_organizations():
 
 for cycle_i in range(10):
-    geckodriver_path = 'geckodriver'
-    driver_service = webdriver.FirefoxService(executable_path=geckodriver_path)
-    driver = webdriver.Firefox(service=driver_service)
-    driver.maximize_window()
-    driver.get('https://www.google.com')
+
+geckodriver_path = 'geckodriver'
+driver_service = webdriver.FirefoxService(executable_path=geckodriver_path)
+driver = webdriver.Firefox(service=driver_service)
+driver.maximize_window()
+driver.get('https://www.google.com')
+sleep(2)
+driver.find_element(By.XPATH, '//div[text()="Rifiuta tutto"]').click()
+sleep(2)
+
+continents = [
+    'america',
+]
+    # 'europe',
+scrapes_num = 10
+
+for continent_i, continent in enumerate(continents[:]):
+    # rows = io.csv_read(f'{g.DATA_FOLDERPATH}/organizations/fetch/gmap/{continent}.csv')
+    rows = io.csv_to_dict(f'{g.DATA_FOLDERPATH}/organizations/fetch/gmap/2025_Gaz_place_national.txt', delimiter='|')
+    print('*********************************')
+    print(continent)
+    print(f'{continent_i}/{len(rows)}')
+    print('*********************************')
+
+    search_industry = f'medicinal herb suppliers'
+    search_text = f'{search_industry}, {continent}'
+    driver.get(f'https://www.google.com/maps/search/{search_text}')
     sleep(2)
-    driver.find_element(By.XPATH, '//div[text()="Rifiuta tutto"]').click()
-    sleep(2)
 
-    continents = [
-        'america',
-    ]
-        # 'europe',
-    scrapes_num = 10
-
-    for continent_i, continent in enumerate(continents[:]):
-        # rows = io.csv_read(f'{g.DATA_FOLDERPATH}/organizations/fetch/gmap/{continent}.csv')
-        rows = io.csv_to_dict(f'{g.DATA_FOLDERPATH}/organizations/fetch/gmap/2025_Gaz_place_national.txt', delimiter='|')
+    operations_num = 0
+    for k, row in enumerate(rows[100:1000]):
+        # country = row[1].strip().lower()
+        place = row['NAME'].strip().lower()
+        output_folderpath = f'{g.DATA_FOLDERPATH}/organizations/fetch/gmap/{continent}/places'.replace(' ', '_')
+        io.folders_recursive_gen(output_folderpath)
         print('*********************************')
-        print(continent)
-        print(f'{continent_i}/{len(rows)}')
+        print(continent, '>>', place)
+        print(f'{k}/{len(rows)}')
         print('*********************************')
 
-        search_industry = f'medicinal herb suppliers'
-        search_text = f'{search_industry}, {continent}'
-        driver.get(f'https://www.google.com/maps/search/{search_text}')
+        output_filepath = f'{output_folderpath}/{search_industry}__{continent}__{place}.csv'.replace(' ', '_')
+        if os.path.exists(output_filepath): continue
+        io.file_write(output_filepath, '')
+
+        search_text = f'{search_industry}, {place}'
+        print(search_text)
+        # driver.get(f'https://www.google.com/maps/search/{search_text}')
+        search_bar_element = driver.find_element(By.XPATH, '//input[@name="q"]')
+        search_bar_element.clear()
         sleep(2)
+        search_bar_element.send_keys(search_text)
+        sleep(2)
+        search_bar_element.send_keys(Keys.ENTER)
+        sleep(10)
 
-        operations_num = 0
-        for k, row in enumerate(rows[5000:]):
-            # country = row[1].strip().lower()
-            place = row['NAME'].strip().lower()
-            output_folderpath = f'{g.DATA_FOLDERPATH}/organizations/fetch/gmap/{continent}/places'.replace(' ', '_')
-            io.folders_recursive_gen(output_folderpath)
-            print('*********************************')
-            print(continent, '>>', place)
-            print(f'{k}/{len(rows)}')
-            print('*********************************')
+        for num in range(scrapes_num):
+            err = scrape_new_business(output_filepath, search_text, continent, place, num)
+            print(err, '\n')
 
-            output_filepath = f'{output_folderpath}/{search_industry}__{continent}__{place}.csv'.replace(' ', '_')
-            if os.path.exists(output_filepath): continue
-            io.file_write(output_filepath, '')
-
-            search_text = f'{search_industry}, {place}'
-            print(search_text)
-            # driver.get(f'https://www.google.com/maps/search/{search_text}')
-            search_bar_element = driver.find_element(By.XPATH, '//input[@name="q"]')
-            search_bar_element.clear()
+        operations_num += 1
+        if operations_num >= 100:
+            operations_num = 0
+            driver.get('https://www.w3schools.com/html/')
+            sleep(600)
+            driver.get(f'https://www.google.com/maps/search/{search_text}')
             sleep(2)
-            search_bar_element.send_keys(search_text)
-            sleep(2)
-            search_bar_element.send_keys(Keys.ENTER)
-            sleep(10)
-
-            for num in range(scrapes_num):
-                err = scrape_new_business(output_filepath, search_text, continent, place, num)
-                print(err, '\n')
-
-            operations_num += 1
-            if operations_num >= 100:
-                operations_num = 0
-                driver.get('https://www.w3schools.com/html/')
-                sleep(600)
-                driver.get(f'https://www.google.com/maps/search/{search_text}')
-                sleep(2)
 
 def run():
     print('ORGANIZATIONS >> FETCH >> gmap')

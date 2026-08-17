@@ -8,11 +8,11 @@ from Bio import Entrez
 
 from lib import io
 
-proj = 'ozonogroup'
 proj = 'terrawhisper'
-query = 'ozone'
+proj = 'ozonogroup'
 query = 'ozone wine'
 query = 'medicinal plant'
+query = 'ozone'
 
 query = query.strip().lower()
 query_slug = query.replace(' ', '-')

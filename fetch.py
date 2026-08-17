@@ -1,9 +1,11 @@
+'''
 import fetch_powo
 import fetch_col
 import fetch_gift
 import fetch_wikidata
 import fetch_pubmed
 import fetch_drduke
+'''
 
 ################################################################################
 # HERBS
@@ -11,7 +13,7 @@ import fetch_drduke
 
 # fetch_powo.run()
 # fetch_col.run()
-fetch_gift.run()
+# fetch_gift.run()
 
 # fetch_wikidata.run()
 # fetch_pubmed.run()
@@ -24,5 +26,5 @@ fetch_gift.run()
 import fetch_website
 
 # fetch_gmap()
-# fetch_website.run()
+fetch_website.run()
 

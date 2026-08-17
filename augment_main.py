@@ -1,6 +1,7 @@
 import os
 import json
 import sqlite3
+import shutil
 
 from lib import g
 from lib import io
