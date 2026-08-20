@@ -16,7 +16,7 @@ DATA_FOLDERPATH = f'{vault_folderpath}/terrawhisper/data'
 
 DATABASE_FOLDERPATH = f'{vault_folderpath}/terrawhisper/database'
 WEBSITE_FOLDERPATH = f'{vault_folderpath}/terrawhisper/website/terrawhisper'
-ASSETS_FOLDERPATH = f'{DATABASE_FOLDERPATH}/assets'
+ASSETS_FOLDERPATH = f'{vault_folderpath}/terrawhisper/assets'
 SHOP_FOLDERPATH = f'{DATABASE_FOLDERPATH}/shop'
 
 JSON_FOLDERPATH = f'{vault_folderpath}/terrawhisper/database/json'

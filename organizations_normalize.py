@@ -1,3 +1,0 @@
-import organizations_normalize_main
-
-organizations_normalize_main.run()

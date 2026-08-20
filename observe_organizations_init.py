@@ -12,17 +12,29 @@ HUB_FOLDERPATH = f'{g.DATA_FOLDERPATH}/organizations'
 output_folderpath = f'{HUB_FOLDERPATH}/observe'
 db_filepath = f'{output_folderpath}/observations.db'
 
-def observations_table_organizations_create(regen=False):
+import parse_organizations_data
+
+def observations_table_organizations_create_backup(regen=False):
     table_name = 'organizations'
+    # quit()
+    fields_data = parse_organizations_data.data
+    table_fields = ''
+    for field_item in fields_data:
+        field_name = field_item['field_name']
+        table_fields += f'''{field_name} TEXT,\n'''
+    print(table_fields)
+    quit()
+    ###
     conn = sqlite3.connect(db_filepath)
     cur = conn.cursor()
     if regen: cur.execute(f"DROP TABLE IF EXISTS {table_name}")
     cur.execute(f"""
         CREATE TABLE IF NOT EXISTS {table_name} (
             id INTEGER PRIMARY KEY,
+            business_gmap_label TEXT,
+            business_gmap_name TEXT,
+            business_gmap_website TEXT,
             business_is_category_herbs TEXT,
-            business_label TEXT,
-            business_name TEXT,
             business_name_official TEXT,
             business_name_legal TEXT,
             business_name_trade TEXT,
@@ -40,8 +52,7 @@ def observations_table_organizations_create(regen=False):
             business_core_values TEXT,
             business_type_primary TEXT,
             business_type_secondary TEXT,
-            business_industry TEXT,
-            business_niche TEXT,
+            business_industry TEXT, business_niche TEXT,
             business_model TEXT,
             business_website TEXT,
             business_email TEXT,
@@ -233,13 +244,8 @@ def observations_table_organizations_create(regen=False):
             business_research_phytochemistry TEXT,
             business_research_plant_breeding TEXT,
             business_education_courses TEXT,
-            business_education_workshops TEXT,
             business_education_webinars TEXT,
-            business_education_apprenticeships TEXT,
             business_education_lectures TEXT,
-            business_education_botanical_walks TEXT,
-            business_education_farm_tours TEXT,
-            business_education_certifications_offered TEXT,
             business_traditional_medicine_systems_ayurveda TEXT,
             business_traditional_medicine_systems_traditional_chinese_medicine TEXT,
             business_traditional_medicine_systems_western_herbalism TEXT,
@@ -253,10 +259,8 @@ def observations_table_organizations_create(regen=False):
             business_expertise_herbal_formulation TEXT,
             business_expertise_ethnobotany TEXT,
             business_expertise_pharmacognosy TEXT,
-            business_expertise_botanical_identification TEXT,
             business_expertise_herbal_medicine TEXT,
             business_expertise_conservation TEXT,
-            business_expertise_plant_propagation TEXT,
             business_people_founders TEXT,
             business_people_owners TEXT,
             business_people_ceo TEXT,
@@ -264,16 +268,11 @@ def observations_table_organizations_create(regen=False):
             business_people_director TEXT,
             business_people_botanists TEXT,
             business_people_herbalists TEXT,
-            business_people_researchers TEXT,
-            business_people_agronomists TEXT,
-            business_people_pharmacists TEXT,
             business_people_educators TEXT,
-            business_people_laboratory_directors TEXT,
             business_people_farm_managers TEXT,
             business_markets_customer_types TEXT,
             business_markets_industries_served TEXT,
             business_markets_export_markets TEXT,
-            business_markets_import_markets TEXT,
             business_markets_countries_served TEXT,
             business_markets_regions_served TEXT,
             business_markets_international_shipping TEXT,
@@ -287,20 +286,9 @@ def observations_table_organizations_create(regen=False):
             business_online_presence_x TEXT,
             business_online_presence_pinterest TEXT,
             business_online_presence_tiktok TEXT,
-            business_online_presence_github TEXT,
-            business_online_presence_wikipedia TEXT,
             business_awards_awards TEXT,
-            business_awards_award_name TEXT,
-            business_awards_award_year TEXT,
-            business_awards_awarding_organization TEXT,
-            business_memberships_professional_associations TEXT,
-            business_memberships_industry_memberships TEXT,
-            business_memberships_botanical_societies TEXT,
-            business_memberships_herbal_associations TEXT,
             business_policies_privacy_policy TEXT,
             business_policies_shipping_policy TEXT,
-            business_policies_returns_policy TEXT,
-            business_policies_refund_policy TEXT,
             business_policies_sustainability_policy TEXT,
             business_policies_accessibility_policy TEXT,
             business_languages_languages TEXT,
@@ -314,7 +302,41 @@ def observations_table_organizations_create(regen=False):
             business_shipping_international_shipping TEXT,
             business_shipping_local_delivery TEXT,
             source_name TEXT,
-            source_acronym TEXT
+            source_acronym TEXT,
+            business_name_normalize TEXT,
+            business_name_display TEXT,
+            business_slug TEXT,
+            business_name_canonical TEXT
+        );
+    """)
+    conn.execute("PRAGMA journal_mode = WAL;")
+    conn.execute("PRAGMA synchronous = OFF;")
+    conn.execute("PRAGMA temp_store = MEMORY;")
+    conn.commit()
+    conn.close()
+
+def observations_table_organizations_create(regen=False):
+    table_name = 'organizations'
+    # quit()
+    fields_data = parse_organizations_data.data
+    table_fields = ''
+    for field_item in fields_data:
+        field_name = field_item['field_name']
+        table_fields += f'''{field_name} TEXT,\n'''
+    ###
+    conn = sqlite3.connect(db_filepath)
+    cur = conn.cursor()
+    if regen: cur.execute(f"DROP TABLE IF EXISTS {table_name}")
+    cur.execute(f"""
+        CREATE TABLE IF NOT EXISTS {table_name} (
+            id INTEGER PRIMARY KEY,
+            {table_fields}
+            source_name TEXT,
+            source_acronym TEXT,
+            business_name_normalize TEXT,
+            business_name_display TEXT,
+            business_slug TEXT,
+            business_name_canonical TEXT
         );
     """)
     conn.execute("PRAGMA journal_mode = WAL;")
@@ -330,5 +352,6 @@ def run():
     # except: pass
     os.makedirs(output_folderpath, exist_ok=True)
 
+    # fields_get()
     observations_table_organizations_create(regen=True)
 

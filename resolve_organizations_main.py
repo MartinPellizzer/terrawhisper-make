@@ -13,9 +13,9 @@ import normalize_utils
 
 HUB_FOLDERPATH = f'{g.DATA_FOLDERPATH}/organizations'
 
-def normalize_businesses(source_foldername):
-    input_folderpath = f'{HUB_FOLDERPATH}/parse/{source_foldername}/json'
-    output_folderpath = f'{HUB_FOLDERPATH}/normalize/{source_foldername}/json'
+def resolve_businesses(source_foldername):
+    input_folderpath = f'{HUB_FOLDERPATH}/normalize/{source_foldername}/json'
+    output_folderpath = f'{HUB_FOLDERPATH}/resolve/{source_foldername}/json'
     try: shutil.rmtree(output_folderpath)
     except: pass
     io.folders_recursive_gen(output_folderpath)
@@ -28,14 +28,21 @@ def normalize_businesses(source_foldername):
         ###
         input_filepath = f'{input_folderpath}/{input_filename}'
         input_data = io.json_read(input_filepath)
-        ### COPY
-        io.json_write(output_filepath, input_data)
-    print(json.dumps(input_data[0], indent=4))
+        ###
+        resolved_data = []
+        for input_item in input_data:
+            business_name_normalize = input_item['business_name_normalize']
+            input_item['business_name_canonical'] = business_name_normalize
+            resolved_data.append(input_item)
+            # print(json.dumps(input_item, indent=4))
+            # quit()
+        if resolved_data != []:
+            io.json_write(output_filepath, resolved_data)
 
 def run():
     print('NORMALIZE >> MAIN')
 
     if 1:
         start = time.perf_counter()
-        normalize_businesses(source_foldername='website')
-        print(f'normalize businesses() - execution time: ', time.perf_counter() - start)
+        resolve_businesses(source_foldername='website')
+        print(f'resolve businesses() - execution time: ', time.perf_counter() - start)

@@ -38,3 +38,15 @@ def masterize_chemicals_get_all():
     conn.close()
     return rows
 
+def masterize_organizations_get_all():
+    db_filepath = f'{g.DATA_FOLDERPATH}/organizations/masterize/master.db'
+    conn = sqlite3.connect(db_filepath)
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT *
+        FROM organizations
+    """)
+    rows = cur.fetchall()
+    conn.close()
+    return rows
+

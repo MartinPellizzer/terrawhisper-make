@@ -11,11 +11,15 @@ from lib import io
 from lib import llm
 
 import parse_utils
+import parse_organizations_data
 
 import re
 import unicodedata
 
+HUB_FOLDERPATH = f'{g.DATA_FOLDERPATH}/organizations'
+
 model_filepath = '/home/ubuntu/vault-tmp/llm/gemma-4-12b-it-Q4_K_S.gguf'
+model_filepath = '/home/ubuntu/vault-tmp/llm/gemma-4-12B-it-qat-UD-Q4_K_XL.gguf'
 
 _NON_ALNUM = re.compile(r"[^\w\s-]", re.UNICODE)
 _SEPARATORS = re.compile(r"[-\s]+")
@@ -28,69 +32,9 @@ def to_slug(name: str) -> str:
     name = _NON_ALNUM.sub("", name)
     return _SEPARATORS.sub("-", name).strip("-").lower()
 
-def parse_gmap():
-    output_folderpath = f'{g.DATA_FOLDERPATH}/organizations/parse/gmap/json'
-    try: shutil.rmtree(output_folderpath)
-    except: pass
-    io.folders_recursive_gen(output_folderpath)
-    ###
-    input_foldername = f'{g.DATA_FOLDERPATH}/organizations/fetch/gmap/america/places'.replace(' ', '_')
-    input_filenames = sorted(os.listdir(input_foldername))
-    for input_filename in input_filenames[:10]:
-        input_filepath = f'{input_foldername}/{input_filename}'
-        with open(input_filepath, encoding="utf-8") as f: rows = f.read().strip().split('\n')
-        for row in rows:
-            values = row.split('~')
-            print(values)
-            if values != [] and values != ['']:
-                label = values[0]
-                address = values[1]
-                website = values[2]
-                phone = values[3]
-                name = values[4]
-                info = values[5]
-                slug = to_slug(label)
-                print(f'label: {label}')
-                print(f'address: {address}')
-                print(f'website: {website}')
-                print(f'phone: {phone}')
-                print(f'name: {name}')
-                print(f'info: {info}')
-                print(f'slug: {slug}')
-                print(f'***************************************')
-                print()
-                print(info)
-                ###
-                output_items = []
-                output_item = parse_utils.organizations__business_create(
-                    business_label = name,
-                    business_name = name,
-                    business_name_official = None,
-                    business_name_legal = None,
-                    business_name_trade = None,
-                    business_name_brand = None,
-                    business_address = address,
-                    business_website = website,
-                    business_phone = phone,
-                    source_name = 'Google Maps',
-                    source_acronym = 'GMAP',
-                )
-                output_items.append(output_item)
-                output_filepath = f'{output_folderpath}/{slug}.json'
-                io.json_write(output_filepath, output_items)
-
-                '''
-                lst = ast.literal_eval(info)
-                if 'Erborista' in lst:
-                    # print('found')
-                    slug = to_slug(label)
-                    # print(slug)
-
-                # quit()
-                '''
-        # print(json.dumps(item, indent=4))
-
-def llm_gen(query, description, website_text):
+def llm_gen(query, description, website_text, input_len_max=0):
+    if input_len_max != 0:
+        website_text = website_text[:input_len_max]
     prompt = f'''
         Extract the {query} from the following text found in the business website.
         By {query} i mean {description}.
@@ -99,10 +43,13 @@ def llm_gen(query, description, website_text):
         WEBSITE TEXT:
         {website_text}
     '''.strip()
+    print(f'LEN CHARS: {len(prompt)}')
+    print(f'LEN WORDS: {len(prompt.split())}')
     reply = llm.reply(prompt, model_filepath, max_tokens=512)
     if '</think>' in reply:
         reply = reply.split('</think>')[1].strip()
     if 'none' in reply.lower(): reply = None
+    print()
     return reply
 
 def llm_bool_gen(query, description, website_text):
@@ -117,21 +64,22 @@ def llm_bool_gen(query, description, website_text):
     reply = llm.reply(prompt, model_filepath, max_tokens=512)
     if '</think>' in reply:
         reply = reply.split('</think>')[1].strip()
+    reply = reply.lower()
     if 'none' in reply.lower(): reply = None
     return reply
 
-### FETCH start 764
 def parse_website():
+    start = 0
+    end = 10
+    ###
     output_folderpath = f'{g.DATA_FOLDERPATH}/organizations/parse/website/json'
     # try: shutil.rmtree(output_folderpath)
     # except: pass
     io.folders_recursive_gen(output_folderpath)
     ###
-    input_foldername = f'{g.DATA_FOLDERPATH}/organizations/fetch/gmap/america/places'.replace(' ', '_')
+    input_foldername = f'{HUB_FOLDERPATH}/fetch/gmap/america/places'.replace(' ', '_')
     input_filenames = sorted(os.listdir(input_foldername))
     i = 0
-    start = 100
-    end = 200
     for input_filename in input_filenames[start:end]:
         print(f'{start+i}/{end}')
         i += 1
@@ -142,14 +90,73 @@ def parse_website():
             values = row.split('~')
             if values != [] and values != ['']:
                 label = values[0]
+                name = values[1]
                 website = values[2]
                 slug = to_slug(label)
                 print(f'label: {label}')
+                print(f'name: {name}')
                 print(f'website: {website}')
                 print(f'slug: {slug}')
                 print(f'***************************************')
                 print()
 
+                llm_business_is_category_herbs  = ''
+                print(f'website: {website}')
+                print(f'slug: {slug}')
+                print(f'***************************************')
+                print()
+
+                website_filepath = f'{HUB_FOLDERPATH}/fetch/websites/america/places/{input_filename_base}/{slug}.html'
+                output_filepath = f'{output_folderpath}/{slug}.json'
+                try: html = io.file_read(website_filepath)
+                except: html = ''
+                if html != '':
+                    soup = BeautifulSoup(html, "html.parser")
+                    website_text = soup.get_text(separator="\n", strip=True)
+                    if website_text.strip() != '':
+
+                        fields_data = parse_organizations_data.data
+                        output_items = []
+                        output_item = {}
+                        for field_item in fields_data:
+                            reply = ''
+                            if field_item['field_type'] == 'bool':
+                                reply = llm_bool_gen(
+                                    query=field_item['field_query'],
+                                    description=field_item['field_description'],
+                                    website_text=website_text
+                                )
+                            elif field_item['field_type'] == 'text':
+                                reply = llm_gen(
+                                    query=field_item['field_query'],
+                                    description=field_item['field_description'],
+                                    website_text=website_text
+                                )
+
+                            key = field_item['field_name']
+                            val = reply
+                            output_item[key] = val
+
+                        output_items.append(output_item)
+                        io.json_write(output_filepath, output_items)
+                        ###
+                        item = output_items[0]
+                        print(output_filepath)
+                        none_count = 0
+                        empty_count = 0
+                        value_count = 0
+                        for key, val in item.items():
+                            if val == None: none_count += 1
+                            elif val == '': empty_count += 1
+                            else: value_count += 1
+                        total_count = none_count + empty_count + value_count
+                        print(f'NONE: {none_count}/{total_count} - {none_count/total_count*100}')
+                        print(f'EMPTY: {empty_count}/{total_count} - {empty_count/total_count*100}')
+                        print(f'VALUE: {value_count}/{total_count} - {value_count/total_count*100}')
+                        ###
+                        # quit()
+
+                continue
                 llm_business_is_category_herbs  = ''
                 ###
                 llm_business_name_official = ''
@@ -560,6 +567,7 @@ def parse_website():
                             description='''Company's stated values''', 
                             website_text=website_text
                             )
+
                         # 2. Business Classification
                         llm_business_type_primary = llm_gen(
                             query='primary business type', 
@@ -1974,9 +1982,12 @@ def parse_website():
                         ###
                         output_items = []
                         output_item = parse_utils.organizations__business_create(
+                            business_gmap_label = label,
+                            business_gmap_name = name,
+                            business_gmap_website = website,
+                            ###
                             business_is_category_herbs = llm_business_is_category_herbs,
-                            business_label = None,
-                            business_name = None,
+                            ###
                             business_name_official = llm_business_name_official,
                             business_name_legal = llm_business_name_legal,
                             business_name_trade = llm_business_name_trade,
@@ -2204,13 +2215,13 @@ def parse_website():
                             business_research_plant_breeding = llm_business_research_plant_breeding,
                             ###
                             business_education_courses = llm_business_education_courses,
-                            business_education_workshops = llm_business_education_workshops,
+                            # business_education_workshops = llm_business_education_workshops,
                             business_education_webinars = llm_business_education_webinars,
-                            business_education_apprenticeships = llm_business_education_apprenticeships,
+                            # business_education_apprenticeships = llm_business_education_apprenticeships,
                             business_education_lectures = llm_business_education_lectures,
-                            business_education_botanical_walks = llm_business_education_botanical_walks,
-                            business_education_farm_tours = llm_business_education_farm_tours,
-                            business_education_certifications_offered = llm_business_education_certifications_offered,
+                            # business_education_botanical_walks = llm_business_education_botanical_walks,
+                            # business_education_farm_tours = llm_business_education_farm_tours,
+                            # business_education_certifications_offered = llm_business_education_certifications_offered,
                             ###
                             business_traditional_medicine_systems_ayurveda = llm_business_traditional_medicine_systems_ayurveda,
                             business_traditional_medicine_systems_traditional_chinese_medicine = llm_business_traditional_medicine_systems_traditional_chinese_medicine,
@@ -2226,10 +2237,10 @@ def parse_website():
                             business_expertise_herbal_formulation = llm_business_expertise_herbal_formulation,
                             business_expertise_ethnobotany = llm_business_expertise_ethnobotany,
                             business_expertise_pharmacognosy = llm_business_expertise_pharmacognosy,
-                            business_expertise_botanical_identification = llm_business_expertise_botanical_identification,
+                            # business_expertise_botanical_identification = llm_business_expertise_botanical_identification,
                             business_expertise_herbal_medicine = llm_business_expertise_herbal_medicine,
                             business_expertise_conservation = llm_business_expertise_conservation,
-                            business_expertise_plant_propagation = llm_business_expertise_plant_propagation,
+                            # business_expertise_plant_propagation = llm_business_expertise_plant_propagation,
 
                             business_people_founders = llm_business_people_founders,
                             business_people_owners = llm_business_people_owners,
@@ -2238,17 +2249,17 @@ def parse_website():
                             business_people_director = llm_business_people_director,
                             business_people_botanists = llm_business_people_botanists,
                             business_people_herbalists = llm_business_people_herbalists,
-                            business_people_researchers = llm_business_people_researchers,
-                            business_people_agronomists = llm_business_people_agronomists,
-                            business_people_pharmacists = llm_business_people_pharmacists,
+                            # business_people_researchers = llm_business_people_researchers,
+                            # business_people_agronomists = llm_business_people_agronomists,
+                            # business_people_pharmacists = llm_business_people_pharmacists,
                             business_people_educators = llm_business_people_educators,
-                            business_people_laboratory_directors = llm_business_people_laboratory_directors,
+                            # business_people_laboratory_directors = llm_business_people_laboratory_directors,
                             business_people_farm_managers = llm_business_people_farm_managers,
 
                             business_markets_customer_types = llm_business_markets_customer_types,
                             business_markets_industries_served = llm_business_markets_industries_served,
                             business_markets_export_markets = llm_business_markets_export_markets,
-                            business_markets_import_markets = llm_business_markets_import_markets,
+                            # business_markets_import_markets = llm_business_markets_import_markets,
                             business_markets_countries_served = llm_business_markets_countries_served,
                             business_markets_regions_served = llm_business_markets_regions_served,
                             business_markets_international_shipping = llm_business_markets_international_shipping,
@@ -2263,23 +2274,23 @@ def parse_website():
                             business_online_presence_x = llm_business_online_presence_x,
                             business_online_presence_pinterest = llm_business_online_presence_pinterest,
                             business_online_presence_tiktok = llm_business_online_presence_tiktok,
-                            business_online_presence_github = llm_business_online_presence_github,
-                            business_online_presence_wikipedia = llm_business_online_presence_wikipedia,
+                            # business_online_presence_github = llm_business_online_presence_github,
+                            # business_online_presence_wikipedia = llm_business_online_presence_wikipedia,
 
                             business_awards_awards = llm_business_awards_awards,
-                            business_awards_award_name = llm_business_awards_award_name,
-                            business_awards_award_year = llm_business_awards_award_year,
-                            business_awards_awarding_organization = llm_business_awards_awarding_organization,
+                            # business_awards_award_name = llm_business_awards_award_name,
+                            # business_awards_award_year = llm_business_awards_award_year,
+                            # business_awards_awarding_organization = llm_business_awards_awarding_organization,
 
-                            business_memberships_professional_associations = llm_business_memberships_professional_associations,
-                            business_memberships_industry_memberships = llm_business_memberships_industry_memberships,
-                            business_memberships_botanical_societies = llm_business_memberships_botanical_societies,
-                            business_memberships_herbal_associations = llm_business_memberships_herbal_associations,
+                            # business_memberships_professional_associations = llm_business_memberships_professional_associations,
+                            # business_memberships_industry_memberships = llm_business_memberships_industry_memberships,
+                            # business_memberships_botanical_societies = llm_business_memberships_botanical_societies,
+                            # business_memberships_herbal_associations = llm_business_memberships_herbal_associations,
 
                             business_policies_privacy_policy = llm_business_policies_privacy_policy,
                             business_policies_shipping_policy = llm_business_policies_shipping_policy,
-                            business_policies_returns_policy = llm_business_policies_returns_policy,
-                            business_policies_refund_policy = llm_business_policies_refund_policy,
+                            # business_policies_returns_policy = llm_business_policies_returns_policy,
+                            # business_policies_refund_policy = llm_business_policies_refund_policy,
                             business_policies_sustainability_policy = llm_business_policies_sustainability_policy,
                             business_policies_accessibility_policy = llm_business_policies_accessibility_policy,
 
@@ -2341,7 +2352,6 @@ def analyse_website():
                 print(f'***************************************')
                 print()
                 ###
-                ###
                 output_filepath = f'{output_folderpath}/{slug}.json'
                 data = io.json_read(output_filepath)
                 item = data[0]
@@ -2358,12 +2368,57 @@ def analyse_website():
                 print(f'VALUE: {value_count}/{total_count} - {value_count/total_count*100}')
                 quit()
 
+def analyse_jsons():
+    input_folderpath = f'{HUB_FOLDERPATH}/parse/website/json'
+    input_filenames = sorted(os.listdir(input_folderpath))
+    i = 0
+    fields = []
+    for input_filename in input_filenames[:]:
+        i += 1
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        data = io.json_read(input_filepath)[0]
+        for key, val in data.items():
+            found = False        
+            for field in fields:
+                if field['name'] == key:
+                    none_count = 0
+                    empty_count = 0
+                    value_count = 0
+                    if val == None: none_count += 1
+                    elif val == '': empty_count += 1
+                    else: value_count += 1
+                    field['analytics']['none'] += none_count
+                    field['analytics']['empty'] += empty_count
+                    field['analytics']['value'] += value_count
+                    ###
+                    found = True        
+                    break
+            if not found:
+                none_count = 0
+                empty_count = 0
+                value_count = 0
+                if val == None: none_count += 1
+                elif val == '': empty_count += 1
+                else: value_count += 1
+                item_new = {
+                    'name': key,
+                    'analytics': {
+                        'none': none_count,
+                        'empty': empty_count,
+                        'value': value_count,
+                    },
+                }
+                fields.append(item_new)
+
+    # print(json.dumps(fields, indent=4))
+
+    fields = sorted(fields, key=lambda x: x["analytics"]["value"], reverse=True)
+
+    print(json.dumps(fields, indent=4))
+    quit()
+
 def run():
     print(f'ORGANIZATION >> PARSE >> main')
-
-    start = time.perf_counter()
-    # parse_gmap()
-    print(f'parse gmap() - execution time: ', time.perf_counter() - start)
 
     start = time.perf_counter()
     parse_website()
@@ -2378,4 +2433,5 @@ HOURS:   {(time.perf_counter() - start)/60/60}
     ''')
 
     # analyse_website()
+    # analyse_jsons()
 

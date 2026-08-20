@@ -1,14 +1,10 @@
 import observe_init
-import observe_wcvp
-import observe_powo
-import observe_pubmed
-import observe_drduke
 import observe_main
+import observe_organizations_init
+import observe_organizations_main
 
-observe_init.run()
-# observe_wcvp.run()
-# observe_powo.run()
-# observe_drduke.run()
-# observe_pubmed.run()
+# observe_init.run()
+# observe_main.run()
 
-observe_main.run()
+observe_organizations_init.run()
+observe_organizations_main.run()

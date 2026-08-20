@@ -23,6 +23,7 @@ import fetch_drduke
 # ORGANIZATIONS
 ################################################################################
 
+# import fetch_gmap
 import fetch_website
 
 # fetch_gmap()

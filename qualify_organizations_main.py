@@ -26,9 +26,10 @@ def folder_copy():
         # if os.path.exists(output_filepath): continue
         shutil.copy2(input_filepath, output_filepath)
 
-print('QUALIFY >> pubmed')
+def run():
+    print('QUALIFY >> pubmed')
 
-start = time.perf_counter()
-folder_copy()
-print(f'folder_copy() - execution time: ', time.perf_counter() - start)
+    start = time.perf_counter()
+    folder_copy()
+    print(f'folder_copy() - execution time: ', time.perf_counter() - start)
 

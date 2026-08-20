@@ -130,10 +130,12 @@ def trait_create(
     return item
 
 def organizations__business_create(
+    business_gmap_label,
+    business_gmap_name,
+    business_gmap_website,
+
     business_is_category_herbs,
 
-    business_label,
-    business_name,
     business_name_official,
     business_name_legal,
     business_name_trade,
@@ -361,13 +363,8 @@ def organizations__business_create(
     business_research_plant_breeding,
 
     business_education_courses,
-    business_education_workshops,
     business_education_webinars,
-    business_education_apprenticeships,
     business_education_lectures,
-    business_education_botanical_walks,
-    business_education_farm_tours,
-    business_education_certifications_offered,
 
     business_traditional_medicine_systems_ayurveda,
     business_traditional_medicine_systems_traditional_chinese_medicine,
@@ -383,10 +380,8 @@ def organizations__business_create(
     business_expertise_herbal_formulation,
     business_expertise_ethnobotany,
     business_expertise_pharmacognosy,
-    business_expertise_botanical_identification,
     business_expertise_herbal_medicine,
     business_expertise_conservation,
-    business_expertise_plant_propagation,
 
     business_people_founders,
     business_people_owners,
@@ -395,17 +390,12 @@ def organizations__business_create(
     business_people_director,
     business_people_botanists,
     business_people_herbalists,
-    business_people_researchers,
-    business_people_agronomists,
-    business_people_pharmacists,
     business_people_educators,
-    business_people_laboratory_directors,
     business_people_farm_managers,
 
     business_markets_customer_types,
     business_markets_industries_served,
     business_markets_export_markets,
-    business_markets_import_markets,
     business_markets_countries_served,
     business_markets_regions_served,
     business_markets_international_shipping,
@@ -420,23 +410,11 @@ def organizations__business_create(
     business_online_presence_x,
     business_online_presence_pinterest,
     business_online_presence_tiktok,
-    business_online_presence_github,
-    business_online_presence_wikipedia,
 
     business_awards_awards,
-    business_awards_award_name,
-    business_awards_award_year,
-    business_awards_awarding_organization,
-
-    business_memberships_professional_associations,
-    business_memberships_industry_memberships,
-    business_memberships_botanical_societies,
-    business_memberships_herbal_associations,
 
     business_policies_privacy_policy,
     business_policies_shipping_policy,
-    business_policies_returns_policy,
-    business_policies_refund_policy,
     business_policies_sustainability_policy,
     business_policies_accessibility_policy,
 
@@ -457,10 +435,12 @@ def organizations__business_create(
     source_acronym,
 ):
     item = {
+        'business_gmap_label': business_gmap_label,
+        'business_gmap_name': business_gmap_name,
+        'business_gmap_website': business_gmap_website,
+
         'business_is_category_herbs': business_is_category_herbs,
 
-        'business_label': business_label,
-        'business_name': business_name,
         'business_name_official': business_name_official,
         'business_name_legal': business_name_legal,
         'business_name_trade': business_name_trade,
@@ -688,13 +668,8 @@ def organizations__business_create(
         'business_research_plant_breeding': business_research_plant_breeding,
         ###
         'business_education_courses': business_education_courses,
-        'business_education_workshops': business_education_workshops,
         'business_education_webinars': business_education_webinars,
-        'business_education_apprenticeships': business_education_apprenticeships,
         'business_education_lectures': business_education_lectures,
-        'business_education_botanical_walks': business_education_botanical_walks,
-        'business_education_farm_tours': business_education_farm_tours,
-        'business_education_certifications_offered': business_education_certifications_offered,
         ###
         'business_traditional_medicine_systems_ayurveda': business_traditional_medicine_systems_ayurveda,
         'business_traditional_medicine_systems_traditional_chinese_medicine': business_traditional_medicine_systems_traditional_chinese_medicine,
@@ -710,10 +685,8 @@ def organizations__business_create(
         'business_expertise_herbal_formulation': business_expertise_herbal_formulation,
         'business_expertise_ethnobotany': business_expertise_ethnobotany,
         'business_expertise_pharmacognosy': business_expertise_pharmacognosy,
-        'business_expertise_botanical_identification': business_expertise_botanical_identification,
         'business_expertise_herbal_medicine': business_expertise_herbal_medicine,
         'business_expertise_conservation': business_expertise_conservation,
-        'business_expertise_plant_propagation': business_expertise_plant_propagation,
         ###
         'business_people_founders': business_people_founders,
         'business_people_owners': business_people_owners,
@@ -722,17 +695,12 @@ def organizations__business_create(
         'business_people_director': business_people_director,
         'business_people_botanists': business_people_botanists,
         'business_people_herbalists': business_people_herbalists,
-        'business_people_researchers': business_people_researchers,
-        'business_people_agronomists': business_people_agronomists,
-        'business_people_pharmacists': business_people_pharmacists,
         'business_people_educators': business_people_educators,
-        'business_people_laboratory_directors': business_people_laboratory_directors,
         'business_people_farm_managers': business_people_farm_managers,
 
         'business_markets_customer_types': business_markets_customer_types,
         'business_markets_industries_served': business_markets_industries_served,
         'business_markets_export_markets': business_markets_export_markets,
-        'business_markets_import_markets': business_markets_import_markets,
         'business_markets_countries_served': business_markets_countries_served,
         'business_markets_regions_served': business_markets_regions_served,
         'business_markets_international_shipping': business_markets_international_shipping,
@@ -747,23 +715,11 @@ def organizations__business_create(
         'business_online_presence_x': business_online_presence_x,
         'business_online_presence_pinterest': business_online_presence_pinterest,
         'business_online_presence_tiktok': business_online_presence_tiktok,
-        'business_online_presence_github': business_online_presence_github,
-        'business_online_presence_wikipedia': business_online_presence_wikipedia,
 
         'business_awards_awards': business_awards_awards,
-        'business_awards_award_name': business_awards_award_name,
-        'business_awards_award_year': business_awards_award_year,
-        'business_awards_awarding_organization': business_awards_awarding_organization,
-
-        'business_memberships_professional_associations': business_memberships_professional_associations,
-        'business_memberships_industry_memberships': business_memberships_industry_memberships,
-        'business_memberships_botanical_societies': business_memberships_botanical_societies,
-        'business_memberships_herbal_associations': business_memberships_herbal_associations,
 
         'business_policies_privacy_policy': business_policies_privacy_policy,
         'business_policies_shipping_policy': business_policies_shipping_policy,
-        'business_policies_returns_policy': business_policies_returns_policy,
-        'business_policies_refund_policy': business_policies_refund_policy,
         'business_policies_sustainability_policy': business_policies_sustainability_policy,
         'business_policies_accessibility_policy': business_policies_accessibility_policy,
 
@@ -784,4 +740,57 @@ def organizations__business_create(
         'source_acronym': source_acronym,
     }
     return item
+
+### BENCH
+'''
+
+    business_policies_returns_policy,
+    business_policies_refund_policy,
+    business_memberships_professional_associations,
+    business_memberships_industry_memberships,
+    business_memberships_botanical_societies,
+    business_memberships_herbal_associations,
+    business_awards_award_name,
+    business_awards_award_year,
+    business_awards_awarding_organization,
+    business_online_presence_github,
+    business_online_presence_wikipedia,
+    business_markets_import_markets,
+    business_people_researchers,
+    business_people_agronomists,
+    business_people_pharmacists,
+    business_people_laboratory_directors,
+    business_expertise_plant_propagation,
+    business_expertise_botanical_identification,
+    business_education_workshops,
+    business_education_apprenticeships,
+    business_education_botanical_walks,
+    business_education_farm_tours,
+    business_education_certifications_offered,
+
+        'business_policies_returns_policy': business_policies_returns_policy,
+        'business_policies_refund_policy': business_policies_refund_policy,
+        'business_memberships_professional_associations': business_memberships_professional_associations,
+        'business_memberships_industry_memberships': business_memberships_industry_memberships,
+        'business_memberships_botanical_societies': business_memberships_botanical_societies,
+        'business_memberships_herbal_associations': business_memberships_herbal_associations,
+        'business_awards_award_name': business_awards_award_name,
+        'business_awards_award_year': business_awards_award_year,
+        'business_awards_awarding_organization': business_awards_awarding_organization,
+        'business_online_presence_github': business_online_presence_github,
+        'business_online_presence_wikipedia': business_online_presence_wikipedia,
+        'business_markets_import_markets': business_markets_import_markets,
+        'business_people_researchers': business_people_researchers,
+        'business_people_agronomists': business_people_agronomists,
+        'business_people_pharmacists': business_people_pharmacists,
+        'business_people_laboratory_directors': business_people_laboratory_directors,
+        'business_expertise_plant_propagation': business_expertise_plant_propagation,
+        'business_expertise_botanical_identification': business_expertise_botanical_identification,
+        'business_education_workshops': business_education_workshops,
+        'business_education_apprenticeships': business_education_apprenticeships,
+        'business_education_botanical_walks': business_education_botanical_walks,
+        'business_education_farm_tours': business_education_farm_tours,
+        'business_education_certifications_offered': business_education_certifications_offered,
+
+'''
 

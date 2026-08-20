@@ -6,13 +6,11 @@ import shutil
 from lib import g
 from lib import io
 
-HUB_FOLDERPATH = f'{g.DATA_FOLDERPATH}/organizations' 
-
 def folder_copy():
-    input_foldername = f'enhance'
-    output_foldername = f'compile'
-    input_folderpath = f'{HUB_FOLDERPATH}/{input_foldername}'
-    output_folderpath = f'{HUB_FOLDERPATH}/{output_foldername}'
+    input_foldername = f'observe'
+    output_foldername = f'qualify'
+    input_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/{input_foldername}'
+    output_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/{output_foldername}'
     io.folders_recursive_gen(output_folderpath)
     input_filenames = os.listdir(input_folderpath)
     ###
@@ -26,9 +24,10 @@ def folder_copy():
         # if os.path.exists(output_filepath): continue
         shutil.copy2(input_filepath, output_filepath)
 
-print('QUALIFY >> pubmed')
+def run():
+    print('QUALIFY >> pubmed')
 
-start = time.perf_counter()
-folder_copy()
-print(f'folder_copy() - execution time: ', time.perf_counter() - start)
+    start = time.perf_counter()
+    folder_copy()
+    print(f'folder_copy() - execution time: ', time.perf_counter() - start)
 

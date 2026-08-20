@@ -1,3 +1,9 @@
+################################################################################
+
+# DOWNLOADS
+# https://www1.census.gov/geo/docs/maps-data/data/gazetteer/2025_Gazetteer/2025_Gaz_place_national.zip
+################################################################################
+
 import os
 from time import sleep
 
@@ -202,7 +208,7 @@ for continent_i, continent in enumerate(continents[:]):
     sleep(2)
 
     operations_num = 0
-    for k, row in enumerate(rows[100:1000]):
+    for k, row in enumerate(rows[10:1000]):
         # country = row[1].strip().lower()
         place = row['NAME'].strip().lower()
         output_folderpath = f'{g.DATA_FOLDERPATH}/organizations/fetch/gmap/{continent}/places'.replace(' ', '_')

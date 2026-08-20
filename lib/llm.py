@@ -12,6 +12,7 @@ def reply(prompt, model_filepath='', temperature=1, n_ctx=16386, max_tokens=1024
               n_gpu_layers=-1, # Uncomment to use GPU acceleration
               # seed=1337, # Uncomment to set a specific seed
               n_ctx=n_ctx, # Uncomment to increase the context window
+                verbose=False,
         )
     chat_history = []
     chat_history.append({'role': 'user', 'content': prompt})

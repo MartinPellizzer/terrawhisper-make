@@ -38,42 +38,6 @@ def observations_table_organizations_add(source_foldername):
     cur.executemany(query, values)
     conn.commit()
 
-    ###
-    '''
-    conn = sqlite3.connect(db_filepath)
-    cur = conn.cursor()
-    cur.executemany(
-        f"""
-            INSERT OR IGNORE INTO {table_name} (
-                business_is_category_herbs,
-                business_label,
-                business_name,
-                business_name_official,
-                business_name_legal,
-                business_name_trade,
-                business_slogan
-            )
-            VALUES (?, ?, ?, ?, ?, ?, ?)
-        """,
-        [
-            (
-                item.get("business_is_category_herbs"),
-                item.get("business_label"),
-                item.get("business_name"),
-                item.get("business_name_official"),
-                item.get("business_name_legal"),
-                item.get("business_name_trade"),
-                item.get("business_slogan"),
-            )
-            for item in all_data
-        ]
-    )
-    conn.commit()
-    rows = conn.execute(f'SELECT * FROM {table_name}')
-    for row in list(rows)[:10]:
-        print(row)
-    '''
-
     ### PEEK
     conn.row_factory = sqlite3.Row
     cur = conn.cursor()
