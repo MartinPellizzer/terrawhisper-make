@@ -253,23 +253,48 @@ def classify_product_domain(record):
         return "PLANT"
     return "UNKNOWN"
 
-def render_listing(items):
-    business_name_canonical = items['business_name_canonical']
-    business_name_display = items['business_name_display']
-    business_slug = items['business_slug']
+def render_listing(master_item):
+    business_name_canonical = master_item['business_name_canonical']
+    business_name_display = master_item['business_name_display']
+    business_slug = master_item['business_slug']
+    url_slug = f'organizations/{business_slug}'
 
     input_data = io.json_read(f'{HUB_FOLDERPATH}/compile/{business_name_canonical}.json')
 
-    print(json.dumps(input_data, indent=4))
+    # print(json.dumps(input_data, indent=4))
     # quit()
+
+    html_article = ''
+
+    if 0:
+        html_article += f'<h1>{business_name_display}</h1>'
+
+        identity_data = input_data['identity']
+        html_article += f'''<h2>Identity</h2>'''
+        html_article += f'''<p>{identity_data[0]['llm']}</p>'''
+
+        location_data = input_data['location']
+        html_article += f'''<h2>Location</h2>'''
+        html_article += f'''<p>{location_data[0]['llm']}</p>'''
+    else:
+        for input_key, input_val in input_data.items():
+            # print(input_key, input_val)
+            if input_key == 'business_name_canonical': continue
+            html_article += f'''<h2>{input_key}</h2>'''
+            html_article += f'''<p>{input_val[0]['llm']}</p>'''
+            for field_key, field_val in input_val[0].items():
+                if field_key == 'llm': continue
+                html_article += f'''<p>{field_key}: {field_val}</p>'''
+                # print(html_article)
+        # quit()
+        
+    """
+    quit()
 
     ###
     identity_data = input_data['identity'][0]
 
-    url_slug = f'organizations/{business_slug}'
 
-    html_article = ''
-    html_article += f'<h1>{business_name_display}</h1>'
     html_article += f'''<p>{identity_data['llm']}</p>'''
 
     ## Business Overview
@@ -292,6 +317,7 @@ def render_listing(items):
             html_article += f'<p>{key}: {val}</p>'
         else:
             html_article += f'<p style="color: red;">{key}: {val}</p>'
+    """
 
     '''
     ## Business Identity
@@ -867,12 +893,13 @@ def render_listing(items):
     '''
 
 
-
+    '''
     html_article += f'<h2>ALL</h2>'
     for key, val in items.items():
         # pass
         # if val != None:
             html_article += f'<p>{key}: {val}</p>'
+    '''
 
 
 
@@ -982,8 +1009,8 @@ def gen_old():
 def run():
     print(f'ORGANIZATIONS >> RENDER >> ALL')
 
-    items = masterize_organizations_utils.masterize_organizations_get_all()
-    for item in items[:10]:
-        print(json.dumps(item, indent=4))
-        render_listing(item)
+    master_items = masterize_organizations_utils.masterize_organizations_get_all()
+    for master_item in master_items[:10]:
+        # print(json.dumps(master_item, indent=4))
+        render_listing(master_item)
 

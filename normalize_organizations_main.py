@@ -91,9 +91,9 @@ def normalize_businesses(source_foldername):
         input_data = io.json_read(input_filepath)
         for input_item in input_data:
             # print(input_item)
-            input_item['business_name_normalize'] = normalize_gen(input_item['business_name_raw'])
-            input_item['business_name_display'] = display_name_gen(input_item['business_name_raw'])
-            input_item['business_slug'] = slug_gen(input_item['business_name_raw'])
+            input_item['business_name_normalize'] = normalize_gen(input_item['business_gmap_name_raw'])
+            input_item['business_name_display'] = display_name_gen(input_item['business_gmap_name_raw'])
+            input_item['business_slug'] = slug_gen(input_item['business_gmap_name_raw'])
         io.json_write(output_filepath, input_data)
     # print(json.dumps(input_item, indent=4))
     # quit()

@@ -27,9 +27,10 @@ def compile_gen():
         output_data = {}
         output_data['business_name_canonical'] = business_name_canonical
 
-        output_data['identity'] = io.json_read(
-            f'{input_folderpath}/identity/{business_name_canonical}.json'
-        )
+        for foldername in os.listdir(input_folderpath):
+            output_data[foldername] = io.json_read(
+                f'{input_folderpath}/{foldername}/{business_name_canonical}.json'
+            )
 
         print(json.dumps(output_data, indent=4))
 
