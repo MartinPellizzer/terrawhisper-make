@@ -48,4 +48,25 @@ data = [
         'field_type': 'text',
         'field_section': 'location',
     },
+    {
+        'field_name': 'business_phone',
+        'field_query': 'business phone', 
+        'field_description': '''The primary business telephone number for customer inquiries. Preserve the international dialing code when available.''',
+        'field_type': 'text',
+        'field_section': 'contact',
+    },
+    {
+        'field_name': 'business_rating',
+        'field_query': '', 
+        'field_description': '''''',
+        'field_type': 'text',
+        'field_section': 'identity',
+    },
+    {
+        'field_name': 'business_reviews_num',
+        'field_query': '', 
+        'field_description': '''''',
+        'field_type': 'text',
+        'field_section': 'identity',
+    },
 ]

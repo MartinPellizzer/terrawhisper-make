@@ -11,32 +11,6 @@ from lib import io
 
 import normalize_utils
 import parse_organizations_data
-'''
-    {
-        'field_name': 'business_name_normalize',
-        'field_query': 'normalized business name', 
-        'field_description': '', 
-        'field_type': '',
-        'field_normalize': 'normalize',
-        'field_normalize_ref': 'business_name_official',
-    },
-    {
-        'field_name': 'business_name_display',
-        'field_query': 'display business name', 
-        'field_description': '', 
-        'field_type': '',
-        'field_normalize': 'display',
-        'field_normalize_ref': 'business_name_official',
-    },
-    {
-        'field_name': 'business_name_slug',
-        'field_query': 'business slug', 
-        'field_description': '', 
-        'field_type': '',
-        'field_normalize': 'slug',
-        'field_normalize_ref': 'business_name_official',
-    },
-'''
 
 HUB_FOLDERPATH = f'{g.DATA_FOLDERPATH}/organizations'
 

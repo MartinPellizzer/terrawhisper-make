@@ -69,7 +69,7 @@ def derive_sections():
         # quit()
         ###
         # TODO: debug, remove
-        if len(observe_items) < 2: continue
+        # if len(observe_items) < 2: continue
         print(business_name_canonical)
         # print(json.dumps(observe_items, indent=4))
         # quit()
@@ -77,14 +77,18 @@ def derive_sections():
         for observe_item in observe_items: 
             fields_data = parse_organizations_data.data
             # print(json.dumps(observe_item, indent=4))
+            # quit()
             # print(json.dumps(fields_data, indent=4))
             source_name = observe_item['source_name']
             for observe_key, observe_val in observe_item.items():
                 field_section = field_section_find(fields_data, observe_key)
                 # print(observe_key, observe_val)
                 if field_section != '':
-                    # print(field_section)
                     # print(observe_key, observe_val)
+                    # print(field_section)
+                    # print()
+                    # if observe_key == 'business_rating':
+                        # quit()
                     found_section = False
                     found_source = False
                     for output_item in output_items:
@@ -92,6 +96,8 @@ def derive_sections():
                             found_section = True
                         if output_item['source_name'] == source_name:
                             found_source = True
+                        if found_section and found_source:
+                            break
                     ###
                     if found_section and found_source:
                         output_item['fields'][observe_key] = observe_val
@@ -134,31 +140,14 @@ def derive_sections():
             io.folders_recursive_gen(f'{HUB_FOLDERPATH}/derive/{field_section}')
             output_filepath = f'{HUB_FOLDERPATH}/derive/{field_section}/{business_name_canonical}.json'
             io.json_write(output_filepath, [output_item_grouped['items']])
+            # io.json_write(output_filepath, [output_item_grouped])
+            # quit()
 
-        quit()
-
-        ### create folders from sections
-        for output_item in output_items:
-            field_section = output_item['field_section']
-            io.folders_recursive_gen(f'{HUB_FOLDERPATH}/derive/{field_section}')
-
-        for output_item in output_items:
-            field_section = output_item['field_section']
-            output_filepath = f'{HUB_FOLDERPATH}/derive/{field_section}/{business_name_canonical}.json'
-            io.json_write(output_filepath, [output_item['fields']])
-
-        quit()
-
-        for output_item in output_items:
-            print(json.dumps(output_item, indent=4))
-            field_section = output_item['field_section']
-            fields = output_item['fields']
-            output_filepath = f'{HUB_FOLDERPATH}/derive/{field_section}/{business_name_canonical}.json'
-            io.folder_create_from_filepath(output_filepath)
-            io.json_write(output_filepath, [fields])
-        quit()
 
 def run():
+    print(f'#########################################')
+    print(f'DERIVE')
+    print(f'#########################################')
     if 1:
         derive_sections()
 

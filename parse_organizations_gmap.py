@@ -34,7 +34,7 @@ def to_slug(name: str) -> str:
 
 def parse_gmap():
     start = 0
-    end = 10
+    end = 100
     ###
     output_folderpath = f'{g.DATA_FOLDERPATH}/organizations/parse/gmap/json'
     try: shutil.rmtree(output_folderpath)
@@ -43,6 +43,7 @@ def parse_gmap():
     ###
     input_foldername = f'{HUB_FOLDERPATH}/fetch/gmap/america/places'.replace(' ', '_')
     input_filenames = sorted(os.listdir(input_foldername))
+    options = set()
     i = 0
     for input_filename in input_filenames[start:end]:
         print(f'{start+i}/{end}')
@@ -56,17 +57,28 @@ def parse_gmap():
                 gmap_label = values[0]
                 gmap_address = values[1]
                 gmap_website = values[2]
+                gmap_phone = values[3]
                 gmap_name = values[4]
                 gmap_info = values[5]
                 slug = to_slug(gmap_label)
+
+                info_lst = result = ast.literal_eval(gmap_info)
+                gmap_rating = None
+                gmap_reviews_num = None
+                if len(info_lst) > 1:
+                    gmap_rating = info_lst[0]
+                    gmap_reviews_num = info_lst[1]
+                
                 print(f'gmap_label: {gmap_label}')
                 print(f'gmap_address: {gmap_address}')
                 print(f'gmap_website: {gmap_website}')
+                print(f'gmap_phone: {gmap_phone}')
                 print(f'gmap_name: {gmap_name}')
                 print(f'gmap_info: {gmap_info}')
                 print(f'gmap_slug: {slug}')
                 print(f'***************************************')
                 print()
+                # quit()
 
                 fields_data = parse_organizations_data.data
 
@@ -78,6 +90,9 @@ def parse_gmap():
                     elif field_item['field_name'] == 'business_gmap_name_raw': reply = gmap_name
                     elif field_item['field_name'] == 'business_website': reply = gmap_website
                     elif field_item['field_name'] == 'business_address': reply = gmap_address
+                    elif field_item['field_name'] == 'business_phone': reply = gmap_phone
+                    elif field_item['field_name'] == 'business_rating': reply = gmap_rating
+                    elif field_item['field_name'] == 'business_reviews_num': reply = gmap_reviews_num
                     key = field_item['field_name']
                     val = reply
                     output_item[key] = val

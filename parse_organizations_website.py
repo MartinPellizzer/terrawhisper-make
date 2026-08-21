@@ -2445,7 +2445,6 @@ def parse_website():
                 # 3. Contact Information
                 llm_business_website = ''
                 llm_business_email = ''
-                llm_business_phone = ''
                 llm_business_fax = ''
                 llm_business_whatsapp = ''
                 llm_business_contact_form = ''
@@ -2876,11 +2875,6 @@ def parse_website():
                         llm_business_media_email = llm_gen(
                             query='media email',
                             description='''The dedicated email address for press, media, public relations, or journalist inquiries (e.g., media@example.com or press@example.com).''',
-                            website_text=website_text
-                        )
-                        llm_business_phone = llm_gen(
-                            query='phone',
-                            description='''The primary business telephone number for customer inquiries. Preserve the international dialing code when available.''',
                             website_text=website_text
                         )
                         llm_business_whatsapp = llm_gen(
@@ -4272,7 +4266,6 @@ def parse_website():
                             business_email_customer_service = llm_business_customer_service_email,
                             business_email_wholesale = llm_business_wholesale_email,
                             business_email_media = llm_business_media_email,
-                            business_phone = llm_business_phone,
                             business_whatsapp = llm_business_whatsapp,
                             business_fax = llm_business_fax,
                             business_contact_form = llm_business_contact_form,

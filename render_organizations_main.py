@@ -263,6 +263,7 @@ def render_listing(master_item):
 
     input_data = io.json_read(f'{HUB_FOLDERPATH}/compile/{business_name_canonical}.json')
 
+    # if len(input_data['identity'][0]) < 2: return
     # print(json.dumps(input_data, indent=4))
     # quit()
 
@@ -271,18 +272,60 @@ def render_listing(master_item):
     if 1:
         html_article += f'<h1>{business_name_display}</h1>'
 
-        html_article += f'''<p>address: 3073 Joyce Street, Adamsville, AL 35005, Stati Uniti</p>'''
-        html_article += f'''<p>phone: +1 469-779-7070</p>'''
-        html_article += f'''<p>website: https://www.chiomatotalbody.com/herapothecary/</p>'''
-        html_article += f'''<p>rating: 4.9 (41)</p>'''
+        # print(json.dumps(input_data, indent=4))
+        # quit()
 
         identity_data = input_data['identity']
-        html_article += f'''<h2>Identity</h2>'''
-        html_article += f'''<p>{identity_data[0]['llm']}</p>'''
+        location_data = input_data['location']
+        contact_data = input_data['contact']
 
+        
+        identity_gmap_item = None
+        for identity_list in identity_data:
+            # print(json.dumps(identity_list, indent=4))
+            for identity_item in identity_list:
+                # print(json.dumps(identity_item, indent=4))
+                if identity_item['source_name'] == 'Google Maps':
+                    identity_gmap_item = identity_item
+
+        location_gmap_item = None
+        for lst in location_data:
+            # print(json.dumps(identity_list, indent=4))
+            for item in lst:
+                # print(json.dumps(location_item, indent=4))
+                if item['source_name'] == 'Google Maps':
+                    location_gmap_item = item
+
+        contact_gmap_item = None
+        for lst in contact_data:
+            for item in lst:
+                if item['source_name'] == 'Google Maps':
+                    contact_gmap_item = item
+
+        # print(json.dumps(identity_data, indent=4))
+        # quit()
+        # print(json.dumps(gmap_item, indent=4))
+        # quit()
+        html_article += f'''<h2>Identity</h2>'''
+        html_article += f'''<p>{identity_gmap_item['llm']}</p>'''
+
+        html_article += f'''<p>address: {location_gmap_item['fields']['business_address']}</p>'''
+        html_article += f'''<p>phone: {contact_gmap_item['fields']['business_phone']}</p>'''
+        html_article += f'''<p>website: {identity_gmap_item['fields']['business_website']}</p>'''
+        html_article += f'''
+            <p>
+                rating: {identity_gmap_item['fields']['business_rating']} ({identity_gmap_item['fields']['business_reviews_num']})
+            </p>
+        '''
+        html_article += f'''
+<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3348.0964118728743!2d-96.84058512365978!3d32.94846387520341!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x864e9fecd95cce51%3A0xce8e79e6fdad6e5c!2sCHIOMA%20Co.%20Wellness%20%26%20Beauty%20Apothecary!5e0!3m2!1sen!2sit!4v1787318301722!5m2!1sen!2sit" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+        '''
+
+        """
         location_data = input_data['location']
         html_article += f'''<h2>Location</h2>'''
         html_article += f'''<p>{location_data[0]['llm']}</p>'''
+        """
     else:
         for input_key, input_val in input_data.items():
             # print(input_key, input_val)
@@ -1017,7 +1060,7 @@ def run():
     print(f'ORGANIZATIONS >> RENDER >> ALL')
 
     master_items = masterize_organizations_utils.masterize_organizations_get_all()
-    for master_item in master_items[:10]:
+    for master_item in master_items[:]:
         # print(json.dumps(master_item, indent=4))
         render_listing(master_item)
 
