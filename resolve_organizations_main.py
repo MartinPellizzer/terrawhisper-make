@@ -44,5 +44,6 @@ def run():
 
     if 1:
         start = time.perf_counter()
+        resolve_businesses(source_foldername='gmap')
         resolve_businesses(source_foldername='website')
         print(f'resolve businesses() - execution time: ', time.perf_counter() - start)

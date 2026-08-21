@@ -41,9 +41,9 @@ def observations_table_organizations_add(source_foldername):
     ### PEEK
     conn.row_factory = sqlite3.Row
     cur = conn.cursor()
-    rows = cur.execute(f'SELECT * FROM {table_name} LIMIT 10').fetchall()
+    rows = cur.execute(f'SELECT * FROM {table_name}').fetchall()
     dict_rows = [dict(row) for row in rows]
-    for row in dict_rows[:1]:
+    for row in dict_rows[:100]:
         print(json.dumps(row, indent=4))
 
     conn.close()
@@ -53,5 +53,6 @@ def run():
     print('OBSERVE')
 
     if 1:
+        observations_table_organizations_add(source_foldername='gmap')
         observations_table_organizations_add(source_foldername='website')
 

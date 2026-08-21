@@ -2334,8 +2334,8 @@ def parse_website():
     end = 10
     ###
     output_folderpath = f'{g.DATA_FOLDERPATH}/organizations/parse/website/json'
-    try: shutil.rmtree(output_folderpath)
-    except: pass
+    # try: shutil.rmtree(output_folderpath)
+    # except: pass
     io.folders_recursive_gen(output_folderpath)
     ###
     input_foldername = f'{HUB_FOLDERPATH}/fetch/gmap/america/places'.replace(' ', '_')

@@ -29,9 +29,11 @@ import parse_gift
 
 # import parse_usda_organic
 # import parse_organizations_website_backup
-import parse_organizations_website
+# import parse_organizations_website
+import parse_organizations_gmap
 
 # parse_usda_organic.run()
 # parse_organizations_website_backup.run()
-parse_organizations_website.run()
+# parse_organizations_website.run()
+parse_organizations_gmap.run()
 

@@ -35,6 +35,13 @@ data = [
         'field_section': 'identity',
     },
     {
+        'field_name': 'business_website',
+        'field_query': 'business website', 
+        'field_description': '''The official website URL of the business. Extract the primary canonical domain used by the organization (e.g., https://www.example.com).''', 
+        'field_type': 'text',
+        'field_section': 'identity',
+    },
+    {
         'field_name': 'business_address',
         'field_query': 'business address', 
         'field_description': '''The complete street address of the business's primary location, including building number, street name, and other published address details.''', 

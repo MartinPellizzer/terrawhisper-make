@@ -103,5 +103,6 @@ def run():
 
     if 1:
         start = time.perf_counter()
+        normalize_businesses(source_foldername='gmap')
         normalize_businesses(source_foldername='website')
         print(f'normalize businesses() - execution time: ', time.perf_counter() - start)

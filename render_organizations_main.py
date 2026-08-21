@@ -6,6 +6,8 @@ import json
 import sqlite3
 import unicodedata
 
+from lorem_text import lorem
+
 from lib import g
 from lib import io
 from lib import sections
@@ -266,8 +268,13 @@ def render_listing(master_item):
 
     html_article = ''
 
-    if 0:
+    if 1:
         html_article += f'<h1>{business_name_display}</h1>'
+
+        html_article += f'''<p>address: 3073 Joyce Street, Adamsville, AL 35005, Stati Uniti</p>'''
+        html_article += f'''<p>phone: +1 469-779-7070</p>'''
+        html_article += f'''<p>website: https://www.chiomatotalbody.com/herapothecary/</p>'''
+        html_article += f'''<p>rating: 4.9 (41)</p>'''
 
         identity_data = input_data['identity']
         html_article += f'''<h2>Identity</h2>'''
@@ -916,7 +923,7 @@ def render_listing(master_item):
         {head_html}
         <body>
             {sections.header_dark()}
-            <main class="container-lg listing" style="margin-top: 4.8rem;">
+            <main class="container-md listing" style="margin-top: 4.8rem;">
                 {html_article}
             </main>
             {sections.footer()}

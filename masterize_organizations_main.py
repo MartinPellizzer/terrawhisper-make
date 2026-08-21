@@ -59,5 +59,6 @@ def run():
     print('MASTERIZE')
 
     if 1:
-        masterize_table_organizations_add(source_foldername='website')
+        masterize_table_organizations_add(source_foldername='gmap')
+        # masterize_table_organizations_add(source_foldername='website')
 
