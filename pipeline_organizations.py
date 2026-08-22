@@ -1,3 +1,6 @@
+# TODO
+# clear business files in each step of pipeline (for now, then remove when llm) 
+# filter businesses by type primary (in render maybe the best place for now?)
 
 import parse_organizations_gmap
 import parse_organizations_website
