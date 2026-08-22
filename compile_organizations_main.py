@@ -32,10 +32,11 @@ def compile_gen():
                 f'{input_folderpath}/{foldername}/{business_name_canonical}.json'
             )
 
-        print(json.dumps(output_data, indent=4))
-
         output_filepath = f'{output_folderpath}/{business_name_canonical}.json'
         io.json_write(output_filepath, output_data)
+
+        # print(json.dumps(output_data, indent=4))
+        # quit()
 
 def run():
     start = time.perf_counter()

@@ -2361,12 +2361,6 @@ def parse_website():
                 print(f'***************************************')
                 print()
 
-                llm_business_is_category_herbs  = ''
-                print(f'website: {website}')
-                print(f'slug: {slug}')
-                print(f'***************************************')
-                print()
-
                 website_filepath = f'{HUB_FOLDERPATH}/fetch/websites/america/places/{input_filename_base}/{slug}.html'
                 output_filepath = f'{output_folderpath}/{slug}.json'
                 try: html = io.file_read(website_filepath)
@@ -2420,7 +2414,6 @@ def parse_website():
                         # quit()
 
                 continue
-                llm_business_is_category_herbs  = ''
                 ###
                 llm_business_name_official = ''
                 llm_business_name_legal = ''
@@ -2747,11 +2740,6 @@ def parse_website():
                     soup = BeautifulSoup(html, "html.parser")
                     website_text = soup.get_text(separator="\n", strip=True)
                     if website_text.strip() != '':
-                        llm_business_is_category_herbs = llm_bool_gen(
-                            query='is mainly about medicinal plants', 
-                            description='that this business is a seller, grower, user, or anything else related to herbs predominantly as their products and core business', 
-                            website_text=website_text
-                            )
 
                         ###
                         llm_business_name_official = llm_gen(
@@ -4237,8 +4225,6 @@ def parse_website():
                             business_gmap_label = label,
                             business_gmap_name = name,
                             business_gmap_website = website,
-                            ###
-                            business_is_category_herbs = llm_business_is_category_herbs,
                             ###
                             business_name_official = llm_business_name_official,
                             business_name_legal = llm_business_name_legal,

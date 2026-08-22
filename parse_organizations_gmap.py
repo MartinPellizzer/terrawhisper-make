@@ -65,9 +65,13 @@ def parse_gmap():
                 info_lst = result = ast.literal_eval(gmap_info)
                 gmap_rating = None
                 gmap_reviews_num = None
-                if len(info_lst) > 1:
+                gmap_business_type_primary = None
+                if len(info_lst) == 1:
+                    gmap_business_type_primary = info_lst[0]
+                elif len(info_lst) == 4:
                     gmap_rating = info_lst[0]
                     gmap_reviews_num = info_lst[1]
+                    gmap_business_type_primary = info_lst[3]
                 
                 print(f'gmap_label: {gmap_label}')
                 print(f'gmap_address: {gmap_address}')
@@ -93,6 +97,7 @@ def parse_gmap():
                     elif field_item['field_name'] == 'business_phone': reply = gmap_phone
                     elif field_item['field_name'] == 'business_rating': reply = gmap_rating
                     elif field_item['field_name'] == 'business_reviews_num': reply = gmap_reviews_num
+                    elif field_item['field_name'] == 'business_type_primary': reply = gmap_business_type_primary
                     key = field_item['field_name']
                     val = reply
                     output_item[key] = val
@@ -103,6 +108,10 @@ def parse_gmap():
                 output_filepath = f'{output_folderpath}/{slug}.json'
                 output_items.append(output_item)
                 io.json_write(output_filepath, output_items)
+
+                # print(json.dumps(output_items, indent=4))
+                # quit()
+
 
 def run():
     print(f'ORGANIZATION >> PARSE >> gmap')

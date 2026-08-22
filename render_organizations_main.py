@@ -283,7 +283,7 @@ def render_listing(master_item):
         identity_gmap_item = None
         for identity_list in identity_data:
             # print(json.dumps(identity_list, indent=4))
-            for identity_item in identity_list:
+            for identity_item in identity_list['items']:
                 # print(json.dumps(identity_item, indent=4))
                 if identity_item['source_name'] == 'Google Maps':
                     identity_gmap_item = identity_item
@@ -291,14 +291,14 @@ def render_listing(master_item):
         location_gmap_item = None
         for lst in location_data:
             # print(json.dumps(identity_list, indent=4))
-            for item in lst:
+            for item in lst['items']:
                 # print(json.dumps(location_item, indent=4))
                 if item['source_name'] == 'Google Maps':
                     location_gmap_item = item
 
         contact_gmap_item = None
         for lst in contact_data:
-            for item in lst:
+            for item in lst['items']:
                 if item['source_name'] == 'Google Maps':
                     contact_gmap_item = item
 
@@ -317,6 +317,7 @@ def render_listing(master_item):
                 rating: {identity_gmap_item['fields']['business_rating']} ({identity_gmap_item['fields']['business_reviews_num']})
             </p>
         '''
+        html_article += f'''<p>type: {identity_gmap_item['fields']['business_type_primary']}</p>'''
         html_article += f'''
 <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3348.0964118728743!2d-96.84058512365978!3d32.94846387520341!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x864e9fecd95cce51%3A0xce8e79e6fdad6e5c!2sCHIOMA%20Co.%20Wellness%20%26%20Beauty%20Apothecary!5e0!3m2!1sen!2sit!4v1787318301722!5m2!1sen!2sit" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
         '''
@@ -978,86 +979,12 @@ def render_listing(master_item):
     print(html_filepath)
 
 
-def gen_old():
-    print(f'ORGANIZATIONS >> RENDER >> ALL')
-
-    input_foldername = f'{g.DATA_FOLDERPATH}/organizations/fetch/gmap/america/places'.replace(' ', '_')
-    input_filenames = sorted(os.listdir(input_foldername))
-    for input_filename in input_filenames[:10]:
-        input_filepath = f'{input_foldername}/{input_filename}'
-        with open(input_filepath, encoding="utf-8") as f: rows = f.read().strip().split('\n')
-        for row in rows:
-            values = row.split('~')
-            print(values)
-            if values != [] and values != ['']:
-                label = values[0]
-                address = values[1]
-                website = values[2]
-                phone = values[3]
-                name = values[4]
-                info = values[5]
-                slug = to_slug(label)
-                print(f'label: {label}')
-                print(f'address: {address}')
-                print(f'website: {website}')
-                print(f'phone: {phone}')
-                print(f'name: {name}')
-                print(f'info: {info}')
-                print(f'slug: {slug}')
-                print(f'***************************************')
-                print()
-                print(info)
-
-                lst = ast.literal_eval(info)
-                if 'Erborista' in lst:
-                    # print('found')
-                    slug = to_slug(label)
-                    # print(slug)
-                    render_listing(name, slug)
-                    quit()
-
-    quit()
-    filepath = "/home/ubuntu/vault/terrawhisper/data/organizations/fetch/usda_organic/INTEGRITY_Export_20260701.csv"
-    items = io.csv_to_dict(filepath, delimiter=',')
-    # print(json.dumps(items[0], indent=4))
-    # print(json.dumps(items[1], indent=4))
-    # print(json.dumps(items[2], indent=4))
-    for record in items[2:]:
-        # print(json.dumps(item, indent=4))
-        types = classify_usda_operation(record)
-        domain = classify_product_domain(record)
-        # print(domain, types)
-        # print(record.get("CR_CertifiedProducts", ""))
-        # print(record.get("LS_CertifiedProducts", ""))
-        # print(record.get("WC_CertifiedProducts", ""))
-        # print(record.get("Han_CertifiedProducts", ""))
-        if domain == "PLANT":
-            print()
-            print(domain, types)
-            print(record.get("CR_CertifiedProducts", ""))
-            print(record.get("LS_CertifiedProducts", ""))
-            print(record.get("WC_CertifiedProducts", ""))
-            print(record.get("Han_CertifiedProducts", ""))
-            quit()
-        continue
-        ###
-        op_name = item['op_name']
-        print(op_name)
-        result = normalize_entity(op_name)
-        herb_business = herb_relevance(item)
-        if herb_business['herb_matches'] != []:
-            print(herb_relevance(item))
-            print(result)
-    quit()
-
-    with open(filepath, encoding="utf-8", newline="") as f:
-        for row in csv.reader(f):
-            print(row, flush=True)
-            quit()
-            render_listing(name, slug)
-
 def run():
     print(f'ORGANIZATIONS >> RENDER >> ALL')
+
+    output_folderpath = f'{g.website_folderpath}/organizations'
+    try: shutil.rmtree(output_folderpath)
+    except: pass
 
     master_items = masterize_organizations_utils.masterize_organizations_get_all()
     for master_item in master_items[:]:

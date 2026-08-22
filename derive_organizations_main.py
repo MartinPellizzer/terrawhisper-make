@@ -140,7 +140,7 @@ def derive_sections():
             io.folders_recursive_gen(f'{HUB_FOLDERPATH}/derive/{field_section}')
             output_filepath = f'{HUB_FOLDERPATH}/derive/{field_section}/{business_name_canonical}.json'
             io.json_write(output_filepath, [output_item_grouped['items']])
-            # io.json_write(output_filepath, [output_item_grouped])
+            io.json_write(output_filepath, [output_item_grouped])
             # quit()
 
 
@@ -150,4 +150,5 @@ def run():
     print(f'#########################################')
     if 1:
         derive_sections()
+    # quit()
 

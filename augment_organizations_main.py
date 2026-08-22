@@ -19,8 +19,8 @@ HUB_FOLDERPATH = f'{g.DATA_FOLDERPATH}/organizations'
 
 def augment_organizations():
     output_folderpath = f'{HUB_FOLDERPATH}/augment'
-    # try: shutil.rmtree(output_folderpath)
-    # except: pass
+    try: shutil.rmtree(output_folderpath)
+    except: pass
     io.folders_recursive_gen(output_folderpath)
     ###
     master_items = masterize_organizations_utils.masterize_organizations_get_all()
@@ -52,10 +52,21 @@ def augment_organizations():
                 # if len(output_list) < 2: continue
                 # print(output_data)
                 # quit()
-                print(json.dumps(output_list, indent=4))
+                # print(json.dumps(output_list, indent=4))
                 # quit()
                 ###
-                for output_item in output_list:
+                # key = 'llm'
+                # output_list[key] = ''
+                # io.json_write(output_filepath, output_data)
+                # print(json.dumps(output_data, indent=4))
+                # quit()
+
+                # continue
+
+                for output_item in output_list['items']:
+                    print(output_list)
+                    print(output_item)
+                    # quit()
                     key = 'llm'
                     if 0:
                         prompt = f'''
@@ -78,12 +89,14 @@ def augment_organizations():
                         print(output_item)
                         output_item[key] = reply
                         io.json_write(output_filepath, output_data)
-                        print(json.dumps(output_data, indent=4))
+                        # print(json.dumps(output_data, indent=4))
                         # quit()
                     else:
                         output_item[key] = ''
                         io.json_write(output_filepath, output_data)
-                        print(json.dumps(output_data, indent=4))
+                        # print(json.dumps(output_data, indent=4))
+                        # quit()
+        # quit()
 
 def run():
     augment_organizations()

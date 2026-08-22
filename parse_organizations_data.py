@@ -69,4 +69,11 @@ data = [
         'field_type': 'text',
         'field_section': 'identity',
     },
+    {
+        'field_name': 'business_type_primary',
+        'field_query': 'primary business type', 
+        'field_description': '''Main business role''',
+        'field_type': 'text',
+        'field_section': 'identity',
+    },
 ]
