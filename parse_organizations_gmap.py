@@ -112,12 +112,52 @@ def parse_gmap():
                 # print(json.dumps(output_items, indent=4))
                 # quit()
 
+def analyze_businesses_types():
+    start = 0
+    end = 100
+    input_foldername = f'{HUB_FOLDERPATH}/fetch/gmap/america/places'.replace(' ', '_')
+    input_filenames = sorted(os.listdir(input_foldername))
+    i = 0
+    strings = []
+    for input_filename in input_filenames[start:end]:
+        print(f'{start+i}/{end}')
+        i += 1
+        input_filename_base = input_filename.split('.')[0].strip()
+        input_filepath = f'{input_foldername}/{input_filename}'
+        with open(input_filepath, encoding="utf-8") as f: rows = f.read().strip().split('\n')
+        for row in rows:
+            values = row.split('~')
+            if values != [] and values != ['']:
+                gmap_info = values[5]
+                info_lst = result = ast.literal_eval(gmap_info)
+
+                gmap_business_type_primary = None
+                if len(info_lst) == 1:
+                    gmap_business_type_primary = info_lst[0]
+                elif len(info_lst) == 4:
+                    gmap_business_type_primary = info_lst[3]
+                print(gmap_business_type_primary)
+
+                def clean(s):
+                    if s is None:
+                        return s
+                    return re.sub(r"[^\w\s]+$", "", s).strip()
+
+                gmap_business_type_primary = clean(gmap_business_type_primary)
+
+                strings.append(gmap_business_type_primary)
+
+    print('###########################################################')
+    from collections import Counter
+    counts = Counter(strings)
+    for s, count in counts.most_common():
+        print(f"{s}: {count}")
 
 def run():
     print(f'ORGANIZATION >> PARSE >> gmap')
 
     start = time.perf_counter()
-    parse_gmap()
+    # parse_gmap()
     print(f'''
 ################################################################################
 parse website() - execution time: 
@@ -128,3 +168,5 @@ HOURS:   {(time.perf_counter() - start)/60/60}
 ################################################################################
     ''')
 
+    analyze_businesses_types()
+    quit()

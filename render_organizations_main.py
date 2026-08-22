@@ -3,6 +3,7 @@ import re
 import csv
 import ast
 import json
+import shutil
 import sqlite3
 import unicodedata
 
@@ -263,7 +264,6 @@ def render_listing(master_item):
 
     input_data = io.json_read(f'{HUB_FOLDERPATH}/compile/{business_name_canonical}.json')
 
-    # if len(input_data['identity'][0]) < 2: return
     # print(json.dumps(input_data, indent=4))
     # quit()
 
@@ -278,7 +278,6 @@ def render_listing(master_item):
         identity_data = input_data['identity']
         location_data = input_data['location']
         contact_data = input_data['contact']
-
         
         identity_gmap_item = None
         for identity_list in identity_data:
@@ -301,6 +300,9 @@ def render_listing(master_item):
             for item in lst['items']:
                 if item['source_name'] == 'Google Maps':
                     contact_gmap_item = item
+
+        print(identity_gmap_item['fields'])
+        if identity_gmap_item['fields']['business_type_primary'] != "Erboristeria":  return
 
         # print(json.dumps(identity_data, indent=4))
         # quit()
@@ -985,9 +987,13 @@ def run():
     output_folderpath = f'{g.website_folderpath}/organizations'
     try: shutil.rmtree(output_folderpath)
     except: pass
+    io.folders_recursive_gen(output_folderpath)
+    # print(output_folderpath)
+    # quit()
 
     master_items = masterize_organizations_utils.masterize_organizations_get_all()
     for master_item in master_items[:]:
+        pass
         # print(json.dumps(master_item, indent=4))
         render_listing(master_item)
 

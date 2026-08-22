@@ -15,6 +15,8 @@ def compile_gen():
     output_foldername = f'compile'
     input_folderpath = f'{HUB_FOLDERPATH}/{input_foldername}'
     output_folderpath = f'{HUB_FOLDERPATH}/{output_foldername}'
+    try: shutil.rmtree(output_folderpath)
+    except: pass
     io.folders_recursive_gen(output_folderpath)
     input_filenames = os.listdir(input_folderpath)
     ###

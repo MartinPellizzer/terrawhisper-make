@@ -13,6 +13,8 @@ def folder_copy():
     output_foldername = f'qualify'
     input_folderpath = f'{HUB_FOLDERPATH}/{input_foldername}'
     output_folderpath = f'{HUB_FOLDERPATH}/{output_foldername}'
+    try: shutil.rmtree(output_folderpath)
+    except: pass
     io.folders_recursive_gen(output_folderpath)
     input_filenames = os.listdir(input_folderpath)
     ###
