@@ -18,11 +18,6 @@ model_filepath = '/home/ubuntu/vault-tmp/llm/gemma-4-12B-it-qat-UD-Q4_K_XL.gguf'
 HUB_FOLDERPATH = f'{g.DATA_FOLDERPATH}/organizations' 
 
 def augment_organizations():
-    output_folderpath = f'{HUB_FOLDERPATH}/augment'
-    try: shutil.rmtree(output_folderpath)
-    except: pass
-    io.folders_recursive_gen(output_folderpath)
-    ###
     master_items = masterize_organizations_utils.masterize_organizations_get_all()
     for i, master_item in enumerate(master_items):
         print(f'{i}/{len(master_items)}')
@@ -99,4 +94,10 @@ def augment_organizations():
         # quit()
 
 def run():
+    output_folderpath = f'{HUB_FOLDERPATH}/augment'
+    try: shutil.rmtree(output_folderpath)
+    except: pass
+    io.folders_recursive_gen(output_folderpath)
+
+    ###
     augment_organizations()

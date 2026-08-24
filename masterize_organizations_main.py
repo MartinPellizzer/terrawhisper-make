@@ -12,7 +12,7 @@ HUB_ORGANIZATIONS_FOLDERPATH = f'{g.DATA_FOLDERPATH}/organizations'
 
 def masterize_table_organizations_add(source_foldername):
     table_name = 'organizations'
-    input_folderpath = f'{HUB_ORGANIZATIONS_FOLDERPATH}/resolve/{source_foldername}/json'
+    input_folderpath = f'{HUB_ORGANIZATIONS_FOLDERPATH}/resolve/{source_foldername}/details/json'
     output_folderpath = f'{HUB_ORGANIZATIONS_FOLDERPATH}/masterize'
     db_filepath = f'{output_folderpath}/master.db'
     ###

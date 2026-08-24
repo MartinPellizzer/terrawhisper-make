@@ -31,11 +31,11 @@ if 1:
     # observe_organizations_main.run()
 
     # qualify_organizations_main.run()
-    derive_organizations_main.run()
+    # derive_organizations_main.run()
     # augment_organizations_main.run()
     # compile_organizations_main.run()
 
-if 0:
+if 1:
     pass
     render_organizations_main.run()
 
