@@ -522,3 +522,32 @@ footer span {
     color: var(--color-carbon-powder);
     text-align: center;
 }
+
+/*
+################################################################################
+ORGANIZATION LISTING
+################################################################################
+*/
+
+.organization-listing {
+}
+
+.organization-listing h2 {
+    font-size: 3rem; 
+    line-height: 1.2;
+}
+
+.organization-listing .rating {
+    margin-top: 1rem; 
+    display: flex; 
+    items-align: center; 
+    gap: 1rem; 
+    margin-bottom: 3.2rem;
+}
+
+.organization-listing .stars {
+    display: flex; 
+    items-align: center; 
+    gap: 0.5rem;
+}
+

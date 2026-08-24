@@ -350,22 +350,20 @@ def render_listing(master_item):
                 if item['source_name'] == 'Google Maps':
                     review_text = item['fields']['business_review_text_ita']
                     html_review = f'''
-                        <div class="stars">
+                        <div style="display: flex; items-align: center; gap: 0.5rem;">
                             {star_placeholder}
                             {star_placeholder}
                             {star_placeholder}
                             {star_placeholder}
                             {star_placeholder}
                         </div>
-                        <p class="review-text">
-                            {review_text}
-                        </p>
-                        <div class="review-divider"></div>
-                    '''
-                    '''
                         <h3 style="margin-top: 0.8rem; font-size: 1.6rem; font-weight: 500; margin-bottom: 1.6rem;">
                             Exceeded my expectations
                         </h3>
+                        <p style="font-size: 1.4rem; color: oklch(55.6% 0 0); padding-bottom: 2.4rem; margin-bottom: 0rem;">
+                            {review_text}
+                        </p>
+                        <div style="border-top: 1px solid oklch(92.2% 0 0); padding-bottom: 2.4rem;"></div>
                     '''
                     html_reviews += html_review
 
@@ -377,28 +375,25 @@ def render_listing(master_item):
             reviews_num = rating.replace('(', '').replace(')', '')
             ###
             html_article += f'''
-                <section class="organization-listing">
-                    <h2>
-                        Customer Reviews
-                    </h2>
-                    <div class="rating">
-                        <div class="stars">
-                            {star_placeholder}
-                            {star_placeholder}
-                            {star_placeholder}
-                            {star_placeholder}
-                            {star_placeholder}
-                        </div>
-                        <span class="rating-text">
-                            {rating} out of 5 · {reviews_num} reviews
-                        </span>
+                <h2 style="font-size: 3rem; line-height: 1.2;">
+                    Customer Reviews
+                </h2>
+                <div style="margin-top: 1rem; display: flex; items-align: center; gap: 1rem; margin-bottom: 3.2rem;">
+                    <div style="display: flex; items-align: center; gap: 0.5rem;">
+                        {star_placeholder}
+                        {star_placeholder}
+                        {star_placeholder}
+                        {star_placeholder}
+                        {star_placeholder}
                     </div>
-                    <div>
-                        {html_reviews}
-                    </div>
-                </section>
+                    <span style="color: oklch(55.6% 0 0);">
+                        {rating} out of 5 · {reviews_num} reviews
+                    </span>
+                </div>
+                <div>
+                    {html_reviews}
+                </div>
             '''
-
     else:
         for input_key, input_val in input_data.items():
             # print(input_key, input_val)
@@ -1039,7 +1034,7 @@ def render_listing(master_item):
         {head_html}
         <body>
             {sections.header_dark()}
-            <main class="container-md organization-listing" style="margin-top: 4.8rem;">
+            <main class="container-md listing" style="margin-top: 4.8rem;">
                 {html_article}
             </main>
             {sections.footer()}

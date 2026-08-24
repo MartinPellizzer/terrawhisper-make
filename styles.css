@@ -540,3 +540,51 @@ footer span {
     border-radius: 9999px;
     margin-bottom: 1.6rem;
 }
+
+/*
+################################################################################
+ORGANIZATION LISTING
+################################################################################
+*/
+
+.organization-listing {
+    margin-top: 4.8rem;
+    margin-bottom: 4.8rem;
+}
+
+.organization-listing h2 {
+    font-size: 3rem; 
+    line-height: 1.2;
+}
+
+.organization-listing .rating {
+    margin-top: 1rem; 
+    display: flex; 
+    items-align: center; 
+    gap: 1rem; 
+    margin-bottom: 3.2rem;
+}
+
+.organization-listing .rating-text {
+    color: oklch(55.6% 0 0);
+}
+
+.organization-listing .stars {
+    display: flex; 
+    items-align: center; 
+    gap: 0.5rem;
+}
+
+.organization-listing .review-text {
+    font-size: 1.4rem; 
+    color: oklch(55.6% 0 0); 
+    padding-bottom: 2.4rem; 
+    margin-bottom: 0rem;
+    margin-top: 0.8rem;
+}
+
+.organization-listing .review-divider {
+    border-top: 1px solid oklch(92.2% 0 0); 
+    padding-bottom: 2.4rem;
+}
+
