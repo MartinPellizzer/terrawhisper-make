@@ -13,6 +13,7 @@ output_folderpath = f'{HUB_FOLDERPATH}/observe'
 db_filepath = f'{output_folderpath}/observations.db'
 
 import parse_organizations_data
+import parse_organizations_reviews_data
 
 def observations_table_organizations_create_backup(regen=False):
     table_name = 'organizations'
@@ -345,6 +346,36 @@ def observations_table_organizations_create(regen=False):
     conn.commit()
     conn.close()
 
+def observations_table_organizations_reviews_create(regen=False):
+    table_name = 'organizations_reviews'
+    # quit()
+    fields_data = parse_organizations_reviews_data.fields
+    table_fields = ''
+    for field_item in fields_data:
+        field_name = field_item['field_name']
+        table_fields += f'''{field_name} TEXT,\n'''
+    ###
+    conn = sqlite3.connect(db_filepath)
+    cur = conn.cursor()
+    if regen: cur.execute(f"DROP TABLE IF EXISTS {table_name}")
+    cur.execute(f"""
+        CREATE TABLE IF NOT EXISTS {table_name} (
+            id INTEGER PRIMARY KEY,
+            {table_fields}
+            source_name TEXT,
+            source_acronym TEXT,
+            business_name_normalize TEXT,
+            business_name_display TEXT,
+            business_slug TEXT,
+            business_name_canonical TEXT
+        );
+    """)
+    conn.execute("PRAGMA journal_mode = WAL;")
+    conn.execute("PRAGMA synchronous = OFF;")
+    conn.execute("PRAGMA temp_store = MEMORY;")
+    conn.commit()
+    conn.close()
+
 def run():
     print('OBSERVE >> init')
 
@@ -354,4 +385,6 @@ def run():
 
     # fields_get()
     observations_table_organizations_create(regen=True)
+
+    observations_table_organizations_reviews_create(regen=True)
 

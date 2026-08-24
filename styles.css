@@ -419,6 +419,13 @@ footer span {
 /* LISTING */
 /**************************************/
 
+.listing {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
 .listing section {
 }
 
@@ -435,9 +442,6 @@ footer span {
 }
 
 .listing h3 {
-    font-size: 2.0rem;
-    margin-top: 4.8rem;
-    margin-bottom: 1.6rem;
 }
 
 /*

@@ -12,6 +12,7 @@ from lib import llm
 
 import parse_utils
 import parse_organizations_data
+import parse_organizations_reviews_data
 
 import re
 import unicodedata
@@ -36,10 +37,15 @@ def parse_gmap():
     start = 0
     end = 100
     ###
-    output_folderpath = f'{g.DATA_FOLDERPATH}/organizations/parse/gmap/json'
+    output_folderpath = f'{g.DATA_FOLDERPATH}/organizations/parse/gmap/details/json'
     try: shutil.rmtree(output_folderpath)
     except: pass
     io.folders_recursive_gen(output_folderpath)
+    ###
+    reviews_output_folderpath = f'{g.DATA_FOLDERPATH}/organizations/parse/gmap/reviews/json'
+    try: shutil.rmtree(reviews_output_folderpath)
+    except: pass
+    io.folders_recursive_gen(reviews_output_folderpath)
     ###
     input_foldername = f'{HUB_FOLDERPATH}/fetch/gmap/america/places'.replace(' ', '_')
     input_filenames = sorted(os.listdir(input_foldername))
@@ -50,6 +56,7 @@ def parse_gmap():
         i += 1
         input_filename_base = input_filename.split('.')[0].strip()
         input_filepath = f'{input_foldername}/{input_filename}'
+
         with open(input_filepath, encoding="utf-8") as f: rows = f.read().strip().split('\n')
         for row in rows:
             values = row.split('~')
@@ -60,6 +67,7 @@ def parse_gmap():
                 gmap_phone = values[3]
                 gmap_name = values[4]
                 gmap_info = values[5]
+                gmap_business_map = values[6]
                 slug = to_slug(gmap_label)
 
                 info_lst = result = ast.literal_eval(gmap_info)
@@ -72,6 +80,8 @@ def parse_gmap():
                     gmap_rating = info_lst[0]
                     gmap_reviews_num = info_lst[1]
                     gmap_business_type_primary = info_lst[3]
+
+                if gmap_rating == None: continue
                 
                 print(f'gmap_label: {gmap_label}')
                 print(f'gmap_address: {gmap_address}')
@@ -84,6 +94,9 @@ def parse_gmap():
                 print()
                 # quit()
 
+                ################################################################################
+                # DETAILS
+                ################################################################################
                 fields_data = parse_organizations_data.data
 
                 output_items = []
@@ -98,6 +111,7 @@ def parse_gmap():
                     elif field_item['field_name'] == 'business_rating': reply = gmap_rating
                     elif field_item['field_name'] == 'business_reviews_num': reply = gmap_reviews_num
                     elif field_item['field_name'] == 'business_type_primary': reply = gmap_business_type_primary
+                    elif field_item['field_name'] == 'business_map': reply = gmap_business_map
                     key = field_item['field_name']
                     val = reply
                     output_item[key] = val
@@ -111,6 +125,79 @@ def parse_gmap():
 
                 # print(json.dumps(output_items, indent=4))
                 # quit()
+
+                ################################################################################
+                # REVIEWS
+                ################################################################################
+                html_folderpath = f'{g.DATA_FOLDERPATH}/organizations/fetch/gmap/america/htmls'
+                html_filepath = f'{html_folderpath}/{gmap_name}.html'
+                html = io.file_read(html_filepath)
+                # print(html_filepath)
+                # quit()
+                soup = BeautifulSoup(html, "html.parser")
+
+                fields_data = parse_organizations_reviews_data.fields
+
+                elements = soup.find_all(
+                    attrs={
+                        "data-review-id": True,
+                        "class": lambda classes: classes and "fontBodyMedium" in classes
+                    }
+                )
+
+                reviews_output_items = []
+                for element in elements:
+                    element_card_body = element.find(
+                        attrs={
+                            "data-irrelevant-review-text-id": True,
+                        }
+                    )
+                    # print(element_card_body.get_text(separator="\n", strip=True))
+                    print(element_card_body.find_all("div")[0].get_text(separator="\n", strip=True))
+                    print(element_card_body.find_all("div")[1].get_text(separator="\n", strip=True))
+                    print(element_card_body.find_all("div")[2].get_text(separator="\n", strip=True))
+                    print(element_card_body.find_all("div")[3].get_text(separator="\n", strip=True))
+                    # print(element_card_body.find_all("div")[4].get_text(separator="\n", strip=True))
+                    # print(element_card_body.find_all("div")[5].get_text(separator="\n", strip=True))
+                    # print(element_card_body.find_all("div")[6].get_text(separator="\n", strip=True))
+                    # print(element_card_body.find_all("div")[7].get_text(separator="\n", strip=True))
+                    # print(element_card_body.find_all("div")[8].get_text(separator="\n", strip=True))
+                    # print(element_card_body.find_all("div")[9].get_text(separator="\n", strip=True))
+                    # print(element_card_body.find_all("div")[10].get_text(separator="\n", strip=True))
+                    # review_text = element_card_body.find_all("div")[1].get_text(separator="\n", strip=True)
+
+                    # print(review_text)
+                    gmap_business_review_text_ita = element_card_body.find_all("div")[2].get_text(separator="\n", strip=True)
+
+                    output_item = {}
+                    for field_item in fields_data:
+                        reply = None
+                        if field_item['field_name'] == 'business_name_raw': reply = gmap_name
+                        elif field_item['field_name'] == 'business_review_text_ita': reply = gmap_business_review_text_ita 
+                        key = field_item['field_name']
+                        val = reply
+                        output_item[key] = val
+                    output_item['source_name'] = 'Google Maps'
+                    output_item['source_acronym'] = 'GM'
+
+                    # print(json.dumps(output_item, indent=4))
+                    # quit()
+
+                    # output_filepath = f'{output_folderpath}/{slug}.json'
+                    # output_items.append(output_item)
+                    # io.json_write(output_filepath, output_items)
+
+                    reviews_output_items.append(output_item)
+
+                reviews_output_filepath = f'{reviews_output_folderpath}/{slug}.json'
+                io.json_write(reviews_output_filepath, reviews_output_items)
+
+                # print(json.dumps(reviews_output_items, indent=4))
+                # quit()
+
+                # print(len(elements))
+                # quit()
+
 
 def analyze_businesses_types():
     start = 0
@@ -157,7 +244,7 @@ def run():
     print(f'ORGANIZATION >> PARSE >> gmap')
 
     start = time.perf_counter()
-    # parse_gmap()
+    parse_gmap()
     print(f'''
 ################################################################################
 parse website() - execution time: 
@@ -168,5 +255,5 @@ HOURS:   {(time.perf_counter() - start)/60/60}
 ################################################################################
     ''')
 
-    analyze_businesses_types()
-    quit()
+    # analyze_businesses_types()
+    # quit()

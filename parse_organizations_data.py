@@ -76,4 +76,11 @@ data = [
         'field_type': 'text',
         'field_section': 'identity',
     },
+    {
+        'field_name': 'business_map',
+        'field_query': '', 
+        'field_description': '''''',
+        'field_type': 'text',
+        'field_section': 'identity',
+    },
 ]

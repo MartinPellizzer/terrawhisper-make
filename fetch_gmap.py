@@ -111,16 +111,31 @@ def scroll_down_up_down():
     feed.send_keys(Keys.PAGE_DOWN)
     sleep(2)
  
-def add_business_to_csv(output_file, label, address, website, phone, name, info):
+def add_business_to_csv(output_file, label, address, website, phone, name, info, iframe):
     string_to_write = ''
     string_to_write += f'{label}~'
     string_to_write += f'{address}~'
     string_to_write += f'{website}~'
     string_to_write += f'{phone}~'
     string_to_write += f'{name}~'
-    string_to_write += f'{info}\n'
+    string_to_write += f'{info}~'
+    string_to_write += f'{iframe}\n'
     with open(output_file, 'a', encoding="utf-8") as f:
         f.write(string_to_write)
+
+def scrape_map_embedded():
+    iframe = ''
+    try: 
+        driver.find_element(By.XPATH, '//button[@aria-label="Condividi"]').click()
+        sleep(5)
+        driver.find_element(By.XPATH, '//button[@aria-label="Incorpora una mappa"]').click()
+        sleep(2)
+        iframe = driver.find_element(By.XPATH, '//button[text()="Copia HTML"]/preceding-sibling::*[1]').get_attribute('value')
+        sleep(2)
+        driver.find_element(By.XPATH, '//body').send_keys(Keys.ESCAPE)
+        sleep(2)
+    except: return ''
+    return iframe
 
 def scrape_new_business(output_filepath, search_text, continent, place, i):
     old_businesses = get_old_businesses(output_filepath)
@@ -144,6 +159,8 @@ def scrape_new_business(output_filepath, search_text, continent, place, i):
     website = scrape_website(card_element)
     phone = scrape_phone(card_element)
 
+    iframe = scrape_map_embedded()
+
     name = sanitize(name)
     address = sanitize(address)
     phone = sanitize(phone)
@@ -153,6 +170,7 @@ def scrape_new_business(output_filepath, search_text, continent, place, i):
     print(address)
     print(website)
     print(phone)
+    print(iframe)
 
     try:
         element = card_element.find_element(By.XPATH, './/h1')
@@ -168,10 +186,12 @@ def scrape_new_business(output_filepath, search_text, continent, place, i):
         # add_business_to_csv(output_filepath, label, address, website, phone, name, info)
         return 'name_not_equal_label'
     else:
-        add_business_to_csv(output_filepath, label, address, website, phone, name, info)
+        add_business_to_csv(output_filepath, label, address, website, phone, name, info, iframe)
         ###
         card_element_html = card_element.get_attribute("innerHTML")
-        html_filepath = f'{g.DATA_FOLDERPATH}/organizations/fetch/gmap/{continent}/htmls/{name}.html'
+        html_folderpath = f'{g.DATA_FOLDERPATH}/organizations/fetch/gmap/{continent}/htmls'
+        io.folders_recursive_gen(html_folderpath)
+        html_filepath = f'{html_folderpath}/{name}.html'
         io.file_write(html_filepath, card_element_html)
         print(html_filepath)
 
@@ -194,6 +214,9 @@ continents = [
     # 'europe',
 scrapes_num = 10
 
+scrape_start = 10
+scrape_end = 100
+
 for continent_i, continent in enumerate(continents[:]):
     # rows = io.csv_read(f'{g.DATA_FOLDERPATH}/organizations/fetch/gmap/{continent}.csv')
     rows = io.csv_to_dict(f'{g.DATA_FOLDERPATH}/organizations/fetch/gmap/2025_Gaz_place_national.txt', delimiter='|')
@@ -208,14 +231,14 @@ for continent_i, continent in enumerate(continents[:]):
     sleep(2)
 
     operations_num = 0
-    for k, row in enumerate(rows[10:1000]):
+    for k, row in enumerate(rows[scrape_start:scrape_end]):
         # country = row[1].strip().lower()
         place = row['NAME'].strip().lower()
         output_folderpath = f'{g.DATA_FOLDERPATH}/organizations/fetch/gmap/{continent}/places'.replace(' ', '_')
         io.folders_recursive_gen(output_folderpath)
         print('*********************************')
         print(continent, '>>', place)
-        print(f'{k}/{len(rows)}')
+        print(f'{scrape_start+k}/{scrape_end}')
         print('*********************************')
 
         output_filepath = f'{output_folderpath}/{search_industry}__{continent}__{place}.csv'.replace(' ', '_')
@@ -251,6 +274,14 @@ def run():
     start = time.perf_counter()
     fetch_organizations()
     print(f'download html_form_master() - execution time: ', time.perf_counter() - start)
+
+driver.get(f'https://www.google.com/maps/search/medicinal herb suppliers')
+sleep(2)
+driver.find_element(By.XPATH, '//button[@aria-label="Condividi"]').click()
+driver.find_element(By.XPATH, '//button[@aria-label="Incorpora una mappa"]').click()
+driver.find_element(By.XPATH, '//button[text()="Copia HTML"]').click()
+driver.find_element(By.XPATH, '//button[text()="Copia HTML"]/preceding-sibling::*[1]').get_attribute('value')
+driver.find_element(By.XPATH, '//body').send_keys(Keys.ESCAPE)
 
 search_bar_element = driver.find_element(By.XPATH, '//input[@name="q"]')
 search_bar_element.clear()

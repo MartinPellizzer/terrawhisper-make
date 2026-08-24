@@ -12,7 +12,7 @@ HUB_FOLDERPATH = f'{g.DATA_FOLDERPATH}/organizations'
 
 def observations_table_organizations_add(source_foldername):
     table_name = 'organizations'
-    input_folderpath = f'{HUB_FOLDERPATH}/resolve/{source_foldername}/json'
+    input_folderpath = f'{HUB_FOLDERPATH}/resolve/{source_foldername}/details/json'
     output_folderpath = f'{HUB_FOLDERPATH}/observe'
     db_filepath = f'{output_folderpath}/observations.db'
     ###
@@ -26,7 +26,6 @@ def observations_table_organizations_add(source_foldername):
             all_data.append(input_item)
             # print(json.dumps(input_item, indent=4))
             # quit()
-
     columns = list(all_data[0].keys())
     col_names = ", ".join(columns)
     placeholders = ", ".join(["?"] * len(columns))
@@ -37,7 +36,6 @@ def observations_table_organizations_add(source_foldername):
     cur = conn.cursor()
     cur.executemany(query, values)
     conn.commit()
-
     ### PEEK
     conn.row_factory = sqlite3.Row
     cur = conn.cursor()
@@ -45,7 +43,41 @@ def observations_table_organizations_add(source_foldername):
     dict_rows = [dict(row) for row in rows]
     for row in dict_rows[:100]:
         print(json.dumps(row, indent=4))
+    conn.close()
 
+def observations_table_organizations_reviews_add(source_foldername):
+    table_name = 'organizations_reviews'
+    input_folderpath = f'{HUB_FOLDERPATH}/resolve/{source_foldername}/reviews/json'
+    output_folderpath = f'{HUB_FOLDERPATH}/observe'
+    db_filepath = f'{output_folderpath}/observations.db'
+    ###
+    input_filenames = os.listdir(input_folderpath)
+    all_data = []
+    for i, input_filename in enumerate(input_filenames[:]):
+        print(f'ORGANIZATIONS - {i}/{len(input_filenames)}')
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        input_data = io.json_read(input_filepath)
+        for input_item in input_data:
+            all_data.append(input_item)
+            # print(json.dumps(input_item, indent=4))
+            # quit()
+    columns = list(all_data[0].keys())
+    col_names = ", ".join(columns)
+    placeholders = ", ".join(["?"] * len(columns))
+    query = f"INSERT OR IGNORE INTO {table_name} ({col_names}) VALUES ({placeholders})"
+    values = [tuple(item.get(col) for col in columns) for item in all_data]
+    ###
+    conn = sqlite3.connect(db_filepath)
+    cur = conn.cursor()
+    cur.executemany(query, values)
+    conn.commit()
+    ### PEEK
+    conn.row_factory = sqlite3.Row
+    cur = conn.cursor()
+    rows = cur.execute(f'SELECT * FROM {table_name}').fetchall()
+    dict_rows = [dict(row) for row in rows]
+    for row in dict_rows[:100]:
+        print(json.dumps(row, indent=4))
     conn.close()
 
 
@@ -54,5 +86,7 @@ def run():
 
     if 1:
         observations_table_organizations_add(source_foldername='gmap')
-        observations_table_organizations_add(source_foldername='website')
+        # observations_table_organizations_add(source_foldername='website')
+
+        observations_table_organizations_reviews_add(source_foldername='gmap')
 

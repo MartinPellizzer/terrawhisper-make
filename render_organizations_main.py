@@ -21,6 +21,8 @@ HUB_FOLDERPATH = f'{g.DATA_FOLDERPATH}/organizations'
 _NON_ALNUM = re.compile(r"[^\w\s-]", re.UNICODE)
 _SEPARATORS = re.compile(r"[-\s]+")
 
+shutil.copy2('styles.css', f'{g.website_folderpath}/styles.css')
+
 def to_slug(name: str) -> str:
     """Convert an organization name into a stable, URL-safe slug."""
     name = unicodedata.normalize("NFKD", name)
@@ -320,15 +322,105 @@ def render_listing(master_item):
             </p>
         '''
         html_article += f'''<p>type: {identity_gmap_item['fields']['business_type_primary']}</p>'''
-        html_article += f'''
-<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3348.0964118728743!2d-96.84058512365978!3d32.94846387520341!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x864e9fecd95cce51%3A0xce8e79e6fdad6e5c!2sCHIOMA%20Co.%20Wellness%20%26%20Beauty%20Apothecary!5e0!3m2!1sen!2sit!4v1787318301722!5m2!1sen!2sit" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
-        '''
+        html_article += f'''{identity_gmap_item['fields']['business_map']}'''
 
         """
         location_data = input_data['location']
         html_article += f'''<h2>Location</h2>'''
         html_article += f'''<p>{location_data[0]['llm']}</p>'''
         """
+        
+        star_placeholder = f'''
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-star fill-foreground stroke-foreground" aria-hidden="true"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg>
+        '''
+        dummy_review = f'''
+                <div
+                    style="
+                        display: flex;
+                        items-align: center;
+                        gap: 0.5rem;
+                    "
+                >
+                    {star_placeholder}
+                    {star_placeholder}
+                    {star_placeholder}
+                    {star_placeholder}
+                    {star_placeholder}
+                </div>
+                <h3 
+                    style="
+                        margin-top: 0.8rem; 
+                        font-size: 1.6rem;
+                        font-weight: 500;
+                        margin-bottom: 1.6rem; 
+                    "
+                >
+                    Exceeded my expectations
+                </h3>
+                <p
+                    style="
+                        font-size: 1.4rem;
+                        color: oklch(55.6% 0 0);
+                        padding-bottom: 2.4rem;
+                        margin-bottom: 0rem;
+                    "
+                >
+                    I was a bit skeptical at first, but this product really delivered. The quality is outstanding and it arrived faster than expected. Would definitely recommend to anyone on the fence.
+                </p>
+        '''
+
+        ### REVIEWS
+        rating = identity_gmap_item['fields']['business_rating']
+        reviews_num = identity_gmap_item['fields']['business_reviews_num']
+        if rating != None and reviews_num != None: 
+            rating = rating.replace(',', '.')
+            reviews_num = rating.replace('(', '').replace(')', '')
+            ###
+            html_article += f'''
+                <h2
+                    style="
+                        font-size: 3rem;
+                        line-height: 1.2;
+                    "
+                >
+                    Customer Reviews
+                </h2>
+                <div
+                    style="
+                        margin-top: 1rem;
+                        display: flex;
+                        items-align: center;
+                        gap: 1rem;
+                        margin-bottom: 3.2rem;
+                    "
+                >
+                    <div
+                        style="
+                            display: flex;
+                            items-align: center;
+                            gap: 0.5rem;
+                        "
+                    >
+                        {star_placeholder}
+                        {star_placeholder}
+                        {star_placeholder}
+                        {star_placeholder}
+                        {star_placeholder}
+                    </div>
+                    <span
+                        style="
+                            color: oklch(55.6% 0 0);
+                        "
+                    >
+                        {rating} out of 5 · {reviews_num} reviews
+                    </span>
+                </div>
+                {dummy_review}
+                <div style="border-top: 1px solid oklch(92.2% 0 0); padding-bottom: 2.4rem;"></div>
+                {dummy_review}
+                <div style="border-top: 1px solid oklch(92.2% 0 0); padding-bottom: 2.4rem;"></div>
+                {dummy_review}
+            '''
     else:
         for input_key, input_val in input_data.items():
             # print(input_key, input_val)
