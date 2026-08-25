@@ -320,16 +320,7 @@ def render_listing(master_item):
         html_article += f'''<h2>Identity</h2>'''
         html_article += f'''<p>{identity_gmap_item['llm']}</p>'''
 
-        html_article += f'''<p>address: {location_gmap_item['fields']['business_address']}</p>'''
-        html_article += f'''<p>phone: {contact_gmap_item['fields']['business_phone']}</p>'''
-        html_article += f'''<p>website: {identity_gmap_item['fields']['business_website']}</p>'''
-        html_article += f'''
-            <p>
-                rating: {identity_gmap_item['fields']['business_rating']} ({identity_gmap_item['fields']['business_reviews_num']})
-            </p>
-        '''
         html_article += f'''<p>type: {identity_gmap_item['fields']['business_type_primary']}</p>'''
-        html_article += f'''{identity_gmap_item['fields']['business_map']}'''
 
         """
         location_data = input_data['location']
@@ -398,7 +389,7 @@ def render_listing(master_item):
             elif float(rating) < 4.5:
                 review_stars = '★★★★☆'
             elif float(rating) <= 5:
-                review_stars = '★★★★★'
+                review_stars = f'''★★★★★'''
             html_article += f'''
                 <section class="organization-listing">
                     <h2>
@@ -1044,6 +1035,29 @@ def render_listing(master_item):
     '''
 
 
+    ################################################################################
+    # CONTACTS (SIDEBAR)
+    ################################################################################
+    iframe_html = identity_gmap_item['fields']['business_map']
+    iframe_html = re.sub(r'\s(?:width|height)="[^"]*"', '', iframe_html)
+
+    contacts_html = f'''
+        <section class="contacts">
+            <h2>
+                Contact this business
+            </h2>
+            {iframe_html}
+            <div>
+                <h3>Address</h3>
+                <p>{location_gmap_item['fields']['business_address']}</p>
+            </div>
+            <div>
+                <h3>Get in touch</h3>
+                <span>{contact_gmap_item['fields']['business_phone']}</span>
+                <span>{identity_gmap_item['fields']['business_website']}</span>
+            </div>
+        </section>
+    '''
 
     meta_title = f'{business_name_canonical}'
     meta_description = f''
@@ -1058,9 +1072,21 @@ def render_listing(master_item):
         {head_html}
         <body>
             {sections.header_dark()}
-            <main class="container-md organization-listing" style="margin-top: 4.8rem;">
-                {html_article}
-            </main>
+            <div class="container-xl organization-listing"
+                style="
+                    display: grid;
+                    grid-template-columns: 2fr 1fr;
+                    gap: 2.4rem;
+                    margin-top: 4.8rem;
+                "
+            >
+                <main>
+                    {html_article}
+                </main>
+                <aside>
+                    {contacts_html}      
+                </aside>
+            </div>
             {sections.footer()}
         </body>
         </html>
