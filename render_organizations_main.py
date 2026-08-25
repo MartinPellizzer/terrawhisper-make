@@ -364,7 +364,7 @@ def render_listing(master_item):
                     elif review_stars == '1':
                         review_stars = '★☆☆☆☆'
                     html_review = f'''
-                        <div class="stars">
+                        <div class="stars-small">
                             <span>{review_stars}</span>
                         </div>
                         <p class="review-text">
@@ -405,7 +405,7 @@ def render_listing(master_item):
                         Customer Reviews
                     </h2>
                     <div class="rating">
-                        <div class="stars">
+                        <div class="stars-big">
                             <span>{review_stars}</span>
                         </div>
                         <span class="rating-text">
