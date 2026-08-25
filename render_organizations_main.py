@@ -348,23 +348,35 @@ def render_listing(master_item):
         for lst in reviews_data:
             for item in lst['items']:
                 if item['source_name'] == 'Google Maps':
-                    review_text = item['fields']['business_review_text_ita']
+                    print(json.dumps(item, indent=4))
+                    review_author_name = item['fields']['business_review_author_name']
+                    review_text = item['fields']['business_review_text_eng']
+                    review_stars = item['fields']['business_review_stars']
+                    # review_stars = 3
+                    if review_stars == '5':
+                        review_stars = '★★★★★'
+                    elif review_stars == '4':
+                        review_stars = '★★★★☆'
+                    elif review_stars == '3':
+                        review_stars = '★★★☆☆'
+                    elif review_stars == '2':
+                        review_stars = '★★☆☆☆'
+                    elif review_stars == '1':
+                        review_stars = '★☆☆☆☆'
                     html_review = f'''
                         <div class="stars">
-                            {star_placeholder}
-                            {star_placeholder}
-                            {star_placeholder}
-                            {star_placeholder}
-                            {star_placeholder}
+                            <span>{review_stars}</span>
                         </div>
                         <p class="review-text">
                             {review_text}
                         </p>
+                        <div class="review-name">
+                            <span>{review_author_name}</span>
+                        </div>
                         <div class="review-divider"></div>
                     '''
                     '''
                         <h3 style="margin-top: 0.8rem; font-size: 1.6rem; font-weight: 500; margin-bottom: 1.6rem;">
-                            Exceeded my expectations
                         </h3>
                     '''
                     html_reviews += html_review
@@ -374,8 +386,19 @@ def render_listing(master_item):
         reviews_num = identity_gmap_item['fields']['business_reviews_num']
         if rating != None and reviews_num != None: 
             rating = rating.replace(',', '.')
-            reviews_num = rating.replace('(', '').replace(')', '')
+            reviews_num = reviews_num.replace('(', '').replace(')', '')
             ###
+
+            if float(rating) < 1.5:
+                review_stars = '★☆☆☆☆'
+            elif float(rating) < 2.5:
+                review_stars = '★★☆☆☆'
+            elif float(rating) < 3.5:
+                review_stars = '★★★☆☆'
+            elif float(rating) < 4.5:
+                review_stars = '★★★★☆'
+            elif float(rating) <= 5:
+                review_stars = '★★★★★'
             html_article += f'''
                 <section class="organization-listing">
                     <h2>
@@ -383,11 +406,7 @@ def render_listing(master_item):
                     </h2>
                     <div class="rating">
                         <div class="stars">
-                            {star_placeholder}
-                            {star_placeholder}
-                            {star_placeholder}
-                            {star_placeholder}
-                            {star_placeholder}
+                            <span>{review_stars}</span>
                         </div>
                         <span class="rating-text">
                             {rating} out of 5 · {reviews_num} reviews
@@ -1049,7 +1068,7 @@ def render_listing(master_item):
     html_filepath = f'{g.website_folderpath}/{url_slug}.html'
     with open(html_filepath, 'w') as f: f.write(html)
     print(html_filepath)
-    quit()
+    # quit()
 
 
 def run():

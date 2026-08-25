@@ -173,9 +173,7 @@ def derive_reviews():
             output_item = {
                 'source_name': observe_item['source_name'],
                 'field_section': 'reviews',
-                'fields': {
-                    'business_review_text_ita': observe_item['business_review_text_ita'],
-                }
+                'fields': observe_item,
             }
             output_items.append(output_item)
 
