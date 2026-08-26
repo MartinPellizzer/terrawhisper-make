@@ -630,11 +630,16 @@ ORGANIZATION LISTING
     padding-left: 2.4rem;
 }
 
-.organization-listing .contacts div {
+.organization-listing .contacts h2 {
+    margin-bottom: 1.6rem;
+}
+
+.organization-listing .contacts h3 {
     margin-top: 4.8rem;
 }
 
 .organization-listing .contacts span {
     display: inline-block;
+    margin-bottom: 2.4rem;
 }
 
