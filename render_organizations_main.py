@@ -341,6 +341,113 @@ def section_reviews_gen(input_data, identity_gmap_item):
         '''
     return output_html
 
+def section_products_gen(input_data):
+
+    identity_website_item = None
+    for identity_list in input_data['identity']:
+        for identity_item in identity_list['items']:
+            if identity_item['source_name'].lower() == 'website':
+                identity_website_item = identity_item
+
+    """
+    herbs_html = ''
+    business_products_herbs = identity_website_item['fields']['business_products_herbs']
+    if business_products_herbs:
+        for business_product_herb in business_products_herbs.split(','):
+            herbs_html += f'''<p class="badge">{business_product_herb.strip()}</p>'''
+    ###
+    <div style="display: flex; gap: 0.8rem; flex-wrap: wrap;">
+        {herbs_html}
+    </div>
+    """
+
+    herbs_html = ''
+    business_products_herbs = identity_website_item['fields']['business_products_herbs']
+    if business_products_herbs:
+        for business_product_herb in business_products_herbs.split(','):
+            herbs_html += f'''<li class="list-panel-default">{business_product_herb.strip()}</li>'''
+
+    output_html = f'''
+        <section>
+            <h2>Products</h2>
+            <ul style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.6rem;">
+                {herbs_html}
+            </ul>
+        </section>
+    '''
+
+    return output_html
+
+    output_html = ''
+    reviews_data = input_data['reviews']
+    ### HTML REVIEWS
+    html_reviews = f''''''
+    for lst in reviews_data:
+        for item in lst['items']:
+            if item['source_name'] == 'Google Maps':
+                # print(json.dumps(item, indent=4))
+                review_author_name = item['fields']['business_review_author_name']
+                review_text = item['fields']['business_review_text_eng']
+                review_stars = item['fields']['business_review_stars']
+                if review_stars == '5':
+                    review_stars = '★★★★★'
+                elif review_stars == '4':
+                    review_stars = '★★★★☆'
+                elif review_stars == '3':
+                    review_stars = '★★★☆☆'
+                elif review_stars == '2':
+                    review_stars = '★★☆☆☆'
+                elif review_stars == '1':
+                    review_stars = '★☆☆☆☆'
+                html_review = f'''
+                    <div class="stars-small">
+                        <span>{review_stars}</span>
+                    </div>
+                    <p class="review-text">
+                        {review_text}
+                    </p>
+                    <div class="review-name">
+                        <span>{review_author_name}</span>
+                    </div>
+                    <div class="review-divider"></div>
+                '''
+                html_reviews += html_review
+    ### HTML OUTPUT
+    rating = identity_gmap_item['fields']['business_rating']
+    reviews_num = identity_gmap_item['fields']['business_reviews_num']
+    if rating != None and reviews_num != None: 
+        rating = rating.replace(',', '.')
+        reviews_num = reviews_num.replace('(', '').replace(')', '')
+        if float(rating) < 1.5:
+            review_stars = '★☆☆☆☆'
+        elif float(rating) < 2.5:
+            review_stars = '★★☆☆☆'
+        elif float(rating) < 3.5:
+            review_stars = '★★★☆☆'
+        elif float(rating) < 4.5:
+            review_stars = '★★★★☆'
+        elif float(rating) <= 5:
+            review_stars = f'''★★★★★'''
+        output_html += f'''
+            <section class="organization-listing">
+                <h2>
+                    Customer Reviews
+                </h2>
+                <div class="rating">
+                    <div class="stars-big">
+                        <span>{review_stars}</span>
+                    </div>
+                    <span class="rating-text">
+                        {rating} out of 5 · {reviews_num} reviews
+                    </span>
+                </div>
+                <div>
+                    {html_reviews}
+                </div>
+            </section>
+        '''
+    return output_html
+
 def section_contacts_gen(input_data, identity_gmap_item):
     iframe_html = identity_gmap_item['fields']['business_map']
     iframe_html = re.sub(r'\s(?:width|height)="[^"]*"', '', iframe_html)
@@ -404,13 +511,7 @@ def render_listing(master_item):
             if identity_item['source_name'] == 'Google Maps':
                 identity_gmap_item = identity_item
 
-    identity_website_item = None
-    for identity_list in identity_data:
-        for identity_item in identity_list['items']:
-            if identity_item['source_name'].lower() == 'website':
-                identity_website_item = identity_item
-
-    # if identity_gmap_item['fields']['business_type_primary'] != "Erboristeria":  return
+    if identity_gmap_item['fields']['business_type_primary'] != "Erboristeria":  return
 
     # print(json.dumps(identity_data, indent=4))
     # quit()
@@ -447,23 +548,7 @@ def render_listing(master_item):
     ################################################################################
     # PRODUCTS
     ################################################################################
-    # print(input_data['products'])
-    # quit()
-    print(identity_website_item)
-    if identity_website_item['fields']['business_products_herbs']:
-        html_article += identity_website_item['fields']['business_products_herbs']
-    # print(json.dumps(input_data, indent=4))
-    # if input_data['business_name_canonical'] == 'the raw honey shop':
-        # quit()
-    '''
-    for product in input_data['products']:
-        for item in product['items']:
-            if item['fields']['business_products_herbs']:
-                html_article += item['fields']['business_products_herbs']
-                # print(html_article)
-                # print('here')
-                # quit()
-    '''
+    html_article += section_products_gen(input_data)
 
     ################################################################################
     # LOCATION ???
