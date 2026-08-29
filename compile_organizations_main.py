@@ -26,6 +26,8 @@ def compile_gen():
     for i, item in enumerate(items):
         print(f'{i}/{len(items)}')
         business_name_canonical = item['business_name_canonical']
+        print(business_name_canonical)
+        # continue
         output_data = {}
         output_data['business_name_canonical'] = business_name_canonical
 
@@ -44,4 +46,5 @@ def run():
     start = time.perf_counter()
     compile_gen()
     print(f'compile_gen() - execution time: ', time.perf_counter() - start)
+    # quit()
 

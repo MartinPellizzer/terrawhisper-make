@@ -54,7 +54,7 @@ def normalize_businesses(source_foldername):
     try: shutil.rmtree(output_folderpath)
     except: pass
     io.folders_recursive_gen(output_folderpath)
-    input_filenames = os.listdir(input_folderpath)
+    input_filenames = sorted(os.listdir(input_folderpath))
     ###
     for i, input_filename in enumerate(input_filenames[:]):
         print(f'{i}/{len(input_filenames)}')
@@ -65,12 +65,12 @@ def normalize_businesses(source_foldername):
         input_data = io.json_read(input_filepath)
         for input_item in input_data:
             # print(input_item)
-            input_item['business_name_normalize'] = normalize_gen(input_item['business_gmap_name_raw'])
-            input_item['business_name_display'] = display_name_gen(input_item['business_gmap_name_raw'])
-            input_item['business_slug'] = slug_gen(input_item['business_gmap_name_raw'])
+            input_item['business_name_normalize'] = normalize_gen(input_item['business_name_raw'])
+            input_item['business_name_display'] = display_name_gen(input_item['business_name_raw'])
+            input_item['business_slug'] = slug_gen(input_item['business_name_raw'])
         io.json_write(output_filepath, input_data)
-    # print(json.dumps(input_item, indent=4))
-    # quit()
+        # print(json.dumps(input_item, indent=4))
+        # quit()
 
 def normalize_reviews(source_foldername):
     input_folderpath = f'{HUB_FOLDERPATH}/parse/{source_foldername}/reviews/json'
@@ -102,7 +102,7 @@ def run():
     if 1:
         start = time.perf_counter()
         normalize_businesses(source_foldername='gmap')
-        # normalize_businesses(source_foldername='website')
+        normalize_businesses(source_foldername='website')
 
         normalize_reviews(source_foldername='gmap')
         print(f'normalize businesses() - execution time: ', time.perf_counter() - start)

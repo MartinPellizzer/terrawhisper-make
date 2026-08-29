@@ -188,8 +188,8 @@ def run():
     print(f'#########################################')
     print(f'DERIVE')
     print(f'#########################################')
-    # try: shutil.rmtree(f'{HUB_FOLDERPATH}/derive')
-    # except: pass
+    try: shutil.rmtree(f'{HUB_FOLDERPATH}/derive')
+    except: pass
     io.folders_recursive_gen(f'{HUB_FOLDERPATH}/derive')
 
     ###

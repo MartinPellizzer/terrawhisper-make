@@ -86,7 +86,7 @@ def run():
 
     if 1:
         observations_table_organizations_add(source_foldername='gmap')
-        # observations_table_organizations_add(source_foldername='website')
+        observations_table_organizations_add(source_foldername='website')
 
         observations_table_organizations_reviews_add(source_foldername='gmap')
 

@@ -19,7 +19,7 @@ def resolve_businesses(source_foldername):
     try: shutil.rmtree(output_folderpath)
     except: pass
     io.folders_recursive_gen(output_folderpath)
-    input_filenames = os.listdir(input_folderpath)
+    input_filenames = sorted(os.listdir(input_folderpath))
     ###
     for i, input_filename in enumerate(input_filenames[:]):
         print(f'{i}/{len(input_filenames)}')
@@ -45,7 +45,7 @@ def resolve_reviews(source_foldername):
     try: shutil.rmtree(output_folderpath)
     except: pass
     io.folders_recursive_gen(output_folderpath)
-    input_filenames = os.listdir(input_folderpath)
+    input_filenames = sorted(os.listdir(input_folderpath))
     ###
     for i, input_filename in enumerate(input_filenames[:]):
         print(f'{i}/{len(input_filenames)}')
@@ -71,7 +71,7 @@ def run():
     if 1:
         start = time.perf_counter()
         resolve_businesses(source_foldername='gmap')
-        # resolve_businesses(source_foldername='website')
+        resolve_businesses(source_foldername='website')
 
         resolve_reviews(source_foldername='gmap')
         print(f'resolve businesses() - execution time: ', time.perf_counter() - start)

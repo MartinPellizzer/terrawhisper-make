@@ -36,7 +36,7 @@ def to_slug(name: str) -> str:
 
 def parse_gmap_backup():
     start = 0
-    end = 100
+    end = 10
     ###
     output_folderpath = f'{g.DATA_FOLDERPATH}/organizations/parse/gmap/details/json'
     try: shutil.rmtree(output_folderpath)
@@ -105,7 +105,6 @@ def parse_gmap_backup():
                 for field_item in fields_data:
                     reply = None
                     if field_item['field_name'] == 'business_name_raw': reply = gmap_name
-                    elif field_item['field_name'] == 'business_gmap_name_raw': reply = gmap_name
                     elif field_item['field_name'] == 'business_website': reply = gmap_website
                     elif field_item['field_name'] == 'business_address': reply = gmap_address
                     elif field_item['field_name'] == 'business_phone': reply = gmap_phone
@@ -235,6 +234,7 @@ def parse_gmap():
     i = 0
     for input_filename in input_filenames[start:end]:
         print(f'{start+i}/{end}')
+        print(f'{input_filename}')
         i += 1
         input_filename_base = input_filename.split('.')[0].strip()
         input_filepath = f'{input_foldername}/{input_filename}'
@@ -252,6 +252,12 @@ def parse_gmap():
                 gmap_business_map = values[6]
                 slug = to_slug(gmap_label)
 
+                from urllib.parse import urlsplit
+                def base_url(url):
+                    p = urlsplit(url)
+                    return f"{p.scheme}://{p.netloc}/"
+                gmap_website = base_url(gmap_website)
+
                 info_lst = result = ast.literal_eval(gmap_info)
                 gmap_rating = None
                 gmap_reviews_num = None
@@ -263,17 +269,19 @@ def parse_gmap():
                     gmap_reviews_num = info_lst[1]
                     gmap_business_type_primary = info_lst[3]
 
-                if gmap_rating == None: continue
+                # if gmap_rating == None: continue
                 
+                print(f'gmap_name: {gmap_name}')
+                '''
                 print(f'gmap_label: {gmap_label}')
                 print(f'gmap_address: {gmap_address}')
                 print(f'gmap_website: {gmap_website}')
                 print(f'gmap_phone: {gmap_phone}')
-                print(f'gmap_name: {gmap_name}')
                 print(f'gmap_info: {gmap_info}')
                 print(f'gmap_slug: {slug}')
                 print(f'***************************************')
                 print()
+                '''
                 # quit()
 
                 ################################################################################

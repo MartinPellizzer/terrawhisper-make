@@ -555,25 +555,61 @@ ORGANIZATION LISTING
 */
 
 .organization-listing {
-    font-family: "Inter", sans-serif;
-    color: oklch(14.5% 0 0); 
-}
-
-.organization-listing {
+    font-family: sans-serif !important;
+    color: #2b2b2b;
     margin-top: 4.8rem;
     margin-bottom: 4.8rem;
+}
+
+.organization-listing .layout{
+    display: grid; 
+    grid-template-columns: 2fr 1fr; 
+    gap: 2.4rem; 
+    margin-top: 3.2rem;
+}
+
+.organization-listing h1 {
+    font-size: 4.8rem;
+    line-height: 1.1;
+    margin-bottom: 1.6rem;
+    color: #111;
 }
 
 .organization-listing h2 {
     font-size: 3rem; 
     line-height: 1.2;
     font-weight: 600;
+    color: #111;
 }
 
 .organization-listing h3 {
     font-size: 1.8rem; 
     line-height: 1.2;
     font-weight: 600;
+    color: #111;
+}
+
+.organization-listing .badge {
+    font-size: 1.2rem; 
+    background-color: #111;
+    color: #fff;
+    border-radius: 9999px;
+    padding: 0.2rem 0.8rem;
+}
+
+.organization-listing .hero-score {
+    font-size: 1.6rem; 
+    background-color: #00a91c;
+    background-color: #216e1f;
+    background-color: #008817;
+    color: #fff;
+    border-radius: 3px;
+    padding: 0.6rem 1.2rem;
+}
+
+.organization-listing .hero-reviews-num {
+    font-size: 1.4rem; 
+    color: oklch(55.6% 0 0);
 }
 
 .organization-listing .rating {
@@ -582,6 +618,7 @@ ORGANIZATION LISTING
     align-items: center; 
     gap: 1rem; 
     margin-bottom: 3.2rem;
+    color: #111;
 }
 
 .organization-listing .rating-text {
@@ -594,6 +631,7 @@ ORGANIZATION LISTING
     gap: 0.5rem;
     font-size: 2.4rem; 
     line-height: 1;
+    color: #111;
 }
 
 .organization-listing .stars-big {
@@ -640,6 +678,5 @@ ORGANIZATION LISTING
 
 .organization-listing .contacts span {
     display: inline-block;
-    margin-bottom: 2.4rem;
 }
 

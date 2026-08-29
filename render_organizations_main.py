@@ -258,6 +258,123 @@ def classify_product_domain(record):
         return "PLANT"
     return "UNKNOWN"
 
+def section_identity_gen(input_data):
+    ### INTRO TEXT
+    html = ''
+    text = None
+    for lst in input_data['identity']:
+        for item in lst['items']:
+            if item['source_name'] == 'Website':
+                text = item['fields']['business_description']
+    if text != None:
+        html += f'''<p>{text}</p>'''
+    return html
+
+def section_reviews_gen(input_data, identity_gmap_item):
+    output_html = ''
+    reviews_data = input_data['reviews']
+    ### HTML REVIEWS
+    html_reviews = f''''''
+    for lst in reviews_data:
+        for item in lst['items']:
+            if item['source_name'] == 'Google Maps':
+                # print(json.dumps(item, indent=4))
+                review_author_name = item['fields']['business_review_author_name']
+                review_text = item['fields']['business_review_text_eng']
+                review_stars = item['fields']['business_review_stars']
+                if review_stars == '5':
+                    review_stars = '★★★★★'
+                elif review_stars == '4':
+                    review_stars = '★★★★☆'
+                elif review_stars == '3':
+                    review_stars = '★★★☆☆'
+                elif review_stars == '2':
+                    review_stars = '★★☆☆☆'
+                elif review_stars == '1':
+                    review_stars = '★☆☆☆☆'
+                html_review = f'''
+                    <div class="stars-small">
+                        <span>{review_stars}</span>
+                    </div>
+                    <p class="review-text">
+                        {review_text}
+                    </p>
+                    <div class="review-name">
+                        <span>{review_author_name}</span>
+                    </div>
+                    <div class="review-divider"></div>
+                '''
+                html_reviews += html_review
+    ### HTML OUTPUT
+    rating = identity_gmap_item['fields']['business_rating']
+    reviews_num = identity_gmap_item['fields']['business_reviews_num']
+    if rating != None and reviews_num != None: 
+        rating = rating.replace(',', '.')
+        reviews_num = reviews_num.replace('(', '').replace(')', '')
+        if float(rating) < 1.5:
+            review_stars = '★☆☆☆☆'
+        elif float(rating) < 2.5:
+            review_stars = '★★☆☆☆'
+        elif float(rating) < 3.5:
+            review_stars = '★★★☆☆'
+        elif float(rating) < 4.5:
+            review_stars = '★★★★☆'
+        elif float(rating) <= 5:
+            review_stars = f'''★★★★★'''
+        output_html += f'''
+            <section class="organization-listing">
+                <h2>
+                    Customer Reviews
+                </h2>
+                <div class="rating">
+                    <div class="stars-big">
+                        <span>{review_stars}</span>
+                    </div>
+                    <span class="rating-text">
+                        {rating} out of 5 · {reviews_num} reviews
+                    </span>
+                </div>
+                <div>
+                    {html_reviews}
+                </div>
+            </section>
+        '''
+    return output_html
+
+def section_contacts_gen(input_data, identity_gmap_item, location_gmap_item, contact_gmap_item):
+    iframe_html = identity_gmap_item['fields']['business_map']
+    iframe_html = re.sub(r'\s(?:width|height)="[^"]*"', '', iframe_html)
+    address_html = ''
+    address_text = location_gmap_item['fields']['business_address']
+    if address_text != '':
+        address_html = f'''
+            <div>
+                <h3>Address</h3>
+                <p>{address_text}</p>
+            </div>
+        '''
+    output_html = f'''
+        <section class="contacts">
+            <h2>
+                Contacts
+            </h2>
+            {iframe_html}
+            {address_html}
+            <div>
+                <h3>Get in touch</h3>
+                <div style="display: flex; items-align: center; gap: 1.2rem; margin-bottom: 2.4rem;">
+                    <svg style="width: 2.0rem;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-phone-icon lucide-phone"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"/></svg>
+                    <span>{contact_gmap_item['fields']['business_phone']}</span>
+                </div>
+                <div style="display: flex; items-align: center; gap: 1.2rem; margin-bottom: 2.4rem;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-globe-icon lucide-globe"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+                    <span>{identity_gmap_item['fields']['business_website']}</span>
+                </div>
+            </div>
+        </section>
+    '''
+    return output_html
+
 def render_listing(master_item):
     business_name_canonical = master_item['business_name_canonical']
     business_name_display = master_item['business_name_display']
@@ -268,159 +385,86 @@ def render_listing(master_item):
 
     # print(json.dumps(input_data, indent=4))
     # quit()
+    identity_data = input_data['identity']
+    location_data = input_data['location']
+    contact_data = input_data['contact']
+    
+    identity_gmap_item = None
+    for identity_list in identity_data:
+        for identity_item in identity_list['items']:
+            if identity_item['source_name'] == 'Google Maps':
+                identity_gmap_item = identity_item
 
+    location_gmap_item = None
+    for lst in location_data:
+        for item in lst['items']:
+            if item['source_name'] == 'Google Maps':
+                location_gmap_item = item
+
+    contact_gmap_item = None
+    for lst in contact_data:
+        for item in lst['items']:
+            if item['source_name'] == 'Google Maps':
+                contact_gmap_item = item
+
+    if identity_gmap_item['fields']['business_type_primary'] != "Erboristeria":  return
+
+    # print(json.dumps(identity_data, indent=4))
+    # quit()
+    # print(json.dumps(gmap_item, indent=4))
+    # quit()
+
+    ################################################################################
+    # INTRO
+    ################################################################################
     html_article = ''
 
-    if 1:
-        html_article += f'<h1>{business_name_display}</h1>'
+    hero_html = f'''
+        {sections.breadcrumbs_explorer(url_slug)}
+        <div style="display: flex; justify-content: space-between;">
+            <div>
+                <h1>{business_name_display}</h1>
+                <span class="badge" style="display: inline-block;">{identity_gmap_item['fields']['business_type_primary']}</span>
+            </div>
+            <div style="display: flex; flex-direction: column; align-items: center; margin-top: 0.8rem;">
+                <span style="display: inline-block;" class="hero-score">4.8 / 5</span>
+                <span style="display: inline-block;" class="hero-reviews-num">4 Ratings</span>
+            </div>
+        </div>
+    '''
 
-        # print(json.dumps(input_data, indent=4))
-        # quit()
+    html_article += f''
 
-        identity_data = input_data['identity']
-        location_data = input_data['location']
-        contact_data = input_data['contact']
-        reviews_data = input_data['reviews']
-        
-        identity_gmap_item = None
-        for identity_list in identity_data:
-            # print(json.dumps(identity_list, indent=4))
-            for identity_item in identity_list['items']:
-                # print(json.dumps(identity_item, indent=4))
-                if identity_item['source_name'] == 'Google Maps':
-                    identity_gmap_item = identity_item
 
-        location_gmap_item = None
-        for lst in location_data:
-            # print(json.dumps(identity_list, indent=4))
-            for item in lst['items']:
-                # print(json.dumps(location_item, indent=4))
-                if item['source_name'] == 'Google Maps':
-                    location_gmap_item = item
+    ################################################################################
+    # IDENTITY
+    ################################################################################
 
-        contact_gmap_item = None
-        for lst in contact_data:
-            for item in lst['items']:
-                if item['source_name'] == 'Google Maps':
-                    contact_gmap_item = item
+    html_article += section_identity_gen(input_data)
 
-        reviews_gmap_item = None
-        for lst in reviews_data:
-            for item in lst['items']:
-                if item['source_name'] == 'Google Maps':
-                    reviews_gmap_item = item
+    ################################################################################
+    # LOCATION ???
+    ################################################################################
+    """
+    location_data = input_data['location']
+    html_article += f'''<h2>Location</h2>'''
+    html_article += f'''<p>{location_data[0]['llm']}</p>'''
+    """
+    
+    ################################################################################
+    # REVIEWS
+    ################################################################################
+    html_article += section_reviews_gen(input_data, identity_gmap_item)
 
-        print(identity_gmap_item['fields'])
-        if identity_gmap_item['fields']['business_type_primary'] != "Erboristeria":  return
+    ################################################################################
+    # CONTACTS (SIDEBAR)
+    ################################################################################
+    contacts_html = section_contacts_gen(input_data, identity_gmap_item, location_gmap_item, contact_gmap_item)
 
-        # print(json.dumps(identity_data, indent=4))
-        # quit()
-        # print(json.dumps(gmap_item, indent=4))
-        # quit()
-        html_article += f'''<h2>Identity</h2>'''
-        html_article += f'''<p>{identity_gmap_item['llm']}</p>'''
 
-        html_article += f'''<p>type: {identity_gmap_item['fields']['business_type_primary']}</p>'''
+    main_html = f'''
+    '''
 
-        """
-        location_data = input_data['location']
-        html_article += f'''<h2>Location</h2>'''
-        html_article += f'''<p>{location_data[0]['llm']}</p>'''
-        """
-        
-        star_placeholder = f'''
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-star fill-foreground stroke-foreground" aria-hidden="true"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg>
-        '''
-
-        # print(reviews_gmap_item['fields'])
-        # quit()
-
-        html_reviews = f''''''
-        for lst in reviews_data:
-            for item in lst['items']:
-                if item['source_name'] == 'Google Maps':
-                    print(json.dumps(item, indent=4))
-                    review_author_name = item['fields']['business_review_author_name']
-                    review_text = item['fields']['business_review_text_eng']
-                    review_stars = item['fields']['business_review_stars']
-                    # review_stars = 3
-                    if review_stars == '5':
-                        review_stars = '★★★★★'
-                    elif review_stars == '4':
-                        review_stars = '★★★★☆'
-                    elif review_stars == '3':
-                        review_stars = '★★★☆☆'
-                    elif review_stars == '2':
-                        review_stars = '★★☆☆☆'
-                    elif review_stars == '1':
-                        review_stars = '★☆☆☆☆'
-                    html_review = f'''
-                        <div class="stars-small">
-                            <span>{review_stars}</span>
-                        </div>
-                        <p class="review-text">
-                            {review_text}
-                        </p>
-                        <div class="review-name">
-                            <span>{review_author_name}</span>
-                        </div>
-                        <div class="review-divider"></div>
-                    '''
-                    '''
-                        <h3 style="margin-top: 0.8rem; font-size: 1.6rem; font-weight: 500; margin-bottom: 1.6rem;">
-                        </h3>
-                    '''
-                    html_reviews += html_review
-
-        ### REVIEWS
-        rating = identity_gmap_item['fields']['business_rating']
-        reviews_num = identity_gmap_item['fields']['business_reviews_num']
-        if rating != None and reviews_num != None: 
-            rating = rating.replace(',', '.')
-            reviews_num = reviews_num.replace('(', '').replace(')', '')
-            ###
-
-            if float(rating) < 1.5:
-                review_stars = '★☆☆☆☆'
-            elif float(rating) < 2.5:
-                review_stars = '★★☆☆☆'
-            elif float(rating) < 3.5:
-                review_stars = '★★★☆☆'
-            elif float(rating) < 4.5:
-                review_stars = '★★★★☆'
-            elif float(rating) <= 5:
-                review_stars = f'''★★★★★'''
-            html_article += f'''
-                <section class="organization-listing">
-                    <h2>
-                        Customer Reviews
-                    </h2>
-                    <div class="rating">
-                        <div class="stars-big">
-                            <span>{review_stars}</span>
-                        </div>
-                        <span class="rating-text">
-                            {rating} out of 5 · {reviews_num} reviews
-                        </span>
-                    </div>
-                    <div>
-                        {html_reviews}
-                    </div>
-                </section>
-            '''
-
-    else:
-        for input_key, input_val in input_data.items():
-            # print(input_key, input_val)
-            if input_key == 'business_name_canonical': continue
-            html_article += f'''<h2>{input_key}</h2>'''
-            html_article += f'''<p>{input_val[0]['llm']}</p>'''
-            for field_key, field_val in input_val[0].items():
-                if field_key == 'llm': continue
-                html_article += f'''<p>{field_key}: {field_val}</p>'''
-                # print(html_article)
-        # quit()
-        
     """
     quit()
 
@@ -1035,36 +1079,6 @@ def render_listing(master_item):
     '''
 
 
-    ################################################################################
-    # CONTACTS (SIDEBAR)
-    ################################################################################
-    iframe_html = identity_gmap_item['fields']['business_map']
-    iframe_html = re.sub(r'\s(?:width|height)="[^"]*"', '', iframe_html)
-
-    contacts_html = f'''
-        <section class="contacts">
-            <h2>
-                Contacts
-            </h2>
-            {iframe_html}
-            <div>
-                <h3>Address</h3>
-                <p>{location_gmap_item['fields']['business_address']}</p>
-            </div>
-            <div>
-                <h3>Get in touch</h3>
-                <div style="display: flex; items-align: center; gap: 1.2rem;">
-                    <svg style="width: 2.0rem;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-phone-icon lucide-phone"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"/></svg>
-                    <span>{contact_gmap_item['fields']['business_phone']}</span>
-                </div>
-                <div style="display: flex; items-align: center; gap: 1.2rem;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-globe-icon lucide-globe"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
-                    <span>{identity_gmap_item['fields']['business_website']}</span>
-                </div>
-            </div>
-        </section>
-    '''
-
     meta_title = f'{business_name_canonical}'
     meta_description = f''
     canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''
@@ -1078,20 +1092,18 @@ def render_listing(master_item):
         {head_html}
         <body>
             {sections.header_dark()}
-            <div class="container-xl organization-listing"
-                style="
-                    display: grid;
-                    grid-template-columns: 2fr 1fr;
-                    gap: 2.4rem;
-                    margin-top: 4.8rem;
-                "
-            >
+            <div class="container-xl organization-listing">
                 <main>
-                    {html_article}
+                    {hero_html}
+                    <div class="layout">
+                        <div>
+                            {html_article}
+                        </div>
+                        <aside>
+                            {contacts_html}      
+                        </aside>
+                    </div>
                 </main>
-                <aside>
-                    {contacts_html}      
-                </aside>
             </div>
             {sections.footer()}
         </body>

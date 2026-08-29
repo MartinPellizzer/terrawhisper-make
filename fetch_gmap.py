@@ -134,7 +134,16 @@ def scrape_map_embedded():
         sleep(2)
         driver.find_element(By.XPATH, '//body').send_keys(Keys.ESCAPE)
         sleep(2)
-    except: return ''
+    except: 
+        try:
+            driver.find_element(By.XPATH, '//img[@alt="Incorpora una mappa"]').click()
+            sleep(5)
+            iframe = driver.find_element(By.XPATH, '//button[text()="Copia HTML"]/preceding-sibling::*[1]').get_attribute('value')
+            sleep(2)
+            driver.find_element(By.XPATH, '//button[@id="header-close-button"]').click()
+            # driver.find_element(By.XPATH, '//body').send_keys(Keys.ESCAPE)
+            sleep(2)
+        except: return ''
     return iframe
 
 def scrape_new_business(output_filepath, search_text, continent, place, i):
@@ -214,8 +223,9 @@ continents = [
     # 'europe',
 scrapes_num = 10
 
-scrape_start = 10
-scrape_end = 100
+scrape_start = 0
+scrape_end = 110
+scrape_end = 300
 
 for continent_i, continent in enumerate(continents[:]):
     # rows = io.csv_read(f'{g.DATA_FOLDERPATH}/organizations/fetch/gmap/{continent}.csv')
@@ -241,7 +251,18 @@ for continent_i, continent in enumerate(continents[:]):
         print(f'{scrape_start+k}/{scrape_end}')
         print('*********************************')
 
-        output_filepath = f'{output_folderpath}/{search_industry}__{continent}__{place}.csv'.replace(' ', '_')
+        print(k)
+
+        k_str = ''
+        if k >= 100000: k_str = f'{k}'
+        elif k >= 10000: k_str = f'0{k}'
+        elif k >= 1000: k_str = f'00{k}'
+        elif k >= 100: k_str = f'000{k}'
+        elif k >= 10: k_str = f'0000{k}'
+        elif k >= 1: k_str = f'00000{k}'
+        else: k_str = f'000000'
+
+        output_filepath = f'{output_folderpath}/{k_str}__{search_industry}__{continent}__{place}.csv'.replace(' ', '_')
         if os.path.exists(output_filepath): continue
         io.file_write(output_filepath, '')
 

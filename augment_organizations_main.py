@@ -22,6 +22,9 @@ def augment_organizations():
     for i, master_item in enumerate(master_items):
         print(f'{i}/{len(master_items)}')
         business_name_canonical = master_item['business_name_canonical']
+        print(business_name_canonical )
+        # if business_name_canonical != 'best love spellscaster':
+            # continue
         # print(item)
         # quit()
         ###
@@ -42,55 +45,43 @@ def augment_organizations():
             print('#########################################################################')
             print(json.dumps(output_data, indent=4))
             print('#########################################################################')
-            # quit()
             for output_list in output_data:
-                # if len(output_list) < 2: continue
-                # print(output_data)
-                # quit()
-                # print(json.dumps(output_list, indent=4))
-                # quit()
-                ###
-                # key = 'llm'
-                # output_list[key] = ''
-                # io.json_write(output_filepath, output_data)
-                # print(json.dumps(output_data, indent=4))
-                # quit()
-
-                # continue
-
-                for output_item in output_list['items']:
-                    print(output_list)
-                    print(output_item)
-                    # quit()
-                    key = 'llm'
-                    if 0:
-                        prompt = f'''
-                            I'm writing an article about the following business: {business_name_canonical}. 
-                            Write a detailed description focusing only on the following section: {section_foldername}.
-                            Use the following data to write the description: {output_data}.
-                            Reply in a paragraph.
-                            Write only in english, translate from other languages if necessary.
-                            Start with the following words: {business_name_canonical} is .
-                        '''.strip()
-                        print(prompt)
-                        reply = llm.reply(prompt, model_filepath)
-                        # reply = 'test desc'
-                        if '</think>' in reply:
-                            reply = reply.split('</think>')[1].strip()
-                        reply = polish.vanilla(reply)
-                        print('########################################################################')
-                        print(reply)
-                        print('########################################################################')
+                if output_list['items'] == []:
+                    io.json_write(output_filepath, output_data)
+                else:
+                    for output_item in output_list['items']:
+                        print(output_list)
                         print(output_item)
-                        output_item[key] = reply
-                        io.json_write(output_filepath, output_data)
-                        # print(json.dumps(output_data, indent=4))
                         # quit()
-                    else:
-                        output_item[key] = ''
-                        io.json_write(output_filepath, output_data)
-                        # print(json.dumps(output_data, indent=4))
-                        # quit()
+                        key = 'llm'
+                        if 0:
+                            prompt = f'''
+                                I'm writing an article about the following business: {business_name_canonical}. 
+                                Write a detailed description focusing only on the following section: {section_foldername}.
+                                Use the following data to write the description: {output_data}.
+                                Reply in a paragraph.
+                                Write only in english, translate from other languages if necessary.
+                                Start with the following words: {business_name_canonical} is .
+                            '''.strip()
+                            print(prompt)
+                            reply = llm.reply(prompt, model_filepath)
+                            # reply = 'test desc'
+                            if '</think>' in reply:
+                                reply = reply.split('</think>')[1].strip()
+                            reply = polish.vanilla(reply)
+                            print('########################################################################')
+                            print(reply)
+                            print('########################################################################')
+                            print(output_item)
+                            output_item[key] = reply
+                            io.json_write(output_filepath, output_data)
+                            print(json.dumps(output_data, indent=4))
+                            # quit()
+                        else:
+                            output_item[key] = ''
+                            io.json_write(output_filepath, output_data)
+                            print(json.dumps(output_data, indent=4))
+                            # quit()
         # quit()
 
 def run():

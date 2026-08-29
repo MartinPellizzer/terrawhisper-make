@@ -1,16 +1,9 @@
 data = [
     {
         'field_name': 'business_is_category_herbs',
-        'field_query': 'is mainly about medicinal plants', 
-        'field_description': '''that this business is a seller, grower, user, or anything else related to herbs predominantly as their products and core business''', 
+        'field_query': 'is about medicinal plants', 
+        'field_description': '''that deals with herbs''', 
         'field_type': 'bool',
-        'field_section': 'identity',
-    },
-    {
-        'field_name': 'business_gmap_name_raw',
-        'field_query': '', 
-        'field_description': '''''', 
-        'field_type': 'text',
         'field_section': 'identity',
     },
     {
@@ -80,6 +73,20 @@ data = [
         'field_name': 'business_map',
         'field_query': '', 
         'field_description': '''''',
+        'field_type': 'text',
+        'field_section': 'identity',
+    },
+    {
+        'field_name': 'business_description',
+        'field_query': 'business description', 
+        'field_description': '''Main factual description of the company''',
+        'field_type': 'text',
+        'field_section': 'identity',
+    },
+    {
+        'field_name': 'business_description_short',
+        'field_query': 'short business description', 
+        'field_description': '''Short summary (1–2 sentences)''',
         'field_type': 'text',
         'field_section': 'identity',
     },

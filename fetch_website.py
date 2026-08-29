@@ -77,7 +77,7 @@ def fetch_websites():
     output_folderpath = f'{g.DATA_FOLDERPATH}/organizations/fetch/websites/america/places'.replace(' ', '_')
     input_filenames = sorted(os.listdir(input_folderpath))
     start_i = 0
-    end_i = 9999
+    end_i = 99999
     for input_filename_i, input_filename in enumerate(input_filenames[start_i:end_i]):
         input_filename_base = input_filename.split('.')[0].strip()
         input_filepath = f'{input_folderpath}/{input_filename}'
