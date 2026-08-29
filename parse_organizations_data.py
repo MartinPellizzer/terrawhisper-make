@@ -5,6 +5,7 @@ data = [
         'field_description': '''that deals with herbs''', 
         'field_type': 'bool',
         'field_section': 'identity',
+        'regen': False,
     },
     {
         'field_name': 'business_name_raw',
@@ -12,6 +13,7 @@ data = [
         'field_description': '''business name as shown on the website''', 
         'field_type': 'text',
         'field_section': 'identity',
+        'regen': False,
     },
     {
         'field_name': 'business_name_official',
@@ -19,6 +21,7 @@ data = [
         'field_description': '''Official business name exactly as shown on the website''', 
         'field_type': 'text',
         'field_section': 'identity',
+        'regen': False,
     },
     {
         'field_name': 'business_slogan',
@@ -26,6 +29,7 @@ data = [
         'field_description': '''Official company slogan or tagline''', 
         'field_type': 'text',
         'field_section': 'identity',
+        'regen': False,
     },
     {
         'field_name': 'business_website',
@@ -33,20 +37,23 @@ data = [
         'field_description': '''The official website URL of the business. Extract the primary canonical domain used by the organization (e.g., https://www.example.com).''', 
         'field_type': 'text',
         'field_section': 'identity',
+        'regen': False,
     },
     {
         'field_name': 'business_address',
         'field_query': 'business address', 
         'field_description': '''The complete street address of the business's primary location, including building number, street name, and other published address details.''', 
         'field_type': 'text',
-        'field_section': 'location',
+        'field_section': 'identity',
+        'regen': False,
     },
     {
         'field_name': 'business_phone',
         'field_query': 'business phone', 
         'field_description': '''The primary business telephone number for customer inquiries. Preserve the international dialing code when available.''',
         'field_type': 'text',
-        'field_section': 'contact',
+        'field_section': 'identity',
+        'regen': False,
     },
     {
         'field_name': 'business_rating',
@@ -54,6 +61,7 @@ data = [
         'field_description': '''''',
         'field_type': 'text',
         'field_section': 'identity',
+        'regen': False,
     },
     {
         'field_name': 'business_reviews_num',
@@ -61,6 +69,7 @@ data = [
         'field_description': '''''',
         'field_type': 'text',
         'field_section': 'identity',
+        'regen': False,
     },
     {
         'field_name': 'business_type_primary',
@@ -68,6 +77,7 @@ data = [
         'field_description': '''Main business role''',
         'field_type': 'text',
         'field_section': 'identity',
+        'regen': False,
     },
     {
         'field_name': 'business_map',
@@ -75,6 +85,7 @@ data = [
         'field_description': '''''',
         'field_type': 'text',
         'field_section': 'identity',
+        'regen': False,
     },
     {
         'field_name': 'business_description',
@@ -82,6 +93,7 @@ data = [
         'field_description': '''Main factual description of the company''',
         'field_type': 'text',
         'field_section': 'identity',
+        'regen': False,
     },
     {
         'field_name': 'business_description_short',
@@ -89,5 +101,22 @@ data = [
         'field_description': '''Short summary (1–2 sentences)''',
         'field_type': 'text',
         'field_section': 'identity',
+        'regen': False,
+    },
+    {
+        'field_name': 'business_products_herbs',
+        'field_query': 'business herbs products', 
+        'field_description': '''List of herbs this business deal with.''',
+        'field_type': 'text',
+        'field_section': 'identity',
+        'regen': False,
+    },
+    {
+        'field_name': 'business_products',
+        'field_query': 'business products', 
+        'field_description': '''Comprehensive information about all herbal and natural health products offered, including formulations, uses, and availability.''',
+        'field_type': 'text',
+        'field_section': 'identity',
+        'regen': False,
     },
 ]

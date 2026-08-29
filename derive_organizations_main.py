@@ -48,6 +48,10 @@ def derive_sections():
         # print(json.dumps(master_item, indent=4))
         # quit()
         business_name_canonical = master_item['business_name_canonical']
+        # if business_name_canonical != 'the raw honey shop': continue
+        # print(business_name_canonical)
+        # print('here')
+        # quit()
         ###
         db_filepath = f'{HUB_FOLDERPATH}/observe/observations.db'
         conn = sqlite3.connect(db_filepath)
@@ -68,27 +72,46 @@ def derive_sections():
         ###
         # TODO: debug, remove
         # if len(observe_items) < 2: continue
-        print(business_name_canonical)
+        # print(business_name_canonical)
         # print(json.dumps(observe_items, indent=4))
         # quit()
+        '''
+        for observe_item in observe_items:
+            if observe_item['business_products_herbs']:
+                print(json.dumps(observe_items, indent=4))
+                print('here')
+                quit()
+        '''
         output_items = []
         for observe_item in observe_items: 
             fields_data = parse_organizations_data.data
             # print(json.dumps(observe_item, indent=4))
             # quit()
+            # continue
             # print(json.dumps(fields_data, indent=4))
             source_name = observe_item['source_name']
+            # print()
+            # print(source_name)
             for observe_key, observe_val in observe_item.items():
                 field_section = field_section_find(fields_data, observe_key)
                 # print(observe_key, observe_val)
+                # continue
                 if field_section != '':
                     # print(observe_key, observe_val)
+                    # print(observe_key)
                     # print(field_section)
+                    # if field_section != 'products': continue
+                    # continue
                     # print()
                     # if observe_key == 'business_rating':
                         # quit()
                     found_section = False
                     found_source = False
+                    print('#########################################################')
+                    # print(json.dumps(output_items, indent=4))
+                    # print(json.dumps(output_items, indent=4))
+                    print('#########################################################')
+                    # quit()
                     for output_item in output_items:
                         if output_item['field_section'] == field_section:
                             found_section = True
@@ -98,7 +121,9 @@ def derive_sections():
                             break
                     ###
                     if found_section and found_source:
+                        # print(observe_key, observe_val)
                         output_item['fields'][observe_key] = observe_val
+                        # print(json.dumps(output_items, indent=4))
                     else:
                         output_item = {
                             'source_name': source_name,
@@ -106,7 +131,7 @@ def derive_sections():
                             'fields': {observe_key: observe_val},
                         }
                         output_items.append(output_item)
-            # print(output_items)
+            # print(json.dumps(output_items, indent=4))
             # quit()
         # print(json.dumps(output_items, indent=4))
         # quit()
@@ -133,13 +158,15 @@ def derive_sections():
         # quit()
 
         for output_item_grouped in output_items_grouped:
-            print(json.dumps(output_item_grouped, indent=4))
+            # print(json.dumps(output_item_grouped, indent=4))
             field_section = output_item_grouped['field_section']
             io.folders_recursive_gen(f'{HUB_FOLDERPATH}/derive/{field_section}')
             output_filepath = f'{HUB_FOLDERPATH}/derive/{field_section}/{business_name_canonical}.json'
             # io.json_write(output_filepath, [output_item_grouped['items']])
             io.json_write(output_filepath, [output_item_grouped])
+            print(json.dumps(output_items_grouped, indent=4))
             # quit()
+        # quit()
 
 def derive_reviews():
     io.folders_recursive_gen(f'{HUB_FOLDERPATH}/derive/reviews')

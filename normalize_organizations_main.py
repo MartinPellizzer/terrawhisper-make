@@ -93,15 +93,15 @@ def normalize_reviews(source_foldername):
             input_item['business_name_display'] = display_name_gen(input_item['business_name_raw'])
             input_item['business_slug'] = slug_gen(input_item['business_name_raw'])
         io.json_write(output_filepath, input_data)
-    # print(json.dumps(input_item, indent=4))
-    # quit()
+        # print(json.dumps(input_item, indent=4))
+        # quit()
 
 def run():
     print('NORMALIZE >> MAIN')
 
     if 1:
         start = time.perf_counter()
-        normalize_businesses(source_foldername='gmap')
+        # normalize_businesses(source_foldername='gmap')
         normalize_businesses(source_foldername='website')
 
         normalize_reviews(source_foldername='gmap')

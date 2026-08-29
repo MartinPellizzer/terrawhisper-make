@@ -18,17 +18,17 @@ import render_organizations_main
 if 1:
     pass
     # parse_organizations_gmap.run()
-    parse_organizations_website.run()
+    # parse_organizations_website.run()
 
 if 1:
     pass
-    normalize_organizations_main.run()
-    resolve_organizations_main.run()
+    # normalize_organizations_main.run()
+    # resolve_organizations_main.run()
 
-    masterize_organizations_init.run()
-    masterize_organizations_main.run()
-    observe_organizations_init.run()
-    observe_organizations_main.run()
+    # masterize_organizations_init.run()
+    # masterize_organizations_main.run()
+    # observe_organizations_init.run()
+    # observe_organizations_main.run()
     # quit()
 
     qualify_organizations_main.run()

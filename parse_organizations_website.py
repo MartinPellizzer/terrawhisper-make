@@ -234,7 +234,6 @@ def parse_website_backup():
                 llm_business_teaches = ''
                 llm_business_uses_in_products = ''
 
-                llm_business_products = ''
                 llm_business_product_categories = ''
                 llm_business_flagship_products = ''
                 llm_business_product_forms = ''
@@ -846,11 +845,6 @@ def parse_website_backup():
                             website_text=website_text
                         )
                         # 8. Products
-                        llm_business_products = llm_gen(
-                            query='products',
-                            description='''Comprehensive information about all herbal and natural health products offered, including formulations, uses, and availability.''',
-                            website_text=website_text
-                        )
                         llm_business_product_categories = llm_gen(
                             query='product_categories',
                             description='''Overview of the different product categories available, including how products are organized by type or purpose.''',
@@ -2065,7 +2059,6 @@ def parse_website_backup():
                             business_teaches = llm_business_teaches,
                             business_uses_in_products = llm_business_uses_in_products,
                             ###
-                            business_products = llm_business_products,
                             business_product_categories = llm_business_product_categories,
                             business_flagship_products = llm_business_flagship_products,
                             business_product_forms = llm_business_product_forms,
@@ -2390,42 +2383,71 @@ def parse_website():
                 ### PARSE FIELD THAT REQUIRE WEBSITE
                 website_filepath = f'{HUB_FOLDERPATH}/fetch/websites/america/places/{input_filename_base}/{slug}.html'
                 output_filepath = f'{output_folderpath}/{slug}.json'
+                output_data = io.json_read(f'{output_folderpath}/{slug}.json', create=True)
                 try: html = io.file_read(website_filepath)
                 except: html = ''
                 if html != '':
                     soup = BeautifulSoup(html, "html.parser")
                     website_text = soup.get_text(separator="\n", strip=True)
+                    website_text = website_text[:16000]
                     if website_text.strip() != '':
 
                         fields_data = parse_organizations_data.data
                         for field_item in fields_data:
                             reply = None
+                            reply_global = True
                             if field_item['field_name'] == 'business_name_raw': reply = gmap_name
                             elif field_item['field_name'] == 'business_website': reply = gmap_website
                             elif field_item['field_name'] == 'business_map': reply = None
                             elif field_item['field_type'] == 'bool':
-                                reply = llm_bool_gen(
-                                    query=field_item['field_query'],
-                                    description=field_item['field_description'],
-                                    website_text=website_text
-                                )
+                                if reply_global == True:
+                                    reply = llm_bool_gen(
+                                        query=field_item['field_query'],
+                                        description=field_item['field_description'],
+                                        website_text=website_text
+                                    )
+                                else:
+                                    if field_item['regen'] == True:
+                                        reply = llm_bool_gen(
+                                            query=field_item['field_query'],
+                                            description=field_item['field_description'],
+                                            website_text=website_text
+                                        )
+                                    else: 
+                                        reply = output_data[0][field_item['field_name']]
                             elif field_item['field_type'] == 'text':
-                                reply = llm_gen(
-                                    query=field_item['field_query'],
-                                    description=field_item['field_description'],
-                                    website_text=website_text
-                                )
+                                if reply_global == True:
+                                    reply = llm_gen(
+                                        query=field_item['field_query'],
+                                        description=field_item['field_description'],
+                                        website_text=website_text
+                                    )
+                                else:
+                                    if field_item['regen'] == True:
+                                        reply = llm_gen(
+                                            query=field_item['field_query'],
+                                            description=field_item['field_description'],
+                                            website_text=website_text
+                                        )
+                                    else: 
+                                        reply = output_data[0][field_item['field_name']]
 
                             key = field_item['field_name']
                             val = reply
                             output_item[key] = val
+
+                        ### DEBUG
+                        # for field_item in fields_data:
+                            # if field_item['field_name'] == 'business_products':
+                                # print(field_item)
+                                # quit()
 
                 output_item['source_name'] = 'Website'
                 output_item['source_acronym'] = None
 
                 output_items.append(output_item)
                 io.json_write(output_filepath, output_items)
-                print(json.dumps(output_item, indent=4))
+                # print(json.dumps(output_item, indent=4))
                 # quit()
                 '''
                 ###
@@ -2554,4 +2576,5 @@ HOURS:   {(time.perf_counter() - start)/60/60}
 
     # analyse_website()
     # analyse_jsons()
+    # quit()
 

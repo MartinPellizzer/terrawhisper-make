@@ -341,11 +341,11 @@ def section_reviews_gen(input_data, identity_gmap_item):
         '''
     return output_html
 
-def section_contacts_gen(input_data, identity_gmap_item, location_gmap_item, contact_gmap_item):
+def section_contacts_gen(input_data, identity_gmap_item):
     iframe_html = identity_gmap_item['fields']['business_map']
     iframe_html = re.sub(r'\s(?:width|height)="[^"]*"', '', iframe_html)
     address_html = ''
-    address_text = location_gmap_item['fields']['business_address']
+    address_text = identity_gmap_item['fields']['business_address']
     if address_text != '':
         address_html = f'''
             <div>
@@ -364,7 +364,7 @@ def section_contacts_gen(input_data, identity_gmap_item, location_gmap_item, con
                 <h3>Get in touch</h3>
                 <div style="display: flex; items-align: center; gap: 1.2rem; margin-bottom: 2.4rem;">
                     <svg style="width: 2.0rem;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-phone-icon lucide-phone"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"/></svg>
-                    <span>{contact_gmap_item['fields']['business_phone']}</span>
+                    <span>{identity_gmap_item['fields']['business_phone']}</span>
                 </div>
                 <div style="display: flex; items-align: center; gap: 1.2rem; margin-bottom: 2.4rem;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-globe-icon lucide-globe"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
@@ -383,11 +383,20 @@ def render_listing(master_item):
 
     input_data = io.json_read(f'{HUB_FOLDERPATH}/compile/{business_name_canonical}.json')
 
+    '''
+    for products in input_data['products']:
+        for item in products['items']:
+            print(item['fields']['business_products_herbs'])
+            if item['fields']['business_products_herbs']:
+                print(json.dumps(input_data, indent=4))
+                print('here')
+                quit()
+    return
+    '''
+    # if business_name_canonical != 'the raw honey shop': return
     # print(json.dumps(input_data, indent=4))
     # quit()
     identity_data = input_data['identity']
-    location_data = input_data['location']
-    contact_data = input_data['contact']
     
     identity_gmap_item = None
     for identity_list in identity_data:
@@ -395,19 +404,13 @@ def render_listing(master_item):
             if identity_item['source_name'] == 'Google Maps':
                 identity_gmap_item = identity_item
 
-    location_gmap_item = None
-    for lst in location_data:
-        for item in lst['items']:
-            if item['source_name'] == 'Google Maps':
-                location_gmap_item = item
+    identity_website_item = None
+    for identity_list in identity_data:
+        for identity_item in identity_list['items']:
+            if identity_item['source_name'].lower() == 'website':
+                identity_website_item = identity_item
 
-    contact_gmap_item = None
-    for lst in contact_data:
-        for item in lst['items']:
-            if item['source_name'] == 'Google Maps':
-                contact_gmap_item = item
-
-    if identity_gmap_item['fields']['business_type_primary'] != "Erboristeria":  return
+    # if identity_gmap_item['fields']['business_type_primary'] != "Erboristeria":  return
 
     # print(json.dumps(identity_data, indent=4))
     # quit()
@@ -439,8 +442,28 @@ def render_listing(master_item):
     ################################################################################
     # IDENTITY
     ################################################################################
-
     html_article += section_identity_gen(input_data)
+
+    ################################################################################
+    # PRODUCTS
+    ################################################################################
+    # print(input_data['products'])
+    # quit()
+    print(identity_website_item)
+    if identity_website_item['fields']['business_products_herbs']:
+        html_article += identity_website_item['fields']['business_products_herbs']
+    # print(json.dumps(input_data, indent=4))
+    # if input_data['business_name_canonical'] == 'the raw honey shop':
+        # quit()
+    '''
+    for product in input_data['products']:
+        for item in product['items']:
+            if item['fields']['business_products_herbs']:
+                html_article += item['fields']['business_products_herbs']
+                # print(html_article)
+                # print('here')
+                # quit()
+    '''
 
     ################################################################################
     # LOCATION ???
@@ -459,7 +482,7 @@ def render_listing(master_item):
     ################################################################################
     # CONTACTS (SIDEBAR)
     ################################################################################
-    contacts_html = section_contacts_gen(input_data, identity_gmap_item, location_gmap_item, contact_gmap_item)
+    contacts_html = section_contacts_gen(input_data, identity_gmap_item)
 
 
     main_html = f'''
