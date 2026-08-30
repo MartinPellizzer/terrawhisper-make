@@ -216,7 +216,7 @@ def parse_gmap_backup():
 
 def parse_gmap():
     start = 0
-    end = 100
+    end = 300
     ###
     output_folderpath = f'{g.DATA_FOLDERPATH}/organizations/parse/gmap/details/json'
     try: shutil.rmtree(output_folderpath)

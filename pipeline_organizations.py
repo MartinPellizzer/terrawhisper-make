@@ -1,5 +1,8 @@
 # TODO
-# Scrape google maps embedd map
+'''
+parse only website fields that are not parsed yet (or regen), not everything
+in parse, make function to analyze ratio of findings for single provided field
+'''
 
 import parse_organizations_gmap
 import parse_organizations_website
@@ -15,20 +18,20 @@ import augment_organizations_main
 import compile_organizations_main
 import render_organizations_main
 
-if 1:
+if 0:
     pass
     # parse_organizations_gmap.run()
-    # parse_organizations_website.run()
+    parse_organizations_website.run()
 
 if 1:
     pass
-    # normalize_organizations_main.run()
-    # resolve_organizations_main.run()
+    normalize_organizations_main.run()
+    resolve_organizations_main.run()
 
-    # masterize_organizations_init.run()
-    # masterize_organizations_main.run()
-    # observe_organizations_init.run()
-    # observe_organizations_main.run()
+    masterize_organizations_init.run()
+    masterize_organizations_main.run()
+    observe_organizations_init.run()
+    observe_organizations_main.run()
     # quit()
 
     qualify_organizations_main.run()

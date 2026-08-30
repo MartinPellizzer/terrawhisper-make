@@ -265,9 +265,17 @@ def section_identity_gen(input_data):
     for lst in input_data['identity']:
         for item in lst['items']:
             if item['source_name'] == 'Website':
-                text = item['fields']['business_description']
-    if text != None:
-        html += f'''<p>{text}</p>'''
+                business_description = item['fields']['business_description']
+                business_founding_year = item['fields']['business_founding_year']
+                business_founding_story = item['fields']['business_founding_story']
+                
+    if business_description != None:
+        html += f'''<p>{business_description}</p>'''
+    if business_founding_year != None:
+        html += f'''<p>{business_founding_year}</p>'''
+    if business_founding_year != None:
+        html += f'''<p>{business_founding_story}</p>'''
+
     return html
 
 def section_reviews_gen(input_data, identity_gmap_item):
@@ -611,7 +619,6 @@ def render_listing(master_item):
         'trading business name': row['business_name_trade'],
         'business company type': row['business_company_type'],
         'business ownership type': row['business_ownership_type'],
-        'business year founded': row['business_founded_year'],
         'business founding story': row['business_founding_story'],
         'business founder names': row['business_founder_names'],
         'business mission': row['business_mission'],

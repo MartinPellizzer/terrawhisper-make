@@ -224,8 +224,8 @@ continents = [
 scrapes_num = 10
 
 scrape_start = 0
-scrape_end = 110
 scrape_end = 300
+scrape_end = 1000
 
 for continent_i, continent in enumerate(continents[:]):
     # rows = io.csv_read(f'{g.DATA_FOLDERPATH}/organizations/fetch/gmap/{continent}.csv')

@@ -162,11 +162,6 @@ def parse_website_backup():
                 llm_business_name_official = ''
                 llm_business_name_legal = ''
                 llm_business_name_trade = ''
-                llm_business_slogan = ''
-                llm_business_description = ''
-                llm_business_description_short = ''
-                llm_business_founded_year = ''
-                llm_business_founding_story = ''
                 llm_business_founder_names = ''
                 llm_business_ownership_type = ''
                 llm_business_company_type = ''
@@ -505,31 +500,6 @@ def parse_website_backup():
                         llm_business_name_trade = llm_gen(
                             query='trading business name', 
                             description='Public trading or DBA name', 
-                            website_text=website_text
-                            )
-                        llm_business_slogan = llm_gen(
-                            query='business slogan', 
-                            description='Official company slogan or tagline', 
-                            website_text=website_text
-                            )
-                        llm_business_description = llm_gen(
-                            query='business description', 
-                            description='Main factual description of the company', 
-                            website_text=website_text
-                            )
-                        llm_business_description_short = llm_gen(
-                            query='short business description', 
-                            description='Short summary (1–2 sentences)', 
-                            website_text=website_text
-                            )
-                        llm_business_founded_year = llm_gen(
-                            query='business year founded', 
-                            description='Year the business was founded', 
-                            website_text=website_text
-                            )
-                        llm_business_founding_story = llm_gen(
-                            query='business founding story', 
-                            description='History or origin story', 
                             website_text=website_text
                             )
                         llm_business_founder_names = llm_gen(
@@ -1986,11 +1956,6 @@ def parse_website_backup():
                             business_name_official = llm_business_name_official,
                             business_name_legal = llm_business_name_legal,
                             business_name_trade = llm_business_name_trade,
-                            business_slogan = llm_business_slogan,
-                            business_description = llm_business_description,
-                            business_description_short = llm_business_description_short,
-                            business_founded_year = llm_business_founded_year,
-                            business_founding_story = llm_business_founding_story,
                             business_founder_names = llm_business_founder_names,
                             business_ownership_type = llm_business_ownership_type,
                             business_company_type = llm_business_company_type,
@@ -2327,8 +2292,8 @@ def parse_website():
     end = 100
     ###
     output_folderpath = f'{g.DATA_FOLDERPATH}/organizations/parse/website/details/json'
-    try: shutil.rmtree(output_folderpath)
-    except: pass
+    # try: shutil.rmtree(output_folderpath)
+    # except: pass
     io.folders_recursive_gen(output_folderpath)
     ###
     input_foldername = f'{HUB_FOLDERPATH}/fetch/gmap/america/places'.replace(' ', '_')
@@ -2340,7 +2305,6 @@ def parse_website():
         i += 1
         input_filename_base = input_filename.split('.')[0].strip()
         input_filepath = f'{input_foldername}/{input_filename}'
-
         with open(input_filepath, encoding="utf-8") as f: rows = f.read().strip().split('\n')
         for row in rows:
             values = row.split('~')
@@ -2349,13 +2313,11 @@ def parse_website():
                 gmap_website = values[2]
                 gmap_name = values[4]
                 slug = to_slug(gmap_label)
-
                 from urllib.parse import urlsplit
                 def base_url(url):
                     p = urlsplit(url)
                     return f"{p.scheme}://{p.netloc}/"
                 gmap_website = base_url(gmap_website)
-
                 if gmap_website.strip() == '': gmap_website = None
                 print(f'name: {gmap_name}')
                 '''
@@ -2369,7 +2331,6 @@ def parse_website():
                 output_items = []
                 output_item = {}
                 fields_data = parse_organizations_data.data
-
                 ### PARSE GENERAL FIELDS
                 for field_item in fields_data:
                     reply = None
@@ -2379,7 +2340,6 @@ def parse_website():
                     key = field_item['field_name']
                     val = reply
                     output_item[key] = val
-
                 ### PARSE FIELD THAT REQUIRE WEBSITE
                 website_filepath = f'{HUB_FOLDERPATH}/fetch/websites/america/places/{input_filename_base}/{slug}.html'
                 output_filepath = f'{output_folderpath}/{slug}.json'
@@ -2391,7 +2351,6 @@ def parse_website():
                     website_text = soup.get_text(separator="\n", strip=True)
                     website_text = website_text[:16000]
                     if website_text.strip() != '':
-
                         fields_data = parse_organizations_data.data
                         for field_item in fields_data:
                             reply = None
@@ -2431,25 +2390,21 @@ def parse_website():
                                         )
                                     else: 
                                         reply = output_data[0][field_item['field_name']]
-
                             key = field_item['field_name']
                             val = reply
                             output_item[key] = val
-
                         ### DEBUG
                         # for field_item in fields_data:
                             # if field_item['field_name'] == 'business_products':
                                 # print(field_item)
                                 # quit()
-
                 output_item['source_name'] = 'Website'
                 output_item['source_acronym'] = None
-
                 output_items.append(output_item)
                 io.json_write(output_filepath, output_items)
                 # print(json.dumps(output_item, indent=4))
                 # quit()
-                '''
+
                 ###
                 item = output_items[0]
                 print(output_filepath)
@@ -2466,7 +2421,6 @@ def parse_website():
                 print(f'VALUE: {value_count}/{total_count} - {value_count/total_count*100}')
                 ###
                 # quit()
-                '''
 
 def analyse_website():
     output_folderpath = f'{g.DATA_FOLDERPATH}/organizations/parse/website/json'

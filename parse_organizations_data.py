@@ -104,6 +104,23 @@ data = [
         'regen': False,
     },
     {
+        'field_name': 'business_founding_year',
+        'field_query': 'business founding year', 
+        'field_description': '''Year the business was founded''',
+        'field_type': 'text',
+        'field_section': 'identity',
+        'regen': False,
+    },
+    {
+        'field_name': 'business_founding_story',
+        'field_query': 'business founding story', 
+        'field_description': '''History or origin story''',
+        'field_type': 'text',
+        'field_section': 'identity',
+        'regen': False,
+    },
+
+    {
         'field_name': 'business_products_herbs',
         'field_query': 'business herbs products', 
         'field_description': '''List of herbs this business deal with.''',
