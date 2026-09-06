@@ -18,6 +18,9 @@ import parse_organizations_reviews_data
 import re
 import unicodedata
 
+start = 0
+end = 2
+
 HUB_FOLDERPATH = f'{g.DATA_FOLDERPATH}/organizations'
 
 model_filepath = '/home/ubuntu/vault-tmp/llm/gemma-4-12b-it-Q4_K_S.gguf'
@@ -215,8 +218,6 @@ def parse_gmap_backup():
 
 
 def parse_gmap():
-    start = 0
-    end = 300
     ###
     output_folderpath = f'{g.DATA_FOLDERPATH}/organizations/parse/gmap/details/json'
     try: shutil.rmtree(output_folderpath)

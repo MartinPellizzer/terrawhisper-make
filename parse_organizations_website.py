@@ -16,6 +16,9 @@ import parse_organizations_data
 import re
 import unicodedata
 
+start = 0
+end = 2
+
 HUB_FOLDERPATH = f'{g.DATA_FOLDERPATH}/organizations'
 
 model_filepath = '/home/ubuntu/vault-tmp/llm/gemma-4-12b-it-Q4_K_S.gguf'
@@ -158,23 +161,7 @@ def parse_website_backup():
 
                 continue
                 llm_business_is_category_herbs  = ''
-                ###
-                llm_business_name_official = ''
-                llm_business_name_legal = ''
-                llm_business_name_trade = ''
-                llm_business_founder_names = ''
-                llm_business_ownership_type = ''
-                llm_business_company_type = ''
-                llm_business_status = ''
-                llm_business_mission = ''
-                llm_business_vision = ''
-                llm_business_core_values = ''
-                # 2. Business Classification
-                llm_business_type_primary = ''
-                llm_business_type_secondary = ''
-                llm_business_industry = ''
-                llm_business_niche = ''
-                llm_business_model = ''
+
                 # 3. Contact Information
                 llm_business_website = ''
                 llm_business_email = ''
@@ -185,53 +172,9 @@ def parse_website_backup():
                 llm_business_customer_service_email = ''
                 llm_business_wholesale_email = ''
                 llm_business_media_email = ''
-                # 4. Locations
-                llm_business_headquarters = ''
-                llm_business_address = ''
-                llm_business_city = ''
-                llm_business_state = ''
-                llm_business_region = ''
-                llm_business_country = ''
-                llm_business_postal_code = ''
-                llm_business_latitude = ''
-                llm_business_longitude = ''
-                llm_business_additional_locations = ''
-                llm_business_farm_locations = ''
-                llm_business_nursery_locations = ''
-                llm_business_factory_locations = ''
-                llm_business_laboratory_locations = ''
-                llm_business_warehouse_locations = ''
-                llm_business_retail_locations = ''
-                # 5. Opening Information
-                llm_business_opening_hours = ''
-                llm_business_seasonal_hours = ''
-                llm_business_appointment_required = ''
-                llm_business_walk_in_available = ''
-                llm_business_visitor_access = ''
-                llm_business_medicinal_plants = ''
-                llm_business_primary_medicinal_plants = ''
-                llm_business_specialty_plants = ''
-                llm_business_native_plants = ''
-                llm_business_rare_plants = ''
-                llm_business_medicinal_plant_categories = ''
-                llm_business_botanical_collection_size = ''
 
-                llm_business_grows = ''
-                llm_business_cultivates = ''
-                llm_business_propagates = ''
-                llm_business_researches = ''
-                llm_business_sells = ''
-                llm_business_distributes = ''
-                llm_business_exports = ''
-                llm_business_imports = ''
-                llm_business_wild_harvests = ''
-                llm_business_conserves = ''
-                llm_business_teaches = ''
-                llm_business_uses_in_products = ''
 
-                llm_business_product_categories = ''
-                llm_business_flagship_products = ''
-                llm_business_product_forms = ''
+
                 llm_business_herbal_teas = ''
                 llm_business_tinctures = ''
                 llm_business_extracts = ''
@@ -252,30 +195,6 @@ def parse_website_backup():
                 llm_business_creams = ''
                 llm_business_salves = ''
                 llm_business_syrups = ''
-
-                llm_business_herbal_consultation = ''
-                llm_business_herbal_clinic = ''
-                llm_business_medicinal_plant_consulting = ''
-                llm_business_plant_identification = ''
-                llm_business_botanical_identification = ''
-                llm_business_cultivation_consulting = ''
-                llm_business_contract_growing = ''
-                llm_business_contract_manufacturing = ''
-                llm_business_private_label_manufacturing = ''
-                llm_business_extraction_services = ''
-                llm_business_drying_services = ''
-                llm_business_milling = ''
-                llm_business_grinding = ''
-                llm_business_packaging = ''
-                llm_business_export_services = ''
-                llm_business_laboratory_testing = ''
-                llm_business_formulation = ''
-                llm_business_research_services = ''
-                llm_business_education = ''
-                llm_business_workshops = ''
-                llm_business_courses = ''
-                llm_business_farm_tours = ''
-                llm_business_botanical_tours = ''
 
                 llm_business_botanical_name = ''
                 llm_business_common_name = ''
@@ -486,84 +405,6 @@ def parse_website_backup():
                             website_text=website_text
                             )
 
-                        ###
-                        llm_business_name_official = llm_gen(
-                            query='official business name', 
-                            description='Official business name exactly as shown on the website', 
-                            website_text=website_text
-                            )
-                        llm_business_name_legal = llm_gen(
-                            query='legal business name', 
-                            description='Registered legal business name if published', 
-                            website_text=website_text
-                            )
-                        llm_business_name_trade = llm_gen(
-                            query='trading business name', 
-                            description='Public trading or DBA name', 
-                            website_text=website_text
-                            )
-                        llm_business_founder_names = llm_gen(
-                            query='business founder names', 
-                            description='Founder(s)', 
-                            website_text=website_text
-                            )
-                        llm_business_ownership_type = llm_gen(
-                            query='business ownership type', 
-                            description='Private, public, cooperative, nonprofit, family-owned, etc.', 
-                            website_text=website_text
-                            )
-                        llm_business_company_type = llm_gen(
-                            query='business company type', 
-                            description='LLC, Ltd, Inc., GmbH, Cooperative, etc.', 
-                            website_text=website_text
-                            )
-                        llm_business_status = llm_gen(
-                            query='business status', 
-                            description='Active, acquired, merged, closed, etc.', 
-                            website_text=website_text
-                            )
-                        llm_business_mission = llm_gen(
-                            query='business mission', 
-                            description='Mission statement', 
-                            website_text=website_text
-                            )
-                        llm_business_vision = llm_gen(
-                            query='business vision', 
-                            description='Vision statement', 
-                            website_text=website_text
-                            )
-                        llm_business_core_values = llm_gen(
-                            query='business core values', 
-                            description='''Company's stated values''', 
-                            website_text=website_text
-                            )
-
-                        # 2. Business Classification
-                        llm_business_type_primary = llm_gen(
-                            query='primary business type', 
-                            description='''Main business role''', 
-                            website_text=website_text
-                            )
-                        llm_business_type_secondary = llm_gen(
-                            query='secondary business type', 
-                            description='''Additional business roles''', 
-                            website_text=website_text
-                            )
-                        llm_business_industry = llm_gen(
-                            query='business industry', 
-                            description='''Industry classification''', 
-                            website_text=website_text
-                            )
-                        llm_business_niche = llm_gen(
-                            query='business niche', 
-                            description='''Specific medicinal plant niche''', 
-                            website_text=website_text
-                            )
-                        llm_business_model = llm_gen(
-                            query='business model', 
-                            description='''B2B, B2C, Marketplace, Manufacturer, etc.''', 
-                            website_text=website_text
-                            )
                         # 3. Contact Information
                         llm_business_website = llm_gen(
                             query='website',
@@ -610,226 +451,8 @@ def parse_website_backup():
                             description='''The URL of the official online contact form where visitors can submit inquiries.''',
                             website_text=website_text
                         )
-                        # 4. Locations
-                        llm_business_headquarters = llm_gen(
-                            query='business headquarters', 
-                            description='''The primary headquarters location of the business, including the city and country where the company is officially based.''', 
-                            website_text=website_text
-                        )
-                        llm_business_address = llm_gen(
-                            query='business address', 
-                            description='''The complete street address of the business's primary location, including building number, street name, and other published address details.''', 
-                            website_text=website_text
-                        )
-                        llm_business_city = llm_gen(
-                            query='business city', 
-                            description='''The city or municipality where the business or facility is located.''', 
-                            website_text=website_text
-                        )
-                        llm_business_state = llm_gen(
-                            query='business state', 
-                            description='''The state, province, prefecture, or equivalent first-level administrative division where the business is located.''', 
-                            website_text=website_text
-                        )
-                        llm_business_region = llm_gen(
-                            query='business region', 
-                            description='''The broader geographic or administrative region (e.g., Tuscany, Bavaria, Queensland) where the business operates.''', 
-                            website_text=website_text
-                        )
-                        llm_business_country = llm_gen(
-                            query='business country', 
-                            description='''The country where the business's primary location is situated. Store using a standardized country name or ISO country code.''', 
-                            website_text=website_text
-                        )
-                        llm_business_postal_code = llm_gen(
-                            query='business postal code', 
-                            description='''The postal or ZIP code associated with the business's address.''', 
-                            website_text=website_text
-                        )
-                        llm_business_latitude = llm_gen(
-                            query='business latitude', 
-                            description='''The latitude coordinate of the published business location, if explicitly available on the website.''', 
-                            website_text=website_text
-                        )
-                        llm_business_longitude = llm_gen(
-                            query='business longitude', 
-                            description='''The longitude coordinate of the published business location, if explicitly available on the website.''', 
-                            website_text=website_text
-                        )
-                        llm_business_additional_locations = llm_gen(
-                            query='business additional locations', 
-                            description='''Other business locations, offices, branches, or facilities operated by the company besides its headquarters. Include names and addresses when available.''', 
-                            website_text=website_text
-                        )
-                        llm_business_farm_locations = llm_gen(
-                            query='business farm locations', 
-                            description='''Locations of farms where the business cultivates, grows, or harvests medicinal plants. Include addresses or geographic areas if provided.''', 
-                            website_text=website_text
-                        )
-                        llm_business_nursery_locations = llm_gen(
-                            query='business nursery locations', 
-                            description='''Locations of plant nurseries where medicinal plants, seedlings, or seeds are propagated or sold.''', 
-                            website_text=website_text
-                        )
-                        llm_business_factory_locations = llm_gen(
-                            query='business factory locations', 
-                            description='''Locations of manufacturing or production facilities where medicinal plant products are processed, formulated, packaged, or manufactured.''', 
-                            website_text=website_text
-                        )
-                        llm_business_laboratory_locations = llm_gen(
-                            query='business laboratory locations', 
-                            description='''Locations of laboratories used for research, quality control, testing, extraction, or scientific analysis.''', 
-                            website_text=website_text
-                        )
-                        llm_business_warehouse_locations = llm_gen(
-                            query='business warehouse locations', 
-                            description='''Locations of warehouses, storage facilities, fulfillment centers, or distribution centers used by the business.''', 
-                            website_text=website_text
-                        )
-                        llm_business_retail_locations = llm_gen(
-                            query='business retail locations', 
-                            description='''Physical retail stores, herbal shops, apothecaries, garden centers, or showrooms operated by the business where customers can make purchases.''', 
-                            website_text=website_text
-                        )
-                        # 5. Opening Information
-                        llm_business_opening_hours = llm_gen(
-                            query='opening_hours',
-                            description='''The regular hours during which the business is open to visitors or customers.''',
-                            website_text=website_text
-                        )
-                        llm_business_seasonal_hours = llm_gen(
-                            query='seasonal_hours',
-                            description='''Any changes to the business opening hours that apply during specific seasons, holidays, or periods of the year.''',
-                            website_text=website_text
-                        )
-                        llm_business_appointment_required = llm_gen(
-                            query='appointment_required',
-                            description='''Whether visitors or customers are required to make an appointment in advance.''',
-                            website_text=website_text
-                        )
-                        llm_business_walk_in_available = llm_gen(
-                            query='walk_in_available',
-                            description='''Whether visitors or customers can visit without an appointment or prior booking.''',
-                            website_text=website_text
-                        )
-                        llm_business_visitor_access = llm_gen(
-                            query='visitor_access',
-                            description='''Information about whether and how visitors can access the business or its premises, including any restrictions or requirements.''',
-                            website_text=website_text
-                        )
-                        # 6. Medicinal Plant Specialization
-                        llm_business_medicinal_plants = llm_gen(
-                            query='medicinal_plants', 
-                            description='''Comprehensive list of medicinal plants, herbs, trees, shrubs, or other botanicals mentioned on the website''', 
-                            website_text=website_text
-                        )
-                        llm_business_primary_medicinal_plants = llm_gen(
-                            query='primary_medicinal_plants', 
-                            description='''Main medicinal plants that are prominently featured, emphasized, or central to the organization's work or offerings''', 
-                            website_text=website_text
-                        )
-                        llm_business_specialty_plants = llm_gen(
-                            query='specialty_plants', 
-                            description='''Specialty, flagship, signature, or particularly notable plant species associated with the organization''', 
-                            website_text=website_text
-                        )
-                        llm_business_native_plants = llm_gen(
-                            query='native_plants', 
-                            description='''Medicinal plant species identified as native to the region, country, or geographic area discussed''', 
-                            website_text=website_text
-                        )
-                        llm_business_rare_plants = llm_gen(
-                            query='rare_plants', 
-                            description='''Rare, threatened, endangered, vulnerable, or otherwise conservation-significant medicinal plant species mentioned''', 
-                            website_text=website_text
-                        )
-                        llm_business_medicinal_plant_categories = llm_gen(
-                            query='medicinal_plant_categories', 
-                            description='''Categories or groupings of medicinal plants mentioned, such as adaptogens, aromatic herbs, medicinal trees, roots, flowers, or traditional herbal plants''', 
-                            website_text=website_text
-                        )
-                        llm_business_botanical_collection_size = llm_gen(
-                            query='botanical_collection_size', 
-                            description='''Number of medicinal or botanical plant species in the organization's collection, garden, archive, nursery, or other stated botanical holdings, if specified''', 
-                            website_text=website_text
-                        )
-                        # 7. Plant Relationships
-                        llm_business_grows = llm_gen(
-                            query='grows',
-                            description='''Whether the business grows or cultivates plants, crops, or other botanical species itself.''',
-                            website_text=website_text
-                        )
-                        llm_business_cultivates = llm_gen(
-                            query='cultivates',
-                            description='''Whether the business actively cultivates plants or botanical species through managed growing practices.''',
-                            website_text=website_text
-                        )
-                        llm_business_propagates = llm_gen(
-                            query='propagates',
-                            description='''Whether the business propagates plants, such as through seeds, cuttings, division, tissue culture, or other propagation methods.''',
-                            website_text=website_text
-                        )
-                        llm_business_researches = llm_gen(
-                            query='researches',
-                            description='''Whether the business conducts or supports research involving plants, botanical species, cultivation, or related applications.''',
-                            website_text=website_text
-                        )
-                        llm_business_sells = llm_gen(
-                            query='sells',
-                            description='''Whether the business sells plants, botanical materials, or plant-derived products directly to customers.''',
-                            website_text=website_text
-                        )
-                        llm_business_distributes = llm_gen(
-                            query='distributes',
-                            description='''Whether the business distributes plants, botanical materials, or plant-derived products to retailers, businesses, or other organizations.''',
-                            website_text=website_text
-                        )
-                        llm_business_exports = llm_gen(
-                            query='exports',
-                            description='''Whether the business exports plants, botanical materials, or plant-derived products to other countries.''',
-                            website_text=website_text
-                        )
-                        llm_business_imports = llm_gen(
-                            query='imports',
-                            description='''Whether the business imports plants, botanical materials, or plant-derived products from other countries.''',
-                            website_text=website_text
-                        )
-                        llm_business_wild_harvests = llm_gen(
-                            query='wild_harvests',
-                            description='''Whether the business collects plants or botanical materials from wild or naturally occurring populations.''',
-                            website_text=website_text
-                        )
-                        llm_business_conserves = llm_gen(
-                            query='conserves',
-                            description='''Whether the business engages in plant conservation, preservation, habitat protection, or safeguarding of botanical biodiversity.''',
-                            website_text=website_text
-                        )
-                        llm_business_teaches = llm_gen(
-                            query='teaches',
-                            description='''Whether the business provides education, training, workshops, courses, or other instruction related to plants, cultivation, or botanical practices.''',
-                            website_text=website_text
-                        )
-                        llm_business_uses_in_products = llm_gen(
-                            query='uses_in_products',
-                            description='''Whether the business uses plants, botanical materials, or plant-derived ingredients in products it manufactures or offers.''',
-                            website_text=website_text
-                        )
-                        # 8. Products
-                        llm_business_product_categories = llm_gen(
-                            query='product_categories',
-                            description='''Overview of the different product categories available, including how products are organized by type or purpose.''',
-                            website_text=website_text
-                        )
-                        llm_business_flagship_products = llm_gen(
-                            query='flagship_products',
-                            description='''Information about featured, best-selling, or signature products that represent the business's core offerings.''',
-                            website_text=website_text
-                        )
-                        llm_business_product_forms = llm_gen(
-                            query='product_forms',
-                            description='''Details about the various forms in which products are available, such as teas, tinctures, capsules, powders, oils, and creams.''',
-                            website_text=website_text
-                        )
+
+
                         llm_business_herbal_teas = llm_gen(
                             query='herbal_teas',
                             description='''Information about herbal tea products, including ingredients, intended benefits, preparation methods, and available blends.''',
@@ -996,122 +619,7 @@ def parse_website_backup():
                             description='''Indicates whether the product is available for direct retail purchase by individual consumers.''',
                             website_text=website_text
                         )
-                        # 10. Services
-                        llm_business_herbal_consultation = llm_gen(
-                            query='herbal consultation',
-                            description='''Professional consultation services focused on the traditional, therapeutic, or practical use of herbs and medicinal plants.''',
-                            website_text=website_text
-                        )
-                        llm_business_herbal_clinic = llm_gen(
-                            query='herbal clinic',
-                            description='''A clinic or practice providing consultations and services related to herbal medicine and plant-based wellness.''',
-                            website_text=website_text
-                        )
-                        llm_business_medicinal_plant_consulting = llm_gen(
-                            query='medicinal plant consulting',
-                            description='''Expert advice on the selection, use, cultivation, sourcing, processing, or commercialization of medicinal plants.''',
-                            website_text=website_text
-                        )
-                        llm_business_plant_identification = llm_gen(
-                            query='plant identification',
-                            description='''Services for identifying plant species, varieties, or specimens based on their physical or botanical characteristics.''',
-                            website_text=website_text
-                        )
-                        llm_business_botanical_identification = llm_gen(
-                            query='botanical identification',
-                            description='''Specialized identification and classification of plants using botanical taxonomy and scientific methods.''',
-                            website_text=website_text
-                        )
-                        llm_business_cultivation_consulting = llm_gen(
-                            query='cultivation consulting',
-                            description='''Consulting services covering the cultivation, propagation, growing conditions, harvesting, and management of plants.''',
-                            website_text=website_text
-                        )
-                        llm_business_contract_growing = llm_gen(
-                            query='contract growing',
-                            description='''Growing plants or agricultural crops on behalf of another business under an agreed contract or production arrangement.''',
-                            website_text=website_text
-                        )
-                        llm_business_contract_manufacturing = llm_gen(
-                            query='contract manufacturing',
-                            description='''Manufacturing botanical, herbal, or plant-based products on behalf of another company or brand.''',
-                            website_text=website_text
-                        )
-                        llm_business_private_label_manufacturing = llm_gen(
-                            query='private label manufacturing',
-                            description='''Production of herbal, botanical, or plant-based products that are sold under a customer's own brand or private label.''',
-                            website_text=website_text
-                        )
-                        llm_business_extraction_services = llm_gen(
-                            query='extraction services',
-                            description='''Services for extracting active compounds, oils, or other useful constituents from plants or botanical materials.''',
-                            website_text=website_text
-                        )
-                        llm_business_drying_services = llm_gen(
-                            query='drying services',
-                            description='''Commercial drying of harvested plants, herbs, roots, leaves, flowers, or other botanical materials to preserve and prepare them for further use.''',
-                            website_text=website_text
-                        )
-                        llm_business_milling = llm_gen(
-                            query='milling',
-                            description='''Mechanical processing of plant or botanical materials into smaller particles or a desired particle size.''',
-                            website_text=website_text
-                        )
-                        llm_business_grinding = llm_gen(
-                            query='grinding',
-                            description='''Processing herbs, plants, seeds, roots, or other botanical materials into a coarse or fine ground form.''',
-                            website_text=website_text
-                        )
-                        llm_business_packaging_service = llm_gen(
-                            query='packaging_service',
-                            description='''Packaging services for herbal, botanical, agricultural, or plant-based products in suitable containers or formats.''',
-                            website_text=website_text
-                        )
-                        llm_business_export_services = llm_gen(
-                            query='export services',
-                            description='''Services supporting the preparation, documentation, logistics, and international shipment of botanical or plant-based products.''',
-                            website_text=website_text
-                        )
-                        llm_business_laboratory_testing = llm_gen(
-                            query='laboratory testing',
-                            description='''Laboratory analysis and testing of botanical or herbal materials and products for quality, identity, purity, safety, or composition.''',
-                            website_text=website_text
-                        )
-                        llm_business_formulation = llm_gen(
-                            query='formulation',
-                            description='''Development or preparation of recipes and product formulations using herbs, botanicals, extracts, or other plant-based ingredients.''',
-                            website_text=website_text
-                        )
-                        llm_business_research_services = llm_gen(
-                            query='research services',
-                            description='''Research and development services involving medicinal plants, botanicals, herbal products, cultivation, extraction, or related scientific topics.''',
-                            website_text=website_text
-                        )
-                        llm_business_education = llm_gen(
-                            query='education',
-                            description='''Educational services providing knowledge or training related to herbs, medicinal plants, botany, cultivation, processing, or herbal practices.''',
-                            website_text=website_text
-                        )
-                        llm_business_workshops = llm_gen(
-                            query='workshops',
-                            description='''Practical, focused educational sessions or hands-on activities covering herbal, botanical, cultivation, processing, or related topics.''',
-                            website_text=website_text
-                        )
-                        llm_business_courses = llm_gen(
-                            query='courses',
-                            description='''Structured educational programs providing systematic instruction in herbal medicine, botany, plant cultivation, or related subjects.''',
-                            website_text=website_text
-                        )
-                        llm_business_farm_tours = llm_gen(
-                            query='farm tours',
-                            description='''Guided visits to farms or agricultural operations where participants can learn about plant cultivation, harvesting, and production.''',
-                            website_text=website_text
-                        )
-                        llm_business_botanical_tours = llm_gen(
-                            query='botanical tours',
-                            description='''Guided tours focused on identifying, studying, and learning about botanical species and plant collections in natural or cultivated settings.''',
-                            website_text=website_text
-                        )
+
                         # 11. Cultivation
                         llm_business_cultivation_methods = llm_gen(
                             query='cultivation_methods',
@@ -1953,23 +1461,6 @@ def parse_website_backup():
                             ###
                             business_is_category_herbs = llm_business_is_category_herbs,
                             ###
-                            business_name_official = llm_business_name_official,
-                            business_name_legal = llm_business_name_legal,
-                            business_name_trade = llm_business_name_trade,
-                            business_founder_names = llm_business_founder_names,
-                            business_ownership_type = llm_business_ownership_type,
-                            business_company_type = llm_business_company_type,
-                            business_status = llm_business_status,
-                            business_mission = llm_business_mission,
-                            business_vision = llm_business_vision,
-                            business_core_values = llm_business_core_values,
-                            ###
-                            business_type_primary = llm_business_type_primary,
-                            business_type_secondary = llm_business_type_secondary,
-                            business_industry = llm_business_industry,
-                            business_niche = llm_business_niche,
-                            business_model = llm_business_model,
-                            ###
                             business_website = llm_business_website,
                             business_email = llm_business_email,
                             business_email_customer_service = llm_business_customer_service_email,
@@ -1980,53 +1471,7 @@ def parse_website_backup():
                             business_fax = llm_business_fax,
                             business_contact_form = llm_business_contact_form,
                             ###
-                            business_headquarters = llm_business_headquarters,
-                            business_address = llm_business_address,
-                            business_city = llm_business_city,
-                            business_state = llm_business_state,
-                            business_region = llm_business_region,
-                            business_country = llm_business_country,
-                            business_postal_code = llm_business_postal_code,
-                            business_latitude = llm_business_latitude,
-                            business_longitude = llm_business_longitude,
-                            business_additional_locations = llm_business_additional_locations,
-                            business_farm_locations = llm_business_farm_locations,
-                            business_nursery_locations = llm_business_nursery_locations,
-                            business_factory_locations = llm_business_factory_locations,
-                            business_laboratory_locations = llm_business_laboratory_locations,
-                            business_warehouse_locations = llm_business_warehouse_locations,
-                            business_retail_locations = llm_business_retail_locations,
                             ###
-                            business_opening_hours = llm_business_opening_hours,
-                            business_seasonal_hours = llm_business_seasonal_hours,
-                            business_appointment_required = llm_business_appointment_required,
-                            business_walk_in_available = llm_business_walk_in_available,
-                            business_visitor_access = llm_business_visitor_access,
-                            ###
-                            business_medicinal_plants = llm_business_medicinal_plants,
-                            business_primary_medicinal_plants = llm_business_primary_medicinal_plants,
-                            business_specialty_plants = llm_business_specialty_plants,
-                            business_native_plants = llm_business_native_plants,
-                            business_rare_plants = llm_business_rare_plants,
-                            business_medicinal_plant_categories = llm_business_medicinal_plant_categories,
-                            business_botanical_collection_size = llm_business_botanical_collection_size,
-                            ###
-                            business_grows = llm_business_grows,
-                            business_cultivates = llm_business_cultivates,
-                            business_propagates = llm_business_propagates,
-                            business_researches = llm_business_researches,
-                            business_sells = llm_business_sells,
-                            business_distributes = llm_business_distributes,
-                            business_exports = llm_business_exports,
-                            business_imports = llm_business_imports,
-                            business_wild_harvests = llm_business_wild_harvests,
-                            business_conserves = llm_business_conserves,
-                            business_teaches = llm_business_teaches,
-                            business_uses_in_products = llm_business_uses_in_products,
-                            ###
-                            business_product_categories = llm_business_product_categories,
-                            business_flagship_products = llm_business_flagship_products,
-                            business_product_forms = llm_business_product_forms,
                             business_herbal_teas = llm_business_herbal_teas,
                             business_tinctures = llm_business_tinctures,
                             business_extracts = llm_business_extracts,
@@ -2061,30 +1506,6 @@ def parse_website_backup():
                             business_private_label = llm_business_private_label,
                             business_wholesale = llm_business_wholesale,
                             business_retail = llm_business_retail,
-                            ###
-                            business_herbal_consultation = llm_business_herbal_consultation,
-                            business_herbal_clinic = llm_business_herbal_clinic,
-                            business_medicinal_plant_consulting = llm_business_medicinal_plant_consulting,
-                            business_plant_identification = llm_business_plant_identification,
-                            business_botanical_identification = llm_business_botanical_identification,
-                            business_cultivation_consulting = llm_business_cultivation_consulting,
-                            business_contract_growing = llm_business_contract_growing,
-                            business_contract_manufacturing = llm_business_contract_manufacturing,
-                            business_private_label_manufacturing = llm_business_private_label_manufacturing,
-                            business_extraction_services = llm_business_extraction_services,
-                            business_drying_services = llm_business_drying_services,
-                            business_milling = llm_business_milling,
-                            business_grinding = llm_business_grinding,
-                            business_packaging_service = llm_business_packaging_service,
-                            business_export_services = llm_business_export_services,
-                            business_laboratory_testing = llm_business_laboratory_testing,
-                            business_formulation = llm_business_formulation,
-                            business_research_services = llm_business_research_services,
-                            business_education = llm_business_education,
-                            business_workshops = llm_business_workshops,
-                            business_courses = llm_business_courses,
-                            business_farm_tours = llm_business_farm_tours,
-                            business_botanical_tours = llm_business_botanical_tours,
                             ###
                             business_cultivation_methods = llm_business_cultivation_methods,
                             business_organic_cultivation = llm_business_organic_cultivation,
@@ -2288,12 +1709,10 @@ def parse_website_backup():
                         # quit()
 
 def parse_website():
-    start = 0
-    end = 100
     ###
     output_folderpath = f'{g.DATA_FOLDERPATH}/organizations/parse/website/details/json'
-    # try: shutil.rmtree(output_folderpath)
-    # except: pass
+    try: shutil.rmtree(output_folderpath)
+    except: pass
     io.folders_recursive_gen(output_folderpath)
     ###
     input_foldername = f'{HUB_FOLDERPATH}/fetch/gmap/america/places'.replace(' ', '_')
@@ -2309,18 +1728,21 @@ def parse_website():
         for row in rows:
             values = row.split('~')
             if values != [] and values != ['']:
+                ### GET CSV ROW VALS
                 gmap_label = values[0]
                 gmap_website = values[2]
                 gmap_name = values[4]
                 slug = to_slug(gmap_label)
+                ### EXTRACT BASE URL
                 from urllib.parse import urlsplit
                 def base_url(url):
                     p = urlsplit(url)
                     return f"{p.scheme}://{p.netloc}/"
                 gmap_website = base_url(gmap_website)
                 if gmap_website.strip() == '': gmap_website = None
-                print(f'name: {gmap_name}')
+                ###
                 '''
+                print(f'name: {gmap_name}')
                 print(f'label: {gmap_label}')
                 print(f'gmap_website: {gmap_website}')
                 print(f'slug: {slug}')
@@ -2354,12 +1776,12 @@ def parse_website():
                         fields_data = parse_organizations_data.data
                         for field_item in fields_data:
                             reply = None
-                            reply_global = True
+                            regen_global = True
                             if field_item['field_name'] == 'business_name_raw': reply = gmap_name
                             elif field_item['field_name'] == 'business_website': reply = gmap_website
                             elif field_item['field_name'] == 'business_map': reply = None
                             elif field_item['field_type'] == 'bool':
-                                if reply_global == True:
+                                if regen_global == True:
                                     reply = llm_bool_gen(
                                         query=field_item['field_query'],
                                         description=field_item['field_description'],
@@ -2372,10 +1794,17 @@ def parse_website():
                                             description=field_item['field_description'],
                                             website_text=website_text
                                         )
-                                    else: 
-                                        reply = output_data[0][field_item['field_name']]
+                                    elif output_data:
+                                        if field_item['field_name'] not in output_data[0]:
+                                            reply = llm_bool_gen(
+                                                query=field_item['field_query'],
+                                                description=field_item['field_description'],
+                                                website_text=website_text
+                                            )
+                                        else: 
+                                            reply = output_data[0][field_item['field_name']]
                             elif field_item['field_type'] == 'text':
-                                if reply_global == True:
+                                if regen_global == True:
                                     reply = llm_gen(
                                         query=field_item['field_query'],
                                         description=field_item['field_description'],
@@ -2388,8 +1817,15 @@ def parse_website():
                                             description=field_item['field_description'],
                                             website_text=website_text
                                         )
-                                    else: 
-                                        reply = output_data[0][field_item['field_name']]
+                                    elif output_data:
+                                        if field_item['field_name'] not in output_data[0]:
+                                            reply = llm_gen(
+                                                query=field_item['field_query'],
+                                                description=field_item['field_description'],
+                                                website_text=website_text
+                                            )
+                                        else: 
+                                            reply = output_data[0][field_item['field_name']]
                             key = field_item['field_name']
                             val = reply
                             output_item[key] = val
@@ -2511,6 +1947,35 @@ def analyse_jsons():
     print(json.dumps(fields, indent=4))
     quit()
 
+def analyse_field(field_name):
+    input_folderpath = f'{g.DATA_FOLDERPATH}/organizations/parse/website/details/json'
+    input_filenames = sorted(os.listdir(input_folderpath))
+    none_count = 0
+    empty_count = 0
+    value_count = 0
+    value_filepaths = []
+    for input_filename in input_filenames[start:end]:
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        data = io.json_read(input_filepath)
+        item = data[0]
+        try: val = item[field_name]
+        except: continue
+        if val == None: none_count += 1
+        elif val == '': empty_count += 1
+        else: 
+            value_count += 1
+            value_filepaths.append(input_filepath)
+        # print(json.dumps(item, indent=4))
+        # quit()
+    total_count = none_count + empty_count + value_count
+    print(f'FIELD_NAME: {field_name}')
+    print(f'NONE: {none_count}/{total_count} - {none_count/total_count*100}')
+    print(f'EMPTY: {empty_count}/{total_count} - {empty_count/total_count*100}')
+    print(f'VALUE: {value_count}/{total_count} - {value_count/total_count*100}')
+    for x in value_filepaths:
+        print(x)
+    quit()
+
 def run():
     print(f'ORGANIZATION >> PARSE >> main')
 
@@ -2530,5 +1995,6 @@ HOURS:   {(time.perf_counter() - start)/60/60}
 
     # analyse_website()
     # analyse_jsons()
+    # analyse_field(field_name='business_founder_name')
     # quit()
 

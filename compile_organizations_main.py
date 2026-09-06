@@ -21,7 +21,6 @@ def compile_gen():
     input_filenames = os.listdir(input_folderpath)
     ###
     i = 0
-
     items = masterize_organizations_utils.masterize_organizations_get_all()
     for i, item in enumerate(items):
         print(f'{i}/{len(items)}')
@@ -30,15 +29,12 @@ def compile_gen():
         # continue
         output_data = {}
         output_data['business_name_canonical'] = business_name_canonical
-
         for foldername in os.listdir(input_folderpath):
             output_data[foldername] = io.json_read(
                 f'{input_folderpath}/{foldername}/{business_name_canonical}.json'
             )
-
         output_filepath = f'{output_folderpath}/{business_name_canonical}.json'
         io.json_write(output_filepath, output_data)
-
         # print(json.dumps(output_data, indent=4))
         # quit()
 

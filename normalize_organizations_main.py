@@ -93,17 +93,46 @@ def normalize_reviews(source_foldername):
             input_item['business_name_display'] = display_name_gen(input_item['business_name_raw'])
             input_item['business_slug'] = slug_gen(input_item['business_name_raw'])
         io.json_write(output_filepath, input_data)
-        # print(json.dumps(input_item, indent=4))
+        # print(json.dumps(input_data, indent=4))
         # quit()
+
+def normalize_herbs(source_foldername):
+    input_folderpath = f'{HUB_FOLDERPATH}/parse/{source_foldername}/herbs/json'
+    output_folderpath = f'{HUB_FOLDERPATH}/normalize/{source_foldername}/herbs/json'
+    try: shutil.rmtree(output_folderpath)
+    except: pass
+    io.folders_recursive_gen(output_folderpath)
+    input_filenames = os.listdir(input_folderpath)
+    ###
+    for i, input_filename in enumerate(input_filenames[:]):
+        print(f'{i}/{len(input_filenames)}')
+        output_filepath = f'{output_folderpath}/{input_filename}'
+        if os.path.exists(output_filepath): continue
+        ###
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        input_data = io.json_read(input_filepath)
+        for input_item in input_data:
+            # print(input_item)
+            input_item['business_name_normalize'] = normalize_gen(input_item['business_name_raw'])
+            input_item['business_name_display'] = display_name_gen(input_item['business_name_raw'])
+            input_item['business_slug'] = slug_gen(input_item['business_name_raw'])
+            # print(json.dumps(input_item, indent=4))
+            # quit()
+        io.json_write(output_filepath, input_data)
+        print(json.dumps(input_data, indent=4))
+        # if input_data != []:
+            # quit()
 
 def run():
     print('NORMALIZE >> MAIN')
 
     if 1:
         start = time.perf_counter()
-        # normalize_businesses(source_foldername='gmap')
+        normalize_businesses(source_foldername='gmap')
         normalize_businesses(source_foldername='website')
 
         normalize_reviews(source_foldername='gmap')
+        normalize_herbs(source_foldername='website')
         print(f'normalize businesses() - execution time: ', time.perf_counter() - start)
+        # quit()
 

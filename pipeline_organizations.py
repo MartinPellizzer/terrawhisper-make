@@ -6,6 +6,7 @@ in parse, make function to analyze ratio of findings for single provided field
 
 import parse_organizations_gmap
 import parse_organizations_website
+import parse_organizations_main
 import normalize_organizations_main
 import resolve_organizations_main
 import masterize_organizations_init
@@ -21,9 +22,10 @@ import render_organizations_main
 if 0:
     pass
     # parse_organizations_gmap.run()
-    parse_organizations_website.run()
+    # parse_organizations_website.run()
+    parse_organizations_main.run()
 
-if 1:
+if 0:
     pass
     normalize_organizations_main.run()
     resolve_organizations_main.run()

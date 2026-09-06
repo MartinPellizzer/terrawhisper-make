@@ -191,10 +191,6 @@ def derive_reviews():
         observe_items = [dict(row) for row in rows]
         conn.close()
         ###
-        print(business_name_canonical)
-        # print(json.dumps(observe_items, indent=4))
-        # quit()
-
         output_items = []
         for observe_item in observe_items:
             output_item = {
@@ -203,12 +199,55 @@ def derive_reviews():
                 'fields': observe_item,
             }
             output_items.append(output_item)
-
         output_data = {
             'field_section': 'reviews',
             'items': output_items,
         }
         output_filepath = f'{HUB_FOLDERPATH}/derive/reviews/{business_name_canonical}.json'
+        io.json_write(output_filepath, [output_data])
+        print(business_name_canonical)
+        # print(json.dumps(observe_items, indent=4))
+        # quit()
+
+def derive_herbs():
+    io.folders_recursive_gen(f'{HUB_FOLDERPATH}/derive/herbs')
+    ###
+    master_items = masterize_organizations_utils.masterize_organizations_get_all()
+    for i, master_item in enumerate(master_items):
+        print(f'{i}/{len(master_items)}')
+        # print(json.dumps(master_item, indent=4))
+        # quit()
+        business_name_canonical = master_item['business_name_canonical']
+        ###
+        db_filepath = f'{HUB_FOLDERPATH}/observe/observations.db'
+        conn = sqlite3.connect(db_filepath)
+        conn.row_factory = sqlite3.Row
+        cursor = conn.execute("""
+            SELECT *
+            FROM organizations_herbs
+            WHERE business_name_canonical = ?
+            ORDER BY business_name_canonical;
+        """, (business_name_canonical,))
+        rows = cursor.fetchall()
+        observe_items = [dict(row) for row in rows]
+        conn.close()
+        ###
+        print(business_name_canonical)
+        # print(json.dumps(observe_items, indent=4))
+        # quit()
+        output_items = []
+        for observe_item in observe_items:
+            output_item = {
+                'source_name': observe_item['source_name'],
+                'field_section': 'herbs',
+                'fields': observe_item,
+            }
+            output_items.append(output_item)
+        output_data = {
+            'field_section': 'herbs',
+            'items': output_items,
+        }
+        output_filepath = f'{HUB_FOLDERPATH}/derive/herbs/{business_name_canonical}.json'
         io.json_write(output_filepath, [output_data])
 
 def run():
@@ -225,6 +264,7 @@ def run():
 
     if 1:
         derive_reviews()
+        derive_herbs()
 
     # quit()
 
