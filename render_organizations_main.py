@@ -350,9 +350,10 @@ def section_products_gen(input_data):
     html = f'''
         <section>
             <h2>Products</h2>
-            {html}
+            <p style="margin-bottom: 1.6rem;">{input_data['identity'][0]['llm_products']}</p>
         </section>
     '''
+            # {html}
     return html
 
 def section_services_gen(input_data):
@@ -412,9 +413,10 @@ def section_services_gen(input_data):
     html = f'''
         <section>
             <h2>Services</h2>
-            {html}
+            <p style="margin-bottom: 1.6rem;">{input_data['identity'][0]['llm_services']}</p>
         </section>
     '''
+            # {html}
     return html
 
 def section_contacts_gen(input_data, identity_gmap_item):
@@ -515,7 +517,8 @@ def section_identity_gen(input_data):
         html_quick_facts += f'''<div><dt>Business status</dt> <dd>{business_status}</dd></div>'''
     html_quick_facts += f'</dl>'
 
-    html_identity += f'<dl class="quick-facts" style="display: flex; flex-direction: column; gap: 1.6rem; padding-bottom: {border_spacing}; margin-bottom: {border_spacing}; border-bottom: 1px solid #e5e5e5;">'
+    # html_identity += f'<dl class="quick-facts" style="display: flex; flex-direction: column; gap: 1.6rem; padding-bottom: {border_spacing}; margin-bottom: {border_spacing}; border-bottom: 1px solid #e5e5e5;">'
+    html_identity += f'<dl class="quick-facts" style="display: flex; flex-direction: column; gap: 1.6rem; margin-bottom: 4.8rem;">'
     if business_core_values != None:
         html_identity += f'''<div><dt>Core values</dt> <dd>{business_core_values}</dd></div>'''
     if business_mission != None:
@@ -588,25 +591,48 @@ def section_location_gen(input_data):
             if item['source_name'] == 'Google Maps':
                 business_address = item['fields']['business_address']
     ### GEN HTML
-    if business_headquarters != None: html += f'''<p>headquarters: {business_headquarters}</p>'''
-    if business_address != None: html += f'''<p>address: {business_address}</p>'''
-    if business_city != None: html += f'''<p>city: {business_city}</p>'''
-    if business_state != None: html += f'''<p>state: {business_state}</p>'''
-    if business_region != None: html += f'''<p>region: {business_region}</p>'''
-    if business_country != None: html += f'''<p>country: {business_country}</p>'''
-    if business_postal_code != None: html += f'''<p>postal_code: {business_postal_code}</p>'''
-    if business_latitude != None: html += f'''<p>latitude: {business_latitude}</p>'''
-    if business_longitude != None: html += f'''<p>longitude: {business_longitude}</p>'''
-    if business_additional_locations != None: html += f'''<p>additional_locations: {business_additional_locations}</p>'''
-    if business_farm_locations != None: html += f'''<p>farm_locations: {business_farm_locations}</p>'''
-    if business_nursery_locations != None: html += f'''<p>nursery_locations: {business_nursery_locations}</p>'''
-    if business_factory_locations != None: html += f'''<p>factory_locations: {business_factory_locations}</p>'''
-    if business_laboratory_locations != None: html += f'''<p>laboratory_locations: {business_laboratory_locations}</p>'''
-    if business_warehouse_locations != None: html += f'''<p>warehouse_locations: {business_warehouse_locations}</p>'''
-    if business_retail_locations != None: html += f'''<p>retail_locations: {business_retail_locations}</p>'''
+    html += f'<dl class="quick-facts" style="margin-bottom: 4.8rem;">'
+    if business_address != None: html += f'''<div style="margin-bottom: 1.6rem;">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-map-pin-house"><path d="M15 22a1 1 0 0 1-1-1v-4a1 1 0 0 1 .445-.832l3-2a1 1 0 0 1 1.11 0l3 2A1 1 0 0 1 22 17v4a1 1 0 0 1-1 1z"/><path d="M18 10a8 8 0 0 0-16 0c0 4.993 5.539 10.193 7.399 11.799a1 1 0 0 0 .601.2"/><path d="M18 22v-3"/><circle cx="10" cy="10" r="3"/></svg>
+        <dt>Full address</dt> <dd>{business_address}</dd>
+        </div>
+    '''
+    if business_headquarters != None:
+        html += f'''<div><dt>Headquarters</dt> <dd>{business_headquarters}</dd></div>'''
+    if business_city != None: 
+        html += f'''<div><dt>City</dt> <dd>{business_city}</dd></div>'''
+    if business_state != None: 
+        html += f'''<div><dt>State</dt> <dd>{business_state}</dd></div>'''
+    # if business_region != None: 
+        # html += f'''<div><dt>Region</dt> <dd>{business_region}</dd></div>'''
+    if business_country != None: 
+        html += f'''<div><dt>Country</dt> <dd>{business_country}</dd></div>'''
+    if business_postal_code != None: 
+        html += f'''<div><dt>Postal code</dt> <dd>{business_postal_code}</dd></div>'''
+    if business_latitude != None: 
+        html += f'''<div><dt>Latitude</dt> <dd>{business_latitude}</dd></div>'''
+    if business_longitude != None: 
+        html += f'''<div><dt>Longitude</dt> <dd>{business_longitude}</dd></div>'''
+    if business_additional_locations != None: 
+        html += f'''<div><dt>Additional locations</dt> <dd>{business_additional_locations}</dd></div>'''
+    if business_farm_locations != None: 
+        html += f'''<div><dt>Farm locations</dt> <dd>{business_farm_locations}</dd></div>'''
+    if business_nursery_locations != None: 
+        html += f'''<div><dt>Nursery locations</dt> <dd>{business_nursery_locations}</dd></div>'''
+    if business_factory_locations != None: 
+        html += f'''<div><dt>Factory locations</dt> <dd>{business_factory_locations}</dd></div>'''
+    if business_laboratory_locations != None: 
+        html += f'''<div><dt>Laboratory locations</dt> <dd>{business_laboratory_locations}</dd></div>'''
+    if business_warehouse_locations != None: 
+        html += f'''<div><dt>Warehouse locations</dt> <dd>{business_warehouse_locations}</dd></div>'''
+    if business_retail_locations != None: 
+        html += f'''<div><dt>Retail locations</dt> <dd>{business_retail_locations}</dd></div>'''
+    html += f'</dl>'
+    print(json.dumps(input_data, indent=4))
     html = f'''
         <section>
             <h2>Location</h2>
+            <p style="margin-bottom: 1.6rem;">{input_data['identity'][0]['llm_location']}</p>
             {html}
         </section>
     '''
@@ -642,15 +668,21 @@ def section_plants_gen(input_data):
     html = ''
     html_plants = ''
     ### HTML REVIEWS
+    html_plants += f'''<ul style="list-style: none; display: flex; flex-wrap: wrap; gap: 1.6rem;">'''
     for lst in input_data['herbs']:
         for item in lst['items']:
             if item['source_name'] == 'Website':
                 # print(json.dumps(item, indent=4))
                 # quit()
-                business_herb_name_raw = f'''<p>{item['fields']['business_herb_name_raw']}</p>'''
+                business_herb_name_raw = f'''
+                    <li style="border: 1px solid #e5e5e5; padding: 0.4rem 1.2rem;">
+                        {item['fields']['business_herb_name_raw']}
+                    </li>
+                '''
                 html_plants += business_herb_name_raw
+    html_plants += f'''</ul>'''
     html = f'''
-        <section>
+        <section style="margin-bottom: 4.8rem;">
             <h2>Medicinal Plants</h2>
             {html_plants}
         </section>
@@ -719,12 +751,13 @@ def section_activities_gen(input_data):
     if business_teaches != None: html += f'''<p>business_teaches: {business_teaches}</p>'''
     if business_uses_in_products != None: html += f'''<p>business_uses_in_products: {business_uses_in_products}</p>'''
     html = f'''
-        <section>
+        <section style="margin-bottom: 4.8rem;">
             <h2>Botanical Activities</h2>
-            {html}
+            <p style="margin-bottom: 1.6rem;">{input_data['identity'][0]['llm_activities']}</p>
         </section>
     '''
     return html
+            # {html}
 
 def render_listing(master_item):
     business_name_canonical = master_item['business_name_canonical']
@@ -812,7 +845,8 @@ def render_listing(master_item):
     ################################################################################
     # VISITOR
     ################################################################################
-    html_article += section_visitor_gen(input_data)
+    ### TODO: gen llm
+    # html_article += section_visitor_gen(input_data)
 
     ################################################################################
     # PLANTS
@@ -822,16 +856,19 @@ def render_listing(master_item):
     ################################################################################
     # ACTIVITIES
     ################################################################################
+    ### TODO: gen llm
     html_article += section_activities_gen(input_data)
 
     ################################################################################
     # PRODUCTS
     ################################################################################
+    ### TODO: gen llm
     html_article += section_products_gen(input_data)
 
     ################################################################################
     # SERVICES
     ################################################################################
+    ### TODO: gen llm
     html_article += section_services_gen(input_data)
 
     ################################################################################

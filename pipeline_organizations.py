@@ -27,17 +27,17 @@ if 0:
 
 if 0:
     pass
-    normalize_organizations_main.run()
-    resolve_organizations_main.run()
+    # normalize_organizations_main.run()
+    # resolve_organizations_main.run()
 
-    masterize_organizations_init.run()
-    masterize_organizations_main.run()
-    observe_organizations_init.run()
-    observe_organizations_main.run()
+    # masterize_organizations_init.run()
+    # masterize_organizations_main.run()
+    # observe_organizations_init.run()
+    # observe_organizations_main.run()
     # quit()
 
-    qualify_organizations_main.run()
-    derive_organizations_main.run()
+    # qualify_organizations_main.run()
+    # derive_organizations_main.run()
     augment_organizations_main.run()
     compile_organizations_main.run()
 
