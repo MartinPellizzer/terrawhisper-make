@@ -25,6 +25,22 @@ data = [
         'regen': False,
     },
     {
+        'field_name': 'business_website_html',
+        'field_query': 'business website_html', 
+        'field_description': '''''', 
+        'field_type': 'text',
+        'field_section': 'identity',
+        'regen': False,
+    },
+    {
+        'field_name': 'business_website_text',
+        'field_query': 'business website_text', 
+        'field_description': '''''', 
+        'field_type': 'text',
+        'field_section': 'identity',
+        'regen': False,
+    },
+    {
         'field_name': 'business_address',
         'field_query': 'business address', 
         'field_description': '''The complete street address of the business's primary location, including building number, street name, and other published address details.''', 

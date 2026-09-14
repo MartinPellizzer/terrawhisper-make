@@ -82,6 +82,7 @@ def augment_organizations():
             # print('#########################################################################')
             # print(json.dumps(output_data, indent=4))
             # print('#########################################################################')
+
             ### GENERATE LOCATION
             if output_data[0]['field_section'] == 'identity':
                 llm_location = ''
@@ -117,6 +118,7 @@ def augment_organizations():
                 print(json.dumps(output_data, indent=4))
                 print('#########################################################################')
                 # quit()
+
             ### GENERATE BOTANICAL ACTIVITIES
             if output_data[0]['field_section'] == 'identity':
                 llm_activities = ''
@@ -128,11 +130,14 @@ def augment_organizations():
                             business_researches = output_item['fields']['business_researches']
                 # print(business_address)
                 # quit()
-                if business_researches != None:
+                prompt_data = []
+                if business_name_canonical != None: prompt_data.append(f'business name: {business_name_canonical}')
+                if business_researches != None: prompt_data.append(f'business researches: {business_researches}')
+                if prompt_data != []:
+                    prompt_data_text = '\n'.join(prompt_data)
                     prompt = f'''
                         Write 2-4 sentences using the following data:
-                        business name: {business_name_canonical}
-                        business researches: {business_researches}
+                        {prompt_data_text}
                         Reply only with the content asked.
                         Reply with a paragraph.
                     '''.strip()
@@ -165,11 +170,14 @@ def augment_organizations():
                             business_products = output_item['fields']['business_products']
                 # print(business_address)
                 # quit()
-                if business_products != None:
+                prompt_data = []
+                if business_name_canonical != None: prompt_data.append(f'business name: {business_name_canonical}')
+                if business_products != None: prompt_data.append(f'business products: {business_products}')
+                if prompt_data != []:
+                    prompt_data_text = '\n'.join(prompt_data)
                     prompt = f'''
                         Write 2-4 sentences using the following data:
-                        business name: {business_name_canonical}
-                        business products: {business_products}
+                        {prompt_data_text}
                         Reply only with the content asked.
                         Reply with a paragraph.
                     '''.strip()
@@ -268,58 +276,39 @@ def augment_organizations():
                             business_botanical_tours = output_item['fields']['business_botanical_tours']
                 # print(business_address)
                 # quit()
-                if (business_herbal_consultation != None or
-                    business_herbal_consultation != None or
-                    business_herbal_clinic != None or
-                    business_medicinal_plant_consulting != None or
-                    business_plant_identification != None or
-                    business_botanical_identification != None or
-                    business_cultivation_consulting != None or
-                    business_contract_growing != None or
-                    business_contract_manufacturing != None or
-                    business_private_label_manufacturing != None or
-                    business_extraction_services != None or
-                    business_drying_services != None or
-                    business_milling != None or
-                    business_grinding != None or
-                    business_packaging_service != None or
-                    business_export_services != None or
-                    business_laboratory_testing != None or
-                    business_formulation != None or
-                    business_research_services != None or
-                    business_education != None or
-                    business_workshops != None or
-                    business_courses != None or
-                    business_farm_tours != None or
-                    business_botanical_tours != None):
+                prompt_data = []
+                if business_herbal_consultation != None: prompt_data.append(f'business herbal consultation: {business_herbal_consultation}')
+                if business_herbal_clinic != None: prompt_data.append(f'business herbal clinic: {business_herbal_clinic}')
+                if business_medicinal_plant_consulting != None: prompt_data.append(f'business medicinal plant consulting : {business_medicinal_plant_consulting}')
+                if business_plant_identification != None: prompt_data.append(f'business plant identification: {business_plant_identification}')
+                if business_botanical_identification != None: prompt_data.append(f'business botanical identification: {business_botanical_identification}')
+                if business_cultivation_consulting != None: prompt_data.append(f'business cultivation consulting: {business_cultivation_consulting}')
+                if business_contract_growing != None: prompt_data.append(f'business contract growing: {business_contract_growing}')
+                if business_contract_manufacturing != None: prompt_data.append(f'business contract manufacturing: {business_contract_manufacturing}')
+                if business_private_label_manufacturing != None: prompt_data.append(f'business private label manufacturing: {business_private_label_manufacturing}')
+                if business_extraction_services != None: prompt_data.append(f'business extraction services: {business_extraction_services}')
+                if business_drying_services != None: prompt_data.append(f'business drying services: {business_drying_services}')
+                if business_milling != None: prompt_data.append(f'business milling: {business_milling}')
+                if business_grinding != None: prompt_data.append(f'business grinding: {business_grinding}')
+                if business_packaging_service != None: prompt_data.append(f'business packaging service: {business_packaging_service}')
+                if business_export_services != None: prompt_data.append(f'business export services: {business_export_services}')
+                if business_laboratory_testing != None: prompt_data.append(f'business laboratory testing: {business_laboratory_testing}')
+                if business_formulation != None: prompt_data.append(f'business formulation: {business_formulation}')
+                if business_research_services != None: prompt_data.append(f'business research services: {business_research_services}')
+                if business_education != None: prompt_data.append(f'business education: {business_education}')
+                if business_workshops != None: prompt_data.append(f'business workshops: {business_workshops}')
+                if business_courses != None: prompt_data.append(f'business courses: {business_courses}')
+                if business_farm_tours != None: prompt_data.append(f'business farm tours: {business_farm_tours}')
+                if business_botanical_tours != None: prompt_data.append(f'business botanical tours: {business_botanical_tours}')
+                if prompt_data != []:
+                    prompt_data_text = '\n'.join(prompt_data)
                     prompt = f'''
                         Write 2-4 sentences using the following data:
                         business name: {business_name_canonical}
-                        business_herbal_consultation = {business_herbal_consultation}
-                        business_herbal_clinic = {business_herbal_clinic}
-                        business_medicinal_plant_consulting = {business_medicinal_plant_consulting}
-                        business_plant_identification = {business_plant_identification}
-                        business_botanical_identification = {business_botanical_identification}
-                        business_cultivation_consulting = {business_cultivation_consulting}
-                        business_contract_growing = {business_contract_growing}
-                        business_contract_manufacturing = {business_contract_manufacturing}
-                        business_private_label_manufacturing = {business_private_label_manufacturing}
-                        business_extraction_services = {business_extraction_services}
-                        business_drying_services = {business_drying_services}
-                        business_milling = {business_milling}
-                        business_grinding = {business_grinding}
-                        business_packaging_service = {business_packaging_service}
-                        business_export_services = {business_export_services}
-                        business_laboratory_testing = {business_laboratory_testing}
-                        business_formulation = {business_formulation}
-                        business_research_services = {business_research_services}
-                        business_education = {business_education}
-                        business_workshops = {business_workshops}
-                        business_courses = {business_courses}
-                        business_farm_tours = {business_farm_tours}
-                        business_botanical_tours = {business_botanical_tours}
+                        {prompt_data_text}
                         Reply only with the content asked.
-                        Reply with a paragraph.
+                        Reply with a 2-4 senctence paragraph.
+                        Answer only in plain paragraph format, never lists or other formats.
                     '''.strip()
                     print(prompt)
                     reply = llm.reply(prompt, model_filepath)
@@ -342,8 +331,8 @@ def augment_organizations():
 
 def run():
     output_folderpath = f'{HUB_FOLDERPATH}/augment'
-    try: shutil.rmtree(output_folderpath)
-    except: pass
+    # try: shutil.rmtree(output_folderpath)
+    # except: pass
     io.folders_recursive_gen(output_folderpath)
 
     ###

@@ -199,6 +199,7 @@ def header_dark():
             <nav class="main-nav" aria-label="Main Navigation">
                 <ul class="nav-links">
                     <li><a style="color: {color};" href="/herbs.html">Herbs</a></li>
+                    <li><a style="color: {color};" href="/organizations.html">Organizations</a></li>
                     <li><a style="color: {color};" href="/about-us.html">About Us</a></li>
                 </ul>
             </nav>

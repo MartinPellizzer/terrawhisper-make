@@ -21,7 +21,7 @@ import re
 import unicodedata
 
 start = 0
-end = 100
+end = 1000
 
 HUB_FOLDERPATH = f'{g.DATA_FOLDERPATH}/organizations'
 
@@ -57,17 +57,19 @@ def llm_gen(query, description, website_text, input_len_max=0):
     print(f'LEN CHARS: {len(prompt)}')
     print(f'LEN WORDS: {len(prompt.split())}')
     print(f'{prompt[:1000]}')
-    quit()
+    # quit()
     reply = llm.reply(prompt, model_filepath, max_tokens=512)
     if '</think>' in reply:
         reply = reply.split('</think>')[1].strip()
-    if 'none' in reply.lower(): reply = None
+    if 'none' in reply.lower(): return None
+    if reply.strip() == '': return None
     print()
     return reply
 
 def llm_herbs_gen(website_text, input_len_max=0):
     if input_len_max != 0:
         website_text = website_text[:input_len_max]
+    website_text = re.sub(r'[^\x20-\x7E]', '', website_text)
     prompt = f'''
         Extract the list of all the herbs names mentined in the content of the following WEBSITE TEXT.
         Write the herbs names exactly as the are in the website text, using as few words as possible, and capitalize case.
@@ -110,6 +112,16 @@ def llm_bool_gen(query, description, website_text):
     reply = reply.lower()
     if 'none' in reply.lower(): reply = None
     return reply
+
+def website_text_get(website_filepath):
+    try: html = io.file_read(website_filepath)
+    except: html = ''
+    if html != '':
+        soup = BeautifulSoup(html, "html.parser")
+        website_text = soup.get_text(separator="\n", strip=True)
+        website_text = website_text[:16000]
+        return website_text.strip()
+    return html
 
 def parse_gmap():
     output_folderpath = f'{g.DATA_FOLDERPATH}/organizations/parse/gmap/details/json'
@@ -293,7 +305,6 @@ def parse_gmap():
                 # print(len(elements))
                 # quit()
 
-
 def parse_website():
     input_folderpath = f'{HUB_FOLDERPATH}/fetch/gmap/america/places_json'
     output_folderpath = f'{HUB_FOLDERPATH}/parse/website/details/json'
@@ -326,7 +337,7 @@ def parse_website():
         output_data = io.json_read(output_filepath, create=True)
         if type(output_data) is list: output_data = output_data[0]
         fields_data = parse_organizations_data.data
-        website_filepath = f'{HUB_FOLDERPATH}/fetch/websites/america/places_json/{gmap_slug}.html'
+        website_filepath = f'{HUB_FOLDERPATH}/fetch/websites/america/places_html/{gmap_slug}.html'
         print(website_filepath)
         # print(json.dumps(output_data, indent=4))
         # quit()
@@ -334,9 +345,11 @@ def parse_website():
         ### PARSE GENERAL FIELDS
         output_item = {}
         for field_item in fields_data:
-            reply = ''
+            reply = None
             if field_item['field_name'] == 'business_name_raw': reply = gmap_name
             elif field_item['field_name'] == 'business_website': reply = gmap_website
+            elif field_item['field_name'] == 'business_website_html': reply = None
+            elif field_item['field_name'] == 'business_website_text': reply = None
             elif field_item['field_name'] == 'business_map': reply = None
             output_item[field_item['field_name']] = reply
         # print(json.dumps(output_item, indent=4))
@@ -350,11 +363,14 @@ def parse_website():
             website_text = soup.get_text(separator="\n", strip=True)
             website_text = website_text[:16000]
             if website_text.strip() != '':
+                output_item['business_website_text'] = 'true'
                 fields_data = parse_organizations_data.data
                 for field_item in fields_data:
                     reply = ''
                     if field_item['field_name'] == 'business_name_raw': reply = gmap_name
                     elif field_item['field_name'] == 'business_website': reply = gmap_website
+                    elif field_item['field_name'] == 'business_website_html': reply = 'true'
+                    elif field_item['field_name'] == 'business_website_text': reply = 'true'
                     elif field_item['field_name'] == 'business_map': reply = None
                     elif field_item['field_type'] == 'bool':
                         if field_item['regen'] == True:
@@ -397,10 +413,24 @@ def parse_website():
                     # if field_item['field_name'] == 'business_products':
                         # print(field_item)
                         # quit()
+            else:
+                output_item['business_website_text'] = 'false'
+        else:
+            output_item['business_website_html'] = 'false'
+            output_item['business_website_text'] = 'false'
         output_item['source_name'] = 'Website'
         output_item['source_acronym'] = None
         io.json_write(output_filepath, [output_item])
-        print(json.dumps(output_item, indent=4))
+        # if output_item['business_website_html'] == 'true':
+            # print(json.dumps(output_item, indent=4))
+            # quit()
+        ### CHECK SHAPE/DATA ERRORS
+        for key, val in output_item.items():
+            if val == '':
+                print('################################################################################')
+                print('''ERR: render > website > details > output_item data has invalid empty stings ''')
+                print('################################################################################')
+                quit()
         ###
         item = output_item
         print(output_filepath)
@@ -418,21 +448,11 @@ def parse_website():
         # quit()
         ###
 
-def website_text_get(website_filepath):
-    try: html = io.file_read(website_filepath)
-    except: html = ''
-    if html != '':
-        soup = BeautifulSoup(html, "html.parser")
-        website_text = soup.get_text(separator="\n", strip=True)
-        website_text = website_text[:16000]
-        return website_text.strip()
-    return html
-
 def parse_website_herbs():
     input_folderpath = f'{HUB_FOLDERPATH}/fetch/gmap/america/places_json'
     output_folderpath = f'{HUB_FOLDERPATH}/parse/website/herbs/json'
-    try: shutil.rmtree(output_folderpath)
-    except: pass
+    # try: shutil.rmtree(output_folderpath)
+    # except: pass
     io.folders_recursive_gen(output_folderpath)
     ###
     input_filenames = sorted(os.listdir(input_folderpath))
@@ -448,10 +468,13 @@ def parse_website_herbs():
         gmap_slug = input_data['gmap_slug']
         ###
         output_filepath = f'{output_folderpath}/{gmap_slug}.json'
-        output_data = io.json_read(output_filepath, create=True)
-        if type(output_data) is list: output_data = output_data[0]
+        try: output_data = io.json_read(output_filepath)
+        except: output_data = []
+        # print(json.dumps(output_data, indent=4))
+        # quit()
+        # if type(output_data) is list: output_data = output_data[0]
         fields_data = parse_organizations_herbs_data.fields
-        website_filepath = f'{HUB_FOLDERPATH}/fetch/websites/america/places_json/{gmap_slug}.html'
+        website_filepath = f'{HUB_FOLDERPATH}/fetch/websites/america/places_html/{gmap_slug}.html'
         # print(website_filepath)
         # print(json.dumps(output_data, indent=4))
         # quit()
@@ -467,25 +490,31 @@ def parse_website_herbs():
         # quit()
         # continue
         '''
-        output_items = []
-        website_text = website_text_get(website_filepath)
-        if website_text != '':
-            llm_herbs_lst = llm_herbs_gen(website_text)
-            if llm_herbs_lst != None:
-                for llm_herb in llm_herbs_lst:
-                    output_item = {}
-                    for field_item in fields_data:
-                        reply = ''
-                        if field_item['field_name'] == 'business_name_raw': reply = gmap_name
-                        elif field_item['field_type'] == 'text': reply = llm_herb
-                        ###
-                        output_item[field_item['field_name']] = reply
-                    output_item['source_name'] = 'Website'
-                    output_item['source_acronym'] = None
-                    output_items.append(output_item)
+        # print(output_filepath)
+        # print(json.dumps(output_data, indent=4))
+        # quit()
+        if output_data == []:
+            output_items = []
+            website_text = website_text_get(website_filepath)
+            if website_text != '':
+                llm_herbs_lst = llm_herbs_gen(website_text)
+                if llm_herbs_lst != None:
+                    for llm_herb in llm_herbs_lst:
+                        output_item = {}
+                        for field_item in fields_data:
+                            reply = ''
+                            if field_item['field_name'] == 'business_name_raw': reply = gmap_name
+                            elif field_item['field_type'] == 'text': reply = llm_herb
+                            ###
+                            output_item[field_item['field_name']] = reply
+                        output_item['source_name'] = 'Website'
+                        output_item['source_acronym'] = None
+                        output_items.append(output_item)
+        else:
+            output_items = output_data
         ###
         io.json_write(output_filepath, output_items)
-        print(json.dumps(output_items, indent=4))
+        # print(json.dumps(output_items, indent=4))
         # quit()
         ###
         '''
@@ -667,16 +696,16 @@ def format_gmap_to_json():
                     'gmap_name': gmap_name,
                     'gmap_slug': gmap_slug,
                 }
-                output_filepath = f'{output_folderpath}/{gmap_slug}'
+                output_filepath = f'{output_folderpath}/{gmap_slug}.json'
                 print(output_filepath)
                 io.json_write(output_filepath, output_data)
     print(f'''NEW: {business_count_new}''')
     print(f'''DUPLICATE: {business_count_duplicate}''')
     print(f'''TOTAL: {business_count_total}''')
 
-def format_websites_to_json():
+def format_websites_to_html():
     input_folderpath = f'{HUB_FOLDERPATH}/fetch/websites/america/places'.replace(' ', '_')
-    output_folderpath = f'{HUB_FOLDERPATH}/fetch/websites/america/places_json'
+    output_folderpath = f'{HUB_FOLDERPATH}/fetch/websites/america/places_html'
     try: shutil.rmtree(output_folderpath)
     except: pass
     io.folders_recursive_gen(output_folderpath)
@@ -698,34 +727,42 @@ def run():
     print(f'ORGANIZATION >> PARSE >> main')
 
     format_gmap_to_json()
-    format_websites_to_json()
+    format_websites_to_html()
     # quit()
 
     start = time.perf_counter()
     # parse_gmap()
     print(f'''
 ################################################################################
-parse website() - execution time: 
----
-SECONDS: {(time.perf_counter() - start)}
-MINUTES: {(time.perf_counter() - start)/60}
-HOURS:   {(time.perf_counter() - start)/60/60}
+parse gmap()
 ################################################################################
     ''')
 
     start = time.perf_counter()
     # parse_website()
+    print(f'''
+################################################################################
+parse website()
+################################################################################
+    ''')
     parse_website_herbs()
     print(f'''
 ################################################################################
-parse website() - execution time: 
+parse website_herbs()
+################################################################################
+    ''')
+
+    """
+    print(f'''
+################################################################################
+parse gmap() - execution time: 
 ---
 SECONDS: {(time.perf_counter() - start)}
 MINUTES: {(time.perf_counter() - start)/60}
 HOURS:   {(time.perf_counter() - start)/60/60}
 ################################################################################
     ''')
-
+    """
     # analyse_website()
     # analyse_jsons()
     # analyse_field(field_name='business_founder_name')
