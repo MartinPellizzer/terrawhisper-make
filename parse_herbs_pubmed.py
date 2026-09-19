@@ -1,4 +1,5 @@
 import os
+import json
 import time
 import shutil
 
@@ -7,7 +8,7 @@ from lib import io
 from lib import llm
 
 model_filepath = '/home/ubuntu/vault-tmp/llm/gemma-4-12b-it-Q4_K_S.gguf'
-# model_filepath = '/home/ubuntu/vault-tmp/llm/gemma-4-26B-A4B-it-UD-Q4_K_XL.gguf'
+model_filepath = '/home/ubuntu/vault-tmp/llm/gemma-4-26B-A4B-it-UD-Q4_K_XL.gguf'
 
 import parse_utils
 
@@ -972,26 +973,77 @@ def activities_raw_to_json():
             output_items.append(output_item)
         io.json_write(output_filepath, output_items)
 
+def compounds_raw_to_json():
+    input_folderpath = f'{HUB_FOLDERPATH}/parse/pubmed/compounds/raw'
+    output_folderpath = f'{HUB_FOLDERPATH}/parse/pubmed/compounds/json'
+    try: shutil.rmtree(output_folderpath)
+    except: pass
+    io.folders_recursive_gen(output_folderpath)
+    ###
+    input_filenames = os.listdir(input_folderpath)
+    for i, input_filename in enumerate(input_filenames[:]):
+        print(f'{i}/{len(input_filenames)}')
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        output_filepath = f'{output_folderpath}/{input_filename}'
+        ###
+        input_data = io.json_read(input_filepath)
+        # print(json.dumps(input_data, indent=4))
+        # quit()
+        relationships_text = input_data['reply']
+        relationships_lines = []
+        for line in relationships_text.split('\n'):
+            line = line.strip()
+            if line == '': continue
+            if line.startswith('['): line = line[1:]
+            if line.endswith(','): line = line[:-1]
+            if line.endswith(']'): line = line[:-1]
+            chunks = [chunk.strip() for chunk in line.split(', ')]
+            if len(chunks) != 3: continue
+            relationships_lines.append(chunks)
+        # print(json.dumps(relationships_lines, indent=4))
+        # quit()
+        # print(len(relationships_lines))
+        # study_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/studies/pubmed/medicinal-plant/json'
+        study_folderpath = f'{HUB_FOLDERPATH}/fetch/pubmed/medicinal_plant/abstracts'
+        study_filepath = f'{study_folderpath}/{input_filename}'
+        study_data = io.json_read(study_filepath)
+        try: article_data = study_data['PubmedArticle'][0]['MedlineCitation']['Article']
+        except: pass
+        try: journal_title = article_data['Journal']['Title']
+        except: pass
+        # print(json.dumps(article_data, indent=4))
+        # print(json.dumps(journal_title, indent=4))
+        ###
+        output_items = []
+        for line in relationships_lines:
+            # print(line)
+            # quit()
+            try: entity_1_val, relationship, entity_2_val = line
+            except: continue
+            # print('here')
+            # try: entity_1_val, relationship, entity_2_val = line
+            # except: continue
+            output_item = {
+                'plant_name_raw': entity_1_val,
+                'relationship': relationship,
+                'compound_name_raw': entity_2_val,
+                'source_name': 'pubmed',
+                'source_acronym': 'PM',
+                'source_id': input_filename.split('.')[0],
+                'source_title': journal_title,
+            }
+            output_items.append(output_item)
+        io.json_write(output_filepath, output_items)
+    print(json.dumps(output_items[0], indent=4))
+    # quit()
+
 def run():
     print('parse >> pubmed')
 
     if 0:
         start = time.perf_counter()
-        activities_extract_raw_llm() ### WARNING: takes many many hours (nightly running)
-        # activities_string_match() ### TODO
-        activities_raw_to_json()
-        print(f'parse activities() - execution time: ', time.perf_counter() - start)
-
-    if 0:
-        start = time.perf_counter()
         # observations_chemicals_extract_raw() ### WARNING: takes many many hours (nightly running)
         # parse_chemicals_raw_to_json()
-        print(f'chemicals observations() - execution time: ', time.perf_counter() - start)
-
-    if 0:
-        start = time.perf_counter()
-        parse_compounds_extract_raw() ### WARNING: takes many many hours (nightly running)
-        # parse_compounds_raw_to_json()
         print(f'chemicals observations() - execution time: ', time.perf_counter() - start)
 
     if 0:
@@ -1014,7 +1066,7 @@ def run():
         # parse_plants_parts_raw_to_json()
         print(f'observations plants_parts() - execution time: ', time.perf_counter() - start)
 
-    if 1:
+    if 0:
         start = time.perf_counter()
         foldername = 'preparation_form'
         entity_1 = 'plant_name'
@@ -1022,4 +1074,17 @@ def run():
         parse_preparation_form_extract_raw(foldername) ### WARNING: takes many many hours (nightly running)
         # parse_raw_to_json(foldername, entity_1, entity_2)
         print(f'observations plants_parts() - execution time: ', time.perf_counter() - start)
+
+    if 0:
+        start = time.perf_counter()
+        # parse_compounds_extract_raw() ### WARNING: takes many many hours (nightly running)
+        compounds_raw_to_json()
+        print(f'chemicals observations() - execution time: ', time.perf_counter() - start)
+
+    if 0:
+        start = time.perf_counter()
+        activities_extract_raw_llm() ### WARNING: takes many many hours (nightly running)
+        # activities_string_match() ### TODO
+        activities_raw_to_json()
+        print(f'parse activities() - execution time: ', time.perf_counter() - start)
 

@@ -129,31 +129,6 @@ def chemical_summary_get(plant_canonical_name):
     conn.close()
     return rows
 
-def chemical_summary_get_0000(plant_canonical_name):
-    conn = sqlite3.connect(db_filepath)
-    cursor = conn.execute("""
-        SELECT
-            plant_name_scientific_canon,
-            chemical_name_canon,
-            COUNT(*) AS num_sources,
-            json_group_array(source_name) AS sources
-        FROM (
-            SELECT DISTINCT
-                plant_name_scientific_canon,
-                chemical_name_canon,
-                source_name
-            FROM plants_chemicals
-            WHERE plant_name_scientific_canon = ?
-        )
-        GROUP BY
-            plant_name_scientific_canon,
-            chemical_name_canon
-        ORDER BY num_sources DESC;
-    """, (plant_canonical_name,))
-    rows = cursor.fetchall()
-    conn.close()
-    return rows
-
 def summary_activity_get(plant_canonical_name):
     conn = sqlite3.connect(db_filepath)
     cursor = conn.execute("""
@@ -482,9 +457,56 @@ def names_common_gen():
     print(common_names_aliases_found_count)
     print(col_common_names_vernacular_found_count)
 
+def chemicals_gen():
+    master_plants_rows = masterize_utils.masterize_plants_get_all()
+    # print(json.dumps(master_plants_rows[0], indent=4))
+    # quit()
+    for i, master_plant_row in enumerate(master_plants_rows):
+        master_item = master_plant_row
+        print(f'{i}/{len(master_plants_rows)}')
+        conn = sqlite3.connect(db_filepath)
+        conn.row_factory = sqlite3.Row
+        cursor = conn.execute("""
+            SELECT
+                plant_name_scientific_reference,
+                chemical_name_reference,
+                COUNT(*) AS sources_num,
+                json_group_array(source_name) AS sources
+            FROM (
+                SELECT DISTINCT
+                    plant_name_scientific_reference,
+                    chemical_name_reference,
+                    source_name
+                FROM plants_chemicals
+                WHERE plant_name_scientific_reference = ?
+            )
+            GROUP BY
+                plant_name_scientific_reference,
+                chemical_name_reference
+            ORDER BY sources_num DESC;
+        """, (master_item['plant_name_scientific_reference'],))
+        rows = cursor.fetchall()
+        conn.close()
+        ###
+        output_items = []
+        for row in rows[:]:
+            output_item = {
+                'plant_name_scientific_reference': master_plant_row['plant_name_scientific_reference'],
+                'chemical_name_reference': row['chemical_name_reference'],
+                'sources_num': row['sources_num'],
+                'sources': json.loads(row['sources']),
+            }
+            # print(json.dumps(output_item, indent=4))
+            output_items.append(output_item)
+        output_filepath = f'''{HUB_FOLDERPATH}/{output_foldername}/chemicals/{master_plant_row['plant_name_scientific_reference']}.json'''
+        io.folder_create_from_filepath(output_filepath)
+        io.json_write(output_filepath, output_items)
+    print(json.dumps(output_items, indent=4))
+
 def run():
-    # activities_gen()
+    activities_gen()
     names_common_gen()
+    chemicals_gen()
 
     ### SYNONYMS
     if 0:
@@ -595,26 +617,6 @@ def run():
                 print(json.dumps(output_item, indent=4))
                 output_items.append(output_item)
             output_filepath = f'{g.DATA_FOLDERPATH}/{output_foldername}/herbs/{entity_foldername}/{master_plant_row[1]}.json'
-            io.folder_create_from_filepath(output_filepath)
-            io.json_write(output_filepath, output_items)
-
-    ### CHEMICALS
-    if 0:
-        master_plants_rows = masterize_utils.masterize_plants_get_all()
-        for i, master_plant_row in enumerate(master_plants_rows):
-            print(f'{i}/{len(master_plants_rows)}')
-            chemical_summary_rows = chemical_summary_get_0000(master_plant_row[1])
-            output_items = []
-            for row in chemical_summary_rows[:]:
-                output_item = {
-                    'plant_canonical_name': master_plant_row[1],
-                    'chemical_canonical_name': row[1],
-                    'sources_num': row[2],
-                    'sources': json.loads(row[3]),
-                }
-                print(json.dumps(output_item, indent=4))
-                output_items.append(output_item)
-            output_filepath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/{output_foldername}/herbs/chemicals/{master_plant_row[1]}.json'
             io.folder_create_from_filepath(output_filepath)
             io.json_write(output_filepath, output_items)
 

@@ -57,14 +57,16 @@ if 0:
     # import reference_herbs_wcvp
     import reference_herbs_drduke
     # import reference_herbs_col
+    # import reference_herbs_pubchem
     # reference_herbs_wcvp.run()
     # reference_herbs_drduke.run()
     # reference_herbs_col.run()
+    # reference_herbs_pubchem.run()
 
 if 0:
-    # import parse_herbs_pubmed
+    import parse_herbs_pubmed
     import parse_herbs_col
-    # parse_herbs_pubmed.run()
+    parse_herbs_pubmed.run()
     parse_herbs_col.run()
 
 if 0:

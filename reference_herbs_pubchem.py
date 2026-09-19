@@ -1,21 +1,30 @@
 import os
+import re
 import time
+import sqlite3
+import unicodedata
 
 from lib import g
 from lib import io
 
+HUB_FOLDERPATH = f'''{g.DATA_FOLDERPATH}/herbs'''
+
+def normalize(name):
+    spaces = re.compile(r"\s+")
+    name = unicodedata.normalize("NFKC", name)
+    name = name.lower()
+    name = name.replace("-", " ")
+    name = spaces.sub(" ", name)
+    return name.strip()
+
 def pubchem__table_synonyms_create():
-    source_foldername = 'pubchem'
-    input_foldername = 'fetch'
-    output_foldername = 'reference'
-    input_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/{input_foldername}/{source_foldername}'
-    output_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/{output_foldername}/{source_foldername}'
+    input_folderpath = f'{HUB_FOLDERPATH}/fetch/pubchem'
+    output_folderpath = f'{HUB_FOLDERPATH}/reference/pubchem'
     io.folders_recursive_gen(output_folderpath)
     # with open(f'{input_folderpath}/CID-Synonym-unfiltered') as f: content = f.read()[:100]
     # lines = content.split('\n')
 
     ### CREATE TABLE
-    import sqlite3
     conn = sqlite3.connect(f"{output_folderpath}/pubchem.db")
     conn.executescript("""
         PRAGMA journal_mode = OFF;
@@ -27,20 +36,9 @@ def pubchem__table_synonyms_create():
         CREATE TABLE pubchem_cid_synonyms (
             cid INTEGER NOT NULL,
             alias TEXT NOT NULL,
-            normalized_alias TEXT NOT NULL
+            alias_normalize TEXT NOT NULL
         );
     """)
-
-    ### NORMALIZE FUNCTION
-    import re
-    import unicodedata
-    spaces = re.compile(r"\s+")
-    def normalize(name):
-        name = unicodedata.normalize("NFKC", name)
-        name = name.lower()
-        name = name.replace("-", " ")
-        name = spaces.sub(" ", name)
-        return name.strip()
 
     ### ADD RECORDS
     import gzip
@@ -89,27 +87,46 @@ def pubchem__table_synonyms_create():
     ### CREATE INDEXES
     print("Creating index...")
     conn.execute("""
-    CREATE INDEX idx_pubchem_cid_synonyms_alias
-    ON pubchem_cid_synonyms(normalized_alias)
-    """)
-    conn.execute("""
     CREATE INDEX idx_pubchem_cid_synonyms_cid
     ON pubchem_cid_synonyms(cid)
     """)
+    conn.execute("""
+    CREATE INDEX idx_pubchem_cid_synonyms_alias
+    ON pubchem_cid_synonyms(alias)
+    """)
+    conn.execute("""
+    CREATE INDEX idx_pubchem_cid_synonyms_alias_normalize
+    ON pubchem_cid_synonyms(alias_normalize)
+    """)
     conn.commit()
 
+def peek():
+    output_folderpath = f'{HUB_FOLDERPATH}/reference/pubchem'
+    conn = sqlite3.connect(f"{output_folderpath}/pubchem.db")
     ### TEST PRINT
     cursor = conn.execute("""
-    SELECT cid, alias, normalized_alias
-    FROM pubchem_cid_synonyms
-    LIMIT 100
+        SELECT cid, alias, alias_normalize
+        FROM pubchem_cid_synonyms
+        LIMIT 10
     """)
-    for row in cursor:
-        print(row)
+    rows = cursor.fetchall()
+    # for row in rows:
+        # print(row)
+
+    from tabulate import tabulate
+    print(tabulate(rows, 
+        headers=[
+            "CID", 
+            "ALIAS", 
+            "ALIAS_NORMALIZE", 
+        ], 
+        tablefmt="plain")
+    )
 
 def run():
     print(f'PARSE >> pubchem')
 
     start = time.perf_counter()
-    pubchem__table_synonyms_create()
+    # pubchem__table_synonyms_create()
+    peek()
     print(f'pubchem__table_synonyms_create() - execution time: ', time.perf_counter() - start)

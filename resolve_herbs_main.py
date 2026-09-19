@@ -159,16 +159,18 @@ def resolve_activities(source_foldername):
     reference_drduke_conn.close()
 
 def resolve_chemicals(source_foldername):
-    input_folderpath = f'{g.DATA_FOLDERPATH}/normalize/{source_foldername}/chemicals/json'
-    output_folderpath = f'{g.DATA_FOLDERPATH}/resolve/{source_foldername}/chemicals/json'
+    input_folderpath = f'{HUB_FOLDERPATH}/normalize/{source_foldername}/chemicals/json'
+    output_folderpath = f'{HUB_FOLDERPATH}/resolve/{source_foldername}/chemicals/json'
     try: shutil.rmtree(output_folderpath)
     except: pass
     os.makedirs(output_folderpath, exist_ok=True)
     ###
-    wcvp_folderpath = f'{g.DATA_FOLDERPATH}/reference/wcvp/wcvp.db'
-    pubchem_folderpath = f'{g.DATA_FOLDERPATH}/reference/pubchem/pubchem.db'
+    wcvp_folderpath = f'{HUB_FOLDERPATH}/reference/wcvp/wcvp.db'
+    pubchem_folderpath = f'{HUB_FOLDERPATH}/reference/pubchem/pubchem.db'
     wcvp_conn = sqlite3.connect(wcvp_folderpath)
+    wcvp_conn.row_factory = sqlite3.Row
     pubchem_conn = sqlite3.connect(pubchem_folderpath)
+    pubchem_conn.row_factory = sqlite3.Row
     ###
     input_filenames = os.listdir(input_folderpath)
     for i, input_filename in enumerate(input_filenames[:]):
@@ -180,28 +182,36 @@ def resolve_chemicals(source_foldername):
         input_data = io.json_read(input_filepath)
         resolved_data = []
         for input_item in input_data:
-            # print(json.dumps(input_item, indent=True))
+            # print(json.dumps(input_item, indent=4))
+            # quit()
             resolved_item = input_item
-            plant_name_raw_norm = input_item['plant_name_raw_norm']
-            chemical_name_raw_norm = input_item['chemical_name_raw_norm']
-            if chemical_name_raw_norm == 'null':
+            plant_name_raw_normalize = input_item['plant_name_raw_normalize']
+            chemical_name_raw_normalize = input_item['chemical_name_raw_normalize']
+            if chemical_name_raw_normalize == 'null':
                 continue
             ### RESOLVE PLANT (WCVP)
-            wcvp_row = resolve_utils.resolve_plant_accepted(wcvp_conn, plant_name_raw_norm)
+            wcvp_row = resolve_utils.resolve_plant_accepted(wcvp_conn, plant_name_raw_normalize)
             ### RESOLVE CHEMICAL (PUBCHEM)
             pubchem_cur = pubchem_conn.cursor()
             pubchem_cur.execute("""
                 SELECT *
                 FROM pubchem_cid_synonyms
-                WHERE normalized_alias = ?
-            """, (chemical_name_raw_norm,))
-            pubchem_row = pubchem_cur.fetchone()
+                WHERE alias_normalize = ?
+            """, (chemical_name_raw_normalize,))
+            # pubchem_row = pubchem_cur.fetchone()
+            pubchem_rows = pubchem_cur.fetchall()
+            pubchem_items = [dict(row) for row in pubchem_rows]
             ###
-            if wcvp_row and pubchem_row:
-                input_item['plant_name_scientific_canon'] = wcvp_row[3]
-                input_item['plant_name_scientific_canon_norm'] = wcvp_row[4]
-                input_item['chemical_name_canon'] = pubchem_row[1]
-                input_item['chemical_name_canon_norm'] = pubchem_row[2]
+            if wcvp_row and pubchem_items:
+                wcvp_item = dict(wcvp_row)
+                pubchem_item = pubchem_items[0]
+                # print(json.dumps(wcvp_item, indent=4))
+                # print(json.dumps(pubchem_item, indent=4))
+                # quit()
+                input_item['plant_name_scientific_reference'] = wcvp_item['taxon_name']
+                input_item['plant_name_scientific_reference_normalize'] = wcvp_item['taxon_name_normalized']
+                input_item['chemical_name_reference'] = pubchem_item['alias']
+                input_item['chemical_name_reference_normalize'] = pubchem_item['alias_normalize']
                 resolved_data.append(input_item)
                 # print(json.dumps(input_item, indent=True))
                 # quit()
@@ -209,6 +219,8 @@ def resolve_chemicals(source_foldername):
             io.json_write(output_filepath, resolved_data)
     wcvp_conn.close()
     pubchem_conn.close()
+    print(json.dumps(resolved_data[0], indent=True))
+    quit()
 
 def resolve_synonyms(source_foldername):
     input_folderpath = f'{g.DATA_FOLDERPATH}/normalize/{source_foldername}/synonyms/json'
@@ -364,17 +376,7 @@ def run():
         resolve_plants_parts(source_foldername='pubmed')
         print(f'resolve plant_part() - execution time: ', time.perf_counter() - start)
 
-    if 0:
-        start = time.perf_counter()
-        resolve_chemicals(source_foldername='drduke')
-        resolve_chemicals(source_foldername='pubmed')
-        print(f'resolve chemicals() - execution time: ', time.perf_counter() - start)
 
-    if 0:
-        start = time.perf_counter()
-        # resolve_activities(source_foldername='drduke')
-        resolve_activities(source_foldername='pubmed')
-        print(f'resolve activiries() - execution time: ', time.perf_counter() - start)
 
     if 1:
         start = time.perf_counter()
@@ -382,3 +384,14 @@ def run():
         resolve_common_names(source_foldername='col')
         print(f'resolve common_names() - execution time: ', time.perf_counter() - start)
 
+    if 1:
+        start = time.perf_counter()
+        # resolve_activities(source_foldername='drduke')
+        resolve_activities(source_foldername='pubmed')
+        print(f'resolve activiries() - execution time: ', time.perf_counter() - start)
+
+    if 1:
+        start = time.perf_counter()
+        # resolve_chemicals(source_foldername='drduke')
+        resolve_chemicals(source_foldername='pubmed')
+        print(f'resolve chemicals() - execution time: ', time.perf_counter() - start)

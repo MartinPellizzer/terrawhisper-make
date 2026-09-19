@@ -61,7 +61,7 @@ def master_table_activities_create(regen=False):
     conn.close()
 
 def master_table_chemicals_create(regen=False):
-    output_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/masterize'
+    output_folderpath = f'{HUB_FOLDERPATH}/terrawhisper/data/masterize'
     db_filepath = f'{output_folderpath}/master.db'
     table_name = 'chemicals'
     ###
@@ -72,15 +72,15 @@ def master_table_chemicals_create(regen=False):
     cur.execute(f"""
         CREATE TABLE IF NOT EXISTS {table_name} (
             id INTEGER PRIMARY KEY,
-            chemical_name_canon TEXT NOT NULL UNIQUE,
-            chemical_name_canon_norm TEXT NOT NULL UNIQUE
+            chemical_name_reference TEXT NOT NULL UNIQUE,
+            chemical_name_reference_normalize TEXT NOT NULL UNIQUE
         );
     """)
     conn.execute("PRAGMA journal_mode = WAL;")
     conn.execute("PRAGMA synchronous = OFF;")
     conn.execute("PRAGMA temp_store = MEMORY;")
-    cur.execute(f"CREATE INDEX IF NOT EXISTS idx_{table_name}_chemical_name_canon ON {table_name}(chemical_name_canon)")
-    cur.execute(f"CREATE INDEX IF NOT EXISTS idx_{table_name}_chemical_name_canon_norm ON {table_name}(chemical_name_canon_norm)")
+    cur.execute(f"CREATE INDEX IF NOT EXISTS idx_{table_name}_chemical_name_reference ON {table_name}(chemical_name_reference)")
+    cur.execute(f"CREATE INDEX IF NOT EXISTS idx_{table_name}_chemical_name_reference_normalize ON {table_name}(chemical_name_reference_normalize)")
     conn.commit()
     conn.close()
 
@@ -144,10 +144,13 @@ def test():
     conn.close()
 
 def run():
-    master_table_plants_create(regen=True)
     # master_table_plants_parts_create(regen=True)
-    # master_table_activities_create(regen=True)
-    # master_table_chemicals_create(regen=True)
 
     # master_table_diseases_create(regen=True)
     # test()
+
+    # master_table_activities_create(regen=True)
+    # master_table_chemicals_create(regen=True)
+
+    master_table_plants_create(regen=True)
+    pass

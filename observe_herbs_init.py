@@ -195,10 +195,10 @@ def observations_table_plants_chemicals_create(regen=False):
     cur.execute(f"""
         CREATE TABLE IF NOT EXISTS {table_name} (
             id INTEGER PRIMARY KEY,
-            plant_name_scientific_canon TEXT NOT NULL,
-            plant_name_scientific_canon_norm TEXT,
-            chemical_name_canon TEXT NOT NULL,
-            chemical_name_canon_norm TEXT,
+            plant_name_scientific_reference TEXT NOT NULL,
+            plant_name_scientific_reference_normalize TEXT,
+            chemical_name_reference TEXT NOT NULL,
+            chemical_name_reference_normalize TEXT,
             plant_part_name_raw TEXT,
             concentration REAL,
             unit TEXT,
@@ -211,8 +211,8 @@ def observations_table_plants_chemicals_create(regen=False):
     conn.execute("PRAGMA synchronous = OFF;")
     conn.execute("PRAGMA temp_store = MEMORY;")
     ###
-    cur.execute(f"CREATE INDEX IF NOT EXISTS idx_{table_name}_plant_name_scientific_canon ON {table_name}(plant_name_scientific_canon)")
-    cur.execute(f"CREATE INDEX IF NOT EXISTS idx_{table_name}_chemical_name_canon ON {table_name}(chemical_name_canon)")
+    cur.execute(f"CREATE INDEX IF NOT EXISTS idx_{table_name}_plant_name_scientific_reference ON {table_name}(plant_name_scientific_reference)")
+    cur.execute(f"CREATE INDEX IF NOT EXISTS idx_{table_name}_chemical_name_reference ON {table_name}(chemical_name_reference)")
     cur.execute(f"CREATE INDEX IF NOT EXISTS idx_{table_name}_source_name ON {table_name}(source_name)")
     conn.commit()
     conn.close()
@@ -295,10 +295,10 @@ def run():
     # observations_table_plants_distributions_create(regen=True)
     # observations_table_plants_traits_create(regen=True)
     # observations_table_plants_plants_parts_create(regen=True)
-    # observations_table_plants_chemicals_create(regen=True)
     # observations_table_plants_diseases_create(regen=True)
     # observations_table_plants_preparations_create(regen=True)
     # observations_table_plants_names_create(regen=True)
 
-    # observations_table_plants_activities_create(regen=True)
     observations_table_plants_names_common_create(regen=True)
+    observations_table_plants_activities_create(regen=True)
+    observations_table_plants_chemicals_create(regen=True)

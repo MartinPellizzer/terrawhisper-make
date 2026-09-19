@@ -282,8 +282,8 @@ def observations_table_plants_activities_add(source_foldername):
 
 def observations_table_plants_chemicals_add(source_foldername):
     table_name = 'plants_chemicals'
-    input_folderpath = f'{g.DATA_FOLDERPATH}/resolve/{source_foldername}/chemicals/json'
-    output_folderpath = f'{g.DATA_FOLDERPATH}/observe'
+    input_folderpath = f'{HUB_FOLDERPATH}/resolve/{source_foldername}/chemicals/json'
+    output_folderpath = f'{HUB_FOLDERPATH}/observe'
     db_filepath = f'{output_folderpath}/observations.db'
     ###
     input_filenames = os.listdir(input_folderpath)
@@ -302,10 +302,10 @@ def observations_table_plants_chemicals_add(source_foldername):
     cur.executemany(
         f"""
             INSERT OR IGNORE INTO {table_name} (
-                plant_name_scientific_canon,
-                plant_name_scientific_canon_norm,
-                chemical_name_canon,
-                chemical_name_canon_norm,
+                plant_name_scientific_reference,
+                plant_name_scientific_reference_normalize,
+                chemical_name_reference,
+                chemical_name_reference_normalize,
                 plant_part_name_raw,
                 concentration,
                 unit,
@@ -317,10 +317,10 @@ def observations_table_plants_chemicals_add(source_foldername):
         """,
         [
             (
-                item.get("plant_name_scientific_canon"),
-                item.get("plant_name_scientific_canon_norm"),
-                item.get("chemical_name_canon"),
-                item.get("chemical_name_canon_norm"),
+                item.get("plant_name_scientific_reference"),
+                item.get("plant_name_scientific_reference_normalize"),
+                item.get("chemical_name_reference"),
+                item.get("chemical_name_reference_normalize"),
                 item.get("plant_part_name_raw"),
                 item.get("concentration"),
                 item.get("unit"),
@@ -359,16 +359,16 @@ def run():
     if 0:
         observations_table_plants_plants_parts_add(source_foldername='pubmed')
 
-    if 0:
-        observations_table_plants_chemicals_add(source_foldername='drduke')
-        observations_table_plants_chemicals_add(source_foldername='pubmed')
     # test()
-
-    if 0:
-        # observations_table_plants_activities_add(source_foldername='drduke')
-        observations_table_plants_activities_add(source_foldername='pubmed')
 
     if 1:
         # observations_table_plants_names_common_add(source_foldername='wikidata')
         observations_table_plants_names_common_add(source_foldername='col')
 
+    if 1:
+        # observations_table_plants_activities_add(source_foldername='drduke')
+        observations_table_plants_activities_add(source_foldername='pubmed')
+
+    if 1:
+        # observations_table_plants_chemicals_add(source_foldername='drduke')
+        observations_table_plants_chemicals_add(source_foldername='pubmed')

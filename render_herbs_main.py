@@ -21,7 +21,9 @@ HUB_FOLDERPATH = f'''{g.DATA_FOLDERPATH}/herbs'''
 
 shutil.copy2('styles.css', f'{g.website_folderpath}/styles.css')
 
-model_filepath = '/home/ubuntu/vault-tmp/llm/gemma-4-26B-A4B-it-UD-Q4_K_XL.gguf'
+# model_filepath = '/home/ubuntu/vault-tmp/llm/gemma-4-12B-it-qat-UD-Q4_K_XL.gguf'
+# model_filepath = '/home/ubuntu/vault-tmp/llm/gemma-4-26B-A4B-it-UD-Q4_K_XL.gguf'
+model_filepath = '/home/ubuntu/vault-tmp/llm/gemma-4-26B-A4B-it-UD-Q4_K_M.gguf'
 
 def sqlite_table_master_plants_get():
     db_filepath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/masterize/master.db'
@@ -1376,14 +1378,251 @@ def plant_listing_page_gen_old(plant_name):
     with open(html_filepath, 'w') as f: f.write(html)
     print(html_filepath)
 
-def plant_listing_page_gen(plant_name):
-    plant_data = io.json_read(f'{HUB_FOLDERPATH}/compile/{plant_name}.json')
+def listing_activities_gen(plant_data):
+    html_article = f''
+    data_key = 'activities'
+    item_key = 'activity_name_reference'
+    section_data = plant_data[data_key]
+    if section_data != []:
+        html_table_body = f''
+        sources_html = f''
+        html_table_body += f'''<tbody>'''
+        table_num = 10
+        for item in section_data[:table_num]:
+            name = item[item_key]
+            slug = polish.sluggify(name)
+            sources_num = item['sources_num']
+            sources = item['sources']
+            source = sources[0]
+            confidence = ''
+            if int(sources_num) >= 10: confidence = '★★★★★'
+            elif int(sources_num) >= 7: confidence = '★★★★☆'
+            elif int(sources_num) >= 5: confidence = '★★★☆☆'
+            elif int(sources_num) >= 3: confidence = '★★☆☆☆'
+            elif int(sources_num) >= 1: confidence = '★☆☆☆☆'
+            html_table_body += f'''
+                <tr>
+                    <th scope="row">{name}</th>
+                    <td>
+                        <a href="#sources-{slug}">
+                            {sources_num} supporting sources
+                        </a>
+                    </td>
+                    <td>
+                        <span>
+                            {confidence}
+                        </span>
+                    </td>
+                </tr>
+            '''
+            ### TODO: add this complete consensus instead of the one in the table
+            '''
+                <span aria-label="Very high source consensus">
+                    {confidence}
+                </span>
+                <span>Very high</span>
+            '''
+            ### SOURCES LISTS
+            sources_html += f'''
+                <h3 id="sources-{slug}">{name}</h3>
+                <ol class="listing-sources">
+            '''
+            for source in sources[:5]:
+                sources_html += f'''
+                    <li>
+                        <cite>
+                            {source}
+                        </cite>
+                    </li>
+                '''
+            sources_html += f'''
+                </ol>
+            '''
+            if len(sources)-5 > 0:
+                sources_html += f'''
+                    <details>
+                        <summary>
+                            View {len(sources)-5} additional sources
+                        </summary>
+                        <ol class="listing-sources" start="6">
+                '''
+                for source in sources[5:]:
+                    sources_html += f'''
+                        <li>
+                            <cite>
+                                {source}
+                            </cite>
+                        </li>
+                    '''
+                sources_html += f'''
+                        </ol>
+                    </details>
+                '''
+        source_tot = 0 
+        for item in section_data[:]:
+            source_tot += int(item['sources_num'])
+        p = []
+        for item in section_data[:5]:
+            p.append(item[item_key])
+        p_str = ', '.join(p)
+        html_table_body += f'''</tbody>'''
+        html_article += f'''
+            <section>
+                <h2>
+                    {data_key.capitalize()}
+                </h2>
+                <p>
+                    {plant_data['plant_name_scientific_reference']} has {len(plant_data[data_key])} reported activities identified across {source_tot} scientific publications and several other databases. The most consistently reported activities include {p_str}.
+                </p>
+                <table style="margin-top: 3.2rem;">
+                    <caption style="text-align: left; margin-bottom: 0.8rem;">
+                        {data_key.capitalize()} reported in {plant_data['plant_name_scientific_reference']}
+                    </caption>
+                    <thead>
+                        <tr>
+                            <th scope="col">Activity</th>
+                            <th scope="col">Supporting sources</th>
+                            <th scope="col">Consensus</th>
+                        </tr>
+                    </thead>
+                    {html_table_body}
+                </table>
+            </section>
+        '''
+        ###
+        html_article += f'''
+            <section aria-labelledby="compounds-heading">
+                {sources_html}
+            </section>
+        '''
+        return html_article
+
+def listing_chemicals_gen(plant_data):
+    html_article = f''
+    chemicals = plant_data['chemicals']
+    if chemicals != []:
+        html_table_body = f''
+        sources_html = f''
+        html_table_body += f'''<tbody>'''
+        table_chemical_num = 10
+        for item in chemicals[:table_chemical_num]:
+            chemical_name = item['chemical_name_reference']
+            chemical_slug = polish.sluggify(chemical_name)
+            sources_num = item['sources_num']
+            sources = item['sources']
+            source = sources[0]
+            confidence = ''
+            if int(sources_num) >= 10: confidence = '★★★★★'
+            elif int(sources_num) >= 7: confidence = '★★★★☆'
+            elif int(sources_num) >= 5: confidence = '★★★☆☆'
+            elif int(sources_num) >= 3: confidence = '★★☆☆☆'
+            elif int(sources_num) >= 1: confidence = '★☆☆☆☆'
+            html_table_body += f'''
+                <tr>
+                    <th scope="row">{chemical_name}</th>
+                    <td>
+                        <a href="#sources-{chemical_slug}">
+                            {sources_num} supporting sources
+                        </a>
+                    </td>
+                    <td>
+                        <span>
+                            {confidence}
+                        </span>
+                    </td>
+                </tr>
+            '''
+            ### TODO: add this complete consensus instead of the one in the table
+            '''
+                        <span aria-label="Very high source consensus">
+                            {confidence}
+                        </span>
+                        <span>Very high</span>
+            '''
+            ### SOURCES LISTS
+            sources_html += f'''
+                <h3 id="sources-{chemical_slug}">{chemical_name}</h3>
+                <ol class="listing-sources">
+            '''
+            for source in sources[:5]:
+                sources_html += f'''
+                    <li>
+                        <cite>
+                            {source}
+                        </cite>
+                    </li>
+                '''
+            sources_html += f'''
+                </ol>
+            '''
+            if len(sources)-5 > 0:
+                sources_html += f'''
+                    <details>
+                        <summary>
+                            View {len(sources)-5} additional sources
+                        </summary>
+                        <ol class="listing-sources" start="6">
+                '''
+                for source in sources[5:]:
+                    sources_html += f'''
+                        <li>
+                            <cite>
+                                {source}
+                            </cite>
+                        </li>
+                    '''
+                sources_html += f'''
+                        </ol>
+                    </details>
+                '''
+        source_tot = 0 
+        for item in chemicals[:]:
+            source_tot += int(item['sources_num'])
+        chemicals_p = []
+        for chemical in chemicals[:5]:
+            chemicals_p.append(chemical['chemical_name_reference'])
+        chemicals_p_str = ', '.join(chemicals_p)
+        html_table_body += f'''</tbody>'''
+        html_article += f'''
+            <section>
+                <h2>
+                    Chemicals
+                </h2>
+                <p>
+                    {plant_data['plant_name_scientific_reference']} has {len(plant_data['chemicals'])} reported phytochemicals identified across {source_tot} scientific publications and several other databases. The most consistently reported chemicals include {chemicals_p_str}.
+                </p>
+                <table style="margin-top: 3.2rem;">
+                    <caption style="text-align: left; margin-bottom: 0.8rem;">
+                        Chemicals reported in {plant_data['plant_name_scientific_reference']}
+                    </caption>
+                    <thead>
+                        <tr>
+                            <th scope="col">Chemical</th>
+                            <th scope="col">Supporting sources</th>
+                            <th scope="col">Consensus</th>
+                        </tr>
+                    </thead>
+                    {html_table_body}
+                </table>
+            </section>
+        '''
+        ###
+        html_article += f'''
+            <section aria-labelledby="compounds-heading">
+                {sources_html}
+            </section>
+        '''
+        return html_article
+
+def plant_listing_page_gen(master_item):
+    plant_name_scientific_reference = master_item['plant_name_scientific_reference']
+    plant_data = io.json_read(f'{HUB_FOLDERPATH}/compile/{plant_name_scientific_reference}.json')
     # print(json.dumps(plant_data, indent=4))
     # print(json.dumps(plant_data['names_common'], indent=4))
     # quit()
 
-    plant_taxon_name_slug = polish.sluggify(plant_name)
-    plant_taxon_name_normalized = normalize_utils.normalize_plant_name(plant_name)
+    plant_taxon_name_slug = polish.sluggify(plant_name_scientific_reference)
+    plant_taxon_name_normalized = normalize_utils.normalize_plant_name(plant_name_scientific_reference)
 
     # plant_parts_data = plant_data['plants_parts']
     # plant_synonyms = plant_data['synonyms']
@@ -1398,7 +1637,111 @@ def plant_listing_page_gen(plant_name):
     ## H1
     plant_name_common = plant_data['names_common']['plant_name_common_preferred']
     if plant_name_common != '': h1_html = f'<h1>{plant_name_common}</h1>'
-    else: h1_html = f'<h1>{plant_name}</h1>'
+    else: h1_html = f'<h1>{plant_name_scientific_reference}</h1>'
+    ### SCIENTIFIC NAME ACCEPTED
+    name_scientific_accepted = f'''
+        <p>
+            <i lang="la">{plant_name_scientific_reference}</i> · 
+            <span>Accepted scientific name</span>
+        </p>
+    '''
+    ### EVIDENCE CONSENSUS
+    db_filepath = f'{HUB_FOLDERPATH}/observe/observations.db'
+    conn = sqlite3.connect(db_filepath)
+    rows_num = 0
+    ###
+    plant_name_scientific_reference = plant_name_scientific_reference
+    '''
+    cursor = conn.execute("""
+        SELECT COUNT (*)
+        FROM plants_parts
+        WHERE plant_canonical_name = ?
+    """, (plant_name_scientific_canon,))
+    rows_num += int(cursor.fetchone()[0])
+    cursor = conn.execute("""
+        SELECT COUNT (*)
+        FROM plants_chemicals
+        WHERE plant_name_scientific_canon = ?
+    """, (plant_name_scientific_canon,))
+    rows_num += int(cursor.fetchone()[0])
+    '''
+    cursor = conn.execute("""
+        SELECT COUNT (*)
+        FROM plants_activities
+        WHERE plant_name_scientific_reference = ?
+    """, (plant_name_scientific_reference,))
+    rows_num += int(cursor.fetchone()[0])
+    '''
+    cursor = conn.execute("""
+        SELECT COUNT (*)
+        FROM plants_diseases
+        WHERE plant_canonical_name = ?
+    """, (plant_name_scientific_canon,))
+    rows_num += int(cursor.fetchone()[0])
+    '''
+    evidence_consensus_count = rows_num
+    ###
+    if evidence_consensus_count >= 200: 
+        consensus_stars = '★★★★★'
+        consensus_tag = 'Very Extensive'
+    elif evidence_consensus_count >= 150: 
+        consensus_stars = '★★★★☆'
+        consensus_tag = 'Extensive'
+    elif evidence_consensus_count >= 100: 
+        consensus_stars = '★★★☆☆'
+        consensus_tag = 'Moderate'
+    elif evidence_consensus_count >= 50: 
+        consensus_stars = '★★☆☆☆'
+        consensus_tag = 'Sparse'
+    else: 
+        consensus_stars = '★☆☆☆☆'
+        consensus_tag = 'Very Sparse'
+    ### LLM INTRO TODO: move to augment
+    json_article_filepath = f'''{HUB_FOLDERPATH}/enhance/{plant_taxon_name_slug}.json'''
+    json_article = io.json_read(json_article_filepath, create=True)
+    regen = False
+    dispel = False
+    key = f'intro'
+    if key not in json_article: json_article[key] = ''
+    if regen: json_article[key] = ''
+    if dispel: 
+        json_article[key] = ''
+        io.json_write(json_article_filepath, json_article)
+        return
+    if json_article[key] == '':
+        plant_name_common = plant_data['names_common']['plant_name_common_preferred']
+        prompt = f'''
+            Write 50 words for an introduction to the following medicinal plant: {plant_name_scientific_reference}.
+            Start the reply with the following words: {plant_name_common}, scientifically known as {plant_name_scientific_reference}, is
+        '''.strip()
+        print(prompt)
+        # quit()
+        reply = llm.reply(prompt, model_filepath)
+        if '</think>' in reply:
+            reply = reply.split('</think>')[1].strip()
+        reply = polish.vanilla(reply)
+        json_article[key] = reply
+        io.json_write(json_article_filepath, json_article)
+    intro_text = json_article[key]
+    ### NAMES COMMON
+    hero_names_common_list = []
+    for value in plant_data['names_common']['en_labels']:
+        hero_names_common_list.append(value)
+    for value in plant_data['names_common']['en_aliases']:
+        hero_names_common_list.append(value)
+    hero_names_common_html = ' · '.join(hero_names_common_list[:2]).title()
+    hero_names_common_count = len(hero_names_common_list) - 2
+    if len(hero_names_common_list) <= 0:
+        hero_names_common_html = f'''Not available'''
+    elif len(hero_names_common_list) <= 2:
+        hero_names_common_html = f'''
+            <i lang="la">{hero_names_common_html}</i>
+        '''
+    else:
+        hero_names_common_html = f'''
+            <i lang="la">{hero_names_common_html}</i> · 
+            <a href="#common-names">{hero_names_common_count} more</a>
+        '''
     ###
     html_hero = f'''
         {sections.breadcrumbs_explorer(url_slug)}
@@ -1410,15 +1753,132 @@ def plant_listing_page_gen(plant_name):
             "
         >
             <div style="flex: 3;">
-              {h1_html}
+                {h1_html}
+                {name_scientific_accepted}
+                <p>
+                    <span style="font-weight: 700;">Scientific literature:</span>
+                    <span>{consensus_tag}</span>
+                    <span>({evidence_consensus_count} studies)</span> · 
+                    <span aria-label="{consensus_tag}">{consensus_stars}</span>
+                </p>
+                <p>
+                    {intro_text}
+                </p>
+                <dl class="quick-facts">
+                    <div>
+                        <dt>Common names</dt>
+                        <dd>{hero_names_common_html}</dd>
+                    </div>
+                </dl>
             </div>
             <div style="flex: 2;">
+                <img 
+                    src="/images/herbs/{plant_taxon_name_slug}.jpg"
+                    style="
+                        height: 100%;
+                        object-fit: cover;
+                        object-position: center;
+                    "
+                >
             </div>
         </div>
     '''
     html_article += html_hero
 
-    meta_title = f'{plant_name}'
+    ################################################################################
+    ### NAMES
+    ################################################################################
+    ### NAMES COMMON
+    if len(plant_data['names_common']['en_labels']) != 0 or len(plant_data['names_common']['en_aliases']) != 0:
+        plant_names_common_en_html = f''
+        plant_names_common_en_html = f'<h3 id="common-names">Common Names</h3>'
+        plant_names_common_en_html += f'<ul style="list-style: none;">'
+        for tag in plant_data['names_common']['en_labels']:
+            plant_names_common_en_html += f'''
+                <li class="tag">{tag}</li>
+            '''
+        for tag in plant_data['names_common']['en_aliases']:
+            plant_names_common_en_html += f'''
+                <li class="tag">{tag}</li>
+            '''
+        plant_names_common_en_html += f'</ul>'
+    else:
+        plant_names_common_en_html = ''
+    ### NAMES REGIONAL
+    plant_names_common_regional_html = ''
+    ### SPANISH
+    values_html = ''
+    for value in plant_data['names_common']['es_names']:
+        values_html += f'''
+            <li class="tag">{value}</li>
+        '''
+    if values_html != '':
+        plant_names_common_regional_html += f'<div style="display: flex; gap: 0.8rem;">'
+        plant_names_common_regional_html += f'<h4>Spanish:</h4>' 
+        plant_names_common_regional_html += f'<ul style="list-style: none;">'
+        plant_names_common_regional_html += values_html 
+        plant_names_common_regional_html += f'</ul>'
+        plant_names_common_regional_html += f'</div>'
+    ### GERMAN
+    values_html = ''
+    for value in plant_data['names_common']['de_names']:
+        values_html += f'''
+            <li class="tag">{value}</li>
+        '''
+    if values_html != '':
+        plant_names_common_regional_html += f'<div style="display: flex; gap: 0.8rem;">'
+        plant_names_common_regional_html += f'<h4>German:</h4>' 
+        plant_names_common_regional_html += f'<ul style="list-style: none;">'
+        plant_names_common_regional_html += values_html 
+        plant_names_common_regional_html += f'</ul>'
+        plant_names_common_regional_html += f'</div>'
+    ### FRENCH
+    values_html = ''
+    for value in plant_data['names_common']['fr_names']:
+        values_html += f'''
+            <li class="tag">{value}</li>
+        '''
+    if values_html != '':
+        plant_names_common_regional_html += f'<div style="display: flex; gap: 0.8rem;">'
+        plant_names_common_regional_html += f'<h4>French:</h4>' 
+        plant_names_common_regional_html += f'<ul style="list-style: none;">'
+        plant_names_common_regional_html += values_html 
+        plant_names_common_regional_html += f'</ul>'
+        plant_names_common_regional_html += f'</div>'
+    ###
+    if plant_names_common_regional_html != '':
+        plant_names_common_regional_html = f'''
+            <h3>Regional and Traditional Names</h3>
+            {plant_names_common_regional_html}
+        '''
+    ### SOURCES
+    sources_html = ''
+    if len(plant_data['names_common']['all']) != 0:
+        sources_names = []
+        for plant_item in plant_data['names_common']['all']:
+            if plant_item['source_name'] not in sources_names:
+                sources_names.append(plant_item['source_name'])
+        sources_names_text = ', '.join(sources_names)
+        sources_html = f'''
+            <p style="margin-top: 3.2rem;">
+                Sources: {sources_names_text}
+            </p>
+        '''
+    html_article += f'''
+        <section id="names-and-synonyms">
+            <h2>Names and Synonyms</h2>
+            {plant_names_common_en_html}
+            <h3>Scientific Names</h3>
+            <h4 style="margin-bottom: 1rem;">Accepted name</h4> <span class="tag">{plant_name_scientific_reference}</span>
+            {plant_names_common_regional_html}
+            {sources_html}
+        </section>
+    '''
+
+    html_article += listing_activities_gen(plant_data)
+    html_article += listing_chemicals_gen(plant_data)
+
+    meta_title = f'{plant_name_scientific_reference}'
     meta_description = f''
     canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''
     head_html = components.html_head(meta_title, meta_description, css='/styles.css', canonical=canonical_html)
@@ -1440,63 +1900,13 @@ def plant_listing_page_gen(plant_name):
     print(html_filepath)
     quit()
 
+
+
+
+
     ################################################################################
     # HERO
     ################################################################################
-    ### SCIENTIFIC NAME ACCEPTED
-    name_scientific_accepted = f'''
-        <p>
-            <i lang="la">{plant_name}</i> · 
-            <span>Accepted scientific name</span>
-        </p>
-    '''
-    ### EVIDENCE CONSENSUS
-    db_filepath = f'{g.DATA_FOLDERPATH}/qualify/observations.db'
-    conn = sqlite3.connect(db_filepath)
-    rows_num = 0
-    ###
-    plant_name_scientific_canon = plant_name
-    cursor = conn.execute("""
-        SELECT COUNT (*)
-        FROM plants_parts
-        WHERE plant_canonical_name = ?
-    """, (plant_name_scientific_canon,))
-    rows_num += int(cursor.fetchone()[0])
-    cursor = conn.execute("""
-        SELECT COUNT (*)
-        FROM plants_chemicals
-        WHERE plant_name_scientific_canon = ?
-    """, (plant_name_scientific_canon,))
-    rows_num += int(cursor.fetchone()[0])
-    cursor = conn.execute("""
-        SELECT COUNT (*)
-        FROM plants_activities
-        WHERE plant_name_scientific_canon = ?
-    """, (plant_name_scientific_canon,))
-    rows_num += int(cursor.fetchone()[0])
-    cursor = conn.execute("""
-        SELECT COUNT (*)
-        FROM plants_diseases
-        WHERE plant_canonical_name = ?
-    """, (plant_name_scientific_canon,))
-    rows_num += int(cursor.fetchone()[0])
-    evidence_consensus_count = rows_num
-    ###
-    if evidence_consensus_count >= 200: 
-        consensus_stars = '★★★★★'
-        consensus_tag = 'Very Extensive'
-    elif evidence_consensus_count >= 150: 
-        consensus_stars = '★★★★☆'
-        consensus_tag = 'Extensive'
-    elif evidence_consensus_count >= 100: 
-        consensus_stars = '★★★☆☆'
-        consensus_tag = 'Moderate'
-    elif evidence_consensus_count >= 50: 
-        consensus_stars = '★★☆☆☆'
-        consensus_tag = 'Sparse'
-    else: 
-        consensus_stars = '★☆☆☆☆'
-        consensus_tag = 'Very Sparse'
     ### FAMILY
     if plant_data['taxonomies'] != []: hero_taxonomy = plant_data['taxonomies'][0]['family'].title()
     else: hero_taxonomy = 'Not available'
@@ -1510,25 +1920,6 @@ def plant_listing_page_gen(plant_name):
     hero_plant_parts_html = ' · '.join(hero_plant_parts_list)
     hero_plant_parts_html = hero_plant_parts_html.title()
     if hero_plant_parts_html == '': hero_plant_parts_html = 'Not available'
-    ### NAMES COMMON
-    hero_names_common_list = []
-    for value in plant_data['names_common']['en_labels']:
-        hero_names_common_list.append(value)
-    for value in plant_data['names_common']['en_aliases']:
-        hero_names_common_list.append(value)
-    hero_names_common_html = ' · '.join(hero_names_common_list[:2]).title()
-    hero_names_common_count = len(hero_names_common_list) - 2
-    if len(hero_names_common_list) <= 0:
-        hero_names_common_html = f'''Not available'''
-    elif len(hero_names_common_list) <= 2:
-        hero_names_common_html = f'''
-            <i lang="la">{hero_names_common_html}</i>
-        '''
-    else:
-        hero_names_common_html = f'''
-            <i lang="la">{hero_names_common_html}</i> · 
-            <a href="#common-names">{hero_names_common_count} more</a>
-        '''
     ### SYNONYMS
     hero_synonyms_list = []
     for item in plant_synonyms:
@@ -1546,33 +1937,6 @@ def plant_listing_page_gen(plant_name):
             <i lang="la">{hero_synonyms_html}</i> · 
             <a href="#synonyms">{hero_synonyms_count} more</a>
         '''
-    ### LLM INTRO
-    json_article_filepath = f'''{g.DATA_FOLDERPATH}/enhance/{plant_taxon_name_slug}.json'''
-    json_article = io.json_read(json_article_filepath, create=True)
-    regen = False
-    dispel = False
-    key = f'intro'
-    if key not in json_article: json_article[key] = ''
-    if regen: json_article[key] = ''
-    if dispel: 
-        json_article[key] = ''
-        io.json_write(json_article_filepath, json_article)
-        return
-    if json_article[key] == '':
-        plant_name_common = plant_data['names_common']['plant_name_common_preferred']
-        prompt = f'''
-            Write 50 words for an introduction to the following medicinal plant: {plant_name}.
-            Start the reply with the following words: {plant_name_common}, scientifically known as {plant_name}, is
-        '''.strip()
-        print(prompt)
-        # quit()
-        reply = llm.reply(prompt, model_filepath)
-        if '</think>' in reply:
-            reply = reply.split('</think>')[1].strip()
-        reply = polish.vanilla(reply)
-        json_article[key] = reply
-        io.json_write(json_article_filepath, json_article)
-    intro_text = json_article[key]
     ###
     html_hero = f'''
         {sections.breadcrumbs_explorer(url_slug)}
@@ -1643,72 +2007,6 @@ def plant_listing_page_gen(plant_name):
     '''
     html_article += html_hero
 
-    ################################################################################
-    ### NAMES
-    ################################################################################
-    ### NAMES COMMON
-    if len(plant_data['names_common']['en_labels']) != 0 or len(plant_data['names_common']['en_aliases']) != 0:
-        plant_names_common_en_html = f''
-        plant_names_common_en_html = f'<h3 id="common-names">Common Names</h3>'
-        plant_names_common_en_html += f'<ul style="list-style: none;">'
-        for tag in plant_data['names_common']['en_labels']:
-            plant_names_common_en_html += f'''
-                <li class="tag">{tag}</li>
-            '''
-        for tag in plant_data['names_common']['en_aliases']:
-            plant_names_common_en_html += f'''
-                <li class="tag">{tag}</li>
-            '''
-        plant_names_common_en_html += f'</ul>'
-    else:
-        plant_names_common_en_html = ''
-    ### NAMES REGIONAL
-    plant_names_common_regional_html = ''
-    ### SPANISH
-    values_html = ''
-    for value in plant_data['names_common']['es_names']:
-        values_html += f'''
-            <li class="tag">{value}</li>
-        '''
-    if values_html != '':
-        plant_names_common_regional_html += f'<div style="display: flex; gap: 0.8rem;">'
-        plant_names_common_regional_html += f'<h4>Spanish:</h4>' 
-        plant_names_common_regional_html += f'<ul style="list-style: none;">'
-        plant_names_common_regional_html += values_html 
-        plant_names_common_regional_html += f'</ul>'
-        plant_names_common_regional_html += f'</div>'
-    ### GERMAN
-    values_html = ''
-    for value in plant_data['names_common']['de_names']:
-        values_html += f'''
-            <li class="tag">{value}</li>
-        '''
-    if values_html != '':
-        plant_names_common_regional_html += f'<div style="display: flex; gap: 0.8rem;">'
-        plant_names_common_regional_html += f'<h4>German:</h4>' 
-        plant_names_common_regional_html += f'<ul style="list-style: none;">'
-        plant_names_common_regional_html += values_html 
-        plant_names_common_regional_html += f'</ul>'
-        plant_names_common_regional_html += f'</div>'
-    ### FRENCH
-    values_html = ''
-    for value in plant_data['names_common']['fr_names']:
-        values_html += f'''
-            <li class="tag">{value}</li>
-        '''
-    if values_html != '':
-        plant_names_common_regional_html += f'<div style="display: flex; gap: 0.8rem;">'
-        plant_names_common_regional_html += f'<h4>French:</h4>' 
-        plant_names_common_regional_html += f'<ul style="list-style: none;">'
-        plant_names_common_regional_html += values_html 
-        plant_names_common_regional_html += f'</ul>'
-        plant_names_common_regional_html += f'</div>'
-    ###
-    if plant_names_common_regional_html != '':
-        plant_names_common_regional_html = f'''
-            <h3>Regional and Traditional Names</h3>
-            {plant_names_common_regional_html}
-        '''
     ### SYNONYMS
     synonyms_html = ''
     synonyms_html += f'<ul style="list-style: none;">'
@@ -1718,7 +2016,7 @@ def plant_listing_page_gen(plant_name):
             <li class="tag"><i>{value}</i></li>
         '''
     synonyms_html += f'</ul>'
-    ### NAMES COMMON
+    ###
     if len(plant_data['synonyms']) != 0:
         synonyms_html = f''
         synonyms_html = f'<h4 id="synonyms" style="margin-bottom: 1rem;">Synonyms</h4>'
@@ -1731,31 +2029,7 @@ def plant_listing_page_gen(plant_name):
         synonyms_html += f'</ul>'
     else:
         synonyms_html = ''
-    ### SOURCES
-    sources_html = ''
-    if len(plant_data['names_common']['all']) != 0:
-        sources_names = []
-        for plant_item in plant_data['names_common']['all']:
-            if plant_item['source_name'] not in sources_names:
-                sources_names.append(plant_item['source_name'])
-        sources_names_text = ', '.join(sources_names)
-        sources_html = f'''
-            <p style="margin-top: 3.2rem;">
-                Sources: {sources_names_text}
-            </p>
-        '''
     ###
-    html_article += f'''
-        <section id="names-and-synonyms">
-            <h2>Names and Synonyms</h2>
-            {plant_names_common_en_html}
-            <h3>Scientific Names</h3>
-            <h4 style="margin-bottom: 1rem;">Accepted name</h4> <span class="tag">{plant_name}</span>
-            {synonyms_html}
-            {plant_names_common_regional_html}
-            {sources_html}
-        </section>
-    '''
     if 0:
         '''
             <h3>Other Names</h3>
@@ -2109,238 +2383,6 @@ def plant_listing_page_gen(plant_name):
     ### TODO: GENERALIZE THIS FUNCTION FOR ALL SECTIONS LIKE THIS?
     html_article += section_table(plant_data, plant_name, section_name='plants_parts')
 
-    ### CHEMICALS
-    chemicals = plant_data['chemicals']
-    if chemicals != []:
-        html_table_body = f''
-        sources_html = f''
-        html_table_body += f'''<tbody>'''
-        table_chemical_num = 10
-        for item in chemicals[:table_chemical_num]:
-            chemical_name = item['chemical_canonical_name']
-            chemical_slug = polish.sluggify(chemical_name)
-            sources_num = item['sources_num']
-            sources = item['sources']
-            source = sources[0]
-            confidence = ''
-            if int(sources_num) >= 10: confidence = '★★★★★'
-            elif int(sources_num) >= 7: confidence = '★★★★☆'
-            elif int(sources_num) >= 5: confidence = '★★★☆☆'
-            elif int(sources_num) >= 3: confidence = '★★☆☆☆'
-            elif int(sources_num) >= 1: confidence = '★☆☆☆☆'
-            html_table_body += f'''
-                <tr>
-                    <th scope="row">{chemical_name}</th>
-                    <td>
-                        <a href="#sources-{chemical_slug}">
-                            {sources_num} supporting sources
-                        </a>
-                    </td>
-                    <td>
-                        <span>
-                            {confidence}
-                        </span>
-                    </td>
-                </tr>
-            '''
-            ### TODO: add this complete consensus instead of the one in the table
-            '''
-                        <span aria-label="Very high source consensus">
-                            {confidence}
-                        </span>
-                        <span>Very high</span>
-            '''
-            ### SOURCES LISTS
-            sources_html += f'''
-                <h3 id="sources-{chemical_slug}">{chemical_name}</h3>
-                <ol class="listing-sources">
-            '''
-            for source in sources[:5]:
-                sources_html += f'''
-                    <li>
-                        <cite>
-                            {source}
-                        </cite>
-                    </li>
-                '''
-            sources_html += f'''
-                </ol>
-            '''
-            if len(sources)-5 > 0:
-                sources_html += f'''
-                    <details>
-                        <summary>
-                            View {len(sources)-5} additional sources
-                        </summary>
-                        <ol class="listing-sources" start="6">
-                '''
-                for source in sources[5:]:
-                    sources_html += f'''
-                        <li>
-                            <cite>
-                                {source}
-                            </cite>
-                        </li>
-                    '''
-                sources_html += f'''
-                        </ol>
-                    </details>
-                '''
-        source_tot = 0 
-        for item in plant_parts_data[:]:
-            source_tot += int(item['sources_num'])
-        chemicals_p = []
-        for chemical in chemicals[:5]:
-            chemicals_p.append(chemical['chemical_canonical_name'])
-        chemicals_p_str = ', '.join(chemicals_p)
-        html_table_body += f'''</tbody>'''
-        html_article += f'''
-            <section>
-                <h2>
-                    Chemicals
-                </h2>
-                <p>
-                    {plant_name} has {len(plant_data['chemicals'])} reported phytochemicals identified across {source_tot} scientific publications and several other databases. The most consistently reported chemicals include {chemicals_p_str}.
-                </p>
-                <table style="margin-top: 3.2rem;">
-                    <caption style="text-align: left; margin-bottom: 0.8rem;">
-                        Chemicals reported in {plant_name}
-                    </caption>
-                    <thead>
-                        <tr>
-                            <th scope="col">Chemical</th>
-                            <th scope="col">Supporting sources</th>
-                            <th scope="col">Consensus</th>
-                        </tr>
-                    </thead>
-                    {html_table_body}
-                </table>
-            </section>
-        '''
-        ###
-        html_article += f'''
-            <section aria-labelledby="compounds-heading">
-                {sources_html}
-            </section>
-        '''
-
-    ### ACTIVITIES
-    data_key = 'activities'
-    item_key = 'activity_canonical_name'
-    section_data = plant_data[data_key]
-    if section_data != []:
-        html_table_body = f''
-        sources_html = f''
-        html_table_body += f'''<tbody>'''
-        table_num = 10
-        for item in section_data[:table_num]:
-            name = item[item_key]
-            slug = polish.sluggify(name)
-            sources_num = item['sources_num']
-            sources = item['sources']
-            source = sources[0]
-            confidence = ''
-            if int(sources_num) >= 10: confidence = '★★★★★'
-            elif int(sources_num) >= 7: confidence = '★★★★☆'
-            elif int(sources_num) >= 5: confidence = '★★★☆☆'
-            elif int(sources_num) >= 3: confidence = '★★☆☆☆'
-            elif int(sources_num) >= 1: confidence = '★☆☆☆☆'
-            html_table_body += f'''
-                <tr>
-                    <th scope="row">{name}</th>
-                    <td>
-                        <a href="#sources-{slug}">
-                            {sources_num} supporting sources
-                        </a>
-                    </td>
-                    <td>
-                        <span>
-                            {confidence}
-                        </span>
-                    </td>
-                </tr>
-            '''
-            ### TODO: add this complete consensus instead of the one in the table
-            '''
-                <span aria-label="Very high source consensus">
-                    {confidence}
-                </span>
-                <span>Very high</span>
-            '''
-            ### SOURCES LISTS
-            sources_html += f'''
-                <h3 id="sources-{slug}">{name}</h3>
-                <ol class="listing-sources">
-            '''
-            for source in sources[:5]:
-                sources_html += f'''
-                    <li>
-                        <cite>
-                            {source}
-                        </cite>
-                    </li>
-                '''
-            sources_html += f'''
-                </ol>
-            '''
-            if len(sources)-5 > 0:
-                sources_html += f'''
-                    <details>
-                        <summary>
-                            View {len(sources)-5} additional sources
-                        </summary>
-                        <ol class="listing-sources" start="6">
-                '''
-                for source in sources[5:]:
-                    sources_html += f'''
-                        <li>
-                            <cite>
-                                {source}
-                            </cite>
-                        </li>
-                    '''
-                sources_html += f'''
-                        </ol>
-                    </details>
-                '''
-        source_tot = 0 
-        for item in plant_parts_data[:]:
-            source_tot += int(item['sources_num'])
-        p = []
-        for item in section_data[:5]:
-            p.append(item[item_key])
-        p_str = ', '.join(p)
-        html_table_body += f'''</tbody>'''
-        html_article += f'''
-            <section>
-                <h2>
-                    {data_key.capitalize()}
-                </h2>
-                <p>
-                    {plant_name} has {len(plant_data[data_key])} reported activities identified across {source_tot} scientific publications and several other databases. The most consistently reported activities include {p_str}.
-                </p>
-                <table style="margin-top: 3.2rem;">
-                    <caption style="text-align: left; margin-bottom: 0.8rem;">
-                        {data_key.capitalize()} reported in {plant_name}
-                    </caption>
-                    <thead>
-                        <tr>
-                            <th scope="col">Activity</th>
-                            <th scope="col">Supporting sources</th>
-                            <th scope="col">Consensus</th>
-                        </tr>
-                    </thead>
-                    {html_table_body}
-                </table>
-            </section>
-        '''
-        ###
-        html_article += f'''
-            <section aria-labelledby="compounds-heading">
-                {sources_html}
-            </section>
-        '''
-
     ### CONDITIONS
     data_key = 'diseases'
     item_key = 'disease_canonical_name'
@@ -2613,5 +2655,5 @@ def run():
     master_items = masterize_utils.masterize_plants_get_all()
     for master_item in master_items[:]:
         print(master_item)
-        plant_listing_page_gen(master_item['plant_name_scientific_reference'])
+        plant_listing_page_gen(master_item)
 

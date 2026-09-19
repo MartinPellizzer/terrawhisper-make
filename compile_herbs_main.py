@@ -82,11 +82,6 @@ def run():
             f'{g.DATA_FOLDERPATH}/{input_foldername}/herbs/plants_parts/{plant_name_scientific_reference}.json'
         )
 
-        ### CHEMICALS
-        output_data['chemicals'] = io.json_read(
-            f'{g.DATA_FOLDERPATH}/{input_foldername}/herbs/chemicals/{plant_name_scientific_reference}.json'
-        )
-
         ### DISEASES
         output_data['diseases'] = io.json_read(
             f'{g.DATA_FOLDERPATH}/{input_foldername}/herbs/diseases/{plant_name_scientific_reference}.json'
@@ -109,14 +104,19 @@ def run():
         ###
         """
 
+        ### NAMES COMMON (NEW) -> merge with wikidata
+        output_data['names_common'] = io.json_read(
+            f'{input_folderpath}/names_common/{plant_name_scientific_reference}.json'
+        )
+
         ### ACTIVITIES
         output_data['activities'] = io.json_read(
             f'{input_folderpath}/activities/{plant_name_scientific_reference}.json'
         )
 
-        ### NAMES COMMON (NEW) -> merge with wikidata
-        output_data['names_common'] = io.json_read(
-            f'{input_folderpath}/names_common/{plant_name_scientific_reference}.json'
+        ### CHEMICALS
+        output_data['chemicals'] = io.json_read(
+            f'{input_folderpath}/chemicals/{plant_name_scientific_reference}.json'
         )
 
         io.json_write(output_filepath, output_data)

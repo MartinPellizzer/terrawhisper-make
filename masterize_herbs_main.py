@@ -62,7 +62,7 @@ def masterize_table_plants_parts_add(source_foldername, subfoldername):
     input_filenames = os.listdir(input_folderpath)
     all_data = []
     for i, input_filename in enumerate(input_filenames[:]):
-        print(f'PLANTS_ACTIVITIES - {i}/{len(input_filenames)}')
+        print(f'{i}/{len(input_filenames)}')
         input_filepath = f'{input_folderpath}/{input_filename}'
         input_data = io.json_read(input_filepath)
         for input_item in input_data:
@@ -182,13 +182,13 @@ def run():
     if 1:
         # masterize_table_plants_add(source_foldername='drduke', subfoldername='activities')
         # masterize_table_plants_add(source_foldername='drduke', subfoldername='chemicals')
-        masterize_table_plants_add(source_foldername='pubmed', subfoldername='activities')
-        # masterize_table_plants_add(source_foldername='pubmed', subfoldername='chemicals')
         # masterize_table_plants_add(source_foldername='pubmed', subfoldername='plants_parts')
         '''
         masterize_table_plants_add(source_foldername='pubmed', subfoldername='diseases')
         masterize_table_plants_add(source_foldername='pubmed', subfoldername='preparations')
         '''
+        masterize_table_plants_add(source_foldername='pubmed', subfoldername='activities')
+        masterize_table_plants_add(source_foldername='pubmed', subfoldername='chemicals')
 
     if 0:
         masterize_table_activities_add(source_foldername='drduke', subfoldername='activities')
