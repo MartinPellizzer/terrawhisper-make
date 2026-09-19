@@ -31,7 +31,7 @@ def resolve_plant_accepted(conn, name_normalized):
     wcvp_cur = conn.cursor()
     wcvp_cur.execute("""
         SELECT *
-        FROM plants_names
+        FROM wcvp_plants_names
         WHERE taxon_name_normalized = ?
     """, (name_normalized,))
     wcvp_row = wcvp_cur.fetchone()
@@ -41,7 +41,7 @@ def resolve_plant_accepted(conn, name_normalized):
         if plant_name_id != accepted_plant_name_id:
             wcvp_cur.execute("""
                 SELECT *
-                FROM plants_names
+                FROM wcvp_plants_names
                 WHERE plant_name_id = ?
             """, (accepted_plant_name_id,))
             wcvp_row = wcvp_cur.fetchone()

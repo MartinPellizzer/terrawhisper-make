@@ -12,17 +12,22 @@ from lib import io
 
 import normalize_utils
 
+HUB_FOLDERPATH = f'''{g.DATA_FOLDERPATH}/herbs'''
+
+table_name = f'drduke_activities_names'
+
 def drduke_table_activities_create():
-    source_foldername = 'drduke'
-    input_foldername = 'fetch'
-    output_foldername = 'reference'
-    input_filepath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/{input_foldername}/{source_foldername}/database/Duke-Source-CSV/ACTIVITIES.csv'
-    output_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/{output_foldername}/{source_foldername}'
+    input_filepath = f'{HUB_FOLDERPATH}/fetch/drduke/database/Duke-Source-CSV/ACTIVITIES.csv'
+    output_folderpath = f'{HUB_FOLDERPATH}/reference/'
     io.folders_recursive_gen(output_folderpath)
 
-    conn = sqlite3.connect(f"{output_folderpath}/drduke.db")
-    table_name = 'activities'
+    # source_foldername = 'drduke'
+    # output_foldername = 'reference'
+    # input_filepath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/{input_foldername}/{source_foldername}/database/Duke-Source-CSV/ACTIVITIES.csv'
+    # output_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/{output_foldername}/{source_foldername}'
+    # io.folders_recursive_gen(output_folderpath)
 
+    conn = sqlite3.connect(f"{output_folderpath}/reference.db")
     conn.executescript(f"""
         PRAGMA journal_mode = OFF;
         PRAGMA synchronous = OFF;
@@ -31,7 +36,7 @@ def drduke_table_activities_create():
         DROP TABLE IF EXISTS {table_name};
         CREATE TABLE {table_name} (
             activity_name_raw TEXT NOT NULL,
-            activity_name_raw_norm TEXT NOT NULL
+            activity_name_normalize TEXT NOT NULL
         );
     """)
 
@@ -62,7 +67,7 @@ def drduke_table_activities_create():
             if len(batch) >= BATCH_SIZE:
                 conn.executemany(f"""
                     INSERT INTO {table_name}
-                    (activity_name_raw, activity_name_raw_norm)
+                    (activity_name_raw, activity_name_normalize)
                     VALUES (?, ?)
                 """, batch)
                 processed += len(batch)
@@ -73,21 +78,21 @@ def drduke_table_activities_create():
         if batch:
             conn.executemany(f"""
                 INSERT INTO {table_name}
-                    (activity_name_raw, activity_name_raw_norm)
+                    (activity_name_raw, activity_name_normalize)
                 VALUES (?, ?)
             """, batch)
     conn.commit()
 
     # Create lookup index AFTER import
     conn.execute(f"""
-        CREATE INDEX idx_{table_name}_activity_name_raw_norm
-        ON {table_name}(activity_name_raw_norm)
+        CREATE INDEX idx_{table_name}_activity_name_normalize
+        ON {table_name}(activity_name_normalize)
     """)
 
     conn.commit()
 
     ### TEST PRINT
-    conn = sqlite3.connect(f"{output_folderpath}/drduke.db")
+    conn = sqlite3.connect(f"{output_folderpath}/reference.db")
     cursor = conn.execute(f"""
         SELECT *
         FROM {table_name}

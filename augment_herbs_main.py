@@ -11,11 +11,13 @@ from lib import polish
 
 import masterize_utils
 
+HUB_FOLDERPATH = f'''{g.DATA_FOLDERPATH}/herbs'''
+
 model_filepath = '/home/ubuntu/vault-tmp/llm/gemma-4-26B-A4B-it-UD-Q4_K_XL.gguf'
 
 def augment_traits():
-    input_folderpath = f'{g.DATA_FOLDERPATH}/derive/herbs/traits'
-    output_folderpath = f'{g.DATA_FOLDERPATH}/augment/herbs/traits'
+    input_folderpath = f'{HUB_FOLDERPATH}/derive/herbs/traits'
+    output_folderpath = f'{HUB_FOLDERPATH}/augment/herbs/traits'
     try: shutil.rmtree(output_folderpath)
     except: pass
     io.folders_recursive_gen(output_folderpath)
@@ -60,30 +62,31 @@ def augment_traits():
         ###
 
 def augment_copy(attribute):
-    input_folderpath = f'{g.DATA_FOLDERPATH}/derive/herbs/{attribute}'
-    output_folderpath = f'{g.DATA_FOLDERPATH}/augment/herbs/{attribute}'
+    input_folderpath = f'{HUB_FOLDERPATH}/derive/{attribute}'
+    output_folderpath = f'{HUB_FOLDERPATH}/augment/{attribute}'
     try: shutil.rmtree(output_folderpath)
     except: pass
     io.folders_recursive_gen(output_folderpath)
     ###
-    plants_rows = masterize_utils.masterize_plants_get_all()
-    for i, plant_row in enumerate(plants_rows):
-        print(f'{i}/{len(plants_rows)}')
-        plant_name_scientific_canon = plant_row[1]
+    master_items = masterize_utils.masterize_plants_get_all()
+    for i, master_item in enumerate(master_items):
+        print(f'{i}/{len(master_items)}')
+        plant_name_scientific_reference = master_item['plant_name_scientific_reference']
         ###
-        input_data = io.json_read(f'{g.DATA_FOLDERPATH}/derive/herbs/{attribute}/{plant_name_scientific_canon}.json')
-        output_filepath = f'{g.DATA_FOLDERPATH}/augment/herbs/{attribute}/{plant_name_scientific_canon}.json'
+        input_data = io.json_read(f'{input_folderpath}/{plant_name_scientific_reference}.json')
+        output_filepath = f'{output_folderpath}/{plant_name_scientific_reference}.json'
         io.json_write(output_filepath, input_data)
 
 def run():
     # augment_traits()
 
+    # augment_copy(attribute='synonyms')
+    # augment_copy(attribute='taxonomies')
+    # augment_copy(attribute='distribution')
+    # augment_copy(attribute='plants_parts')
+    # augment_copy(attribute='chemicals')
+    # augment_copy(attribute='diseases')
+    # augment_copy(attribute='preparations')
+
+    # augment_copy(attribute='activities')
     augment_copy(attribute='names_common')
-    augment_copy(attribute='synonyms')
-    augment_copy(attribute='taxonomies')
-    augment_copy(attribute='distribution')
-    augment_copy(attribute='plants_parts')
-    augment_copy(attribute='chemicals')
-    augment_copy(attribute='activities')
-    augment_copy(attribute='diseases')
-    augment_copy(attribute='preparations')

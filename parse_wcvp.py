@@ -14,14 +14,13 @@ import masterize_utils
 import reference_utils
 import parse_utils
 
-def wcvp_names():
-    source_foldername = 'wcvp'
-    input_foldername = 'fetch'
-    output_foldername = 'parse'
-    input_folderpath = f'{g.DATA_FOLDERPATH}/{input_foldername}/{source_foldername}'
-    output_folderpath = f'{g.DATA_FOLDERPATH}/{output_foldername}/{source_foldername}/names/json'
-    io.folders_recursive_gen(output_folderpath)
+HUB_FOLDERPATH = f'''{g.DATA_FOLDERPATH}/herbs'''
 
+def wcvp_names():
+    input_folderpath = f'{HUB_FOLDERPATH}/fetch/wcvp/wcvp'
+    output_folderpath = f'{HUB_FOLDERPATH}/parse/wcvp/wcvp/names/json'
+    io.folders_recursive_gen(output_folderpath)
+    ###
     with open(f"{input_folderpath}/wcvp_names.csv", "r", encoding="utf8", errors="ignore", newline="") as f:
         reader = csv.DictReader(f, delimiter="|")
         i = 0
@@ -31,6 +30,16 @@ def wcvp_names():
             if not taxon_name: continue
             i+= 1
             io.json_write(f'{output_folderpath}/{taxon_name}.json', row)
+
+def wcvp_names_peek(num=10):
+    input_folderpath = f'{HUB_FOLDERPATH}/parse/wcvp/wcvp/names/json'
+    input_filenames = os.listdir(input_folderpath)
+    for i, input_filename in enumerate(input_filenames[:num]):
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        input_data = io.json_read(input_filepath)
+        ###
+        print(f'{i}/{len(input_filenames)} - {input_filename}')
+        print(json.dumps(input_data, indent=4))
 
 def parse_synonyms():
     output_folderpath = f'{g.DATA_FOLDERPATH}/parse/wcvp/synonyms/json'
@@ -63,19 +72,6 @@ def parse_synonyms():
         # shutil.copy(input_filepath, output_filepath)
         # print(input_filename)
 
-def wcvp_names_peek():
-    source_foldername = 'wcvp'
-    input_foldername = 'fetch'
-    input_folderpath = f'{g.DATA_FOLDERPATH}/{input_foldername}/{source_foldername}'
-    with open(f"{input_folderpath}/wcvp_names.csv", "r", encoding="utf8", errors="ignore", newline="") as f:
-        reader = csv.DictReader(f, delimiter="|")
-        i = 0
-        conn = sqlite3.connect(f'{g.DATA_FOLDERPATH}/reference/wcvp/wcvp.db')
-        for row in reader:
-            print(f'{i}')
-            print(json.dumps(row, indent=4))
-            quit()
-
 def wcvp_distribution_peek():
     source_foldername = 'wcvp'
     input_foldername = 'fetch'
@@ -92,22 +88,26 @@ def wcvp_distribution_peek():
 def run():
     print('PARSE >> wcvp')
 
-    start = time.perf_counter()
-    # wcvp_names() ### WARNING: takes many many minutes
-    # wcvp_names_peek()
-    print(f'wcvp to_jsons() - execution time: ', time.perf_counter() - start)
+    if 1:
+        start = time.perf_counter()
+        # wcvp_names() ### WARNING: takes many many minutes
+        wcvp_names_peek()
+        print(f'wcvp to_jsons() - execution time: ', time.perf_counter() - start)
 
     ### WCVP DISTRIBUTION
-    start = time.perf_counter()
     if 0:
+        start = time.perf_counter()
         pipeline_utils.folder_copy(
             input_folderpath = f'{g.DATA_FOLDERPATH}/fetch/wcvp/distribution',
             output_folderpath = f'{g.DATA_FOLDERPATH}/parse/wcvp/distribution',
         )
-    # wcvp_distribution_peek()
-    print(f'wcvp distribution() - execution time: ', time.perf_counter() - start)
 
-    start = time.perf_counter()
-    parse_synonyms()
-    print(f'parse synonyms() - execution time: ', time.perf_counter() - start)
+    if 0:
+        # wcvp_distribution_peek()
+        print(f'wcvp distribution() - execution time: ', time.perf_counter() - start)
+
+    if 0:
+        start = time.perf_counter()
+        parse_synonyms()
+        print(f'parse synonyms() - execution time: ', time.perf_counter() - start)
 

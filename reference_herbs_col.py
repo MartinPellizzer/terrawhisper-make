@@ -14,9 +14,11 @@ from lib import io
 
 import normalize_utils
 
+HUB_FOLDERPATH = f'''{g.DATA_FOLDERPATH}/herbs'''
+
 def table_name_usage_create():
-    input_folderpath = f'{g.DATA_FOLDERPATH}/fetch/col/datasets'
-    output_folderpath = f'{g.DATA_FOLDERPATH}/reference/col'
+    input_folderpath = f'{HUB_FOLDERPATH}/fetch/col/datasets'
+    output_folderpath = f'{HUB_FOLDERPATH}/reference/col'
     io.folders_recursive_gen(output_folderpath)
 
     conn = sqlite3.connect(f"{output_folderpath}/col.db")
@@ -33,8 +35,8 @@ def table_name_usage_create():
 
         CREATE TABLE {table_name} (
             col_id TEXT NOT NULL,
-            scientific_name TEXT NOT NULL,
-            scientific_name_norm TEXT NOT NULL
+            plant_name_scientific TEXT NOT NULL,
+            plant_name_scientific_normalize TEXT NOT NULL
         );
     """)
 
@@ -78,8 +80,8 @@ def table_name_usage_create():
                     INSERT INTO {table_name}
                     (
                         col_id,
-                        scientific_name,
-                        scientific_name_norm
+                        plant_name_scientific,
+                        plant_name_scientific_normalize
                     )
                     VALUES (?, ?, ?)
                 """, batch)
@@ -98,8 +100,8 @@ def table_name_usage_create():
                 INSERT INTO {table_name}
                 (
                         col_id,
-                        scientific_name,
-                        scientific_name_norm
+                        plant_name_scientific,
+                        plant_name_scientific_normalize
                 )
                 VALUES (?, ?, ?)
             """, batch)
@@ -114,13 +116,13 @@ def table_name_usage_create():
     """)
     conn.execute(
     f"""
-        CREATE INDEX idx_{table_name}_scientific_name
-        ON {table_name}(scientific_name)
+        CREATE INDEX idx_{table_name}_plant_name_scientific
+        ON {table_name}(plant_name_scientific)
     """)
     conn.execute(
     f"""
-        CREATE INDEX idx_{table_name}_scientific_name_norm
-        ON {table_name}(scientific_name_norm)
+        CREATE INDEX idx_{table_name}_plant_name_scientific_normalize
+        ON {table_name}(plant_name_scientific_normalize)
     """)
 
     conn.commit()
@@ -135,8 +137,8 @@ def table_name_usage_create():
     conn.close()
 
 def table_vernacular_name_create():
-    input_folderpath = f'{g.DATA_FOLDERPATH}/fetch/col/datasets'
-    output_folderpath = f'{g.DATA_FOLDERPATH}/reference/col'
+    input_folderpath = f'{HUB_FOLDERPATH}/fetch/col/datasets'
+    output_folderpath = f'{HUB_FOLDERPATH}/reference/col'
     io.folders_recursive_gen(output_folderpath)
 
     conn = sqlite3.connect(f"{output_folderpath}/col.db")
@@ -268,12 +270,13 @@ def table_vernacular_name_create():
 def run():
     print(f'''HERBS >> REFERENCE >> col''')
 
-    if 0:
+    if 1:
         start = time.perf_counter()
-        # table_name_usage_create()
+        table_name_usage_create()
         print(f'reference sqlite_name_usage() - execution time: ', time.perf_counter() - start)
 
-    start = time.perf_counter()
-    table_vernacular_name_create()
-    print(f'reference sqlite_vernacular_name_create() - execution time: ', time.perf_counter() - start)
+    if 0:
+        start = time.perf_counter()
+        table_vernacular_name_create()
+        print(f'reference sqlite_vernacular_name_create() - execution time: ', time.perf_counter() - start)
 

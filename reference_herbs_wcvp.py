@@ -8,9 +8,12 @@ import re
 import unicodedata
 import time
 
-
 from lib import g
 from lib import io
+
+HUB_FOLDERPATH = f'''{g.DATA_FOLDERPATH}/herbs'''
+
+wcvp_table_name = f'wcvp_plants_names'
 
 def normalize_plant_name(name):
     # Common botanical author abbreviations (extend over time)
@@ -43,24 +46,22 @@ def normalize_plant_name(name):
     return name
 
 def wcvp_table_plants_names_create():
-    source_foldername = 'wcvp'
-    input_foldername = 'fetch'
-    output_foldername = 'reference'
-    input_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/{input_foldername}/{source_foldername}'
-    output_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/{output_foldername}/{source_foldername}'
+    input_folderpath = f'{HUB_FOLDERPATH}/fetch/wcvp/wcvp'
+    output_folderpath = f'{HUB_FOLDERPATH}/reference/wcvp'
     io.folders_recursive_gen(output_folderpath)
 
     conn = sqlite3.connect(f"{output_folderpath}/wcvp.db")
 
-    conn.executescript("""
+
+    conn.executescript(f"""
     PRAGMA journal_mode = OFF;
     PRAGMA synchronous = OFF;
     PRAGMA temp_store = MEMORY;
     PRAGMA cache_size = -500000;
 
-    DROP TABLE IF EXISTS plants_names;
+    DROP TABLE IF EXISTS {wcvp_table_name};
 
-    CREATE TABLE plants_names (
+    CREATE TABLE {wcvp_table_name} (
         plant_name_id TEXT NOT NULL,
         accepted_plant_name_id TEXT NOT NULL,
         taxon_status TEXT NOT NULL,
@@ -111,8 +112,8 @@ def wcvp_table_plants_names_create():
             ))
 
             if len(batch) >= BATCH_SIZE:
-                conn.executemany("""
-                    INSERT INTO plants_names
+                conn.executemany(f"""
+                    INSERT INTO {wcvp_table_name}
                     (
                         plant_name_id,
                         accepted_plant_name_id,
@@ -134,8 +135,8 @@ def wcvp_table_plants_names_create():
                 batch.clear()
 
         if batch:
-            conn.executemany("""
-                INSERT INTO plants_names
+            conn.executemany(f"""
+                INSERT INTO {wcvp_table_name}
                 (
                         plant_name_id,
                         accepted_plant_name_id,
@@ -151,31 +152,31 @@ def wcvp_table_plants_names_create():
     conn.commit()
 
     # Create lookup index AFTER import
-    conn.execute("""
-        CREATE INDEX idx_plants_names_plant_name_id
-        ON plants_names(plant_name_id)
+    conn.execute(f"""
+        CREATE INDEX idx_{wcvp_table_name}_plant_name_id
+        ON {wcvp_table_name}(plant_name_id)
     """)
-    conn.execute("""
-        CREATE INDEX idx_plants_names_accepted_plant_name_id
-        ON plants_names(accepted_plant_name_id)
+    conn.execute(f"""
+        CREATE INDEX idx_{wcvp_table_name}_accepted_plant_name_id
+        ON {wcvp_table_name}(accepted_plant_name_id)
     """)
-    conn.execute("""
-        CREATE INDEX idx_plants_names_taxon_name_normalized
-        ON plants_names(taxon_name_normalized)
+    conn.execute(f"""
+        CREATE INDEX idx_{wcvp_table_name}_taxon_name_normalized
+        ON {wcvp_table_name}(taxon_name_normalized)
     """)
-    conn.execute("""
-        CREATE INDEX idx_plants_names_powo_id
-        ON plants_names(powo_id)
+    conn.execute(f"""
+        CREATE INDEX idx_{wcvp_table_name}_powo_id
+        ON {wcvp_table_name}(powo_id)
     """)
-    conn.execute("""
-        CREATE INDEX idx_plants_names_ipni_id
-        ON plants_names(ipni_id)
+    conn.execute(f"""
+        CREATE INDEX idx_{wcvp_table_name}_ipni_id
+        ON {wcvp_table_name}(ipni_id)
     """)
 
     conn.commit()
-    cursor = conn.execute("""
+    cursor = conn.execute(f"""
         SELECT *
-        FROM plants_names
+        FROM {wcvp_table_name}
         LIMIT 10
     """)
     for row in cursor:
@@ -185,15 +186,11 @@ def wcvp_table_plants_names_create():
     print("Done")
 
 def peek():
-    source_foldername = 'wcvp'
-    output_foldername = 'reference'
-    output_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/{output_foldername}/{source_foldername}'
-
     ### TEST PRINT
-    conn = sqlite3.connect(f"{output_folderpath}/wcvp.db")
-    cursor = conn.execute("""
+    conn = sqlite3.connect(f"{HUB_FOLDERPATH}/reference/wcvp/wcvp.db")
+    cursor = conn.execute(f"""
         SELECT *
-        FROM plants_names
+        FROM {wcvp_table_name}
         LIMIT 10
     """)
     rows = cursor.fetchall()
@@ -217,8 +214,8 @@ def run():
     print(f'REFERENCE >> wcvp')
 
     start = time.perf_counter()
-    # wcvp_table_plants_names_create()
-    peek()
+    wcvp_table_plants_names_create()
+    # peek()
     print(f'wcvp table_plants_names_create() - execution time: ', time.perf_counter() - start)
 
 

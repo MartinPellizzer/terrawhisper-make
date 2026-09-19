@@ -8,6 +8,10 @@ from lib import g
 from lib import io
 from lib import llm
 
+HUB_FOLDERPATH = f'''{g.DATA_FOLDERPATH}/herbs'''
+output_folderpath = f'{HUB_FOLDERPATH}/observe'
+db_filepath = f'{output_folderpath}/observations.db'
+
 def observations_table_plants_synonyms_add(source_foldername):
     table_name = 'plants_synonyms'
     input_folderpath = f'{g.DATA_FOLDERPATH}/resolve/{source_foldername}/synonyms/json'
@@ -53,8 +57,8 @@ def observations_table_plants_synonyms_add(source_foldername):
 
 def observations_table_plants_names_common_add(source_foldername):
     table_name = 'plants_names_common'
-    input_folderpath = f'{g.DATA_FOLDERPATH}/resolve/{source_foldername}/names/json'
-    output_folderpath = f'{g.DATA_FOLDERPATH}/observe'
+    input_folderpath = f'{HUB_FOLDERPATH}/resolve/{source_foldername}/names/json'
+    output_folderpath = f'{HUB_FOLDERPATH}/observe'
     db_filepath = f'{output_folderpath}/observations.db'
     ###
     input_filenames = os.listdir(input_folderpath)
@@ -75,11 +79,9 @@ def observations_table_plants_names_common_add(source_foldername):
     cur.executemany(
         f"""
             INSERT OR IGNORE INTO {table_name} (
-                plant_name_scientific_canon,
-                plant_name_scientific_canon_norm,
-                plant_name_scientific_raw,
-                plant_name_scientific_raw_norm,
-                plant_name_common_raw,
+                plant_name_scientific_reference,
+                plant_name_scientific_reference_normalize,
+                plant_name_common,
                 plant_name_common_transliteration,
                 plant_name_common_language,
                 plant_name_common_preferred,
@@ -89,15 +91,13 @@ def observations_table_plants_names_common_add(source_foldername):
                 source_name,
                 source_acronym
             )
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """,
         [
             (
-                item.get("wcvp_name_taxon"),
-                item.get("wcvp_name_taxon_norm"),
-                item.get("plant_name_scientific_raw"),
-                item.get("plant_name_scientific_raw_norm"),
-                item.get("plant_name_common_raw"),
+                item.get("plant_name_scientific_reference"),
+                item.get("plant_name_scientific_reference_normalize"),
+                item.get("plant_name_common"),
                 item.get("plant_name_common_transliteration"),
                 item.get("plant_name_common_language"),
                 item.get("plant_name_common_preferred"),
@@ -234,9 +234,7 @@ def observations_table_plants_plants_parts_add(source_foldername):
 
 def observations_table_plants_activities_add(source_foldername):
     table_name = 'plants_activities'
-    input_folderpath = f'{g.DATA_FOLDERPATH}/resolve/{source_foldername}/activities/json'
-    output_folderpath = f'{g.DATA_FOLDERPATH}/observe'
-    db_filepath = f'{output_folderpath}/observations.db'
+    input_folderpath = f'{HUB_FOLDERPATH}/resolve/{source_foldername}/activities/json'
     ###
     input_filenames = os.listdir(input_folderpath)
     all_data = []
@@ -255,25 +253,23 @@ def observations_table_plants_activities_add(source_foldername):
     cur.executemany(
         f"""
             INSERT OR IGNORE INTO {table_name} (
-                plant_name_scientific_canon, 
-                plant_name_scientific_canon_norm, 
-                activity_name_canon, 
-                activity_name_canon_norm, 
+                plant_name_scientific_reference, 
+                plant_name_scientific_reference_normalize, 
+                activity_name_reference, 
+                activity_name_reference_normalize, 
                 source_name,
-                source_acronym,
-                reference_name
+                source_acronym
             )
-            VALUES (?, ?, ?, ?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?)
         """,
         [
             (
-                item.get("plant_name_scientific_canon"),
-                item.get("plant_name_scientific_canon_norm"),
-                item.get("activity_name_canon"),
-                item.get("activity_name_canon_norm"),
+                item.get("plant_name_scientific_reference"),
+                item.get("plant_name_scientific_reference_normalize"),
+                item.get("activity_name_reference"),
+                item.get("activity_name_reference_normalize"),
                 item.get("source_name"),
                 item.get("source_acronym"),
-                item.get("reference_name"),
             )
             for item in all_data
         ]
@@ -354,27 +350,25 @@ def run():
     print('OBSERVE')
 
     if 0:
-        observations_table_plants_names_common_add(source_foldername='wikidata')
-        observations_table_plants_names_common_add(source_foldername='col')
-
-    if 0:
         observations_table_plants_synonyms_add(source_foldername='wcvp')
 
 
-    if 1:
+    if 0:
         observations_table_plants_traits_add(source_foldername='gift')
 
     if 0:
         observations_table_plants_plants_parts_add(source_foldername='pubmed')
 
     if 0:
-        observations_table_plants_activities_add(source_foldername='drduke')
-        observations_table_plants_activities_add(source_foldername='pubmed')
-
-    if 0:
         observations_table_plants_chemicals_add(source_foldername='drduke')
         observations_table_plants_chemicals_add(source_foldername='pubmed')
     # test()
 
+    if 0:
+        # observations_table_plants_activities_add(source_foldername='drduke')
+        observations_table_plants_activities_add(source_foldername='pubmed')
 
+    if 1:
+        # observations_table_plants_names_common_add(source_foldername='wikidata')
+        observations_table_plants_names_common_add(source_foldername='col')
 

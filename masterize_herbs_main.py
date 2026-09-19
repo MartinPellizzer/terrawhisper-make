@@ -8,10 +8,12 @@ from lib import g
 from lib import io
 from lib import llm
 
+HUB_FOLDERPATH = f'''{g.DATA_FOLDERPATH}/herbs'''
+
 def masterize_table_plants_add(source_foldername, subfoldername):
     table_name = 'plants'
-    output_folderpath = f'{g.DATA_FOLDERPATH}/masterize'
-    input_folderpath = f'{g.DATA_FOLDERPATH}/resolve/{source_foldername}/{subfoldername}/json'
+    input_folderpath = f'{HUB_FOLDERPATH}/resolve/{source_foldername}/{subfoldername}/json'
+    output_folderpath = f'{HUB_FOLDERPATH}/masterize'
     db_filepath = f'{output_folderpath}/master.db'
     ###
     input_filenames = os.listdir(input_folderpath)
@@ -24,21 +26,23 @@ def masterize_table_plants_add(source_foldername, subfoldername):
             all_data.append(input_item)
             # print(json.dumps(input_item, indent=4))
             # quit()
+    # print(json.dumps(all_data[0], indent=4))
+    # quit()
     ###
     conn = sqlite3.connect(db_filepath)
     cur = conn.cursor()
     cur.executemany(
         f"""
             INSERT OR IGNORE INTO {table_name} (
-                plant_name_scientific_canon, 
-                plant_name_scientific_canon_norm
+                plant_name_scientific_reference, 
+                plant_name_scientific_reference_normalize
             )
             VALUES (?, ?)
         """,
         [
             (
-                item.get("plant_name_scientific_canon"),
-                item.get("plant_name_scientific_canon_norm"),
+                item.get("plant_name_scientific_reference"),
+                item.get("plant_name_scientific_reference_normalize"),
             )
             for item in all_data
         ]
@@ -176,11 +180,11 @@ def run():
     print('MASTERIZE')
 
     if 1:
-        masterize_table_plants_add(source_foldername='drduke', subfoldername='activities')
-        masterize_table_plants_add(source_foldername='drduke', subfoldername='chemicals')
+        # masterize_table_plants_add(source_foldername='drduke', subfoldername='activities')
+        # masterize_table_plants_add(source_foldername='drduke', subfoldername='chemicals')
         masterize_table_plants_add(source_foldername='pubmed', subfoldername='activities')
-        masterize_table_plants_add(source_foldername='pubmed', subfoldername='chemicals')
-        masterize_table_plants_add(source_foldername='pubmed', subfoldername='plants_parts')
+        # masterize_table_plants_add(source_foldername='pubmed', subfoldername='chemicals')
+        # masterize_table_plants_add(source_foldername='pubmed', subfoldername='plants_parts')
         '''
         masterize_table_plants_add(source_foldername='pubmed', subfoldername='diseases')
         masterize_table_plants_add(source_foldername='pubmed', subfoldername='preparations')
@@ -194,6 +198,6 @@ def run():
         masterize_table_chemicals_add(source_foldername='drduke', subfoldername='chemicals')
         masterize_table_chemicals_add(source_foldername='pubmed', subfoldername='chemicals')
 
-    if 1:
+    if 0:
         masterize_table_plants_parts_add(source_foldername='pubmed', subfoldername='plants_parts')
 

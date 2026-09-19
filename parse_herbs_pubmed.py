@@ -11,6 +11,70 @@ model_filepath = '/home/ubuntu/vault-tmp/llm/gemma-4-12b-it-Q4_K_S.gguf'
 
 import parse_utils
 
+HUB_FOLDERPATH = f'''{g.DATA_FOLDERPATH}/herbs'''
+
+def activities_extract_raw_llm():
+    input_folderpath = f'{HUB_FOLDERPATH}/fetch/pubmed/medicinal_plant/abstracts'
+    output_folderpath = f'{HUB_FOLDERPATH}/parse/pubmed/activities/raw'
+    io.folders_recursive_gen(output_folderpath)
+    # try: shutil.rmtree(output_folderpath)
+    # except: pass
+    # os.makedirs(output_folderpath, exist_ok=True)
+    ###
+    relationships_found = []
+    input_filenames = os.listdir(input_folderpath)
+    i = 0
+    for input_filename in input_filenames[i:]:
+        i += 1
+        print(f'{i}/{len(input_filenames)}')
+        output_filepath = f'{output_folderpath}/{input_filename}'
+        if os.path.exists(output_filepath): continue
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        input_data = io.json_read(input_filepath)
+        try: article_data = input_data['PubmedArticle'][0]['MedlineCitation']['Article']
+        except: pass
+        try: input_title = article_data['ArticleTitle']
+        except: input_title = ''
+        try: input_abstract = ' '.join(article_data['Abstract']['AbstractText'])
+        except: continue
+        # print(json.dumps(input_title, indent=4))
+        # print(input_title)
+        # print(input_abstract)
+        # quit()
+        content_to_extract = f'{input_title} {input_abstract}'
+        prompt = f'''
+            From the scientific study ABSTRACT below, extract all the relationships (observations) between plant name and biological activity.
+            Write each observation using this format: [plant name, biological activity]
+            RULES:
+            Always write the names of the plants in latin binomial scientific name, no common names or abbreviated names.
+            Always write the names of the biological activities of the herbs exactly how you find them in the text. By biological activities I mean things like Adaptogen, Adrenalytic, Anti-inflammatory, etc.
+            Only reply with the relationships requested.
+            If you can't find any of these relationships, reply with "NONE".
+            ABSTRACT:
+            {content_to_extract}
+        '''.strip()
+        prompt = prompt.replace('<text>', content_to_extract)
+        reply = llm.reply(prompt, model_filepath, max_tokens=512)
+        if '</think>' in reply:
+            reply = reply.split('</think>')[1].strip()
+        print('################################################################################')
+        print(reply)
+        print('########################################')
+        # print(prompt)
+        print('################################################################################')
+        if 'NONE'.strip() not in reply.strip():
+            relationships_found.append(reply)
+            output_data = {
+                'title': input_title,
+                'abstract': input_abstract,
+                'reply': reply,
+            }
+            io.json_write(
+                output_filepath,
+                output_data,
+            )
+    print(len(relationships_found))
+
 def observations_chemicals_extract_raw():
     input_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/fetch/pubmed/medicinal_plant/abstracts'
     output_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/parse/pubmed/chemicals/raw'
@@ -77,8 +141,8 @@ def observations_chemicals_extract_raw():
     # quit()
 
 def parse_compounds_extract_raw():
-    input_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/fetch/pubmed/medicinal_plant/abstracts'
-    output_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/parse/pubmed/compounds/raw'
+    input_folderpath = f'{HUB_FOLDERPATH}/fetch/pubmed/medicinal_plant/abstracts'
+    output_folderpath = f'{HUB_FOLDERPATH}/parse/pubmed/compounds/raw'
     # try: shutil.rmtree(output_folderpath)
     # except: pass
     io.folders_recursive_gen(output_folderpath)
@@ -111,71 +175,6 @@ def parse_compounds_extract_raw():
             RULES:
             Always write the names of the plants exactly how you find them in the text.
             Always write the names of the active compounds exactly how you find them in the text.
-            Only reply with the relationships requested.
-            If you can't find any of these relationships, reply with "NONE".
-            ABSTRACT:
-            {content_to_extract}
-        '''.strip()
-        prompt = prompt.replace('<text>', content_to_extract)
-        reply = llm.reply(prompt, model_filepath, max_tokens=512)
-        if '</think>' in reply:
-            reply = reply.split('</think>')[1].strip()
-        print('################################################################################')
-        print(reply)
-        print('########################################')
-        # print(prompt)
-        print('################################################################################')
-        if 'NONE'.strip() not in reply.strip():
-            relationships_found.append(reply)
-            output_data = {
-                'title': input_title,
-                'abstract': input_abstract,
-                'reply': reply,
-            }
-            io.json_write(
-                output_filepath,
-                output_data,
-            )
-        # if i > 10:
-            # quit()
-    print(len(relationships_found))
-    # quit()
-
-def observations_activities_extract_raw():
-    input_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/fetch/pubmed/medicinal_plant/abstracts'
-    output_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/parse/pubmed/activities/raw'
-    io.folders_recursive_gen(output_folderpath)
-    # try: shutil.rmtree(output_folderpath)
-    # except: pass
-    # os.makedirs(output_folderpath, exist_ok=True)
-    ###
-    relationships_found = []
-    input_filenames = os.listdir(input_folderpath)
-    i = 0
-    for input_filename in input_filenames[i:]:
-        i += 1
-        print(f'{i}/{len(input_filenames)}')
-        output_filepath = f'{output_folderpath}/{input_filename}'
-        if os.path.exists(output_filepath): continue
-        input_filepath = f'{input_folderpath}/{input_filename}'
-        input_data = io.json_read(input_filepath)
-        try: article_data = input_data['PubmedArticle'][0]['MedlineCitation']['Article']
-        except: pass
-        try: input_title = article_data['ArticleTitle']
-        except: input_title = ''
-        try: input_abstract = ' '.join(article_data['Abstract']['AbstractText'])
-        except: continue
-        # print(json.dumps(input_title, indent=4))
-        # print(input_title)
-        # print(input_abstract)
-        # quit()
-        content_to_extract = f'{input_title} {input_abstract}'
-        prompt = f'''
-            From the scientific study ABSTRACT below, extract all the relationships (observations) between plant name and biological activity.
-            Write each observation using this format: [plant name, biological activity]
-            RULES:
-            Always write the names of the plants in latin binomial scientific name, no common names or abbreviated names.
-            Always write the names of the biological activities of the herbs exactly how you find them in the text. By biological activities I mean things like Adaptogen, Adrenalytic, Anti-inflammatory, etc.
             Only reply with the relationships requested.
             If you can't find any of these relationships, reply with "NONE".
             ABSTRACT:
@@ -561,8 +560,8 @@ def observations_symptoms_extract_raw():
     # quit()
 
 def parse_conditions_extract_raw():
-    input_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/fetch/pubmed/medicinal_plant/abstracts'
-    output_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/parse/pubmed/conditions/raw'
+    input_folderpath = f'{HUB_FOLDERPATH}/fetch/pubmed/medicinal_plant/abstracts'
+    output_folderpath = f'{HUB_FOLDERPATH}/parse/pubmed/conditions/raw'
     # try: shutil.rmtree(output_folderpath)
     # except: pass
     io.folders_recursive_gen(output_folderpath)
@@ -587,12 +586,13 @@ def parse_conditions_extract_raw():
         # print(input_title)
         # print(input_abstract)
         # quit()
+            # Always write the names of the plants names exactly how you find them in the text.
         content_to_extract = f'{input_title} {input_abstract}'
         prompt = f'''
             From the scientific study ABSTRACT below, extract all the relationships (observations) between plant name and condition name treated by that plant.
             Write each observation using this format: [plant name, treats, condition name]
             RULES:
-            Always write the names of the plants names exactly how you find them in the text.
+            Always write the names of the plants in latin binomial scientific name, no common names or abbreviated names.
             Always write the names of the conditions names exactly how you find them in the text.
             Only reply with the relationships requested.
             If you can't find any of these relationships, reply with "NONE".
@@ -625,8 +625,8 @@ def parse_conditions_extract_raw():
     # quit()
 
 def observations_plants_parts_extract_raw():
-    input_folderpath = f'{g.DATA_FOLDERPATH}/fetch/pubmed/medicinal_plant/abstracts'
-    output_folderpath = f'{g.DATA_FOLDERPATH}/parse/pubmed/plants_parts/raw'
+    input_folderpath = f'{HUB_FOLDERPATH}/fetch/pubmed/medicinal_plant/abstracts'
+    output_folderpath = f'{HUB_FOLDERPATH}/parse/pubmed/plants_parts/raw'
     io.folders_recursive_gen(output_folderpath)
     # try: shutil.rmtree(output_folderpath)
     # except: pass
@@ -800,8 +800,8 @@ def observations_preparations_raw_to_json():
         io.json_write(output_filepath, output_items)
 
 def parse_preparation_form_extract_raw(foldername):
-    input_folderpath = f'{g.DATA_FOLDERPATH}/fetch/pubmed/medicinal_plant/abstracts'
-    output_folderpath = f'{g.DATA_FOLDERPATH}/parse/pubmed/{foldername}/raw'
+    input_folderpath = f'{HUB_FOLDERPATH}/fetch/pubmed/medicinal_plant/abstracts'
+    output_folderpath = f'{HUB_FOLDERPATH}/parse/pubmed/{foldername}/raw'
     io.folders_recursive_gen(output_folderpath)
     # try: shutil.rmtree(output_folderpath)
     # except: pass
@@ -915,26 +915,86 @@ def parse_raw_to_json(foldername, entity_1, entity_2):
             output_items.append(output_item)
         io.json_write(output_filepath, output_items)
 
+def activities_raw_to_json():
+    input_folderpath = f'{HUB_FOLDERPATH}/parse/pubmed/activities/raw'
+    output_folderpath = f'{HUB_FOLDERPATH}/parse/pubmed/activities/json'
+    try: shutil.rmtree(output_folderpath)
+    except: pass
+    io.folders_recursive_gen(output_folderpath)
+    ###
+    input_filenames = os.listdir(input_folderpath)
+    for i, input_filename in enumerate(input_filenames[:]):
+        print(f'{i}/{len(input_filenames)}')
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        output_filepath = f'{output_folderpath}/{input_filename}'
+        ###
+        input_data = io.json_read(input_filepath)
+        # print(json.dumps(input_data, indent=4))
+        relationships_text = input_data['reply']
+        relationships_lines = []
+        for line in relationships_text.split('\n'):
+            line = line.strip()
+            if line == '': continue
+            if line.startswith('['): line = line[1:]
+            if line.endswith(','): line = line[:-1]
+            if line.endswith(']'): line = line[:-1]
+            chunks = [chunk.strip() for chunk in line.split(', ')]
+            if len(chunks) != 2: continue
+            relationships_lines.append(chunks)
+        # print(len(relationships_lines))
+        # study_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/studies/pubmed/medicinal-plant/json'
+        study_folderpath = f'{HUB_FOLDERPATH}/fetch/pubmed/medicinal_plant/abstracts'
+        study_filepath = f'{study_folderpath}/{input_filename}'
+        study_data = io.json_read(study_filepath)
+        try: article_data = study_data['PubmedArticle'][0]['MedlineCitation']['Article']
+        except: pass
+        try: journal_title = article_data['Journal']['Title']
+        except: pass
+        # print(json.dumps(article_data, indent=4))
+        # print(json.dumps(journal_title, indent=4))
+        ###
+        output_items = []
+        for line in relationships_lines:
+            # print(line)
+            try: entity_1_val, entity_2_val = line
+            except: continue
+            # try: entity_1_val, relationship, entity_2_val = line
+            # except: continue
+            output_item = {
+                'plant_name_raw': entity_1_val,
+                # 'relationship': relationship,
+                'activity_name_raw': entity_2_val,
+                'source_name': 'pubmed',
+                'source_acronym': 'PM',
+                'source_id': input_filename.split('.')[0],
+                'source_title': journal_title,
+            }
+            output_items.append(output_item)
+        io.json_write(output_filepath, output_items)
 
 def run():
     print('parse >> pubmed')
 
-    start = time.perf_counter()
-    # observations_activities_extract_raw() ### WARNING: takes many many hours (nightly running)
-    # parse_activities_raw_to_json()
-    print(f'parse activities() - execution time: ', time.perf_counter() - start)
+    if 0:
+        start = time.perf_counter()
+        activities_extract_raw_llm() ### WARNING: takes many many hours (nightly running)
+        # activities_string_match() ### TODO
+        activities_raw_to_json()
+        print(f'parse activities() - execution time: ', time.perf_counter() - start)
 
-    if 1:
+    if 0:
         start = time.perf_counter()
         # observations_chemicals_extract_raw() ### WARNING: takes many many hours (nightly running)
         # parse_chemicals_raw_to_json()
         print(f'chemicals observations() - execution time: ', time.perf_counter() - start)
+
+    if 0:
         start = time.perf_counter()
         parse_compounds_extract_raw() ### WARNING: takes many many hours (nightly running)
         # parse_compounds_raw_to_json()
         print(f'chemicals observations() - execution time: ', time.perf_counter() - start)
 
-    if 1:
+    if 0:
         start = time.perf_counter()
         # observations_diseases_extract_raw() ### WARNING: takes many many hours (nightly running)
         # observations_diseases_raw_to_json()
@@ -945,19 +1005,21 @@ def run():
         print(f'observations symptoms() - execution time: ', time.perf_counter() - start)
         ###
         start = time.perf_counter()
-        # parse_conditions_extract_raw() ### WARNING: takes many many hours (nightly running)
+        parse_conditions_extract_raw() ### WARNING: takes many many hours (nightly running)
         print(f'observations symptoms() - execution time: ', time.perf_counter() - start)
 
-    start = time.perf_counter()
-    # observations_plants_parts_extract_raw() ### WARNING: takes many many hours (nightly running)
-    parse_plants_parts_raw_to_json()
-    print(f'observations plants_parts() - execution time: ', time.perf_counter() - start)
+    if 0:
+        start = time.perf_counter()
+        observations_plants_parts_extract_raw() ### WARNING: takes many many hours (nightly running)
+        # parse_plants_parts_raw_to_json()
+        print(f'observations plants_parts() - execution time: ', time.perf_counter() - start)
 
-    start = time.perf_counter()
-    foldername = 'preparation_form'
-    entity_1 = 'plant_name'
-    entity_2 = 'preparation_name'
-    # parse_preparation_form_extract_raw(foldername) ### WARNING: takes many many hours (nightly running)
-    # parse_raw_to_json(foldername, entity_1, entity_2)
-    print(f'observations plants_parts() - execution time: ', time.perf_counter() - start)
+    if 1:
+        start = time.perf_counter()
+        foldername = 'preparation_form'
+        entity_1 = 'plant_name'
+        entity_2 = 'preparation_name'
+        parse_preparation_form_extract_raw(foldername) ### WARNING: takes many many hours (nightly running)
+        # parse_raw_to_json(foldername, entity_1, entity_2)
+        print(f'observations plants_parts() - execution time: ', time.perf_counter() - start)
 

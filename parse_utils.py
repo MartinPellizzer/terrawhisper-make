@@ -64,9 +64,9 @@ def chemical_create(
 
 
 def common_name_create(
-    plant_name_scientific_raw,
-    plant_name_scientific_norm,
-    plant_name_common_raw,
+    plant_name_scientific_reference,
+    plant_name_scientific_reference_normalize,
+    plant_name_common,
     plant_name_common_transliteration,
     plant_name_common_language,
     plant_name_common_preferred,
@@ -77,9 +77,9 @@ def common_name_create(
     source_acronym,
 ):
     item = {
-        'plant_name_scientific_raw': plant_name_scientific_raw,
-        'plant_name_scientific_norm': plant_name_scientific_norm,
-        'plant_name_common_raw': plant_name_common_raw,
+        'plant_name_scientific_reference': plant_name_scientific_reference,
+        'plant_name_scientific_reference_normalize': plant_name_scientific_reference_normalize,
+        'plant_name_common': plant_name_common,
         'plant_name_common_transliteration': plant_name_common_transliteration,
         'plant_name_common_language': plant_name_common_language,
         'plant_name_common_preferred': plant_name_common_preferred,

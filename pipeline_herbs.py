@@ -41,32 +41,95 @@ get chemicals classes from chemical and pubchem
 TRY DATASET (identification layer)
 '''
 
+"""
+PROCEDURE:
+
+Follow this procedure in order to not get errors:
+
+1. parse pubmed
+2. create masterize from pubmed
+3. parse all other sources
+
+Parse all other sources after creating masterize from pubmed because parsing other sources requires master tables
+"""
+
+if 0:
+    # import reference_herbs_wcvp
+    import reference_herbs_drduke
+    # import reference_herbs_col
+    # reference_herbs_wcvp.run()
+    # reference_herbs_drduke.run()
+    # reference_herbs_col.run()
+
+if 0:
+    # import parse_herbs_pubmed
+    import parse_herbs_col
+    # parse_herbs_pubmed.run()
+    parse_herbs_col.run()
+
+if 0:
+    import normalize_herbs_main
+    normalize_herbs_main.run()
+
+if 0:
+    import resolve_herbs_main
+    resolve_herbs_main.run()
+
+if 0:
+    import masterize_herbs_init
+    import masterize_herbs_main
+    masterize_herbs_init.run()
+    masterize_herbs_main.run()
+
+if 0:
+    import observe_herbs_init
+    import observe_herbs_main
+    observe_herbs_init.run()
+    observe_herbs_main.run()
+
+if 0:
+    import derive_herbs_main
+    derive_herbs_main.run()
+
+if 0:
+    import augment_herbs_main
+    augment_herbs_main.run()
+
+if 0:
+    import compile_herbs_main
+    compile_herbs_main.run()
+
+if 1:
+    import render_herbs_main
+    render_herbs_main.run()
+
+quit()
+
 if 0:
     import parse_wcvp
     import parse_ipni
     import parse_powo
     import parse_wikidata
-    import parse_pubmed
     import parse_drduke
 
-    # parse_wcvp.run()
+    parse_wcvp.run()
     # parse_ipni.run()
     # parse_powo.run()
     # parse_wikidata.run()
-    parse_pubmed.run()
     # parse_drduke.run()
 
 if 0:
-    import normalize_wcvp
-    import normalize_powo
-    import normalize_wikidata
-    import normalize_pubmed
-    import normalize_drduke
+    # import normalize_wcvp
+    # import normalize_powo
+    # import normalize_wikidata
+    # import normalize_pubmed
+    # import normalize_drduke
+    import normalize_herbs_main
 
     # normalize_wcvp.run()
     # normalize_powo.run()
     # normalize_wikidata.run()
-    normalize_pubmed.run()
+    normalize_herbs_main.run()
     # normalize_drduke.run()
 
 if 0:
@@ -110,14 +173,14 @@ if 0:
 if 0:
     import qualify
 
-if 1:
+if 0:
     import derive
 
-if 1:
+if 0:
     import compile_main
     compile_main.run()
 
-if 1:
+if 0:
     import render
 
 if 0:

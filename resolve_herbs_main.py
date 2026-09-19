@@ -10,6 +10,8 @@ from lib import llm
 
 import resolve_utils
 
+HUB_FOLDERPATH = f'''{g.DATA_FOLDERPATH}/herbs'''
+
 def resolve_plants_parts(source_foldername):
     input_folderpath = f'{g.DATA_FOLDERPATH}/normalize/{source_foldername}/plants_parts/json'
     output_folderpath = f'{g.DATA_FOLDERPATH}/resolve/{source_foldername}/plants_parts/json'
@@ -95,16 +97,17 @@ def resolve_plants_parts(source_foldername):
     wcvp_conn.close()
 
 def resolve_activities(source_foldername):
-    input_folderpath = f'{g.DATA_FOLDERPATH}/normalize/{source_foldername}/activities/json'
-    output_folderpath = f'{g.DATA_FOLDERPATH}/resolve/{source_foldername}/activities/json'
+    input_folderpath = f'{HUB_FOLDERPATH}/normalize/{source_foldername}/activities/json'
+    output_folderpath = f'{HUB_FOLDERPATH}/resolve/{source_foldername}/activities/json'
     try: shutil.rmtree(output_folderpath)
     except: pass
     os.makedirs(output_folderpath, exist_ok=True)
     ###
-    wcvp_folderpath = f'{g.DATA_FOLDERPATH}/reference/wcvp/wcvp.db'
-    drduke_folderpath = f'{g.DATA_FOLDERPATH}/reference/drduke/drduke.db'
-    wcvp_conn = sqlite3.connect(wcvp_folderpath)
-    drduke_conn = sqlite3.connect(drduke_folderpath)
+    reference_wcvp_folderpath = f'{HUB_FOLDERPATH}/reference/wcvp/wcvp.db'
+    reference_drduke_folderpath = f'{HUB_FOLDERPATH}/reference/reference.db'
+    reference_wcvp_conn = sqlite3.connect(reference_wcvp_folderpath)
+    reference_drduke_conn = sqlite3.connect(reference_drduke_folderpath)
+    reference_drduke_conn.row_factory = sqlite3.Row
     ###
     input_filenames = os.listdir(input_folderpath)
     for i, input_filename in enumerate(input_filenames[:]):
@@ -115,35 +118,45 @@ def resolve_activities(source_foldername):
         ###
         input_data = io.json_read(input_filepath)
         resolved_data = []
-        for input_item in input_data:
+        for input_item in input_data[:]:
             # print(json.dumps(input_item, indent=True))
             # quit()
-            plant_name_raw_norm = input_item['plant_name_raw_norm']
-            activity_name_raw_norm = input_item['activity_name_raw_norm']
-            # if chemical_name_normalized == 'null': continue
+            plant_name_normalize = input_item['plant_name_normalize']
+            activity_name_normalize = input_item['activity_name_normalize']
+            # print(plant_name_normalize, '->', activity_name_normalize)
+            # continue
+            # quit()
             ### RESOLVE PLANT (WCVP)
-            wcvp_row = resolve_utils.resolve_plant_accepted(wcvp_conn, plant_name_raw_norm)
+            wcvp_row = resolve_utils.resolve_plant_accepted(reference_wcvp_conn, plant_name_normalize)
             ### RESOLVE ACTIVITY (DRDUKE)
-            drduke_cur = drduke_conn.cursor()
+            drduke_cur = reference_drduke_conn.cursor()
             drduke_cur.execute("""
                 SELECT *
-                FROM activities
-                WHERE activity_name_raw_norm = ?
-            """, (activity_name_raw_norm,))
-            drduke_row = drduke_cur.fetchone()
+                FROM drduke_activities_names
+                WHERE activity_name_normalize = ?
+            """, (activity_name_normalize,))
+            # drduke_row = drduke_cur.fetchone()
+            drduke_rows = drduke_cur.fetchall()
+            drduke_items = [dict(row) for row in drduke_rows]
+            # if drduke_items != []:
+                # print(drduke_items)
+                # quit()
+            # continue
             ###
-            if wcvp_row and drduke_row:
-                input_item['plant_name_scientific_canon'] = wcvp_row[3]
-                input_item['plant_name_scientific_canon_norm'] = wcvp_row[4]
-                input_item['activity_name_canon'] = drduke_row[0]
-                input_item['activity_name_canon_norm'] = drduke_row[1]
+            if wcvp_row and drduke_items != []:
+                drduke_item = drduke_items[0]
+                input_item['plant_name_scientific_reference'] = wcvp_row[3]
+                input_item['plant_name_scientific_reference_normalize'] = wcvp_row[4]
+                input_item['activity_name_reference'] = drduke_item['activity_name_raw']
+                input_item['activity_name_reference_normalize'] = drduke_item['activity_name_normalize']
                 resolved_data.append(input_item)
                 # print(json.dumps(input_item, indent=True))
                 # quit()
+            # else:
         if resolved_data != []:
             io.json_write(output_filepath, resolved_data)
-    wcvp_conn.close()
-    drduke_conn.close()
+    reference_wcvp_conn.close()
+    reference_drduke_conn.close()
 
 def resolve_chemicals(source_foldername):
     input_folderpath = f'{g.DATA_FOLDERPATH}/normalize/{source_foldername}/chemicals/json'
@@ -252,14 +265,15 @@ def resolve_synonyms(source_foldername):
     wcvp_conn.close()
 
 def resolve_common_names(source_foldername):
-    input_folderpath = f'{g.DATA_FOLDERPATH}/normalize/{source_foldername}/names/json'
-    output_folderpath = f'{g.DATA_FOLDERPATH}/resolve/{source_foldername}/names/json'
+    input_folderpath = f'{HUB_FOLDERPATH}/normalize/{source_foldername}/names/json'
+    output_folderpath = f'{HUB_FOLDERPATH}/resolve/{source_foldername}/names/json'
     try: shutil.rmtree(output_folderpath)
     except: pass
     os.makedirs(output_folderpath, exist_ok=True)
     ###
-    wcvp_folderpath = f'{g.DATA_FOLDERPATH}/reference/wcvp/wcvp.db'
+    wcvp_folderpath = f'{HUB_FOLDERPATH}/reference/wcvp/wcvp.db'
     wcvp_conn = sqlite3.connect(wcvp_folderpath)
+    wcvp_conn.row_factory = sqlite3.Row
     ###
     input_filenames = os.listdir(input_folderpath)
     # print(input_filenames)
@@ -274,21 +288,24 @@ def resolve_common_names(source_foldername):
         for input_item in input_data:
             # print(json.dumps(input_item, indent=4))
             # quit()
-            plant_name_scientific_norm = input_item['plant_name_scientific_norm']
+            plant_name_scientific_reference_normalize = input_item['plant_name_scientific_reference_normalize']
             ### RESOLVE PLANT NAME (WCVP)
-            wcvp_row = resolve_utils.resolve_plant_accepted(wcvp_conn, plant_name_scientific_norm)
+            wcvp_row = resolve_utils.resolve_plant_accepted(wcvp_conn, plant_name_scientific_reference_normalize)
             ###
             if wcvp_row:
-                # print(wcvp_name_row)
+                wcvp_item = dict(wcvp_row)
+                # print(wcvp_item)
                 # quit()
-                input_item['wcvp_name_taxon'] = wcvp_row[3]
-                input_item['wcvp_name_taxon_norm'] = wcvp_row[4]
+                input_item['wcvp_name_taxon'] = wcvp_row['taxon_name']
+                input_item['wcvp_name_taxon_normalized'] = wcvp_row['taxon_name_normalized']
                 resolved_data.append(input_item)
                 # print(json.dumps(input_item, indent=4))
                 # quit()
         if resolved_data != []:
             io.json_write(output_filepath, resolved_data)
     wcvp_conn.close()
+    print(json.dumps(resolved_data[0], indent=4))
+    # quit()
 
 def resolve_traits(source_foldername):
     input_folderpath = f'{g.DATA_FOLDERPATH}/normalize/{source_foldername}/traits/json'
@@ -339,12 +356,6 @@ def run():
 
     if 0:
         start = time.perf_counter()
-        resolve_common_names(source_foldername='wikidata')
-        resolve_common_names(source_foldername='col')
-        print(f'resolve common_names() - execution time: ', time.perf_counter() - start)
-
-    if 1:
-        start = time.perf_counter()
         resolve_traits(source_foldername='gift')
         print(f'resolve traits() - execution time: ', time.perf_counter() - start)
 
@@ -355,13 +366,19 @@ def run():
 
     if 0:
         start = time.perf_counter()
-        resolve_activities(source_foldername='drduke')
-        resolve_activities(source_foldername='pubmed')
+        resolve_chemicals(source_foldername='drduke')
+        resolve_chemicals(source_foldername='pubmed')
         print(f'resolve chemicals() - execution time: ', time.perf_counter() - start)
 
     if 0:
         start = time.perf_counter()
-        resolve_chemicals(source_foldername='drduke')
-        resolve_chemicals(source_foldername='pubmed')
-        print(f'resolve chemicals() - execution time: ', time.perf_counter() - start)
+        # resolve_activities(source_foldername='drduke')
+        resolve_activities(source_foldername='pubmed')
+        print(f'resolve activiries() - execution time: ', time.perf_counter() - start)
+
+    if 1:
+        start = time.perf_counter()
+        # resolve_common_names(source_foldername='wikidata')
+        resolve_common_names(source_foldername='col')
+        print(f'resolve common_names() - execution time: ', time.perf_counter() - start)
 

@@ -7,11 +7,14 @@ import sqlite3
 from lib import g
 from lib import io
 
+HUB_FOLDERPATH = f'''{g.DATA_FOLDERPATH}/herbs'''
+
 def master_table_plants_create(regen=False):
-    output_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/masterize'
-    db_filepath = f'{output_folderpath}/master.db'
     table_name = 'plants'
+    output_folderpath = f'{HUB_FOLDERPATH}/masterize'
+    db_filepath = f'{output_folderpath}/master.db'
     ###
+    os.makedirs(output_folderpath, exist_ok=True)
     conn = sqlite3.connect(db_filepath)
     cur = conn.cursor()
     if regen:
@@ -19,16 +22,16 @@ def master_table_plants_create(regen=False):
     cur.execute(f"""
         CREATE TABLE IF NOT EXISTS {table_name} (
             id INTEGER PRIMARY KEY,
-            plant_name_scientific_canon TEXT NOT NULL UNIQUE,
-            plant_name_scientific_canon_norm TEXT NOT NULL UNIQUE
+            plant_name_scientific_reference TEXT NOT NULL UNIQUE,
+            plant_name_scientific_reference_normalize TEXT NOT NULL UNIQUE
         );
     """)
     conn.execute("PRAGMA journal_mode = WAL;")
     conn.execute("PRAGMA synchronous = OFF;")
     conn.execute("PRAGMA temp_store = MEMORY;")
     ###
-    cur.execute(f"CREATE INDEX IF NOT EXISTS idx_{table_name}_canonical_name ON {table_name}(plant_name_scientific_canon)")
-    cur.execute(f"CREATE INDEX IF NOT EXISTS idx_{table_name}_canonical_name_normalized ON {table_name}(plant_name_scientific_canon_norm)")
+    cur.execute(f"CREATE INDEX IF NOT EXISTS idx_{table_name}_name_scientific_reference ON {table_name}(plant_name_scientific_reference)")
+    cur.execute(f"CREATE INDEX IF NOT EXISTS idx_{table_name}_name_scientific_reference_normalize ON {table_name}(plant_name_scientific_reference_normalize)")
     conn.commit()
     conn.close()
 
@@ -142,7 +145,7 @@ def test():
 
 def run():
     master_table_plants_create(regen=True)
-    master_table_plants_parts_create(regen=True)
+    # master_table_plants_parts_create(regen=True)
     # master_table_activities_create(regen=True)
     # master_table_chemicals_create(regen=True)
 
