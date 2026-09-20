@@ -189,6 +189,7 @@ def run():
         '''
         masterize_table_plants_add(source_foldername='pubmed', subfoldername='activities')
         masterize_table_plants_add(source_foldername='pubmed', subfoldername='chemicals')
+        masterize_table_plants_add(source_foldername='pubmed', subfoldername='conditions')
 
     if 0:
         masterize_table_activities_add(source_foldername='drduke', subfoldername='activities')

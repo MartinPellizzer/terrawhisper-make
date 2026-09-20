@@ -275,7 +275,7 @@ def run():
         table_name_usage_create()
         print(f'reference sqlite_name_usage() - execution time: ', time.perf_counter() - start)
 
-    if 0:
+    if 1:
         start = time.perf_counter()
         table_vernacular_name_create()
         print(f'reference sqlite_vernacular_name_create() - execution time: ', time.perf_counter() - start)

@@ -104,7 +104,7 @@ def resolve_activities(source_foldername):
     os.makedirs(output_folderpath, exist_ok=True)
     ###
     reference_wcvp_folderpath = f'{HUB_FOLDERPATH}/reference/wcvp/wcvp.db'
-    reference_drduke_folderpath = f'{HUB_FOLDERPATH}/reference/reference.db'
+    reference_drduke_folderpath = f'{HUB_FOLDERPATH}/reference/drduke/drduke.db'
     reference_wcvp_conn = sqlite3.connect(reference_wcvp_folderpath)
     reference_drduke_conn = sqlite3.connect(reference_drduke_folderpath)
     reference_drduke_conn.row_factory = sqlite3.Row
@@ -220,7 +220,70 @@ def resolve_chemicals(source_foldername):
     wcvp_conn.close()
     pubchem_conn.close()
     print(json.dumps(resolved_data[0], indent=True))
-    quit()
+    # quit()
+
+def resolve_conditions(source_foldername):
+    input_folderpath = f'{HUB_FOLDERPATH}/normalize/{source_foldername}/conditions/json'
+    output_folderpath = f'{HUB_FOLDERPATH}/resolve/{source_foldername}/conditions/json'
+    try: shutil.rmtree(output_folderpath)
+    except: pass
+    os.makedirs(output_folderpath, exist_ok=True)
+    ###
+    wcvp_folderpath = f'{HUB_FOLDERPATH}/reference/wcvp/wcvp.db'
+    wcvp_conn = sqlite3.connect(wcvp_folderpath)
+    wcvp_conn.row_factory = sqlite3.Row
+    mesh_folderpath = f'{HUB_FOLDERPATH}/reference/mesh/mesh.db'
+    mesh_conn = sqlite3.connect(mesh_folderpath)
+    mesh_conn.row_factory = sqlite3.Row
+    ###
+    input_filenames = os.listdir(input_folderpath)
+    for i, input_filename in enumerate(input_filenames[:]):
+        print(f'{i}/{len(input_filenames)}')
+        output_filepath = f'{output_folderpath}/{input_filename}'
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        if os.path.exists(output_filepath): continue
+        ###
+        input_data = io.json_read(input_filepath)
+        resolved_data = []
+        for input_item in input_data:
+            # print(json.dumps(input_item, indent=4))
+            # quit()
+            resolved_item = input_item
+            plant_name_raw_normalize = input_item['plant_name_raw_normalize']
+            condition_name_raw_normalize = input_item['condition_name_raw_normalize']
+            if condition_name_raw_normalize == 'null':
+                continue
+            ### RESOLVE PLANT (WCVP)
+            wcvp_row = resolve_utils.resolve_plant_accepted(wcvp_conn, plant_name_raw_normalize)
+            ### RESOLVE DISEASE (MESH)
+            mesh_cur = mesh_conn.cursor()
+            mesh_cur.execute("""
+                SELECT *
+                FROM diseases
+                WHERE disease_name_normalize = ?
+            """, (condition_name_raw_normalize,))
+            mesh_rows = mesh_cur.fetchall()
+            mesh_items = [dict(row) for row in mesh_rows]
+            ###
+            if wcvp_row and mesh_items:
+                wcvp_item = dict(wcvp_row)
+                mesh_item = mesh_items[0]
+                # print(json.dumps(wcvp_item, indent=4))
+                # print(json.dumps(pubchem_item, indent=4))
+                # quit()
+                input_item['plant_name_scientific_reference'] = wcvp_item['taxon_name']
+                input_item['plant_name_scientific_reference_normalize'] = wcvp_item['taxon_name_normalized']
+                input_item['condition_name_reference'] = mesh_item['disease_name']
+                input_item['condition_name_reference_normalize'] = mesh_item['disease_name_normalize']
+                resolved_data.append(input_item)
+                # print(json.dumps(input_item, indent=True))
+                # quit()
+        if resolved_data != []:
+            io.json_write(output_filepath, resolved_data)
+    wcvp_conn.close()
+    mesh_conn.close()
+    print(json.dumps(resolved_data[0], indent=True))
+    # quit()
 
 def resolve_synonyms(source_foldername):
     input_folderpath = f'{g.DATA_FOLDERPATH}/normalize/{source_foldername}/synonyms/json'
@@ -394,4 +457,9 @@ def run():
         start = time.perf_counter()
         # resolve_chemicals(source_foldername='drduke')
         resolve_chemicals(source_foldername='pubmed')
+        print(f'resolve chemicals() - execution time: ', time.perf_counter() - start)
+
+    if 1:
+        start = time.perf_counter()
+        resolve_conditions(source_foldername='pubmed')
         print(f'resolve chemicals() - execution time: ', time.perf_counter() - start)

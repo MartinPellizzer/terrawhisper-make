@@ -503,10 +503,54 @@ def chemicals_gen():
         io.json_write(output_filepath, output_items)
     print(json.dumps(output_items, indent=4))
 
+def conditions_gen():
+    master_plants_rows = masterize_utils.masterize_plants_get_all()
+    for i, master_plant_row in enumerate(master_plants_rows):
+        master_item = master_plant_row
+        print(f'DERIVE CONDITIONS - {i}/{len(master_plants_rows)}')
+        conn = sqlite3.connect(db_filepath)
+        conn.row_factory = sqlite3.Row
+        cursor = conn.execute("""
+            SELECT
+                plant_name_scientific_reference,
+                condition_name_reference,
+                COUNT(*) AS sources_num,
+                json_group_array(source_name) AS sources
+            FROM (
+                SELECT DISTINCT
+                    plant_name_scientific_reference,
+                    condition_name_reference,
+                    source_name
+                FROM plants_conditions
+                WHERE plant_name_scientific_reference = ?
+            )
+            GROUP BY
+                plant_name_scientific_reference,
+                condition_name_reference
+            ORDER BY sources_num DESC;
+        """, (master_item['plant_name_scientific_reference'],))
+        rows = cursor.fetchall()
+        conn.close()
+        ###
+        output_items = []
+        for row in rows:
+            output_item = {
+                'plant_name_scientific_reference': master_plant_row['plant_name_scientific_reference'],
+                'condition_name_reference': row['condition_name_reference'],
+                'sources_num': row[2],
+                'sources': json.loads(row[3]),
+            }
+            output_items.append(output_item)
+        output_filepath = f'''{HUB_FOLDERPATH}/{output_foldername}/conditions/{master_plant_row['plant_name_scientific_reference']}.json'''
+        io.folder_create_from_filepath(output_filepath)
+        io.json_write(output_filepath, output_items)
+    print(json.dumps(output_item, indent=4))
+
 def run():
-    activities_gen()
     names_common_gen()
+    activities_gen()
     chemicals_gen()
+    conditions_gen()
 
     ### SYNONYMS
     if 0:

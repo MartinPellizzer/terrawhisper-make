@@ -12,6 +12,8 @@ from lib import io
 
 import normalize_utils
 
+HUB_FOLDERPATH = f'''{g.DATA_FOLDERPATH}/herbs'''
+
 def mesh_table_diseases_create():
     import sqlite3
     import time
@@ -19,10 +21,8 @@ def mesh_table_diseases_create():
     import gzip
 
     source_foldername = 'mesh'
-    input_foldername = 'fetch'
-    output_foldername = 'reference'
-    input_filepath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/{input_foldername}/{source_foldername}/database/desc2026.gz'
-    output_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/{output_foldername}/{source_foldername}'
+    input_filepath = f'{HUB_FOLDERPATH}/fetch/mesh/datasets/desc2026.gz'
+    output_folderpath = f'{HUB_FOLDERPATH}/reference/mesh'
     io.folders_recursive_gen(output_folderpath)
 
     conn = sqlite3.connect(f"{output_folderpath}/mesh.db")
@@ -36,7 +36,7 @@ def mesh_table_diseases_create():
         CREATE TABLE {table_name} (
             mesh_id TEXT NOT NULL,
             disease_name TEXT NOT NULL,
-            disease_name_normalized TEXT NOT NULL
+            disease_name_normalize TEXT NOT NULL
         );
     """)
     conn.commit()
@@ -46,9 +46,17 @@ def mesh_table_diseases_create():
     processed = 0
     start = time.time()
     conn.execute("BEGIN")
+    '''
     with gzip.open(
         input_filepath,
         "rt",
+        encoding="utf8",
+        errors="ignore"
+    ) as f:
+    '''
+    with open(
+        input_filepath,
+        "r",
         encoding="utf8",
         errors="ignore"
     ) as f:
@@ -86,7 +94,7 @@ def mesh_table_diseases_create():
                     (
                         mesh_id,
                         disease_name,
-                        disease_name_normalized
+                        disease_name_normalize
                     )
                     VALUES (?, ?, ?)
                 """, batch)
@@ -105,7 +113,7 @@ def mesh_table_diseases_create():
             (
                 mesh_id,
                 disease_name,
-                disease_name_normalized
+                disease_name_normalize
             )
             VALUES (?, ?, ?)
         """, batch)
@@ -113,8 +121,8 @@ def mesh_table_diseases_create():
 
     # Create lookup index AFTER import
     conn.execute(f"""
-        CREATE INDEX idx_{table_name}_disease_name_normalized
-        ON {table_name}(disease_name_normalized)
+        CREATE INDEX idx_{table_name}_disease_name_normalize
+        ON {table_name}(disease_name_normalize)
     """)
     conn.commit()
 
@@ -123,10 +131,21 @@ def mesh_table_diseases_create():
     cursor = conn.execute(f"""
         SELECT *
         FROM {table_name}
-        LIMIT 100
+        LIMIT 10
     """)
-    for row in cursor:
-        print(row)
+    rows = cursor.fetchall()
+    # for row in cursor:
+        # print(row)
+
+    from tabulate import tabulate
+    print(tabulate(rows, 
+        headers=[
+            "MESH_ID", 
+            "DISEASE_NAME", 
+            "DISEASE_NAME_NORMALIZE", 
+        ], 
+        tablefmt="plain")
+    )
 
     print("Done")
 

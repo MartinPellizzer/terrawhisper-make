@@ -18,8 +18,9 @@ table_name = f'drduke_activities_names'
 
 def drduke_table_activities_create():
     input_filepath = f'{HUB_FOLDERPATH}/fetch/drduke/database/Duke-Source-CSV/ACTIVITIES.csv'
-    output_folderpath = f'{HUB_FOLDERPATH}/reference/'
+    output_folderpath = f'{HUB_FOLDERPATH}/reference/drduke'
     io.folders_recursive_gen(output_folderpath)
+    database_filepath = f"{output_folderpath}/drduke.db"
 
     # source_foldername = 'drduke'
     # output_foldername = 'reference'
@@ -27,7 +28,7 @@ def drduke_table_activities_create():
     # output_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/{output_foldername}/{source_foldername}'
     # io.folders_recursive_gen(output_folderpath)
 
-    conn = sqlite3.connect(f"{output_folderpath}/reference.db")
+    conn = sqlite3.connect(database_filepath)
     conn.executescript(f"""
         PRAGMA journal_mode = OFF;
         PRAGMA synchronous = OFF;
@@ -92,11 +93,11 @@ def drduke_table_activities_create():
     conn.commit()
 
     ### TEST PRINT
-    conn = sqlite3.connect(f"{output_folderpath}/reference.db")
+    conn = sqlite3.connect(database_filepath)
     cursor = conn.execute(f"""
         SELECT *
         FROM {table_name}
-        LIMIT 100
+        LIMIT 10
     """)
     for row in cursor:
         print(row)
