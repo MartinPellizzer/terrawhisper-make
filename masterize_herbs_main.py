@@ -182,7 +182,6 @@ def run():
     if 1:
         # masterize_table_plants_add(source_foldername='drduke', subfoldername='activities')
         # masterize_table_plants_add(source_foldername='drduke', subfoldername='chemicals')
-        # masterize_table_plants_add(source_foldername='pubmed', subfoldername='plants_parts')
         '''
         masterize_table_plants_add(source_foldername='pubmed', subfoldername='diseases')
         masterize_table_plants_add(source_foldername='pubmed', subfoldername='preparations')
@@ -190,6 +189,7 @@ def run():
         masterize_table_plants_add(source_foldername='pubmed', subfoldername='activities')
         masterize_table_plants_add(source_foldername='pubmed', subfoldername='chemicals')
         masterize_table_plants_add(source_foldername='pubmed', subfoldername='conditions')
+        masterize_table_plants_add(source_foldername='pubmed', subfoldername='plants_parts')
 
     if 0:
         masterize_table_activities_add(source_foldername='drduke', subfoldername='activities')

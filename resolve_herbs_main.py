@@ -13,14 +13,15 @@ import resolve_utils
 HUB_FOLDERPATH = f'''{g.DATA_FOLDERPATH}/herbs'''
 
 def resolve_plants_parts(source_foldername):
-    input_folderpath = f'{g.DATA_FOLDERPATH}/normalize/{source_foldername}/plants_parts/json'
-    output_folderpath = f'{g.DATA_FOLDERPATH}/resolve/{source_foldername}/plants_parts/json'
+    input_folderpath = f'{HUB_FOLDERPATH}/normalize/{source_foldername}/plants_parts/json'
+    output_folderpath = f'{HUB_FOLDERPATH}/resolve/{source_foldername}/plants_parts/json'
     try: shutil.rmtree(output_folderpath)
     except: pass
     os.makedirs(output_folderpath, exist_ok=True)
     ###
-    wcvp_folderpath = f'{g.DATA_FOLDERPATH}/reference/wcvp/wcvp.db'
-    wcvp_conn = sqlite3.connect(wcvp_folderpath)
+    wcvp_filepath = f'{HUB_FOLDERPATH}/reference/wcvp/wcvp.db'
+    wcvp_conn = sqlite3.connect(wcvp_filepath)
+    wcvp_conn.row_factory = sqlite3.Row
     input_filenames = os.listdir(input_folderpath)
     for i, input_filename in enumerate(input_filenames[:]):
         print(f'{i}/{len(input_filenames)}')
@@ -31,11 +32,11 @@ def resolve_plants_parts(source_foldername):
         input_data = io.json_read(input_filepath)
         resolved_data = []
         for input_item in input_data:
-            # print(json.dumps(input_item, indent=True))
+            print(json.dumps(input_item, indent=True))
             # quit()
-            plant_name_raw_norm = input_item['plant_name_raw_norm']
+            plant_name_raw_normalize = input_item['plant_name_raw_normalize']
             ### RESOLVE PLANT (WCVP)
-            wcvp_row = resolve_utils.resolve_plant_accepted(wcvp_conn, plant_name_raw_norm)
+            wcvp_row = resolve_utils.resolve_plant_accepted(wcvp_conn, plant_name_raw_normalize)
             ### RESOLVE PLANT PART (...)
             plant_parts_canon = [
                 {
@@ -71,7 +72,7 @@ def resolve_plants_parts(source_foldername):
             for item in plant_parts_canon:
                 found = False
                 for raw_val in item['raw']:
-                    if raw_val in input_item['plant_part_name_raw_norm']:
+                    if raw_val in input_item['plant_part_name_raw_normalize']:
                         plant_part_canon = item['canon']
                         found = True
                         break
@@ -82,10 +83,11 @@ def resolve_plants_parts(source_foldername):
                 continue
             ###
             if wcvp_row:
-                input_item['plant_name_scientific_canon'] = wcvp_row[3]
-                input_item['plant_name_scientific_canon_norm'] = wcvp_row[4]
-                input_item['plant_part_name_canon'] = plant_part_canon
-                input_item['plant_part_name_canon_norm'] = plant_part_canon
+                wcvp_item = dict(wcvp_row)
+                input_item['plant_name_scientific_reference'] = wcvp_item['taxon_name']
+                input_item['plant_name_scientific_reference_normalize'] = wcvp_item['taxon_name_normalized']
+                input_item['plant_part_name_reference'] = plant_part_canon
+                input_item['plant_part_name_reference_normalize'] = plant_part_canon
                 resolved_data.append(input_item)
                 # if plant_name_raw_norm == 'panax ginseng':
                     # print(json.dumps(input_item, indent=True))
@@ -95,6 +97,7 @@ def resolve_plants_parts(source_foldername):
         if resolved_data != []:
             io.json_write(output_filepath, resolved_data)
     wcvp_conn.close()
+    # print(json.dumps(resolved_data, indent=4))
 
 def resolve_activities(source_foldername):
     input_folderpath = f'{HUB_FOLDERPATH}/normalize/{source_foldername}/activities/json'
@@ -145,8 +148,8 @@ def resolve_activities(source_foldername):
             ###
             if wcvp_row and drduke_items != []:
                 drduke_item = drduke_items[0]
-                input_item['plant_name_scientific_reference'] = wcvp_row[3]
-                input_item['plant_name_scientific_reference_normalize'] = wcvp_row[4]
+                input_item['plant_name_scientific_reference'] = wcvp_item['taxon_name']
+                input_item['plant_name_scientific_reference_normalize'] = wcvp_item['taxon_name_normalized']
                 input_item['activity_name_reference'] = drduke_item['activity_name_raw']
                 input_item['activity_name_reference_normalize'] = drduke_item['activity_name_normalize']
                 resolved_data.append(input_item)
@@ -434,11 +437,6 @@ def run():
         resolve_traits(source_foldername='gift')
         print(f'resolve traits() - execution time: ', time.perf_counter() - start)
 
-    if 0:
-        start = time.perf_counter()
-        resolve_plants_parts(source_foldername='pubmed')
-        print(f'resolve plant_part() - execution time: ', time.perf_counter() - start)
-
 
 
     if 1:
@@ -463,3 +461,9 @@ def run():
         start = time.perf_counter()
         resolve_conditions(source_foldername='pubmed')
         print(f'resolve chemicals() - execution time: ', time.perf_counter() - start)
+
+    if 1:
+        start = time.perf_counter()
+        resolve_plants_parts(source_foldername='pubmed')
+        print(f'resolve plant_parts() - execution time: ', time.perf_counter() - start)
+

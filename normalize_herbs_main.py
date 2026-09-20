@@ -24,8 +24,8 @@ def normalize_condition_name(name):
     return name.strip()
 
 def normalize_plants_parts(source_foldername):
-    input_folderpath = f'{g.DATA_FOLDERPATH}/parse/{source_foldername}/plants_parts/json'
-    output_folderpath = f'{g.DATA_FOLDERPATH}/normalize/{source_foldername}/plants_parts/json'
+    input_folderpath = f'{HUB_FOLDERPATH}/parse/{source_foldername}/plants_parts/json'
+    output_folderpath = f'{HUB_FOLDERPATH}/normalize/{source_foldername}/plants_parts/json'
     try: shutil.rmtree(output_folderpath)
     except: pass
     io.folders_recursive_gen(output_folderpath)
@@ -41,12 +41,12 @@ def normalize_plants_parts(source_foldername):
         # print(json.dumps(input_data, indent=4))
         # quit()
         for input_item in input_data:
-            input_item['plant_name_raw_norm'] = normalize_utils.normalize_plant_name(input_item['plant_name_raw'])
-            input_item['plant_part_name_raw_norm'] = normalize_utils.normalize_plant_part_name(input_item['plant_part_name_raw'])
+            input_item['plant_name_raw_normalize'] = normalize_utils.normalize_plant_name(input_item['plant_name_raw'])
+            input_item['plant_part_name_raw_normalize'] = normalize_utils.normalize_plant_part_name(input_item['plant_part_name_raw'])
             # print(json.dumps(input_item, indent=4))
             # quit()
         io.json_write(output_filepath, input_data)
-    # print(json.dumps(input_data[0], indent=4))
+    print(json.dumps(input_data[0], indent=4))
     # quit()
 
 def normalize_plants_activities(source_foldername):
@@ -259,6 +259,11 @@ def run():
     if 1:
         start = time.perf_counter()
         normalize_plants_conditions(source_foldername='pubmed')
+        print(f'normalize plants_conditions() - execution time: ', time.perf_counter() - start)
+
+    if 1:
+        start = time.perf_counter()
+        normalize_plants_parts(source_foldername='pubmed')
         print(f'normalize plants_conditions() - execution time: ', time.perf_counter() - start)
 
     # quit()

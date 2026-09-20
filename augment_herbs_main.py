@@ -91,3 +91,4 @@ def run():
     augment_copy(attribute='activities')
     augment_copy(attribute='chemicals')
     augment_copy(attribute='conditions')
+    augment_copy(attribute='plants_parts')

@@ -77,11 +77,6 @@ def run():
             }
             output_data['distribution'].append(item)
 
-        ### PLANTS PARTS
-        output_data['plants_parts'] = io.json_read(
-            f'{g.DATA_FOLDERPATH}/{input_foldername}/herbs/plants_parts/{plant_name_scientific_reference}.json'
-        )
-
         ### DISEASES
         output_data['diseases'] = io.json_read(
             f'{g.DATA_FOLDERPATH}/{input_foldername}/herbs/diseases/{plant_name_scientific_reference}.json'
@@ -122,6 +117,11 @@ def run():
         ### CONDITIONS
         output_data['conditions'] = io.json_read(
             f'{input_folderpath}/conditions/{plant_name_scientific_reference}.json'
+        )
+
+        ### PLANTS PARTS
+        output_data['plants_parts'] = io.json_read(
+            f'{input_folderpath}/plants_parts/{plant_name_scientific_reference}.json'
         )
 
 

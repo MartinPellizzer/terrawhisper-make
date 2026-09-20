@@ -183,8 +183,8 @@ def observations_table_plants_traits_add(source_foldername):
 
 def observations_table_plants_plants_parts_add(source_foldername):
     table_name = 'plants_plants_parts'
-    input_folderpath = f'{g.DATA_FOLDERPATH}/resolve/{source_foldername}/plants_parts/json'
-    output_folderpath = f'{g.DATA_FOLDERPATH}/observe'
+    input_folderpath = f'{HUB_FOLDERPATH}/resolve/{source_foldername}/plants_parts/json'
+    output_folderpath = f'{HUB_FOLDERPATH}/observe'
     db_filepath = f'{output_folderpath}/observations.db'
     ###
     input_filenames = os.listdir(input_folderpath)
@@ -203,10 +203,10 @@ def observations_table_plants_plants_parts_add(source_foldername):
     cur.executemany(
         f"""
             INSERT OR IGNORE INTO {table_name} (
-                plant_name_scientific_canon, 
-                plant_name_scientific_canon_norm, 
-                plant_part_name_canon, 
-                plant_part_name_canon_norm, 
+                plant_name_scientific_reference, 
+                plant_name_scientific_reference_normalize, 
+                plant_part_name_reference, 
+                plant_part_name_reference_normalize, 
                 source_name,
                 source_acronym,
                 reference_name
@@ -215,10 +215,10 @@ def observations_table_plants_plants_parts_add(source_foldername):
         """,
         [
             (
-                item.get("plant_name_scientific_canon"),
-                item.get("plant_name_scientific_canon_norm"),
-                item.get("plant_part_name_canon"),
-                item.get("plant_part_name_canon_norm"),
+                item.get("plant_name_scientific_reference"),
+                item.get("plant_name_scientific_reference_normalize"),
+                item.get("plant_part_name_reference"),
+                item.get("plant_part_name_reference_normalize"),
                 item.get("source_name"),
                 item.get("source_acronym"),
                 item.get("reference_name"),
@@ -227,7 +227,7 @@ def observations_table_plants_plants_parts_add(source_foldername):
         ]
     )
     conn.commit()
-    rows = conn.execute(f'SELECT * FROM {table_name} WHERE plant_part_name_canon == "root"')
+    rows = conn.execute(f'SELECT * FROM {table_name}')
     for row in list(rows)[:10]:
         print(row)
     conn.close()
@@ -405,9 +405,6 @@ def run():
     if 0:
         observations_table_plants_traits_add(source_foldername='gift')
 
-    if 0:
-        observations_table_plants_plants_parts_add(source_foldername='pubmed')
-
     # test()
 
     if 1:
@@ -424,3 +421,7 @@ def run():
 
     if 1:
         observations_table_plants_conditions_add(source_foldername='pubmed')
+
+    if 1:
+        observations_table_plants_plants_parts_add(source_foldername='pubmed')
+

@@ -1733,6 +1733,125 @@ def listing_condition_gen(plant_data):
         '''
     return html_article
 
+def listing_plant_parts_gen(plant_data):
+    html_article = ''
+    data_key = 'plants_parts'
+    item_key = 'plant_part_name_reference'
+    section_data = plant_data[data_key]
+    if section_data != []:
+        html_table_body = f''
+        sources_html = f''
+        html_table_body += f'''<tbody>'''
+        table_num = 10
+        for item in section_data[:table_num]:
+            name = item[item_key].capitalize()
+            slug = polish.sluggify(name)
+            sources_num = item['sources_num']
+            sources = item['sources']
+            source = sources[0]
+            confidence = ''
+            if int(sources_num) >= 10: confidence = '★★★★★'
+            elif int(sources_num) >= 7: confidence = '★★★★☆'
+            elif int(sources_num) >= 5: confidence = '★★★☆☆'
+            elif int(sources_num) >= 3: confidence = '★★☆☆☆'
+            elif int(sources_num) >= 1: confidence = '★☆☆☆☆'
+            html_table_body += f'''
+                <tr>
+                    <th scope="row">{name}</th>
+                    <td>
+                        <a href="#sources-{slug}">
+                            {sources_num} supporting sources
+                        </a>
+                    </td>
+                    <td>
+                        <span>
+                            {confidence}
+                        </span>
+                    </td>
+                </tr>
+            '''
+            ### TODO: add this complete consensus instead of the one in the table
+            '''
+                <span aria-label="Very high source consensus">
+                    {confidence}
+                </span>
+                <span>Very high</span>
+            '''
+            ### SOURCES LISTS
+            sources_html += f'''
+                <h3 id="sources-{slug}">{name}</h3>
+                <ol class="listing-sources">
+            '''
+            for source in sources[:5]:
+                sources_html += f'''
+                    <li>
+                        <cite>
+                            {source}
+                        </cite>
+                    </li>
+                '''
+            sources_html += f'''
+                </ol>
+            '''
+            if len(sources)-5 > 0:
+                sources_html += f'''
+                    <details>
+                        <summary>
+                            View {len(sources)-5} additional sources
+                        </summary>
+                        <ol class="listing-sources" start="6">
+                '''
+                for source in sources[5:]:
+                    sources_html += f'''
+                        <li>
+                            <cite>
+                                {source}
+                            </cite>
+                        </li>
+                    '''
+                sources_html += f'''
+                        </ol>
+                    </details>
+                '''
+        source_tot = 0 
+        for item in section_data[:]:
+            source_tot += int(item['sources_num'])
+        p = []
+        for item in section_data[:5]:
+            p.append(item[item_key])
+        p_str = ', '.join(p)
+        html_table_body += f'''</tbody>'''
+        html_article += f'''
+            <section>
+                <h2>
+                    Plant parts
+                </h2>
+                <p>
+                    {plant_data['plant_name_scientific_reference']} has {len(plant_data[data_key])} reported investigations on plant parts identified across {source_tot} scientific publications and several other databases. The most consistently reported plant parts include {p_str}.
+                </p>
+                <table style="margin-top: 3.2rem;">
+                    <caption style="text-align: left; margin-bottom: 0.8rem;">
+                        Plant parts investigated for {plant_data['plant_name_scientific_reference']}
+                    </caption>
+                    <thead>
+                        <tr>
+                            <th scope="col">Plant part</th>
+                            <th scope="col">Supporting sources</th>
+                            <th scope="col">Consensus</th>
+                        </tr>
+                    </thead>
+                    {html_table_body}
+                </table>
+            </section>
+        '''
+        ###
+        html_article += f'''
+            <section aria-labelledby="conditions-heading">
+                {sources_html}
+            </section>
+        '''
+    return html_article
+
 def plant_listing_page_gen(master_item):
     plant_name_scientific_reference = master_item['plant_name_scientific_reference']
     plant_data = io.json_read(f'{HUB_FOLDERPATH}/compile/{plant_name_scientific_reference}.json')
@@ -1997,6 +2116,7 @@ def plant_listing_page_gen(master_item):
     html_article += listing_activities_gen(plant_data)
     html_article += listing_chemicals_gen(plant_data)
     html_article += listing_condition_gen(plant_data)
+    html_article += listing_plant_parts_gen(plant_data)
 
     meta_title = f'{plant_name_scientific_reference}'
     meta_description = f''
@@ -2415,89 +2535,6 @@ def plant_listing_page_gen(master_item):
         '''
 
     """
-    ### PLANT PARTS
-    plants_parts_data = plant_data['plants_parts']
-    if plants_parts_data != []:
-        ### filter rows
-        row_num = 10
-        items_filtered = []
-        for item in plants_parts_data:
-            ### add filter condition here if needed
-            items_filtered.append(item)
-            if len(items_filtered) >= row_num:
-                break
-        if 1:
-            ### llm
-            json_article_filepath = f'''{g.DATA_FOLDERPATH}/enhance/{plant_taxon_name_slug}.json'''
-            json_article = io.json_read(json_article_filepath, create=True)
-            regen = False
-            key = f'plants_parts'
-            if key not in json_article: json_article[key] = ''
-            if regen: json_article[key] = ''
-            if json_article[key] == '':
-                list_prompt = ''
-                for item in items_filtered[:5]:
-                    plant_part = item['plant_part_canonical_name']
-                    list_prompt += f'''{plant_part}\n'''
-                prompt = f'''
-                    Write a paragraph about the plant parts of the following medicinal plant: {plant_name}.
-                    Use the following plant parts:
-                    {list_prompt}
-                    Start the reply with the following words: This plant 
-                '''.strip()
-                print(prompt)
-                reply = llm.reply(prompt, model_filepath)
-                if '</think>' in reply:
-                    reply = reply.split('</think>')[1].strip()
-                reply = polish.vanilla(reply)
-                json_article[key] = reply
-                io.json_write(json_article_filepath, json_article)
-            names_text = json_article[key]
-        else:
-            names_text = ''
-        ###
-        html_table_body = f''
-        html_table_body += f'''<tbody>'''
-        for item in items_filtered:
-            plant_part = item['plant_part_canonical_name']
-            sources_num = item['sources_num']
-            sources = item['sources']
-            source = sources[0]
-            confidence = ''
-            if int(sources_num) >= 10: confidence = '★★★★★'
-            elif int(sources_num) >= 7: confidence = '★★★★☆'
-            elif int(sources_num) >= 5: confidence = '★★★☆☆'
-            elif int(sources_num) >= 3: confidence = '★★☆☆☆'
-            elif int(sources_num) >= 1: confidence = '★☆☆☆☆'
-            html_table_body += f'''
-                <tr>
-                    <td>{plant_part}</td>
-                    <td>{source} (and other {sources_num} sources)</td>
-                    <td>{confidence}</td>
-                </tr>
-            '''
-        source_tot = 0 
-        for item in plants_parts_data[:]:
-            source_tot += int(item['sources_num'])
-        html_table_body += f'''</tbody>'''
-        html_article += f'''
-            <section>
-                <h2>
-                    Plant Parts
-                </h2>
-                {names_text}
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Plant Part</th>
-                      <th>Sources</th>
-                      <th>Consensus</th>
-                    </tr>
-                  </thead>
-                  {html_table_body}
-                </table>
-            </section>
-        '''
     """
 
     ### TODO: GENERALIZE THIS FUNCTION FOR ALL SECTIONS LIKE THIS?
