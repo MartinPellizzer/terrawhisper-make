@@ -863,12 +863,9 @@ def parse_preparation_form_extract_raw(foldername):
     print(len(relationships_found))
     # quit()
 
-def parse_raw_to_json(foldername, entity_1, entity_2):
-    source_name = 'pubmed'
-    input_foldername = f'parse'
-    output_foldername = f'parse'
-    input_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/{input_foldername}/{source_name}/{foldername}/raw'
-    output_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/{output_foldername}/{source_name}/{foldername}/json'
+def raw_to_json(foldername, entity_1, entity_2):
+    input_folderpath = f'{HUB_FOLDERPATH}/parse/pubmed/{foldername}/raw'
+    output_folderpath = f'{HUB_FOLDERPATH}/parse/pubmed/{foldername}/json'
     try: shutil.rmtree(output_folderpath)
     except: pass
     io.folders_recursive_gen(output_folderpath)
@@ -892,7 +889,8 @@ def parse_raw_to_json(foldername, entity_1, entity_2):
             chunks = [chunk.strip() for chunk in line.split(', ')]
             relationships_lines.append(chunks)
         # print(len(relationships_lines))
-        study_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/studies/pubmed/medicinal-plant/json'
+        # study_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/studies/pubmed/medicinal-plant/json'
+        study_folderpath = f'{HUB_FOLDERPATH}/fetch/pubmed/medicinal_plant/abstracts'
         study_filepath = f'{study_folderpath}/{input_filename}'
         study_data = io.json_read(study_filepath)
         try: article_data = study_data['PubmedArticle'][0]['MedlineCitation']['Article']
@@ -911,6 +909,8 @@ def parse_raw_to_json(foldername, entity_1, entity_2):
                 entity_1: entity_1_val,
                 f'relationship': relationship,
                 entity_2: entity_2_val,
+                'source_name': 'pubmed',
+                'source_acronym': 'PM',
                 f'source_id': input_filename.split('.')[0],
                 f'journal_title': journal_title,
             }
@@ -1236,15 +1236,6 @@ def run():
     print('parse >> pubmed')
 
 
-    if 0:
-        start = time.perf_counter()
-        foldername = 'preparation_form'
-        entity_1 = 'plant_name'
-        entity_2 = 'preparation_name'
-        parse_preparation_form_extract_raw(foldername) ### WARNING: takes many many hours (nightly running)
-        # parse_raw_to_json(foldername, entity_1, entity_2)
-        print(f'observations plants_parts() - execution time: ', time.perf_counter() - start)
-
 
 
     if 0:
@@ -1281,9 +1272,24 @@ def run():
         conditions_raw_to_json()
         print(f'observations symptoms() - execution time: ', time.perf_counter() - start)
 
-    if 1:
+    if 0:
         start = time.perf_counter()
         # observations_plants_parts_extract_raw() ### WARNING: takes many many hours (nightly running)
         plants_parts_raw_to_json()
         print(f'observations plants_parts() - execution time: ', time.perf_counter() - start)
+
+    if 0:
+        start = time.perf_counter()
+        # observations_plants_parts_extract_raw() ### WARNING: takes many many hours (nightly running)
+        plants_parts_raw_to_json()
+        print(f'observations plants_parts() - execution time: ', time.perf_counter() - start)
+
+    if 0:
+        start = time.perf_counter()
+        foldername = 'preparations'
+        entity_1 = 'plant_name'
+        entity_2 = 'preparation_name'
+        # parse_preparation_form_extract_raw(foldername) ### WARNING: takes many many hours (nightly running)
+        raw_to_json(foldername, entity_1, entity_2)
+        print(f'observations plants_preparations() - execution time: ', time.perf_counter() - start)
 

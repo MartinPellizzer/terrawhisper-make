@@ -72,7 +72,6 @@ if 0:
     parse_herbs_pubmed.run()
     # parse_herbs_col.run()
 
-
 if 0:
     import normalize_herbs_main
     normalize_herbs_main.run()
@@ -108,8 +107,6 @@ if 0:
 if 1:
     import render_herbs_main
     render_herbs_main.run()
-
-quit()
 
 quit()
 

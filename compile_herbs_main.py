@@ -124,6 +124,11 @@ def run():
             f'{input_folderpath}/plants_parts/{plant_name_scientific_reference}.json'
         )
 
+        ### PREPARATIONS
+        output_data['preparations'] = io.json_read(
+            f'{input_folderpath}/preparations/{plant_name_scientific_reference}.json'
+        )
+
 
         io.json_write(output_filepath, output_data)
         # print(json.dumps(output_data, indent=4))

@@ -232,6 +232,59 @@ def observations_table_plants_plants_parts_add(source_foldername):
         print(row)
     conn.close()
 
+def observations_table_plants_preparations_add(source_foldername):
+    table_name = 'plants_preparations'
+    input_folderpath = f'{HUB_FOLDERPATH}/resolve/{source_foldername}/preparations/json'
+    output_folderpath = f'{HUB_FOLDERPATH}/observe'
+    db_filepath = f'{output_folderpath}/observations.db'
+    ###
+    input_filenames = os.listdir(input_folderpath)
+    all_data = []
+    for i, input_filename in enumerate(input_filenames[:]):
+        print(f'PLANTS_PREPARATIONS - {i}/{len(input_filenames)}')
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        input_data = io.json_read(input_filepath)
+        for input_item in input_data:
+            all_data.append(input_item)
+            # print(json.dumps(input_item, indent=4))
+            # quit()
+    # print(json.dumps(all_data[0], indent=4))
+    # quit()
+    ###
+    conn = sqlite3.connect(db_filepath)
+    cur = conn.cursor()
+    cur.executemany(
+        f"""
+            INSERT OR IGNORE INTO {table_name} (
+                plant_name_scientific_reference, 
+                plant_name_scientific_reference_normalize, 
+                preparation_name_reference, 
+                preparation_name_reference_normalize, 
+                source_name,
+                source_acronym,
+                reference_name
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+        """,
+        [
+            (
+                item.get("plant_name_scientific_reference"),
+                item.get("plant_name_scientific_reference_normalize"),
+                item.get("preparation_name_reference"),
+                item.get("preparation_name_reference_normalize"),
+                item.get("source_name"),
+                item.get("source_acronym"),
+                item.get("reference_name"),
+            )
+            for item in all_data
+        ]
+    )
+    conn.commit()
+    rows = conn.execute(f'SELECT * FROM {table_name}')
+    for row in list(rows)[:10]:
+        print(row)
+    conn.close()
+
 def observations_table_plants_activities_add(source_foldername):
     table_name = 'plants_activities'
     input_folderpath = f'{HUB_FOLDERPATH}/resolve/{source_foldername}/activities/json'
@@ -424,4 +477,7 @@ def run():
 
     if 1:
         observations_table_plants_plants_parts_add(source_foldername='pubmed')
+
+    if 1:
+        observations_table_plants_preparations_add(source_foldername='pubmed')
 
