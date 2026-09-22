@@ -82,11 +82,9 @@ def run():
 
     # augment_copy(attribute='synonyms')
     # augment_copy(attribute='taxonomies')
-    # augment_copy(attribute='distribution')
-    # augment_copy(attribute='plants_parts')
     # augment_copy(attribute='diseases')
-    # augment_copy(attribute='preparations')
 
+    augment_copy(attribute='distributions')
     augment_copy(attribute='names_common')
     augment_copy(attribute='activities')
     augment_copy(attribute='chemicals')

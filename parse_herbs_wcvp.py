@@ -72,23 +72,79 @@ def parse_synonyms():
         # shutil.copy(input_filepath, output_filepath)
         # print(input_filename)
 
+def parse_wcvp_distributions():
+    input_folderpath = f'{HUB_FOLDERPATH}/fetch/wcvp/wcvp'
+    output_folderpath = f'{HUB_FOLDERPATH}/parse/wcvp/distributions/json'
+    try: shutil.rmtree(output_folderpath)
+    except: pass
+    io.folders_recursive_gen(output_folderpath)
+    ###
+    plants_rows = masterize_utils.masterize_plants_get_all()
+    items_output_debug = []
+    for i, plant_item in enumerate(plants_rows[:]):
+        print(f'{i}/{len(plants_rows)}')
+        # print(json.dumps(plant_item, indent=4))
+        plant_id = plant_item['id']
+        plant_name_scientific_reference = plant_item['plant_name_scientific_reference']
+        plant_name_scientific_reference_normalize = plant_item['plant_name_scientific_reference_normalize']
+        # print(plant_id)
+        # print(plant_name_scientific_reference)
+        # print(plant_name_scientific_reference_normalize)
+        ###
+        conn = sqlite3.connect(f'{HUB_FOLDERPATH}/reference/wcvp/wcvp.db')
+        conn.row_factory = sqlite3.Row
+        cursor = conn.execute("""
+            SELECT *
+            FROM plants_distributions
+            WHERE plant_name_id = ?
+        """, (plant_id,))
+        rows = cursor.fetchall()
+        items = [dict(row) for row in rows]
+        items_output = []
+        for item in items:
+            item_output = {
+                'plant_name_scientific_reference': plant_name_scientific_reference,
+                'plant_name_scientific_reference_normalize': plant_name_scientific_reference_normalize,
+                'locality_continent_code': item['continent_code_l1'],
+                'locality_continent': item['continent'],
+                'locality_region_code': item['region_code_l2'],
+                'locality_region': item['region'],
+                'locality_area_code': item['area_code_l3'],
+                'locality_area': item['area'],
+                'locality_introduced': item['introduced'],
+                'locality_extinct': item['extinct'],
+                'locality_doubtful': item['location_doubtful'],
+                'source_name': 'The World Checklist of Vascular Plants',
+                'source_acronym': 'WCVP',
+            }
+            items_output.append(item_output)
+            # print(json.dumps(item_output, indent=4))
+            # quit()
+        output_filepath = f'{output_folderpath}/{plant_name_scientific_reference_normalize}.json'
+        io.json_write(output_filepath, items_output)
+        if items_output != []:
+            items_output_debug = items_output
+    print(json.dumps(items_output_debug, indent=4))
+    quit()
+
 def wcvp_distribution_peek():
     source_foldername = 'wcvp'
     input_foldername = 'fetch'
-    input_folderpath = f'{g.DATA_FOLDERPATH}/{input_foldername}/{source_foldername}/distribution'
+    input_folderpath = f'{HUB_FOLDERPATH}/{input_foldername}/{source_foldername}/wcvp'
     with open(f"{input_folderpath}/wcvp_distribution.csv", "r", encoding="utf8", errors="ignore", newline="") as f:
         reader = csv.DictReader(f, delimiter="|")
         i = 0
-        conn = sqlite3.connect(f'{g.DATA_FOLDERPATH}/reference/wcvp/wcvp.db')
         for row in reader:
             print(f'{i}')
-            print(json.dumps(row, indent=4))
-            quit()
+            # print(json.dumps(row, indent=4))
+            i += 1
+            # quit()
+        # print(i)
 
 def run():
     print('PARSE >> wcvp')
 
-    if 1:
+    if 0:
         start = time.perf_counter()
         # wcvp_names() ### WARNING: takes many many minutes
         wcvp_names_peek()
@@ -97,12 +153,15 @@ def run():
     ### WCVP DISTRIBUTION
     if 0:
         start = time.perf_counter()
+        '''
         pipeline_utils.folder_copy(
             input_folderpath = f'{g.DATA_FOLDERPATH}/fetch/wcvp/distribution',
             output_folderpath = f'{g.DATA_FOLDERPATH}/parse/wcvp/distribution',
         )
+        '''
 
-    if 0:
+    if 1:
+        parse_wcvp_distributions() ### WARNING: takes many many minutes
         # wcvp_distribution_peek()
         print(f'wcvp distribution() - execution time: ', time.perf_counter() - start)
 

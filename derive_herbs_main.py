@@ -636,7 +636,40 @@ def preparations_gen():
         io.json_write(output_filepath, output_items)
     print(json.dumps(output_item, indent=4))
 
+def distributions_gen():
+    entity_foldername = 'distributions'
+    master_plants_rows = masterize_utils.masterize_plants_get_all()
+    for i, master_plant_row in enumerate(master_plants_rows):
+        master_item = master_plant_row
+        print(f'{i}/{len(master_plants_rows)}')
+        ###
+        conn = sqlite3.connect(db_filepath)
+        conn.row_factory = sqlite3.Row
+        cursor = conn.execute("""
+            SELECT *
+            FROM plants_distributions
+            WHERE plant_name_scientific_reference = ?
+        """, (master_item['plant_name_scientific_reference'],))
+        rows = cursor.fetchall()
+        items = [dict(row) for row in rows]
+        conn.close()
+        ###
+        output_items = []
+        for item in items:
+            output_item = {
+                'plant_name_scientific_reference': master_plant_row['plant_name_scientific_reference'],
+                'locality_continent': item['locality_continent'],
+                'locality_region': item['locality_region'],
+                'locality_area': item['locality_area'],
+            }
+            output_items.append(output_item)
+        output_filepath = f'''{HUB_FOLDERPATH}/{output_foldername}/distributions/{master_plant_row['plant_name_scientific_reference']}.json'''
+        io.folder_create_from_filepath(output_filepath)
+        io.json_write(output_filepath, output_items)
+    print(json.dumps(output_item, indent=4))
+
 def run():
+    distributions_gen()
     names_common_gen()
     activities_gen()
     chemicals_gen()
@@ -684,28 +717,6 @@ def run():
                     'genus': row[8],
                 }
                 print(json.dumps(output_item, indent=4))
-                output_items.append(output_item)
-            output_filepath = f'{g.DATA_FOLDERPATH}/{output_foldername}/herbs/{entity_foldername}/{master_plant_row[1]}.json'
-            io.folder_create_from_filepath(output_filepath)
-            io.json_write(output_filepath, output_items)
-
-    ### DISTRIBUTION
-    if 0:
-        entity_foldername = 'distribution'
-        master_plants_rows = masterize_utils.masterize_plants_get_all()
-        for i, master_plant_row in enumerate(master_plants_rows):
-            print(f'{i}/{len(master_plants_rows)}')
-            summary_rows = distribution_summary_get(master_plant_row[1])
-            output_items = []
-            for row in summary_rows:
-                output_item = {
-                    'plant_canonical_name': master_plant_row[1], ### MANDATORY
-                    'continent': row[2],
-                    'region': row[3],
-                    'area': row[4],
-                }
-                print(json.dumps(output_item, indent=4))
-                # quit()
                 output_items.append(output_item)
             output_filepath = f'{g.DATA_FOLDERPATH}/{output_foldername}/herbs/{entity_foldername}/{master_plant_row[1]}.json'
             io.folder_create_from_filepath(output_filepath)

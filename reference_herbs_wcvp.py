@@ -14,6 +14,32 @@ from lib import io
 HUB_FOLDERPATH = f'''{g.DATA_FOLDERPATH}/herbs'''
 
 wcvp_table_name = f'wcvp_plants_names'
+wcvp_table_name_distribution = f'plants_distributions'
+
+def peek():
+    ### TEST PRINT
+    conn = sqlite3.connect(f"{HUB_FOLDERPATH}/reference/wcvp/wcvp.db")
+    cursor = conn.execute(f"""
+        SELECT *
+        FROM {wcvp_table_name}
+        LIMIT 10
+    """)
+    rows = cursor.fetchall()
+        # print(row)
+
+    from tabulate import tabulate
+    print(tabulate(rows, 
+        headers=[
+            "PLANT_NAME_ID", 
+            "ACCEPTED_PLANT_NAME_ID", 
+            "TAXON_STATUS", 
+            "TAXON_NAME", 
+            "TAXON_NAME_NORMALIZED",
+            "POWO_ID",
+            "IPNI_ID",
+        ], 
+        tablefmt="plain")
+    )
 
 def normalize_plant_name(name):
     # Common botanical author abbreviations (extend over time)
@@ -49,18 +75,13 @@ def wcvp_table_plants_names_create():
     input_folderpath = f'{HUB_FOLDERPATH}/fetch/wcvp/wcvp'
     output_folderpath = f'{HUB_FOLDERPATH}/reference/wcvp'
     io.folders_recursive_gen(output_folderpath)
-
     conn = sqlite3.connect(f"{output_folderpath}/wcvp.db")
-
-
     conn.executescript(f"""
     PRAGMA journal_mode = OFF;
     PRAGMA synchronous = OFF;
     PRAGMA temp_store = MEMORY;
     PRAGMA cache_size = -500000;
-
     DROP TABLE IF EXISTS {wcvp_table_name};
-
     CREATE TABLE {wcvp_table_name} (
         plant_name_id TEXT NOT NULL,
         accepted_plant_name_id TEXT NOT NULL,
@@ -71,9 +92,7 @@ def wcvp_table_plants_names_create():
         ipni_id TEXT
     );
     """)
-
     conn.commit()
-
     BATCH_SIZE = 100000
     processed = 0
     start = time.time()
@@ -90,7 +109,6 @@ def wcvp_table_plants_names_create():
         for row in reader:
             # print(json.dumps(row, indent=4))
             # quit() 
-
             plant_name_id =             row["plant_name_id"]
             accepted_plant_name_id =    row["accepted_plant_name_id"]
             taxon_status =              row["taxon_status"]
@@ -100,7 +118,6 @@ def wcvp_table_plants_names_create():
             ipni_id =                   row["ipni_id"]
             if not taxon_name:
                 continue
-
             batch.append((
                 plant_name_id,
                 accepted_plant_name_id,
@@ -110,7 +127,6 @@ def wcvp_table_plants_names_create():
                 powo_id,
                 ipni_id,
             ))
-
             if len(batch) >= BATCH_SIZE:
                 conn.executemany(f"""
                     INSERT INTO {wcvp_table_name}
@@ -125,15 +141,11 @@ def wcvp_table_plants_names_create():
                     )
                     VALUES (?, ?, ?, ?, ?, ?, ?)
                 """, batch)
-
                 processed += len(batch)
-
                 if processed % 1000000 == 0:
                     elapsed = time.time() - start
                     print(f"{processed:,} inserted ({elapsed:.1f}s)")
-
                 batch.clear()
-
         if batch:
             conn.executemany(f"""
                 INSERT INTO {wcvp_table_name}
@@ -148,9 +160,7 @@ def wcvp_table_plants_names_create():
                 )
                 VALUES (?, ?, ?, ?, ?, ?, ?)
             """, batch)
-
     conn.commit()
-
     # Create lookup index AFTER import
     conn.execute(f"""
         CREATE INDEX idx_{wcvp_table_name}_plant_name_id
@@ -172,7 +182,6 @@ def wcvp_table_plants_names_create():
         CREATE INDEX idx_{wcvp_table_name}_ipni_id
         ON {wcvp_table_name}(ipni_id)
     """)
-
     conn.commit()
     cursor = conn.execute(f"""
         SELECT *
@@ -182,30 +191,150 @@ def wcvp_table_plants_names_create():
     for row in cursor:
         print(row)
     conn.close()
-
     print("Done")
 
-def peek():
-    ### TEST PRINT
-    conn = sqlite3.connect(f"{HUB_FOLDERPATH}/reference/wcvp/wcvp.db")
+def wcvp_table_plants_distribution_create():
+    input_folderpath = f'{HUB_FOLDERPATH}/fetch/wcvp/wcvp'
+    output_folderpath = f'{HUB_FOLDERPATH}/reference/wcvp'
+    io.folders_recursive_gen(output_folderpath)
+    conn = sqlite3.connect(f"{output_folderpath}/wcvp.db")
+    conn.executescript(f"""
+    PRAGMA journal_mode = OFF;
+    PRAGMA synchronous = OFF;
+    PRAGMA temp_store = MEMORY;
+    PRAGMA cache_size = -500000;
+    DROP TABLE IF EXISTS {wcvp_table_name_distribution};
+    CREATE TABLE {wcvp_table_name_distribution} (
+        plant_locality_id TEXT NOT NULL,
+        plant_name_id TEXT NOT NULL,
+        continent_code_l1 TEXT,
+        continent TEXT,
+        region_code_l2 TEXT,
+        region TEXT,
+        area_code_l3 TEXT,
+        area TEXT,
+        introduced TEXT,
+        extinct TEXT,
+        location_doubtful TEXT
+    );
+    """)
+    conn.commit()
+    BATCH_SIZE = 100000
+    processed = 0
+    start = time.time()
+    conn.execute("BEGIN")
+    with open(
+        f"{input_folderpath}/wcvp_distribution.csv",
+        "r",
+        encoding="utf8",
+        errors="ignore",
+        newline="",
+    ) as f:
+        reader = csv.DictReader(f, delimiter="|")
+        batch = []
+        for row in reader:
+            # print(json.dumps(row, indent=4))
+            # quit() 
+            plant_locality_id = row['plant_locality_id']
+            plant_name_id = row['plant_name_id']
+            continent_code_l1 = row['continent_code_l1']
+            continent = row['continent']
+            region_code_l2 = row['region_code_l2']
+            region = row['region']
+            area_code_l3 = row['area_code_l3']
+            area = row['area']
+            introduced = row['introduced']
+            extinct = row['extinct']
+            location_doubtful = row['location_doubtful']
+            batch.append((
+                plant_locality_id,
+                plant_name_id,
+                continent_code_l1,
+                continent,
+                region_code_l2,
+                region,
+                area_code_l3,
+                area,
+                introduced,
+                extinct,
+                location_doubtful
+            ))
+            if len(batch) >= BATCH_SIZE:
+                conn.executemany(f"""
+                    INSERT INTO {wcvp_table_name_distribution}
+                    (
+                        plant_locality_id,
+                        plant_name_id,
+                        continent_code_l1,
+                        continent,
+                        region_code_l2,
+                        region,
+                        area_code_l3,
+                        area,
+                        introduced,
+                        extinct,
+                        location_doubtful
+                    )
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """, batch)
+                processed += len(batch)
+                if processed % 1000000 == 0:
+                    elapsed = time.time() - start
+                    print(f"{processed:,} inserted ({elapsed:.1f}s)")
+                batch.clear()
+        if batch:
+            conn.executemany(f"""
+                INSERT INTO {wcvp_table_name_distribution}
+                (
+                    plant_locality_id,
+                    plant_name_id,
+                    continent_code_l1,
+                    continent,
+                    region_code_l2,
+                    region,
+                    area_code_l3,
+                    area,
+                    introduced,
+                    extinct,
+                    location_doubtful
+                )
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """, batch)
+    conn.commit()
+    # Create lookup index AFTER import
+    conn.execute(f"""
+        CREATE INDEX idx_{wcvp_table_name_distribution}_plant_locality_id
+        ON {wcvp_table_name_distribution}(plant_locality_id)
+    """)
+    conn.execute(f"""
+        CREATE INDEX idx_{wcvp_table_name_distribution}_plant_name_id
+        ON {wcvp_table_name_distribution}(plant_name_id)
+    """)
+    conn.commit()
     cursor = conn.execute(f"""
         SELECT *
-        FROM {wcvp_table_name}
+        FROM {wcvp_table_name_distribution}
         LIMIT 10
     """)
     rows = cursor.fetchall()
+    # for row in cursor:
         # print(row)
-
+    conn.close()
+    print("Done")
     from tabulate import tabulate
     print(tabulate(rows, 
         headers=[
-            "PLANT_NAME_ID", 
-            "ACCEPTED_PLANT_NAME_ID", 
-            "TAXON_STATUS", 
-            "TAXON_NAME", 
-            "TAXON_NAME_NORMALIZED",
-            "POWO_ID",
-            "IPNI_ID",
+            'PLANT_LOCALITY_ID',
+            'PLANT_NAME_ID',
+            'CONTINENT_CODE_L1',
+            'CONTINENT',
+            'REGION_CODE_L2',
+            'REGION',
+            'AREA_CODE_L3',
+            'AREA',
+            'INTRODUCED',
+            'EXTINCT',
+            'LOCATION_DOUBTFUL',
         ], 
         tablefmt="plain")
     )
@@ -213,9 +342,12 @@ def peek():
 def run():
     print(f'REFERENCE >> wcvp')
 
-    start = time.perf_counter()
-    wcvp_table_plants_names_create()
-    # peek()
-    print(f'wcvp table_plants_names_create() - execution time: ', time.perf_counter() - start)
+    if 0:
+        start = time.perf_counter()
+        wcvp_table_plants_names_create()
+        # peek()
+        print(f'wcvp table_plants_names_create() - execution time: ', time.perf_counter() - start)
 
+    if 1:
+        wcvp_table_plants_distribution_create()
 

@@ -99,6 +99,11 @@ def run():
         ###
         """
 
+        ### DISTRIBUTIONS
+        output_data['distributions'] = io.json_read(
+            f'{input_folderpath}/distributions/{plant_name_scientific_reference}.json'
+        )
+
         ### NAMES COMMON (NEW) -> merge with wikidata
         output_data['names_common'] = io.json_read(
             f'{input_folderpath}/names_common/{plant_name_scientific_reference}.json'

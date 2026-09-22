@@ -116,6 +116,77 @@ def observations_table_plants_names_common_add(source_foldername):
         print(row)
     conn.close()
 
+def observations_table_plants_distributions_add(source_foldername):
+    table_name = 'plants_distributions'
+    input_folderpath = f'{HUB_FOLDERPATH}/resolve/{source_foldername}/distributions/json'
+    output_folderpath = f'{HUB_FOLDERPATH}/observe'
+    db_filepath = f'{output_folderpath}/observations.db'
+    ###
+    input_filenames = os.listdir(input_folderpath)
+    all_data = []
+    for i, input_filename in enumerate(input_filenames[:]):
+        print(f'PLANTS_DISTRIBUTIONS - {i}/{len(input_filenames)}')
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        input_data = io.json_read(input_filepath)
+        for input_item in input_data:
+            all_data.append(input_item)
+            # print(json.dumps(input_item, indent=4))
+            # quit()
+    # print(json.dumps(all_data[0], indent=4))
+    # quit()
+    ###
+    conn = sqlite3.connect(db_filepath)
+    cur = conn.cursor()
+    cur.executemany(
+        f"""
+            INSERT OR IGNORE INTO {table_name} (
+                plant_name_scientific_reference,
+                plant_name_scientific_reference_normalize,
+                locality_continent_code,
+                locality_continent,
+                locality_region_code,
+                locality_region,
+                locality_area_code,
+                locality_area,
+                locality_introduced,
+                locality_extinct,
+                locality_doubtful,
+                locality_continent_normalize,
+                locality_region_normalize,
+                locality_area_normalize,
+                source_name,
+                source_acronym
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """,
+        [
+            (
+                item.get('plant_name_scientific_reference'),
+                item.get('plant_name_scientific_reference_normalize'),
+                item.get('locality_continent_code'),
+                item.get('locality_continent'),
+                item.get('locality_region_code'),
+                item.get('locality_region'),
+                item.get('locality_area_code'),
+                item.get('locality_area'),
+                item.get('locality_introduced'),
+                item.get('locality_extinct'),
+                item.get('locality_doubtful'),
+                item.get('locality_continent_normalize'),
+                item.get('locality_region_normalize'),
+                item.get('locality_area_normalize'),
+                item.get('source_name'),
+                item.get('source_acronym')
+            )
+            for item in all_data
+        ]
+    )
+    conn.commit()
+    rows = conn.execute(f"SELECT * FROM {table_name}")
+    for row in list(rows)[:10]:
+        print(row)
+    conn.close()
+
 def observations_table_plants_traits_add(source_foldername):
     table_name = 'plants_traits'
     input_folderpath = f'{g.DATA_FOLDERPATH}/resolve/{source_foldername}/traits/json'
@@ -459,6 +530,8 @@ def run():
         observations_table_plants_traits_add(source_foldername='gift')
 
     # test()
+    if 1:
+        observations_table_plants_distributions_add(source_foldername='wcvp')
 
     if 1:
         # observations_table_plants_names_common_add(source_foldername='wikidata')

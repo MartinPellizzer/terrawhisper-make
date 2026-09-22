@@ -20,35 +20,51 @@ import masterize_utils
 
 datasets_folderpath = f'{g.SSOT_FOLDERPATH}/datasets'
 
-def sqlite_table_master_plants_get():
-    db_filepath = f'{g.DATA_FOLDERPATH}/masterize/master.db'
-    conn = sqlite3.connect(db_filepath)
-    cur = conn.cursor()
-    cur.execute("""
-        SELECT *
-        FROM plants
-    """)
-    row = cur.fetchall()
-    conn.close()
-    return row
+HUB_FOLDERPATH = f'''{g.DATA_FOLDERPATH}/herbs'''
 
 def download_html_form_master():
     geckodriver_path = 'geckodriver'
     driver_service = webdriver.FirefoxService(executable_path=geckodriver_path)
     driver = webdriver.Firefox(service=driver_service)
+    output_folderpath = f'{HUB_FOLDERPATH}/fetch/powo/html'
+    io.folders_recursive_gen(output_folderpath)
 
-    plants_rows = masterize_utils.masterize_plants_get_all()
-    for i, plant_row in enumerate(plants_rows):
-        print(f'{i}/{len(plants_rows)}')
-        plant_name_normalized = plant_row[2]
-        wcvp_row = reference_utils.wcvp_plant_name_get_row(plant_name_normalized)
-        powo_id = wcvp_row[5]
-        print(plant_row)
-        print(wcvp_row)
-        print(powo_id)
+    master_items = masterize_utils.masterize_plants_get_all()
+    for i, master_item in enumerate(master_items):
+        print(f'{i}/{len(master_items)}')
+        ###
+        conn = sqlite3.connect(f"{HUB_FOLDERPATH}/reference/wcvp/wcvp.db")
+        conn.row_factory = sqlite3.Row
+        cursor = conn.execute(f'''
+            SELECT *
+            FROM wcvp_plants_names
+            WHERE taxon_name_normalized = ?
+        ''', (master_item['plant_name_scientific_reference_normalize'],))
+        wcvp_rows = cursor.fetchall()
+        wcvp_items = [dict(row) for row in wcvp_rows]
+        conn.close()
+        if wcvp_items == []: continue
+        wcvp_item = wcvp_items[0]
+        ###
+        from tabulate import tabulate
+        print(tabulate(wcvp_rows, 
+            headers=[
+                "PLANT_NAME_ID", 
+                "ACCEPTED_PLANT_NAME_ID", 
+                "TAXON_STATUS", 
+                "TAXON_NAME", 
+                "TAXON_NAME_NORMALIZED",
+                "POWO_ID",
+                "IPNI_ID",
+            ], 
+            tablefmt="plain")
+        )
+        ###
+        powo_id = wcvp_item['powo_id']
+        # print(powo_id)
         # quit()
         # powo_id = plant_row[3]
-        powo_html_filepath = f'{g.DATA_FOLDERPATH}/fetch/powo/html/{powo_id}.html'
+        powo_html_filepath = f'{output_folderpath}/{powo_id}.html'
         if not os.path.exists(powo_html_filepath):
             url = f"https://powo.science.kew.org/api/2/taxon/urn:lsid:ipni.org:names:{powo_id}"
             driver.get(url)
@@ -59,7 +75,7 @@ def download_html_form_master():
                 print("Page loaded successfully.")
             except TimeoutException:
                 print("Timed out waiting for page to load.")
-                driver.save_screenshot(f'{g.DATA_FOLDERPATH}/fetch/powo/timeouts_logs/{powo_id}.png')
+                driver.save_screenshot(f'{HUB_FOLDERPATH}/fetch/powo/timeouts_logs/{powo_id}.png')
                 quit()
             html = driver.page_source
             time.sleep(random.randint(13, 21))

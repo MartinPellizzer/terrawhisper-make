@@ -1971,26 +1971,102 @@ def listing_preparations_gen(plant_data):
         '''
     return html_article
 
-def plant_listing_page_gen(master_item):
-    plant_name_scientific_reference = master_item['plant_name_scientific_reference']
-    plant_data = io.json_read(f'{HUB_FOLDERPATH}/compile/{plant_name_scientific_reference}.json')
-    # print(json.dumps(plant_data, indent=4))
-    # print(json.dumps(plant_data['names_common'], indent=4))
-    # quit()
+def listing_names_common_gen(plant_data):
+    html_article = ''
+    if len(plant_data['names_common']['en_labels']) != 0 or len(plant_data['names_common']['en_aliases']) != 0:
+        plant_names_common_en_html = f''
+        plant_names_common_en_html = f'<h3 id="common-names">Common Names</h3>'
+        plant_names_common_en_html += f'<ul style="list-style: none;">'
+        for tag in plant_data['names_common']['en_labels']:
+            plant_names_common_en_html += f'''
+                <li class="tag">{tag}</li>
+            '''
+        for tag in plant_data['names_common']['en_aliases']:
+            plant_names_common_en_html += f'''
+                <li class="tag">{tag}</li>
+            '''
+        plant_names_common_en_html += f'</ul>'
+    else:
+        plant_names_common_en_html = ''
+    ### NAMES REGIONAL
+    plant_names_common_regional_html = ''
+    ### SPANISH
+    values_html = ''
+    for value in plant_data['names_common']['es_names']:
+        values_html += f'''
+            <li class="tag">{value}</li>
+        '''
+    if values_html != '':
+        plant_names_common_regional_html += f'<div style="display: flex; gap: 0.8rem;">'
+        plant_names_common_regional_html += f'<h4>Spanish:</h4>' 
+        plant_names_common_regional_html += f'<ul style="list-style: none;">'
+        plant_names_common_regional_html += values_html 
+        plant_names_common_regional_html += f'</ul>'
+        plant_names_common_regional_html += f'</div>'
+    ### GERMAN
+    values_html = ''
+    for value in plant_data['names_common']['de_names']:
+        values_html += f'''
+            <li class="tag">{value}</li>
+        '''
+    if values_html != '':
+        plant_names_common_regional_html += f'<div style="display: flex; gap: 0.8rem;">'
+        plant_names_common_regional_html += f'<h4>German:</h4>' 
+        plant_names_common_regional_html += f'<ul style="list-style: none;">'
+        plant_names_common_regional_html += values_html 
+        plant_names_common_regional_html += f'</ul>'
+        plant_names_common_regional_html += f'</div>'
+    ### FRENCH
+    values_html = ''
+    for value in plant_data['names_common']['fr_names']:
+        values_html += f'''
+            <li class="tag">{value}</li>
+        '''
+    if values_html != '':
+        plant_names_common_regional_html += f'<div style="display: flex; gap: 0.8rem;">'
+        plant_names_common_regional_html += f'<h4>French:</h4>' 
+        plant_names_common_regional_html += f'<ul style="list-style: none;">'
+        plant_names_common_regional_html += values_html 
+        plant_names_common_regional_html += f'</ul>'
+        plant_names_common_regional_html += f'</div>'
+    ###
+    if plant_names_common_regional_html != '':
+        plant_names_common_regional_html = f'''
+            <h3>Regional and Traditional Names</h3>
+            {plant_names_common_regional_html}
+        '''
+    ### SOURCES
+    sources_html = ''
+    if len(plant_data['names_common']['all']) != 0:
+        sources_names = []
+        for plant_item in plant_data['names_common']['all']:
+            if plant_item['source_name'] not in sources_names:
+                sources_names.append(plant_item['source_name'])
+        sources_names_text = ', '.join(sources_names)
+        sources_html = f'''
+            <p style="margin-top: 3.2rem;">
+                Sources: {sources_names_text}
+            </p>
+        '''
+    plant_name_scientific_reference = plant_data['plant_name_scientific_reference']
+    html_article += f'''
+        <section id="names-and-synonyms">
+            <h2>Names and Synonyms</h2>
+            {plant_names_common_en_html}
+            <h3>Scientific Names</h3>
+            <h4 style="margin-bottom: 1rem;">Accepted name</h4> <span class="tag">{plant_name_scientific_reference}</span>
+            {plant_names_common_regional_html}
+            {sources_html}
+        </section>
+    '''
+    return html_article
 
+def listing_hero_gen(plant_data):
+    plant_name_scientific_reference = plant_data['plant_name_scientific_reference']
     plant_taxon_name_slug = polish.sluggify(plant_name_scientific_reference)
     plant_taxon_name_normalized = normalize_utils.normalize_plant_name(plant_name_scientific_reference)
-
-    # plant_parts_data = plant_data['plants_parts']
-    # plant_synonyms = plant_data['synonyms']
-
     url_slug = f'herbs/{plant_taxon_name_slug}'
-
-    html_article = f''
-
-    ################################################################################
-    # HERO
-    ################################################################################
+    html_article = ''
     ## H1
     plant_name_common = plant_data['names_common']['plant_name_common_preferred']
     if plant_name_common != '': h1_html = f'<h1>{plant_name_common}</h1>'
@@ -2141,97 +2217,75 @@ def plant_listing_page_gen(master_item):
         </div>
     '''
     html_article += html_hero
+    return html_article
 
-    ################################################################################
-    ### NAMES
-    ################################################################################
-    ### NAMES COMMON
-    if len(plant_data['names_common']['en_labels']) != 0 or len(plant_data['names_common']['en_aliases']) != 0:
-        plant_names_common_en_html = f''
-        plant_names_common_en_html = f'<h3 id="common-names">Common Names</h3>'
-        plant_names_common_en_html += f'<ul style="list-style: none;">'
-        for tag in plant_data['names_common']['en_labels']:
-            plant_names_common_en_html += f'''
-                <li class="tag">{tag}</li>
-            '''
-        for tag in plant_data['names_common']['en_aliases']:
-            plant_names_common_en_html += f'''
-                <li class="tag">{tag}</li>
-            '''
-        plant_names_common_en_html += f'</ul>'
-    else:
-        plant_names_common_en_html = ''
-    ### NAMES REGIONAL
-    plant_names_common_regional_html = ''
-    ### SPANISH
-    values_html = ''
-    for value in plant_data['names_common']['es_names']:
-        values_html += f'''
-            <li class="tag">{value}</li>
-        '''
-    if values_html != '':
-        plant_names_common_regional_html += f'<div style="display: flex; gap: 0.8rem;">'
-        plant_names_common_regional_html += f'<h4>Spanish:</h4>' 
-        plant_names_common_regional_html += f'<ul style="list-style: none;">'
-        plant_names_common_regional_html += values_html 
-        plant_names_common_regional_html += f'</ul>'
-        plant_names_common_regional_html += f'</div>'
-    ### GERMAN
-    values_html = ''
-    for value in plant_data['names_common']['de_names']:
-        values_html += f'''
-            <li class="tag">{value}</li>
-        '''
-    if values_html != '':
-        plant_names_common_regional_html += f'<div style="display: flex; gap: 0.8rem;">'
-        plant_names_common_regional_html += f'<h4>German:</h4>' 
-        plant_names_common_regional_html += f'<ul style="list-style: none;">'
-        plant_names_common_regional_html += values_html 
-        plant_names_common_regional_html += f'</ul>'
-        plant_names_common_regional_html += f'</div>'
-    ### FRENCH
-    values_html = ''
-    for value in plant_data['names_common']['fr_names']:
-        values_html += f'''
-            <li class="tag">{value}</li>
-        '''
-    if values_html != '':
-        plant_names_common_regional_html += f'<div style="display: flex; gap: 0.8rem;">'
-        plant_names_common_regional_html += f'<h4>French:</h4>' 
-        plant_names_common_regional_html += f'<ul style="list-style: none;">'
-        plant_names_common_regional_html += values_html 
-        plant_names_common_regional_html += f'</ul>'
-        plant_names_common_regional_html += f'</div>'
-    ###
-    if plant_names_common_regional_html != '':
-        plant_names_common_regional_html = f'''
-            <h3>Regional and Traditional Names</h3>
-            {plant_names_common_regional_html}
-        '''
-    ### SOURCES
-    sources_html = ''
-    if len(plant_data['names_common']['all']) != 0:
-        sources_names = []
-        for plant_item in plant_data['names_common']['all']:
-            if plant_item['source_name'] not in sources_names:
-                sources_names.append(plant_item['source_name'])
-        sources_names_text = ', '.join(sources_names)
+def listing_distributions_gen(plant_data):
+    html_article = ''
+    distributions = plant_data['distributions']
+    if distributions != []:
+        html_table_body = f''
+        html_table_body += f'''<tbody>'''
+        row_num = 10
+        for distribution in distributions[:row_num]:
+            # print(distribution)
+            # plant_name = plants_chemicals_row[1]
+            continent = distribution['locality_continent'].title()
+            region = distribution['locality_region']
+            area = distribution['locality_area']
+            html_table_body += f'''
+            <tr>
+                <td>{continent}</td>
+                <td>{region}</td>
+                <td>{area}</td>
+            </tr>'''
+        html_table_body += f'''</tbody>'''
+        ### SOURCES
         sources_html = f'''
-            <p style="margin-top: 3.2rem;">
-                Sources: {sources_names_text}
+            <p style="margin-top: 4.8rem;">
+                Sources: The World Checklist of Vascular Plants (WCVP)
             </p>
         '''
-    html_article += f'''
-        <section id="names-and-synonyms">
-            <h2>Names and Synonyms</h2>
-            {plant_names_common_en_html}
-            <h3>Scientific Names</h3>
-            <h4 style="margin-bottom: 1rem;">Accepted name</h4> <span class="tag">{plant_name_scientific_reference}</span>
-            {plant_names_common_regional_html}
-            {sources_html}
-        </section>
-    '''
+        ###
+        html_article += f'''
+            <section>
+                <h2>
+                    Distribution
+                </h2>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Continent</th>
+                      <th>Region</th>
+                      <th>Area</th>
+                    </tr>
+                  </thead>
+                  {html_table_body}
+                </table>
+                {sources_html}
+            </section>
+        '''
+    return html_article
 
+def plant_listing_page_gen(master_item):
+    plant_name_scientific_reference = master_item['plant_name_scientific_reference']
+    plant_data = io.json_read(f'{HUB_FOLDERPATH}/compile/{plant_name_scientific_reference}.json')
+    # print(json.dumps(plant_data, indent=4))
+    # print(json.dumps(plant_data['names_common'], indent=4))
+    # quit()
+
+    plant_taxon_name_slug = polish.sluggify(plant_name_scientific_reference)
+    plant_taxon_name_normalized = normalize_utils.normalize_plant_name(plant_name_scientific_reference)
+
+    # plant_parts_data = plant_data['plants_parts']
+    # plant_synonyms = plant_data['synonyms']
+
+    url_slug = f'herbs/{plant_taxon_name_slug}'
+
+    html_article = f''
+
+    html_article += listing_hero_gen(plant_data)
+    html_article += listing_names_common_gen(plant_data)
+    html_article += listing_distributions_gen(plant_data)
     html_article += listing_activities_gen(plant_data)
     html_article += listing_chemicals_gen(plant_data)
     html_article += listing_condition_gen(plant_data)
@@ -2492,76 +2546,6 @@ def plant_listing_page_gen(master_item):
                     <tr>
                       <th>Rank</th>
                       <th>Classification</th>
-                    </tr>
-                  </thead>
-                  {html_table_body}
-                </table>
-                {sources_html}
-            </section>
-        '''
-
-    ### DISTRIBUTION
-    distributions = plant_data['distribution']
-    if distributions != []:
-        ### llm
-        json_article_filepath = f'''{g.DATA_FOLDERPATH}/enhance/{plant_taxon_name_slug}.json'''
-        json_article = io.json_read(json_article_filepath, create=True)
-        regen = False
-        key = f'distribution'
-        if key not in json_article: json_article[key] = ''
-        if regen: json_article[key] = ''
-        if json_article[key] == '':
-            distribution_prompt = ''
-            for distribution in distributions[:5]:
-                distribution_prompt += f'''{distribution['region']}: {distribution['area']}\n'''
-            prompt = f'''
-                Write a paragraph in 5 sentences about the geographical distribution of the following medicinal plant: {plant_name}.
-                Use the following geographical distribution:
-                {distribution_prompt}
-                Start the reply with the following words: This plant 
-            '''.strip()
-            print(prompt)
-            reply = llm.reply(prompt, model_filepath)
-            if '</think>' in reply:
-                reply = reply.split('</think>')[1].strip()
-            reply = polish.vanilla(reply)
-            json_article[key] = reply
-            io.json_write(json_article_filepath, json_article)
-        distribution_text = json_article[key]
-        ###
-        html_table_body = f''
-        html_table_body += f'''<tbody>'''
-        row_num = 10
-        for distribution in distributions[:row_num]:
-            # print(distribution)
-            # plant_name = plants_chemicals_row[1]
-            continent = distribution['continent']
-            region = distribution['region']
-            area = distribution['area']
-            html_table_body += f'''
-            <tr>
-                <td>{region}</td>
-                <td>{area}</td>
-            </tr>'''
-        html_table_body += f'''</tbody>'''
-        ### SOURCES
-        sources_html = f'''
-            <p style="margin-top: 4.8rem;">
-                Sources: The World Checklist of Vascular Plants (WCVP)
-            </p>
-        '''
-        ###
-        html_article += f'''
-            <section>
-                <h2>
-                    Distribution
-                </h2>
-                <p>{distribution_text}</p>
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Region</th>
-                      <th>Area</th>
                     </tr>
                   </thead>
                   {html_table_body}

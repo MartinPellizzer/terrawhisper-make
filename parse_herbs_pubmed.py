@@ -7,7 +7,7 @@ from lib import g
 from lib import io
 from lib import llm
 
-model_filepath = '/home/ubuntu/vault-tmp/llm/gemma-4-12b-it-Q4_K_S.gguf'
+# model_filepath = '/home/ubuntu/vault-tmp/llm/gemma-4-12b-it-Q4_K_S.gguf'
 model_filepath = '/home/ubuntu/vault-tmp/llm/gemma-4-26B-A4B-it-UD-Q4_K_M.gguf'
 
 import parse_utils
@@ -691,6 +691,71 @@ def observations_plants_parts_extract_raw():
     print(len(relationships_found))
     # quit()
 
+def plants_extract_raw():
+    input_folderpath = f'{HUB_FOLDERPATH}/fetch/pubmed/medicinal_plant/abstracts'
+    output_folderpath = f'{HUB_FOLDERPATH}/parse/pubmed/plants_names/raw'
+    io.folders_recursive_gen(output_folderpath)
+    # try: shutil.rmtree(output_folderpath)
+    # except: pass
+    os.makedirs(output_folderpath, exist_ok=True)
+    ###
+    relationships_found = []
+    input_filenames = os.listdir(input_folderpath)
+    i = 0
+    for input_filename in input_filenames[i:]:
+        i += 1
+        print(f'{i}/{len(input_filenames)}')
+        output_filepath = f'{output_folderpath}/{input_filename}'
+        if os.path.exists(output_filepath): continue
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        input_data = io.json_read(input_filepath)
+        try: article_data = input_data['PubmedArticle'][0]['MedlineCitation']['Article']
+        except: pass
+        try: input_title = article_data['ArticleTitle']
+        except: input_title = ''
+        try: input_abstract = ' '.join(article_data['Abstract']['AbstractText'])
+        except: continue
+        # print(json.dumps(input_title, indent=4))
+        # print(input_title)
+        # print(input_abstract)
+        # quit()
+        content_to_extract = f'{input_title} {input_abstract}'
+        prompt = f'''
+            From the SCIENTIFIC STUDY below, extract all the plants names mentioned.
+            RULES:
+            Write one plant name per new line.
+            Plants names include scientific names, common names, abbreviations, and any other type variation.
+            Always write the names of the plants names exactly how you find them in the text.
+            Only reply with the content requested.
+            If you can't find what requested, reply with "NONE".
+            SCIENTIFIC STUDY:            
+            {content_to_extract}
+        '''.strip()
+        prompt = prompt.replace('<text>', content_to_extract)
+        reply = llm.reply(prompt, model_filepath, max_tokens=512)
+        if '</think>' in reply:
+            reply = reply.split('</think>')[1].strip()
+        print('################################################################################')
+        print(reply)
+        print('########################################')
+        # print(prompt)
+        print('################################################################################')
+        if 'NONE'.strip() not in reply.strip():
+            relationships_found.append(reply)
+            output_data = {
+                'title': input_title,
+                'abstract': input_abstract,
+                'reply': reply,
+            }
+            io.json_write(
+                output_filepath,
+                output_data,
+            )
+        # if i > 10:
+            # quit()
+    print(len(relationships_found))
+    # quit()
+
 def parse_plants_parts_raw_to_json():
     entity_type = 'plants_parts'
     source_name = 'pubmed'
@@ -1293,3 +1358,8 @@ def run():
         raw_to_json(foldername, entity_1, entity_2)
         print(f'observations plants_preparations() - execution time: ', time.perf_counter() - start)
 
+    if 1:
+        start = time.perf_counter()
+        plants_extract_raw() ### WARNING: takes many many hours (nightly running)
+        # plants_raw_to_json()
+        print(f'observations plants_parts() - execution time: ', time.perf_counter() - start)

@@ -363,6 +363,49 @@ def resolve_common_names(source_foldername):
     print(json.dumps(resolved_data[0], indent=4))
     # quit()
 
+def resolve_distributions(source_foldername):
+    input_folderpath = f'{HUB_FOLDERPATH}/normalize/{source_foldername}/distributions/json'
+    output_folderpath = f'{HUB_FOLDERPATH}/resolve/{source_foldername}/distributions/json'
+    try: shutil.rmtree(output_folderpath)
+    except: pass
+    os.makedirs(output_folderpath, exist_ok=True)
+    ###
+    wcvp_folderpath = f'{HUB_FOLDERPATH}/reference/wcvp/wcvp.db'
+    wcvp_conn = sqlite3.connect(wcvp_folderpath)
+    wcvp_conn.row_factory = sqlite3.Row
+    ###
+    input_filenames = os.listdir(input_folderpath)
+    # print(input_filenames)
+    for i, input_filename in enumerate(input_filenames[:]):
+        print(f'{i}/{len(input_filenames)}')
+        output_filepath = f'{output_folderpath}/{input_filename}'
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        if os.path.exists(output_filepath): continue
+        input_data = io.json_read(input_filepath)
+        ###
+        resolved_data = []
+        for input_item in input_data:
+            # print(json.dumps(input_item, indent=4))
+            # quit()
+            plant_name_scientific_reference_normalize = input_item['plant_name_scientific_reference_normalize']
+            ### RESOLVE PLANT NAME (WCVP)
+            wcvp_row = resolve_utils.resolve_plant_accepted(wcvp_conn, plant_name_scientific_reference_normalize)
+            ###
+            if wcvp_row:
+                wcvp_item = dict(wcvp_row)
+                # print(wcvp_item)
+                # quit()
+                # input_item['wcvp_name_taxon'] = wcvp_row['taxon_name']
+                # input_item['wcvp_name_taxon_normalized'] = wcvp_row['taxon_name_normalized']
+                resolved_data.append(input_item)
+                # print(json.dumps(input_item, indent=4))
+                # quit()
+        if resolved_data != []:
+            io.json_write(output_filepath, resolved_data)
+    wcvp_conn.close()
+    print(json.dumps(resolved_data[0], indent=4))
+    # quit()
+
 def resolve_activities(source_foldername):
     input_folderpath = f'{HUB_FOLDERPATH}/normalize/{source_foldername}/activities/json'
     output_folderpath = f'{HUB_FOLDERPATH}/resolve/{source_foldername}/activities/json'
@@ -485,6 +528,10 @@ def run():
         print(f'resolve traits() - execution time: ', time.perf_counter() - start)
 
 
+    if 1:
+        start = time.perf_counter()
+        resolve_distributions(source_foldername='wcvp')
+        print(f'resolve distributions() - execution time: ', time.perf_counter() - start)
 
     if 1:
         start = time.perf_counter()
