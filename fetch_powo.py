@@ -123,3 +123,5 @@ def run():
     # download_html()
     download_html_form_master()
     print(f'download html_form_master() - execution time: ', time.perf_counter() - start)
+
+run()
