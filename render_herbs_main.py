@@ -2156,6 +2156,16 @@ def listing_hero_gen(plant_data):
         json_article[key] = reply
         io.json_write(json_article_filepath, json_article)
     intro_text = json_article[key]
+    ### DISTRIBUTIONS
+    if plant_data['distributions'] != []: hero_distributions = plant_data['distributions'][0]['locality_continent'].title()
+    else: hero_distributions = 'Not available'
+    ### PLANTS PARTS
+    hero_plant_parts_list = []
+    for item in plant_data['plants_parts'][:2]:
+        hero_plant_parts_list.append(item['plant_part_name_reference'])
+    hero_plant_parts_html = ' · '.join(hero_plant_parts_list)
+    hero_plant_parts_html = hero_plant_parts_html.title()
+    if hero_plant_parts_html == '': hero_plant_parts_html = 'Not available'
     ### NAMES COMMON
     hero_names_common_list = []
     for value in plant_data['names_common']['en_labels']:
@@ -2201,6 +2211,14 @@ def listing_hero_gen(plant_data):
                     <div>
                         <dt>Common names</dt>
                         <dd>{hero_names_common_html}</dd>
+                    </div>
+                    <div>
+                        <dt>Distribution</dt>
+                        <dd>{hero_distributions}</dd>
+                    </div>
+                    <div>
+                        <dt>Plant Parts</dt>
+                        <dd>{hero_plant_parts_html}</dd>
                     </div>
                 </dl>
             </div>
@@ -2266,6 +2284,90 @@ def listing_distributions_gen(plant_data):
         '''
     return html_article
 
+def listing_traits_gen(plant_data):
+    html_article = ''
+    traits_data = plant_data['traits']
+    if traits_data != []:
+        # print(traits_data)
+        # quit()
+        html_categories = ''
+        for trait_item in traits_data:
+            # print(json.dumps(trait_item, indent=4))
+            # quit()
+            category = trait_item['trait_category']
+            ### TODO: REMOVE when all "trait_item" have 'llm' field
+            try: 
+                trait_llm = trait_item['llm']
+                trait_llm_html = f'''<p>{trait_item['llm']}</p>'''
+            except: 
+                trait_llm_html = f''
+            html_categories += f'''
+                <h3>{category}</h3>
+                {trait_llm_html}
+            '''
+            traits = trait_item['traits']
+            traits_done = []
+            traits_formatted = []
+            for trait in traits:
+                found = False
+                for trait_done in traits_done:
+                    if (
+                        trait_done['trait_1'] == trait['trait_1'] and
+                        trait_done['trait_value'] == trait['trait_value']
+                    ):
+                        found = True
+                        break
+                if found:
+                    continue
+                traits_done.append(
+                    {
+                       'trait_1': trait['trait_1'],
+                       'trait_value': trait['trait_value'],
+                    }
+                )
+                ###
+                if 'mean' in trait['trait_2'] or 'max' in trait['trait_2'] or 'min' in trait['trait_2']:
+                    unit = trait['trait_units']
+                    if 'mean' in trait['trait_2']:
+                        descriptor = 'mean'
+                    elif 'max' in trait['trait_2']:
+                        descriptor = 'max'
+                    elif 'min' in trait['trait_2']:
+                        descriptor = 'min'
+                    else:
+                        descriptor = ''
+                else:
+                    unit = ''
+                    descriptor = ''
+                traits_formatted.append(
+                    {
+                        'trait_name': f'''{trait['trait_1']} {descriptor}''',
+                        'trait_value': f'''{trait['trait_value']} {unit}''',
+                    }
+                )
+            traits_formatted = sorted(traits_formatted, key=lambda x: x['trait_name'], reverse=False)
+            for trait in traits_formatted:
+                html_categories += f''' 
+                    <dl>
+                        <dt style="display: inline;">{trait['trait_name']}:</dt>
+                        <dd class="tag">{trait['trait_value']}</dd>
+                    </dl>
+                '''
+        ### SOURCES
+        sources_html = f'''
+            <p style="margin-top: 4.8rem;">
+                Sources: Global Inventory of Floras and Traits (GIFT)
+            </p>
+        '''
+        html_article += f'''
+            <section>
+                <h2>Botanical Identification</h2>
+                {html_categories}
+                {sources_html}
+            </section>
+        '''
+    return html_article
+
 def plant_listing_page_gen(master_item):
     plant_name_scientific_reference = master_item['plant_name_scientific_reference']
     plant_data = io.json_read(f'{HUB_FOLDERPATH}/compile/{plant_name_scientific_reference}.json')
@@ -2286,6 +2388,7 @@ def plant_listing_page_gen(master_item):
     html_article += listing_hero_gen(plant_data)
     html_article += listing_names_common_gen(plant_data)
     html_article += listing_distributions_gen(plant_data)
+    html_article += listing_traits_gen(plant_data)
     html_article += listing_activities_gen(plant_data)
     html_article += listing_chemicals_gen(plant_data)
     html_article += listing_condition_gen(plant_data)
@@ -2324,16 +2427,6 @@ def plant_listing_page_gen(master_item):
     ### FAMILY
     if plant_data['taxonomies'] != []: hero_taxonomy = plant_data['taxonomies'][0]['family'].title()
     else: hero_taxonomy = 'Not available'
-    ### NATIVE RANGE
-    if plant_data['distribution'] != []: hero_distribution = plant_data['distribution'][0]['continent'].title()
-    else: hero_distribution = 'Not available'
-    ### PLANTS PARTS
-    hero_plant_parts_list = []
-    for item in plant_parts_data[:2]:
-        hero_plant_parts_list.append(item['plant_part_canonical_name'])
-    hero_plant_parts_html = ' · '.join(hero_plant_parts_list)
-    hero_plant_parts_html = hero_plant_parts_html.title()
-    if hero_plant_parts_html == '': hero_plant_parts_html = 'Not available'
     ### SYNONYMS
     hero_synonyms_list = []
     for item in plant_synonyms:
@@ -2554,89 +2647,6 @@ def plant_listing_page_gen(master_item):
             </section>
         '''
 
-    ################################################################################
-    ### IDENTIFICATION
-    ################################################################################
-    traits_data = plant_data['traits']
-    if traits_data != []:
-        # print(traits_data)
-        # quit()
-        html_categories = ''
-        for trait_item in traits_data:
-            # print(json.dumps(trait_item, indent=4))
-            # quit()
-            category = trait_item['trait_category']
-            ### TODO: REMOVE when all "trait_item" have 'llm' field
-            try: 
-                trait_llm = trait_item['llm']
-                trait_llm_html = f'''<p>{trait_item['llm']}</p>'''
-            except: 
-                trait_llm_html = f''
-            html_categories += f'''
-                <h3>{category}</h3>
-                {trait_llm_html}
-            '''
-            traits = trait_item['traits']
-            traits_done = []
-            traits_formatted = []
-            for trait in traits:
-                found = False
-                for trait_done in traits_done:
-                    if (
-                        trait_done['trait_1'] == trait['trait_1'] and
-                        trait_done['trait_value'] == trait['trait_value']
-                    ):
-                        found = True
-                        break
-                if found:
-                    continue
-                traits_done.append(
-                    {
-                       'trait_1': trait['trait_1'],
-                       'trait_value': trait['trait_value'],
-                    }
-                )
-                ###
-                if 'mean' in trait['trait_2'] or 'max' in trait['trait_2'] or 'min' in trait['trait_2']:
-                    unit = trait['trait_units']
-                    if 'mean' in trait['trait_2']:
-                        descriptor = 'mean'
-                    elif 'max' in trait['trait_2']:
-                        descriptor = 'max'
-                    elif 'min' in trait['trait_2']:
-                        descriptor = 'min'
-                    else:
-                        descriptor = ''
-                else:
-                    unit = ''
-                    descriptor = ''
-                traits_formatted.append(
-                    {
-                        'trait_name': f'''{trait['trait_1']} {descriptor}''',
-                        'trait_value': f'''{trait['trait_value']} {unit}''',
-                    }
-                )
-            traits_formatted = sorted(traits_formatted, key=lambda x: x['trait_name'], reverse=False)
-            for trait in traits_formatted:
-                html_categories += f''' 
-                    <dl>
-                        <dt style="display: inline;">{trait['trait_name']}:</dt>
-                        <dd class="tag">{trait['trait_value']}</dd>
-                    </dl>
-                '''
-        ### SOURCES
-        sources_html = f'''
-            <p style="margin-top: 4.8rem;">
-                Sources: Global Inventory of Floras and Traits (GIFT)
-            </p>
-        '''
-        html_article += f'''
-            <section>
-                <h2>Botanical Identification</h2>
-                {html_categories}
-                {sources_html}
-            </section>
-        '''
 
     """
     """

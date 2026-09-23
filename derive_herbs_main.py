@@ -253,37 +253,23 @@ def traits_gen():
     entity_foldername = 'traits'
     master_plants_rows = masterize_utils.masterize_plants_get_all()
     for i, master_plant_row in enumerate(master_plants_rows):
+        master_item = master_plant_row
         print(f'{i}/{len(master_plants_rows)}')
-        plant_name_scientific_canon = master_plant_row[1]
+        plant_name_scientific_reference = master_plant_row['plant_name_scientific_reference']
         ###
         conn = sqlite3.connect(db_filepath)
         conn.row_factory = sqlite3.Row
         cursor = conn.execute("""
             SELECT *
             FROM plants_traits
-            WHERE plant_name_scientific_canon = ?
+            WHERE plant_name_scientific_reference = ?
             ORDER BY trait_category;
-        """, (plant_name_scientific_canon,))
+        """, (plant_name_scientific_reference,))
         rows = cursor.fetchall()
         items = [dict(row) for row in rows]
         conn.close()
         ###
         output_items = []
-        '''
-        grouped_traits = defaultdict(list)
-        for row in rows:
-            category = row["trait_category"] or "General"
-            grouped_traits[category].append({
-                "trait_1": row["trait_1"],
-                "trait_2": row["trait_2"],
-                "value": row["trait_value"],
-                "units": row["trait_units"]
-            })
-            output_item = dict(grouped_traits)
-            # print(json.dumps(output_item, indent=4))
-            # quit()
-            output_items.append(output_item)
-        '''
         traits_groups = []
         for item in items:
             found = False
@@ -311,12 +297,13 @@ def traits_gen():
                 }
                 traits_groups.append(item_new)
         output_items = traits_groups
-        print(json.dumps(traits_groups, indent=4))
+        # print(json.dumps(traits_groups, indent=4))
         # quit()
         ###
-        output_filepath = f'{g.DATA_FOLDERPATH}/{output_foldername}/herbs/{entity_foldername}/{master_plant_row[1]}.json'
+        output_filepath = f'''{HUB_FOLDERPATH}/{output_foldername}/traits/{master_item['plant_name_scientific_reference']}.json'''
         io.folder_create_from_filepath(output_filepath)
         io.json_write(output_filepath, output_items)
+    print(json.dumps(output_items[0], indent=4))
 
 def activities_gen():
     master_items = masterize_utils.masterize_plants_get_all()
@@ -669,6 +656,8 @@ def distributions_gen():
     print(json.dumps(output_item, indent=4))
 
 def run():
+    traits_gen()
+    quit()
     distributions_gen()
     names_common_gen()
     activities_gen()
@@ -742,6 +731,3 @@ def run():
             io.folder_create_from_filepath(output_filepath)
             io.json_write(output_filepath, output_items)
 
-    ### TRAITS
-    if 0:
-        traits_gen()

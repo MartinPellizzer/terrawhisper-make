@@ -189,8 +189,8 @@ def observations_table_plants_distributions_add(source_foldername):
 
 def observations_table_plants_traits_add(source_foldername):
     table_name = 'plants_traits'
-    input_folderpath = f'{g.DATA_FOLDERPATH}/resolve/{source_foldername}/traits/json'
-    output_folderpath = f'{g.DATA_FOLDERPATH}/observe'
+    input_folderpath = f'{HUB_FOLDERPATH}/resolve/{source_foldername}/traits/json'
+    output_folderpath = f'{HUB_FOLDERPATH}/observe'
     db_filepath = f'{output_folderpath}/observations.db'
     ###
     input_filenames = os.listdir(input_folderpath)
@@ -209,8 +209,8 @@ def observations_table_plants_traits_add(source_foldername):
     cur.executemany(
         f"""
             INSERT OR IGNORE INTO {table_name} (
-                plant_name_scientific_canon,
-                plant_name_scientific_canon_norm,
+                plant_name_scientific_reference,
+                plant_name_scientific_reference_normalize,
                 trait_category,
                 trait_1,
                 trait_2,
@@ -526,10 +526,9 @@ def run():
         observations_table_plants_synonyms_add(source_foldername='wcvp')
 
 
-    if 0:
+    if 1:
         observations_table_plants_traits_add(source_foldername='gift')
 
-    # test()
     if 1:
         observations_table_plants_distributions_add(source_foldername='wcvp')
 

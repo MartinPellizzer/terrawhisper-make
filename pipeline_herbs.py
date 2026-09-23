@@ -54,25 +54,29 @@ Parse all other sources after creating masterize from pubmed because parsing oth
 """
 
 if 0:
-    import reference_herbs_wcvp
+    # import reference_herbs_wcvp
     # import reference_herbs_drduke
     # import reference_herbs_col
     # import reference_herbs_pubchem
     # import reference_herbs_mesh
-    reference_herbs_wcvp.run()
+    import reference_herbs_gift
+    # reference_herbs_wcvp.run()
     # reference_herbs_drduke.run()
     # reference_herbs_col.run()
     # reference_herbs_pubchem.run()
     # reference_herbs_mesh.run()
+    reference_herbs_gift.run()
     pass
 
 if 0:
     # import parse_herbs_pubmed
     # import parse_herbs_col
-    import parse_herbs_wcvp
+    # import parse_herbs_wcvp
+    import parse_herbs_gift
     # parse_herbs_pubmed.run()
     # parse_herbs_col.run()
-    parse_herbs_wcvp.run()
+    # parse_herbs_wcvp.run()
+    parse_herbs_gift.run()
 
 if 0:
     import normalize_herbs_main
@@ -109,6 +113,7 @@ if 0:
 if 1:
     import render_herbs_main
     render_herbs_main.run()
+
 quit()
 
 quit()

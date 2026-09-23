@@ -476,13 +476,13 @@ def resolve_activities(source_foldername):
     # quit()
 
 def resolve_traits(source_foldername):
-    input_folderpath = f'{g.DATA_FOLDERPATH}/normalize/{source_foldername}/traits/json'
-    output_folderpath = f'{g.DATA_FOLDERPATH}/resolve/{source_foldername}/traits/json'
+    input_folderpath = f'{HUB_FOLDERPATH}/normalize/{source_foldername}/traits/json'
+    output_folderpath = f'{HUB_FOLDERPATH}/resolve/{source_foldername}/traits/json'
     try: shutil.rmtree(output_folderpath)
     except: pass
     os.makedirs(output_folderpath, exist_ok=True)
     ###
-    wcvp_folderpath = f'{g.DATA_FOLDERPATH}/reference/wcvp/wcvp.db'
+    wcvp_folderpath = f'{HUB_FOLDERPATH}/reference/wcvp/wcvp.db'
     wcvp_conn = sqlite3.connect(wcvp_folderpath)
     ###
     input_filenames = os.listdir(input_folderpath)
@@ -498,9 +498,9 @@ def resolve_traits(source_foldername):
         for input_item in input_data:
             # print(json.dumps(input_item, indent=4))
             # quit()
-            plant_name_scientific_norm = input_item['plant_name_scientific_norm']
+            plant_name_scientific_reference_normalize = input_item['plant_name_scientific_reference_normalize']
             ### RESOLVE PLANT NAME (WCVP)
-            wcvp_row = resolve_utils.resolve_plant_accepted(wcvp_conn, plant_name_scientific_norm)
+            wcvp_row = resolve_utils.resolve_plant_accepted(wcvp_conn, plant_name_scientific_reference_normalize)
             ###
             if wcvp_row:
                 # print(wcvp_name_row)
@@ -513,6 +513,7 @@ def resolve_traits(source_foldername):
         if resolved_data != []:
             io.json_write(output_filepath, resolved_data)
     wcvp_conn.close()
+    print(json.dumps(input_item, indent=4))
 
 def run():
     print('RESOLVE')
@@ -522,11 +523,12 @@ def run():
         resolve_synonyms(source_foldername='wcvp')
         print(f'resolve synonyms() - execution time: ', time.perf_counter() - start)
 
-    if 0:
+    if 1:
         start = time.perf_counter()
         resolve_traits(source_foldername='gift')
         print(f'resolve traits() - execution time: ', time.perf_counter() - start)
 
+    quit()
 
     if 1:
         start = time.perf_counter()

@@ -11,19 +11,62 @@ from lib import io
 import masterize_utils
 import parse_utils
 
+HUB_FOLDERPATH = f'''{g.DATA_FOLDERPATH}/herbs'''
+
+def trait_create(
+    plant_name_scientific_reference,
+    plant_name_scientific_reference_normalize,
+    plant_genus,
+    plant_author,
+    trait_category,
+    trait_1,
+    trait_2,
+    trait_units,
+    trait_type,
+    trait_value,
+    trait_agreement,
+    trait_coeff_var,
+    trait_n,
+    trait_refs,
+    source_name,
+    source_acronym,
+):
+    item = {
+        'plant_name_scientific_reference': plant_name_scientific_reference,
+        'plant_name_scientific_reference_normalize': plant_name_scientific_reference_normalize,
+        'plant_genus': plant_genus,
+        'plant_author': plant_author,
+        'trait_category': trait_category,
+        'trait_1': trait_1,
+        'trait_2': trait_2,
+        'trait_units': trait_units,
+        'trait_type': trait_type,
+        'trait_value': trait_value,
+        'trait_agreement': trait_agreement,
+        'trait_coeff_var': trait_coeff_var,
+        'trait_n': trait_n,
+        'trait_refs': trait_refs,
+        'source_name': source_name,
+        'source_acronym': source_acronym,
+    }
+    return item
+
 def parse_traits():
-    output_folderpath = f'{g.DATA_FOLDERPATH}/parse/gift/traits/json'
+    output_folderpath = f'{HUB_FOLDERPATH}/parse/gift/traits/json'
     try: shutil.rmtree(output_folderpath)
     except: pass
     io.folders_recursive_gen(output_folderpath)
     ###
     master_plants_rows = masterize_utils.masterize_plants_get_all()
-    conn = sqlite3.connect(f"{g.DATA_FOLDERPATH}/reference/gift/gift.db")
+    conn = sqlite3.connect(f"{HUB_FOLDERPATH}/reference/gift/gift.db")
     cursor = conn.cursor()
+    output_items_last = []
     for i, master_plant_row in enumerate(master_plants_rows[:]):
         print(f'{i}/{len(master_plants_rows)}')
-        plant_name_scientific_raw = master_plant_row[1]
-        plant_name_scientific_norm = master_plant_row[2]
+        # print(master_plant_row)
+        # quit()
+        plant_name_scientific_reference = master_plant_row['plant_name_scientific_reference']
+        plant_name_scientific_reference_normalize = master_plant_row['plant_name_scientific_reference_normalize']
         cursor.execute("""
             SELECT 
                 p.work_species,
@@ -47,13 +90,13 @@ def parse_traits():
                 ON pt.trait_id = tm.lvl3
             WHERE p.work_species_norm = ?
             ORDER BY tm.category;
-        """, (plant_name_scientific_norm,))
+        """, (plant_name_scientific_reference_normalize,))
         rows = cursor.fetchall()
         output_items = []
         for row in rows:
-            output_item = parse_utils.trait_create(
-                plant_name_scientific_raw = row[0],
-                plant_name_scientific_norm = row[1],
+            output_item = trait_create(
+                plant_name_scientific_reference = row[0],
+                plant_name_scientific_reference_normalize = row[1],
                 plant_genus = row[2],
                 plant_author = row[3],
                 trait_category = row[4],
@@ -72,11 +115,13 @@ def parse_traits():
             output_items.append(output_item)
             # print(json.dumps(output_item, indent=4))
             # quit()
-
-        output_filepath = f'{output_folderpath}/{plant_name_scientific_raw}.json'
+        output_filepath = f'{output_folderpath}/{plant_name_scientific_reference_normalize}.json'
         io.json_write(output_filepath, output_items)
-
+        if output_items != []:
+            output_items_last = output_items
     conn.close()
+    print(json.dumps(output_items_last, indent=4))
+    # quit()
        
 
 def run():

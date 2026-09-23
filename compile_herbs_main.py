@@ -82,21 +82,6 @@ def run():
             f'{g.DATA_FOLDERPATH}/{input_foldername}/herbs/diseases/{plant_name_scientific_reference}.json'
         )
 
-        ### PREPARATIONS 
-        output_data['preparations'] = io.json_read(
-            f'{g.DATA_FOLDERPATH}/{input_foldername}/herbs/preparations/{plant_name_scientific_reference}.json'
-        )
-
-        ### TRAITS 
-        ### TODO: remove condition after making all jsons have the 'traits' field
-        try: 
-            filepath = f'{g.DATA_FOLDERPATH}/{input_foldername}/herbs/traits/{plant_name_scientific_reference}.json'
-            traits = io.json_read(filepath)
-            output_data['traits'] = traits
-        except:
-            output_data['traits'] = []
-
-        ###
         """
 
         ### DISTRIBUTIONS
@@ -134,6 +119,10 @@ def run():
             f'{input_folderpath}/preparations/{plant_name_scientific_reference}.json'
         )
 
+        ### TRAITS
+        output_data['traits'] = io.json_read(
+            f'{input_folderpath}/traits/{plant_name_scientific_reference}.json'
+        )
 
         io.json_write(output_filepath, output_data)
         # print(json.dumps(output_data, indent=4))

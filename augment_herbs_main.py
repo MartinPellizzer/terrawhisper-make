@@ -84,6 +84,7 @@ def run():
     # augment_copy(attribute='taxonomies')
     # augment_copy(attribute='diseases')
 
+    augment_copy(attribute='traits')
     augment_copy(attribute='distributions')
     augment_copy(attribute='names_common')
     augment_copy(attribute='activities')

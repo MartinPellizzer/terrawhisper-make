@@ -14,9 +14,11 @@ from lib import io
 
 import normalize_utils
 
+HUB_FOLDERPATH = f'''{g.DATA_FOLDERPATH}/herbs'''
+
 def table_species_create():
-    input_folderpath = f'{g.DATA_FOLDERPATH}/fetch/gift'
-    output_folderpath = f'{g.DATA_FOLDERPATH}/reference/gift'
+    input_folderpath = f'{HUB_FOLDERPATH}/fetch/gift'
+    output_folderpath = f'{HUB_FOLDERPATH}/reference/gift'
     io.folders_recursive_gen(output_folderpath)
 
     conn = sqlite3.connect(f"{output_folderpath}/gift.db")
@@ -153,8 +155,8 @@ def table_species_create():
 
 
 def table_traits_create():
-    input_folderpath = f'{g.DATA_FOLDERPATH}/fetch/gift/traits'
-    output_folderpath = f'{g.DATA_FOLDERPATH}/reference/gift'
+    input_folderpath = f'{HUB_FOLDERPATH}/fetch/gift/traits'
+    output_folderpath = f'{HUB_FOLDERPATH}/reference/gift'
     io.folders_recursive_gen(output_folderpath)
 
     conn = sqlite3.connect(f"{output_folderpath}/gift.db")
@@ -275,8 +277,8 @@ def table_traits_create():
 
 
 def table_traits_meta_create():
-    input_folderpath = f'{g.DATA_FOLDERPATH}/fetch/gift'
-    output_folderpath = f'{g.DATA_FOLDERPATH}/reference/gift'
+    input_folderpath = f'{HUB_FOLDERPATH}/fetch/gift'
+    output_folderpath = f'{HUB_FOLDERPATH}/reference/gift'
     io.folders_recursive_gen(output_folderpath)
 
     conn = sqlite3.connect(f"{output_folderpath}/gift.db")
@@ -406,17 +408,17 @@ def table_traits_meta_create():
 def run():
     print(f'''HERBS >> REFERENCE >> gift''')
 
-    if 0:
+    if 1:
         start = time.perf_counter()
         table_species_create()
         print(f'table species_create() - execution time: ', time.perf_counter() - start)
 
-    if 0:
+    if 1:
         start = time.perf_counter()
         table_traits_create()
         print(f'table traits_create() - execution time: ', time.perf_counter() - start)
 
-    if 0:
+    if 1:
         start = time.perf_counter()
         table_traits_meta_create()
         print(f'table traits_meta_create() - execution time: ', time.perf_counter() - start)
