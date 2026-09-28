@@ -16,6 +16,8 @@ import reference_utils
 import normalize_utils
 import masterize_utils
 
+HUB_FOLDERPATH = f'''{g.DATA_FOLDERPATH}/herbs'''
+
 def powo_to_jsons():
     source_foldername = 'powo'
     input_foldername = 'fetch'
@@ -125,20 +127,17 @@ def powo_to_jsons():
         # quit()
 
 def powo_to_jsons_new():
-    source_foldername = 'powo'
-    input_foldername = 'fetch'
-    output_foldername = 'parse'
-    input_folderpath = f'{g.DATA_FOLDERPATH}/{input_foldername}/{source_foldername}/html'
-    output_folderpath = f'{g.DATA_FOLDERPATH}/{output_foldername}/{source_foldername}/json'
+    input_folderpath = f'{HUB_FOLDERPATH}/fetch/powo/html'
+    output_folderpath = f'{HUB_FOLDERPATH}/parse/powo/taxonomies/json'
     try: shutil.rmtree(output_folderpath)
     except: pass
     io.folders_recursive_gen(output_folderpath)
     input_filenames = sorted(os.listdir(input_folderpath))
-    ### FILTER FOR "ACCEPTED" PLANTS
+    ### TODO? FILTER FOR "ACCEPTED" PLANTS
     plants_rows = masterize_utils.masterize_plants_get_all()
     wcvp_rows = []
     for i, plant_row in enumerate(plants_rows[:]):
-        plant_name_normalized = plant_row[2]
+        plant_name_normalized = plant_row['plant_name_scientific_reference_normalize']
         wcvp_plant_name_row = reference_utils.wcvp_plant_name_get_row(plant_name_normalized)
         if wcvp_plant_name_row == None: continue
         wcvp_rows.append(wcvp_plant_name_row)
@@ -152,9 +151,10 @@ def powo_to_jsons_new():
         if powo_id.strip() == '': powo_id = ipni_id
         # quit()
 
-        print(f'{i}/{len(wcvp_rows)}')
+        print(f'PARSE HERBS POWO TAXONOMY {i}/{len(wcvp_rows)}')
         powo_html_filename = f'{powo_id}.html'
         powo_html_filepath = f'{input_folderpath}/{powo_html_filename}'
+        if not os.path.exists(powo_html_filepath): continue
         powo_html = io.file_read(powo_html_filepath)
         html = powo_html
         soup = BeautifulSoup(html, "html.parser")
@@ -250,8 +250,6 @@ def powo_to_jsons_new():
 def run():
     print('PARSE >> powo')
 
-    start = time.perf_counter()
     # powo_to_jsons() ### WARNING: takes many many minutes
     powo_to_jsons_new() ### WARNING: takes many many minutes
-    print(f'powo to_jsons() - execution time: ', time.perf_counter() - start)
 

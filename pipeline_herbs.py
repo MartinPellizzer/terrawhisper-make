@@ -54,29 +54,39 @@ Parse all other sources after creating masterize from pubmed because parsing oth
 """
 
 if 0:
-    # import reference_herbs_wcvp
+    import reference_herbs_wcvp
     # import reference_herbs_drduke
     # import reference_herbs_col
     # import reference_herbs_pubchem
     # import reference_herbs_mesh
     import reference_herbs_gift
-    # reference_herbs_wcvp.run()
+
+    reference_herbs_wcvp.run()
     # reference_herbs_drduke.run()
     # reference_herbs_col.run()
     # reference_herbs_pubchem.run()
     # reference_herbs_mesh.run()
-    reference_herbs_gift.run()
+    # reference_herbs_gift.run()
     pass
 
 if 0:
-    # import parse_herbs_pubmed
-    # import parse_herbs_col
-    # import parse_herbs_wcvp
+    import masterize_herbs_main_new
+    masterize_herbs_main_new.run()
+
+if 0:
+    import parse_herbs_wcvp
+    import parse_herbs_powo
+    import parse_herbs_col
     import parse_herbs_gift
-    # parse_herbs_pubmed.run()
-    # parse_herbs_col.run()
-    # parse_herbs_wcvp.run()
+    import parse_herbs_drduke
+    import parse_herbs_pubmed
+
+    parse_herbs_col.run()
+    parse_herbs_wcvp.run()
     parse_herbs_gift.run()
+    parse_herbs_drduke.run()
+    parse_herbs_pubmed.run()
+    parse_herbs_powo.run()
 
 if 0:
     import normalize_herbs_main
@@ -92,27 +102,34 @@ if 0:
     masterize_herbs_init.run()
     masterize_herbs_main.run()
 
+# quit()
 if 0:
     import observe_herbs_init
     import observe_herbs_main
+    import observe_herbs_peek
     observe_herbs_init.run()
     observe_herbs_main.run()
+    # observe_herbs_peek.run()
+
+# quit()
 
 if 0:
     import derive_herbs_main
     derive_herbs_main.run()
 
-if 0:
+if 1:
     import augment_herbs_main
     augment_herbs_main.run()
 
-if 0:
+if 1:
     import compile_herbs_main
     compile_herbs_main.run()
 
 if 1:
     import render_herbs_main
     render_herbs_main.run()
+
+quit()
 
 quit()
 

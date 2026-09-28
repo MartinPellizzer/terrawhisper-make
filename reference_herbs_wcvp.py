@@ -13,7 +13,7 @@ from lib import io
 
 HUB_FOLDERPATH = f'''{g.DATA_FOLDERPATH}/herbs'''
 
-wcvp_table_name = f'wcvp_plants_names'
+wcvp_table_name = f'plants_names'
 wcvp_table_name_distribution = f'plants_distributions'
 
 def peek():
@@ -342,12 +342,6 @@ def wcvp_table_plants_distribution_create():
 def run():
     print(f'REFERENCE >> wcvp')
 
-    if 0:
-        start = time.perf_counter()
-        wcvp_table_plants_names_create()
-        # peek()
-        print(f'wcvp table_plants_names_create() - execution time: ', time.perf_counter() - start)
-
-    if 1:
-        wcvp_table_plants_distribution_create()
+    wcvp_table_plants_names_create()
+    wcvp_table_plants_distribution_create()
 

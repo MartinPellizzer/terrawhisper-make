@@ -12,85 +12,16 @@ HUB_FOLDERPATH = f'''{g.DATA_FOLDERPATH}/herbs'''
 output_folderpath = f'{HUB_FOLDERPATH}/observe'
 db_filepath = f'{output_folderpath}/observations.db'
 
-def observations_table_plants_taxonomies_add():
-    table_name = 'plants_taxonomies'
-    input_folderpath = f'{HUB_FOLDERPATH}/resolve/powo/taxonomies/json'
-    output_folderpath = f'{HUB_FOLDERPATH}/observe'
-    db_filepath = f'{output_folderpath}/observations.db'
-    ###
-    input_filenames = os.listdir(input_folderpath)
-    all_data = []
-    for i, input_filename in enumerate(input_filenames[:]):
-        print(f'OBSERVE PLANTS TAXONOMIES - {i}/{len(input_filenames)}')
-        input_filepath = f'{input_folderpath}/{input_filename}'
-        input_data = io.json_read(input_filepath)
-        for input_item in input_data:
-            all_data.append(input_item)
-            # print(json.dumps(input_item, indent=4))
-            # quit()
-    # print(json.dumps(input_data[0], indent=4))
-    # quit()
-    """
-    all_data = []
-    for i, input_filename in enumerate(input_filenames[:]):
-        print(f'{i}/{len(input_filenames)}')
-        input_filepath = f'{input_folderpath}/{input_filename}'
-        input_data = io.json_read(input_filepath)
-        all_data.append(input_data)
-    """
-    ###
-    conn = sqlite3.connect(db_filepath)
-    cur = conn.cursor()
-    cur.executemany(
-        f"""
-        INSERT OR IGNORE INTO {table_name} (
-            plant_name_scientific_reference,
-            plant_name_scientific_reference_normalize,
-            taxon_kingdom,
-            taxon_phylum,
-            taxon_class,
-            taxon_subclass,
-            taxon_order,
-            taxon_family,
-            taxon_genus,
-            source_name,
-            source_acronym
-        )
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        """,
-        [
-            (
-                item.get("wcvp_name_taxon"),
-                item.get("wcvp_name_taxon_norm"),
-                item.get("kingdom"),
-                item.get("phylum"),
-                item.get("class"),
-                item.get("subclass"),
-                item.get("order"),
-                item.get("family"),
-                item.get("genus"),
-                'Plants of the World Online',
-                'POWO',
-            )
-            for item in all_data
-        ]
-    )
-    conn.commit()
-    rows = conn.execute("SELECT * FROM plants_taxonomies")
-    for row in list(rows)[:10]:
-        print(row)
-    conn.close()
-
 def observations_table_plants_synonyms_add(source_foldername):
     table_name = 'plants_synonyms'
-    input_folderpath = f'{HUB_FOLDERPATH}/resolve/{source_foldername}/synonyms/json'
-    output_folderpath = f'{HUB_FOLDERPATH}/observe'
+    input_folderpath = f'{g.DATA_FOLDERPATH}/resolve/{source_foldername}/synonyms/json'
+    output_folderpath = f'{g.DATA_FOLDERPATH}/observe'
     db_filepath = f'{output_folderpath}/observations.db'
     ###
     input_filenames = os.listdir(input_folderpath)
     all_data = []
     for i, input_filename in enumerate(input_filenames[:]):
-        print(f'OBSERVE PLANTS SYNONYMS - {i}/{len(input_filenames)}')
+        print(f'PLANTS_SYNONYMS - {i}/{len(input_filenames)}')
         input_filepath = f'{input_folderpath}/{input_filename}'
         input_data = io.json_read(input_filepath)
         for input_item in input_data:
@@ -103,8 +34,8 @@ def observations_table_plants_synonyms_add(source_foldername):
     cur.executemany(
         f"""
             INSERT OR IGNORE INTO {table_name} (
-                plant_name_scientific_reference, 
-                plant_synonym_reference, 
+                plant_canonical_name, 
+                plant_synonym, 
                 source_name
             )
             VALUES (?, ?, ?)
@@ -451,11 +382,9 @@ def observations_table_plants_activities_add(source_foldername):
                 activity_name_reference, 
                 activity_name_reference_normalize, 
                 source_name,
-                source_acronym,
-                reference_id,
-                reference_name
+                source_acronym
             )
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?)
         """,
         [
             (
@@ -465,14 +394,12 @@ def observations_table_plants_activities_add(source_foldername):
                 item.get("activity_name_reference_normalize"),
                 item.get("source_name"),
                 item.get("source_acronym"),
-                item.get("reference_id"),
-                item.get("reference_name"),
             )
             for item in all_data
         ]
     )
     conn.commit()
-    rows = conn.execute(f'''SELECT * FROM {table_name} WHERE plant_name_scientific_reference = "cakile maritima"''')
+    rows = conn.execute(f"SELECT * FROM {table_name}")
     for row in list(rows)[:10]:
         print(row)
     conn.close()
@@ -493,8 +420,6 @@ def observations_table_plants_chemicals_add(source_foldername):
             all_data.append(input_item)
             # print(json.dumps(input_item, indent=4))
             # quit()
-    # print(json.dumps(all_data[0], indent=4))
-    # quit()
     ###
     conn = sqlite3.connect(db_filepath)
     cur = conn.cursor()
@@ -510,10 +435,9 @@ def observations_table_plants_chemicals_add(source_foldername):
                 unit,
                 source_name,
                 source_acronym,
-                reference_id,
                 reference_name
             )
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """,
         [
             (
@@ -526,8 +450,7 @@ def observations_table_plants_chemicals_add(source_foldername):
                 item.get("unit"),
                 item.get("source_name"),
                 item.get("source_acronym"),
-                item.get("reference_id"),
-                item.get("reference_name"),
+                item.get("reference_nam"),
             )
             for item in all_data
         ]
@@ -596,37 +519,30 @@ def test():
         print(row)
     conn.close()
 
+def observations_peek():
+    db_filepath = f'{HUB_FOLDERPATH}/observe/observations.db'
+    conn = sqlite3.connect(db_filepath)
+    conn.row_factory = sqlite3.Row
+    records = conn.execute(f'''
+        SELECT * 
+        FROM plants_compounds 
+        WHERE plant_name_scientific_reference_normalize = "panax ginseng"
+    ''')
+    rows = records.fetchall()
+    items = [dict(row) for row in rows]
+    '''
+    for item in items:
+        print(json.dumps(item, indent=4))
+        quit()
+    '''
+    print(len(items))
+    conn.close()
+
 def run():
     print('OBSERVE')
 
-    # observations_table_plants_chemicals_add(source_foldername='drduke')
-    observations_table_plants_chemicals_add(source_foldername='pubmed')
-    # quit()
-
-    observations_table_plants_activities_add(source_foldername='drduke')
-    observations_table_plants_activities_add(source_foldername='pubmed')
-    # quit()
-
-    observations_table_plants_taxonomies_add()
-
-    observations_table_plants_synonyms_add(source_foldername='wcvp')
-
     if 1:
-        observations_table_plants_traits_add(source_foldername='gift')
+        observations_peek()
 
-    if 1:
-        observations_table_plants_distributions_add(source_foldername='wcvp')
-
-    if 1:
-        # observations_table_plants_names_common_add(source_foldername='wikidata')
-        observations_table_plants_names_common_add(source_foldername='col')
-
-    if 1:
-        observations_table_plants_conditions_add(source_foldername='pubmed')
-
-    if 1:
-        observations_table_plants_plants_parts_add(source_foldername='pubmed')
-
-    if 1:
-        observations_table_plants_preparations_add(source_foldername='pubmed')
+    quit()
 

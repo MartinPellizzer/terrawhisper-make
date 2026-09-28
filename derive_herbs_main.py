@@ -16,17 +16,6 @@ input_folderpath = f'{HUB_FOLDERPATH}/{input_foldername}'
 output_folderpath = f'{HUB_FOLDERPATH}/{output_foldername}'
 db_filepath = f'{input_folderpath}/observations.db'
 
-def synonym_summary_get(plant_canonical_name):
-    conn = sqlite3.connect(db_filepath)
-    cursor = conn.execute("""
-        SELECT *
-        FROM plants_synonyms
-        WHERE plant_canonical_name = ?
-    """, (plant_canonical_name,))
-    rows = cursor.fetchall()
-    conn.close()
-    return rows
-
 def names_common_summary_get(plant_name_scientific_canon):
     conn = sqlite3.connect(db_filepath)
     cursor = conn.execute("""
@@ -254,7 +243,7 @@ def traits_gen():
     master_plants_rows = masterize_utils.masterize_plants_get_all()
     for i, master_plant_row in enumerate(master_plants_rows):
         master_item = master_plant_row
-        print(f'{i}/{len(master_plants_rows)}')
+        print(f'DERIVE TRAITS {i}/{len(master_plants_rows)}')
         plant_name_scientific_reference = master_plant_row['plant_name_scientific_reference']
         ###
         conn = sqlite3.connect(db_filepath)
@@ -305,54 +294,6 @@ def traits_gen():
         io.json_write(output_filepath, output_items)
     print(json.dumps(output_items[0], indent=4))
 
-def activities_gen():
-    master_items = masterize_utils.masterize_plants_get_all()
-    # print(json.dumps(items, indent=4))
-    # quit()
-    for i, master_item in enumerate(master_items):
-        print(f'{i}/{len(master_items)}')
-        ###
-        conn = sqlite3.connect(db_filepath)
-        conn.row_factory = sqlite3.Row
-        cursor = conn.execute("""
-            SELECT
-                plant_name_scientific_reference,
-                activity_name_reference,
-                COUNT(*) AS sources_num,
-                json_group_array(source_name) AS sources
-            FROM (
-                SELECT DISTINCT
-                    plant_name_scientific_reference,
-                    activity_name_reference,
-                    source_name
-                FROM plants_activities
-                WHERE plant_name_scientific_reference = ?
-            )
-            GROUP BY
-                plant_name_scientific_reference,
-                activity_name_reference
-            ORDER BY sources_num DESC;
-        """, (master_item['plant_name_scientific_reference'],))
-        items = cursor.fetchall()
-        items = [dict(item) for item in items]
-        conn.close()
-        # print(json.dumps(items, indent=4))
-        # quit()
-        ###
-        output_items = []
-        for item in items:
-            output_item = {
-                'plant_name_scientific_reference': master_item['plant_name_scientific_reference'],
-                'activity_name_reference': item['activity_name_reference'],
-                'sources_num': item['sources_num'],
-                'sources': json.loads(item['sources']),
-            }
-            print(json.dumps(output_item, indent=4))
-            output_items.append(output_item)
-        output_filepath = f'''{HUB_FOLDERPATH}/{output_foldername}/activities/{master_item['plant_name_scientific_reference']}.json'''
-        io.folder_create_from_filepath(output_filepath)
-        io.json_write(output_filepath, output_items)
-
 def names_common_gen():
     entity_foldername = 'names_common'
     master_plants_rows = masterize_utils.masterize_plants_get_all()
@@ -360,7 +301,7 @@ def names_common_gen():
     common_names_aliases_found_count = 0
     col_common_names_vernacular_found_count = 0
     for i, master_plant_row in enumerate(master_plants_rows):
-        print(f'{i}/{len(master_plants_rows)}')
+        print(f'DERIVE NAMES COMMON {i}/{len(master_plants_rows)}')
         plant_name_scientific_reference_normalize = master_plant_row['plant_name_scientific_reference_normalize']
         ### GET ALL NAMES COMMON
         conn = sqlite3.connect(db_filepath)
@@ -444,26 +385,99 @@ def names_common_gen():
     print(common_names_aliases_found_count)
     print(col_common_names_vernacular_found_count)
 
+def activities_gen():
+    master_items = masterize_utils.masterize_plants_get_all()
+    # print(json.dumps(items, indent=4))
+    # quit()
+    for i, master_item in enumerate(master_items):
+        print(f'DERIVE ACTIVITIES {i}/{len(master_items)}')
+        ###
+        # if master_item['plant_name_scientific_reference'] != 'cakile maritima': continue
+        conn = sqlite3.connect(db_filepath)
+        conn.row_factory = sqlite3.Row
+        # cursor = conn.execute(f"SELECT * FROM plants_activities")
+        # rows = cursor.fetchall()
+        # items = [dict(row) for row in rows]
+        # for item in items[:1]:
+            # print(json.dumps(item, indent=4))
+        cursor = conn.execute("""
+            SELECT
+                plant_name_scientific_reference,
+                activity_name_reference,
+                COUNT(*) AS sources_num,
+                json_group_array(
+                    json_object(
+                        'reference_name', reference_name,
+                        'reference_id', reference_id
+                    )
+                ) AS sources
+            FROM (
+                SELECT DISTINCT
+                    plant_name_scientific_reference,
+                    activity_name_reference,
+                    reference_name,
+                    reference_id
+                FROM plants_activities
+                WHERE plant_name_scientific_reference = ?
+            )
+            GROUP BY
+                plant_name_scientific_reference,
+                activity_name_reference
+            ORDER BY sources_num DESC;
+        """, (master_item['plant_name_scientific_reference'],))
+        items = cursor.fetchall()
+        items = [dict(item) for item in items]
+        conn.close()
+        ###
+        output_items = []
+        for item in items:
+            output_item = {
+                'plant_name_scientific_reference': master_item['plant_name_scientific_reference'],
+                'activity_name_reference': item['activity_name_reference'],
+                'sources_num': item['sources_num'],
+                'sources': json.loads(item['sources']),
+            }
+            # print(json.dumps(output_item, indent=4))
+            output_items.append(output_item)
+        output_filepath = f'''{HUB_FOLDERPATH}/{output_foldername}/activities/{master_item['plant_name_scientific_reference']}.json'''
+        io.folder_create_from_filepath(output_filepath)
+        io.json_write(output_filepath, output_items)
+        # print(json.dumps(output_items, indent=4))
+        # quit()
+
 def chemicals_gen():
     master_plants_rows = masterize_utils.masterize_plants_get_all()
     # print(json.dumps(master_plants_rows[0], indent=4))
     # quit()
+    last = []
     for i, master_plant_row in enumerate(master_plants_rows):
         master_item = master_plant_row
-        print(f'{i}/{len(master_plants_rows)}')
+        print(f'DERIVE CHEMICALS {i}/{len(master_plants_rows)}')
         conn = sqlite3.connect(db_filepath)
         conn.row_factory = sqlite3.Row
-        cursor = conn.execute("""
+        # cursor = conn.execute(f"SELECT * FROM plants_chemicals")
+        # rows = cursor.fetchall()
+        # items = [dict(row) for row in rows]
+        # for item in items[:1]:
+            # print(json.dumps(item, indent=4))
+        # quit()
+        cursor = conn.execute('''
             SELECT
                 plant_name_scientific_reference,
                 chemical_name_reference,
                 COUNT(*) AS sources_num,
-                json_group_array(source_name) AS sources
+                json_group_array(
+                    json_object(
+                        'reference_name', reference_name,
+                        'reference_id', reference_id
+                    )
+                ) AS sources
             FROM (
                 SELECT DISTINCT
                     plant_name_scientific_reference,
                     chemical_name_reference,
-                    source_name
+                    reference_name,
+                    reference_id
                 FROM plants_chemicals
                 WHERE plant_name_scientific_reference = ?
             )
@@ -471,7 +485,7 @@ def chemicals_gen():
                 plant_name_scientific_reference,
                 chemical_name_reference
             ORDER BY sources_num DESC;
-        """, (master_item['plant_name_scientific_reference'],))
+        ''', (master_item['plant_name_scientific_reference'],))
         rows = cursor.fetchall()
         conn.close()
         ###
@@ -488,13 +502,16 @@ def chemicals_gen():
         output_filepath = f'''{HUB_FOLDERPATH}/{output_foldername}/chemicals/{master_plant_row['plant_name_scientific_reference']}.json'''
         io.folder_create_from_filepath(output_filepath)
         io.json_write(output_filepath, output_items)
-    print(json.dumps(output_items, indent=4))
+        if output_items != []:
+            last = output_items
+    print(json.dumps(last, indent=4))
+    # quit()
 
 def conditions_gen():
     master_plants_rows = masterize_utils.masterize_plants_get_all()
     for i, master_plant_row in enumerate(master_plants_rows):
         master_item = master_plant_row
-        print(f'DERIVE CONDITIONS - {i}/{len(master_plants_rows)}')
+        print(f'DERIVE CONDITIONS {i}/{len(master_plants_rows)}')
         conn = sqlite3.connect(db_filepath)
         conn.row_factory = sqlite3.Row
         cursor = conn.execute("""
@@ -537,7 +554,7 @@ def plants_parts_gen():
     master_plants_rows = masterize_utils.masterize_plants_get_all()
     for i, master_plant_row in enumerate(master_plants_rows):
         master_item = master_plant_row
-        print(f'{i}/{len(master_plants_rows)}')
+        print(f'DERIVE PLANTS PARTS {i}/{len(master_plants_rows)}')
         ###
         conn = sqlite3.connect(db_filepath)
         conn.row_factory = sqlite3.Row
@@ -583,7 +600,7 @@ def preparations_gen():
     master_plants_rows = masterize_utils.masterize_plants_get_all()
     for i, master_plant_row in enumerate(master_plants_rows):
         master_item = master_plant_row
-        print(f'{i}/{len(master_plants_rows)}')
+        print(f'DERIVE PREPARATIONS {i}/{len(master_plants_rows)}')
         ###
         conn = sqlite3.connect(db_filepath)
         conn.row_factory = sqlite3.Row
@@ -628,7 +645,7 @@ def distributions_gen():
     master_plants_rows = masterize_utils.masterize_plants_get_all()
     for i, master_plant_row in enumerate(master_plants_rows):
         master_item = master_plant_row
-        print(f'{i}/{len(master_plants_rows)}')
+        print(f'DERIVE DISTRIBUTIONS {i}/{len(master_plants_rows)}')
         ###
         conn = sqlite3.connect(db_filepath)
         conn.row_factory = sqlite3.Row
@@ -653,81 +670,83 @@ def distributions_gen():
         output_filepath = f'''{HUB_FOLDERPATH}/{output_foldername}/distributions/{master_plant_row['plant_name_scientific_reference']}.json'''
         io.folder_create_from_filepath(output_filepath)
         io.json_write(output_filepath, output_items)
+    # print(json.dumps(output_item, indent=4))
+
+def synonyms_gen():
+    entity_foldername = 'synonyms'
+    master_plants_rows = masterize_utils.masterize_plants_get_all()
+    for i, master_plant_row in enumerate(master_plants_rows):
+        master_item = master_plant_row
+        print(f'DERIVE PLANTS - SYNONYMS {i}/{len(master_plants_rows)}')
+        ###
+        conn = sqlite3.connect(db_filepath)
+        conn.row_factory = sqlite3.Row
+        cursor = conn.execute("""
+            SELECT *
+            FROM plants_synonyms
+            WHERE plant_name_scientific_reference = ?
+        """, (master_item['plant_name_scientific_reference'],))
+        rows = cursor.fetchall()
+        items = [dict(row) for row in rows]
+        conn.close()
+        ###
+        output_items = []
+        for item in items:
+            output_item = {
+                'plant_name_scientific_reference': master_plant_row['plant_name_scientific_reference'],
+                'plant_synonym_reference': item['plant_synonym_reference'],
+            }
+            output_items.append(output_item)
+        output_filepath = f'''{HUB_FOLDERPATH}/{output_foldername}/synonyms/{master_plant_row['plant_name_scientific_reference']}.json'''
+        io.folder_create_from_filepath(output_filepath)
+        io.json_write(output_filepath, output_items)
+    print(json.dumps(output_item, indent=4))
+
+def taxonomies_gen():
+    entity_foldername = 'taxonomies'
+    master_plants_rows = masterize_utils.masterize_plants_get_all()
+    for i, master_plant_row in enumerate(master_plants_rows):
+        master_item = master_plant_row
+        print(f'DERIVE PLANTS TAXONOMIES {i}/{len(master_plants_rows)}')
+        ###
+        conn = sqlite3.connect(db_filepath)
+        conn.row_factory = sqlite3.Row
+        cursor = conn.execute("""
+            SELECT *
+            FROM plants_taxonomies
+            WHERE plant_name_scientific_reference = ?
+        """, (master_item['plant_name_scientific_reference'],))
+        rows = cursor.fetchall()
+        items = [dict(row) for row in rows]
+        conn.close()
+        ###
+        output_items = []
+        for item in items:
+            output_item = {
+                'plant_name_scientific_reference': master_plant_row['plant_name_scientific_reference'],
+                'kingdom': item['taxon_kingdom'],
+                'phylum': item['taxon_phylum'],
+                'class': item['taxon_class'],
+                'subclass': item['taxon_subclass'],
+                'order': item['taxon_order'],
+                'family': item['taxon_family'],
+                'genus': item['taxon_genus'],
+            }
+            output_items.append(output_item)
+        output_filepath = f'''{HUB_FOLDERPATH}/{output_foldername}/taxonomies/{master_plant_row['plant_name_scientific_reference']}.json'''
+        io.folder_create_from_filepath(output_filepath)
+        io.json_write(output_filepath, output_items)
     print(json.dumps(output_item, indent=4))
 
 def run():
+    chemicals_gen()
+    activities_gen()
+    taxonomies_gen()
+    synonyms_gen()
     traits_gen()
-    quit()
     distributions_gen()
     names_common_gen()
-    activities_gen()
-    chemicals_gen()
     conditions_gen()
     plants_parts_gen()
     preparations_gen()
-
-    ### SYNONYMS
-    if 0:
-        entity_foldername = 'synonyms'
-        master_plants_rows = masterize_utils.masterize_plants_get_all()
-        for i, master_plant_row in enumerate(master_plants_rows):
-            print(f'{i}/{len(master_plants_rows)}')
-            summary_rows = synonym_summary_get(master_plant_row[1])
-            output_items = []
-            for row in summary_rows:
-                output_item = {
-                    'plant_canonical_name': master_plant_row[1], ### MANDATORY
-                    'plant_synonym': row[2],
-                    'source': row[3],
-                }
-                print(json.dumps(output_item, indent=4))
-                output_items.append(output_item)
-            output_filepath = f'{g.DATA_FOLDERPATH}/{output_foldername}/herbs/{entity_foldername}/{master_plant_row[1]}.json'
-            io.folder_create_from_filepath(output_filepath)
-            io.json_write(output_filepath, output_items)
-
-    ### TAXONOMIES
-    if 0:
-        entity_foldername = 'taxonomies'
-        master_plants_rows = masterize_utils.masterize_plants_get_all()
-        for i, master_plant_row in enumerate(master_plants_rows):
-            print(f'{i}/{len(master_plants_rows)}')
-            summary_rows = taxonomy_summary_get(master_plant_row[1])
-            output_items = []
-            for row in summary_rows:
-                output_item = {
-                    'plant_canonical_name': master_plant_row[1], ### MANDATORY
-                    'kingdom': row[2],
-                    'phylum': row[3],
-                    'class': row[4],
-                    'subclass': row[5],
-                    'order': row[6],
-                    'family': row[7],
-                    'genus': row[8],
-                }
-                print(json.dumps(output_item, indent=4))
-                output_items.append(output_item)
-            output_filepath = f'{g.DATA_FOLDERPATH}/{output_foldername}/herbs/{entity_foldername}/{master_plant_row[1]}.json'
-            io.folder_create_from_filepath(output_filepath)
-            io.json_write(output_filepath, output_items)
-
-    ### DISEASES
-    if 0:
-        master_plants_rows = masterize_utils.masterize_plants_get_all()
-        for i, master_plant_row in enumerate(master_plants_rows):
-            print(f'{i}/{len(master_plants_rows)}')
-            summary_disease_rows = disease_summary_get_0000(master_plant_row[1])
-            output_items = []
-            for row in summary_disease_rows:
-                output_item = {
-                    'plant_canonical_name': master_plant_row[1],
-                    'disease_canonical_name': row[1],
-                    'sources_num': row[2],
-                    'sources': json.loads(row[3]),
-                }
-                print(json.dumps(output_item, indent=4))
-                output_items.append(output_item)
-            output_filepath = f'{g.DATA_FOLDERPATH}/{output_foldername}/herbs/diseases/{master_plant_row[1]}.json'
-            io.folder_create_from_filepath(output_filepath)
-            io.json_write(output_filepath, output_items)
 

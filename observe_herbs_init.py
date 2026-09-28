@@ -19,7 +19,8 @@ def observations_table_plants_taxonomies_create(regen=False):
     cur.execute(f"""
         CREATE TABLE IF NOT EXISTS {table_name} (
             id INTEGER PRIMARY KEY,
-            plant_canonical_name TEXT NOT NULL,
+            plant_name_scientific_reference TEXT NOT NULL,
+            plant_name_scientific_reference_normalize TEXT NOT NULL,
             taxon_kingdom TEXT,
             taxon_phylum TEXT,
             taxon_class TEXT,
@@ -27,13 +28,14 @@ def observations_table_plants_taxonomies_create(regen=False):
             taxon_order TEXT,
             taxon_family TEXT,
             taxon_genus TEXT,
-            source TEXT
+            source_name TEXT,
+            source_acronym TEXT
         );
     """)
     conn.execute("PRAGMA journal_mode = WAL;")
     conn.execute("PRAGMA synchronous = OFF;")
     conn.execute("PRAGMA temp_store = MEMORY;")
-    cur.execute(f"CREATE INDEX IF NOT EXISTS idx_{table_name}_plant_canonical_name ON {table_name}(plant_canonical_name)")
+    cur.execute(f"CREATE INDEX IF NOT EXISTS idx_{table_name}_plant_name_scientific_reference ON {table_name}(plant_name_scientific_reference)")
     conn.commit()
     conn.close()
 
@@ -45,15 +47,15 @@ def observations_table_plants_synonyms_create(regen=False):
     cur.execute(f"""
         CREATE TABLE IF NOT EXISTS {table_name} (
             id INTEGER PRIMARY KEY,
-            plant_canonical_name TEXT NOT NULL,
-            plant_synonym TEXT NOT NULL,
+            plant_name_scientific_reference TEXT NOT NULL,
+            plant_synonym_reference TEXT NOT NULL,
             source_name TEXT
         );
     """)
     conn.execute("PRAGMA journal_mode = WAL;")
     conn.execute("PRAGMA synchronous = OFF;")
     conn.execute("PRAGMA temp_store = MEMORY;")
-    cur.execute(f"CREATE INDEX IF NOT EXISTS idx_{table_name}_plant_canonical_name ON {table_name}(plant_canonical_name)")
+    cur.execute(f"CREATE INDEX IF NOT EXISTS idx_{table_name}_plant_name_scientific_reference ON {table_name}(plant_name_scientific_reference)")
     conn.commit()
     conn.close()
 
@@ -215,6 +217,7 @@ def observations_table_plants_chemicals_create(regen=False):
             unit TEXT,
             source_name TEXT NOT NULL,
             source_acronym TEXT,
+            reference_id TEXT,
             reference_name TEXT
         );
     """)
@@ -241,7 +244,9 @@ def observations_table_plants_activities_create(regen=False):
             activity_name_reference TEXT NOT NULL,
             activity_name_reference_normalize TEXT,
             source_name TEXT NOT NULL,
-            source_acronym TEXT
+            source_acronym TEXT,
+            reference_id TEXT,
+            reference_name TEXT
         );
     """)
     conn.execute("PRAGMA journal_mode = WAL;")
@@ -308,17 +313,18 @@ def run():
     # except: pass
     os.makedirs(output_folderpath, exist_ok=True)
 
-    # observations_table_plants_synonyms_create(regen=True)
+    observations_table_plants_activities_create(regen=True)
+    observations_table_plants_chemicals_create(regen=True)
+
     # observations_table_plants_names_create(regen=True)
 
-    # observations_table_plants_taxonomies_create(regen=True)
+    observations_table_plants_taxonomies_create(regen=True)
 
+    observations_table_plants_synonyms_create(regen=True)
     observations_table_plants_traits_create(regen=True)
 
     observations_table_plants_names_common_create(regen=True)
     observations_table_plants_distributions_create(regen=True)
-    observations_table_plants_activities_create(regen=True)
-    observations_table_plants_chemicals_create(regen=True)
     observations_table_plants_conditions_create(regen=True)
     observations_table_plants_plants_parts_create(regen=True)
     observations_table_plants_preparations_create(regen=True)

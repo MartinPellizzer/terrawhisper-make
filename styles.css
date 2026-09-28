@@ -1,3 +1,23 @@
+:root {
+    --font: system-ui, sans-serif;
+    --font_normal: 400;
+    --font_bold: 700;
+    --font_xl: 4.8rem;
+    --font_lg: 3.2rem;
+    --font_md: 2.4rem;
+    --font_sm: 1.6rem;
+    --font_xs: 1.4rem;
+    
+    --space_4: 1.6rem;
+    --space_5: 2.4rem;
+    --space_6: 3.2rem;
+    --space_7: 4.8rem;
+    --space_8: 6.4rem;
+
+    --text: #111;
+    --bg: #fff;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -11,7 +31,10 @@ html {
 body {
     font-size: 1.6rem;
     line-height: 1.5;
-    font-family: sans-serif;
+    font-family: var(--font);
+
+    color: var(--text);
+    background: var(--bg);
 }
 
 .container-xxl {
@@ -43,23 +66,27 @@ body {
 }
 
 h1 {
-    font-size: 7.2rem;
+    font-size: var(--font_xl);
+    font-weight: var(--font_bold);
     line-height: 1.2;
-    margin-bottom: 1.6rem;
-    color: #000000;
 }
 
 h2 {
-    font-size: 4.8rem;
+    font-size: var(--font_lg);
+    font-weight: var(--font_bold);
     line-height: 1.2;
-    color: #000000;
 }
 
 h3 {
-    font-size: 2.4rem;
+    font-size: var(--font_md);
+    font-weight: var(--font_bold);
     line-height: 1.2;
-    margin-bottom: 1.6rem;
-    color: #000000;
+}
+
+p {
+    font-size: var(--font_sm);
+    font-weight: var(--font_normal);
+    line-height: 1.5;
 }
 
 img {
@@ -72,6 +99,10 @@ iframe {
     width: 100%;
     height: 450px;
     border: 0;
+}
+
+.mb_4 {
+    margin-bottom: var(--space_4);
 }
 
 /*********************************************/
@@ -427,19 +458,23 @@ footer span {
 /**************************************/
 
 .listing {
+    /*
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
   font-weight: 400;
   font-style: normal;
+    */
 }
 
 .listing section {
 }
 
 .listing h1 {
+    /*
     font-size: 4.8rem;
     line-height: 1.1;
     margin-bottom: 1.6rem;
+    */
 }
 
 .listing h2 {

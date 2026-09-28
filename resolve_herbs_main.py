@@ -24,7 +24,7 @@ def resolve_preparations(source_foldername):
     wcvp_conn.row_factory = sqlite3.Row
     input_filenames = os.listdir(input_folderpath)
     for i, input_filename in enumerate(input_filenames[:]):
-        print(f'{i}/{len(input_filenames)}')
+        print(f'RESOLVE PLANTS PREPARATIONS {i}/{len(input_filenames)}')
         output_filepath = f'{output_folderpath}/{input_filename}'
         input_filepath = f'{input_folderpath}/{input_filename}'
         if os.path.exists(output_filepath): continue
@@ -64,7 +64,7 @@ def resolve_plants_parts(source_foldername):
     wcvp_conn.row_factory = sqlite3.Row
     input_filenames = os.listdir(input_folderpath)
     for i, input_filename in enumerate(input_filenames[:]):
-        print(f'{i}/{len(input_filenames)}')
+        print(f'RESOLVE PLANTS PARTS {i}/{len(input_filenames)}')
         output_filepath = f'{output_folderpath}/{input_filename}'
         input_filepath = f'{input_folderpath}/{input_filename}'
         if os.path.exists(output_filepath): continue
@@ -155,7 +155,7 @@ def resolve_chemicals(source_foldername):
     ###
     input_filenames = os.listdir(input_folderpath)
     for i, input_filename in enumerate(input_filenames[:]):
-        print(f'{i}/{len(input_filenames)}')
+        print(f'RESOLVE PLANTS CHEMICALS {i}/{len(input_filenames)}')
         output_filepath = f'{output_folderpath}/{input_filename}'
         input_filepath = f'{input_folderpath}/{input_filename}'
         if os.path.exists(output_filepath): continue
@@ -219,7 +219,7 @@ def resolve_conditions(source_foldername):
     ###
     input_filenames = os.listdir(input_folderpath)
     for i, input_filename in enumerate(input_filenames[:]):
-        print(f'{i}/{len(input_filenames)}')
+        print(f'RESOLVE PLANTS CONDITIONS {i}/{len(input_filenames)}')
         output_filepath = f'{output_folderpath}/{input_filename}'
         input_filepath = f'{input_folderpath}/{input_filename}'
         if os.path.exists(output_filepath): continue
@@ -267,19 +267,20 @@ def resolve_conditions(source_foldername):
     # quit()
 
 def resolve_synonyms(source_foldername):
-    input_folderpath = f'{g.DATA_FOLDERPATH}/normalize/{source_foldername}/synonyms/json'
-    output_folderpath = f'{g.DATA_FOLDERPATH}/resolve/{source_foldername}/synonyms/json'
+    input_folderpath = f'{HUB_FOLDERPATH}/normalize/{source_foldername}/synonyms/json'
+    output_folderpath = f'{HUB_FOLDERPATH}/resolve/{source_foldername}/synonyms/json'
     try: shutil.rmtree(output_folderpath)
     except: pass
     os.makedirs(output_folderpath, exist_ok=True)
     ###
-    wcvp_folderpath = f'{g.DATA_FOLDERPATH}/reference/wcvp/wcvp.db'
+    wcvp_folderpath = f'{HUB_FOLDERPATH}/reference/wcvp/wcvp.db'
     wcvp_conn = sqlite3.connect(wcvp_folderpath)
     ###
     input_filenames = os.listdir(input_folderpath)
     # print(input_filenames)
+    output_items_last = []
     for i, input_filename in enumerate(input_filenames[:]):
-        print(f'{i}/{len(input_filenames)}')
+        print(f'RESOLVE PLANTS SYNONYMS {i}/{len(input_filenames)}')
         output_filepath = f'{output_folderpath}/{input_filename}'
         input_filepath = f'{input_folderpath}/{input_filename}'
         if os.path.exists(output_filepath): continue
@@ -298,12 +299,18 @@ def resolve_synonyms(source_foldername):
             wcvp_synonym_row = resolve_utils.resolve_plant_accepted(wcvp_conn, plant_synonym_normalized)
             ###
             if wcvp_name_row and wcvp_synonym_row:
+                # print(wcvp_name_row)
+                # quit()
                 wcvp_name = wcvp_name_row[4]
                 wcvp_synonym = wcvp_synonym_row[4]
                 if wcvp_name != wcvp_synonym: continue
                 # print(wcvp_name_row)
                 # print(wcvp_synonym_row)
                 # quit()
+                # input_item['plant_name_scientific_reference'] = wcvp_item['taxon_name']
+                # input_item['plant_name_scientific_reference_normalize'] = wcvp_item['taxon_name_normalized']
+                # input_item['condition_name_reference'] = mesh_item['disease_name']
+                # input_item['condition_name_reference_normalize'] = mesh_item['disease_name_normalize']
                 wcvp_plant_name_id = wcvp_name_row[0]
                 wcvp_accepted_plant_name_id = wcvp_name_row[1]
                 wcvp_taxon_status = wcvp_name_row[2]
@@ -318,6 +325,8 @@ def resolve_synonyms(source_foldername):
                 # quit()
         if resolved_data != []:
             io.json_write(output_filepath, resolved_data)
+        if resolved_data != []: output_items_last = resolved_data
+    print(json.dumps(output_items_last, indent=4))
     wcvp_conn.close()
 
 def resolve_common_names(source_foldername):
@@ -334,7 +343,7 @@ def resolve_common_names(source_foldername):
     input_filenames = os.listdir(input_folderpath)
     # print(input_filenames)
     for i, input_filename in enumerate(input_filenames[:]):
-        print(f'{i}/{len(input_filenames)}')
+        print(f'RESOLVE PLANTS COMMON NAMES {i}/{len(input_filenames)}')
         output_filepath = f'{output_folderpath}/{input_filename}'
         input_filepath = f'{input_folderpath}/{input_filename}'
         if os.path.exists(output_filepath): continue
@@ -377,7 +386,7 @@ def resolve_distributions(source_foldername):
     input_filenames = os.listdir(input_folderpath)
     # print(input_filenames)
     for i, input_filename in enumerate(input_filenames[:]):
-        print(f'{i}/{len(input_filenames)}')
+        print(f'RESOLVE PLANTS DISTRIBUTIONS {i}/{len(input_filenames)}')
         output_filepath = f'{output_folderpath}/{input_filename}'
         input_filepath = f'{input_folderpath}/{input_filename}'
         if os.path.exists(output_filepath): continue
@@ -423,7 +432,7 @@ def resolve_activities(source_foldername):
     input_filenames = os.listdir(input_folderpath)
     last_resolved_data = []
     for i, input_filename in enumerate(input_filenames[:]):
-        print(f'{i}/{len(input_filenames)}')
+        print(f'RESOLVE PLANTS ACTIVITIES {i}/{len(input_filenames)}')
         output_filepath = f'{output_folderpath}/{input_filename}'
         input_filepath = f'{input_folderpath}/{input_filename}'
         if os.path.exists(output_filepath): continue
@@ -488,7 +497,7 @@ def resolve_traits(source_foldername):
     input_filenames = os.listdir(input_folderpath)
     # print(input_filenames)
     for i, input_filename in enumerate(input_filenames[:]):
-        print(f'{i}/{len(input_filenames)}')
+        print(f'RESOLVE PLANTS TRAITS {i}/{len(input_filenames)}')
         output_filepath = f'{output_folderpath}/{input_filename}'
         input_filepath = f'{input_folderpath}/{input_filename}'
         if os.path.exists(output_filepath): continue
@@ -515,20 +524,61 @@ def resolve_traits(source_foldername):
     wcvp_conn.close()
     print(json.dumps(input_item, indent=4))
 
+def resolve_taxonomies(source_foldername):
+    input_folderpath = f'{HUB_FOLDERPATH}/normalize/{source_foldername}/taxonomies/json'
+    output_folderpath = f'{HUB_FOLDERPATH}/resolve/{source_foldername}/taxonomies/json'
+    try: shutil.rmtree(output_folderpath)
+    except: pass
+    os.makedirs(output_folderpath, exist_ok=True)
+    ###
+    wcvp_folderpath = f'{HUB_FOLDERPATH}/reference/wcvp/wcvp.db'
+    wcvp_conn = sqlite3.connect(wcvp_folderpath)
+    ###
+    input_filenames = os.listdir(input_folderpath)
+    # print(input_filenames)
+    for i, input_filename in enumerate(input_filenames[:]):
+        print(f'RESOLVE PLANTS TAXONOMIES {i}/{len(input_filenames)}')
+        output_filepath = f'{output_folderpath}/{input_filename}'
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        if os.path.exists(output_filepath): continue
+        input_data = io.json_read(input_filepath)
+        ###
+        resolved_data = []
+        for input_item in input_data:
+            # print(json.dumps(input_item, indent=4))
+            # quit()
+            plant_name_scientific_reference_normalize = input_item['plant_name_scientific_raw_normalize']
+            ### RESOLVE PLANT TAXONOMIES TODO?
+            wcvp_row = resolve_utils.resolve_plant_accepted(wcvp_conn, plant_name_scientific_reference_normalize)
+            ###
+            if wcvp_row:
+                # print(wcvp_name_row)
+                # quit()
+                input_item['wcvp_name_taxon'] = wcvp_row[3]
+                input_item['wcvp_name_taxon_norm'] = wcvp_row[4]
+                resolved_data.append(input_item)
+                # print(json.dumps(input_item, indent=4))
+                # quit()
+        if resolved_data != []:
+            io.json_write(output_filepath, resolved_data)
+    wcvp_conn.close()
+    print(json.dumps(input_item, indent=4))
+
 def run():
     print('RESOLVE')
 
-    if 0:
-        start = time.perf_counter()
-        resolve_synonyms(source_foldername='wcvp')
-        print(f'resolve synonyms() - execution time: ', time.perf_counter() - start)
+    resolve_activities(source_foldername='drduke')
+    resolve_activities(source_foldername='pubmed')
+    # resolve_chemicals(source_foldername='drduke')
+    resolve_chemicals(source_foldername='pubmed')
+    # quit()
+    resolve_taxonomies(source_foldername='powo')
+    resolve_synonyms(source_foldername='wcvp')
 
     if 1:
         start = time.perf_counter()
         resolve_traits(source_foldername='gift')
         print(f'resolve traits() - execution time: ', time.perf_counter() - start)
-
-    quit()
 
     if 1:
         start = time.perf_counter()
@@ -540,18 +590,6 @@ def run():
         # resolve_common_names(source_foldername='wikidata')
         resolve_common_names(source_foldername='col')
         print(f'resolve common_names() - execution time: ', time.perf_counter() - start)
-
-    if 1:
-        start = time.perf_counter()
-        # resolve_activities(source_foldername='drduke')
-        resolve_activities(source_foldername='pubmed')
-        print(f'resolve activiries() - execution time: ', time.perf_counter() - start)
-
-    if 1:
-        start = time.perf_counter()
-        # resolve_chemicals(source_foldername='drduke')
-        resolve_chemicals(source_foldername='pubmed')
-        print(f'resolve chemicals() - execution time: ', time.perf_counter() - start)
 
     if 1:
         start = time.perf_counter()

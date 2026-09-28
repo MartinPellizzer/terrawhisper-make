@@ -8,17 +8,20 @@ from lib import io
 from lib import llm
 
 import parse_utils
+import parse_herbs_schemas
+
+HUB_FOLDERPATH = f'''{g.DATA_FOLDERPATH}/herbs'''
 
 def parse_activities():
-    input_folderpath = f'{g.DATA_FOLDERPATH}/fetch/drduke/json'
-    output_folderpath = f'{g.DATA_FOLDERPATH}/parse/drduke/activities/json'
+    input_folderpath = f'{HUB_FOLDERPATH}/fetch/drduke/json'
+    output_folderpath = f'{HUB_FOLDERPATH}/parse/drduke/activities/json'
     try: shutil.rmtree(output_folderpath)
     except: pass
     os.makedirs(output_folderpath, exist_ok=True)
     ###
     input_filenames = os.listdir(input_folderpath)
     for i, input_filename in enumerate(input_filenames[:]):
-        print(f'{i}/{len(input_filenames)}')
+        print(f'PARSE PLANTS ACTIVITIES DRDUKE {i}/{len(input_filenames)}')
         output_filepath = f'{output_folderpath}/{input_filename}'
         input_filepath = f'{input_folderpath}/{input_filename}'
         if os.path.exists(output_filepath): continue
@@ -31,12 +34,15 @@ def parse_activities():
             for item in data['activities']:
                 # print(json.dumps(item, indent=4))
                 # quit()
-                item_output = parse_utils.activity_create(
+                item_output = parse_herbs_schemas.schema_plants_activities_gen(
                     plant_name_raw = data['herb_name_latin'], 
+                    relationship = 'has_activity', 
                     activity_name_raw = item['Activity'], 
                     source_name = 'Dr. Duke',
                     source_acronym = '',
-                    reference_name = item['Reference'],
+                    reference_id = '',
+                    # reference_name = item['Reference'],
+                    reference_name = 'Dr. Duke',
                 )
                 items_output.append(item_output)
                 # print(json.dumps(item_output, indent=4))
@@ -88,6 +94,6 @@ def run():
     print(f'parse activities() - execution time: ', time.perf_counter() - start)
 
     start = time.perf_counter()
-    parse_chemicals()
+    # parse_chemicals()
     print(f'parse chemicals() - execution time: ', time.perf_counter() - start)
 

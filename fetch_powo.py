@@ -3,6 +3,7 @@
 
 import os
 import time
+import json
 import random
 import sqlite3
 
@@ -11,6 +12,8 @@ from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import TimeoutException
+
+from bs4 import BeautifulSoup
 
 from lib import g
 from lib import io
@@ -46,6 +49,7 @@ def download_html_form_master():
         if wcvp_items == []: continue
         wcvp_item = wcvp_items[0]
         ###
+        """
         from tabulate import tabulate
         print(tabulate(wcvp_rows, 
             headers=[
@@ -59,13 +63,15 @@ def download_html_form_master():
             ], 
             tablefmt="plain")
         )
+        """
         ###
         powo_id = wcvp_item['powo_id']
+        powo_html_filepath = f'{output_folderpath}/{powo_id}.html'
         # print(powo_id)
         # quit()
         # powo_id = plant_row[3]
-        powo_html_filepath = f'{output_folderpath}/{powo_id}.html'
         if not os.path.exists(powo_html_filepath):
+            # continue
             url = f"https://powo.science.kew.org/api/2/taxon/urn:lsid:ipni.org:names:{powo_id}"
             driver.get(url)
             try:
@@ -80,6 +86,21 @@ def download_html_form_master():
             html = driver.page_source
             time.sleep(random.randint(13, 21))
             io.file_write(powo_html_filepath, html)
+        else:
+            '''
+            powo_html = io.file_read(powo_html_filepath)
+            html = powo_html
+            soup = BeautifulSoup(html, "html.parser")
+            try: 
+                content = soup.find("table").text
+                row = soup.find("tr", id="/name")
+                name_value = row.find("td", class_="treeValueCell").get_text(strip=True).strip("\"'")
+            except:
+                os.remove(powo_html_filepath)
+            '''
+            # print(name_value)
+            # print(wcvp_item['taxon_name'])
+            continue
     driver.quit()
 
 def download_html():

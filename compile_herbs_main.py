@@ -15,7 +15,7 @@ def run():
     io.folders_recursive_gen(output_folderpath)
     master_items = masterize_utils.masterize_plants_get_all()
     for i, master_item in enumerate(master_items):
-        print(f'{i}/{len(master_items)}')
+        print(f'COMPILE {i}/{len(master_items)}')
         plant_name_scientific_reference = master_item['plant_name_scientific_reference']
         output_filepath = f'{output_folderpath}/{plant_name_scientific_reference}.json'
         output_data = {}
@@ -122,6 +122,16 @@ def run():
         ### TRAITS
         output_data['traits'] = io.json_read(
             f'{input_folderpath}/traits/{plant_name_scientific_reference}.json'
+        )
+
+        ### SYNONYMS
+        output_data['synonyms'] = io.json_read(
+            f'{input_folderpath}/synonyms/{plant_name_scientific_reference}.json'
+        )
+
+        ### TAXONOMIES
+        output_data['taxonomies'] = io.json_read(
+            f'{input_folderpath}/taxonomies/{plant_name_scientific_reference}.json'
         )
 
         io.json_write(output_filepath, output_data)
