@@ -62,6 +62,7 @@ def resolve_plants_parts(source_foldername):
     wcvp_filepath = f'{HUB_FOLDERPATH}/reference/wcvp/wcvp.db'
     wcvp_conn = sqlite3.connect(wcvp_filepath)
     wcvp_conn.row_factory = sqlite3.Row
+    ###
     input_filenames = os.listdir(input_folderpath)
     for i, input_filename in enumerate(input_filenames[:]):
         print(f'RESOLVE PLANTS PARTS {i}/{len(input_filenames)}')
@@ -72,7 +73,7 @@ def resolve_plants_parts(source_foldername):
         input_data = io.json_read(input_filepath)
         resolved_data = []
         for input_item in input_data:
-            print(json.dumps(input_item, indent=True))
+            # print(json.dumps(input_item, indent=True))
             # quit()
             plant_name_raw_normalize = input_item['plant_name_raw_normalize']
             ### RESOLVE PLANT (WCVP)
@@ -213,6 +214,7 @@ def resolve_conditions(source_foldername):
     wcvp_folderpath = f'{HUB_FOLDERPATH}/reference/wcvp/wcvp.db'
     wcvp_conn = sqlite3.connect(wcvp_folderpath)
     wcvp_conn.row_factory = sqlite3.Row
+    ###
     mesh_folderpath = f'{HUB_FOLDERPATH}/reference/mesh/mesh.db'
     mesh_conn = sqlite3.connect(mesh_folderpath)
     mesh_conn.row_factory = sqlite3.Row
@@ -567,11 +569,13 @@ def resolve_taxonomies(source_foldername):
 def run():
     print('RESOLVE')
 
-    resolve_activities(source_foldername='drduke')
-    resolve_activities(source_foldername='pubmed')
+    resolve_plants_parts(source_foldername='pubmed')
+
+    resolve_conditions(source_foldername='pubmed')
     # resolve_chemicals(source_foldername='drduke')
     resolve_chemicals(source_foldername='pubmed')
-    # quit()
+    resolve_activities(source_foldername='drduke')
+    resolve_activities(source_foldername='pubmed')
     resolve_taxonomies(source_foldername='powo')
     resolve_synonyms(source_foldername='wcvp')
 
@@ -590,16 +594,6 @@ def run():
         # resolve_common_names(source_foldername='wikidata')
         resolve_common_names(source_foldername='col')
         print(f'resolve common_names() - execution time: ', time.perf_counter() - start)
-
-    if 1:
-        start = time.perf_counter()
-        resolve_conditions(source_foldername='pubmed')
-        print(f'resolve chemicals() - execution time: ', time.perf_counter() - start)
-
-    if 1:
-        start = time.perf_counter()
-        resolve_plants_parts(source_foldername='pubmed')
-        print(f'resolve plant_parts() - execution time: ', time.perf_counter() - start)
 
     if 1:
         start = time.perf_counter()

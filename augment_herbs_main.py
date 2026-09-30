@@ -209,14 +209,141 @@ def augment_chemicals():
         # quit()
     print(found_num)
 
+def augment_conditions():
+    input_folderpath = f'{HUB_FOLDERPATH}/derive/conditions'
+    output_folderpath = f'{HUB_FOLDERPATH}/augment/conditions'
+    # try: shutil.rmtree(output_folderpath)
+    # except: pass
+    io.folders_recursive_gen(output_folderpath)
+    ###
+    master_items = masterize_utils.masterize_plants_get_all()
+    found_num = 0
+    for i, master_item in enumerate(master_items[:]):
+        print(f'AUGMENT CONDITIONS {i}/{len(master_items)}')
+        plant_name_scientific_reference = master_item['plant_name_scientific_reference']
+        input_filepath = f'{input_folderpath}/{plant_name_scientific_reference}.json'
+        output_filepath = f'{output_folderpath}/{plant_name_scientific_reference}.json'
+        input_data = io.json_read(input_filepath)
+        if input_data != []:
+            found_num += 1
+            # print(json.dumps(input_data, indent=4))
+            # quit()
+        ###
+        # print(json.dumps(master_item, indent=4))
+        # print(json.dumps(input_data, indent=4))
+        # quit()
+        if os.path.exists(output_filepath): continue
+        if input_data != []:
+            found_num += 1
+            plant_name_scientific_reference = [item['plant_name_scientific_reference'] for item in input_data][0]
+            conditions = [item['condition_name_reference'] for item in input_data][:4]
+            conditions_prompt = ', '.join(conditions)
+            # quit()
+            sentences_num = len(conditions)
+            prompt = f'''
+                Write a {sentences_num}-sentence paragraph about the conditions treated with the following plant: {plant_name_scientific_reference}.
+                The conditions treated with this plant are the following: {conditions_prompt}.
+                Reply only with the asked content.
+                Start with the following words: {plant_name_scientific_reference} .
+            '''.strip()
+            # print(prompt)
+            # quit()
+            reply = llm.reply(prompt, model_filepath)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            print()
+            print('########################################################################')
+            print(reply)
+            print('########################################################################')
+            print()
+            input_data = {
+                'conditions': input_data,
+                'llm_intro': reply,
+            }
+        else: 
+            input_data = {
+                'conditions': input_data,
+                'llm_intro': '',
+            }
+        print(json.dumps(input_data, indent=4))
+        io.json_write(output_filepath, input_data)
+        # quit()
+    print(found_num)
+
+def augment_plants_parts():
+    input_folderpath = f'{HUB_FOLDERPATH}/derive/plants_parts'
+    output_folderpath = f'{HUB_FOLDERPATH}/augment/plants_parts'
+    # try: shutil.rmtree(output_folderpath)
+    # except: pass
+    io.folders_recursive_gen(output_folderpath)
+    ###
+    master_items = masterize_utils.masterize_plants_get_all()
+    found_num = 0
+    for i, master_item in enumerate(master_items[:]):
+        print(f'AUGMENT PLANTS PARTS {i}/{len(master_items)}')
+        plant_name_scientific_reference = master_item['plant_name_scientific_reference']
+        input_filepath = f'{input_folderpath}/{plant_name_scientific_reference}.json'
+        output_filepath = f'{output_folderpath}/{plant_name_scientific_reference}.json'
+        input_data = io.json_read(input_filepath)
+        if input_data != []:
+            found_num += 1
+            # print(json.dumps(input_data, indent=4))
+            # quit()
+        ###
+        # print(json.dumps(master_item, indent=4))
+        # print(json.dumps(input_data, indent=4))
+        # quit()
+        if os.path.exists(output_filepath): continue
+        if input_data != []:
+            found_num += 1
+            plant_name_scientific_reference = [item['plant_name_scientific_reference'] for item in input_data][0]
+            plants_parts = [item['plant_part_name_reference'] for item in input_data][:4]
+            plants_parts_prompt = ', '.join(plants_parts)
+            # quit()
+            sentences_num = len(plants_parts)
+            prompt = f'''
+                Write a {sentences_num}-sentence paragraph about the medicinal plant parts of the following plant: {plant_name_scientific_reference}.
+                The medicinal plant parts of this plant are the following: {plants_parts_prompt}.
+                Reply only with the asked content.
+                Start with the following words: {plant_name_scientific_reference} .
+            '''.strip()
+            # print(prompt)
+            # quit()
+            reply = llm.reply(prompt, model_filepath)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            print()
+            print('########################################################################')
+            print(reply)
+            print('########################################################################')
+            print()
+            input_data = {
+                'plants_parts': input_data,
+                'llm_intro': reply,
+            }
+        else: 
+            input_data = {
+                'plants_parts': input_data,
+                'llm_intro': '',
+            }
+        print(json.dumps(input_data, indent=4))
+        io.json_write(output_filepath, input_data)
+        # quit()
+    print(found_num)
+
 def run():
 
     # augment_copy(attribute='taxonomies')
     # augment_copy(attribute='diseases')
 
+    augment_plants_parts()
+    augment_conditions()
+    augment_chemicals()
     augment_activities()
-    # augment_chemicals()
-    augment_copy(attribute='chemicals')
+
+    # augment_copy(attribute='chemicals')
 
     augment_copy(attribute='taxonomies')
 
@@ -226,6 +353,4 @@ def run():
     augment_copy(attribute='traits')
     augment_copy(attribute='distributions')
     augment_copy(attribute='names_common')
-    augment_copy(attribute='conditions')
-    augment_copy(attribute='plants_parts')
     augment_copy(attribute='preparations')

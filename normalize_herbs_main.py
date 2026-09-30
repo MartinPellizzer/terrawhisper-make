@@ -48,8 +48,6 @@ def normalize_plants_parts(source_foldername):
         ###
         input_filepath = f'{input_folderpath}/{input_filename}'
         input_data = io.json_read(input_filepath)
-        # print(json.dumps(input_data, indent=4))
-        # quit()
         for input_item in input_data:
             input_item['plant_name_raw_normalize'] = normalize_utils.normalize_plant_name(input_item['plant_name_raw'])
             input_item['plant_part_name_raw_normalize'] = normalize_utils.normalize_plant_part_name(input_item['plant_part_name_raw'])
@@ -112,6 +110,30 @@ def normalize_plants_chemicals(source_foldername):
             # quit()
         io.json_write(output_filepath, input_data)
     # print(json.dumps(input_data[0], indent=4))
+    # quit()
+
+def normalize_plants_conditions(source_foldername):
+    input_folderpath = f'{HUB_FOLDERPATH}/parse/{source_foldername}/conditions/json'
+    output_folderpath = f'{HUB_FOLDERPATH}/normalize/{source_foldername}/conditions/json'
+    try: shutil.rmtree(output_folderpath)
+    except: pass
+    io.folders_recursive_gen(output_folderpath)
+    input_filenames = os.listdir(input_folderpath)
+    ###
+    for i, input_filename in enumerate(input_filenames[:]):
+        print(f'NORMALIZE PLANTS CONDITIONS - {i}/{len(input_filenames)}')
+        output_filepath = f'{output_folderpath}/{input_filename}'
+        if os.path.exists(output_filepath): continue
+        ###
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        input_data = io.json_read(input_filepath)
+        for input_item in input_data:
+            input_item['plant_name_raw_normalize'] = normalize_utils.normalize_plant_name(input_item['plant_name_raw'])
+            input_item['condition_name_raw_normalize'] = normalize_condition_name(input_item['condition_name_raw'])
+            # print(json.dumps(normalized_item, indent=4))
+            # quit()
+        io.json_write(output_filepath, input_data)
+    print(json.dumps(input_data[0], indent=4))
     # quit()
 
 def normalize_plants_compounds(source_foldername):
@@ -264,30 +286,6 @@ def normalize_plants_traits(source_foldername):
         io.json_write(output_filepath, input_data)
     print(json.dumps(input_item, indent=4))
 
-def normalize_plants_conditions(source_foldername):
-    input_folderpath = f'{HUB_FOLDERPATH}/parse/{source_foldername}/conditions/json'
-    output_folderpath = f'{HUB_FOLDERPATH}/normalize/{source_foldername}/conditions/json'
-    try: shutil.rmtree(output_folderpath)
-    except: pass
-    io.folders_recursive_gen(output_folderpath)
-    input_filenames = os.listdir(input_folderpath)
-    ###
-    for i, input_filename in enumerate(input_filenames[:]):
-        print(f'NORMALIZE PLANTS CONDITIONS - {i}/{len(input_filenames)}')
-        output_filepath = f'{output_folderpath}/{input_filename}'
-        if os.path.exists(output_filepath): continue
-        ###
-        input_filepath = f'{input_folderpath}/{input_filename}'
-        input_data = io.json_read(input_filepath)
-        for input_item in input_data:
-            input_item['plant_name_raw_normalize'] = normalize_utils.normalize_plant_name(input_item['plant_name_raw'])
-            input_item['condition_name_raw_normalize'] = normalize_condition_name(input_item['condition_name_raw'])
-            # print(json.dumps(normalized_item, indent=4))
-            # quit()
-        io.json_write(output_filepath, input_data)
-    print(json.dumps(input_data[0], indent=4))
-    # quit()
-
 def normalize_plants_preparations(source_foldername):
     input_folderpath = f'{HUB_FOLDERPATH}/parse/{source_foldername}/preparations/json'
     output_folderpath = f'{HUB_FOLDERPATH}/normalize/{source_foldername}/preparations/json'
@@ -318,19 +316,23 @@ def run():
     # normalize_plants_compounds(source_foldername='pubmed')
     # quit()
 
+    normalize_plants_parts(source_foldername='pubmed')
+
+    normalize_plants_conditions(source_foldername='pubmed')
+    # normalize_plants_chemicals(source_foldername='drduke')
+    normalize_plants_chemicals(source_foldername='pubmed')
+    normalize_plants_activities(source_foldername='drduke')
+    normalize_plants_activities(source_foldername='pubmed')
+
+
+
     normalize_plants_common_names(source_foldername='col')
     normalize_plants_synonyms(source_foldername='wcvp')
     normalize_plants_taxonomies(source_foldername='powo')
     normalize_plants_distributions(source_foldername='wcvp')
     normalize_plants_traits(source_foldername='gift')
 
-    normalize_plants_activities(source_foldername='drduke')
-    normalize_plants_activities(source_foldername='pubmed')
 
-    # normalize_plants_chemicals(source_foldername='drduke')
-    normalize_plants_chemicals(source_foldername='pubmed')
 
-    normalize_plants_conditions(source_foldername='pubmed')
-    normalize_plants_parts(source_foldername='pubmed')
     normalize_plants_preparations(source_foldername='pubmed')
 

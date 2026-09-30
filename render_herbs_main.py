@@ -1519,8 +1519,7 @@ def listing_chemicals_gen(plant_data):
     data_key = 'chemicals'
     item_key = 'chemical_name_reference'
     section_data = plant_data[data_key]
-    print(json.dumps(section_data, indent=4))
-    if section_data != {}:
+    if section_data != []:
         html_table_body = f''
         sources_html = f''
         html_table_body += f'''<tbody>'''
@@ -1770,7 +1769,8 @@ def listing_condition_gen(plant_data):
         sources_html = f''
         html_table_body += f'''<tbody>'''
         table_num = 10
-        for item in section_data[:table_num]:
+        section_items = section_data[data_key]
+        for item in section_items[:table_num]:
             name = item[item_key].capitalize()
             slug = polish.sluggify(name)
             sources_num = item['sources_num']
@@ -1782,13 +1782,22 @@ def listing_condition_gen(plant_data):
             elif int(sources_num) >= 5: confidence = '★★★☆☆'
             elif int(sources_num) >= 3: confidence = '★★☆☆☆'
             elif int(sources_num) >= 1: confidence = '★☆☆☆☆'
+            ###
+            sources_table = ''
+            for source in sources[:2]:
+                sources_table += source['reference_name'] + ' · '
+            sources_table = sources_table[:-3]
+            ###
+            sources_table_left = len(sources) - 2
+            sources_table_more = ''
+            if sources_table_left > 0:
+                sources_table_more = f' · {sources_table_left} more'
+            ###
             html_table_body += f'''
                 <tr>
                     <th scope="row">{name}</th>
                     <td>
-                        <a href="#sources-{slug}">
-                            {sources_num} supporting sources
-                        </a>
+                        {sources_table} {sources_table_more}
                     </td>
                     <td>
                         <span>
@@ -1841,30 +1850,33 @@ def listing_condition_gen(plant_data):
                     </details>
                 '''
         source_tot = 0 
-        for item in section_data[:]:
+        for item in section_items[:]:
             source_tot += int(item['sources_num'])
         p = []
-        for item in section_data[:5]:
+        for item in section_items[:5]:
             p.append(item[item_key])
         p_str = ', '.join(p)
         html_table_body += f'''</tbody>'''
+        """
+                    {plant_data['plant_name_scientific_reference']} has {len(plant_data[data_key])} reported investigations on conditions identified across {source_tot} scientific publications and several other databases. The most consistently reported conditions include {p_str}.
+                    <caption style="text-align: left; margin-bottom: 0.8rem;">
+                        Conditions investigated for {plant_data['plant_name_scientific_reference']}
+                    </caption>
+        """
         html_article += f'''
             <section>
                 <h2>
                     Conditions
                 </h2>
                 <p>
-                    {plant_data['plant_name_scientific_reference']} has {len(plant_data[data_key])} reported investigations on conditions identified across {source_tot} scientific publications and several other databases. The most consistently reported conditions include {p_str}.
+                    {section_data['llm_intro']}
                 </p>
                 <table style="margin-top: 3.2rem;">
-                    <caption style="text-align: left; margin-bottom: 0.8rem;">
-                        Conditions investigated for {plant_data['plant_name_scientific_reference']}
-                    </caption>
                     <thead>
                         <tr>
                             <th scope="col">Condition</th>
                             <th scope="col">Supporting sources</th>
-                            <th scope="col">Consensus</th>
+                            <th scope="col">Consensus Score</th>
                         </tr>
                     </thead>
                     {html_table_body}
@@ -1872,11 +1884,13 @@ def listing_condition_gen(plant_data):
             </section>
         '''
         ###
+        """
         html_article += f'''
             <section aria-labelledby="conditions-heading">
                 {sources_html}
             </section>
         '''
+        """
     return html_article
 
 def listing_plant_parts_gen(plant_data):
@@ -1889,7 +1903,8 @@ def listing_plant_parts_gen(plant_data):
         sources_html = f''
         html_table_body += f'''<tbody>'''
         table_num = 10
-        for item in section_data[:table_num]:
+        section_items = section_data[data_key]
+        for item in section_items[:table_num]:
             name = item[item_key].capitalize()
             slug = polish.sluggify(name)
             sources_num = item['sources_num']
@@ -1901,13 +1916,22 @@ def listing_plant_parts_gen(plant_data):
             elif int(sources_num) >= 5: confidence = '★★★☆☆'
             elif int(sources_num) >= 3: confidence = '★★☆☆☆'
             elif int(sources_num) >= 1: confidence = '★☆☆☆☆'
+            ###
+            sources_table = ''
+            for source in sources[:2]:
+                sources_table += source['reference_name'] + ' · '
+            sources_table = sources_table[:-3]
+            ###
+            sources_table_left = len(sources) - 2
+            sources_table_more = ''
+            if sources_table_left > 0:
+                sources_table_more = f' · {sources_table_left} more'
+            ###
             html_table_body += f'''
                 <tr>
                     <th scope="row">{name}</th>
                     <td>
-                        <a href="#sources-{slug}">
-                            {sources_num} supporting sources
-                        </a>
+                        {sources_table} {sources_table_more}
                     </td>
                     <td>
                         <span>
@@ -1960,30 +1984,33 @@ def listing_plant_parts_gen(plant_data):
                     </details>
                 '''
         source_tot = 0 
-        for item in section_data[:]:
+        for item in section_items[:]:
             source_tot += int(item['sources_num'])
         p = []
-        for item in section_data[:5]:
+        for item in section_items[:5]:
             p.append(item[item_key])
         p_str = ', '.join(p)
         html_table_body += f'''</tbody>'''
+        """
+                    {plant_data['plant_name_scientific_reference']} has {len(plant_data[data_key])} reported investigations on plant parts identified across {source_tot} scientific publications and several other databases. The most consistently reported plant parts include {p_str}.
+                    <caption style="text-align: left; margin-bottom: 0.8rem;">
+                        Plant parts investigated for {plant_data['plant_name_scientific_reference']}
+                    </caption>
+        """
         html_article += f'''
             <section>
                 <h2>
                     Plant parts
                 </h2>
                 <p>
-                    {plant_data['plant_name_scientific_reference']} has {len(plant_data[data_key])} reported investigations on plant parts identified across {source_tot} scientific publications and several other databases. The most consistently reported plant parts include {p_str}.
+                    {section_data['llm_intro']}
                 </p>
                 <table style="margin-top: 3.2rem;">
-                    <caption style="text-align: left; margin-bottom: 0.8rem;">
-                        Plant parts investigated for {plant_data['plant_name_scientific_reference']}
-                    </caption>
                     <thead>
                         <tr>
                             <th scope="col">Plant part</th>
                             <th scope="col">Supporting sources</th>
-                            <th scope="col">Consensus</th>
+                            <th scope="col">Consensus Source</th>
                         </tr>
                     </thead>
                     {html_table_body}
@@ -1991,11 +2018,13 @@ def listing_plant_parts_gen(plant_data):
             </section>
         '''
         ###
+        """
         html_article += f'''
             <section aria-labelledby="conditions-heading">
                 {sources_html}
             </section>
         '''
+        """
     return html_article
 
 def listing_preparations_gen(plant_data):
@@ -2349,7 +2378,7 @@ def listing_hero_gen(plant_data):
     else: hero_distributions = 'Not available'
     ### PLANTS PARTS
     hero_plant_parts_list = []
-    for item in plant_data['plants_parts'][:2]:
+    for item in plant_data['plants_parts']['plants_parts'][:2]:
         hero_plant_parts_list.append(item['plant_part_name_reference'])
     hero_plant_parts_html = ' · '.join(hero_plant_parts_list)
     hero_plant_parts_html = hero_plant_parts_html.title()
@@ -2682,7 +2711,7 @@ def plant_listing_page_gen(master_item):
     html_article += listing_condition_gen(plant_data)
     html_article += listing_plant_parts_gen(plant_data)
     html_article += listing_preparations_gen(plant_data)
-
+ 
     meta_title = f'{plant_name_scientific_reference}'
     meta_description = f''
     canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''

@@ -188,6 +188,7 @@ def observations_table_plants_plants_parts_create(regen=False):
             plant_part_name_reference_normalize TEXT,
             source_name TEXT NOT NULL,
             source_acronym TEXT,
+            reference_id TEXT,
             reference_name TEXT
         );
     """)
@@ -196,7 +197,6 @@ def observations_table_plants_plants_parts_create(regen=False):
     conn.execute("PRAGMA temp_store = MEMORY;")
     cur.execute(f"CREATE INDEX IF NOT EXISTS idx_{table_name}_plant_name_scientific_reference ON {table_name}(plant_name_scientific_reference)")
     cur.execute(f"CREATE INDEX IF NOT EXISTS idx_{table_name}_plant_part_name_reference ON {table_name}(plant_part_name_reference)")
-    cur.execute(f"CREATE INDEX IF NOT EXISTS idx_{table_name}_source_name ON {table_name}(source_name)")
     conn.commit()
     conn.close()
 
@@ -270,7 +270,9 @@ def observations_table_plants_conditions_create(regen=False):
             condition_name_reference TEXT NOT NULL,
             condition_name_reference_normalize TEXT NOT NULL,
             source_name TEXT NOT NULL,
-            source_acronym TEXT
+            source_acronym TEXT,
+            reference_id TEXT,
+            reference_name TEXT
         );
     """)
     conn.execute("PRAGMA journal_mode = WAL;")
@@ -313,8 +315,11 @@ def run():
     # except: pass
     os.makedirs(output_folderpath, exist_ok=True)
 
-    observations_table_plants_activities_create(regen=True)
+    observations_table_plants_plants_parts_create(regen=True)
+
+    observations_table_plants_conditions_create(regen=True)
     observations_table_plants_chemicals_create(regen=True)
+    observations_table_plants_activities_create(regen=True)
 
     # observations_table_plants_names_create(regen=True)
 
@@ -325,7 +330,5 @@ def run():
 
     observations_table_plants_names_common_create(regen=True)
     observations_table_plants_distributions_create(regen=True)
-    observations_table_plants_conditions_create(regen=True)
-    observations_table_plants_plants_parts_create(regen=True)
     observations_table_plants_preparations_create(regen=True)
 

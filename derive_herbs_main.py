@@ -509,9 +509,11 @@ def chemicals_gen():
 
 def conditions_gen():
     master_plants_rows = masterize_utils.masterize_plants_get_all()
+    last = []
     for i, master_plant_row in enumerate(master_plants_rows):
         master_item = master_plant_row
         print(f'DERIVE CONDITIONS {i}/{len(master_plants_rows)}')
+        ###
         conn = sqlite3.connect(db_filepath)
         conn.row_factory = sqlite3.Row
         cursor = conn.execute("""
@@ -519,12 +521,18 @@ def conditions_gen():
                 plant_name_scientific_reference,
                 condition_name_reference,
                 COUNT(*) AS sources_num,
-                json_group_array(source_name) AS sources
+                json_group_array(
+                    json_object(
+                        'reference_name', reference_name,
+                        'reference_id', reference_id
+                    )
+                ) AS sources
             FROM (
                 SELECT DISTINCT
                     plant_name_scientific_reference,
                     condition_name_reference,
-                    source_name
+                    reference_name,
+                    reference_id
                 FROM plants_conditions
                 WHERE plant_name_scientific_reference = ?
             )
@@ -541,17 +549,21 @@ def conditions_gen():
             output_item = {
                 'plant_name_scientific_reference': master_plant_row['plant_name_scientific_reference'],
                 'condition_name_reference': row['condition_name_reference'],
-                'sources_num': row[2],
-                'sources': json.loads(row[3]),
+                'sources_num': row['sources_num'],
+                'sources': json.loads(row['sources']),
             }
             output_items.append(output_item)
         output_filepath = f'''{HUB_FOLDERPATH}/{output_foldername}/conditions/{master_plant_row['plant_name_scientific_reference']}.json'''
         io.folder_create_from_filepath(output_filepath)
         io.json_write(output_filepath, output_items)
+        if output_items != []:
+            last = output_items
     print(json.dumps(output_item, indent=4))
+    # quit()
 
 def plants_parts_gen():
     master_plants_rows = masterize_utils.masterize_plants_get_all()
+    last = []
     for i, master_plant_row in enumerate(master_plants_rows):
         master_item = master_plant_row
         print(f'DERIVE PLANTS PARTS {i}/{len(master_plants_rows)}')
@@ -563,12 +575,18 @@ def plants_parts_gen():
                 plant_name_scientific_reference,
                 plant_part_name_reference,
                 COUNT(*) AS sources_num,
-                json_group_array(source_name) AS sources
+                json_group_array(
+                    json_object(
+                        'reference_name', reference_name,
+                        'reference_id', reference_id
+                    )
+                ) AS sources
             FROM (
                 SELECT DISTINCT
                     plant_name_scientific_reference,
                     plant_part_name_reference,
-                    source_name
+                    reference_name,
+                    reference_id
                 FROM plants_plants_parts
                 WHERE plant_name_scientific_reference = ?
             )
@@ -589,10 +607,13 @@ def plants_parts_gen():
                 'sources': json.loads(row[3]),
             }
             # print(json.dumps(output_item, indent=4))
+            # quit()
             output_items.append(output_item)
         output_filepath = f'''{HUB_FOLDERPATH}/{output_foldername}/plants_parts/{master_plant_row['plant_name_scientific_reference']}.json'''
         io.folder_create_from_filepath(output_filepath)
         io.json_write(output_filepath, output_items)
+        if output_items != []:
+            last = output_items
     print(json.dumps(output_item, indent=4))
 
 def preparations_gen():
@@ -739,14 +760,15 @@ def taxonomies_gen():
     print(json.dumps(output_item, indent=4))
 
 def run():
+    plants_parts_gen()
+    conditions_gen()
     chemicals_gen()
     activities_gen()
+
     taxonomies_gen()
     synonyms_gen()
     traits_gen()
     distributions_gen()
     names_common_gen()
-    conditions_gen()
-    plants_parts_gen()
     preparations_gen()
 

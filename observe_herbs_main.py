@@ -349,9 +349,10 @@ def observations_table_plants_plants_parts_add(source_foldername):
                 plant_part_name_reference_normalize, 
                 source_name,
                 source_acronym,
+                reference_id,
                 reference_name
             )
-            VALUES (?, ?, ?, ?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         """,
         [
             (
@@ -361,6 +362,7 @@ def observations_table_plants_plants_parts_add(source_foldername):
                 item.get("plant_part_name_reference_normalize"),
                 item.get("source_name"),
                 item.get("source_acronym"),
+                item.get("reference_id"),
                 item.get("reference_name"),
             )
             for item in all_data
@@ -565,9 +567,11 @@ def observations_table_plants_conditions_add(source_foldername):
                 condition_name_reference,
                 condition_name_reference_normalize,
                 source_name,
-                source_acronym
+                source_acronym,
+                reference_id,
+                reference_name
             )
-            VALUES (?, ?, ?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         """,
         [
             (
@@ -577,6 +581,8 @@ def observations_table_plants_conditions_add(source_foldername):
                 item.get("condition_name_reference_normalize"),
                 item.get("source_name"),
                 item.get("source_acronym"),
+                item.get("reference_id"),
+                item.get("reference_name"),
             )
             for item in all_data
         ]
@@ -599,13 +605,14 @@ def test():
 def run():
     print('OBSERVE')
 
-    # observations_table_plants_chemicals_add(source_foldername='drduke')
-    observations_table_plants_chemicals_add(source_foldername='pubmed')
+    observations_table_plants_plants_parts_add(source_foldername='pubmed')
     # quit()
 
+    observations_table_plants_conditions_add(source_foldername='pubmed')
+    # observations_table_plants_chemicals_add(source_foldername='drduke')
+    observations_table_plants_chemicals_add(source_foldername='pubmed')
     observations_table_plants_activities_add(source_foldername='drduke')
     observations_table_plants_activities_add(source_foldername='pubmed')
-    # quit()
 
     observations_table_plants_taxonomies_add()
 
@@ -620,12 +627,6 @@ def run():
     if 1:
         # observations_table_plants_names_common_add(source_foldername='wikidata')
         observations_table_plants_names_common_add(source_foldername='col')
-
-    if 1:
-        observations_table_plants_conditions_add(source_foldername='pubmed')
-
-    if 1:
-        observations_table_plants_plants_parts_add(source_foldername='pubmed')
 
     if 1:
         observations_table_plants_preparations_add(source_foldername='pubmed')

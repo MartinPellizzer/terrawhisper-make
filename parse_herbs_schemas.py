@@ -51,3 +51,43 @@ def schema_plants_chemicals_gen(
     }
     return item
 
+def schema_plants_conditions_gen(
+    plant_name_raw,
+    relationship,
+    condition_name_raw,
+    source_name,
+    source_acronym,
+    reference_id,
+    reference_name,
+):
+    item = {
+        'plant_name_raw': plant_name_raw,
+        'relationship': relationship,
+        'condition_name_raw': condition_name_raw,
+        'source_name': source_name,
+        'source_acronym': source_acronym,
+        'reference_id': reference_id,
+        'reference_name': reference_name,
+    }
+    return item
+
+def schema_plants_parts_gen(
+    plant_name_raw,
+    relationship,
+    plant_part_name_raw,
+    source_name,
+    source_acronym,
+    reference_id,
+    reference_name,
+):
+    item = {
+        'plant_name_raw': plant_name_raw,
+        'relationship': relationship,
+        'plant_part_name_raw': plant_part_name_raw,
+        'source_name': source_name,
+        'source_acronym': source_acronym,
+        'reference_id': reference_id,
+        'reference_name': reference_name,
+    }
+    return item
+

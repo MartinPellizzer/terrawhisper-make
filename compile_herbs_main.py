@@ -135,6 +135,7 @@ def run():
         )
 
         io.json_write(output_filepath, output_data)
-        # print(json.dumps(output_data, indent=4))
-        # quit()
+        # if output_data['chemicals'] != []:
+            # print(json.dumps(output_data, indent=4))
+            # quit()
 
