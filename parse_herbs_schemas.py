@@ -91,3 +91,23 @@ def schema_plants_parts_gen(
     }
     return item
 
+def schema_preparations_gen(
+    plant_name_raw,
+    relationship,
+    preparation_name_raw,
+    source_name,
+    source_acronym,
+    reference_id,
+    reference_name,
+):
+    item = {
+        'plant_name_raw': plant_name_raw,
+        'relationship': relationship,
+        'preparation_name_raw': preparation_name_raw,
+        'source_name': source_name,
+        'source_acronym': source_acronym,
+        'reference_id': reference_id,
+        'reference_name': reference_name,
+    }
+    return item
+

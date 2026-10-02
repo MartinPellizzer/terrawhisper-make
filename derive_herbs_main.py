@@ -614,11 +614,12 @@ def plants_parts_gen():
         io.json_write(output_filepath, output_items)
         if output_items != []:
             last = output_items
-    print(json.dumps(output_item, indent=4))
+    print(json.dumps(last, indent=4))
 
 def preparations_gen():
     entity_foldername = 'preparations'
     master_plants_rows = masterize_utils.masterize_plants_get_all()
+    last = []
     for i, master_plant_row in enumerate(master_plants_rows):
         master_item = master_plant_row
         print(f'DERIVE PREPARATIONS {i}/{len(master_plants_rows)}')
@@ -630,12 +631,18 @@ def preparations_gen():
                 plant_name_scientific_reference,
                 preparation_name_reference,
                 COUNT(*) AS sources_num,
-                json_group_array(source_name) AS sources
+                json_group_array(
+                    json_object(
+                        'reference_name', reference_name,
+                        'reference_id', reference_id
+                    )
+                ) AS sources
             FROM (
                 SELECT DISTINCT
                     plant_name_scientific_reference,
                     preparation_name_reference,
-                    source_name
+                    reference_name,
+                    reference_id
                 FROM plants_preparations
                 WHERE plant_name_scientific_reference = ?
             )
@@ -655,11 +662,15 @@ def preparations_gen():
                 'sources_num': row[2],
                 'sources': json.loads(row[3]),
             }
+            # print(json.dumps(output_item, indent=4))
+            # quit()
             output_items.append(output_item)
         output_filepath = f'''{HUB_FOLDERPATH}/{output_foldername}/preparations/{master_plant_row['plant_name_scientific_reference']}.json'''
         io.folder_create_from_filepath(output_filepath)
         io.json_write(output_filepath, output_items)
-    print(json.dumps(output_item, indent=4))
+        if output_items != []:
+            last = output_items
+    print(json.dumps(last, indent=4))
 
 def distributions_gen():
     entity_foldername = 'distributions'
@@ -760,6 +771,7 @@ def taxonomies_gen():
     print(json.dumps(output_item, indent=4))
 
 def run():
+    preparations_gen()
     plants_parts_gen()
     conditions_gen()
     chemicals_gen()
@@ -770,5 +782,4 @@ def run():
     traits_gen()
     distributions_gen()
     names_common_gen()
-    preparations_gen()
 

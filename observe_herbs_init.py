@@ -297,6 +297,7 @@ def observations_table_plants_preparations_create(regen=False):
             preparation_name_reference_normalize TEXT NOT NULL,
             source_name TEXT NOT NULL,
             source_acronym TEXT,
+            reference_id TEXT,
             reference_name TEXT
         );
     """)
@@ -315,8 +316,9 @@ def run():
     # except: pass
     os.makedirs(output_folderpath, exist_ok=True)
 
-    observations_table_plants_plants_parts_create(regen=True)
+    observations_table_plants_preparations_create(regen=True)
 
+    observations_table_plants_plants_parts_create(regen=True)
     observations_table_plants_conditions_create(regen=True)
     observations_table_plants_chemicals_create(regen=True)
     observations_table_plants_activities_create(regen=True)
@@ -330,5 +332,4 @@ def run():
 
     observations_table_plants_names_common_create(regen=True)
     observations_table_plants_distributions_create(regen=True)
-    observations_table_plants_preparations_create(regen=True)
 

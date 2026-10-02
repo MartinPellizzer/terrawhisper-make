@@ -333,11 +333,75 @@ def augment_plants_parts():
         # quit()
     print(found_num)
 
+def augment_preparations():
+    input_folderpath = f'{HUB_FOLDERPATH}/derive/preparations'
+    output_folderpath = f'{HUB_FOLDERPATH}/augment/preparations'
+    # try: shutil.rmtree(output_folderpath)
+    # except: pass
+    io.folders_recursive_gen(output_folderpath)
+    ###
+    master_items = masterize_utils.masterize_plants_get_all()
+    found_num = 0
+    for i, master_item in enumerate(master_items[:]):
+        print(f'AUGMENT PREPARATIONS {i}/{len(master_items)}')
+        plant_name_scientific_reference = master_item['plant_name_scientific_reference']
+        input_filepath = f'{input_folderpath}/{plant_name_scientific_reference}.json'
+        output_filepath = f'{output_folderpath}/{plant_name_scientific_reference}.json'
+        input_data = io.json_read(input_filepath)
+        if input_data != []:
+            found_num += 1
+            # print(json.dumps(input_data, indent=4))
+            # quit()
+        ###
+        # print(json.dumps(master_item, indent=4))
+        # print(json.dumps(input_data, indent=4))
+        # quit()
+        if os.path.exists(output_filepath): continue
+        if input_data != []:
+            found_num += 1
+            plant_name_scientific_reference = [item['plant_name_scientific_reference'] for item in input_data][0]
+            preparations = [item['preparation_name_reference'] for item in input_data][:4]
+            preparations_prompt = ', '.join(preparations)
+            # quit()
+            sentences_num = len(preparations)
+            prompt = f'''
+                Write a {sentences_num}-sentence paragraph about the preparations of the following plant: {plant_name_scientific_reference}.
+                The preparations of this plant are the following: {preparations_prompt}.
+                Reply only with the asked content.
+                Start with the following words: {plant_name_scientific_reference} .
+            '''.strip()
+            # print(prompt)
+            # quit()
+            reply = llm.reply(prompt, model_filepath)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            print()
+            print('########################################################################')
+            print(reply)
+            print('########################################################################')
+            print()
+            input_data = {
+                'preparations': input_data,
+                'llm_intro': reply,
+            }
+        else: 
+            input_data = {
+                'preparations': input_data,
+                'llm_intro': '',
+            }
+        print(json.dumps(input_data, indent=4))
+        io.json_write(output_filepath, input_data)
+        # quit()
+    print(found_num)
+
 def run():
 
     # augment_copy(attribute='taxonomies')
     # augment_copy(attribute='diseases')
 
+    # augment_copy(attribute='preparations')
+    augment_preparations()
     augment_plants_parts()
     augment_conditions()
     augment_chemicals()
@@ -353,4 +417,3 @@ def run():
     augment_copy(attribute='traits')
     augment_copy(attribute='distributions')
     augment_copy(attribute='names_common')
-    augment_copy(attribute='preparations')

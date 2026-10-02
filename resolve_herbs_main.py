@@ -32,7 +32,7 @@ def resolve_preparations(source_foldername):
         input_data = io.json_read(input_filepath)
         resolved_data = []
         for input_item in input_data:
-            print(json.dumps(input_item, indent=True))
+            # print(json.dumps(input_item, indent=True))
             # quit()
             plant_name_raw_normalize = input_item['plant_name_raw_normalize']
             ### RESOLVE PLANT (WCVP)
@@ -45,7 +45,7 @@ def resolve_preparations(source_foldername):
                 input_item['preparation_name_reference'] = input_item['preparation_name_raw']
                 input_item['preparation_name_reference_normalize'] = input_item['preparation_name_raw_normalize']
                 resolved_data.append(input_item)
-                # print(json.dumps(input_item, indent=True))
+                # print(json.dumps(input_item, indent=4))
                 # quit()
         if resolved_data != []:
             io.json_write(output_filepath, resolved_data)
@@ -569,8 +569,9 @@ def resolve_taxonomies(source_foldername):
 def run():
     print('RESOLVE')
 
-    resolve_plants_parts(source_foldername='pubmed')
+    resolve_preparations(source_foldername='pubmed')
 
+    resolve_plants_parts(source_foldername='pubmed')
     resolve_conditions(source_foldername='pubmed')
     # resolve_chemicals(source_foldername='drduke')
     resolve_chemicals(source_foldername='pubmed')
@@ -594,8 +595,3 @@ def run():
         # resolve_common_names(source_foldername='wikidata')
         resolve_common_names(source_foldername='col')
         print(f'resolve common_names() - execution time: ', time.perf_counter() - start)
-
-    if 1:
-        start = time.perf_counter()
-        resolve_preparations(source_foldername='pubmed')
-        print(f'resolve plant_preparations() - execution time: ', time.perf_counter() - start)

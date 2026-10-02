@@ -304,7 +304,7 @@ def normalize_plants_preparations(source_foldername):
         for input_item in input_data:
             input_item['plant_name_raw_normalize'] = normalize_utils.normalize_plant_name(input_item['plant_name_raw'])
             input_item['preparation_name_raw_normalize'] = normalize_name_lvl1(input_item['preparation_name_raw'])
-            # print(json.dumps(normalized_item, indent=4))
+            # print(json.dumps(input_item, indent=4))
             # quit()
         io.json_write(output_filepath, input_data)
     print(json.dumps(input_data[0], indent=4))
@@ -316,6 +316,7 @@ def run():
     # normalize_plants_compounds(source_foldername='pubmed')
     # quit()
 
+    normalize_plants_preparations(source_foldername='pubmed')
     normalize_plants_parts(source_foldername='pubmed')
 
     normalize_plants_conditions(source_foldername='pubmed')
@@ -334,5 +335,4 @@ def run():
 
 
 
-    normalize_plants_preparations(source_foldername='pubmed')
 

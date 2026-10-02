@@ -1554,6 +1554,67 @@ def plants_resolve_local_llm():
         # print(json.dumps(output_data, indent=4))
         # quit()
 
+def preparations_raw_to_json():
+    input_folderpath = f'{HUB_FOLDERPATH}/parse/pubmed/preparations/raw'
+    output_folderpath = f'{HUB_FOLDERPATH}/parse/pubmed/preparations/json'
+    try: shutil.rmtree(output_folderpath)
+    except: pass
+    io.folders_recursive_gen(output_folderpath)
+    ###
+    input_filenames = os.listdir(input_folderpath)
+    for i, input_filename in enumerate(input_filenames[:]):
+        print(f'PARSE PLANTS PARTS PUBMED RAW TO JSON: {i}/{len(input_filenames)}')
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        output_filepath = f'{output_folderpath}/{input_filename}'
+        ###
+        input_data = io.json_read(input_filepath)
+        # print(json.dumps(input_data, indent=4))
+        # quit()
+        relationships_text = input_data['reply']
+        relationships_lines = []
+        for line in relationships_text.split('\n'):
+            line = line.strip()
+            if line == '': continue
+            if line.startswith('['): line = line[1:]
+            if line.endswith(','): line = line[:-1]
+            if line.endswith(']'): line = line[:-1]
+            chunks = [chunk.strip() for chunk in line.split(', ')]
+            relationships_lines.append(chunks)
+        # print(len(relationships_lines))
+        # study_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/studies/pubmed/medicinal-plant/json'
+        study_folderpath = f'{HUB_FOLDERPATH}/fetch/pubmed/medicinal_plant/abstracts'
+        study_filepath = f'{study_folderpath}/{input_filename}'
+        study_data = io.json_read(study_filepath)
+        try: article_data = study_data['PubmedArticle'][0]['MedlineCitation']['Article']
+        except: pass
+        try: journal_title = article_data['Journal']['Title']
+        except: pass
+        # print(json.dumps(article_data, indent=4))
+        # print(json.dumps(journal_title, indent=4))
+        ###
+        output_items = []
+        for line in relationships_lines:
+            # print(line)
+            try: entity_1_val, relationship, entity_2_val = [val.strip() for val in line]
+            except: continue
+            if entity_1_val == '' or relationship == '' or entity_2_val == '': continue
+            if entity_1_val == None or relationship == None or entity_2_val == None: continue
+            ###
+            output_item = parse_herbs_schemas.schema_preparations_gen(
+                plant_name_raw = entity_1_val,
+                relationship = relationship,
+                preparation_name_raw = entity_2_val,
+                source_name = 'Pubmed',
+                source_acronym = 'PM',
+                reference_id = input_filename.split('.')[0],
+                reference_name = journal_title,
+            )
+            output_items.append(output_item)
+        io.json_write(output_filepath, output_items)
+    print(json.dumps(output_items[0], indent=4))
+    # quit()
+
+
 def run():
     print('parse >> pubmed')
 
@@ -1564,11 +1625,11 @@ def run():
     # observations_plants_parts_extract_raw() ### WARNING: takes many many hours (nightly running)
     # parse_preparation_form_extract_raw(foldername) ### WARNING: takes many many hours (nightly running)
 
+    preparations_raw_to_json()
     plants_parts_raw_to_json()
     conditions_raw_to_json()
     chemicals_raw_to_json()
     activities_raw_to_json()
-    # raw_to_json('plants_parts', 'plant_name_raw', 'plant_part_name_raw')
     # raw_to_json('preparations', 'plant_name_raw', 'preparation_name_raw')
 
     if 0:

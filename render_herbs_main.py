@@ -2010,7 +2010,7 @@ def listing_plant_parts_gen(plant_data):
                         <tr>
                             <th scope="col">Plant part</th>
                             <th scope="col">Supporting sources</th>
-                            <th scope="col">Consensus Source</th>
+                            <th scope="col">Consensus score</th>
                         </tr>
                     </thead>
                     {html_table_body}
@@ -2037,7 +2037,8 @@ def listing_preparations_gen(plant_data):
         sources_html = f''
         html_table_body += f'''<tbody>'''
         table_num = 10
-        for item in section_data[:table_num]:
+        section_items = section_data[data_key]
+        for item in section_items[:table_num]:
             name = item[item_key].capitalize()
             slug = polish.sluggify(name)
             sources_num = item['sources_num']
@@ -2049,13 +2050,22 @@ def listing_preparations_gen(plant_data):
             elif int(sources_num) >= 5: confidence = '★★★☆☆'
             elif int(sources_num) >= 3: confidence = '★★☆☆☆'
             elif int(sources_num) >= 1: confidence = '★☆☆☆☆'
+            ###
+            sources_table = ''
+            for source in sources[:2]:
+                sources_table += source['reference_name'] + ' · '
+            sources_table = sources_table[:-3]
+            ###
+            sources_table_left = len(sources) - 2
+            sources_table_more = ''
+            if sources_table_left > 0:
+                sources_table_more = f' · {sources_table_left} more'
+            ###
             html_table_body += f'''
                 <tr>
                     <th scope="row">{name}</th>
                     <td>
-                        <a href="#sources-{slug}">
-                            {sources_num} supporting sources
-                        </a>
+                        {sources_table} {sources_table_more}
                     </td>
                     <td>
                         <span>
@@ -2108,30 +2118,33 @@ def listing_preparations_gen(plant_data):
                     </details>
                 '''
         source_tot = 0 
-        for item in section_data[:]:
+        for item in section_items[:]:
             source_tot += int(item['sources_num'])
         p = []
-        for item in section_data[:5]:
+        for item in section_items[:5]:
             p.append(item[item_key])
         p_str = ', '.join(p)
         html_table_body += f'''</tbody>'''
+        """
+                    {plant_data['plant_name_scientific_reference']} has {len(plant_data[data_key])} reported investigations on preparations identified across {source_tot} scientific publications and several other databases. The most consistently reported preparations include {p_str}.
+                    <caption style="text-align: left; margin-bottom: 0.8rem;">
+                        Preparations investigated for {plant_data['plant_name_scientific_reference']}
+                    </caption>
+        """
         html_article += f'''
             <section>
                 <h2>
                     Preparations
                 </h2>
                 <p>
-                    {plant_data['plant_name_scientific_reference']} has {len(plant_data[data_key])} reported investigations on preparations identified across {source_tot} scientific publications and several other databases. The most consistently reported preparations include {p_str}.
+                    {section_data['llm_intro']}
                 </p>
                 <table style="margin-top: 3.2rem;">
-                    <caption style="text-align: left; margin-bottom: 0.8rem;">
-                        Preparations investigated for {plant_data['plant_name_scientific_reference']}
-                    </caption>
                     <thead>
                         <tr>
                             <th scope="col">Preparation</th>
                             <th scope="col">Supporting sources</th>
-                            <th scope="col">Consensus</th>
+                            <th scope="col">Consensus score</th>
                         </tr>
                     </thead>
                     {html_table_body}
@@ -2139,11 +2152,13 @@ def listing_preparations_gen(plant_data):
             </section>
         '''
         ###
+        """
         html_article += f'''
             <section aria-labelledby="conditions-heading">
                 {sources_html}
             </section>
         '''
+        """
     return html_article
 
 def listing_names_common_gen(plant_data):
