@@ -23,6 +23,8 @@ sidebar_plants_parts_rows = None
 sidebar_activities_rows = None
 sidebar_chemicals_rows = None
 
+HUB_FOLDERPATH = f'''{g.DATA_FOLDERPATH}/herbs'''
+
 def groups_gen(items, group_len):
     pages = []
     page_cur = []
@@ -44,7 +46,7 @@ def hero_html_gen(title):
     plants_num = len(plants_rows)
     activities_num = len(activities_rows)
     chemicals_num = len(chemicals_rows)
-    studies_num = len(os.listdir(f'{g.VAULT_FOLDERPATH}/terrawhisper/data/fetch/pubmed/medicinal_plant/abstracts'))
+    studies_num = len(os.listdir(f'{HUB_FOLDERPATH}/fetch/pubmed/medicinal_plant/abstracts'))
     '''
                     <div style="display: flex; align-items: center;">
                         <h1 style="font-size: 1.4rem; margin-bottom: 0; margin-top: 2px;">
@@ -81,15 +83,15 @@ def hero_html_gen(title):
 
 def sidebar_plants_parts_get():
     global sidebar_plants_parts_rows 
-    db_filepath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/qualify/observations.db'
+    db_filepath = f'{HUB_FOLDERPATH}/observe/observations.db'
     conn = sqlite3.connect(db_filepath)
     cursor = conn.execute("""
         SELECT
-            plant_part_name_canon,
+            plant_part_name_reference,
             COUNT(DISTINCT source_name) AS source_count
         FROM plants_plants_parts
-        GROUP BY plant_part_name_canon
-        ORDER BY source_count DESC, plant_part_name_canon ASC;
+        GROUP BY plant_part_name_reference
+        ORDER BY source_count DESC, plant_part_name_reference ASC;
     """)
     rows = cursor.fetchall()
     conn.close()
@@ -97,15 +99,15 @@ def sidebar_plants_parts_get():
 
 def sidebar_activities_get():
     global sidebar_activities_rows 
-    db_filepath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/qualify/observations.db'
+    db_filepath = f'{HUB_FOLDERPATH}/observe/observations.db'
     conn = sqlite3.connect(db_filepath)
     cursor = conn.execute("""
         SELECT
-            activity_name_canon,
+            activity_name_reference,
             COUNT(DISTINCT source_name) AS source_count
         FROM plants_activities
-        GROUP BY activity_name_canon
-        ORDER BY source_count DESC, activity_name_canon ASC;
+        GROUP BY activity_name_reference
+        ORDER BY source_count DESC, activity_name_reference ASC;
     """)
     rows = cursor.fetchall()
     conn.close()
@@ -113,15 +115,15 @@ def sidebar_activities_get():
 
 def sidebar_chemicals_get():
     global sidebar_chemicals_rows 
-    db_filepath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/qualify/observations.db'
+    db_filepath = f'{HUB_FOLDERPATH}/observe/observations.db'
     conn = sqlite3.connect(db_filepath)
     cursor = conn.execute("""
         SELECT
-            chemical_name_canon,
+            chemical_name_reference,
             COUNT(DISTINCT source_name) AS source_count
         FROM plants_chemicals
-        GROUP BY chemical_name_canon
-        ORDER BY source_count DESC, chemical_name_canon ASC;
+        GROUP BY chemical_name_reference
+        ORDER BY source_count DESC, chemical_name_reference ASC;
     """)
     rows = cursor.fetchall()
     conn.close()
@@ -372,24 +374,35 @@ def cards_header_html_gen(group_i, page_cards_num, total_items_num, title):
 def cards_html_gen(group):
     cards_html = ''
     for plant_row in group[:]:
-        plant_name = plant_row['plant_name_canonical']
+        plant_name = plant_row['plant_name_scientific_reference']
         plant_slug = polish.sluggify(plant_name)
         plant_img_src = f'/images/herbs/{plant_slug}.jpg'
         plant_filepath = f'{g.WEBSITE_FOLDERPATH}/images/herbs/{plant_slug}.jpg'
         ###
         # try: plant_data = io.json_read(f'{g.DATA_FOLDERPATH}/compile/herbs/{plant_name}.json')
         # except: plant_data = []
-        plant_data = io.json_read(f'{g.DATA_FOLDERPATH}/compile/herbs/{plant_name}.json')
+        plant_data = io.json_read(f'{HUB_FOLDERPATH}/compile/{plant_name}.json')
         plant_common_name_preferred = ''
         if 'names_common' in plant_data and plant_data['names_common'] != []:
             plant_common_name_preferred = plant_data['names_common']['plant_name_common_preferred']
         if plant_common_name_preferred == '':
             plant_common_name_preferred = plant_name
         ###
-        json_article_filepath = f'''{g.DATA_FOLDERPATH}/enhance/{plant_slug}.json'''
-        try: json_article = io.json_read(json_article_filepath) # TODO: fix missing/extra? plants
-        except: continue
-        plant_desc = ' '.join(json_article['intro'].split(' ')[:16]).strip()
+        json_article_filepath = f'''{HUB_FOLDERPATH}/enhance/{plant_slug}.json'''
+        # try: json_article = io.json_read(json_article_filepath) # TODO: fix missing/extra? plants
+        # except: continue
+        # print(json.dumps(json_article, indent=4))
+        # print(plant_slug)
+        ### TODO: fix missing intros
+        # try: 
+            # plant_desc = ' '.join(json_article['intro'].split(' ')[:16]).strip()
+            # if plant_desc[-1] == '.': plant_desc = plant_desc[:-1]
+        # except: plant_desc = ''
+        # print(plant_data)
+        # print(plant_data['intro_llm'])
+        # quit()
+        # plant_desc = plant_data['intro']['llm_intro']
+        plant_desc = ' '.join(plant_data['intro']['llm_intro'].split(' ')[:16]).strip()
         if plant_desc[-1] == '.': plant_desc = plant_desc[:-1]
         plant_desc += '...'
         cards_html += f'''
@@ -503,18 +516,26 @@ def herbs_index():
 
     ### GET ALL PLANTS -> TO LIST OF ITEMS
     # plants_rows = data.sqlite__plants_get()
-    plants_rows = masterize_utils.masterize_plants_get_all()
+    plants_items = masterize_utils.masterize_plants_get_all()
     plants_data = [
         {
-            'plant_id': row[0],
-            'plant_name_canonical': row[1],
+            'plant_id': item['id'],
+            'plant_name_scientific_reference': item['plant_name_scientific_reference'],
         }
-        for row in plants_rows
+        for item in plants_items
     ]
 
     ### GROUP PLANTS IN PAGES
     page_cards_num = 48
     groups = groups_gen(plants_data, page_cards_num)
+
+    """
+    for group in groups:
+        for plant in group:
+            print(plant)
+        print()
+    return
+    """
 
     ### GENERATE PAGES
     for group_i, group in enumerate(groups):
@@ -528,10 +549,14 @@ def herbs_index():
 
 
         hero_html = hero_html_gen(title='Explore all medicinal herbs')
-        sidebar_html = sidebar_html_gen()
-        cards_header_html = cards_header_html_gen(group_i, page_cards_num, len(plants_data), title='List of all herbs')
+        # sidebar_html = sidebar_html_gen()
+        # cards_header_html = cards_header_html_gen(group_i, page_cards_num, len(plants_data), title='List of all herbs')
         cards_html = cards_html_gen(group)
-        pagination_html = pagination_html_gen(group_i, groups, url_slug)
+        # pagination_html = pagination_html_gen(group_i, groups, url_slug)
+        sidebar_html = ''
+        cards_header_html = ''
+        # cards_html = ''
+        pagination_html = ''
 
         html_article = ''
         html_article += f'''
@@ -589,7 +614,7 @@ def herbs_popular_category():
     plants_rows = masterize_utils.masterize_plants_get_all()
 
     plants_data = []
-    db_filepath = f'{g.DATA_FOLDERPATH}/qualify/observations.db'
+    db_filepath = f'{HUB_FOLDERPATH}/observe/observations.db'
     conn = sqlite3.connect(db_filepath)
     for plant_row in plants_rows:
         plant_name_scientific_canon = plant_row[1]
@@ -1716,7 +1741,7 @@ def run():
     if sidebar_chemicals_rows == None:
         sidebar_chemicals_get()
 
-    if 0:
+    if 1:
         herbs_index()
 
     if 0:
@@ -1753,7 +1778,7 @@ def run():
     if 0:
         herbs_plants_parts_category()
 
-    if 1:
+    if 0:
         rows = sidebar_plants_parts_rows
         for i, item in enumerate(rows):
             print(f'{i}/{len(rows)}')

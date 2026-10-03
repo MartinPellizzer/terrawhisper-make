@@ -125,9 +125,13 @@ if 0:
     import compile_herbs_main
     compile_herbs_main.run()
 
-if 1:
+if 0:
     import render_herbs_main
     render_herbs_main.run()
+
+if 1:
+    import explore_herbs_main
+    explore_herbs_main.run()
 
 quit()
 

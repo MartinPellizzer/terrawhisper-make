@@ -19,7 +19,7 @@ def masterize_plants_get_all():
     return items
 
 def masterize_activities_get_all():
-    db_filepath = f'{g.DATA_FOLDERPATH}/masterize/master.db'
+    db_filepath = f'{HUB_HERBS_FOLDERPATH}/masterize/master.db'
     conn = sqlite3.connect(db_filepath)
     cur = conn.cursor()
     cur.execute("""
@@ -31,7 +31,7 @@ def masterize_activities_get_all():
     return rows
 
 def masterize_chemicals_get_all():
-    db_filepath = f'{g.DATA_FOLDERPATH}/masterize/master.db'
+    db_filepath = f'{HUB_HERBS_FOLDERPATH}/masterize/master.db'
     conn = sqlite3.connect(db_filepath)
     cur = conn.cursor()
     cur.execute("""

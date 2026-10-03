@@ -395,12 +395,111 @@ def augment_preparations():
         # quit()
     print(found_num)
 
+def augment_intro():
+    input_preparations_folderpath = f'{HUB_FOLDERPATH}/derive/preparations'
+    input_plants_parts_folderpath = f'{HUB_FOLDERPATH}/derive/plants_parts'
+    input_conditions_folderpath = f'{HUB_FOLDERPATH}/derive/conditions'
+    input_chemicals_folderpath = f'{HUB_FOLDERPATH}/derive/chemicals'
+    input_activities_folderpath = f'{HUB_FOLDERPATH}/derive/activities'
+    output_folderpath = f'{HUB_FOLDERPATH}/augment/intro'
+    # try: shutil.rmtree(output_folderpath)
+    # except: pass
+    io.folders_recursive_gen(output_folderpath)
+    ###
+    master_items = masterize_utils.masterize_plants_get_all()
+    found_num = 0
+    for i, master_item in enumerate(master_items[:]):
+        print(f'AUGMENT PREPARATIONS {i}/{len(master_items)}')
+        plant_name_scientific_reference = master_item['plant_name_scientific_reference']
+        input_preparations_filepath = f'{input_preparations_folderpath}/{plant_name_scientific_reference}.json'
+        input_plants_parts_filepath = f'{input_plants_parts_folderpath}/{plant_name_scientific_reference}.json'
+        input_conditions_filepath = f'{input_conditions_folderpath}/{plant_name_scientific_reference}.json'
+        input_chemicals_filepath = f'{input_chemicals_folderpath}/{plant_name_scientific_reference}.json'
+        input_activities_filepath = f'{input_activities_folderpath}/{plant_name_scientific_reference}.json'
+        output_filepath = f'{output_folderpath}/{plant_name_scientific_reference}.json'
+        input_preparations_data = io.json_read(input_preparations_filepath)
+        input_plants_parts_data = io.json_read(input_plants_parts_filepath)
+        input_conditions_data = io.json_read(input_conditions_filepath)
+        input_chemicals_data = io.json_read(input_chemicals_filepath)
+        input_activities_data = io.json_read(input_activities_filepath)
+        ###
+        # print(json.dumps(master_item, indent=4))
+        # print(json.dumps(input_data, indent=4))
+        # quit()
+        if os.path.exists(output_filepath): continue
+        if (
+            input_preparations_data != [] or 
+            input_plants_parts_data != [] or 
+            input_conditions_data != [] or 
+            input_chemicals_data != [] or 
+            input_activities_data != []
+        ):
+            found_num += 1
+            preparations = [item['preparation_name_reference'] for item in input_preparations_data][:4]
+            plants_parts = [item['plant_part_name_reference'] for item in input_plants_parts_data][:4]
+            conditions = [item['condition_name_reference'] for item in input_conditions_data][:4]
+            chemicals = [item['chemical_name_reference'] for item in input_chemicals_data][:4]
+            activities = [item['activity_name_reference'] for item in input_activities_data][:4]
+            preparations_prompt = ', '.join(preparations)
+            plants_parts_prompt = ', '.join(plants_parts)
+            conditions_prompt = ', '.join(conditions)
+            chemicals_prompt = ', '.join(chemicals)
+            activities_prompt = ', '.join(activities)
+            # quit()
+            sentences_num = 0
+            sentences_num += len(activities_prompt)
+            sentences_num += len(chemicals_prompt)
+            sentences_num += len(conditions_prompt)
+            sentences_num += len(plants_parts_prompt)
+            sentences_num += len(preparations_prompt)
+            if activities_prompt.strip() != '': activities_prompt = f'''activities: {activities_prompt}'''
+            if chemicals_prompt.strip() != '': chemicals_prompt = f'''chemicals: {chemicals_prompt}'''
+            if conditions_prompt.strip() != '': conditions_prompt = f'''conditions: {conditions_prompt}'''
+            if plants_parts_prompt.strip() != '': plants_parts_prompt = f'''plants_parts: {plants_parts_prompt}'''
+            if preparations_prompt.strip() != '': preparations_prompt = f'''preparations: {preparations_prompt}'''
+            prompt = f'''
+                Write a 5-sentence intro paragraph about the following plant: {plant_name_scientific_reference}.
+                CONTEXT:
+                {activities_prompt}
+                {chemicals_prompt}
+                {conditions_prompt}
+                {plants_parts_prompt}
+                {preparations_prompt}
+                RULES:
+                Reply only with the asked content.
+                Start with the following words: {plant_name_scientific_reference} .
+            '''.strip()
+            # print(prompt)
+            # quit()
+            reply = llm.reply(prompt, model_filepath)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            print()
+            print('########################################################################')
+            print(reply)
+            print('########################################################################')
+            print()
+            input_data = {
+                'llm_intro': reply,
+            }
+        else: 
+            input_data = {
+                'llm_intro': '',
+            }
+        print(json.dumps(input_data, indent=4))
+        io.json_write(output_filepath, input_data)
+        # quit()
+    print(found_num)
+
+
 def run():
 
     # augment_copy(attribute='taxonomies')
     # augment_copy(attribute='diseases')
 
     # augment_copy(attribute='preparations')
+    augment_intro()
     augment_preparations()
     augment_plants_parts()
     augment_conditions()

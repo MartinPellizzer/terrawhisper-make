@@ -2293,6 +2293,8 @@ def listing_hero_gen(plant_data):
     plant_taxon_name_normalized = normalize_utils.normalize_plant_name(plant_name_scientific_reference)
     url_slug = f'herbs/{plant_taxon_name_slug}'
     html_article = ''
+    # print(plant_data['names_common'])
+    # quit()
     ## H1
     plant_name_common = plant_data['names_common']['plant_name_common_preferred']
     if plant_name_common != '': h1_html = f'<h1 class="mb_4">{plant_name_common}</h1>'

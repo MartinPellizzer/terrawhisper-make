@@ -55,8 +55,8 @@ def masterize_table_plants_add(source_foldername, subfoldername):
 
 def masterize_table_plants_parts_add(source_foldername, subfoldername):
     table_name = 'plants_parts'
-    input_folderpath = f'{g.DATA_FOLDERPATH}/resolve/{source_foldername}/{subfoldername}/json'
-    output_folderpath = f'{g.DATA_FOLDERPATH}/masterize'
+    input_folderpath = f'{HUB_FOLDERPATH}/resolve/{source_foldername}/{subfoldername}/json'
+    output_folderpath = f'{HUB_FOLDERPATH}/masterize'
     db_filepath = f'{output_folderpath}/master.db'
     ###
     input_filenames = os.listdir(input_folderpath)
@@ -75,15 +75,15 @@ def masterize_table_plants_parts_add(source_foldername, subfoldername):
     cur.executemany(
         f"""
             INSERT OR IGNORE INTO {table_name} (
-                name_canon, 
-                name_canon_norm
+                plant_part_name_reference, 
+                plant_part_name_reference_normalize
             )
             VALUES (?, ?)
         """,
         [
             (
-                item.get("plant_part_name_canon"),
-                item.get("plant_part_name_canon_norm"),
+                item.get("plant_part_name_reference"),
+                item.get("plant_part_name_reference_normalize"),
             )
             for item in all_data
         ]
@@ -96,8 +96,8 @@ def masterize_table_plants_parts_add(source_foldername, subfoldername):
 
 def masterize_table_activities_add(source_foldername, subfoldername):
     table_name = 'activities'
-    output_folderpath = f'{g.DATA_FOLDERPATH}/masterize'
-    input_folderpath = f'{g.DATA_FOLDERPATH}/resolve/{source_foldername}/{subfoldername}/json'
+    output_folderpath = f'{HUB_FOLDERPATH}/masterize'
+    input_folderpath = f'{HUB_FOLDERPATH}/resolve/{source_foldername}/{subfoldername}/json'
     db_filepath = f'{output_folderpath}/master.db'
     ###
     input_filenames = os.listdir(input_folderpath)
@@ -116,15 +116,15 @@ def masterize_table_activities_add(source_foldername, subfoldername):
     cur.executemany(
         f"""
             INSERT OR IGNORE INTO {table_name} (
-                activity_name_canon, 
-                activity_name_canon_norm
+                activity_name_reference, 
+                activity_name_reference_normalize
             )
             VALUES (?, ?)
         """,
         [
             (
-                item.get("activity_name_canon"),
-                item.get("activity_name_canon_norm"),
+                item.get("activity_name_reference"),
+                item.get("activity_name_reference_normalize"),
             )
             for item in all_data
         ]
@@ -137,8 +137,8 @@ def masterize_table_activities_add(source_foldername, subfoldername):
 
 def masterize_table_chemicals_add(source_foldername, subfoldername):
     table_name = 'chemicals'
-    output_folderpath = f'{g.DATA_FOLDERPATH}/masterize'
-    input_folderpath = f'{g.DATA_FOLDERPATH}/resolve/{source_foldername}/{subfoldername}/json'
+    output_folderpath = f'{HUB_FOLDERPATH}/masterize'
+    input_folderpath = f'{HUB_FOLDERPATH}/resolve/{source_foldername}/{subfoldername}/json'
     db_filepath = f'{output_folderpath}/master.db'
     ###
     input_filenames = os.listdir(input_folderpath)
@@ -157,15 +157,15 @@ def masterize_table_chemicals_add(source_foldername, subfoldername):
     cur.executemany(
         f"""
             INSERT OR IGNORE INTO {table_name} (
-                chemical_name_canon, 
-                chemical_name_canon_norm
+                chemical_name_reference, 
+                chemical_name_reference_normalize
             )
             VALUES (?, ?)
         """,
         [
             (
-                item.get("chemical_name_canon"),
-                item.get("chemical_name_canon_norm"),
+                item.get("chemical_name_reference"),
+                item.get("chemical_name_reference_normalize"),
             )
             for item in all_data
         ]
@@ -179,7 +179,7 @@ def masterize_table_chemicals_add(source_foldername, subfoldername):
 def run():
     print('MASTERIZE')
 
-    if 1:
+    if 0:
         # masterize_table_plants_add(source_foldername='drduke', subfoldername='activities')
         # masterize_table_plants_add(source_foldername='drduke', subfoldername='chemicals')
         '''
@@ -191,14 +191,11 @@ def run():
         masterize_table_plants_add(source_foldername='pubmed', subfoldername='plants_parts')
         masterize_table_plants_add(source_foldername='pubmed', subfoldername='preparations')
 
-    if 0:
-        masterize_table_activities_add(source_foldername='drduke', subfoldername='activities')
-        masterize_table_activities_add(source_foldername='pubmed', subfoldername='activities')
+    masterize_table_activities_add(source_foldername='drduke', subfoldername='activities')
+    masterize_table_activities_add(source_foldername='pubmed', subfoldername='activities')
 
-    if 0:
-        masterize_table_chemicals_add(source_foldername='drduke', subfoldername='chemicals')
-        masterize_table_chemicals_add(source_foldername='pubmed', subfoldername='chemicals')
+    # masterize_table_chemicals_add(source_foldername='drduke', subfoldername='chemicals')
+    masterize_table_chemicals_add(source_foldername='pubmed', subfoldername='chemicals')
 
-    if 0:
-        masterize_table_plants_parts_add(source_foldername='pubmed', subfoldername='plants_parts')
+    masterize_table_plants_parts_add(source_foldername='pubmed', subfoldername='plants_parts')
 
