@@ -35,7 +35,7 @@ def parse_activities():
                 # print(json.dumps(item, indent=4))
                 # quit()
                 item_output = parse_herbs_schemas.schema_plants_activities_gen(
-                    plant_name_raw = data['herb_name_latin'], 
+                    plant_name_scientific_raw = data['herb_name_latin'], 
                     relationship = 'has_activity', 
                     activity_name_raw = item['Activity'], 
                     source_name = 'Dr. Duke',

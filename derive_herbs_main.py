@@ -507,6 +507,68 @@ def chemicals_gen():
     print(json.dumps(last, indent=4))
     # quit()
 
+def compounds_gen():
+    master_plants_rows = masterize_utils.masterize_plants_get_all()
+    # print(json.dumps(master_plants_rows[0], indent=4))
+    # quit()
+    last = []
+    for i, master_plant_row in enumerate(master_plants_rows):
+        master_item = master_plant_row
+        print(f'DERIVE COMPOUNDS {i}/{len(master_plants_rows)}')
+        conn = sqlite3.connect(db_filepath)
+        conn.row_factory = sqlite3.Row
+        # cursor = conn.execute(f"SELECT * FROM plants_chemicals")
+        # rows = cursor.fetchall()
+        # items = [dict(row) for row in rows]
+        # for item in items[:1]:
+            # print(json.dumps(item, indent=4))
+        # quit()
+        cursor = conn.execute('''
+            SELECT
+                plant_name_scientific_reference,
+                compound_name_reference,
+                COUNT(*) AS sources_num,
+                json_group_array(
+                    json_object(
+                        'reference_name', reference_name,
+                        'reference_id', reference_id
+                    )
+                ) AS sources
+            FROM (
+                SELECT DISTINCT
+                    plant_name_scientific_reference,
+                    compound_name_reference,
+                    reference_name,
+                    reference_id
+                FROM plants_compounds
+                WHERE plant_name_scientific_reference = ?
+            )
+            GROUP BY
+                plant_name_scientific_reference,
+                compound_name_reference
+            ORDER BY sources_num DESC;
+        ''', (master_item['plant_name_scientific_reference'],))
+        rows = cursor.fetchall()
+        conn.close()
+        ###
+        output_items = []
+        for row in rows[:]:
+            output_item = {
+                'plant_name_scientific_reference': master_plant_row['plant_name_scientific_reference'],
+                'compound_name_reference': row['compound_name_reference'],
+                'sources_num': row['sources_num'],
+                'sources': json.loads(row['sources']),
+            }
+            # print(json.dumps(output_item, indent=4))
+            output_items.append(output_item)
+        output_filepath = f'''{HUB_FOLDERPATH}/{output_foldername}/compounds/{master_plant_row['plant_name_scientific_reference']}.json'''
+        io.folder_create_from_filepath(output_filepath)
+        io.json_write(output_filepath, output_items)
+        if output_items != []:
+            last = output_items
+    print(json.dumps(last, indent=4))
+    # quit()
+
 def conditions_gen():
     master_plants_rows = masterize_utils.masterize_plants_get_all()
     last = []
@@ -771,6 +833,8 @@ def taxonomies_gen():
     print(json.dumps(output_item, indent=4))
 
 def run():
+    compounds_gen()
+
     preparations_gen()
     plants_parts_gen()
     conditions_gen()

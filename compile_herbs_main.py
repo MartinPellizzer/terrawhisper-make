@@ -139,6 +139,10 @@ def run():
             f'{input_folderpath}/intro/{plant_name_scientific_reference}.json'
         )
 
+        output_data['compounds'] = io.json_read(
+            f'{input_folderpath}/compounds/{plant_name_scientific_reference}.json'
+        )
+
         io.json_write(output_filepath, output_data)
         # if output_data['chemicals'] != []:
             # print(json.dumps(output_data, indent=4))

@@ -14,7 +14,7 @@ import parse_utils
 HUB_FOLDERPATH = f'''{g.DATA_FOLDERPATH}/herbs'''
 
 def parse_names():
-    output_folderpath = f'{HUB_FOLDERPATH}/parse/col/names/json'
+    output_folderpath = f'{HUB_FOLDERPATH}/parse/col/plants_names_common/json'
     try: shutil.rmtree(output_folderpath)
     except: pass
     io.folders_recursive_gen(output_folderpath)
@@ -46,9 +46,9 @@ def parse_names():
             # print(row)
             # quit()
             output_item = parse_utils.common_name_create(
-                plant_name_scientific_reference = plant_name_scientific_reference,
-                plant_name_scientific_reference_normalize = plant_name_scientific_reference,
-                plant_name_common = item['name'],
+                plant_name_scientific_raw = plant_name_scientific_reference,
+                # plant_name_scientific_reference_normalize = plant_name_scientific_reference,
+                plant_name_common_raw = item['name'],
                 plant_name_common_transliteration = item['transliteration'],
                 plant_name_common_language = item['language'],
                 plant_name_common_preferred = item['preferred'],

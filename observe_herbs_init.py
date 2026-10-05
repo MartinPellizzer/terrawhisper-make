@@ -200,6 +200,36 @@ def observations_table_plants_plants_parts_create(regen=False):
     conn.commit()
     conn.close()
 
+def observations_table_plants_compounds_create(regen=False):
+    table_name = 'plants_compounds'
+    conn = sqlite3.connect(db_filepath)
+    cur = conn.cursor()
+    if regen: cur.execute(f"DROP TABLE IF EXISTS {table_name}")
+    cur.execute(f"""
+        CREATE TABLE IF NOT EXISTS {table_name} (
+            id INTEGER PRIMARY KEY,
+            plant_name_scientific_reference TEXT NOT NULL,
+            plant_name_scientific_reference_normalize TEXT,
+            compound_name_reference TEXT NOT NULL,
+            compound_name_reference_normalize TEXT,
+            plant_part_name_raw TEXT,
+            concentration REAL,
+            unit TEXT,
+            source_name TEXT NOT NULL,
+            source_acronym TEXT,
+            reference_id TEXT,
+            reference_name TEXT
+        );
+    """)
+    conn.execute("PRAGMA journal_mode = WAL;")
+    conn.execute("PRAGMA synchronous = OFF;")
+    conn.execute("PRAGMA temp_store = MEMORY;")
+    ###
+    cur.execute(f"CREATE INDEX IF NOT EXISTS idx_{table_name}_plant_name_scientific_reference ON {table_name}(plant_name_scientific_reference)")
+    cur.execute(f"CREATE INDEX IF NOT EXISTS idx_{table_name}_compound_name_reference ON {table_name}(compound_name_reference)")
+    conn.commit()
+    conn.close()
+
 def observations_table_plants_chemicals_create(regen=False):
     table_name = 'plants_chemicals'
     conn = sqlite3.connect(db_filepath)
@@ -316,20 +346,20 @@ def run():
     # except: pass
     os.makedirs(output_folderpath, exist_ok=True)
 
+    observations_table_plants_compounds_create(regen=True)
     observations_table_plants_preparations_create(regen=True)
-
     observations_table_plants_plants_parts_create(regen=True)
     observations_table_plants_conditions_create(regen=True)
-    observations_table_plants_chemicals_create(regen=True)
+    # observations_table_plants_chemicals_create(regen=True)
     observations_table_plants_activities_create(regen=True)
 
     # observations_table_plants_names_create(regen=True)
+    observations_table_plants_names_common_create(regen=True)
 
     observations_table_plants_taxonomies_create(regen=True)
 
     observations_table_plants_synonyms_create(regen=True)
     observations_table_plants_traits_create(regen=True)
 
-    observations_table_plants_names_common_create(regen=True)
     observations_table_plants_distributions_create(regen=True)
 

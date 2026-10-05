@@ -549,7 +549,7 @@ def parse_chemicals_raw_to_json():
             try: plant_name, plant_part_name, chemical_name = line
             except: continue
             output = parse_utils.chemical_create(
-                plant_name_raw = plant_name,
+                plant_name_scientific_raw = plant_name,
                 chemical_name_raw = chemical_name,
                 plant_part_name_raw = plant_part_name,
                 source_name = journal_title,
@@ -1117,8 +1117,8 @@ def raw_to_json(foldername, entity_1, entity_2):
     print(json.dumps(output_items[0], indent=4))
 
 def activities_raw_to_json():
-    input_folderpath = f'{HUB_FOLDERPATH}/parse/pubmed/activities_resolved_one_shot/raw'
-    output_folderpath = f'{HUB_FOLDERPATH}/parse/pubmed/activities_resolved_one_shot/json'
+    input_folderpath = f'{HUB_FOLDERPATH}/parse/pubmed/activities/raw'
+    output_folderpath = f'{HUB_FOLDERPATH}/parse/pubmed/activities/json'
     try: shutil.rmtree(output_folderpath)
     except: pass
     io.folders_recursive_gen(output_folderpath)
@@ -1163,7 +1163,7 @@ def activities_raw_to_json():
             if entity_1_val == None or relationship == None or entity_2_val == None: continue
             ###
             output_item = parse_herbs_schemas.schema_plants_activities_gen(
-                plant_name_raw = entity_1_val,
+                plant_name_scientific_raw = entity_1_val,
                 relationship = relationship,
                 activity_name_raw = entity_2_val,
                 source_name = 'Pubmed',
@@ -1222,7 +1222,7 @@ def chemicals_raw_to_json():
             if entity_1_val == None or relationship == None or entity_2_val == None: continue
             ###
             output_item = parse_herbs_schemas.schema_plants_chemicals_gen(
-                plant_name_raw = entity_1_val,
+                plant_name_scientific_raw = entity_1_val,
                 relationship = relationship,
                 chemical_name_raw = entity_2_val,
                 source_name = 'Pubmed',
@@ -1281,7 +1281,7 @@ def conditions_raw_to_json():
             if entity_1_val == None or relationship == None or entity_2_val == None: continue
             ###
             output_item = parse_herbs_schemas.schema_plants_conditions_gen(
-                plant_name_raw = entity_1_val,
+                plant_name_scientific_raw = entity_1_val,
                 relationship = relationship,
                 condition_name_raw = entity_2_val,
                 source_name = 'Pubmed',
@@ -1340,7 +1340,7 @@ def plants_parts_raw_to_json():
             if entity_1_val == None or relationship == None or entity_2_val == None: continue
             ###
             output_item = parse_herbs_schemas.schema_plants_parts_gen(
-                plant_name_raw = entity_1_val,
+                plant_name_scientific_raw = entity_1_val,
                 relationship = relationship,
                 plant_part_name_raw = entity_2_val,
                 source_name = 'Pubmed',
@@ -1348,70 +1348,6 @@ def plants_parts_raw_to_json():
                 reference_id = input_filename.split('.')[0],
                 reference_name = journal_title,
             )
-            output_items.append(output_item)
-        io.json_write(output_filepath, output_items)
-    print(json.dumps(output_items[0], indent=4))
-    # quit()
-
-def chemicals_raw_to_json_old():
-    input_folderpath = f'{HUB_FOLDERPATH}/parse/pubmed/chemicals/raw'
-    output_folderpath = f'{HUB_FOLDERPATH}/parse/pubmed/chemicals/json'
-    try: shutil.rmtree(output_folderpath)
-    except: pass
-    io.folders_recursive_gen(output_folderpath)
-    ###
-    input_filenames = os.listdir(input_folderpath)
-    for i, input_filename in enumerate(input_filenames[:]):
-        print(f'{i}/{len(input_filenames)}')
-        input_filepath = f'{input_folderpath}/{input_filename}'
-        output_filepath = f'{output_folderpath}/{input_filename}'
-        ###
-        input_data = io.json_read(input_filepath)
-        # print(json.dumps(input_data, indent=4))
-        # quit()
-        relationships_text = input_data['reply']
-        relationships_lines = []
-        for line in relationships_text.split('\n'):
-            line = line.strip()
-            if line == '': continue
-            if line.startswith('['): line = line[1:]
-            if line.endswith(','): line = line[:-1]
-            if line.endswith(']'): line = line[:-1]
-            chunks = [chunk.strip() for chunk in line.split(', ')]
-            if len(chunks) != 3: continue
-            relationships_lines.append(chunks)
-        # print(json.dumps(relationships_lines, indent=4))
-        # quit()
-        # print(len(relationships_lines))
-        # study_folderpath = f'{g.VAULT_FOLDERPATH}/terrawhisper/studies/pubmed/medicinal-plant/json'
-        study_folderpath = f'{HUB_FOLDERPATH}/fetch/pubmed/medicinal_plant/abstracts'
-        study_filepath = f'{study_folderpath}/{input_filename}'
-        study_data = io.json_read(study_filepath)
-        try: article_data = study_data['PubmedArticle'][0]['MedlineCitation']['Article']
-        except: pass
-        try: journal_title = article_data['Journal']['Title']
-        except: pass
-        # print(json.dumps(article_data, indent=4))
-        # print(json.dumps(journal_title, indent=4))
-        ###
-        output_items = []
-        for line in relationships_lines:
-            # print(line)
-            # quit()
-            try: entity_1_val, relationship, entity_2_val = line
-            except: continue
-            # print('here')
-            # try: entity_1_val, relationship, entity_2_val = line
-            # except: continue
-            output_item = {
-                'plant_name_raw': entity_1_val,
-                'relationship': relationship,
-                'chemical_name_raw': entity_2_val,
-                'source_name': 'pubmed',
-                'source_acronym': 'PM',
-                'source_id': input_filename.split('.')[0],
-                'source_title': journal_title,
-            }
             output_items.append(output_item)
         io.json_write(output_filepath, output_items)
     print(json.dumps(output_items[0], indent=4))
@@ -1467,15 +1403,15 @@ def compounds_raw_to_json():
             # print('here')
             # try: entity_1_val, relationship, entity_2_val = line
             # except: continue
-            output_item = {
-                'plant_name_raw': entity_1_val,
-                'relationship': relationship,
-                'compound_name_raw': entity_2_val,
-                'source_name': 'pubmed',
-                'source_acronym': 'PM',
-                'source_id': input_filename.split('.')[0],
-                'source_title': journal_title,
-            }
+            output_item = parse_herbs_schemas.schema_plants_compounds_gen(
+                plant_name_scientific_raw = entity_1_val,
+                relationship = relationship,
+                compound_name_raw = entity_2_val,
+                source_name = 'Pubmed',
+                source_acronym = 'PM',
+                reference_id = input_filename.split('.')[0],
+                reference_name = journal_title,
+            )
             output_items.append(output_item)
         io.json_write(output_filepath, output_items)
     print(json.dumps(output_items[0], indent=4))
@@ -1601,7 +1537,7 @@ def preparations_raw_to_json():
             if entity_1_val == None or relationship == None or entity_2_val == None: continue
             ###
             output_item = parse_herbs_schemas.schema_preparations_gen(
-                plant_name_raw = entity_1_val,
+                plant_name_scientific_raw = entity_1_val,
                 relationship = relationship,
                 preparation_name_raw = entity_2_val,
                 source_name = 'Pubmed',
@@ -1620,31 +1556,20 @@ def run():
 
     # activities_extract_raw_resolve_one_shot_llm()
 
+    # parse_compounds_extract_raw() ### WARNING: takes many many hours (nightly running)
+
     # chemicals_extract_raw() ### WARNING: takes many many hours (nightly running)
     # parse_conditions_extract_raw() ### WARNING: takes many many hours (nightly running)
     # observations_plants_parts_extract_raw() ### WARNING: takes many many hours (nightly running)
     # parse_preparation_form_extract_raw(foldername) ### WARNING: takes many many hours (nightly running)
 
+    compounds_raw_to_json()
     preparations_raw_to_json()
     plants_parts_raw_to_json()
     conditions_raw_to_json()
-    chemicals_raw_to_json()
     activities_raw_to_json()
-    # raw_to_json('preparations', 'plant_name_raw', 'preparation_name_raw')
 
-    if 0:
-        start = time.perf_counter()
-        # activities_extract_raw_llm() ### WARNING: takes many many hours (nightly running)
-        # activities_string_match() ### TODO
-        # activities_raw_to_json()
-        print(f'parse activities - execution time: ', time.perf_counter() - start)
-
-
-    if 0:
-        start = time.perf_counter()
-        # parse_compounds_extract_raw() ### WARNING: takes many many hours (nightly running)
-        # compounds_raw_to_json()
-        print(f'chemicals observations() - execution time: ', time.perf_counter() - start)
+    # chemicals_raw_to_json()
 
     if 0:
         start = time.perf_counter()

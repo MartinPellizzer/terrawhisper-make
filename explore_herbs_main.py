@@ -18,6 +18,7 @@ import masterize_utils
 shutil.copy2('styles.css', f'{g.website_folderpath}/styles.css')
 
 model_filepath = '/home/ubuntu/vault-tmp/llm/gemma-4-26B-A4B-it-UD-Q4_K_XL.gguf'
+model_filepath = '/home/ubuntu/vault-tmp/llm/gemma-4-26B-A4B-it-UD-Q4_K_M.gguf'
 
 sidebar_plants_parts_rows = None
 sidebar_activities_rows = None
@@ -109,9 +110,21 @@ def sidebar_activities_get():
         GROUP BY activity_name_reference
         ORDER BY source_count DESC, activity_name_reference ASC;
     """)
+    cursor = conn.execute('''
+        SELECT
+            activity_name_reference,
+            COUNT(DISTINCT reference_name) AS source_count
+        FROM plants_activities
+        GROUP BY activity_name_reference
+        ORDER BY source_count DESC, activity_name_reference ASC;
+    ''')
     rows = cursor.fetchall()
     conn.close()
     sidebar_activities_rows = rows
+    # for row in rows:
+        # print(row)
+    # print(len(rows))
+    # quit()
 
 def sidebar_chemicals_get():
     global sidebar_chemicals_rows 
@@ -549,14 +562,14 @@ def herbs_index():
 
 
         hero_html = hero_html_gen(title='Explore all medicinal herbs')
-        # sidebar_html = sidebar_html_gen()
-        # cards_header_html = cards_header_html_gen(group_i, page_cards_num, len(plants_data), title='List of all herbs')
+        sidebar_html = sidebar_html_gen()
+        cards_header_html = cards_header_html_gen(group_i, page_cards_num, len(plants_data), title='List of all herbs')
         cards_html = cards_html_gen(group)
-        # pagination_html = pagination_html_gen(group_i, groups, url_slug)
-        sidebar_html = ''
-        cards_header_html = ''
+        pagination_html = pagination_html_gen(group_i, groups, url_slug)
+        # sidebar_html = ''
+        # cards_header_html = ''
         # cards_html = ''
-        pagination_html = ''
+        # pagination_html = ''
 
         html_article = ''
         html_article += f'''
@@ -617,37 +630,45 @@ def herbs_popular_category():
     db_filepath = f'{HUB_FOLDERPATH}/observe/observations.db'
     conn = sqlite3.connect(db_filepath)
     for plant_row in plants_rows:
-        plant_name_scientific_canon = plant_row[1]
+        plant_name_scientific_canon = plant_row['plant_name_scientific_reference']
         rows_num = 0
         ###
         cursor = conn.execute("""
             SELECT COUNT (*)
-            FROM plants_parts
-            WHERE plant_canonical_name = ?
+            FROM plants_plants_parts
+            WHERE plant_name_scientific_reference = ?
         """, (plant_name_scientific_canon,))
         rows_num += int(cursor.fetchone()[0])
         cursor = conn.execute("""
             SELECT COUNT (*)
             FROM plants_activities
-            WHERE plant_name_scientific_canon = ?
+            WHERE plant_name_scientific_reference = ?
         """, (plant_name_scientific_canon,))
         rows_num += int(cursor.fetchone()[0])
         cursor = conn.execute("""
             SELECT COUNT (*)
             FROM plants_chemicals
-            WHERE plant_name_scientific_canon = ?
+            WHERE plant_name_scientific_reference = ?
         """, (plant_name_scientific_canon,))
         rows_num += int(cursor.fetchone()[0])
-        cursor = conn.execute("""
+        """
+        cursor = conn.execute('''
             SELECT COUNT (*)
             FROM plants_diseases
-            WHERE plant_canonical_name = ?
-        """, (plant_name_scientific_canon,))
+            WHERE plant_name_scientific_reference = ?
+        ''', (plant_name_scientific_canon,))
+        rows_num += int(cursor.fetchone()[0])
+        """
+        cursor = conn.execute('''
+            SELECT COUNT (*)
+            FROM plants_conditions
+            WHERE plant_name_scientific_reference = ?
+        ''', (plant_name_scientific_canon,))
         rows_num += int(cursor.fetchone()[0])
         print(rows_num)
         ###
         plant_item = {
-            'plant_canonical_name': plant_name_scientific_canon,
+            'plant_name_scientific_reference': plant_name_scientific_canon,
             'datapoints_num': rows_num,
         }
         plants_data.append(plant_item)
@@ -657,7 +678,7 @@ def herbs_popular_category():
 
     plants_data = [
         {
-            'plant_name_canonical': item['plant_canonical_name']
+            'plant_name_scientific_reference': item['plant_name_scientific_reference']
         }
         for item in plants_data[:]
     ]
@@ -759,7 +780,7 @@ def herbs_alphabet_category():
         alphabet_letter_slug = polish.sluggify(alphabet_letter_name)
         ### GET PLANTS OF LETTER "?"
         plants_rows = masterize_utils.masterize_plants_get_all()
-        plants_rows = sorted([row[1] for row in plants_rows])
+        plants_rows = sorted([row['plant_name_scientific_reference'] for row in plants_rows])
         plants_data = [
             {
                 'plant_name_canonical': name,
@@ -862,10 +883,10 @@ def herbs_alphabet(alphabet_letter=''):
     ### GET ALL PLANTS -> TO LIST OF ITEMS
     # plants_rows = data.sqlite__plants_get()
     plants_rows = masterize_utils.masterize_plants_get_all()
-    plants_rows = sorted([row[1] for row in plants_rows])
+    plants_rows = sorted([row['plant_name_scientific_reference'] for row in plants_rows])
     plants_data = [
         {
-            'plant_name_canonical': name,
+            'plant_name_scientific_reference': name,
         }
         for name in plants_rows[:]
         if name.strip()[0].lower() == f'{alphabet_letter}'
@@ -977,23 +998,23 @@ def herbs_activities_category():
             activity_name = row[0]
             activity_slug = polish.sluggify(activity_name)
 
-            conn = sqlite3.connect(f'{g.VAULT_FOLDERPATH}/terrawhisper/data/observe/observations.db')
+            conn = sqlite3.connect(f'{HUB_FOLDERPATH}/observe/observations.db')
             cur = conn.cursor()
 
             ### PLANTS NAMES
             cur.execute("""
-                SELECT DISTINCT plant_name_scientific_canon
+                SELECT DISTINCT plant_name_scientific_reference
                 FROM plants_activities
-                WHERE activity_name_canon = ?
+                WHERE activity_name_reference = ?
             """, (activity_name,))
             plants_rows = cur.fetchall()
 
             ### PLANTS COUNT
             cur.execute(
                 """
-                SELECT COUNT(DISTINCT plant_name_scientific_canon)
+                SELECT COUNT(DISTINCT plant_name_scientific_reference)
                 FROM plants_activities
-                WHERE activity_name_canon = ?
+                WHERE activity_name_reference = ?
                 """, (activity_name,)
             )
             plants_count = cur.fetchone()[0]
@@ -1113,13 +1134,13 @@ def herbs_activities(activity_name):
     io.folders_recursive_gen(f'''{g.website_folderpath}/{url_slug}''')
 
     ### GET ALL PLANTS -> TO LIST OF ITEMS
-    db_filepath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/qualify/observations.db'
+    db_filepath = f'{HUB_FOLDERPATH}/observe/observations.db'
     conn = sqlite3.connect(db_filepath)
     cur = conn.cursor()
     cur.execute("""
-        SELECT DISTINCT plant_name_scientific_canon
+        SELECT DISTINCT plant_name_scientific_reference
         FROM plants_activities
-        WHERE activity_name_canon = ?
+        WHERE activity_name_reference = ?
     """, (activity_name,))
     plants_rows = cur.fetchall()
     conn.close()
@@ -1128,13 +1149,22 @@ def herbs_activities(activity_name):
     plants_rows = sorted([row[0] for row in plants_rows])
     plants_data = [
         {
-            'plant_name_canonical': name,
+            'plant_name_scientific_reference': name,
         }
         for name in plants_rows[:]
     ]
     # print(plants_data[0])
     # print(plants_data[1])
     # quit()
+
+    i = 0
+    for row in plants_data:
+        print(row)
+        i += 1
+        if i > 100: break
+    print(len(plants_rows))
+    # quit()
+
 
     ### GROUP PLANTS IN PAGES
     page_cards_num = 48
@@ -1242,23 +1272,23 @@ def herbs_chemicals_category():
             chemical_slug = polish.sluggify(chemical_name)
 
 
-            conn = sqlite3.connect(f'{g.VAULT_FOLDERPATH}/terrawhisper/data/observe/observations.db')
+            conn = sqlite3.connect(f'{HUB_FOLDERPATH}/observe/observations.db')
             cur = conn.cursor()
 
             ### PLANTS NAMES
             cur.execute("""
-                SELECT DISTINCT plant_name_scientific_canon
+                SELECT DISTINCT plant_name_scientific_reference
                 FROM plants_chemicals
-                WHERE chemical_name_canon = ?
+                WHERE chemical_name_reference = ?
             """, (chemical_name,))
             plants_rows = cur.fetchall()
 
             ### PLANTS COUNT
             cur.execute(
                 """
-                SELECT COUNT(DISTINCT plant_name_scientific_canon)
+                SELECT COUNT(DISTINCT plant_name_scientific_reference)
                 FROM plants_chemicals
-                WHERE chemical_name_canon = ?
+                WHERE chemical_name_reference = ?
                 """, (chemical_name,)
             )
             plants_count = cur.fetchone()[0]
@@ -1378,13 +1408,13 @@ def herbs_chemicals(chemical_name):
     io.folders_recursive_gen(f'''{g.website_folderpath}/{url_slug}''')
 
     ### GET ALL PLANTS -> TO LIST OF ITEMS
-    db_filepath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/observe/observations.db'
+    db_filepath = f'{HUB_FOLDERPATH}/observe/observations.db'
     conn = sqlite3.connect(db_filepath)
     cur = conn.cursor()
     cur.execute("""
-        SELECT DISTINCT chemical_name_canon, plant_name_scientific_canon
+        SELECT DISTINCT chemical_name_reference, plant_name_scientific_reference
         FROM plants_chemicals
-        WHERE chemical_name_canon = ?
+        WHERE chemical_name_reference = ?
     """, (chemical_name,))
     plants_rows = cur.fetchall()
     conn.close()
@@ -1392,7 +1422,7 @@ def herbs_chemicals(chemical_name):
     plants_rows = sorted([row[1] for row in plants_rows])
     plants_data = [
         {
-            'plant_name_canonical': name,
+            'plant_name_scientific_reference': name,
         }
         for name in plants_rows[:]
     ]
@@ -1502,21 +1532,21 @@ def herbs_plants_parts_category():
             plant_part_name = row[0]
             plant_part_slug = polish.sluggify(plant_part_name)
             ###
-            conn = sqlite3.connect(f'{g.VAULT_FOLDERPATH}/terrawhisper/data/observe/observations.db')
+            conn = sqlite3.connect(f'{HUB_FOLDERPATH}/observe/observations.db')
             cur = conn.cursor()
             ### PLANTS NAMES
             cur.execute("""
-                SELECT DISTINCT plant_name_scientific_canon
+                SELECT DISTINCT plant_name_scientific_reference
                 FROM plants_plants_parts
-                WHERE plant_part_name_canon = ?
+                WHERE plant_part_name_reference = ?
             """, (plant_part_name,))
             plants_rows = cur.fetchall()
             ### PLANTS COUNT
             cur.execute(
                 """
-                SELECT COUNT(DISTINCT plant_name_scientific_canon)
+                SELECT COUNT(DISTINCT plant_name_scientific_reference)
                 FROM plants_plants_parts
-                WHERE plant_part_name_canon = ?
+                WHERE plant_part_name_reference = ?
                 """, (plant_part_name,)
             )
             plants_count = cur.fetchone()[0]
@@ -1634,13 +1664,13 @@ def herbs_plants_parts(plant_part_name):
     io.folders_recursive_gen(f'''{g.website_folderpath}/{url_slug}''')
 
     ### GET ALL PLANTS -> TO LIST OF ITEMS
-    db_filepath = f'{g.VAULT_FOLDERPATH}/terrawhisper/data/observe/observations.db'
+    db_filepath = f'{HUB_FOLDERPATH}/observe/observations.db'
     conn = sqlite3.connect(db_filepath)
     cur = conn.cursor()
     cur.execute("""
-        SELECT DISTINCT plant_part_name_canon, plant_name_scientific_canon
+        SELECT DISTINCT plant_part_name_reference, plant_name_scientific_reference
         FROM plants_plants_parts
-        WHERE plant_part_name_canon = ?
+        WHERE plant_part_name_reference = ?
     """, (plant_part_name,))
     plants_rows = cur.fetchall()
     conn.close()
@@ -1648,7 +1678,7 @@ def herbs_plants_parts(plant_part_name):
     plants_rows = sorted([row[1] for row in plants_rows])
     plants_data = [
         {
-            'plant_name_canonical': name,
+            'plant_name_scientific_reference': name,
         }
         for name in plants_rows[:]
     ]
@@ -1741,7 +1771,7 @@ def run():
     if sidebar_chemicals_rows == None:
         sidebar_chemicals_get()
 
-    if 1:
+    if 0:
         herbs_index()
 
     if 0:
@@ -1778,7 +1808,7 @@ def run():
     if 0:
         herbs_plants_parts_category()
 
-    if 0:
+    if 1:
         rows = sidebar_plants_parts_rows
         for i, item in enumerate(rows):
             print(f'{i}/{len(rows)}')
