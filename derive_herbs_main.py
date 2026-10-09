@@ -7,6 +7,7 @@ from lib import io
 from lib import data
 
 import masterize_utils
+import schema_herbs
 
 HUB_FOLDERPATH = f'''{g.DATA_FOLDERPATH}/herbs'''
 
@@ -832,18 +833,97 @@ def taxonomies_gen():
         io.json_write(output_filepath, output_items)
     print(json.dumps(output_item, indent=4))
 
+def schema_derive_gen(schema_item):
+    schema_table_name = schema_item['table_name']
+    schema_source_name = schema_item['sources'][0]['source_name']
+    schema_output_foldername = schema_table_name
+    schema_entity_1_val = schema_item['fields'][0]['field_name']
+    schema_relationship_val = schema_item['fields'][1]['field_name']
+    schema_entity_2_val = schema_item['fields'][2]['field_name']
+    ###
+    master_plants_rows = masterize_utils.masterize_plants_get_all()
+    last = []
+    for i, master_plant_row in enumerate(master_plants_rows):
+        master_item = master_plant_row
+        # print(master_item)
+        # quit()
+        print(f'DERIVE {schema_table_name} {i}/{len(master_plants_rows)}')
+        conn = sqlite3.connect(db_filepath)
+        conn.row_factory = sqlite3.Row
+        cursor = conn.execute(f'''
+            SELECT
+                {schema_entity_1_val}_reference,
+                {schema_relationship_val}_raw,
+                {schema_entity_2_val}_reference,
+                COUNT(*) AS sources_num,
+                json_group_array(
+                    json_object(
+                        'reference_name', reference_name,
+                        'reference_id', reference_id
+                    )
+                ) AS sources
+            FROM (
+                SELECT DISTINCT
+                    {schema_entity_1_val}_reference,
+                    {schema_relationship_val}_raw,
+                    {schema_entity_2_val}_reference,
+                    reference_name,
+                    reference_id
+                FROM {schema_table_name}
+                WHERE {schema_entity_1_val}_reference = ?
+            )
+            GROUP BY
+                {schema_entity_1_val}_reference,
+                {schema_relationship_val}_raw,
+                {schema_entity_2_val}_reference
+            ORDER BY sources_num DESC;
+        ''', (master_item[f'{schema_entity_1_val}_reference'],))
+        rows = cursor.fetchall()
+        items = [dict(row) for row in rows]
+        conn.close()
+        ###
+        output_items = []
+        for row in items[:]:
+            # print(row)
+            # quit()
+            output_item = {
+                f'{schema_entity_1_val}_reference': row[f'{schema_entity_1_val}_reference'],
+                f'{schema_relationship_val}_raw': row[f'{schema_relationship_val}_raw'],
+                f'{schema_entity_2_val}_reference': row[f'{schema_entity_2_val}_reference'],
+                f'sources_num': row[f'sources_num'],
+                f'sources': json.loads(row[f'sources']),
+            }
+            # print(json.dumps(output_item, indent=4))
+            output_items.append(output_item)
+        # print(f'HERE: {master_plant_row}')
+        # print(f'HERE: {schema_entity_1_val}')
+        # quit()
+        plant_name_scientific_reference = master_plant_row[f'{schema_entity_1_val}_reference']
+        output_filepath = f'''{HUB_FOLDERPATH}/derive/{schema_table_name}/{plant_name_scientific_reference}.json'''
+        io.folder_create_from_filepath(output_filepath)
+        io.json_write(output_filepath, output_items)
+        if output_items != []:
+            last = output_items
+    print(json.dumps(last, indent=4))
+    # quit()
+
 def run():
-    compounds_gen()
+    schema_items = schema_herbs.data['items']
+    for schema_item in schema_items: 
+        schema_derive_gen(schema_item)
 
-    preparations_gen()
-    plants_parts_gen()
-    conditions_gen()
-    chemicals_gen()
-    activities_gen()
+    if 0:
+        # compounds_gen()
 
-    taxonomies_gen()
-    synonyms_gen()
-    traits_gen()
-    distributions_gen()
-    names_common_gen()
+        # preparations_gen()
+        plants_parts_gen()
+        conditions_gen()
+        chemicals_gen()
+        activities_gen()
+
+        taxonomies_gen()
+        synonyms_gen()
+        traits_gen()
+        distributions_gen()
+        names_common_gen()
 

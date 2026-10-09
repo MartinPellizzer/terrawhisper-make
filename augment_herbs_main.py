@@ -10,6 +10,7 @@ from lib import data
 from lib import polish
 
 import masterize_utils
+import schema_herbs
 
 HUB_FOLDERPATH = f'''{g.DATA_FOLDERPATH}/herbs'''
 
@@ -555,28 +556,149 @@ def augment_intro():
     print(found_num)
 
 
+def schema_augment_gen(schema_item):
+    schema_regen = schema_item['regen']
+    schema_table_name = schema_item['table_name']
+    schema_source_name = schema_item['sources'][0]['source_name']
+    schema_output_foldername = schema_table_name
+    schema_entity_1_val = schema_item['fields'][0]['field_name']
+    schema_relationship_val = schema_item['fields'][1]['field_name']
+    schema_entity_2_val = schema_item['fields'][2]['field_name']
+    ###
+    input_folderpath = f'{HUB_FOLDERPATH}/derive/{schema_table_name}'
+    output_folderpath = f'{HUB_FOLDERPATH}/augment/{schema_table_name}'
+    if schema_regen:
+        try: shutil.rmtree(output_folderpath)
+        except: pass
+    io.folders_recursive_gen(output_folderpath)
+    ###
+    master_items = masterize_utils.masterize_plants_get_all()
+    found_num = 0
+    for i, master_item in enumerate(master_items[:]):
+        print(f'AUGMENT {schema_table_name} {i}/{len(master_items)}')
+        plant_name_scientific_reference = master_item['plant_name_scientific_reference']
+        input_filepath = f'{input_folderpath}/{plant_name_scientific_reference}.json'
+        output_filepath = f'{output_folderpath}/{plant_name_scientific_reference}.json'
+        input_data = io.json_read(input_filepath)
+        if input_data != []:
+            found_num += 1
+            if input_data[0]['plant_name_scientific_reference'] == 'Panax ginseng':
+                # print(json.dumps(input_data, indent=4))
+                # quit()
+                pass
+        ###
+        # print(json.dumps(master_item, indent=4))
+        # print(json.dumps(input_data, indent=4))
+        # quit()
+        if os.path.exists(output_filepath): continue
+        if input_data != []:
+            # print(json.dumps(input_data, indent=4))
+            # quit()
+            found_num += 1
+            prompt_relationships = []
+            # relationships = []
+            prompt_abstracts = []
+            for input_item in input_data[:5]:
+                entity_1_val = input_item[f'{schema_entity_1_val}_reference']
+                relationship_val = input_item[f'{schema_relationship_val}_raw']
+                entity_2_val = input_item[f'{schema_entity_2_val}_reference']
+                """
+                relationship = {
+                    'entity_1': entity_1_val,
+                    'relationship': relationship_val,
+                    'entity_2': entity_1_val,
+                }
+                """
+                prompt_relationships.append(f'''{entity_1_val} {relationship_val} {entity_2_val}''')
+                ###
+                for source in input_item['sources'][:3]:
+                    source_id = source['reference_id']
+                    study_filepath = f'{HUB_FOLDERPATH}/fetch/pubmed/medicinal_plant/abstracts/{source_id}.json'
+                    ###
+                    study_data = io.json_read(study_filepath)
+                    try: article_data = study_data['PubmedArticle'][0]['MedlineCitation']['Article']
+                    except: pass
+                    try: study_title = article_data['ArticleTitle']
+                    except: input_title = ''
+                    try: study_abstract = ' '.join(article_data['Abstract']['AbstractText'])
+                    except: continue
+                    # print(study_abstract)
+                    prompt_abstracts.append(f'{study_title} {study_abstract}')
+                    # quit()
+            sentences_num = len(prompt_relationships)
+            prompt_relationships = '\n'.join(prompt_relationships)
+            # prompt_abstracts = '\n'.join(prompt_abstracts)[:10000]
+            prompt_abstracts = '\n'.join(prompt_abstracts)[:]
+            # print(prompt_relationships)
+            # quit()
+            ### STUDY
+            prompt = f'''
+                Write a 5-sentence paragraph about the following plant RELATIONSHIPS found in the ABSTRACTS below. 
+                RELATIONSHIPS:
+                {prompt_relationships}
+                ABSTRACTS:
+                {prompt_abstracts}
+                RULES:
+                Reply only with the asked content.
+                Answer in a direct and straightforward way.
+                Reply using a prose that flows well and reads natural.
+                Don't start with generic info, reply directly with the relationships asked.
+                Don't end with generic info, only write about the relationships asked.
+                Start with the following words: {plant_name_scientific_reference} .
+            '''.strip()
+            # print(prompt)
+            # quit()
+            reply = llm.reply(prompt, model_filepath)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            print()
+            print('########################################################################')
+            print(reply)
+            print('########################################################################')
+            print()
+            input_data = {
+                schema_table_name: input_data,
+                'llm_intro': reply,
+            }
+        else: 
+            input_data = {
+                schema_table_name: input_data,
+                'llm_intro': '',
+            }
+        # print(json.dumps(input_data, indent=4))
+        io.json_write(output_filepath, input_data)
+        # quit()
+    print(found_num)
+
+
 def run():
 
-    # augment_copy(attribute='taxonomies')
-    # augment_copy(attribute='diseases')
+    schema_items = schema_herbs.data['items']
+    for schema_item in schema_items: 
+        schema_augment_gen(schema_item)
 
-    # augment_copy(attribute='preparations')
-    augment_compounds()
+    if 0:
+        # augment_copy(attribute='taxonomies')
+        # augment_copy(attribute='diseases')
 
-    augment_intro()
-    augment_preparations()
-    augment_plants_parts()
-    augment_conditions()
-    # augment_chemicals()
-    augment_activities()
+        # augment_copy(attribute='preparations')
+        # augment_compounds()
 
-    # augment_copy(attribute='chemicals')
+        augment_intro()
+        # augment_preparations()
+        augment_plants_parts()
+        augment_conditions()
+        # augment_chemicals()
+        augment_activities()
 
-    augment_copy(attribute='taxonomies')
+        # augment_copy(attribute='chemicals')
 
-    augment_copy(attribute='synonyms')
+        augment_copy(attribute='taxonomies')
+
+        augment_copy(attribute='synonyms')
 
 
-    augment_copy(attribute='traits')
-    augment_copy(attribute='distributions')
-    augment_copy(attribute='names_common')
+        augment_copy(attribute='traits')
+        augment_copy(attribute='distributions')
+        augment_copy(attribute='names_common')

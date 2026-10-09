@@ -6,6 +6,7 @@ from lib import io
 from lib import data
 
 import masterize_utils
+import schema_herbs
 
 HUB_FOLDERPATH = f'''{g.DATA_FOLDERPATH}/herbs'''
 input_folderpath = f'{HUB_FOLDERPATH}/augment'
@@ -114,10 +115,12 @@ def run():
             f'{input_folderpath}/plants_parts/{plant_name_scientific_reference}.json'
         )
 
+        """
         ### PREPARATIONS
         output_data['preparations'] = io.json_read(
             f'{input_folderpath}/preparations/{plant_name_scientific_reference}.json'
         )
+        """
 
         ### TRAITS
         output_data['traits'] = io.json_read(
@@ -139,12 +142,21 @@ def run():
             f'{input_folderpath}/intro/{plant_name_scientific_reference}.json'
         )
 
+        """
         output_data['compounds'] = io.json_read(
             f'{input_folderpath}/compounds/{plant_name_scientific_reference}.json'
         )
+        """
+
+        schema_items = schema_herbs.data['items']
+        for schema_item in schema_items: 
+            schema_table_name = schema_item['table_name']
+            output_data[schema_table_name] = io.json_read(
+                f'{input_folderpath}/{schema_table_name}/{plant_name_scientific_reference}.json'
+            )
 
         io.json_write(output_filepath, output_data)
-        # if output_data['chemicals'] != []:
+        # if output_data['plants_compounds']['plants_compounds'] != []:
             # print(json.dumps(output_data, indent=4))
             # quit()
 

@@ -23,6 +23,7 @@ model_filepath = '/home/ubuntu/vault-tmp/llm/gemma-4-26B-A4B-it-UD-Q4_K_M.gguf'
 sidebar_plants_parts_rows = None
 sidebar_activities_rows = None
 sidebar_chemicals_rows = None
+sidebar_compounds_rows = None
 
 HUB_FOLDERPATH = f'''{g.DATA_FOLDERPATH}/herbs'''
 
@@ -89,7 +90,7 @@ def sidebar_plants_parts_get():
     cursor = conn.execute("""
         SELECT
             plant_part_name_reference,
-            COUNT(DISTINCT source_name) AS source_count
+            COUNT(DISTINCT reference_name) AS source_count
         FROM plants_plants_parts
         GROUP BY plant_part_name_reference
         ORDER BY source_count DESC, plant_part_name_reference ASC;
@@ -105,7 +106,7 @@ def sidebar_activities_get():
     cursor = conn.execute("""
         SELECT
             activity_name_reference,
-            COUNT(DISTINCT source_name) AS source_count
+            COUNT(DISTINCT reference_name) AS source_count
         FROM plants_activities
         GROUP BY activity_name_reference
         ORDER BY source_count DESC, activity_name_reference ASC;
@@ -133,7 +134,7 @@ def sidebar_chemicals_get():
     cursor = conn.execute("""
         SELECT
             chemical_name_reference,
-            COUNT(DISTINCT source_name) AS source_count
+            COUNT(DISTINCT reference_name) AS source_count
         FROM plants_chemicals
         GROUP BY chemical_name_reference
         ORDER BY source_count DESC, chemical_name_reference ASC;
@@ -142,9 +143,33 @@ def sidebar_chemicals_get():
     conn.close()
     sidebar_chemicals_rows = rows
 
+def sidebar_compounds_get():
+    global sidebar_compounds_rows 
+    db_filepath = f'{HUB_FOLDERPATH}/observe/observations.db'
+    conn = sqlite3.connect(db_filepath)
+    cursor = conn.execute("""
+        SELECT
+            compound_name_reference,
+            COUNT(DISTINCT reference_name) AS source_count
+        FROM plants_compounds
+        GROUP BY compound_name_reference
+        ORDER BY source_count DESC, compound_name_reference ASC;
+    """)
+    """
+    cursor = conn.execute(f'''
+        SELECT * 
+        FROM plants_compounds
+    ''')
+    """
+    rows = cursor.fetchall()
+    # for row in rows:
+        # print(row)
+        # quit()
+    conn.close()
+    sidebar_compounds_rows = rows
+
 def sidebar_html_gen():
     li_a_style = f'''text-decoration: none; color: #111; font-size: 1.4rem; display: inline-block;'''
-
     ### ALPHABET
     letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
     alphabet_html = ''
@@ -158,7 +183,7 @@ def sidebar_html_gen():
             </a>
         '''
     alphabet_html += '</ul>'
-
+    ###
     plants_parts_html = ''
     plants_parts_html += f'''<ul style="list-style: none; display: flex; flex-direction: column; gap: 0.4rem;">'''
     for row in sidebar_plants_parts_rows[:10]:
@@ -170,7 +195,7 @@ def sidebar_html_gen():
             </li>
         '''
     plants_parts_html += f'''</ul>'''
-
+    ###
     activities_html = ''
     activities_html += f'''<ul style="list-style: none; display: flex; flex-direction: column; gap: 0.4rem;">'''
     for row in sidebar_activities_rows[:10]:
@@ -195,6 +220,19 @@ def sidebar_html_gen():
             </li>
         '''
     chemicals_html += f'''</ul>'''
+
+    compounds_html = ''
+    compounds_html += f'''<ul style="list-style: none; display: flex; flex-direction: column; gap: 0.4rem;">'''
+    for row in sidebar_compounds_rows[:10]:
+        compound_name = row[0]
+        compound_name = compound_name[0].upper() + compound_name[1:]
+        compound_slug = polish.sluggify(compound_name)
+        compounds_html += f'''
+            <li>
+                <a style="{li_a_style}" href="/herbs/compounds/{compound_slug}.html">{compound_name}</a>
+            </li>
+        '''
+    compounds_html += f'''</ul>'''
 
     # TODO: body systems    
     '''
@@ -353,11 +391,11 @@ def sidebar_html_gen():
             <a style="{li_a_style} margin-top: 1.6rem;" href="/herbs/activities.html">View all →</a>
             <hr style="border: 0; border-bottom: 1px solid #d8d8d8; margin-top: 2.4rem; margin-bottom: 2.4rem;">
 
-            <a href="/herbs/chemicals.html" style="color: #111;">
+            <a href="/herbs/compounds.html" style="color: #111;">
                 <h3 style="font-size: 1.4rem; letter-spacing: 0.5px; margin-bottom: 1.4rem;">Bioactive Compounds</h3>
             </a>
-            {chemicals_html}
-            <a style="{li_a_style} margin-top: 1.6rem;" href="/herbs/chemicals.html">View all →</a>
+            {compounds_html}
+            <a style="{li_a_style} margin-top: 1.6rem;" href="/herbs/compounds.html">View all →</a>
             <hr style="border: 0; border-bottom: 1px solid #d8d8d8; margin-top: 2.4rem; margin-bottom: 2.4rem;">
 
             <a href="/herbs/parts.html" style="color: #111;">
@@ -367,6 +405,15 @@ def sidebar_html_gen():
             <a style="{li_a_style} margin-top: 1.6rem;" href="/herbs/parts.html">View all →</a>
 
         </div>
+    '''
+    '''
+            <a href="/herbs/chemicals.html" style="color: #111;">
+                <h3 style="font-size: 1.4rem; letter-spacing: 0.5px; margin-bottom: 1.4rem;">Bioactive Compounds</h3>
+            </a>
+            {chemicals_html}
+            <a style="{li_a_style} margin-top: 1.6rem;" href="/herbs/chemicals.html">View all →</a>
+            <hr style="border: 0; border-bottom: 1px solid #d8d8d8; margin-top: 2.4rem; margin-bottom: 2.4rem;">
+
     '''
     return sidebar_html
 
@@ -526,7 +573,6 @@ def pagination_html_gen(group_i, groups, url_slug):
 
 def herbs_index():
     url_slug = 'herbs'
-
     ### GET ALL PLANTS -> TO LIST OF ITEMS
     # plants_rows = data.sqlite__plants_get()
     plants_items = masterize_utils.masterize_plants_get_all()
@@ -537,19 +583,9 @@ def herbs_index():
         }
         for item in plants_items
     ]
-
     ### GROUP PLANTS IN PAGES
     page_cards_num = 48
     groups = groups_gen(plants_data, page_cards_num)
-
-    """
-    for group in groups:
-        for plant in group:
-            print(plant)
-        print()
-    return
-    """
-
     ### GENERATE PAGES
     for group_i, group in enumerate(groups):
         print(f'{group_i}/{len(groups)}')
@@ -559,8 +595,7 @@ def herbs_index():
         else:
             os.makedirs(f'''{g.website_folderpath}/herbs/page''', exist_ok=True)
             html_filepath = f'''{g.website_folderpath}/herbs/page/{group_i+1}.html'''
-
-
+        ###
         hero_html = hero_html_gen(title='Explore all medicinal herbs')
         sidebar_html = sidebar_html_gen()
         cards_header_html = cards_header_html_gen(group_i, page_cards_num, len(plants_data), title='List of all herbs')
@@ -570,7 +605,6 @@ def herbs_index():
         # cards_header_html = ''
         # cards_html = ''
         # pagination_html = ''
-
         html_article = ''
         html_article += f'''
             <section style="margin-bottom: 9.6rem;">
@@ -593,7 +627,6 @@ def herbs_index():
                 </div>
             </section>
         '''
-
         ###
         meta_title = f'Explore all medicinal herbs'
         meta_description = ''
@@ -601,7 +634,6 @@ def herbs_index():
         head_html = components.html_head(
             meta_title, meta_description, css='/styles.css', canonical=canonical_html
         )
-                # {sections.breadcrumbs_new(url_slug)}
         html = f''' 
             <!DOCTYPE html>
             <html lang="en">
@@ -645,13 +677,13 @@ def herbs_popular_category():
             WHERE plant_name_scientific_reference = ?
         """, (plant_name_scientific_canon,))
         rows_num += int(cursor.fetchone()[0])
-        cursor = conn.execute("""
+        """
+        cursor = conn.execute('''
             SELECT COUNT (*)
             FROM plants_chemicals
             WHERE plant_name_scientific_reference = ?
-        """, (plant_name_scientific_canon,))
+        ''', (plant_name_scientific_canon,))
         rows_num += int(cursor.fetchone()[0])
-        """
         cursor = conn.execute('''
             SELECT COUNT (*)
             FROM plants_diseases
@@ -1292,9 +1324,7 @@ def herbs_chemicals_category():
                 """, (chemical_name,)
             )
             plants_count = cur.fetchone()[0]
-
             conn.close()
-            
             plants_html = f''
             for plant_row in plants_rows[:3]:
                 plant_name = plant_row[0]
@@ -1308,7 +1338,6 @@ def herbs_chemicals_category():
                         <p style="font-size: 1.4rem;">{plant_name}</p>
                     </div>
                 '''
-
             ### DESCRIPTION
             json_article_filepath = f'''{g.DATA_FOLDERPATH}/explore/categories/chemicals.json'''
             json_article = io.json_read(json_article_filepath, create=True)
@@ -1329,7 +1358,6 @@ def herbs_chemicals_category():
                 json_article[key] = reply
                 io.json_write(json_article_filepath, json_article)
             description_text = json_article[key]
-
             chemicals_html += f'''
                 <article style="border: 1px solid #d8d8d8; margin-bottom: 1.6rem; padding: 1.6rem;">
                     <div style="display: flex; gap: 4.8rem;">
@@ -1354,7 +1382,6 @@ def herbs_chemicals_category():
                 </article>
             '''
         pagination_html = pagination_html_gen(group_i, groups, url_slug)
-
         html_article = ''
         html_article += f'''
             <section style="margin-bottom: 9.6rem;">
@@ -1375,9 +1402,156 @@ def herbs_chemicals_category():
                 </div>
             </section>
         '''
-
         ###
         meta_title = f'Explore herbs chemicals'
+        meta_description = ''
+        canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''
+        head_html = components.html_head(
+            meta_title, meta_description, css='/styles.css', canonical=canonical_html
+        )
+                # {sections.breadcrumbs_new(url_slug)}
+        html = f''' 
+            <!DOCTYPE html>
+            <html lang="en">
+            {head_html}
+            <body style="background-color: #fff;">
+                {sections.header_dark()}
+                {hero_html}
+                <main class="container-xxl explorer">
+                    {html_article}
+                </main>
+                {sections.footer()}
+            </body>
+            </html>
+        '''.strip()
+        with open(html_filepath, 'w') as f: f.write(html)
+        print(html_filepath)
+
+def herbs_compounds_category():
+    url_slug = f'herbs/conditions'
+    io.folders_recursive_gen(f'''{g.website_folderpath}/{url_slug}''')
+    ### GROUP PLANTS IN PAGES
+    page_cards_num = 48
+    groups = groups_gen(sidebar_compounds_rows[:1000], page_cards_num)
+    ### GENERATE PAGES
+    for group_i, group in enumerate(groups):
+        print(f'{group_i}/{len(groups)}')
+        ### PAGE URL
+        if group_i == 0:
+            html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
+        else:
+            os.makedirs(f'''{g.website_folderpath}/{url_slug}/page''', exist_ok=True)
+            html_filepath = f'''{g.website_folderpath}/{url_slug}/page/{group_i+1}.html'''
+        hero_html = hero_html_gen(
+            title='Explore herbs compounds'
+        )
+        sidebar_html = sidebar_html_gen()
+        cards_header_html = cards_header_html_gen(group_i, page_cards_num, len(sidebar_compounds_rows),
+            title='List of herbs compounds'
+        )
+        compounds_html = f''
+        for i, row in enumerate(group[:]):
+            print(f'{i}/{len(group)}')
+            compound_name = row[0]
+            compound_slug = polish.sluggify(compound_name)
+            conn = sqlite3.connect(f'{HUB_FOLDERPATH}/observe/observations.db')
+            cur = conn.cursor()
+            ### PLANTS NAMES
+            cur.execute("""
+                SELECT DISTINCT plant_name_scientific_reference
+                FROM plants_compounds
+                WHERE compound_name_reference = ?
+            """, (compound_name,))
+            plants_rows = cur.fetchall()
+            ### PLANTS COUNT
+            cur.execute(
+                """
+                SELECT COUNT(DISTINCT plant_name_scientific_reference)
+                FROM plants_compounds
+                WHERE compound_name_reference = ?
+                """, (compound_name,)
+            )
+            plants_count = cur.fetchone()[0]
+            conn.close()
+            plants_html = f''
+            for plant_row in plants_rows[:3]:
+                plant_name = plant_row[0]
+                plant_slug = polish.sluggify(plant_name)
+                plants_html += f'''
+                    <div>
+                        <img 
+                            src="/images/herbs/{plant_slug}.jpg" 
+                            style="margin-bottom: 0.8rem; width: 80px; height: 80px;"
+                        >
+                        <p style="font-size: 1.4rem;">{plant_name}</p>
+                    </div>
+                '''
+            ### DESCRIPTION
+            json_article_filepath = f'''{g.DATA_FOLDERPATH}/explore/categories/compounds.json'''
+            json_article = io.json_read(json_article_filepath, create=True)
+            regen = False
+            key = f'compound_{compound_slug}'
+            if key not in json_article: json_article[key] = ''
+            if regen: json_article[key] = ''
+            if json_article[key] == '':
+                plants_names_llm = ','.join([x[0] for x in plants_rows[:3]])
+                prompt = f'''
+                    Write 2 sentences to explain the following bioactive compound of medicinal herbs: {compound_name}.
+                    Include a sample on what herbs have this bioactive compound, like {plants_names_llm}.
+                '''.strip()
+                reply = llm.reply(prompt, model_filepath)
+                if '</think>' in reply:
+                    reply = reply.split('</think>')[1].strip()
+                reply = polish.vanilla(reply)
+                json_article[key] = reply
+                io.json_write(json_article_filepath, json_article)
+            description_text = json_article[key]
+            compounds_html += f'''
+                <article style="border: 1px solid #d8d8d8; margin-bottom: 1.6rem; padding: 1.6rem;">
+                    <div style="display: flex; gap: 4.8rem;">
+                        <div style="flex: 2;">
+                            <a href="/herbs/compounds/{compound_slug}.html" style="text-decoration: none;">
+                                <h3 style="font-size: 1.8rem;">{compound_name}</h3>
+                            </a>
+                            <p style="margin-bottom: 1.6rem;">{description_text}</p>
+                            <p style="font-size: 1.4rem;"><span style="font-weight: 700;">Associated herbs:</span> {plants_count}</p>
+                        </div>
+                        <div style="flex: 1;">
+                            <p style="font-size: 1.4rem; font-weight: 700; margin-bottom: 1.6rem;">Occurs naturally in</p>
+                            <div class="grid-3" style="gap: 1.6rem;">
+                                {plants_html}
+                            </div>
+                            <a 
+                                style="color: #111; text-decoration: none; display: inline-block; margin-top: 1.6rem; font-size: 1.4rem;"
+                                href="/herbs/compounds/{compound_slug}.html">View all {compound_name} herbs →
+                            </a>
+                        </div>
+                    </div>
+                </article>
+            '''
+        pagination_html = pagination_html_gen(group_i, groups, url_slug)
+        html_article = ''
+        html_article += f'''
+            <section style="margin-bottom: 9.6rem;">
+                <div class="explorer-layout" style="gap: 4.8rem;">
+                    <div style="flex: 1;">
+                        {sidebar_html}
+                    </div>
+                    <div style="flex: 3;">
+                        {sections.breadcrumbs_explorer(url_slug)}
+                        {cards_header_html}
+                        {compounds_html}
+                        <nav class="pagination">
+                            <ul>
+                                {pagination_html}
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </section>
+        '''
+        ###
+        meta_title = f'Explore herbs compounds'
         meta_description = ''
         canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''
         head_html = components.html_head(
@@ -1477,6 +1651,98 @@ def herbs_chemicals(chemical_name):
 
         ###
         meta_title = f"Explore herbs that contain {chemical_name}"
+        meta_description = ''
+        canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''
+        head_html = components.html_head(
+            meta_title, meta_description, css='/styles.css', canonical=canonical_html
+        )
+                # {sections.breadcrumbs_new(url_slug)}
+        html = f''' 
+            <!DOCTYPE html>
+            <html lang="en">
+            {head_html}
+            <body style="background-color: #fff;">
+                {sections.header_dark()}
+                {hero_html}
+                <main class="container-xxl explorer">
+                    {html_article}
+                </main>
+                {sections.footer()}
+            </body>
+            </html>
+        '''.strip()
+        with open(html_filepath, 'w') as f: f.write(html)
+        print(html_filepath)
+
+def herbs_compounds(compound_name):
+    print(compound_name)
+    compound_slug = polish.sluggify(compound_name)
+    url_slug = f'herbs/compounds/{compound_slug}'
+    io.folders_recursive_gen(f'''{g.website_folderpath}/{url_slug}''')
+    ### GET ALL PLANTS -> TO LIST OF ITEMS
+    db_filepath = f'{HUB_FOLDERPATH}/observe/observations.db'
+    conn = sqlite3.connect(db_filepath)
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT DISTINCT compound_name_reference, plant_name_scientific_reference
+        FROM plants_compounds
+        WHERE compound_name_reference = ?
+    """, (compound_name,))
+    plants_rows = cur.fetchall()
+    conn.close()
+    plants_rows = sorted([row[1] for row in plants_rows])
+    plants_data = [
+        {
+            'plant_name_scientific_reference': name,
+        }
+        for name in plants_rows[:]
+    ]
+    ### GROUP PLANTS IN PAGES
+    page_cards_num = 48
+    groups = groups_gen(plants_data, page_cards_num)
+    ### GENERATE PAGES
+    for group_i, group in enumerate(groups):
+        print(f'{group_i}/{len(groups)}')
+        ### PAGE URL
+        if group_i == 0:
+            html_filepath = f'''{g.website_folderpath}/{url_slug}.html'''
+        else:
+            os.makedirs(f'''{g.website_folderpath}/{url_slug}/page''', exist_ok=True)
+            html_filepath = f'''{g.website_folderpath}/{url_slug}/page/{group_i+1}.html'''
+        hero_html = hero_html_gen(
+            title=f"Explore herbs that contain {condition_name}"
+        )
+        sidebar_html = sidebar_html_gen()
+        cards_header_html = cards_header_html_gen(group_i, page_cards_num, len(plants_data),
+            title=f"List of herbs that contain {condition_name}"
+        )
+        cards_html = cards_html_gen(group)
+        pagination_html = pagination_html_gen(group_i, groups, url_slug)
+
+        html_article = ''
+        html_article += f'''
+            <section style="margin-bottom: 9.6rem;">
+                <div class="explorer-layout" style="gap: 4.8rem;">
+                    <div style="flex: 1;">
+                        {sidebar_html}
+                    </div>
+                    <div style="flex: 3;">
+                        {sections.breadcrumbs_explorer(url_slug)}
+                        {cards_header_html}
+                        <div class="grid-5" style="gap: 1.6rem; row-gap: 3.2rem;">
+                            {cards_html}
+                        </div>
+                        <nav class="pagination">
+                            <ul>
+                                {pagination_html}
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </section>
+        '''
+        ###
+        meta_title = f"Explore herbs that contain {condition_name}"
         meta_description = ''
         canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''
         head_html = components.html_head(
@@ -1767,11 +2033,15 @@ def run():
     if sidebar_activities_rows == None:
         sidebar_activities_get()
 
-    ### COMPOUNDS (do only ones, cache it)
+    ### CHEMICALS (do only ones, cache it)
     if sidebar_chemicals_rows == None:
         sidebar_chemicals_get()
 
-    if 0:
+    ### COMPOUNDS (do only ones, cache it)
+    if sidebar_compounds_rows == None:
+        sidebar_compounds_get()
+
+    if 1:
         herbs_index()
 
     if 0:
@@ -1804,11 +2074,21 @@ def run():
             herbs_chemicals(chemical_name)
             # quit()
 
+    if 0:
+        herbs_compounds_category()
+
+    if 0:
+        for i, compound in enumerate(sidebar_compounds_rows[:1000]):
+            print(f'{i}/{len(sidebar_compounds_rows)}')
+            compound_name = compound[0]
+            herbs_compounds(compound_name)
+            # quit()
+
     ### PLANTS PARTS
     if 0:
         herbs_plants_parts_category()
 
-    if 1:
+    if 0:
         rows = sidebar_plants_parts_rows
         for i, item in enumerate(rows):
             print(f'{i}/{len(rows)}')

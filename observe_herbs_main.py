@@ -12,6 +12,8 @@ HUB_FOLDERPATH = f'''{g.DATA_FOLDERPATH}/herbs'''
 output_folderpath = f'{HUB_FOLDERPATH}/observe'
 db_filepath = f'{output_folderpath}/observations.db'
 
+import schema_herbs
+
 def observations_table_plants_taxonomies_add():
     table_name = 'plants_taxonomies'
     input_folderpath = f'{HUB_FOLDERPATH}/resolve/powo/taxonomies/json'
@@ -668,24 +670,99 @@ def test():
         print(row)
     conn.close()
 
+def schema_observe_add(schema_item):
+    schema_table_name = schema_item['table_name']
+    schema_source_name = schema_item['sources'][0]['source_name']
+    schema_output_foldername = schema_table_name
+    schema_entity_1_val = schema_item['fields'][0]['field_name']
+    schema_relationship_val = schema_item['fields'][1]['field_name']
+    schema_entity_2_val = schema_item['fields'][2]['field_name']
+    ###
+    input_folderpath = f'{HUB_FOLDERPATH}/resolve/{schema_source_name}/{schema_output_foldername}/json'
+    output_folderpath = f'{HUB_FOLDERPATH}/observe'
+    db_filepath = f'{output_folderpath}/observations.db'
+    ###
+    input_filenames = os.listdir(input_folderpath)
+    all_data = []
+    for i, input_filename in enumerate(input_filenames[:]):
+        print(f'OBSERVE {schema_table_name} - {i}/{len(input_filenames)}')
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        input_data = io.json_read(input_filepath)
+        for input_item in input_data:
+            all_data.append(input_item)
+            # print(json.dumps(input_item, indent=4))
+            # quit()
+    # print(json.dumps(all_data[0], indent=4))
+    # quit()
+    ###
+    conn = sqlite3.connect(db_filepath)
+    cur = conn.cursor()
+    cur.executemany(
+        f"""
+            INSERT OR IGNORE INTO {schema_table_name} (
+                {schema_entity_1_val}_reference,
+                {schema_entity_1_val}_reference_normalize,
+                {schema_entity_2_val}_reference,
+                {schema_entity_2_val}_reference_normalize,
+                {schema_relationship_val}_raw,
+                source_name,
+                source_acronym,
+                reference_id,
+                reference_name
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """,
+        [
+            (
+                item.get(f'{schema_entity_1_val}_reference'),
+                item.get(f'{schema_entity_1_val}_reference_normalize'),
+                item.get(f'{schema_entity_2_val}_reference'),
+                item.get(f'{schema_entity_2_val}_reference_normalize'),
+                item.get(f'{schema_relationship_val}_raw'),
+                item.get("source_name"),
+                item.get("source_acronym"),
+                item.get("reference_id"),
+                item.get("reference_name"),
+            )
+            for item in all_data
+        ]
+    )
+    conn.commit()
+    rows = conn.execute(f"SELECT * FROM {schema_table_name}")
+    for row in list(rows)[:10]:
+        print(row)
+    ###
+    # cols = conn.execute(f'PRAGMA table_info({schema_table_name})').fetchall()
+    # print([c[1] for c in cols])
+    # print(json.dumps(all_data[0], indent=4))
+    # quit()
+    ###
+    conn.close()
+
+
 def run():
     print('OBSERVE')
 
-    observations_table_plants_compounds_add(source_foldername='pubmed')
+    schema_items = schema_herbs.data['items']
+    for schema_item in schema_items: 
+        schema_observe_add(schema_item)
 
-    # observations_table_plants_activities_add(source_foldername='drduke')
-    observations_table_plants_activities_add(source_foldername='pubmed')
+    if 0:
+        # observations_table_plants_compounds_add(source_foldername='pubmed')
 
-    observations_table_plants_preparations_add(source_foldername='pubmed')
-    observations_table_plants_plants_parts_add(source_foldername='pubmed')
-    observations_table_plants_conditions_add(source_foldername='pubmed')
-    # observations_table_plants_chemicals_add(source_foldername='drduke')
-    # observations_table_plants_chemicals_add(source_foldername='pubmed')
+        # observations_table_plants_activities_add(source_foldername='drduke')
+        observations_table_plants_activities_add(source_foldername='pubmed')
 
-    observations_table_plants_taxonomies_add()
-    observations_table_plants_synonyms_add(source_foldername='wcvp')
-    observations_table_plants_traits_add(source_foldername='gift')
-    observations_table_plants_distributions_add(source_foldername='wcvp')
-    # observations_table_plants_names_common_add(source_foldername='wikidata')
-    observations_table_plants_names_common_add(source_foldername='col')
+        # observations_table_plants_preparations_add(source_foldername='pubmed')
+        observations_table_plants_plants_parts_add(source_foldername='pubmed')
+        observations_table_plants_conditions_add(source_foldername='pubmed')
+        # observations_table_plants_chemicals_add(source_foldername='drduke')
+        # observations_table_plants_chemicals_add(source_foldername='pubmed')
+
+        observations_table_plants_taxonomies_add()
+        observations_table_plants_synonyms_add(source_foldername='wcvp')
+        observations_table_plants_traits_add(source_foldername='gift')
+        observations_table_plants_distributions_add(source_foldername='wcvp')
+        # observations_table_plants_names_common_add(source_foldername='wikidata')
+        observations_table_plants_names_common_add(source_foldername='col')
 

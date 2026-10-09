@@ -11,6 +11,8 @@ HUB_FOLDERPATH = f'''{g.DATA_FOLDERPATH}/herbs'''
 output_folderpath = f'{HUB_FOLDERPATH}/observe'
 db_filepath = f'{output_folderpath}/observations.db'
 
+import schema_herbs
+
 def observations_table_plants_taxonomies_create(regen=False):
     table_name = 'plants_taxonomies'
     conn = sqlite3.connect(db_filepath)
@@ -339,6 +341,49 @@ def observations_table_plants_preparations_create(regen=False):
     conn.commit()
     conn.close()
 
+def schema_observe_create(schema_item):
+    schema_table_name = schema_item['table_name']
+    schema_source_name = schema_item['sources'][0]['source_name']
+    schema_output_foldername = schema_table_name
+    schema_entity_1_val = schema_item['fields'][0]['field_name']
+    schema_relationship_val = schema_item['fields'][1]['field_name']
+    schema_entity_2_val = schema_item['fields'][2]['field_name']
+    ###
+    conn = sqlite3.connect(db_filepath)
+    cur = conn.cursor()
+    # if regen: cur.execute(f"DROP TABLE IF EXISTS {schema_table_name}")
+    cur.execute(f"DROP TABLE IF EXISTS {schema_table_name}")
+    sql_query = f'''
+        CREATE TABLE IF NOT EXISTS {schema_table_name} (
+            id INTEGER PRIMARY KEY,
+            {schema_entity_1_val}_reference TEXT NOT NULL,
+            {schema_entity_1_val}_reference_normalize TEXT,
+            {schema_entity_2_val}_reference TEXT NOT NULL,
+            {schema_entity_2_val}_reference_normalize TEXT,
+            {schema_relationship_val}_raw TEXT,
+            source_name TEXT NOT NULL,
+            source_acronym TEXT,
+            reference_id TEXT,
+            reference_name TEXT
+        );
+    '''
+    # print(sql_query)
+    # quit()
+    cur.execute(sql_query)
+    conn.execute("PRAGMA journal_mode = WAL;")
+    conn.execute("PRAGMA synchronous = OFF;")
+    conn.execute("PRAGMA temp_store = MEMORY;")
+    ###
+    cur.execute(f"CREATE INDEX IF NOT EXISTS idx_{schema_table_name}_{schema_entity_1_val}_reference ON {schema_table_name}({schema_entity_1_val}_reference)")
+    cur.execute(f"CREATE INDEX IF NOT EXISTS idx_{schema_table_name}_{schema_entity_2_val}_reference ON {schema_table_name}({schema_entity_2_val}_reference)")
+    conn.commit()
+    ###
+    # cols = conn.execute(f'PRAGMA table_info({schema_table_name})').fetchall()
+    # print([c[1] for c in cols])
+    ###
+    # quit()
+    conn.close()
+
 def run():
     print('OBSERVE >> init')
 
@@ -346,20 +391,25 @@ def run():
     # except: pass
     os.makedirs(output_folderpath, exist_ok=True)
 
-    observations_table_plants_compounds_create(regen=True)
-    observations_table_plants_preparations_create(regen=True)
-    observations_table_plants_plants_parts_create(regen=True)
-    observations_table_plants_conditions_create(regen=True)
-    # observations_table_plants_chemicals_create(regen=True)
-    observations_table_plants_activities_create(regen=True)
+    schema_items = schema_herbs.data['items']
+    for schema_item in schema_items: 
+        schema_observe_create(schema_item)
 
-    # observations_table_plants_names_create(regen=True)
-    observations_table_plants_names_common_create(regen=True)
+    if 0:
+        # observations_table_plants_compounds_create(regen=True)
+        # observations_table_plants_preparations_create(regen=True)
+        observations_table_plants_plants_parts_create(regen=True)
+        observations_table_plants_conditions_create(regen=True)
+        # observations_table_plants_chemicals_create(regen=True)
+        observations_table_plants_activities_create(regen=True)
 
-    observations_table_plants_taxonomies_create(regen=True)
+        # observations_table_plants_names_create(regen=True)
+        observations_table_plants_names_common_create(regen=True)
 
-    observations_table_plants_synonyms_create(regen=True)
-    observations_table_plants_traits_create(regen=True)
+        observations_table_plants_taxonomies_create(regen=True)
 
-    observations_table_plants_distributions_create(regen=True)
+        observations_table_plants_synonyms_create(regen=True)
+        observations_table_plants_traits_create(regen=True)
+
+        observations_table_plants_distributions_create(regen=True)
 

@@ -16,6 +16,7 @@ from lib import components
 
 import normalize_utils
 import masterize_utils
+import schema_herbs
 
 HUB_FOLDERPATH = f'''{g.DATA_FOLDERPATH}/herbs'''
 
@@ -1764,6 +1765,132 @@ def listing_compounds_gen(plant_data):
         '''
     return html_article
 
+def schema_listing_gen(plant_data, schema_item):
+    html_article = f''
+    # print(json.dumps(schema_item, indent=4))
+    schema_table_name = schema_item['table_name']
+    data_key = schema_item['table_name']
+    item_key = schema_item['fields'][2]['field_name'] + '_reference'
+    section_data = plant_data[data_key]
+    if section_data != []:
+        html_table_body = f''
+        sources_html = f''
+        html_table_body += f'''<tbody>'''
+        table_num = 10
+        section_items = section_data[data_key]
+        for item in section_items[:table_num]:
+            # print(section_items )
+            # quit()
+            name = item[item_key]
+            slug = polish.sluggify(name)
+            sources_num = item['sources_num']
+            sources = item['sources']
+            source = sources[0]
+            confidence = ''
+            if int(sources_num) >= 10: confidence = '★★★★★'
+            elif int(sources_num) >= 7: confidence = '★★★★☆'
+            elif int(sources_num) >= 5: confidence = '★★★☆☆'
+            elif int(sources_num) >= 3: confidence = '★★☆☆☆'
+            elif int(sources_num) >= 1: confidence = '★☆☆☆☆'
+            ###
+            sources_table = ''
+            for source in sources[:2]:
+                sources_table += source['reference_name'] + ' · '
+            sources_table = sources_table[:-3]
+            ###
+            sources_table_left = len(sources) - 2
+            sources_table_more = ''
+            if sources_table_left > 0:
+                sources_table_more = f' · {sources_table_left} more'
+            html_table_body += f'''
+                <tr>
+                    <th scope="row">{name}</th>
+                    <td>
+                        {sources_table} {sources_table_more}
+                    </td>
+                    <td>
+                        <span>
+                            {confidence}
+                        </span>
+                    </td>
+                </tr>
+            '''
+            ### TODO: add this complete consensus instead of the one in the table
+            '''
+                <span aria-label="Very high source consensus">
+                    {confidence}
+                </span>
+                <span>Very high</span>
+            '''
+            ### SOURCES LISTS
+            sources_html += f'''
+                <h3 id="sources-{slug}">{name}</h3>
+                <ol class="listing-sources">
+            '''
+            for source in sources[:5]:
+                sources_html += f'''
+                    <li>
+                        <cite>
+                            {source}
+                        </cite>
+                    </li>
+                '''
+            sources_html += f'''
+                </ol>
+            '''
+            if len(sources)-5 > 0:
+                sources_html += f'''
+                    <details>
+                        <summary>
+                            View {len(sources)-5} additional sources
+                        </summary>
+                        <ol class="listing-sources" start="6">
+                '''
+                for source in sources[5:]:
+                    sources_html += f'''
+                        <li>
+                            <cite>
+                                {source}
+                            </cite>
+                        </li>
+                    '''
+                sources_html += f'''
+                        </ol>
+                    </details>
+                '''
+        source_tot = 0 
+        source_studies_tot = 0 
+        for item in section_items[:]:
+            source_tot += int(item['sources_num'])
+            sources_studies_num = item['sources_num']
+            if 'Dr. Duke' in item['sources']:
+                sources_studies_num -= 1
+            source_studies_tot += sources_studies_num 
+        p = []
+        for item in section_items[:5]:
+            p.append(item[item_key])
+        p_str = ', '.join(p)
+        html_table_body += f'''</tbody>'''
+        html_article += f'''
+            <section>
+                <h2>{schema_table_name}</h2>
+                <p>
+                    {section_data['llm_intro']}
+                </p>
+                <table style="margin-top: 3.2rem;">
+                    <thead>
+                        <tr>
+                            <th scope="col">{schema_table_name}</th>
+                            <th scope="col">Supporting Sources</th>
+                            <th scope="col">Consensus Score</th>
+                        </tr>
+                    </thead>
+                    {html_table_body}
+                </table>
+            </section>
+        '''
+    return html_article
+
 def listing_chemicals_gen_old(plant_data):
     html_article = f''
     chemicals = plant_data['chemicals']
@@ -2845,12 +2972,15 @@ def plant_listing_page_gen(master_item):
     html_article += listing_taxonomies_gen(plant_data)
     html_article += listing_distributions_gen(plant_data)
     html_article += listing_traits_gen(plant_data)
-    html_article += listing_activities_gen(plant_data)
-    html_article += listing_compounds_gen(plant_data)
+    # html_article += listing_activities_gen(plant_data)
+    # html_article += listing_compounds_gen(plant_data)
+    schema_items = schema_herbs.data['items']
+    for schema_item in schema_items: 
+        html_article += schema_listing_gen(plant_data, schema_item)
     # html_article += listing_chemicals_gen(plant_data)
-    html_article += listing_condition_gen(plant_data)
-    html_article += listing_plant_parts_gen(plant_data)
-    html_article += listing_preparations_gen(plant_data)
+    # html_article += listing_condition_gen(plant_data)
+    # html_article += listing_plant_parts_gen(plant_data)
+    # html_article += listing_preparations_gen(plant_data)
  
     meta_title = f'{plant_name_scientific_reference}'
     meta_description = f''

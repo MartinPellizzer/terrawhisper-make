@@ -9,6 +9,7 @@ from lib import io
 from lib import llm
 
 import resolve_utils
+import schema_herbs
 
 HUB_FOLDERPATH = f'''{g.DATA_FOLDERPATH}/herbs'''
 
@@ -651,22 +652,77 @@ def resolve_gen(entity_1, entity_2, source_foldername, output_foldername):
     wcvp_conn.close()
     print(json.dumps(last, indent=4))
 
+def schema_resolve_gen(schema_item):
+    schema_table_name = schema_item['table_name']
+    schema_source_name = schema_item['sources'][0]['source_name']
+    schema_output_foldername = schema_table_name
+    schema_entity_1_val = schema_item['fields'][0]['field_name']
+    schema_relationship_val = schema_item['fields'][1]['field_name']
+    schema_entity_2_val = schema_item['fields'][2]['field_name']
+    ###
+    input_folderpath = f'{HUB_FOLDERPATH}/normalize/{schema_source_name}/{schema_output_foldername}/json'
+    output_folderpath = f'{HUB_FOLDERPATH}/resolve/{schema_source_name}/{schema_output_foldername}/json'
+    try: shutil.rmtree(output_folderpath)
+    except: pass
+    os.makedirs(output_folderpath, exist_ok=True)
+    ###
+    wcvp_filepath = f'{HUB_FOLDERPATH}/reference/wcvp/wcvp.db'
+    wcvp_conn = sqlite3.connect(wcvp_filepath)
+    wcvp_conn.row_factory = sqlite3.Row
+    input_filenames = os.listdir(input_folderpath)
+    last = []
+    for i, input_filename in enumerate(input_filenames[:]):
+        print(f'RESOLVE {schema_entity_1_val} {schema_entity_2_val} - {i}/{len(input_filenames)}')
+        output_filepath = f'{output_folderpath}/{input_filename}'
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        if os.path.exists(output_filepath): continue
+        ###
+        input_data = io.json_read(input_filepath)
+        resolved_data = []
+        for input_item in input_data:
+            # print(json.dumps(input_item, indent=True))
+            plant_name_scientific_raw_normalize = input_item['plant_name_scientific_raw_normalize']
+            ### RESOLVE PLANT (WCVP)
+            wcvp_row = resolve_utils.resolve_plant_accepted(wcvp_conn, plant_name_scientific_raw_normalize)
+            ###
+            if wcvp_row:
+                wcvp_item = dict(wcvp_row)
+                # print(wcvp_item)
+                # quit()
+                input_item[f'{schema_entity_1_val}_reference'] = wcvp_item[f'taxon_name']
+                input_item[f'{schema_entity_1_val}_reference_normalize'] = wcvp_item[f'taxon_name_normalized']
+                input_item[f'{schema_entity_2_val}_reference'] = input_item[f'{schema_entity_2_val}_raw']
+                input_item[f'{schema_entity_2_val}_reference_normalize'] = input_item[f'{schema_entity_2_val}_raw_normalize']
+                resolved_data.append(input_item)
+                # print(json.dumps(input_item, indent=4))
+                # quit()
+        if resolved_data != []:
+            io.json_write(output_filepath, resolved_data)
+            last = resolved_data 
+    wcvp_conn.close()
+    print(json.dumps(last, indent=4))
+
 def run():
     print('RESOLVE')
 
-    resolve_gen('plant_name_scientific', 'compound_name', 'pubmed', 'compounds')
-    resolve_gen('plant_name_scientific', 'preparation_name', 'pubmed', 'preparations')
-    resolve_gen('plant_name_scientific', 'plant_part_name', 'pubmed', 'plants_parts')
-    resolve_gen('plant_name_scientific', 'condition_name', 'pubmed', 'conditions')
-    resolve_gen('plant_name_scientific', 'activity_name', 'pubmed', 'activities')
+    schema_items = schema_herbs.data['items']
+    for schema_item in schema_items: 
+        schema_resolve_gen(schema_item)
 
-    # resolve_chemicals(source_foldername='drduke')
-    resolve_chemicals(source_foldername='pubmed')
-    resolve_taxonomies(source_foldername='powo')
-    resolve_synonyms(source_foldername='wcvp')
-    resolve_traits(source_foldername='gift')
-    resolve_distributions(source_foldername='wcvp')
+    if 0:
+        # resolve_gen('plant_name_scientific', 'compound_name', 'pubmed', 'compounds')
+        # resolve_gen('plant_name_scientific', 'preparation_name', 'pubmed', 'preparations')
+        resolve_gen('plant_name_scientific', 'plant_part_name', 'pubmed', 'plants_parts')
+        resolve_gen('plant_name_scientific', 'condition_name', 'pubmed', 'conditions')
+        resolve_gen('plant_name_scientific', 'activity_name', 'pubmed', 'activities')
 
-    # resolve_common_names(source_foldername='wikidata')
-    resolve_common_names(source_foldername='col')
+        # resolve_chemicals(source_foldername='drduke')
+        resolve_chemicals(source_foldername='pubmed')
+        resolve_taxonomies(source_foldername='powo')
+        resolve_synonyms(source_foldername='wcvp')
+        resolve_traits(source_foldername='gift')
+        resolve_distributions(source_foldername='wcvp')
+
+        # resolve_common_names(source_foldername='wikidata')
+        resolve_common_names(source_foldername='col')
 

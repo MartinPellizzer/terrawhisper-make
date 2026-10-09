@@ -10,6 +10,7 @@ from lib import g
 from lib import io
 
 import normalize_utils
+import schema_herbs
 
 HUB_FOLDERPATH = f'''{g.DATA_FOLDERPATH}/herbs'''
 
@@ -345,29 +346,66 @@ def normalize_gen(entity_1, entity_2, source_foldername, output_foldername):
     print(json.dumps(input_data[0], indent=4))
     # quit()
 
+def schema_normalize_gen(schema_item):
+    schema_table_name = schema_item['table_name']
+    schema_source_name = schema_item['sources'][0]['source_name']
+    schema_output_foldername = schema_table_name
+    schema_entity_1_val = schema_item['fields'][0]['field_name']
+    schema_relationship_val = schema_item['fields'][1]['field_name']
+    schema_entity_2_val = schema_item['fields'][2]['field_name']
+    ###
+    input_folderpath = f'{HUB_FOLDERPATH}/parse/{schema_source_name}/{schema_output_foldername}/json'
+    output_folderpath = f'{HUB_FOLDERPATH}/normalize/{schema_source_name}/{schema_output_foldername}/json'
+    try: shutil.rmtree(output_folderpath)
+    except: pass
+    io.folders_recursive_gen(output_folderpath)
+    input_filenames = os.listdir(input_folderpath)
+    ###
+    for i, input_filename in enumerate(input_filenames[:]):
+        print(f'NORMALIZE {schema_entity_1_val} {schema_entity_2_val} - {i}/{len(input_filenames)}')
+        output_filepath = f'{output_folderpath}/{input_filename}'
+        if os.path.exists(output_filepath): continue
+        ###
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        input_data = io.json_read(input_filepath)
+        for input_item in input_data:
+            # print(json.dumps(input_item, indent=4))
+            input_item[f'{schema_entity_1_val}_raw_normalize'] = normalize_utils.normalize_plant_name(input_item[f'{schema_entity_1_val}_raw'])
+            input_item[f'{schema_entity_2_val}_raw_normalize'] = normalize_format(input_item[f'{schema_entity_2_val}_raw'])
+            # print(json.dumps(input_item, indent=4))
+            # quit()
+        io.json_write(output_filepath, input_data)
+    print(json.dumps(input_data[0], indent=4))
+    # quit()
+
 def run():
     print('NORMALIZE >> MAIN')
 
-    normalize_gen('plant_name_scientific', 'compound_name', 'pubmed', 'compounds')
-    normalize_gen('plant_name_scientific', 'preparation_name', 'pubmed', 'preparations')
-    normalize_gen('plant_name_scientific', 'plant_part_name', 'pubmed', 'plants_parts')
-    normalize_gen('plant_name_scientific', 'condition_name', 'pubmed', 'conditions')
-    normalize_gen('plant_name_scientific', 'activity_name', 'pubmed', 'activities')
-    normalize_gen('plant_name_scientific', 'plant_name_common', 'col', 'plants_names_common')
-
-    normalize_plants_synonyms(source_foldername='wcvp')
-    normalize_plants_synonyms(source_foldername='wcvp')
-    normalize_plants_taxonomies(source_foldername='powo')
-    normalize_plants_distributions(source_foldername='wcvp')
-    normalize_plants_traits(source_foldername='gift')
-
+    schema_items = schema_herbs.data['items']
+    for schema_item in schema_items: 
+        schema_normalize_gen(schema_item)
     # quit()
 
-    # normalize_plants_chemicals(source_foldername='drduke')
-    # normalize_plants_chemicals(source_foldername='pubmed')
-    # normalize_plants_activities(source_foldername='drduke')
+    if 0:
+        # normalize_gen('plant_name_scientific', 'preparation_name', 'pubmed', 'preparations')
+        normalize_gen('plant_name_scientific', 'plant_part_name', 'pubmed', 'plants_parts')
+        normalize_gen('plant_name_scientific', 'condition_name', 'pubmed', 'conditions')
+        normalize_gen('plant_name_scientific', 'activity_name', 'pubmed', 'activities')
+        normalize_gen('plant_name_scientific', 'plant_name_common', 'col', 'plants_names_common')
 
-    # normalize_plants_common_names(source_foldername='col')
+        normalize_plants_synonyms(source_foldername='wcvp')
+        normalize_plants_synonyms(source_foldername='wcvp')
+        normalize_plants_taxonomies(source_foldername='powo')
+        normalize_plants_distributions(source_foldername='wcvp')
+        normalize_plants_traits(source_foldername='gift')
+
+        # quit()
+
+        # normalize_plants_chemicals(source_foldername='drduke')
+        # normalize_plants_chemicals(source_foldername='pubmed')
+        # normalize_plants_activities(source_foldername='drduke')
+
+        # normalize_plants_common_names(source_foldername='col')
 
 
 

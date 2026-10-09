@@ -82,7 +82,7 @@ def herbs_gen_new(dispel=False):
     # print(plants_rows[0])
     # quit()
     # herbs = [row[-2] for row in rows if row[-1] == 'SPECIES']
-    herbs = [row[1] for row in plants_rows]
+    herbs = [row['plant_name_scientific_reference'] for row in plants_rows]
     for herb_i, herb in enumerate(herbs):
         print(f'{herb_i}/{len(herbs)} - {herb}')
         herb_name_scientific = herb
