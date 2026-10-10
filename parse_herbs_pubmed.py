@@ -1503,8 +1503,9 @@ def schema_raw_to_json(schema_item):
     schema_fields = schema_item['fields']
     input_folderpath = f'{HUB_FOLDERPATH}/parse/pubmed/{schema_table_name}/raw'
     output_folderpath = f'{HUB_FOLDERPATH}/parse/pubmed/{schema_table_name}/json'
-    try: shutil.rmtree(output_folderpath)
-    except: pass
+    if schema_item['regen'] == True:
+        try: shutil.rmtree(output_folderpath)
+        except: pass
     io.folders_recursive_gen(output_folderpath)
     ###
     input_filenames = os.listdir(input_folderpath)
@@ -1512,6 +1513,8 @@ def schema_raw_to_json(schema_item):
         print(f'''PARSE {schema_table_name} {i}/{len(input_filenames)}''')
         input_filepath = f'{input_folderpath}/{input_filename}'
         output_filepath = f'{output_folderpath}/{input_filename}'
+        if os.path.exists(output_filepath): continue
+        print(f'''exe...''')
         ###
         input_data = io.json_read(input_filepath)
         # print(json.dumps(input_data, indent=4))
@@ -1581,7 +1584,8 @@ def run():
 
     schema_items = schema_herbs.data['items']
     for schema_item in schema_items: 
-        schema_raw_to_json(schema_item)
+        if schema_item['process'] == True:
+            schema_raw_to_json(schema_item)
 
     if 0:
         compounds_raw_to_json()

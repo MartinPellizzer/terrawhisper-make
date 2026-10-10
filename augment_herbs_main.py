@@ -623,12 +623,14 @@ def schema_augment_gen(schema_item):
                     try: study_abstract = ' '.join(article_data['Abstract']['AbstractText'])
                     except: continue
                     # print(study_abstract)
+                    study_abstract = ' '.join(study_abstract.split(' ')[:800])
                     prompt_abstracts.append(f'{study_title} {study_abstract}')
                     # quit()
             sentences_num = len(prompt_relationships)
             prompt_relationships = '\n'.join(prompt_relationships)
             # prompt_abstracts = '\n'.join(prompt_abstracts)[:10000]
             prompt_abstracts = '\n'.join(prompt_abstracts)[:]
+            # prompt_abstracts = ' '.join(prompt_abstracts.split(' '))
             # print(prompt_relationships)
             # quit()
             ### STUDY

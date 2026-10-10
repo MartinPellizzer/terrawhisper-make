@@ -2606,35 +2606,6 @@ def listing_hero_gen(plant_data):
     else: 
         consensus_stars = '★☆☆☆☆'
         consensus_tag = 'Very Sparse'
-    intro_text = ''
-    """
-    ### LLM INTRO TODO: move to augment
-    json_article_filepath = f'''{HUB_FOLDERPATH}/enhance/{plant_taxon_name_slug}.json'''
-    json_article = io.json_read(json_article_filepath, create=True)
-    regen = False
-    dispel = False
-    key = f'intro'
-    if key not in json_article: json_article[key] = ''
-    if regen: json_article[key] = ''
-    if dispel: 
-        json_article[key] = ''
-        io.json_write(json_article_filepath, json_article)
-        return
-    if json_article[key] == '':
-        plant_name_common = plant_data['names_common']['plant_name_common_preferred']
-        prompt = f'''
-            Write 50 words for an introduction to the following medicinal plant: {plant_name_scientific_reference}.
-            Start the reply with the following words: {plant_name_common}, scientifically known as {plant_name_scientific_reference}, is
-        '''.strip()
-        print(prompt)
-        # quit()
-        reply = llm.reply(prompt, model_filepath)
-        if '</think>' in reply:
-            reply = reply.split('</think>')[1].strip()
-        reply = polish.vanilla(reply)
-        json_article[key] = reply
-        io.json_write(json_article_filepath, json_article)
-    """
     intro_text = plant_data['intro']['llm_intro']
     ### FAMILY
     if plant_data['taxonomies'] != []: hero_taxonomy = plant_data['taxonomies'][0]['family'].title()
@@ -2742,6 +2713,45 @@ def listing_hero_gen(plant_data):
                 >
             </div>
         </div>
+    '''
+
+    """
+        <dl class="quick-facts">
+            <div>
+                <dt>Synonyms</dt>
+                <dd>{hero_synonyms_html}</dd>
+            </div>
+            <div>
+                <dt>Common names</dt>
+                <dd>{hero_names_common_html}</dd>
+            </div>
+            <div>
+                <dt>Family</dt>
+                <dd>{hero_taxonomy}</dd>
+            </div>
+            <div>
+                <dt>Distribution</dt>
+                <dd>{hero_distributions}</dd>
+            </div>
+            <div>
+                <dt>Plant Parts</dt>
+                <dd>{hero_plant_parts_html}</dd>
+            </div>
+        </dl>
+    """
+    html_hero = f'''
+        {sections.breadcrumbs_explorer(url_slug)}
+        {h1_html}
+        {name_scientific_accepted}
+        <p>
+            <span style="font-weight: 700;">Scientific literature:</span>
+            <span>{consensus_tag}</span>
+            <span>({evidence_consensus_count} studies)</span> · 
+            <span aria-label="{consensus_tag}">{consensus_stars}</span>
+        </p>
+        <p>
+            {intro_text}
+        </p>
     '''
     html_article += html_hero
     return html_article
@@ -2981,11 +2991,59 @@ def plant_listing_page_gen(master_item):
     # html_article += listing_condition_gen(plant_data)
     # html_article += listing_plant_parts_gen(plant_data)
     # html_article += listing_preparations_gen(plant_data)
+
+    listing_sidebar_left_html = f'''
+        <aside class="">
+            <nav class="listing-toc" aria-label="Table of contents">
+              <div class="toc-heading">On this page</div>
+              <ul>
+                <li><a href="#intro">Introduction</a></li>
+                <li>
+                  <a href="#benefits">Benefits</a>
+                  <ul>
+                    <li><a href="#digestive">Digestive health</a></li>
+                    <li><a href="#inflammation">Inflammation</a></li>
+                    <li>
+                      <a href="#benefits">Benefits</a>
+                      <ul>
+                            <li><a href="#digestive">Digestive health</a></li>
+                            <li><a href="#inflammation">Inflammation</a></li>
+                      </ul>
+                  </ul>
+                </li>
+              </ul>
+            </nav>
+        </aside>
+    '''
+
+    listing_sidebar_right_html = f'''
+        <aside class="quick-facts">
+              <div style="font-size: 1.5rem; font-weight: 700;">Quick facts</div>
+                <img 
+                    src="/images/herbs/{plant_taxon_name_slug}.jpg"
+                    style="
+                        height: 100%;
+                        object-fit: cover;
+                        object-position: center;
+                    "
+                >
+
+            <table>
+                <tr><th>Scientific name</th><td><i>Salvia officinalis</i></td></tr>
+                <tr><th>Family</th><td>Lamiaceae</td></tr>
+                <tr><th>Type</th><td>Perennial herb</td></tr>
+                <tr><th>Native to</th><td>Mediterranean</td></tr>
+                <tr><th>Parts used</th><td>Leaves</td></tr>
+                <tr><th>Traditional uses</th><td>Digestive support</td></tr>
+            </table>
+        </aside>
+    '''
  
     meta_title = f'{plant_name_scientific_reference}'
     meta_description = f''
     canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''
     head_html = components.html_head(meta_title, meta_description, css='/styles.css', canonical=canonical_html)
+    """
     html = f''' 
         <!DOCTYPE html>
         <html lang="en">
@@ -2994,6 +3052,28 @@ def plant_listing_page_gen(master_item):
             {sections.header_dark()}
             <main class="container-lg listing" style="margin-top: 4.8rem; margin-bottom: 4.8rem;">
                 {html_article}
+            </main>
+            {sections.footer()}
+        </body>
+        </html>
+    '''.strip()
+    """
+    html = f''' 
+        <!DOCTYPE html>
+        <html lang="en">
+        {head_html}
+        <body>
+            {sections.header_dark()}
+            <main class="listing">
+                <div class="col-left">
+                    {listing_sidebar_left_html}
+                </div>
+                <div class="col-center">
+                    {html_article}
+                </div>
+                <div class="col-right">
+                    {listing_sidebar_right_html}
+                </div>
             </main>
             {sections.footer()}
         </body>
@@ -3060,9 +3140,31 @@ def plant_listing_page_gen(master_item):
         </body>
         </html>
     '''.strip()
+    ###
+    html = f''' 
+        <!DOCTYPE html>
+        <html lang="en">
+        {head_html}
+        <body>
+            {sections.header_dark()}
+            <main class="container-lg layout">
+                <div class="col-left">
+                <div>
+                <div class="col-center">
+                    {html_article}
+                <div>
+                <div class="col-right">
+                <div>
+            </main>
+            {sections.footer()}
+        </body>
+        </html>
+    '''.strip()
+    ###
     html_filepath = f'{g.website_folderpath}/{url_slug}.html'
     with open(html_filepath, 'w') as f: f.write(html)
     print(html_filepath)
+    quit()
 
 def run():
     master_items = masterize_utils.masterize_plants_get_all()

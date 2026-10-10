@@ -3,6 +3,7 @@
 data = {
     'items': [
         {
+            'process': False,
             'regen': False,
             'table_name': 'plants_activities',
             'fields': [
@@ -23,6 +24,7 @@ data = {
             ],
         },
         {
+            'process': False,
             'regen': False,
             'table_name': 'plants_compounds',
             'fields': [
@@ -43,6 +45,7 @@ data = {
             ],
         },
         {
+            'process': False,
             'regen': False,
             'table_name': 'plants_conditions',
             'fields': [
@@ -63,6 +66,7 @@ data = {
             ],
         },
         {
+            'process': False,
             'regen': False,
             'table_name': 'plants_preparations',
             'fields': [
@@ -83,6 +87,7 @@ data = {
             ],
         },
         {
+            'process': False,
             'regen': False,
             'table_name': 'plants_plants_parts',
             'fields': [

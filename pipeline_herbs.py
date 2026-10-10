@@ -18,7 +18,7 @@ if 0:
     import masterize_herbs_main_new
     masterize_herbs_main_new.run()
 
-if 1:
+if 0:
     import parse_herbs_wcvp
     import parse_herbs_powo
     import parse_herbs_col
@@ -33,22 +33,22 @@ if 1:
     # parse_herbs_drduke.run()
     # parse_herbs_powo.run()
 
-if 1:
+if 0:
     import normalize_herbs_main
     normalize_herbs_main.run()
 
-if 1:
+if 0:
     import resolve_herbs_main
     resolve_herbs_main.run()
 
-if 1:
+if 0:
     import masterize_herbs_init
     import masterize_herbs_main
     masterize_herbs_init.run()
     masterize_herbs_main.run()
 
 # quit()
-if 1:
+if 0:
     import observe_herbs_init
     import observe_herbs_main
     import observe_herbs_peek
@@ -60,15 +60,15 @@ if 1:
 
 # quit()
 
-if 1:
+if 0:
     import derive_herbs_main
     derive_herbs_main.run()
 
-if 1:
+if 0:
     import augment_herbs_main
     augment_herbs_main.run()
 
-if 1:
+if 0:
     import compile_herbs_main
     compile_herbs_main.run()
 
