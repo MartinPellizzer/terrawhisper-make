@@ -6,6 +6,7 @@ data = {
             'process': False,
             'regen': False,
             'table_name': 'plants_activities',
+            'section_heading': 'Biological Activities',
             'fields': [
                 {
                     'field_name': 'plant_name_scientific',
@@ -27,6 +28,7 @@ data = {
             'process': False,
             'regen': False,
             'table_name': 'plants_compounds',
+            'section_heading': 'Compounds',
             'fields': [
                 {
                     'field_name': 'plant_name_scientific',
@@ -48,6 +50,7 @@ data = {
             'process': False,
             'regen': False,
             'table_name': 'plants_conditions',
+            'section_heading': 'Conditions',
             'fields': [
                 {
                     'field_name': 'plant_name_scientific',
@@ -69,6 +72,7 @@ data = {
             'process': False,
             'regen': False,
             'table_name': 'plants_preparations',
+            'section_heading': 'Preparations',
             'fields': [
                 {
                     'field_name': 'plant_name_scientific',
@@ -90,6 +94,7 @@ data = {
             'process': False,
             'regen': False,
             'table_name': 'plants_plants_parts',
+            'section_heading': 'Parts used',
             'fields': [
                 {
                     'field_name': 'plant_name_scientific',

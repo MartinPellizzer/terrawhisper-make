@@ -1873,7 +1873,7 @@ def schema_listing_gen(plant_data, schema_item):
         html_table_body += f'''</tbody>'''
         html_article += f'''
             <section>
-                <h2>{schema_table_name}</h2>
+                <h2>{schema_item['section_heading']}</h2>
                 <p>
                     {section_data['llm_intro']}
                 </p>
@@ -2752,6 +2752,7 @@ def listing_hero_gen(plant_data):
         <p>
             {intro_text}
         </p>
+        [toc]
     '''
     html_article += html_hero
     return html_article
@@ -2983,19 +2984,19 @@ def plant_listing_page_gen(master_item):
     html_article += listing_distributions_gen(plant_data)
     html_article += listing_traits_gen(plant_data)
     # html_article += listing_activities_gen(plant_data)
-    # html_article += listing_compounds_gen(plant_data)
     schema_items = schema_herbs.data['items']
     for schema_item in schema_items: 
         html_article += schema_listing_gen(plant_data, schema_item)
-    # html_article += listing_chemicals_gen(plant_data)
-    # html_article += listing_condition_gen(plant_data)
-    # html_article += listing_plant_parts_gen(plant_data)
-    # html_article += listing_preparations_gen(plant_data)
 
+    ### TOC
+    html_article = sections.toc_article(html_article)
+
+    html_toc_sidebar = sections.toc_sidebar(html_article)
+    ### SIDEBAR LEFT
     listing_sidebar_left_html = f'''
         <aside class="">
-            <nav class="listing-toc" aria-label="Table of contents">
-              <div class="toc-heading">On this page</div>
+            <nav class="sidebar-toc" aria-label="Table of contents">
+              <div class="toc-heading">Contents</div>
               <ul>
                 <li><a href="#intro">Introduction</a></li>
                 <li>
@@ -3015,6 +3016,7 @@ def plant_listing_page_gen(master_item):
             </nav>
         </aside>
     '''
+    listing_sidebar_left_html = html_toc_sidebar
 
     listing_sidebar_right_html = f'''
         <aside class="quick-facts">
@@ -3082,8 +3084,8 @@ def plant_listing_page_gen(master_item):
     html_filepath = f'{g.website_folderpath}/{url_slug}.html'
     with open(html_filepath, 'w') as f: f.write(html)
     print(html_filepath)
+    # quit()
     return
-    quit()
 
 
 
