@@ -10,13 +10,17 @@ from lib import io
 
 import masterize_utils
 import parse_utils
+import schema_herbs
 
 HUB_FOLDERPATH = f'''{g.DATA_FOLDERPATH}/herbs'''
 
-def parse_names():
-    output_folderpath = f'{HUB_FOLDERPATH}/parse/col/plants_names_common/json'
-    try: shutil.rmtree(output_folderpath)
-    except: pass
+def parse_names(schema_item):
+    schema_table_name = schema_item['table_name']
+    schema_fields = schema_item['fields']
+    output_folderpath = f'{HUB_FOLDERPATH}/parse/col/{schema_table_name}/json'
+    if schema_item['regen'] == True:
+        try: shutil.rmtree(output_folderpath)
+        except: pass
     io.folders_recursive_gen(output_folderpath)
     ###
     master_plants_rows = masterize_utils.masterize_plants_get_all()
@@ -45,6 +49,7 @@ def parse_names():
         for item in items:
             # print(row)
             # quit()
+            '''
             output_item = parse_utils.common_name_create(
                 plant_name_scientific_raw = plant_name_scientific_reference,
                 # plant_name_scientific_reference_normalize = plant_name_scientific_reference,
@@ -58,6 +63,22 @@ def parse_names():
                 source_name = 'Catalogue of Life',
                 source_acronym = 'COL',
             )
+            '''
+            output_item = {
+                f'plant_name_scientific_raw': plant_name_scientific_reference,
+                f'relationship_name_raw': 'has_name_common',
+                f'plant_name_common_raw': item['name'],
+                f'plant_name_common_transliteration': item['transliteration'],
+                f'plant_name_common_language': item['language'],
+                f'plant_name_common_preferred': item['preferred'],
+                f'plant_name_common_country': item['country'],
+                f'plant_name_common_area': item['area'],
+                f'plant_name_common_type': 'vernacular',
+                f'source_name': 'Catalogue of Life',
+                f'source_acronym': 'COL',
+                f'reference_id': '',
+                f'reference_name': '',
+            }
             output_items.append(output_item)
             # print(json.dumps(output_item, indent=4))
             # quit()
@@ -70,7 +91,19 @@ def parse_names():
 def run():
     print(f'''HERBS >> PARSE >> col''')
 
+    '''
     start = time.perf_counter()
     parse_names()
     print(f'parse names() - execution time: ', time.perf_counter() - start)
+    '''
+
+    schema_items = schema_herbs.data['items']
+    for schema_item in schema_items: 
+        if schema_item['process'] != True: continue
+        sources_names = [
+            source['source_name'] 
+            for source in schema_item['sources']
+        ]
+        if 'col' not in sources_names: continue
+        parse_names(schema_item)
 

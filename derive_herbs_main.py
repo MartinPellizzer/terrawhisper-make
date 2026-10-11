@@ -910,6 +910,7 @@ def schema_derive_gen(schema_item):
 def run():
     schema_items = schema_herbs.data['items']
     for schema_item in schema_items: 
+        if schema_item['process'] != True: continue
         schema_derive_gen(schema_item)
 
     if 0:
@@ -925,5 +926,5 @@ def run():
         synonyms_gen()
         traits_gen()
         distributions_gen()
-        names_common_gen()
+        # names_common_gen()
 

@@ -1765,9 +1765,10 @@ def listing_compounds_gen(plant_data):
         '''
     return html_article
 
-def schema_listing_gen(plant_data, schema_item):
+def schema_listing_gen(plant_data, schema_item, render_table=True):
     html_article = f''
     # print(json.dumps(schema_item, indent=4))
+    # quit()
     schema_table_name = schema_item['table_name']
     data_key = schema_item['table_name']
     item_key = schema_item['fields'][2]['field_name'] + '_reference'
@@ -1871,12 +1872,9 @@ def schema_listing_gen(plant_data, schema_item):
             p.append(item[item_key])
         p_str = ', '.join(p)
         html_table_body += f'''</tbody>'''
-        html_article += f'''
-            <section>
-                <h2>{schema_item['section_heading']}</h2>
-                <p>
-                    {section_data['llm_intro']}
-                </p>
+        ###
+        if render_table == True: 
+            html_table = f'''
                 <table style="margin-top: 3.2rem;">
                     <thead>
                         <tr>
@@ -1887,6 +1885,25 @@ def schema_listing_gen(plant_data, schema_item):
                     </thead>
                     {html_table_body}
                 </table>
+            '''
+        else:
+            html_table = ''
+        ###
+        paragraphs_text = section_data['llm_intro']
+        """
+        for item in section_data[schema_table_name]:
+            item_field = item_key 
+            item_val = item[item_field]
+            paragraphs_text = paragraphs_text.replace(item_val, f'''<strong>{item_val}</strong>''')
+        """
+        html_paragraphs = f'''
+            <p>{paragraphs_text}</p>
+        '''
+        html_article += f'''
+            <section>
+                <h2>{schema_item['section_heading']}</h2>
+                {html_paragraphs}
+                {html_table}
             </section>
         '''
     return html_article
@@ -2716,29 +2733,51 @@ def listing_hero_gen(plant_data):
     '''
 
     """
-        <dl class="quick-facts">
-            <div>
-                <dt>Synonyms</dt>
-                <dd>{hero_synonyms_html}</dd>
-            </div>
-            <div>
-                <dt>Common names</dt>
-                <dd>{hero_names_common_html}</dd>
-            </div>
-            <div>
-                <dt>Family</dt>
-                <dd>{hero_taxonomy}</dd>
-            </div>
-            <div>
-                <dt>Distribution</dt>
-                <dd>{hero_distributions}</dd>
-            </div>
-            <div>
-                <dt>Plant Parts</dt>
-                <dd>{hero_plant_parts_html}</dd>
-            </div>
-        </dl>
+            <table>
+                <tr><th>Scientific name</th><td><i>Salvia officinalis</i></td></tr>
+                <tr><th>Family</th><td>Lamiaceae</td></tr>
+                <tr><th>Type</th><td>Perennial herb</td></tr>
+                <tr><th>Native to</th><td>Mediterranean</td></tr>
+                <tr><th>Parts used</th><td>Leaves</td></tr>
+                <tr><th>Traditional uses</th><td>Digestive support</td></tr>
+            </table>
     """
+    quick_facts_html = f'''
+        <div class="quick-facts-mobile" style="margin-top: 2rem;">
+            <img 
+                src="/images/herbs/{plant_taxon_name_slug}.jpg"
+                style="
+                    height: 100%;
+                    object-fit: cover;
+                    object-position: center;
+                "
+            >
+            <div class="toc-heading" style="margin-top: 2rem;">Quick facts</div>
+            <dl class="quick-facts">
+                <div>
+                    <dt>Synonyms</dt>
+                    <dd>{hero_synonyms_html}</dd>
+                </div>
+                <div>
+                    <dt>Common names</dt>
+                    <dd>{hero_names_common_html}</dd>
+                </div>
+                <div>
+                    <dt>Family</dt>
+                    <dd>{hero_taxonomy}</dd>
+                </div>
+                <div>
+                    <dt>Distribution</dt>
+                    <dd>{hero_distributions}</dd>
+                </div>
+                <div>
+                    <dt>Plant Parts</dt>
+                    <dd>{hero_plant_parts_html}</dd>
+                </div>
+            </dl>
+        </div>
+    '''
+    # html_article = html_article.replace("[quick_facts]", quick_facts_html)
     html_hero = f'''
         {sections.breadcrumbs_explorer(url_slug)}
         {h1_html}
@@ -2752,6 +2791,7 @@ def listing_hero_gen(plant_data):
         <p>
             {intro_text}
         </p>
+        {quick_facts_html}
         [toc]
     '''
     html_article += html_hero
@@ -2979,14 +3019,14 @@ def plant_listing_page_gen(master_item):
     html_article = f''
 
     html_article += listing_hero_gen(plant_data)
-    html_article += listing_names_common_gen(plant_data)
+    # html_article += listing_names_common_gen(plant_data)
     html_article += listing_taxonomies_gen(plant_data)
     html_article += listing_distributions_gen(plant_data)
     html_article += listing_traits_gen(plant_data)
     # html_article += listing_activities_gen(plant_data)
     schema_items = schema_herbs.data['items']
     for schema_item in schema_items: 
-        html_article += schema_listing_gen(plant_data, schema_item)
+        html_article += schema_listing_gen(plant_data, schema_item, render_table=False)
 
     ### TOC
     html_article = sections.toc_article(html_article)
@@ -3019,7 +3059,7 @@ def plant_listing_page_gen(master_item):
     listing_sidebar_left_html = html_toc_sidebar
 
     listing_sidebar_right_html = f'''
-        <aside class="quick-facts">
+        <aside class="quick-facts quick-facts-desktop">
               <div style="font-size: 1.5rem; font-weight: 700;">Quick facts</div>
                 <img 
                     src="/images/herbs/{plant_taxon_name_slug}.jpg"
@@ -3029,7 +3069,6 @@ def plant_listing_page_gen(master_item):
                         object-position: center;
                     "
                 >
-
             <table>
                 <tr><th>Scientific name</th><td><i>Salvia officinalis</i></td></tr>
                 <tr><th>Family</th><td>Lamiaceae</td></tr>
@@ -3045,21 +3084,6 @@ def plant_listing_page_gen(master_item):
     meta_description = f''
     canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''
     head_html = components.html_head(meta_title, meta_description, css='/styles.css', canonical=canonical_html)
-    """
-    html = f''' 
-        <!DOCTYPE html>
-        <html lang="en">
-        {head_html}
-        <body>
-            {sections.header_dark()}
-            <main class="container-lg listing" style="margin-top: 4.8rem; margin-bottom: 4.8rem;">
-                {html_article}
-            </main>
-            {sections.footer()}
-        </body>
-        </html>
-    '''.strip()
-    """
     html = f''' 
         <!DOCTYPE html>
         <html lang="en">

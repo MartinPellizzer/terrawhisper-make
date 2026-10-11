@@ -662,8 +662,9 @@ def schema_resolve_gen(schema_item):
     ###
     input_folderpath = f'{HUB_FOLDERPATH}/normalize/{schema_source_name}/{schema_output_foldername}/json'
     output_folderpath = f'{HUB_FOLDERPATH}/resolve/{schema_source_name}/{schema_output_foldername}/json'
-    try: shutil.rmtree(output_folderpath)
-    except: pass
+    if schema_item['regen'] == True:
+        try: shutil.rmtree(output_folderpath)
+        except: pass
     os.makedirs(output_folderpath, exist_ok=True)
     ###
     wcvp_filepath = f'{HUB_FOLDERPATH}/reference/wcvp/wcvp.db'
@@ -707,6 +708,7 @@ def run():
 
     schema_items = schema_herbs.data['items']
     for schema_item in schema_items: 
+        if schema_item['process'] != True: continue
         schema_resolve_gen(schema_item)
 
     if 0:

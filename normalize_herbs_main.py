@@ -356,11 +356,13 @@ def schema_normalize_gen(schema_item):
     ###
     input_folderpath = f'{HUB_FOLDERPATH}/parse/{schema_source_name}/{schema_output_foldername}/json'
     output_folderpath = f'{HUB_FOLDERPATH}/normalize/{schema_source_name}/{schema_output_foldername}/json'
-    try: shutil.rmtree(output_folderpath)
-    except: pass
+    if schema_item['regen'] == True:
+        try: shutil.rmtree(output_folderpath)
+        except: pass
     io.folders_recursive_gen(output_folderpath)
     input_filenames = os.listdir(input_folderpath)
     ###
+    last = []
     for i, input_filename in enumerate(input_filenames[:]):
         print(f'NORMALIZE {schema_entity_1_val} {schema_entity_2_val} - {i}/{len(input_filenames)}')
         output_filepath = f'{output_folderpath}/{input_filename}'
@@ -375,7 +377,9 @@ def schema_normalize_gen(schema_item):
             # print(json.dumps(input_item, indent=4))
             # quit()
         io.json_write(output_filepath, input_data)
-    print(json.dumps(input_data[0], indent=4))
+        if input_data != []:
+            last = input_data
+    print(json.dumps(last, indent=4))
     # quit()
 
 def run():
@@ -383,14 +387,12 @@ def run():
 
     schema_items = schema_herbs.data['items']
     for schema_item in schema_items: 
+        if schema_item['process'] != True: continue
         schema_normalize_gen(schema_item)
     # quit()
 
     if 0:
         # normalize_gen('plant_name_scientific', 'preparation_name', 'pubmed', 'preparations')
-        normalize_gen('plant_name_scientific', 'plant_part_name', 'pubmed', 'plants_parts')
-        normalize_gen('plant_name_scientific', 'condition_name', 'pubmed', 'conditions')
-        normalize_gen('plant_name_scientific', 'activity_name', 'pubmed', 'activities')
         normalize_gen('plant_name_scientific', 'plant_name_common', 'col', 'plants_names_common')
 
         normalize_plants_synonyms(source_foldername='wcvp')

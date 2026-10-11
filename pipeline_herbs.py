@@ -26,9 +26,9 @@ if 0:
     import parse_herbs_drduke
     import parse_herbs_pubmed
 
-    parse_herbs_pubmed.run()
-    # parse_herbs_col.run()
-    # parse_herbs_wcvp.run()
+    # parse_herbs_pubmed.run()
+    parse_herbs_col.run()
+    parse_herbs_wcvp.run()
     # parse_herbs_gift.run()
     # parse_herbs_drduke.run()
     # parse_herbs_powo.run()
@@ -68,7 +68,7 @@ if 0:
     import augment_herbs_main
     augment_herbs_main.run()
 
-if 0:
+if 1:
     import compile_herbs_main
     compile_herbs_main.run()
 

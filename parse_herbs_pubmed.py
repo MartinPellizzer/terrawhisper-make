@@ -1584,8 +1584,13 @@ def run():
 
     schema_items = schema_herbs.data['items']
     for schema_item in schema_items: 
-        if schema_item['process'] == True:
-            schema_raw_to_json(schema_item)
+        if schema_item['process'] != True: continue
+        sources_names = [
+            source['source_name'] 
+            for source in schema_item['sources']
+        ]
+        if 'pubmed' not in sources_names: continue
+        schema_raw_to_json(schema_item)
 
     if 0:
         compounds_raw_to_json()

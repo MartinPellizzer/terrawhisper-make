@@ -464,27 +464,6 @@ footer span {
 
 .listing {
     max-width: 80rem;
-    margin: 0 auto;
-    padding-left: 1rem;
-    padding-right: 1rem;
-    display: grid;
-    grid-template-columns: 200px 1fr 250px;
-    gap: 3rem;
-    padding-top: 3rem;
-    margin-bottom: 3rem;
-}
-
-@media (max-width: 767px) {
-  .col-left {
-    display: none;
-  }
-  .col-right {
-    display: none;
-  }
-}
-
-.listing {
-    max-width: 80rem;
     margin: 0 auto 3rem;
     padding: 3rem 1rem 0;
     display: grid;
@@ -503,7 +482,6 @@ footer span {
         display: none;
     }
 }
-
 
 .listing h1 {
     font-size: var(--font_xl);
@@ -573,10 +551,34 @@ footer span {
     font-size: var(--font_xs);
 }
 
+.quick-facts-desktop {
+  position: sticky;
+  top: 6rem;
+  align-self: start;
+}
+
+.quick-facts-mobile {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .quick-facts-desktop {
+    display: none;
+  }
+
+  .quick-facts-mobile {
+    display: block;
+  }
+}
+
 .quick-facts {
-  border: 1px solid #ccc;
-  padding: 12px;
-  font-size: 14px;
+    font-size: var(--font_xs);
+}
+
+.quick-facts-layout {
+    border: 1px solid #ccc;
+    padding: 12px;
+    font-size: 14px;
 }
 
 .quick-facts h3 {

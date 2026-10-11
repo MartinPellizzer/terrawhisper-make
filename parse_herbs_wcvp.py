@@ -13,6 +13,7 @@ import pipeline_utils
 import masterize_utils
 import reference_utils
 import parse_utils
+import schema_herbs
 
 HUB_FOLDERPATH = f'''{g.DATA_FOLDERPATH}/herbs'''
 
@@ -82,6 +83,69 @@ def parse_synonyms():
                 source_name = 'WCVP',
             )
             items_output.append(item_output)
+            # print(json.dumps(item_output, indent=4))
+            # quit()
+        io.json_write(output_filepath, items_output)
+        if items_output != []: output_items_last = items_output
+        # shutil.copy(input_filepath, output_filepath)
+        # print(input_filename)
+    print(json.dumps(output_items_last, indent=4))
+
+def parse_synonyms_new(schema_item):
+    schema_table_name = schema_item['table_name']
+    schema_fields = schema_item['fields']
+    output_folderpath = f'{HUB_FOLDERPATH}/parse/wcvp/{schema_table_name}/json'
+    if schema_item['regen'] == True:
+        try: shutil.rmtree(output_folderpath)
+        except: pass
+    os.makedirs(output_folderpath, exist_ok=True)
+    ###
+    plants_items = masterize_utils.masterize_plants_get_all()
+    output_items_last = []
+    for i, plant_item in enumerate(plants_items[:]):
+        # print(json.dumps(plant_item, indent=4))
+        # quit()
+        print(f'PARSE PLANTS WCVP SYNONYMS {i}/{len(plants_items)}')
+        plant_name_raw = plant_item['plant_name_scientific_reference']
+        plant_name_normalized = plant_item['plant_name_scientific_reference_normalize']
+        input_filename = plant_name_raw
+        output_filepath = f'{output_folderpath}/{input_filename}'
+        if os.path.exists(output_filepath): continue
+        ###
+        conn = sqlite3.connect(f'{HUB_FOLDERPATH}/reference/wcvp/wcvp.db')
+        cursor = conn.execute("""
+            SELECT s.*
+            FROM plants_names AS a
+            JOIN plants_names AS s
+                ON s.accepted_plant_name_id = a.plant_name_id
+            WHERE a.taxon_name_normalized = ?
+              AND a.plant_name_id = a.accepted_plant_name_id
+              AND s.plant_name_id <> s.accepted_plant_name_id
+              AND s.taxon_status = 'Synonym';
+        """, (plant_name_normalized,))
+        rows = cursor.fetchall()
+        synonyms_rows = rows
+        ###
+        items_output = []
+        for synonym_row in synonyms_rows:
+            plant_synonym_raw = synonym_row[3]
+            '''
+            item_output = parse_utils.synonym_create(
+                plant_name_raw = plant_name_raw, 
+                plant_synonym_raw = plant_synonym_raw, 
+                source_name = 'WCVP',
+            )
+            '''
+            output_item = {
+                f'plant_name_scientific_raw': plant_name_raw,
+                f'relationship_name_raw': 'has_synonym',
+                f'plant_synonym_raw': plant_synonym_raw,
+                f'source_name': 'World Checklist of Vascular Plants',
+                f'source_acronym': 'WCVP',
+                f'reference_id': '',
+                f'reference_name': '',
+            }
+            items_output.append(output_item)
             # print(json.dumps(item_output, indent=4))
             # quit()
         io.json_write(output_filepath, items_output)
@@ -162,6 +226,16 @@ def wcvp_distribution_peek():
 def run():
     print('PARSE >> wcvp')
 
+    schema_items = schema_herbs.data['items']
+    for schema_item in schema_items: 
+        if schema_item['process'] != True: continue
+        sources_names = [
+            source['source_name'] 
+            for source in schema_item['sources']
+        ]
+        if 'wcvp' not in sources_names: continue
+        parse_synonyms_new(schema_item)
+
     if 0:
         # wcvp_names() ### WARNING: takes many many minutes
         wcvp_names_peek()
@@ -180,6 +254,6 @@ def run():
         parse_wcvp_distributions() ### WARNING: takes many many minutes
         # wcvp_distribution_peek()
 
-    if 1:
+    if 0:
         parse_synonyms()
 

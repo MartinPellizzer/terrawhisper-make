@@ -573,19 +573,12 @@ def schema_augment_gen(schema_item):
     io.folders_recursive_gen(output_folderpath)
     ###
     master_items = masterize_utils.masterize_plants_get_all()
-    found_num = 0
     for i, master_item in enumerate(master_items[:]):
         print(f'AUGMENT {schema_table_name} {i}/{len(master_items)}')
         plant_name_scientific_reference = master_item['plant_name_scientific_reference']
         input_filepath = f'{input_folderpath}/{plant_name_scientific_reference}.json'
         output_filepath = f'{output_folderpath}/{plant_name_scientific_reference}.json'
         input_data = io.json_read(input_filepath)
-        if input_data != []:
-            found_num += 1
-            if input_data[0]['plant_name_scientific_reference'] == 'Panax ginseng':
-                # print(json.dumps(input_data, indent=4))
-                # quit()
-                pass
         ###
         # print(json.dumps(master_item, indent=4))
         # print(json.dumps(input_data, indent=4))
@@ -594,25 +587,18 @@ def schema_augment_gen(schema_item):
         if input_data != []:
             # print(json.dumps(input_data, indent=4))
             # quit()
-            found_num += 1
             prompt_relationships = []
             # relationships = []
             prompt_abstracts = []
             for input_item in input_data[:5]:
                 entity_1_val = input_item[f'{schema_entity_1_val}_reference']
-                relationship_val = input_item[f'{schema_relationship_val}_raw']
+                relationship_val = input_item[f'{schema_relationship_val}_raw'].replace('_', ' ')
                 entity_2_val = input_item[f'{schema_entity_2_val}_reference']
-                """
-                relationship = {
-                    'entity_1': entity_1_val,
-                    'relationship': relationship_val,
-                    'entity_2': entity_1_val,
-                }
-                """
                 prompt_relationships.append(f'''{entity_1_val} {relationship_val} {entity_2_val}''')
                 ###
                 for source in input_item['sources'][:3]:
                     source_id = source['reference_id']
+                    if source_id.strip() == '': continue
                     study_filepath = f'{HUB_FOLDERPATH}/fetch/pubmed/medicinal_plant/abstracts/{source_id}.json'
                     ###
                     study_data = io.json_read(study_filepath)
@@ -626,28 +612,35 @@ def schema_augment_gen(schema_item):
                     study_abstract = ' '.join(study_abstract.split(' ')[:800])
                     prompt_abstracts.append(f'{study_title} {study_abstract}')
                     # quit()
-            sentences_num = len(prompt_relationships)
             prompt_relationships = '\n'.join(prompt_relationships)
             # prompt_abstracts = '\n'.join(prompt_abstracts)[:10000]
-            prompt_abstracts = '\n'.join(prompt_abstracts)[:]
+            if prompt_abstracts != []:
+                prompt_abstracts_0 = 'found in the ABSTRACTS below'
+                prompt_abstracts_1 = '\n'.join(prompt_abstracts)[:]
+                prompt_abstracts_1 = 'ABSTRACTS:\n' + prompt_abstracts_1
+            else:
+                prompt_abstracts_0 = ''
+                prompt_abstracts_1 = ''
+            
             # prompt_abstracts = ' '.join(prompt_abstracts.split(' '))
             # print(prompt_relationships)
             # quit()
+            prompt_sentences_count = len(prompt_relationships[:5])
             ### STUDY
             prompt = f'''
-                Write a 5-sentence paragraph about the following plant RELATIONSHIPS found in the ABSTRACTS below. 
+                Write a {prompt_sentences_count}-sentence paragraph about the following plant RELATIONSHIPS {prompt_abstracts_0}.
                 RELATIONSHIPS:
                 {prompt_relationships}
-                ABSTRACTS:
-                {prompt_abstracts}
+                {prompt_abstracts_1}
                 RULES:
                 Reply only with the asked content.
                 Answer in a direct and straightforward way.
                 Reply using a prose that flows well and reads natural.
                 Don't start with generic info, reply directly with the relationships asked.
-                Don't end with generic info, only write about the relationships asked.
                 Start with the following words: {plant_name_scientific_reference} .
             '''.strip()
+                # Don't start with generic info, reply directly with the relationships asked.
+                # Don't end with generic info, only write about the relationships asked.
             # print(prompt)
             # quit()
             reply = llm.reply(prompt, model_filepath)
@@ -671,13 +664,13 @@ def schema_augment_gen(schema_item):
         # print(json.dumps(input_data, indent=4))
         io.json_write(output_filepath, input_data)
         # quit()
-    print(found_num)
 
 
 def run():
 
     schema_items = schema_herbs.data['items']
     for schema_item in schema_items: 
+        if schema_item['process'] != True: continue
         schema_augment_gen(schema_item)
 
     if 0:
