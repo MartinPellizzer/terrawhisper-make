@@ -154,6 +154,71 @@ def parse_synonyms_new(schema_item):
         # print(input_filename)
     print(json.dumps(output_items_last, indent=4))
 
+def parse_distributions(schema_item, source_foldername):
+    schema_table_name = schema_item['table_name']
+    schema_fields = schema_item['fields']
+    output_folderpath = f'{HUB_FOLDERPATH}/parse/{source_foldername}/{schema_table_name}/json'
+    if schema_item['regen'] == True:
+        try: shutil.rmtree(output_folderpath)
+        except: pass
+    os.makedirs(output_folderpath, exist_ok=True)
+    ###
+    output_folderpath = f'{HUB_FOLDERPATH}/parse/{source_foldername}/{schema_table_name}/json'
+    master_plants_rows = masterize_utils.masterize_plants_get_all()
+    items_output_debug = []
+    for i, plant_item in enumerate(master_plants_rows[:]):
+        print(f'PARSE HERBS {schema_table_name} {source_foldername} {i}/{len(master_plants_rows)}')
+        # print(json.dumps(plant_item, indent=4))
+        plant_id = plant_item['id']
+        plant_name_scientific_reference = plant_item['plant_name_scientific_reference']
+        plant_name_scientific_reference_normalize = plant_item['plant_name_scientific_reference_normalize']
+        # print(plant_id)
+        # print(plant_name_scientific_reference)
+        # print(plant_name_scientific_reference_normalize)
+        ###
+        conn = sqlite3.connect(f'{HUB_FOLDERPATH}/reference/wcvp/wcvp.db')
+        conn.row_factory = sqlite3.Row
+        cursor = conn.execute("""
+            SELECT *
+            FROM plants_distributions
+            WHERE plant_name_id = ?
+        """, (plant_id,))
+        rows = cursor.fetchall()
+        items = [dict(row) for row in rows]
+        ###
+        entity_1_key = schema_fields[0]['field_name']
+        relationship_key = schema_fields[1]['field_name']
+        entity_2_key = schema_fields[2]['field_name']
+        ###
+        items_output = []
+        for item in items:
+            item_output = {
+                f'{entity_1_key}_raw': plant_name_scientific_reference,
+                f'{relationship_key}_raw': 'has_distribution',
+                f'{entity_2_key}_raw': item['continent'],
+                f'locality_continent_code': item['continent_code_l1'],
+                'locality_region': item['region'],
+                'locality_region_code': item['region_code_l2'],
+                'locality_area': item['area'],
+                'locality_area_code': item['area_code_l3'],
+                'locality_introduced': item['introduced'],
+                'locality_extinct': item['extinct'],
+                'locality_doubtful': item['location_doubtful'],
+                'source_name': 'The World Checklist of Vascular Plants',
+                'source_acronym': 'WCVP',
+                f'reference_id': '',
+                f'reference_name': '',
+            }
+            items_output.append(item_output)
+            # print(json.dumps(item_output, indent=4))
+            # quit()
+        output_filepath = f'{output_folderpath}/{plant_name_scientific_reference_normalize}.json'
+        io.json_write(output_filepath, items_output)
+        if items_output != []:
+            items_output_debug = items_output
+    print(json.dumps(items_output_debug, indent=4))
+    # quit()
+
 def parse_wcvp_distributions():
     input_folderpath = f'{HUB_FOLDERPATH}/fetch/wcvp/wcvp'
     output_folderpath = f'{HUB_FOLDERPATH}/parse/wcvp/distributions/json'
@@ -234,7 +299,8 @@ def run():
             for source in schema_item['sources']
         ]
         if 'wcvp' not in sources_names: continue
-        parse_synonyms_new(schema_item)
+        if schema_item['table_name'] == 'plants_synonyms': parse_synonyms_new(schema_item)
+        if schema_item['table_name'] == 'plants_distributions': parse_distributions(schema_item, 'wcvp')
 
     if 0:
         # wcvp_names() ### WARNING: takes many many minutes
@@ -251,8 +317,8 @@ def run():
         '''
 
     if 0:
-        parse_wcvp_distributions() ### WARNING: takes many many minutes
-        # wcvp_distribution_peek()
+        # parse_wcvp_distributions() ### WARNING: takes many many minutes
+        wcvp_distribution_peek()
 
     if 0:
         parse_synonyms()

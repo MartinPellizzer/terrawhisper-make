@@ -3020,9 +3020,9 @@ def plant_listing_page_gen(master_item):
 
     html_article += listing_hero_gen(plant_data)
     # html_article += listing_names_common_gen(plant_data)
-    html_article += listing_taxonomies_gen(plant_data)
+    # html_article += listing_taxonomies_gen(plant_data)
     html_article += listing_distributions_gen(plant_data)
-    html_article += listing_traits_gen(plant_data)
+    # html_article += listing_traits_gen(plant_data)
     # html_article += listing_activities_gen(plant_data)
     schema_items = schema_herbs.data['items']
     for schema_item in schema_items: 

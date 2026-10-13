@@ -25,8 +25,8 @@ data = {
             ],
         },
         {
-            'process': True,
-            'regen': True,
+            'process': False,
+            'regen': False,
             'table_name': 'plants_synonyms',
             'section_heading': 'Synonyms',
             'fields': [
@@ -37,6 +37,66 @@ data = {
             'sources': [
                 {
                     'source_name': 'wcvp',
+                },
+            ],
+        },
+        {
+            'process': False,
+            'regen': False,
+            'table_name': 'plants_taxonomies',
+            'section_heading': 'Taxonomy',
+            'fields': [
+                {'field_name': 'plant_name_scientific',},
+                {'field_name': 'relationship_name',},
+                {'field_name': 'taxonomy_name',},
+                {'field_name': 'taxonomy_level',},
+            ],
+            'sources': [
+                {
+                    'source_name': 'powo',
+                },
+            ],
+        },
+        {
+            'process': True,
+            'regen': True,
+            'table_name': 'plants_distributions',
+            'section_heading': 'Distribution',
+            'fields': [
+                {'field_name': 'plant_name_scientific',},
+                {'field_name': 'relationship_name',},
+                {'field_name': 'locality_continent_name',},
+            ],
+            'sources': [
+                {
+                    'source_name': 'wcvp',
+                },
+            ],
+        },
+        {
+            'process': False,
+            'regen': False,
+            'table_name': 'plants_traits',
+            'section_heading': 'Traits',
+            'fields': [
+                {'field_name': 'plant_name_scientific',},
+                {'field_name': 'relationship_name',},
+                {'field_name': 'trait_1_name',},
+                {'field_name': 'trait_2_name',},
+                {'field_name': 'trait_units',},
+                {'field_name': 'trait_type',},
+                {'field_name': 'trait_value',},
+                {'field_name': 'trait_category',},
+                {'field_name': 'plant_author',},
+                {'field_name': 'plant_genus',},
+                {'field_name': 'trait_agreement',},
+                {'field_name': 'trait_coeff_var',},
+                {'field_name': 'trait_n',},
+                {'field_name': 'trait_refs',},
+            ],
+            'sources': [
+                {
+                    'source_name': 'gift',
                 },
             ],
         },

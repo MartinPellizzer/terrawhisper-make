@@ -5,6 +5,7 @@ Because of "reasons", parsing POWO means converting html in json
 import os
 import csv
 import time
+import json
 import shutil
 
 from lib import g
@@ -15,6 +16,7 @@ from bs4 import BeautifulSoup
 import reference_utils
 import normalize_utils
 import masterize_utils
+import schema_herbs
 
 HUB_FOLDERPATH = f'''{g.DATA_FOLDERPATH}/herbs'''
 
@@ -247,9 +249,228 @@ def powo_to_jsons_new():
         # print(len(text))
         # quit()
 
+def parse_taxonomies(schema_item):
+    schema_table_name = schema_item['table_name']
+    schema_fields = schema_item['fields']
+    output_folderpath = f'{HUB_FOLDERPATH}/parse/powo/{schema_table_name}/json'
+    if schema_item['regen'] == True:
+        try: shutil.rmtree(output_folderpath)
+        except: pass
+    io.folders_recursive_gen(output_folderpath)
+    ###
+    input_folderpath = f'{HUB_FOLDERPATH}/fetch/powo/html'
+    input_filenames = sorted(os.listdir(input_folderpath))
+    ### TODO? FILTER FOR "ACCEPTED" PLANTS
+    plants_rows = masterize_utils.masterize_plants_get_all()
+    wcvp_rows = []
+    for i, plant_row in enumerate(plants_rows[:]):
+        plant_name_normalized = plant_row['plant_name_scientific_reference_normalize']
+        wcvp_plant_name_row = reference_utils.wcvp_plant_name_get_row(plant_name_normalized)
+        if wcvp_plant_name_row == None: continue
+        wcvp_rows.append(wcvp_plant_name_row)
+    ###
+    for i, wcvp_plant_name_row in enumerate(wcvp_rows):
+        ipni_id = wcvp_plant_name_row[5]
+        powo_id = wcvp_plant_name_row[6]
+        # print(wcvp_plant_name_row)
+        # print(ipni_id)
+        # print(powo_id)
+        if powo_id.strip() == '': powo_id = ipni_id
+        # quit()
+        print(f'PARSE HERBS POWO TAXONOMY {i}/{len(wcvp_rows)}')
+        powo_html_filename = f'{powo_id}.html'
+        powo_html_filepath = f'{input_folderpath}/{powo_html_filename}'
+        if not os.path.exists(powo_html_filepath): continue
+        powo_html = io.file_read(powo_html_filepath)
+        html = powo_html
+        soup = BeautifulSoup(html, "html.parser")
+        content = soup.find("table").text
+        try: 
+            row = soup.find("tr", id="/name")
+            name_value = row.find("td", class_="treeValueCell").get_text(strip=True).strip("\"'")
+            # print('name', name_value)
+            if len(name_value) > 50: continue
+        except: 
+            name_value = None
+            # print(powo_html_filepath)
+            # print(html)
+        try: 
+            row = soup.find("tr", id="/kingdom")
+            kingdom_value = row.find("td", class_="treeValueCell").get_text(strip=True).strip("\"'")
+            # print('kingdom', kingdom_value)
+            if len(kingdom_value) > 20: continue
+        except: 
+            kingdom_value = None
+            # print(powo_html_filepath)
+            # print(html)
+        try: 
+            row = soup.find("tr", id="/phylum")
+            phylum_value = row.find("td", class_="treeValueCell").get_text(strip=True).strip("\"'")
+            # print('phylum', phylum_value)
+            if len(kingdom_value) > 20: continue
+        except: 
+            phylum_value = None
+            # print(powo_html_filepath)
+            # print(html)
+        try: 
+            row = soup.find("tr", id="/clazz")
+            class_value = row.find("td", class_="treeValueCell").get_text(strip=True).strip("\"'")
+            # print('class', class_value)
+            if len(kingdom_value) > 20: continue
+        except: 
+            class_value = None
+            # print(powo_html_filepath)
+            # print(html)
+        try: 
+            row = soup.find("tr", id="/subclass")
+            subclass_value = row.find("td", class_="treeValueCell").get_text(strip=True).strip("\"'")
+            # print('subclass', subclass_value)
+            if len(kingdom_value) > 20: continue
+        except: 
+            subclass_value = None
+            # print(powo_html_filepath)
+            # print(html)
+        try: 
+            row = soup.find("tr", id="/order")
+            order_value = row.find("td", class_="treeValueCell").get_text(strip=True).strip("\"'")
+            # print('order', order_value)
+            if len(kingdom_value) > 20: continue
+        except: 
+            order_value = None
+            # print(powo_html_filepath)
+            # print(html)
+        try: 
+            row = soup.find("tr", id="/family")
+            family_value = row.find("td", class_="treeValueCell").get_text(strip=True).strip("\"'")
+            # print('family', family_value)
+            if len(kingdom_value) > 20: continue
+        except: 
+            family_value = None
+            # print(powo_html_filepath)
+            # print(html)
+        try: 
+            row = soup.find("tr", id="/genus")
+            genus_value = row.find("td", class_="treeValueCell").get_text(strip=True).strip("\"'")
+            # print('genus', genus_value)
+            if len(kingdom_value) > 20: continue
+        except: 
+            genus_value = None
+            # print(powo_html_filepath)
+            # print(html)
+        ###
+        plant_name_scientific_reference = name_value
+        output_items = []
+
+        ###
+        entity_1_key = schema_fields[0]['field_name']
+        relationship_key = schema_fields[1]['field_name']
+        entity_2_key = schema_fields[2]['field_name']
+        output_item = {
+            f'{entity_1_key}_raw': plant_name_scientific_reference,
+            f'{relationship_key}_raw': 'has_kingdom',
+            f'{entity_2_key}_raw': kingdom_value,
+            f'taxonomy_level': 'kingdom',
+            f'source_name': 'Plants of the World Online',
+            f'source_acronym': 'POWO',
+            f'reference_id': '',
+            f'reference_name': '',
+        }
+        output_items.append(output_item)
+        ###
+        output_item = {
+            f'{entity_1_key}_raw': plant_name_scientific_reference,
+            f'{relationship_key}_raw': 'has_phylum',
+            f'{entity_2_key}_raw': phylum_value,
+            f'taxonomy_level': 'phylum',
+            f'source_name': 'Plants of the World Online',
+            f'source_acronym': 'POWO',
+            f'reference_id': '',
+            f'reference_name': '',
+        }
+        output_items.append(output_item)
+        ###
+        output_item = {
+            f'{entity_1_key}_raw': plant_name_scientific_reference,
+            f'{relationship_key}_raw': 'has_class',
+            f'{entity_2_key}_raw': class_value,
+            f'taxonomy_level': 'class',
+            f'source_name': 'Plants of the World Online',
+            f'source_acronym': 'POWO',
+            f'reference_id': '',
+            f'reference_name': '',
+        }
+        output_items.append(output_item)
+        ###
+        output_item = {
+            f'{entity_1_key}_raw': plant_name_scientific_reference,
+            f'{relationship_key}_raw': 'has_subclass',
+            f'{entity_2_key}_raw': subclass_value,
+            f'taxonomy_level': 'subclass',
+            f'source_name': 'Plants of the World Online',
+            f'source_acronym': 'POWO',
+            f'reference_id': '',
+            f'reference_name': '',
+        }
+        output_items.append(output_item)
+        ###
+        output_item = {
+            f'{entity_1_key}_raw': plant_name_scientific_reference,
+            f'{relationship_key}_raw': 'has_order',
+            f'{entity_2_key}_raw': order_value,
+            f'taxonomy_level': 'order',
+            f'source_name': 'Plants of the World Online',
+            f'source_acronym': 'POWO',
+            f'reference_id': '',
+            f'reference_name': '',
+        }
+        output_items.append(output_item)
+        ###
+        output_item = {
+            f'{entity_1_key}_raw': plant_name_scientific_reference,
+            f'{relationship_key}_raw': 'has_family',
+            f'{entity_2_key}_raw': family_value,
+            f'taxonomy_level': 'family',
+            f'source_name': 'Plants of the World Online',
+            f'source_acronym': 'POWO',
+            f'reference_id': '',
+            f'reference_name': '',
+        }
+        output_items.append(output_item)
+        ###
+        output_item = {
+            f'{entity_1_key}_raw': plant_name_scientific_reference,
+            f'{relationship_key}_raw': 'has_genus',
+            f'{entity_2_key}_raw': genus_value,
+            f'taxonomy_level': 'genus',
+            f'source_name': 'Plants of the World Online',
+            f'source_acronym': 'POWO',
+            f'reference_id': '',
+            f'reference_name': '',
+        }
+        output_items.append(output_item)
+        ###
+
+        powo_json_filepath = f'{output_folderpath}/{powo_html_filename}'.replace('.html', '.json')
+        io.json_write(powo_json_filepath, output_items)
+        # print(name_value)
+        # print(len(text))
+        # quit()
+        # print(json.dumps(output_items, indent=4))
+        # quit()
+
 def run():
     print('PARSE >> powo')
 
     # powo_to_jsons() ### WARNING: takes many many minutes
-    powo_to_jsons_new() ### WARNING: takes many many minutes
+    # powo_to_jsons_new() ### WARNING: takes many many minutes
 
+    schema_items = schema_herbs.data['items']
+    for schema_item in schema_items: 
+        if schema_item['process'] != True: continue
+        sources_names = [
+            source['source_name'] 
+            for source in schema_item['sources']
+        ]
+        if 'powo' not in sources_names: continue
+        if schema_item['table_name'] == 'plants_taxonomies':
+            parse_taxonomies(schema_item)

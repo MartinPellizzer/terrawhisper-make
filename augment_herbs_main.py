@@ -634,11 +634,11 @@ def schema_augment_gen(schema_item):
                 {prompt_abstracts_1}
                 RULES:
                 Reply only with the asked content.
-                Answer in a direct and straightforward way.
                 Reply using a prose that flows well and reads natural.
-                Don't start with generic info, reply directly with the relationships asked.
                 Start with the following words: {plant_name_scientific_reference} .
             '''.strip()
+                # Answer in a direct and straightforward way.
+                # Don't start with generic info, reply directly with the relationships asked.
                 # Don't start with generic info, reply directly with the relationships asked.
                 # Don't end with generic info, only write about the relationships asked.
             # print(prompt)
