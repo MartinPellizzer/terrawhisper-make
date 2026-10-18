@@ -7,6 +7,7 @@ import csv
 import re
 import unicodedata
 import time
+from tabulate import tabulate
 
 from lib import g
 from lib import io
@@ -339,9 +340,65 @@ def wcvp_table_plants_distribution_create():
         tablefmt="plain")
     )
 
+def wcvp_table_plants_distributions_peek():
+    output_folderpath = f'{HUB_FOLDERPATH}/reference/wcvp'
+    conn = sqlite3.connect(f"{output_folderpath}/wcvp.db")
+    cursor = conn.execute(f"""
+        SELECT *
+        FROM {wcvp_table_name_distribution}
+        WHERE plant_name_id == "146697"
+        LIMIT 10
+    """)
+    rows = cursor.fetchall()
+    conn.close()
+    print(tabulate(rows, 
+        headers=[
+            'PLANT_LOCALITY_ID',
+            'PLANT_NAME_ID',
+            'CONTINENT_CODE_L1',
+            'CONTINENT',
+            'REGION_CODE_L2',
+            'REGION',
+            'AREA_CODE_L3',
+            'AREA',
+            'INTRODUCED',
+            'EXTINCT',
+            'LOCATION_DOUBTFUL',
+        ], 
+        tablefmt="plain")
+    )
+
+def wcvp_table_plants_names_peek():
+    output_folderpath = f'{HUB_FOLDERPATH}/reference/wcvp'
+    io.folders_recursive_gen(output_folderpath)
+    conn = sqlite3.connect(f"{output_folderpath}/wcvp.db")
+    cursor = conn.execute(f"""
+        SELECT *
+        FROM {wcvp_table_name}
+        WHERE taxon_name_normalized == "panax ginseng"
+        LIMIT 10
+    """)
+    rows = cursor.fetchall()
+    conn.close()
+    print(tabulate(rows, 
+        headers=[
+            'PLANT_NAME_ID',
+            'ACCEPTED_PLANT_NAME_ID',
+            'TAXON_STATUS',
+            'TAXON_NAME',
+            'TAXON_NAME_NORMALIZED',
+            'POWO_ID',
+            'IPNI_ID',
+        ], 
+        tablefmt="plain")
+    )
+
 def run():
     print(f'REFERENCE >> wcvp')
 
-    wcvp_table_plants_names_create()
-    wcvp_table_plants_distribution_create()
+    # wcvp_table_plants_names_create()
+    # wcvp_table_plants_distribution_create()
+    wcvp_table_plants_distributions_peek()
+    wcvp_table_plants_names_peek()
 
+    quit()

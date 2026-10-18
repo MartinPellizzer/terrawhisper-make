@@ -7,6 +7,7 @@
     --font_md: 1.5rem;
     --font_sm: 1rem;
     --font_xs: 0.875rem;
+    --font_xxs: 0.75rem;
     
     --space_4: 1.6rem;
     --space_5: 2.4rem;
@@ -399,7 +400,7 @@ footer span {
 }
 
 .explorer .pagination {
-    margin-top: 4.8rem;
+    margin-top: 3rem;
 }
 
 .explorer .pagination ul {
@@ -411,9 +412,9 @@ footer span {
 .explorer .pagination a {
     color: #111;
     text-decoration: none;
-    font-size: 1.2rem; 
+    font-size: var(--font_xs); 
     font-weight: bold; 
-    padding: 0.8rem 1.6rem; 
+    padding: 0.5rem 1rem; 
     border: 1px solid #e7e7e7;
     display: inline-block;
 }
@@ -421,9 +422,9 @@ footer span {
 .explorer .pagination span {
     color: #111;
     text-decoration: none;
-    font-size: 1.2rem; 
+    font-size: var(--font_xs); 
     font-weight: bold; 
-    padding: 0.8rem 1.6rem; 
+    padding: 0.5rem 1rem; 
     border: 1px solid #e7e7e7;
     display: inline-block;
 }
@@ -433,29 +434,125 @@ footer span {
     background-color: #111;
 }
 
-.explorer-hero {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 2.4rem; 
-    margin-bottom: 0.4rem;
-}
-
-@media screen and (max-width: 768px) {
-    .explorer-hero {
-        flex-direction: column;
-    }
-}
-
 .explorer-card-title {
-    font-size: 1.8rem;
-    margin-bottom: 1.2rem;
+    font-size: var(--font_sm);
+    margin-bottom: 0.75rem;
+    color: #111;
 }
 
 @media screen and (max-width: 768px) {
     .explorer-card-title {
-        font-size: 2.4rem;
+        font-size: var(--font_md);
     }
+}
+
+.exp-card-img {
+    margin-bottom: var(--font_sm);
+}
+
+.exp-card-tag {
+    display: inline-block;
+    font-size: var(--font_xxs);
+    background-color: #f2f2f2;
+    padding: 0.25rem 1rem;
+    border-radius: 9999px;
+    margin-bottom: 1rem;
+}
+
+.exp-card-desc {
+    font-size: var(--font_sm);
+}
+
+.exp-cards-topbar {
+    justify-content: space-between; 
+    align-items: center; 
+    margin-bottom: var(--font_md);
+}
+
+.exp-cards-topbar-title {
+    font-size: var(--font_md);
+}
+
+.exp-cards-topbar-pag {
+    font-size: var(--font_xs);
+}
+
+.exp-sidebar-li-a {
+    text-decoration: none; 
+    color: #111; 
+    font-size: var(--font_xs); 
+    display: inline-block;
+}
+
+.exp-sidebar-li {
+    border: 1px solid #cdcdcd; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    padding: 0.25rem 0.5rem;
+}
+
+.exp-sidebar-alph {
+    list-style: none; 
+    display: grid; 
+    grid-template-columns: repeat(7, 1fr); 
+    gap: 0.5rem;
+}
+
+.exp-sidebar-ul {
+    list-style: none; 
+    display: flex; 
+    flex-direction: column; 
+    gap: 0.25rem;
+}
+
+.exp-sidebar-title {
+    font-size: var(--font_xs); 
+    letter-spacing: 0.5px; 
+    margin-bottom: var(--font_xs);
+    color: #111;
+}
+
+.exp-sidebar-title-a {
+    color: #111;
+    text-decoration: none;
+}
+
+.exp-sidebar-hr {
+    border: 0; 
+    border-bottom: 1px solid #d8d8d8; 
+    margin-top: var(--font_md); 
+    margin-bottom: var(--font_md);
+}
+
+.exp-sidebar-more {
+    margin-top: var(--font_sm); 
+}
+
+.exp-topbar {
+    padding-top: var(--font_sm);
+    padding-bottom: var(--font_sm);
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+    margin-bottom: 2rem;
+}
+
+.exp-topbar-lay {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem; 
+    margin-bottom: 0.1rem;
+}
+
+@media screen and (max-width: 768px) {
+    .exp-topbar-lay {
+        flex-direction: column;
+    }
+}
+
+.exp-topbar-title {
+    font-size: var(--font-xs);
+    margin-bottom: 0;
 }
 
 /**************************************/
@@ -504,6 +601,28 @@ footer span {
 
 .listing p + p {
     margin-top: 1rem;
+}
+
+.listing article table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--font_xs);
+    margin-bottom: 1rem;
+}
+
+.listing article th {
+    text-align: left;
+    padding: 1rem;
+    background-color: #f8f9fa;
+    color: #555;
+    font-weight: 600;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.listing article td {
+    padding: 1rem;
+    border-bottom: 1px solid #e2e8f0;
+    vertical-align: top;
 }
 
 .toc-desktop {
@@ -610,30 +729,6 @@ footer span {
 }
 
 
-/*
-.listing2 table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: var(--font_xs);
-    margin-bottom: 1rem;
-}
-
-.listing2 th {
-    text-align: left;
-    padding: 1rem;
-    background-color: #f8f9fa;
-    color: #555;
-    font-weight: 600;
-    border-bottom: 2px solid #e2e8f0;
-}
-
-.listing2 td {
-    padding: 1rem;
-    border-bottom: 1px solid #e2e8f0;
-    vertical-align: top;
-}
-*/
-
 .quick-facts dt::after {
     content: ":";
 }
@@ -654,15 +749,6 @@ footer span {
 /**************************************/
 /* COMPONENTS */
 /**************************************/
-
-.tag {
-    display: inline-block;
-    font-size: 1.2rem;
-    background-color: #f2f2f2;
-    padding: 0.4rem 1.6rem;
-    border-radius: 9999px;
-    margin-bottom: 1.6rem;
-}
 
 /*
 ################################################################################

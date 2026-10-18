@@ -177,7 +177,7 @@ def toc_article(html):
         return text
     soup = BeautifulSoup(html, "html.parser")
     # headings = soup.find_all(re.compile("^h[2-6]$"))
-    headings = soup.find_all(re.compile("^h[2]$"))
+    headings = soup.find_all(re.compile("^h[2-3]$"))
     used_ids = set()
     toc_items = []
     for h in headings:
@@ -242,7 +242,7 @@ def toc_sidebar(html):
         return text
     soup = BeautifulSoup(html, "html.parser")
     # headings = soup.find_all(re.compile("^h[2-6]$"))
-    headings = soup.find_all(re.compile("^h[2]$"))
+    headings = soup.find_all(re.compile("^h[2-3]$"))
     used_ids = set()
     toc_items = []
     for h in headings:

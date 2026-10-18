@@ -58,19 +58,10 @@ def hero_html_gen(title):
                     </div>
     '''
     html = f'''
-        <section
-            style="
-                padding-top: 1.6rem;
-                padding-bottom: 1.6rem;
-                box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
-                margin-bottom: 3.2rem;
-            "
-        >
+        <section class="exp-topbar">
             <div class="container-xxl">
-                <div class="explorer-hero">
-                    <h1 style="font-size: 1.4rem; margin-bottom: 0;">
-                        {title}
-                    </h1>
+                <div class="exp-topbar-lay">
+                    <h1 class="exp-topbar-title">{title}</h1>
                     <ul style="list-style: none; display: flex; align-items: center; gap: 1.2rem; font-size: 1.4rem;">
                         <li>{plants_num} Plants</li> <span>|</span>
                         <li>{chemicals_num} Compounds</li> <span>|</span>
@@ -169,15 +160,14 @@ def sidebar_compounds_get():
     sidebar_compounds_rows = rows
 
 def sidebar_html_gen():
-    li_a_style = f'''text-decoration: none; color: #111; font-size: 1.4rem; display: inline-block;'''
     ### ALPHABET
     letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
     alphabet_html = ''
-    alphabet_html += '<ul style="list-style: none; display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.8rem;">'
+    alphabet_html += '<ul class="exp-sidebar-alph">'
     for letter in letters:
         alphabet_html += f'''
-            <a style="{li_a_style}" href="/herbs/alphabet/{letter}.html">
-                <li style="border: 1px solid #cdcdcd; display: flex; justify-content: center; align-items: center; padding: 0.4rem 0.8rem;">
+            <a class="exp-sidebar-li-a" href="/herbs/alphabet/{letter}.html">
+                <li class="exp-sidebar-li">
                     {letter.upper()}
                 </li>
             </a>
@@ -185,51 +175,52 @@ def sidebar_html_gen():
     alphabet_html += '</ul>'
     ###
     plants_parts_html = ''
-    plants_parts_html += f'''<ul style="list-style: none; display: flex; flex-direction: column; gap: 0.4rem;">'''
+    plants_parts_html += f'''<ul class="exp-sidebar-ul">'''
     for row in sidebar_plants_parts_rows[:10]:
         name = row[0]
         slug = polish.sluggify(name)
         plants_parts_html += f'''
             <li>
-                <a style="{li_a_style}" href="/herbs/parts/{slug}.html">{name.capitalize()}</a>
+                <a class="exp-sidebar-li-a" href="/herbs/parts/{slug}.html">{name.capitalize()}</a>
             </li>
         '''
     plants_parts_html += f'''</ul>'''
+
     ###
     activities_html = ''
-    activities_html += f'''<ul style="list-style: none; display: flex; flex-direction: column; gap: 0.4rem;">'''
+    activities_html += f'''<ul class="exp-sidebar-ul">'''
     for row in sidebar_activities_rows[:10]:
         activity_name = row[0]
         activity_slug = polish.sluggify(activity_name)
         activities_html += f'''
             <li>
-                <a style="{li_a_style}" href="/herbs/activities/{activity_slug}.html">{activity_name}</a>
+                <a class="exp-sidebar-li-a" href="/herbs/activities/{activity_slug}.html">{activity_name.title()}</a>
             </li>
         '''
     activities_html += f'''</ul>'''
 
     chemicals_html = ''
-    chemicals_html += f'''<ul style="list-style: none; display: flex; flex-direction: column; gap: 0.4rem;">'''
+    chemicals_html += f'''<ul class="exp-sidebar-ul">'''
     for row in sidebar_chemicals_rows[:10]:
         chemical_name = row[0]
         chemical_name = chemical_name[0].upper() + chemical_name[1:]
         chemical_slug = polish.sluggify(chemical_name)
         chemicals_html += f'''
             <li>
-                <a style="{li_a_style}" href="/herbs/chemicals/{chemical_slug}.html">{chemical_name}</a>
+                <a class="exp-sidebar-li-a" href="/herbs/chemicals/{chemical_slug}.html">{chemical_name}</a>
             </li>
         '''
     chemicals_html += f'''</ul>'''
 
     compounds_html = ''
-    compounds_html += f'''<ul style="list-style: none; display: flex; flex-direction: column; gap: 0.4rem;">'''
+    compounds_html += f'''<ul class="exp-sidebar-ul">'''
     for row in sidebar_compounds_rows[:10]:
         compound_name = row[0]
         compound_name = compound_name[0].upper() + compound_name[1:]
         compound_slug = polish.sluggify(compound_name)
         compounds_html += f'''
             <li>
-                <a style="{li_a_style}" href="/herbs/compounds/{compound_slug}.html">{compound_name}</a>
+                <a class="exp-sidebar-li-a" href="/herbs/compounds/{compound_slug}.html">{compound_name}</a>
             </li>
         '''
     compounds_html += f'''</ul>'''
@@ -241,31 +232,31 @@ def sidebar_html_gen():
             </h3>
             <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.4rem;">
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">digestive</a>
+                    <a style="exp-sidebar-li-a" href="/herbs.html">digestive</a>
                 </li>
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">immune</a>
+                    <a style="exp-sidebar-li-a" href="/herbs.html">immune</a>
                 </li>
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">nervous</a>
+                    <a style="exp-sidebar-li-a" href="/herbs.html">nervous</a>
                 </li>
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">respiratory</a>
+                    <a style="exp-sidebar-li-a" href="/herbs.html">respiratory</a>
                 </li>
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">cardiovascular</a>
+                    <a style="exp-sidebar-li-a" href="/herbs.html">cardiovascular</a>
                 </li>
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">skin</a>
+                    <a style="exp-sidebar-li-a" href="/herbs.html">skin</a>
                 </li>
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">urinary</a>
+                    <a style="exp-sidebar-li-a" href="/herbs.html">urinary</a>
                 </li>
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">musculoskeletal</a>
+                    <a style="exp-sidebar-li-a" href="/herbs.html">musculoskeletal</a>
                 </li>
             </ul>
-            <a style="{li_a_style} margin-top: 1.6rem;" href="/herbs.html">view all →</a>
+            <a style="exp-sidebar-li-a" href="/herbs.html">view all →</a>
             <hr style="border: 0; border-bottom: 1px solid #d8d8d8; margin-top: 2.4rem; margin-bottom: 2.4rem;">
     '''
 
@@ -276,25 +267,25 @@ def sidebar_html_gen():
             </h3>
             <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.4rem;">
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">lamiaceae</a>
+                    <a style="exp-sidebar-li-a" href="/herbs.html">lamiaceae</a>
                 </li>
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">asteraceae</a>
+                    <a style="exp-sidebar-li-a" href="/herbs.html">asteraceae</a>
                 </li>
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">fabaceae</a>
+                    <a style="exp-sidebar-li-a" href="/herbs.html">fabaceae</a>
                 </li>
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">apiaceae</a>
+                    <a style="exp-sidebar-li-a" href="/herbs.html">apiaceae</a>
                 </li>
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">rosaceae</a>
+                    <a style="exp-sidebar-li-a" href="/herbs.html">rosaceae</a>
                 </li>
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">rutaceae</a>
+                    <a style="exp-sidebar-li-a" href="/herbs.html">rutaceae</a>
                 </li>
             </ul>
-            <a style="{li_a_style} margin-top: 1.6rem;" href="/herbs.html">view all →</a>
+            <a style="exp-sidebar-li-a" href="/herbs.html">view all →</a>
             <hr style="border: 0; border-bottom: 1px solid #d8d8d8; margin-top: 2.4rem; margin-bottom: 2.4rem;">
     '''
 
@@ -305,25 +296,25 @@ def sidebar_html_gen():
             </h3>
             <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.4rem;">
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">europe</a>
+                    <a style="exp-sidebar-li-a" href="/herbs.html">europe</a>
                 </li>
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">asia</a>
+                    <a style="exp-sidebar-li-a" href="/herbs.html">asia</a>
                 </li>
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">africa</a>
+                    <a style="exp-sidebar-li-a" href="/herbs.html">africa</a>
                 </li>
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">north america</a>
+                    <a style="exp-sidebar-li-a" href="/herbs.html">north america</a>
                 </li>
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">south america</a>
+                    <a style="exp-sidebar-li-a" href="/herbs.html">south america</a>
                 </li>
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">oceania</a>
+                    <a style="exp-sidebar-li-a" href="/herbs.html">oceania</a>
                 </li>
             </ul>
-            <a style="{li_a_style} margin-top: 1.6rem;" href="/herbs.html">view all →</a>
+            <a style="exp-sidebar-li-a" href="/herbs.html">view all →</a>
             <hr style="border: 0; border-bottom: 1px solid #d8d8d8; margin-top: 2.4rem; margin-bottom: 2.4rem;">
     '''
 
@@ -334,25 +325,25 @@ def sidebar_html_gen():
             </h3>
             <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.4rem;">
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">ayurveda</a>
+                    <a style="exp-sidebar-li-a" href="/herbs.html">ayurveda</a>
                 </li>
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">traditional chinese medicine</a>
+                    <a style="exp-sidebar-li-a" href="/herbs.html">traditional chinese medicine</a>
                 </li>
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">western herbalism</a>
+                    <a style="exp-sidebar-li-a" href="/herbs.html">western herbalism</a>
                 </li>
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">unani</a>
+                    <a style="exp-sidebar-li-a" href="/herbs.html">unani</a>
                 </li>
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">native america</a>
+                    <a style="exp-sidebar-li-a" href="/herbs.html">native america</a>
                 </li>
                 <li>
-                    <a style="{li_a_style}" href="/herbs.html">african traditional medicine</a>
+                    <a style="exp-sidebar-li-a" href="/herbs.html">african traditional medicine</a>
                 </li>
             </ul>
-            <a style="{li_a_style} margin-top: 1.6rem;" href="/herbs.html">view all →</a>
+            <a style="exp-sidebar-li-a" href="/herbs.html">view all →</a>
     '''
 
     '''
@@ -360,49 +351,41 @@ def sidebar_html_gen():
                     <a style="text-decoration: none; color: #111; font-size: 1.4rem;" href="/herbs.html">Recently Added</a>
                 </li>
     '''
+
     sidebar_html = f'''
-        <div 
-            style=" 
-            "
-        >
-            <h2 style="font-size: 1.4rem; letter-spacing: 0.5px; margin-bottom: 1.4rem;">
-                Explore Herbs
-            </h2>
-            <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.4rem;">
-                <li>
-                    <a style="text-decoration: none; color: #111; font-size: 1.4rem;" href="/herbs.html">All Herbs</a>
-                </li>
-                <li>
-                    <a style="text-decoration: none; color: #111; font-size: 1.4rem;" href="/herbs/popular.html">Popular Herbs</a>
-                </li>
+        <div>
+            <h2 class="exp-sidebar-title">Explore Herbs</h2>
+            <ul class="exp-sidebar-ul">
+                <li><a class="exp-sidebar-li-a" href="/herbs.html">All Herbs</a></li>
+                <li><a class="exp-sidebar-li-a" href="/herbs/popular.html">Popular Herbs</a></li>
             </ul>
-            <hr style="border: 0; border-bottom: 1px solid #d8d8d8; margin-top: 2.4rem; margin-bottom: 2.4rem;">
+            <hr class="exp-sidebar-hr">
 
-            <a href="/herbs/alphabet.html" style="color: #111;">
-                <h3 style="font-size: 1.4rem; letter-spacing: 0.5px; margin-bottom: 1.4rem;">Alphabet</h3>
-            </a>
+            <h3 class="exp-sidebar-title">
+                <a class="exp-sidebar-title-a" href="/herbs/alphabet.html">Alphabet</a>
+            </h3>
             {alphabet_html}
-            <hr style="border: 0; border-bottom: 1px solid #d8d8d8; margin-top: 2.4rem; margin-bottom: 2.4rem;">
+            <hr class="exp-sidebar-hr">
 
-            <a href="/herbs/activities.html" style="color: #111;">
-                <h3 style="font-size: 1.4rem; letter-spacing: 0.5px; margin-bottom: 1.4rem;">Biological Activity</h3>
-            </a>
+            <h3 class="exp-sidebar-title">
+                <a class="exp-sidebar-title-a" href="/herbs/activities.html">Biological Activities</a>
+            </h3>
             {activities_html}
-            <a style="{li_a_style} margin-top: 1.6rem;" href="/herbs/activities.html">View all →</a>
-            <hr style="border: 0; border-bottom: 1px solid #d8d8d8; margin-top: 2.4rem; margin-bottom: 2.4rem;">
+            <a class="exp-sidebar-li-a exp-sidebar-more" href="/herbs/activities.html">View all →</a>
+            <hr class="exp-sidebar-hr">
 
-            <a href="/herbs/compounds.html" style="color: #111;">
-                <h3 style="font-size: 1.4rem; letter-spacing: 0.5px; margin-bottom: 1.4rem;">Bioactive Compounds</h3>
-            </a>
+            <h3 class="exp-sidebar-title">
+                <a class="exp-sidebar-title-a" href="/herbs/compounds.html">Bioactive Compounds</a>
+            </h3>
             {compounds_html}
-            <a style="{li_a_style} margin-top: 1.6rem;" href="/herbs/compounds.html">View all →</a>
-            <hr style="border: 0; border-bottom: 1px solid #d8d8d8; margin-top: 2.4rem; margin-bottom: 2.4rem;">
+            <a class="exp-sidebar-li-a exp-sidebar-more" href="/herbs/compounds.html">View all →</a>
+            <hr class="exp-sidebar-hr">
 
-            <a href="/herbs/parts.html" style="color: #111;">
-                <h3 style="font-size: 1.4rem; letter-spacing: 0.5px; margin-bottom: 1.4rem;">Plant Parts</h3>
-            </a>
+            <h3 class="exp-sidebar-title">
+                <a class="exp-sidebar-title-a" href="/herbs/parts.html">Plant Parts</a>
+            </h3>
             {plants_parts_html}
-            <a style="{li_a_style} margin-top: 1.6rem;" href="/herbs/parts.html">View all →</a>
+            <a class="exp-sidebar-li-a exp-sidebar-more" href="/herbs/parts.html">View all →</a>
 
         </div>
     '''
@@ -411,7 +394,7 @@ def sidebar_html_gen():
                 <h3 style="font-size: 1.4rem; letter-spacing: 0.5px; margin-bottom: 1.4rem;">Bioactive Compounds</h3>
             </a>
             {chemicals_html}
-            <a style="{li_a_style} margin-top: 1.6rem;" href="/herbs/chemicals.html">View all →</a>
+            <a class="exp-sidebar-li-a" href="/herbs/chemicals.html">View all →</a>
             <hr style="border: 0; border-bottom: 1px solid #d8d8d8; margin-top: 2.4rem; margin-bottom: 2.4rem;">
 
     '''
@@ -422,11 +405,9 @@ def cards_header_html_gen(group_i, page_cards_num, total_items_num, title):
     to_num = page_cards_num*group_i+page_cards_num
     if to_num > total_items_num: to_num = total_items_num
     html = f'''
-        <div class="m-flex" style="justify-content: space-between; align-items: center; margin-bottom: 2.4rem;">
-            <h2 style="font-size: 2.4rem;">
-               {title}
-            </h2>
-            <span style="font-size: 1.4rem;">Showing {from_num}-{to_num}  out of {total_items_num} results</span>
+        <div class="m-flex exp-cards-topbar">
+            <h2 class="exp-cards-topbar-title">{title}</h2>
+            <span class="exp-cards-topbar-pag">Showing {from_num}-{to_num} out of {total_items_num} results</span>
         </div>
     '''
     return html
@@ -468,15 +449,13 @@ def cards_html_gen(group):
         cards_html += f'''
             <article>
                 <a href="/herbs/{plant_slug}.html" style="text-decoration: none;">
-                    <img src="{plant_img_src}" alt="{plant_name}" style="margin-bottom: 1.6rem;">
+                    <img src="{plant_img_src}" alt="{plant_name}" class="exp-card-img">
                     <h3 class="explorer-card-title">{plant_common_name_preferred.capitalize()}</h3>
                 </a>
-                <p 
-                    class="tag"
-                >
+                <p class="exp-card-tag">
                     <i>{plant_name}</i>
                 </p>
-                <p style="font-size: 1.4rem;">{plant_desc}</p>
+                <p class="exp-card-desc">{plant_desc}</p>
             </article>
         '''
         if 0:

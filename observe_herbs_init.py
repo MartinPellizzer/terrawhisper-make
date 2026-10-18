@@ -348,6 +348,16 @@ def schema_observe_create(schema_item):
     schema_entity_1_val = schema_item['fields'][0]['field_name']
     schema_relationship_val = schema_item['fields'][1]['field_name']
     schema_entity_2_val = schema_item['fields'][2]['field_name']
+    # schema_fields_core = schema_item['fields'][:3]
+    schema_fields_remaining = schema_item['fields'][3:]
+    fields_vals = ''
+    for field in schema_fields_remaining:
+        for key, val in field.items():
+            if key == 'field_name':
+                fields_vals += val + ' TEXT,\n'
+    # for val in fields_vals:
+        # print(val)
+    # quit()
     ###
     conn = sqlite3.connect(db_filepath)
     cur = conn.cursor()
@@ -361,6 +371,7 @@ def schema_observe_create(schema_item):
             {schema_entity_2_val}_reference TEXT NOT NULL,
             {schema_entity_2_val}_reference_normalize TEXT,
             {schema_relationship_val}_raw TEXT,
+{fields_vals.strip()}
             source_name TEXT NOT NULL,
             source_acronym TEXT,
             reference_id TEXT,
@@ -391,9 +402,18 @@ def run():
     # except: pass
     os.makedirs(output_folderpath, exist_ok=True)
 
-    schema_items = schema_herbs.data['items']
-    for schema_item in schema_items: 
-        schema_observe_create(schema_item)
+    if 1:
+        schema_items = schema_herbs.data['items']
+        for schema_item in schema_items: 
+            schema_observe_create(schema_item)
+
+    if 0:
+        schema_items = schema_herbs.data['items']
+        for schema_item in schema_items: 
+            if schema_item['table_name'] == 'plants_distributions':
+                schema_observe_create(schema_item)
+
+    # quit()
 
     if 0:
         # observations_table_plants_compounds_create(regen=True)

@@ -1767,6 +1767,7 @@ def listing_compounds_gen(plant_data):
 
 def schema_listing_gen(plant_data, schema_item, render_table=True):
     html_article = f''
+    # print(json.dumps(plant_data, indent=4))
     # print(json.dumps(schema_item, indent=4))
     # quit()
     schema_table_name = schema_item['table_name']
@@ -1774,6 +1775,8 @@ def schema_listing_gen(plant_data, schema_item, render_table=True):
     item_key = schema_item['fields'][2]['field_name'] + '_reference'
     section_data = plant_data[data_key]
     if section_data != []:
+        # print(json.dumps(section_data, indent=4))
+        # quit()
         html_table_body = f''
         sources_html = f''
         html_table_body += f'''<tbody>'''
@@ -2553,6 +2556,89 @@ def listing_names_common_gen(plant_data):
     '''
     return html_article
 
+def quick_facts(plant_data):
+    plant_name_scientific_reference = plant_data['plant_name_scientific_reference']
+    plant_taxon_name_slug = polish.sluggify(plant_name_scientific_reference)
+    plant_taxon_name_normalized = normalize_utils.normalize_plant_name(plant_name_scientific_reference)
+    url_slug = f'herbs/{plant_taxon_name_slug}'
+    ### SYNONYMS
+    hero_synonyms_list = []
+    plant_synonyms = plant_data['synonyms']
+    for item in plant_synonyms:
+        hero_synonyms_list.append(item['plant_synonym_reference'])
+    hero_synonyms_html = ' · '.join(hero_synonyms_list[:2]).title()
+    hero_synonyms_count = len(plant_synonyms) - 2
+    if len(hero_synonyms_list) <= 0:
+        hero_synonyms_html = f'''Not available'''
+    elif len(hero_synonyms_list) <= 2:
+        hero_synonyms_html = f'''
+            <i lang="la">{hero_synonyms_html}</i>
+        '''
+    else:
+        hero_synonyms_html = f'''
+            <i lang="la">{hero_synonyms_html}</i> · 
+            <a href="#synonyms">{hero_synonyms_count} more</a>
+        '''
+    ### NAMES COMMON
+    hero_names_common_list = []
+    for value in plant_data['names_common']['en_labels']:
+        hero_names_common_list.append(value)
+    for value in plant_data['names_common']['en_aliases']:
+        hero_names_common_list.append(value)
+    hero_names_common_html = ' · '.join(hero_names_common_list[:2]).title()
+    hero_names_common_count = len(hero_names_common_list) - 2
+    if len(hero_names_common_list) <= 0:
+        hero_names_common_html = f'''Not available'''
+    elif len(hero_names_common_list) <= 2:
+        hero_names_common_html = f'''
+            <i lang="la">{hero_names_common_html}</i>
+        '''
+    else:
+        hero_names_common_html = f'''
+            <i lang="la">{hero_names_common_html}</i> · 
+            <a href="#common-names">{hero_names_common_count} more</a>
+        '''
+    ### FAMILY
+    if plant_data['taxonomies'] != []: hero_taxonomy = plant_data['taxonomies'][0]['family'].title()
+    else: hero_taxonomy = 'Not available'
+    ### DISTRIBUTIONS
+    if plant_data['distributions'] != []: hero_distributions = plant_data['distributions'][0]['locality_continent'].title()
+    else: hero_distributions = 'Not available'
+    ### PLANTS PARTS
+    hero_plant_parts_list = []
+    for item in plant_data['plants_parts']['plants_parts'][:2]:
+        hero_plant_parts_list.append(item['plant_part_name_reference'])
+    hero_plant_parts_html = ' · '.join(hero_plant_parts_list)
+    hero_plant_parts_html = hero_plant_parts_html.title()
+    if hero_plant_parts_html == '': hero_plant_parts_html = 'Not available'
+    ### HTML
+    quick_facts_html = f'''
+            <dl class="quick-facts">
+                <div>
+                    <dt>Synonyms</dt>
+                    <dd>{hero_synonyms_html}</dd>
+                </div>
+                <div>
+                    <dt>Common names</dt>
+                    <dd>{hero_names_common_html}</dd>
+                </div>
+                <div>
+                    <dt>Family</dt>
+                    <dd>{hero_taxonomy}</dd>
+                </div>
+                <div>
+                    <dt>Distribution</dt>
+                    <dd>{hero_distributions}</dd>
+                </div>
+                <div>
+                    <dt>Plant Parts</dt>
+                    <dd>{hero_plant_parts_html}</dd>
+                </div>
+            </dl>
+    '''
+    # print(quick_facts_html)
+    return quick_facts_html 
+
 def listing_hero_gen(plant_data):
     plant_name_scientific_reference = plant_data['plant_name_scientific_reference']
     plant_taxon_name_slug = polish.sluggify(plant_name_scientific_reference)
@@ -2742,41 +2828,8 @@ def listing_hero_gen(plant_data):
                 <tr><th>Traditional uses</th><td>Digestive support</td></tr>
             </table>
     """
-    quick_facts_html = f'''
-        <div class="quick-facts-mobile" style="margin-top: 2rem;">
-            <img 
-                src="/images/herbs/{plant_taxon_name_slug}.jpg"
-                style="
-                    height: 100%;
-                    object-fit: cover;
-                    object-position: center;
-                "
-            >
-            <div class="toc-heading" style="margin-top: 2rem;">Quick facts</div>
-            <dl class="quick-facts">
-                <div>
-                    <dt>Synonyms</dt>
-                    <dd>{hero_synonyms_html}</dd>
-                </div>
-                <div>
-                    <dt>Common names</dt>
-                    <dd>{hero_names_common_html}</dd>
-                </div>
-                <div>
-                    <dt>Family</dt>
-                    <dd>{hero_taxonomy}</dd>
-                </div>
-                <div>
-                    <dt>Distribution</dt>
-                    <dd>{hero_distributions}</dd>
-                </div>
-                <div>
-                    <dt>Plant Parts</dt>
-                    <dd>{hero_plant_parts_html}</dd>
-                </div>
-            </dl>
-        </div>
-    '''
+
+    quick_facts_html = quick_facts(plant_data)
     # html_article = html_article.replace("[quick_facts]", quick_facts_html)
     html_hero = f'''
         {sections.breadcrumbs_explorer(url_slug)}
@@ -2791,7 +2844,18 @@ def listing_hero_gen(plant_data):
         <p>
             {intro_text}
         </p>
-        {quick_facts_html}
+        <div class="quick-facts-mobile" style="margin-top: 2rem;">
+            <img 
+                src="/images/herbs/{plant_taxon_name_slug}.jpg"
+                style="
+                    height: 100%;
+                    object-fit: cover;
+                    object-position: center;
+                "
+            >
+            <div class="toc-heading" style="margin-top: 2rem;">Quick facts</div>
+            {quick_facts_html}
+        </div>
         [toc]
     '''
     html_article += html_hero
@@ -2864,6 +2928,229 @@ def listing_taxonomies_gen(plant_data):
         '''
     return html_article
 
+def listing_names_common_gen_new(plant_data, render_table=True):
+    html_article = ''
+    section_data = plant_data['plants_names_common']['plants_names_common']
+    if section_data != []:
+        # print(json.dumps(section_data, indent=4))
+        # quit()
+        ### PROSE
+        paragraphs_text = plant_data['plants_names_common']['llm_intro']
+        ### SOURCES
+        html_sources = f'''
+            <p style="margin-top: 1rem;">
+                Sources: Catalogue of Life (COL)
+            </p>
+        '''
+        ###
+        html_article += f'''
+            <section>
+                <h3>Common Names</h3>
+                <p>{paragraphs_text}</p>
+                {html_sources}
+            </section>
+        '''
+    return html_article
+
+def listing_synonyms_gen_new(plant_data, render_table=True):
+    html_article = ''
+    section_data = plant_data['plants_synonyms']['plants_synonyms']
+    if section_data != []:
+        # print(json.dumps(section_data, indent=4))
+        # quit()
+        ### PROSE
+        paragraphs_text = plant_data['plants_synonyms']['llm_intro']
+        ### SOURCES
+        html_sources = f'''
+            <p style="margin-top: 1rem;">
+                Sources: The World Checklist of Vascular Plants (WCVP)
+            </p>
+        '''
+        ###
+        html_article += f'''
+            <section>
+                <h3>Synonyms</h3>
+                <p>{paragraphs_text}</p>
+                {html_sources}
+            </section>
+        '''
+    return html_article
+
+def listing_taxonomies_gen_new(plant_data, render_table=True):
+    html_article = ''
+    section_data = plant_data['plants_taxonomies']['plants_taxonomies']
+    if section_data != []:
+        # print(json.dumps(section_data, indent=4))
+        # quit()
+        ### PROSE
+        paragraphs_text = plant_data['plants_taxonomies']['llm_intro']
+        ### TABLE
+        if render_table == True:
+            taxonomy_kingdom = ''
+            taxonomy_phylum = ''
+            taxonomy_class = ''
+            taxonomy_subclass = ''
+            taxonomy_order = ''
+            taxonomy_family = ''
+            taxonomy_genus = ''
+            for section_item in section_data:
+                if section_item['relationship_name_raw'] == 'has_kingdom': 
+                    taxonomy_kingdom = section_item['taxonomy_name_reference']
+                if section_item['relationship_name_raw'] == 'has_phylum': 
+                    taxonomy_phylum = section_item['taxonomy_name_reference']
+                if section_item['relationship_name_raw'] == 'has_class': 
+                    taxonomy_class = section_item['taxonomy_name_reference']
+                if section_item['relationship_name_raw'] == 'has_subclass': 
+                    taxonomy_subclass = section_item['taxonomy_name_reference']
+                if section_item['relationship_name_raw'] == 'has_order': 
+                    taxonomy_order = section_item['taxonomy_name_reference']
+                if section_item['relationship_name_raw'] == 'has_family': 
+                    taxonomy_family = section_item['taxonomy_name_reference']
+                if section_item['relationship_name_raw'] == 'has_genus': 
+                    taxonomy_genus = section_item['taxonomy_name_reference']
+            html_table = f'''
+                <table style="margin-top: 1rem;">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Classification</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Kingdom</td>
+                            <td>{taxonomy_kingdom}</td>
+                        </tr>
+                        <tr>
+                            <td>Phylum</td>
+                            <td>{taxonomy_phylum}</td>
+                        </tr>
+                        <tr>
+                            <td>Class</td>
+                            <td>{taxonomy_class}</td>
+                        </tr>
+                        <tr>
+                            <td>Subclass</td>
+                            <td>{taxonomy_subclass}</td>
+                        </tr>
+                        <tr>
+                            <td>Order</td>
+                            <td>{taxonomy_order}</td>
+                        </tr>
+                        <tr>
+                            <td>Family</td>
+                            <td>{taxonomy_family}</td>
+                        </tr>
+                        <tr>
+                            <td>Genus</td>
+                            <td>{taxonomy_genus}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            '''
+        ### SOURCES
+        html_sources = f'''
+            <p style="margin-top: 1rem;">
+                Sources: The World Checklist of Vascular Plants (WCVP)
+            </p>
+        '''
+        ###
+        html_article += f'''
+            <section>
+                <h3>Taxonomy</h3>
+                <p>{paragraphs_text}</p>
+                {html_table}
+                {html_sources}
+            </section>
+        '''
+    return html_article
+
+def listing_classification(plant_data):
+    html_article = ''
+    html_common_names = listing_names_common_gen_new(plant_data)
+    html_synonyms = listing_synonyms_gen_new(plant_data)
+    html_taxonomy = listing_taxonomies_gen_new(plant_data)
+    html_article = f'''
+        <section>
+            <h2>Classification</h2>
+            {html_common_names}
+            {html_synonyms}
+            {html_taxonomy}
+        </section>
+    '''
+    return html_article
+
+def listing_distribution_gen_new(plant_data, render_table=True):
+    html_article = ''
+    section_data = plant_data['plants_distributions']['plants_distributions']
+    if section_data != []:
+        # print(json.dumps(section_data, indent=4))
+        # quit()
+        ### PROSE
+        paragraphs_text = plant_data['plants_distributions']['llm_intro']
+        ### SOURCES
+        html_sources = f'''
+            <p style="margin-top: 1rem;">
+                Sources: The World Checklist of Vascular Plants (WCVP)
+            </p>
+        '''
+        ###
+        html_article += f'''
+            <section>
+                <h3>Geographic Regions</h3>
+                <p>{paragraphs_text}</p>
+                {html_sources}
+            </section>
+        '''
+    return html_article
+
+def listing_distribution(plant_data):
+    html_article = ''
+    html_distribution = listing_distribution_gen_new(plant_data)
+    html_article = f'''
+        <section>
+            <h2>Distribution</h2>
+            {html_distribution}
+        </section>
+    '''
+    return html_article
+
+def listing_morphology_gen_new(plant_data, render_table=True):
+    html_article = ''
+    # print(json.dumps(plant_data, indent=4))
+    # quit()
+    section_data = plant_data['plants_morphologies']['plants_morphologies']
+    if section_data != []:
+        # print(json.dumps(section_data, indent=4))
+        # quit()
+        ### PROSE
+        paragraphs_text = plant_data['plants_morphologies']['llm_intro']
+        ### SOURCES
+        html_sources = f'''
+            <p style="margin-top: 1rem;">
+                Sources: Global Inventory of Floras and Traits (GIFT)
+            </p>
+        '''
+        ###
+        html_article += f'''
+            <section>
+                <h3>Morphology</h3>
+                <p>{paragraphs_text}</p>
+                {html_sources}
+            </section>
+        '''
+    return html_article
+
+def listing_identification(plant_data):
+    html_article = ''
+    html_morphology = listing_morphology_gen_new(plant_data)
+    html_article = f'''
+        <section>
+            <h2>Identification</h2>
+            {html_morphology}
+        </section>
+    '''
+    return html_article
 
 def listing_distributions_gen(plant_data):
     html_article = ''
@@ -3006,7 +3293,7 @@ def plant_listing_page_gen(master_item):
     plant_taxon_name_slug = polish.sluggify(plant_name_scientific_reference)
     plant_taxon_name_normalized = normalize_utils.normalize_plant_name(plant_name_scientific_reference)
 
-    # print(plant_taxon_name_slug )
+    # print(plant_taxon_name_slug)
     # if plant_taxon_name_slug != 'panax-ginseng': return
     # print(json.dumps(plant_data['activities'], indent=4))
     # quit()
@@ -3021,11 +3308,23 @@ def plant_listing_page_gen(master_item):
     html_article += listing_hero_gen(plant_data)
     # html_article += listing_names_common_gen(plant_data)
     # html_article += listing_taxonomies_gen(plant_data)
-    html_article += listing_distributions_gen(plant_data)
+    # html_article += listing_distributions_gen(plant_data)
     # html_article += listing_traits_gen(plant_data)
     # html_article += listing_activities_gen(plant_data)
+    ###
+    html_article += listing_classification(plant_data)
+    html_article += listing_distribution(plant_data)
+    html_article += listing_identification(plant_data)
+    ### 
     schema_items = schema_herbs.data['items']
     for schema_item in schema_items: 
+        if schema_item['table_name'] == 'plants_names_common': continue
+        if schema_item['table_name'] == 'plants_synonyms': continue
+        if schema_item['table_name'] == 'plants_taxonomies': continue
+        if schema_item['table_name'] == 'plants_distributions': continue
+        if schema_item['table_name'] == 'plants_growth_forms': continue
+        if schema_item['table_name'] == 'plants_climbers': continue
+        if schema_item['table_name'] == 'plants_heights': continue
         html_article += schema_listing_gen(plant_data, schema_item, render_table=False)
 
     ### TOC
@@ -3033,34 +3332,11 @@ def plant_listing_page_gen(master_item):
 
     html_toc_sidebar = sections.toc_sidebar(html_article)
     ### SIDEBAR LEFT
-    listing_sidebar_left_html = f'''
-        <aside class="">
-            <nav class="sidebar-toc" aria-label="Table of contents">
-              <div class="toc-heading">Contents</div>
-              <ul>
-                <li><a href="#intro">Introduction</a></li>
-                <li>
-                  <a href="#benefits">Benefits</a>
-                  <ul>
-                    <li><a href="#digestive">Digestive health</a></li>
-                    <li><a href="#inflammation">Inflammation</a></li>
-                    <li>
-                      <a href="#benefits">Benefits</a>
-                      <ul>
-                            <li><a href="#digestive">Digestive health</a></li>
-                            <li><a href="#inflammation">Inflammation</a></li>
-                      </ul>
-                  </ul>
-                </li>
-              </ul>
-            </nav>
-        </aside>
-    '''
     listing_sidebar_left_html = html_toc_sidebar
 
     listing_sidebar_right_html = f'''
         <aside class="quick-facts quick-facts-desktop">
-              <div style="font-size: 1.5rem; font-weight: 700;">Quick facts</div>
+            <h2 class="toc-heading" style="margin-top: 0;">Quick facts</h2>
                 <img 
                     src="/images/herbs/{plant_taxon_name_slug}.jpg"
                     style="
@@ -3079,6 +3355,23 @@ def plant_listing_page_gen(master_item):
             </table>
         </aside>
     '''
+
+    quick_facts_html = quick_facts(plant_data)
+    listing_sidebar_right_html = f'''
+        <aside class="quick-facts quick-facts-desktop">
+            <h2 class="toc-heading" style="margin-top: 1rem;">Quick facts</h2>
+                <img 
+                    src="/images/herbs/{plant_taxon_name_slug}.jpg"
+                    style="
+                        height: 100%;
+                        object-fit: cover;
+                        object-position: center;
+                        margin-bottom: 1rem;
+                    "
+                >
+            {quick_facts_html}
+        </aside>
+    '''
  
     meta_title = f'{plant_name_scientific_reference}'
     meta_description = f''
@@ -3095,7 +3388,9 @@ def plant_listing_page_gen(master_item):
                     {listing_sidebar_left_html}
                 </div>
                 <div class="col-center">
-                    {html_article}
+                    <article>
+                        {html_article}
+                    </article>
                 </div>
                 <div class="col-right">
                     {listing_sidebar_right_html}
@@ -3110,7 +3405,6 @@ def plant_listing_page_gen(master_item):
     print(html_filepath)
     # quit()
     return
-
 
 
 

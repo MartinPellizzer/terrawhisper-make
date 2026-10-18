@@ -163,7 +163,6 @@ def parse_distributions(schema_item, source_foldername):
         except: pass
     os.makedirs(output_folderpath, exist_ok=True)
     ###
-    output_folderpath = f'{HUB_FOLDERPATH}/parse/{source_foldername}/{schema_table_name}/json'
     master_plants_rows = masterize_utils.masterize_plants_get_all()
     items_output_debug = []
     for i, plant_item in enumerate(master_plants_rows[:]):
@@ -172,19 +171,35 @@ def parse_distributions(schema_item, source_foldername):
         plant_id = plant_item['id']
         plant_name_scientific_reference = plant_item['plant_name_scientific_reference']
         plant_name_scientific_reference_normalize = plant_item['plant_name_scientific_reference_normalize']
+        # if plant_name_scientific_reference_normalize != 'panax ginseng': continue
         # print(plant_id)
         # print(plant_name_scientific_reference)
         # print(plant_name_scientific_reference_normalize)
+        # quit()
         ###
         conn = sqlite3.connect(f'{HUB_FOLDERPATH}/reference/wcvp/wcvp.db')
         conn.row_factory = sqlite3.Row
+        ###
+        cursor = conn.execute("""
+            SELECT *
+            FROM plants_names
+            WHERE taxon_name_normalized = ?
+        """, (plant_name_scientific_reference_normalize,))
+        rows = cursor.fetchall()
+        items = [dict(row) for row in rows]
+        wcvp_plant_id = items[0]['plant_name_id']
+        # print(items)
+        # quit()
+        ###
         cursor = conn.execute("""
             SELECT *
             FROM plants_distributions
             WHERE plant_name_id = ?
-        """, (plant_id,))
+        """, (wcvp_plant_id,))
         rows = cursor.fetchall()
         items = [dict(row) for row in rows]
+        # print(json.dumps(items, indent=4))
+        # quit()
         ###
         entity_1_key = schema_fields[0]['field_name']
         relationship_key = schema_fields[1]['field_name']
@@ -197,9 +212,9 @@ def parse_distributions(schema_item, source_foldername):
                 f'{relationship_key}_raw': 'has_distribution',
                 f'{entity_2_key}_raw': item['continent'],
                 f'locality_continent_code': item['continent_code_l1'],
-                'locality_region': item['region'],
+                'locality_region_name': item['region'],
                 'locality_region_code': item['region_code_l2'],
-                'locality_area': item['area'],
+                'locality_area_name': item['area'],
                 'locality_area_code': item['area_code_l3'],
                 'locality_introduced': item['introduced'],
                 'locality_extinct': item['extinct'],
@@ -215,7 +230,9 @@ def parse_distributions(schema_item, source_foldername):
         output_filepath = f'{output_folderpath}/{plant_name_scientific_reference_normalize}.json'
         io.json_write(output_filepath, items_output)
         if items_output != []:
-            items_output_debug = items_output
+            # items_output_debug = items_output
+            if items_output[0]['plant_name_scientific_raw'] == 'Panax ginseng': 
+                items_output_debug = items_output
     print(json.dumps(items_output_debug, indent=4))
     # quit()
 
@@ -283,9 +300,9 @@ def wcvp_distribution_peek():
         i = 0
         for row in reader:
             print(f'{i}')
-            # print(json.dumps(row, indent=4))
+            print(json.dumps(row, indent=4))
             i += 1
-            # quit()
+            quit()
         # print(i)
 
 def run():
@@ -301,25 +318,4 @@ def run():
         if 'wcvp' not in sources_names: continue
         if schema_item['table_name'] == 'plants_synonyms': parse_synonyms_new(schema_item)
         if schema_item['table_name'] == 'plants_distributions': parse_distributions(schema_item, 'wcvp')
-
-    if 0:
-        # wcvp_names() ### WARNING: takes many many minutes
-        wcvp_names_peek()
-
-    ### WCVP DISTRIBUTION
-    if 0:
-        start = time.perf_counter()
-        '''
-        pipeline_utils.folder_copy(
-            input_folderpath = f'{g.DATA_FOLDERPATH}/fetch/wcvp/distribution',
-            output_folderpath = f'{g.DATA_FOLDERPATH}/parse/wcvp/distribution',
-        )
-        '''
-
-    if 0:
-        # parse_wcvp_distributions() ### WARNING: takes many many minutes
-        wcvp_distribution_peek()
-
-    if 0:
-        parse_synonyms()
 

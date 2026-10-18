@@ -907,11 +907,335 @@ def schema_derive_gen(schema_item):
     print(json.dumps(last, indent=4))
     # quit()
 
+def schema_derive_distribution_gen(schema_item):
+    schema_table_name = schema_item['table_name']
+    schema_source_name = schema_item['sources'][0]['source_name']
+    schema_output_foldername = schema_table_name
+    schema_entity_1_val = schema_item['fields'][0]['field_name']
+    schema_relationship_val = schema_item['fields'][1]['field_name']
+    schema_entity_2_val = schema_item['fields'][2]['field_name']
+    ###
+    master_plants_rows = masterize_utils.masterize_plants_get_all()
+    last = []
+    for i, master_plant_row in enumerate(master_plants_rows):
+        master_item = master_plant_row
+        # print(master_item)
+        # quit()
+        print(f'DERIVE {schema_table_name} {i}/{len(master_plants_rows)}')
+        conn = sqlite3.connect(db_filepath)
+        conn.row_factory = sqlite3.Row
+        cursor = conn.execute(f'''
+            SELECT
+                {schema_entity_1_val}_reference,
+                {schema_relationship_val}_raw,
+                {schema_entity_2_val}_reference,
+                locality_region_name,
+                locality_area_name,
+                COUNT(*) AS sources_num,
+                json_group_array(
+                    json_object(
+                        'reference_name', reference_name,
+                        'reference_id', reference_id
+                    )
+                ) AS sources
+            FROM (
+                SELECT DISTINCT
+                    {schema_entity_1_val}_reference,
+                    {schema_relationship_val}_raw,
+                    {schema_entity_2_val}_reference,
+                    locality_region_name,
+                    locality_area_name,
+                    reference_name,
+                    reference_id
+                FROM {schema_table_name}
+                WHERE {schema_entity_1_val}_reference = ?
+            )
+            GROUP BY
+                {schema_entity_1_val}_reference,
+                {schema_relationship_val}_raw,
+                {schema_entity_2_val}_reference,
+                locality_region_name,
+                locality_area_name
+            ORDER BY sources_num DESC;
+        ''', (master_item[f'{schema_entity_1_val}_reference'],))
+        rows = cursor.fetchall()
+        items = [dict(row) for row in rows]
+        conn.close()
+        ###
+        output_items = []
+        for row in items[:]:
+            # print(row)
+            # quit()
+            output_item = {
+                f'{schema_entity_1_val}_reference': row[f'{schema_entity_1_val}_reference'],
+                f'{schema_relationship_val}_raw': row[f'{schema_relationship_val}_raw'],
+                f'{schema_entity_2_val}_reference': row[f'{schema_entity_2_val}_reference'],
+                f'locality_region_name': row[f'locality_region_name'],
+                f'locality_area_name': row[f'locality_area_name'],
+                f'sources_num': row[f'sources_num'],
+                f'sources': json.loads(row[f'sources']),
+            }
+            # print(json.dumps(output_item, indent=4))
+            output_items.append(output_item)
+        # print(f'HERE: {master_plant_row}')
+        # print(f'HERE: {schema_entity_1_val}')
+        # quit()
+        plant_name_scientific_reference = master_plant_row[f'{schema_entity_1_val}_reference']
+        output_filepath = f'''{HUB_FOLDERPATH}/derive/{schema_table_name}/{plant_name_scientific_reference}.json'''
+        io.folder_create_from_filepath(output_filepath)
+        io.json_write(output_filepath, output_items)
+        if output_items != []:
+            last = output_items
+    print(json.dumps(last, indent=4))
+    # quit()
+
+def schema_derive_traits_gen(schema_item):
+    schema_table_name = schema_item['table_name']
+    schema_source_name = schema_item['sources'][0]['source_name']
+    schema_output_foldername = schema_table_name
+    schema_entity_1_val = schema_item['fields'][0]['field_name']
+    schema_relationship_val = schema_item['fields'][1]['field_name']
+    schema_entity_2_val = schema_item['fields'][2]['field_name']
+    schema_fields_derive = [
+        item['field_name'] 
+        for item in schema_item['fields'] 
+        if 'derive' in item and item['derive'] == 1
+    ]
+    sql_fields = ',\n'.join(schema_fields_derive)
+    ###
+    master_plants_rows = masterize_utils.masterize_plants_get_all()
+    last = []
+    for i, master_plant_row in enumerate(master_plants_rows):
+        master_item = master_plant_row
+        # print(json.dumps(master_item, indent=4))
+        # print(json.dumps(schema_item, indent=4))
+        print(f'DERIVE {schema_table_name} {i}/{len(master_plants_rows)}')
+        conn = sqlite3.connect(db_filepath)
+        conn.row_factory = sqlite3.Row
+        cursor = conn.execute(f'''
+            SELECT
+                {schema_entity_1_val}_reference,
+                {schema_relationship_val}_raw,
+                {schema_entity_2_val}_reference,
+                {sql_fields},
+                COUNT(*) AS sources_num,
+                json_group_array(
+                    json_object(
+                        'reference_name', reference_name,
+                        'reference_id', reference_id
+                    )
+                ) AS sources
+            FROM (
+                SELECT DISTINCT
+                    {schema_entity_1_val}_reference,
+                    {schema_relationship_val}_raw,
+                    {schema_entity_2_val}_reference,
+                    {sql_fields},
+                    reference_name,
+                    reference_id
+                FROM {schema_table_name}
+                WHERE {schema_entity_1_val}_reference = ?
+            )
+            GROUP BY
+                {schema_entity_1_val}_reference,
+                {schema_relationship_val}_raw,
+                {schema_entity_2_val}_reference,
+                {sql_fields}
+            ORDER BY sources_num DESC;
+        ''', (master_item[f'{schema_entity_1_val}_reference'],))
+        rows = cursor.fetchall()
+        items = [dict(row) for row in rows]
+        conn.close()
+        ###
+        output_items = []
+        for item in items[:]:
+            # print(json.dumps(item, indent=4))
+            # quit()
+            output_item = {
+                f'{schema_entity_1_val}_reference': item[f'{schema_entity_1_val}_reference'],
+                f'{schema_relationship_val}_raw': item[f'{schema_relationship_val}_raw'],
+                f'{schema_entity_2_val}_reference': item[f'{schema_entity_2_val}_reference'],
+                f'sources_num': item[f'sources_num'],
+                f'sources': json.loads(item[f'sources']),
+            }
+            schema_fields_derive_output = [
+                {'key': field['field_name'], 'val': item[field['field_name']]}
+                for field in schema_item['fields'] 
+                if 'derive' in field and field['derive'] == 1
+            ]
+            for field in schema_fields_derive_output:
+                output_item[field['key']] = field['val']
+            # print(json.dumps(output_item, indent=4))
+            output_items.append(output_item)
+            # quit()
+        # print(f'HERE: {master_plant_row}')
+        # print(f'HERE: {schema_entity_1_val}')
+        # quit()
+        plant_name_scientific_reference = master_plant_row[f'{schema_entity_1_val}_reference']
+        output_filepath = f'''{HUB_FOLDERPATH}/derive/{schema_table_name}/{plant_name_scientific_reference}.json'''
+        io.folder_create_from_filepath(output_filepath)
+        io.json_write(output_filepath, output_items)
+        if output_items != []:
+            last = output_items
+    print(json.dumps(last, indent=4))
+    # quit()
+
+def sql_group_gen(field_1, field_2, field_3, table_name):
+    sql_query = f'''
+            SELECT
+                {field_1},
+                {field_2},
+                {field_3},
+                COUNT(*) AS sources_num,
+                json_group_array(
+                    json_object(
+                        'reference_name', reference_name,
+                        'reference_id', reference_id
+                    )
+                ) AS sources
+            FROM (
+                SELECT DISTINCT
+                    {field_1},
+                    {field_2},
+                    {field_3},
+                    reference_name,
+                    reference_id
+                FROM {table_name}
+                WHERE plant_name_scientific_reference = ?
+            )
+            GROUP BY
+                {field_1},
+                {field_2},
+                {field_3}
+            ORDER BY sources_num DESC;
+    '''
+    return sql_query
+
+def derive_morphology_gen():
+    master_plants_rows = masterize_utils.masterize_plants_get_all()
+    last = []
+    for i, master_plant_row in enumerate(master_plants_rows):
+        master_item = master_plant_row
+        # print(json.dumps(master_item, indent=4))
+        # print(json.dumps(schema_item, indent=4))
+        print(f'DERIVE HERBS morphology {i}/{len(master_plants_rows)}')
+        conn = sqlite3.connect(db_filepath)
+        conn.row_factory = sqlite3.Row
+        ###
+        output_items = []
+        ### GROWTH FORM
+        sql_query = sql_group_gen(
+            'plant_name_scientific_reference',
+            'relationship_name_raw',
+            'growth_form_name_reference',
+            'plants_growth_forms',
+        )
+        cursor = conn.execute(
+            sql_query, 
+            (master_item[f'plant_name_scientific_reference'],)
+        )
+        rows = cursor.fetchall()
+        items = [dict(row) for row in rows]
+        ###
+        for item in items[:]:
+            # print(json.dumps(item, indent=4))
+            # quit()
+            output_item = {
+                f'plant_name_scientific_reference': item[f'plant_name_scientific_reference'],
+                f'relationship_name_raw': item[f'relationship_name_raw'],
+                f'growth_form_name_reference': item[f'growth_form_name_reference'],
+                f'category': 'morphology',
+                f'sources_num': item[f'sources_num'],
+                f'sources': json.loads(item[f'sources']),
+            }
+            output_items.append(output_item)
+            # print(json.dumps(output_item, indent=4))
+            # quit()
+        ### CLIMBER
+        sql_query = sql_group_gen(
+            'plant_name_scientific_reference',
+            'relationship_name_raw',
+            'climber_name_reference',
+            'plants_climbers',
+        )
+        cursor = conn.execute(
+            sql_query, 
+            (master_item[f'plant_name_scientific_reference'],)
+        )
+        rows = cursor.fetchall()
+        items = [dict(row) for row in rows]
+        ###
+        for item in items[:]:
+            # print(json.dumps(item, indent=4))
+            # quit()
+            output_item = {
+                f'plant_name_scientific_reference': item[f'plant_name_scientific_reference'],
+                f'relationship_name_raw': item[f'relationship_name_raw'],
+                f'climber_name_reference': item[f'climber_name_reference'],
+                f'category': 'morphology',
+                f'sources_num': item[f'sources_num'],
+                f'sources': json.loads(item[f'sources']),
+            }
+            output_items.append(output_item)
+            # print(json.dumps(output_item, indent=4))
+            # quit()
+        ### HEIGHT
+        sql_query = sql_group_gen(
+            'plant_name_scientific_reference',
+            'relationship_name_raw',
+            'height_name_reference',
+            'plants_heights',
+        )
+        cursor = conn.execute(
+            sql_query, 
+            (master_item[f'plant_name_scientific_reference'],)
+        )
+        rows = cursor.fetchall()
+        items = [dict(row) for row in rows]
+        ###
+        for item in items[:]:
+            # print(json.dumps(item, indent=4))
+            # quit()
+            output_item = {
+                f'plant_name_scientific_reference': item[f'plant_name_scientific_reference'],
+                f'relationship_name_raw': item[f'relationship_name_raw'],
+                f'height_name_reference': item[f'height_name_reference'],
+                f'category': 'morphology',
+                f'sources_num': item[f'sources_num'],
+                f'sources': json.loads(item[f'sources']),
+            }
+            output_items.append(output_item)
+            # print(json.dumps(output_items, indent=4))
+            # print(json.dumps(output_item, indent=4))
+            # for itm in output_items:  
+                # for key, val in itm.items():
+                    # if val == 'has_height_min':
+                        # pass
+            # quit()
+        # print(f'HERE: {master_plant_row}')
+        # print(f'HERE: {schema_entity_1_val}')
+        # quit()
+        plant_name_scientific_reference = master_plant_row[f'plant_name_scientific_reference']
+        output_filepath = f'''{HUB_FOLDERPATH}/derive/plants_morphologies/{plant_name_scientific_reference}.json'''
+        io.folder_create_from_filepath(output_filepath)
+        io.json_write(output_filepath, output_items)
+        if output_items != []:
+            last = output_items
+    conn.close()
+    print(json.dumps(last, indent=4))
+    # quit()
+
+
 def run():
+    derive_morphology_gen()
+    return
+
     schema_items = schema_herbs.data['items']
     for schema_item in schema_items: 
         if schema_item['process'] != True: continue
-        schema_derive_gen(schema_item)
+        if schema_item['table_name'] == 'plants_traits': schema_derive_traits_gen(schema_item)
+        # elif schema_item['table_name'] == 'plants_distributions': schema_derive_distribution_gen(schema_item)
+        # else: schema_derive_gen(schema_item)
 
     if 0:
         # compounds_gen()

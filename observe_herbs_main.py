@@ -695,23 +695,42 @@ def schema_observe_add(schema_item):
     # print(json.dumps(all_data[0], indent=4))
     # quit()
     ###
+    schema_fields_remaining = schema_item['fields'][3:]
+    fields_vals = ''
+    question_marks = ''
+    for field in schema_fields_remaining:
+        for key, val in field.items():
+            if key == 'field_name':
+                fields_vals += val + ',\n'
+                question_marks += ', ?'
+    ###
     conn = sqlite3.connect(db_filepath)
     cur = conn.cursor()
-    cur.executemany(
-        f"""
+    sql_query = f'''
             INSERT OR IGNORE INTO {schema_table_name} (
                 {schema_entity_1_val}_reference,
                 {schema_entity_1_val}_reference_normalize,
                 {schema_entity_2_val}_reference,
                 {schema_entity_2_val}_reference_normalize,
                 {schema_relationship_val}_raw,
+                {fields_vals.strip()}
                 source_name,
                 source_acronym,
                 reference_id,
                 reference_name
             )
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-        """,
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?{question_marks})
+    '''
+    # print(sql_query)
+    # quit()
+    # Dynamically generate field names
+    field_names = [
+        field['field_name']
+        for field in schema_fields_remaining
+        if 'field_name' in field
+    ]
+    cur.executemany(
+        sql_query,
         [
             (
                 item.get(f'{schema_entity_1_val}_reference'),
@@ -719,6 +738,7 @@ def schema_observe_add(schema_item):
                 item.get(f'{schema_entity_2_val}_reference'),
                 item.get(f'{schema_entity_2_val}_reference_normalize'),
                 item.get(f'{schema_relationship_val}_raw'),
+*(item.get(field_name) for field_name in field_names),
                 item.get("source_name"),
                 item.get("source_acronym"),
                 item.get("reference_id"),
@@ -728,9 +748,18 @@ def schema_observe_add(schema_item):
         ]
     )
     conn.commit()
-    rows = conn.execute(f"SELECT * FROM {schema_table_name}")
-    for row in list(rows)[:10]:
-        print(row)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.execute(f'''
+        SELECT * 
+        FROM {schema_table_name}
+        WHERE plant_name_scientific_reference_normalize == "panax ginseng"
+    ''')
+    rows = cursor.fetchall()
+    items = [dict(row) for row in rows]
+    for item in items:
+        print(json.dumps(item, indent=4))
+    # for row in list(rows)[:10]:
+        # print(row)
     ###
     # cols = conn.execute(f'PRAGMA table_info({schema_table_name})').fetchall()
     # print([c[1] for c in cols])
@@ -743,9 +772,17 @@ def schema_observe_add(schema_item):
 def run():
     print('OBSERVE')
 
-    schema_items = schema_herbs.data['items']
-    for schema_item in schema_items: 
-        schema_observe_add(schema_item)
+    if 1:
+        schema_items = schema_herbs.data['items']
+        for schema_item in schema_items: 
+            schema_observe_add(schema_item)
+
+    if 0:
+        schema_items = schema_herbs.data['items']
+        for schema_item in schema_items: 
+            if schema_item['table_name'] == 'plants_growth_forms':
+                schema_observe_add(schema_item)
+                quit()
 
     if 0:
         # observations_table_plants_compounds_add(source_foldername='pubmed')

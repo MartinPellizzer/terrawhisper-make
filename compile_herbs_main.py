@@ -22,69 +22,6 @@ def run():
         output_data = {}
         output_data['plant_name_scientific_reference'] = plant_name_scientific_reference
 
-        """
-        ### SYNONYMS
-        output_data['synonyms'] = io.json_read(
-            f'{input_folderpath}/{input_foldername}/herbs/synonyms/{plant_name_scientific_reference}.json'
-        )
-
-        ### TAXONOMIES
-        taxonomies_data = io.json_read(
-            f'{input_folderpath}/terrawhisper/data/{input_foldername}/herbs/taxonomies/{plant_name_scientific_reference}.json'
-        )
-        # print(json.dumps(chemicals_data, indent=4))
-        output_data['taxonomies'] = []
-        for item in taxonomies_data:
-            item_new = {
-                "kingdom": item['kingdom'],
-                "phylum": item['phylum'],
-                "class": item['class'],
-                "subclass": item['subclass'],
-                "order": item['order'],
-                "family": item['family'],
-                "genus": item['genus'],
-            }
-            output_data['taxonomies'].append(item)
-
-        '''
-        ### NAMES
-        data_type = 'names'
-        data = io.json_read(
-            f'{g.DATA_FOLDERPATH}/{input_foldername}/herbs/{data_type}/{plant_name_scientific_reference}.json'
-        )
-        # print(json.dumps(chemicals_data, indent=4))
-        output_data['names'] = []
-        for item in data:
-            item_new = {
-                "name_type": item['name_type'],
-                "language_code": item['language_code'],
-                "language_value": item['language_value'],
-                "source": item['source'],
-            }
-            output_data[f'{data_type}'].append(item)
-
-        '''
-        ### DISTRIBUTION
-        distribution_data = io.json_read(
-            f'{input_folderpath}/distribution/{plant_name_scientific_reference}.json'
-        )
-        # print(json.dumps(chemicals_data, indent=4))
-        output_data['distribution'] = []
-        for item in distribution_data:
-            item_new = {
-                "continent": item['continent'],
-                "region": item['region'],
-                "area": item['area'],
-            }
-            output_data['distribution'].append(item)
-
-        ### DISEASES
-        output_data['diseases'] = io.json_read(
-            f'{g.DATA_FOLDERPATH}/{input_foldername}/herbs/diseases/{plant_name_scientific_reference}.json'
-        )
-
-        """
-
         ### DISTRIBUTIONS
         output_data['distributions'] = io.json_read(
             f'{input_folderpath}/distributions/{plant_name_scientific_reference}.json'
@@ -148,9 +85,17 @@ def run():
         )
         """
 
+        ### INTRO
+        output_data['plants_morphologies'] = io.json_read(
+            f'{input_folderpath}/plants_morphologies/{plant_name_scientific_reference}.json'
+        )
+
         schema_items = schema_herbs.data['items']
         for schema_item in schema_items: 
             schema_table_name = schema_item['table_name']
+            if schema_table_name == 'plants_growth_forms': continue
+            if schema_table_name == 'plants_climbers': continue
+            if schema_table_name == 'plants_heights': continue
             output_data[schema_table_name] = io.json_read(
                 f'{input_folderpath}/{schema_table_name}/{plant_name_scientific_reference}.json'
             )

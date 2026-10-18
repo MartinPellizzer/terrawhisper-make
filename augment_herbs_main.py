@@ -564,6 +564,13 @@ def schema_augment_gen(schema_item):
     schema_entity_1_val = schema_item['fields'][0]['field_name']
     schema_relationship_val = schema_item['fields'][1]['field_name']
     schema_entity_2_val = schema_item['fields'][2]['field_name']
+    schema_fields_remaining = schema_item['fields'][3:]
+    augment_fields_names = []
+    for field in schema_fields_remaining:
+        for key, val in field.items():
+            if key == 'augment' and field['augment'] == 1:
+                    augment_fields_names.append(field['field_name'])
+    # quit()
     ###
     input_folderpath = f'{HUB_FOLDERPATH}/derive/{schema_table_name}'
     output_folderpath = f'{HUB_FOLDERPATH}/augment/{schema_table_name}'
@@ -579,8 +586,11 @@ def schema_augment_gen(schema_item):
         input_filepath = f'{input_folderpath}/{plant_name_scientific_reference}.json'
         output_filepath = f'{output_folderpath}/{plant_name_scientific_reference}.json'
         input_data = io.json_read(input_filepath)
-        ###
+        print(plant_name_scientific_reference)
+        # if plant_name_scientific_reference != 'Panax ginseng': continue
         # print(json.dumps(master_item, indent=4))
+        # quit()
+        ###
         # print(json.dumps(input_data, indent=4))
         # quit()
         if os.path.exists(output_filepath): continue
@@ -594,7 +604,12 @@ def schema_augment_gen(schema_item):
                 entity_1_val = input_item[f'{schema_entity_1_val}_reference']
                 relationship_val = input_item[f'{schema_relationship_val}_raw'].replace('_', ' ')
                 entity_2_val = input_item[f'{schema_entity_2_val}_reference']
-                prompt_relationships.append(f'''{entity_1_val} {relationship_val} {entity_2_val}''')
+                augment_fields_vals = ''
+                for augment_field_name in augment_fields_names:
+                    augment_fields_vals += ', ' + input_item[f'{augment_field_name}']
+                prompt_relationships.append(f'''{entity_1_val} {relationship_val} {entity_2_val}{augment_fields_vals}''')
+                # print(prompt_relationships)
+                # quit()
                 ###
                 for source in input_item['sources'][:3]:
                     source_id = source['reference_id']
@@ -613,6 +628,9 @@ def schema_augment_gen(schema_item):
                     prompt_abstracts.append(f'{study_title} {study_abstract}')
                     # quit()
             prompt_relationships = '\n'.join(prompt_relationships)
+            # print(prompt_relationships)
+            # quit()
+            ###
             # prompt_abstracts = '\n'.join(prompt_abstracts)[:10000]
             if prompt_abstracts != []:
                 prompt_abstracts_0 = 'found in the ABSTRACTS below'
@@ -621,16 +639,14 @@ def schema_augment_gen(schema_item):
             else:
                 prompt_abstracts_0 = ''
                 prompt_abstracts_1 = ''
-            
             # prompt_abstracts = ' '.join(prompt_abstracts.split(' '))
-            # print(prompt_relationships)
-            # quit()
+            ###
             prompt_sentences_count = len(prompt_relationships[:5])
             ### STUDY
             prompt = f'''
-                Write a {prompt_sentences_count}-sentence paragraph about the following plant RELATIONSHIPS {prompt_abstracts_0}.
+                Write a {prompt_sentences_count}-sentence paragraph for an article about the following plant RELATIONSHIPS {prompt_abstracts_0}.
                 RELATIONSHIPS:
-                {prompt_relationships}
+                {prompt_relationships.strip()}
                 {prompt_abstracts_1}
                 RULES:
                 Reply only with the asked content.
@@ -656,6 +672,7 @@ def schema_augment_gen(schema_item):
                 schema_table_name: input_data,
                 'llm_intro': reply,
             }
+            # quit()
         else: 
             input_data = {
                 schema_table_name: input_data,
@@ -665,8 +682,155 @@ def schema_augment_gen(schema_item):
         io.json_write(output_filepath, input_data)
         # quit()
 
+def morphology_augment_gen():
+    regen = True
+    ###
+    input_folderpath = f'{HUB_FOLDERPATH}/derive/plants_morphologies'
+    output_folderpath = f'{HUB_FOLDERPATH}/augment/plants_morphologies'
+    if regen:
+        try: shutil.rmtree(output_folderpath)
+        except: pass
+    io.folders_recursive_gen(output_folderpath)
+    ###
+    master_items = masterize_utils.masterize_plants_get_all()
+    for i, master_item in enumerate(master_items[:]):
+        print(f'AUGMENT HERBS morphology {i}/{len(master_items)}')
+        plant_name_scientific_reference = master_item['plant_name_scientific_reference']
+        input_filepath = f'{input_folderpath}/{plant_name_scientific_reference}.json'
+        output_filepath = f'{output_folderpath}/{plant_name_scientific_reference}.json'
+        input_data = io.json_read(input_filepath)
+        print(plant_name_scientific_reference)
+        # if plant_name_scientific_reference != 'Panax ginseng': continue
+        # print(json.dumps(master_item, indent=4))
+        # quit()
+        ###
+        # print(json.dumps(input_data, indent=4))
+        # quit()
+        if os.path.exists(output_filepath): continue
+        if input_data != []:
+            # print(json.dumps(input_data, indent=4))
+            # quit()
+            prompt_relationships = []
+            # relationships = []
+            prompt_abstracts = []
+            for input_item in input_data[:5]:
+                print(json.dumps(input_item, indent=4))
+                # print(prompt_relationships)
+                if input_item['relationship_name_raw'] == 'has_growth_form':
+                    relationship_line = ''
+                    relationship_line += input_item['plant_name_scientific_reference'] + ' '
+                    relationship_line += input_item['relationship_name_raw'].replace('_', ' ') + ' '
+                    relationship_line += input_item['growth_form_name_reference'] + ' '
+                    prompt_relationships.append(relationship_line)
+                    # print(relationship_line)
+                elif input_item['relationship_name_raw'] == 'is_climber':
+                    relationship_line = ''
+                    relationship_line += input_item['plant_name_scientific_reference'] + ' '
+                    if input_item['climber_name_reference'] == 'self-supporting':
+                        relationship_line += 'is self-supporting'
+                    elif input_item['climber_name_reference'] == 'obligatory':
+                        relationship_line += 'has obligatory climbing habit'
+                    elif input_item['climber_name_reference'] == 'facultative':
+                        relationship_line += 'has facultative climbing habit'
+                    elif input_item['climber_name_reference'] == 'vine':
+                        relationship_line += 'has vine growth habit'
+                    elif input_item['climber_name_reference'] == 'liana':
+                        relationship_line += 'has liana growth habit'
+                    prompt_relationships.append(relationship_line)
+                    # print(relationship_line)
+                elif input_item['relationship_name_raw'] == 'has_height_min':
+                    relationship_line = ''
+                    relationship_line += input_item['plant_name_scientific_reference'] + ' '
+                    relationship_line += input_item['relationship_name_raw'].replace('_', ' ') + ' '
+                    relationship_line += input_item['height_name_reference'] + ' '
+                    prompt_relationships.append(relationship_line)
+                    # print(relationship_line)
+                elif input_item['relationship_name_raw'] == 'has_height_max':
+                    relationship_line = ''
+                    relationship_line += input_item['plant_name_scientific_reference'] + ' '
+                    relationship_line += input_item['relationship_name_raw'].replace('_', ' ') + ' '
+                    relationship_line += input_item['height_name_reference'] + ' '
+                    prompt_relationships.append(relationship_line)
+                    # print(relationship_line)
+                # quit()
+                ###
+                for source in input_item['sources'][:3]:
+                    source_id = source['reference_id']
+                    if source_id.strip() == '': continue
+                    study_filepath = f'{HUB_FOLDERPATH}/fetch/pubmed/medicinal_plant/abstracts/{source_id}.json'
+                    ###
+                    study_data = io.json_read(study_filepath)
+                    try: article_data = study_data['PubmedArticle'][0]['MedlineCitation']['Article']
+                    except: pass
+                    try: study_title = article_data['ArticleTitle']
+                    except: input_title = ''
+                    try: study_abstract = ' '.join(article_data['Abstract']['AbstractText'])
+                    except: continue
+                    # print(study_abstract)
+                    study_abstract = ' '.join(study_abstract.split(' ')[:800])
+                    prompt_abstracts.append(f'{study_title} {study_abstract}')
+                    # quit()
+            prompt_sentences_count = len(prompt_relationships[:5])
+            # if prompt_sentences_count < 3: continue
+            prompt_relationships = '\n'.join(prompt_relationships)
+            # print(prompt_relationships)
+            # quit()
+            ###
+            # prompt_abstracts = '\n'.join(prompt_abstracts)[:10000]
+            if prompt_abstracts != []:
+                prompt_abstracts_0 = 'found in the ABSTRACTS below'
+                prompt_abstracts_1 = '\n'.join(prompt_abstracts)[:]
+                prompt_abstracts_1 = 'ABSTRACTS:\n' + prompt_abstracts_1
+            else:
+                prompt_abstracts_0 = ''
+                prompt_abstracts_1 = ''
+            # prompt_abstracts = ' '.join(prompt_abstracts.split(' '))
+            ###
+            ### STUDY
+            prompt = f'''
+                Write a {prompt_sentences_count}-sentence paragraph for an article about the following plant RELATIONSHIPS {prompt_abstracts_0}.
+                RELATIONSHIPS:
+                {prompt_relationships.strip()}
+                {prompt_abstracts_1}
+                RULES:
+                Reply only with the asked content.
+                Reply using a prose that flows well and reads natural.
+                Start with the following words: {plant_name_scientific_reference} .
+            '''.strip()
+                # Answer in a direct and straightforward way.
+                # Don't start with generic info, reply directly with the relationships asked.
+                # Don't start with generic info, reply directly with the relationships asked.
+                # Don't end with generic info, only write about the relationships asked.
+            # print(prompt)
+            # quit()
+            reply = llm.reply(prompt, model_filepath)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            print()
+            print('########################################################################')
+            print(reply)
+            print('########################################################################')
+            print()
+            input_data = {
+                'plants_morphologies': input_data,
+                'llm_intro': reply,
+            }
+            # quit()
+        else: 
+            input_data = {
+                'plants_morphologies': input_data,
+                'llm_intro': '',
+            }
+        # print(json.dumps(input_data, indent=4))
+        io.json_write(output_filepath, input_data)
+        # quit()
+
 
 def run():
+
+    morphology_augment_gen()
+    return
 
     schema_items = schema_herbs.data['items']
     for schema_item in schema_items: 

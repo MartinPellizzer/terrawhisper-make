@@ -24,6 +24,7 @@ data = {
                 },
             ],
         },
+
         {
             'process': False,
             'regen': False,
@@ -40,11 +41,12 @@ data = {
                 },
             ],
         },
+
         {
             'process': False,
             'regen': False,
             'table_name': 'plants_taxonomies',
-            'section_heading': 'Taxonomy',
+            'section_heading': 'Taxonomical Classification',
             'fields': [
                 {'field_name': 'plant_name_scientific',},
                 {'field_name': 'relationship_name',},
@@ -57,15 +59,24 @@ data = {
                 },
             ],
         },
+
         {
-            'process': True,
-            'regen': True,
+            'process': False,
+            'regen': False,
             'table_name': 'plants_distributions',
             'section_heading': 'Distribution',
             'fields': [
                 {'field_name': 'plant_name_scientific',},
                 {'field_name': 'relationship_name',},
                 {'field_name': 'locality_continent_name',},
+                {'field_name': 'locality_continent_code',},
+                {'field_name': 'locality_region_name', 'augment': 1,},
+                {'field_name': 'locality_region_code',},
+                {'field_name': 'locality_area_name', 'augment': 1,},
+                {'field_name': 'locality_area_code',},
+                {'field_name': 'locality_introduced',},
+                {'field_name': 'locality_extinct',},
+                {'field_name': 'locality_doubtful',},
             ],
             'sources': [
                 {
@@ -73,26 +84,17 @@ data = {
                 },
             ],
         },
+
         {
-            'process': False,
-            'regen': False,
-            'table_name': 'plants_traits',
-            'section_heading': 'Traits',
+            'process': True,
+            'regen': True,
+            'table_name': 'plants_growth_forms',
+            'section_heading': 'Morphologies',
             'fields': [
                 {'field_name': 'plant_name_scientific',},
                 {'field_name': 'relationship_name',},
-                {'field_name': 'trait_1_name',},
-                {'field_name': 'trait_2_name',},
-                {'field_name': 'trait_units',},
-                {'field_name': 'trait_type',},
-                {'field_name': 'trait_value',},
-                {'field_name': 'trait_category',},
-                {'field_name': 'plant_author',},
-                {'field_name': 'plant_genus',},
-                {'field_name': 'trait_agreement',},
-                {'field_name': 'trait_coeff_var',},
-                {'field_name': 'trait_n',},
-                {'field_name': 'trait_refs',},
+                {'field_name': 'growth_form_name',},
+                {'field_name': 'category', 'derive': 1, 'augment': 0},
             ],
             'sources': [
                 {
@@ -100,6 +102,43 @@ data = {
                 },
             ],
         },
+
+        {
+            'process': True,
+            'regen': True,
+            'table_name': 'plants_climbers',
+            'section_heading': 'Morphologies',
+            'fields': [
+                {'field_name': 'plant_name_scientific',},
+                {'field_name': 'relationship_name',},
+                {'field_name': 'climber_name',},
+                {'field_name': 'category', 'derive': 1, 'augment': 0},
+            ],
+            'sources': [
+                {
+                    'source_name': 'gift',
+                },
+            ],
+        },
+
+        {
+            'process': True,
+            'regen': True,
+            'table_name': 'plants_heights',
+            'section_heading': 'Morphologies',
+            'fields': [
+                {'field_name': 'plant_name_scientific',},
+                {'field_name': 'relationship_name',},
+                {'field_name': 'height_name',},
+                {'field_name': 'category', 'derive': 1, 'augment': 0},
+            ],
+            'sources': [
+                {
+                    'source_name': 'gift',
+                },
+            ],
+        },
+
         {
             'process': False,
             'regen': False,
@@ -213,3 +252,52 @@ data = {
     ],
 }
 
+"""
+{
+    'process': True,
+    'regen': True,
+    'table_name': 'plants_traits',
+    'section_heading': 'Traits',
+    'fields': [
+        {'field_name': 'plant_name_scientific',},
+        {'field_name': 'relationship_name',},
+        {'field_name': 'trait_1_name', 'augment': 0},
+        {'field_name': 'trait_2_name', 'derive': 1, 'augment': 0},
+        {'field_name': 'trait_units', 'derive': 1, 'augment': 0},
+        {'field_name': 'trait_type', 'derive': 1,},
+        {'field_name': 'trait_value', 'derive': 1, 'augment': 0},
+        {'field_name': 'trait_category', 'derive': 1,},
+        {'field_name': 'plant_author', 'derive': 1,},
+        {'field_name': 'plant_genus', 'derive': 1,},
+        {'field_name': 'trait_agreement', 'derive': 1,},
+        {'field_name': 'trait_coeff_var', 'derive': 1,},
+        {'field_name': 'trait_n', 'derive': 0,},
+        {'field_name': 'trait_refs', 'derive': 0,},
+    ],
+    'sources': [
+        {
+            'source_name': 'gift',
+        },
+    ],
+},
+"""
+
+"""
+        {
+            'process': True,
+            'regen': True,
+            'table_name': 'plants_traits',
+            'section_heading': 'Traits',
+            'fields': [
+                {'field_name': 'plant_name_scientific',},
+                {'field_name': 'relationship_name',},
+                {'field_name': 'trait_name', 'augment': 0},
+                {'field_name': 'category', 'derive': 1, 'augment': 0},
+            ],
+            'sources': [
+                {
+                    'source_name': 'gift',
+                },
+            ],
+        },
+"""
