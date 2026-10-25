@@ -1,7 +1,7 @@
 from llama_cpp import Llama
 
 llm = None
-def reply(prompt, model_filepath='', temperature=1, n_ctx=16386, max_tokens=1024):
+def reply(prompt, model_filepath='', temperature=1, n_ctx=16386, max_tokens=2048):
     global llm
     if model_filepath == '':
         # model_filepath = '/home/ubuntu/vault-tmp/llm/Qwen3-8B-Q4_K_M.gguf'

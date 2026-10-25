@@ -371,7 +371,7 @@ def schema_observe_create(schema_item):
             {schema_entity_2_val}_reference TEXT NOT NULL,
             {schema_entity_2_val}_reference_normalize TEXT,
             {schema_relationship_val}_raw TEXT,
-{fields_vals.strip()}
+            {fields_vals.strip()}
             source_name TEXT NOT NULL,
             source_acronym TEXT,
             reference_id TEXT,
@@ -405,6 +405,7 @@ def run():
     if 1:
         schema_items = schema_herbs.data['items']
         for schema_item in schema_items: 
+            if schema_item['process'] != True: continue
             schema_observe_create(schema_item)
 
     if 0:
@@ -415,10 +416,11 @@ def run():
 
     # quit()
 
+    # observations_table_plants_plants_parts_create(regen=True)
+
     if 0:
         # observations_table_plants_compounds_create(regen=True)
         # observations_table_plants_preparations_create(regen=True)
-        observations_table_plants_plants_parts_create(regen=True)
         observations_table_plants_conditions_create(regen=True)
         # observations_table_plants_chemicals_create(regen=True)
         observations_table_plants_activities_create(regen=True)

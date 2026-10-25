@@ -18,6 +18,21 @@ def masterize_plants_get_all():
     conn.close()
     return items
 
+def masterize_plants_get_by_name_reference(plant_name_scientific_reference):
+    db_filepath = f'{HUB_HERBS_FOLDERPATH}/masterize/master.db'
+    conn = sqlite3.connect(db_filepath)
+    conn.row_factory = sqlite3.Row
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT *
+        FROM plants
+        WHERE plant_name_scientific_reference = ?
+    """, (plant_name_scientific_reference,))
+    items = cur.fetchall()
+    items = [dict(item) for item in items]
+    conn.close()
+    return items
+
 def masterize_activities_get_all():
     db_filepath = f'{HUB_HERBS_FOLDERPATH}/masterize/master.db'
     conn = sqlite3.connect(db_filepath)

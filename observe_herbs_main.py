@@ -775,6 +775,7 @@ def run():
     if 1:
         schema_items = schema_herbs.data['items']
         for schema_item in schema_items: 
+            if schema_item['process'] != True: continue
             schema_observe_add(schema_item)
 
     if 0:
@@ -782,7 +783,8 @@ def run():
         for schema_item in schema_items: 
             if schema_item['table_name'] == 'plants_growth_forms':
                 schema_observe_add(schema_item)
-                quit()
+
+    # observations_table_plants_plants_parts_add(source_foldername='pubmed')
 
     if 0:
         # observations_table_plants_compounds_add(source_foldername='pubmed')
@@ -791,7 +793,6 @@ def run():
         observations_table_plants_activities_add(source_foldername='pubmed')
 
         # observations_table_plants_preparations_add(source_foldername='pubmed')
-        observations_table_plants_plants_parts_add(source_foldername='pubmed')
         observations_table_plants_conditions_add(source_foldername='pubmed')
         # observations_table_plants_chemicals_add(source_foldername='drduke')
         # observations_table_plants_chemicals_add(source_foldername='pubmed')

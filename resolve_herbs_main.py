@@ -54,8 +54,8 @@ def resolve_preparations(source_foldername):
     # print(json.dumps(resolved_data, indent=4))
 
 def resolve_plants_parts(source_foldername):
-    input_folderpath = f'{HUB_FOLDERPATH}/normalize/{source_foldername}/plants_parts/json'
-    output_folderpath = f'{HUB_FOLDERPATH}/resolve/{source_foldername}/plants_parts/json'
+    input_folderpath = f'{HUB_FOLDERPATH}/normalize/{source_foldername}/plants_plants_parts/json'
+    output_folderpath = f'{HUB_FOLDERPATH}/resolve/{source_foldername}/plants_plants_parts/json'
     try: shutil.rmtree(output_folderpath)
     except: pass
     os.makedirs(output_folderpath, exist_ok=True)
@@ -65,6 +65,7 @@ def resolve_plants_parts(source_foldername):
     wcvp_conn.row_factory = sqlite3.Row
     ###
     input_filenames = os.listdir(input_folderpath)
+    last = []
     for i, input_filename in enumerate(input_filenames[:]):
         print(f'RESOLVE PLANTS PARTS {i}/{len(input_filenames)}')
         output_filepath = f'{output_folderpath}/{input_filename}'
@@ -76,9 +77,9 @@ def resolve_plants_parts(source_foldername):
         for input_item in input_data:
             # print(json.dumps(input_item, indent=True))
             # quit()
-            plant_name_raw_normalize = input_item['plant_name_raw_normalize']
+            plant_name_scientific_raw_normalize = input_item['plant_name_scientific_raw_normalize']
             ### RESOLVE PLANT (WCVP)
-            wcvp_row = resolve_utils.resolve_plant_accepted(wcvp_conn, plant_name_raw_normalize)
+            wcvp_row = resolve_utils.resolve_plant_accepted(wcvp_conn, plant_name_scientific_raw_normalize)
             ### RESOLVE PLANT PART (...)
             plant_parts_canon = [
                 {
@@ -131,15 +132,15 @@ def resolve_plants_parts(source_foldername):
                 input_item['plant_part_name_reference'] = plant_part_canon
                 input_item['plant_part_name_reference_normalize'] = plant_part_canon
                 resolved_data.append(input_item)
-                # if plant_name_raw_norm == 'panax ginseng':
-                    # print(json.dumps(input_item, indent=True))
-                    # quit()
-                # print(json.dumps(input_item, indent=True))
+                # print(json.dumps(input_item, indent=4))
                 # quit()
         if resolved_data != []:
             io.json_write(output_filepath, resolved_data)
+            # print(json.dumps(resolved_data, indent=4))
+            # quit()
+            last = resolved_data
     wcvp_conn.close()
-    # print(json.dumps(resolved_data, indent=4))
+    print(json.dumps(last, indent=4))
 
 def resolve_chemicals(source_foldername):
     input_folderpath = f'{HUB_FOLDERPATH}/normalize/{source_foldername}/chemicals/json'
@@ -421,8 +422,8 @@ def resolve_distributions(source_foldername):
     # quit()
 
 def resolve_activities(source_foldername):
-    input_folderpath = f'{HUB_FOLDERPATH}/normalize/{source_foldername}/activities/json'
-    output_folderpath = f'{HUB_FOLDERPATH}/resolve/{source_foldername}/activities/json'
+    input_folderpath = f'{HUB_FOLDERPATH}/normalize/{source_foldername}/plants_activities/json'
+    output_folderpath = f'{HUB_FOLDERPATH}/resolve/{source_foldername}/plants_activities/json'
     try: shutil.rmtree(output_folderpath)
     except: pass
     os.makedirs(output_folderpath, exist_ok=True)
@@ -437,7 +438,7 @@ def resolve_activities(source_foldername):
     input_filenames = os.listdir(input_folderpath)
     last_resolved_data = []
     for i, input_filename in enumerate(input_filenames[:]):
-        print(f'RESOLVE PLANTS ACTIVITIES {i}/{len(input_filenames)}')
+        print(f'RESOLVE PLANTS plants_activities {i}/{len(input_filenames)}')
         output_filepath = f'{output_folderpath}/{input_filename}'
         input_filepath = f'{input_folderpath}/{input_filename}'
         if os.path.exists(output_filepath): continue
@@ -447,27 +448,28 @@ def resolve_activities(source_foldername):
         for input_item in input_data[:]:
             # print(json.dumps(input_item, indent=True))
             # quit()
-            plant_name_normalize = input_item['plant_name_normalize']
-            activity_name_normalize = input_item['activity_name_normalize']
-            # print(plant_name_normalize, '->', activity_name_normalize)
+            plant_name_scientific_raw_normalize = input_item['plant_name_scientific_raw_normalize']
+            activity_name_raw_normalize = input_item['activity_name_raw_normalize']
+            # print(plant_name_scientific_raw_normalize, '->', activity_name_raw_normalize)
             # continue
             # quit()
             ### RESOLVE PLANT (WCVP)
-            wcvp_row = resolve_utils.resolve_plant_accepted(wcvp_conn, plant_name_normalize)
+            wcvp_row = resolve_utils.resolve_plant_accepted(wcvp_conn, plant_name_scientific_raw_normalize)
             ### RESOLVE ACTIVITY (DRDUKE)
             drduke_cur = drduke_conn.cursor()
             drduke_cur.execute("""
                 SELECT *
                 FROM drduke_activities_names
                 WHERE activity_name_normalize = ?
-            """, (activity_name_normalize,))
+            """, (activity_name_raw_normalize,))
             # drduke_row = drduke_cur.fetchone()
             drduke_rows = drduke_cur.fetchall()
             drduke_items = [dict(row) for row in drduke_rows]
             # if drduke_items != []:
                 # print(drduke_items)
                 # quit()
-            # continue
+            # else:
+                # continue
             ###
             if wcvp_row and drduke_items != []:
                 # print(wcvp_row)
@@ -570,18 +572,22 @@ def resolve_taxonomies(source_foldername):
     print(json.dumps(input_item, indent=4))
 
 def resolve_compounds(source_foldername):
-    input_folderpath = f'{HUB_FOLDERPATH}/normalize/{source_foldername}/compounds/json'
-    output_folderpath = f'{HUB_FOLDERPATH}/resolve/{source_foldername}/compounds/json'
+    input_folderpath = f'{HUB_FOLDERPATH}/normalize/{source_foldername}/plants_compounds/json'
+    output_folderpath = f'{HUB_FOLDERPATH}/resolve/{source_foldername}/plants_compounds/json'
     try: shutil.rmtree(output_folderpath)
     except: pass
     os.makedirs(output_folderpath, exist_ok=True)
     ###
-    wcvp_filepath = f'{HUB_FOLDERPATH}/reference/wcvp/wcvp.db'
-    wcvp_conn = sqlite3.connect(wcvp_filepath)
+    wcvp_folderpath = f'{HUB_FOLDERPATH}/reference/wcvp/wcvp.db'
+    pubchem_folderpath = f'{HUB_FOLDERPATH}/reference/pubchem/pubchem.db'
+    wcvp_conn = sqlite3.connect(wcvp_folderpath)
     wcvp_conn.row_factory = sqlite3.Row
+    pubchem_conn = sqlite3.connect(pubchem_folderpath)
+    pubchem_conn.row_factory = sqlite3.Row
+    ###
     input_filenames = os.listdir(input_folderpath)
     for i, input_filename in enumerate(input_filenames[:]):
-        print(f'RESOLVE PLANTS COMPOUNDS {i}/{len(input_filenames)}')
+        print(f'RESOLVE PLANTS plants_compounds {i}/{len(input_filenames)}')
         output_filepath = f'{output_folderpath}/{input_filename}'
         input_filepath = f'{input_folderpath}/{input_filename}'
         if os.path.exists(output_filepath): continue
@@ -589,25 +595,45 @@ def resolve_compounds(source_foldername):
         input_data = io.json_read(input_filepath)
         resolved_data = []
         for input_item in input_data:
-            # print(json.dumps(input_item, indent=True))
+            # print(json.dumps(input_item, indent=4))
             # quit()
+            resolved_item = input_item
             plant_name_scientific_raw_normalize = input_item['plant_name_scientific_raw_normalize']
+            compound_name_raw_normalize = input_item['compound_name_raw_normalize']
+            if compound_name_raw_normalize == 'null': continue
             ### RESOLVE PLANT (WCVP)
             wcvp_row = resolve_utils.resolve_plant_accepted(wcvp_conn, plant_name_scientific_raw_normalize)
+            ### RESOLVE CHEMICAL (PUBCHEM)
+            pubchem_cur = pubchem_conn.cursor()
+            pubchem_cur.execute("""
+                SELECT *
+                FROM pubchem_cid_synonyms
+                WHERE alias_normalize = ?
+            """, (compound_name_raw_normalize,))
+            # pubchem_row = pubchem_cur.fetchone()
+            pubchem_rows = pubchem_cur.fetchall()
+            pubchem_items = [dict(row) for row in pubchem_rows]
             ###
-            if wcvp_row:
+            if wcvp_row and pubchem_items:
                 wcvp_item = dict(wcvp_row)
+                pubchem_item = pubchem_items[0]
+                # print(json.dumps(wcvp_item, indent=4))
+                # print(json.dumps(pubchem_item, indent=4))
+                # quit()
                 input_item['plant_name_scientific_reference'] = wcvp_item['taxon_name']
                 input_item['plant_name_scientific_reference_normalize'] = wcvp_item['taxon_name_normalized']
-                input_item['compound_name_reference'] = input_item['compound_name_raw']
-                input_item['compound_name_reference_normalize'] = input_item['compound_name_raw_normalize']
+                input_item['compound_name_reference'] = pubchem_item['alias']
+                input_item['compound_name_reference_normalize'] = pubchem_item['alias_normalize']
                 resolved_data.append(input_item)
-                # print(json.dumps(input_item, indent=4))
+                # print(json.dumps(input_item, indent=True))
                 # quit()
         if resolved_data != []:
             io.json_write(output_filepath, resolved_data)
     wcvp_conn.close()
-    # print(json.dumps(resolved_data, indent=4))
+    pubchem_conn.close()
+    print(json.dumps(resolved_data[0], indent=True))
+    # quit()
+
 
 def resolve_gen(entity_1, entity_2, source_foldername, output_foldername):
     input_folderpath = f'{HUB_FOLDERPATH}/normalize/{source_foldername}/{output_foldername}/json'
@@ -703,18 +729,212 @@ def schema_resolve_gen(schema_item):
     wcvp_conn.close()
     print(json.dumps(last, indent=4))
 
+def studies_resolve(source_foldername):
+    input_folderpath = f'{HUB_FOLDERPATH}/normalize/{source_foldername}/studies/json'
+    output_folderpath = f'{HUB_FOLDERPATH}/resolve/{source_foldername}/studies/json'
+    try: shutil.rmtree(output_folderpath)
+    except: pass
+    os.makedirs(output_folderpath, exist_ok=True)
+    ###
+    input_filenames = os.listdir(input_folderpath)
+    last_resolved_data = []
+    for i, input_filename in enumerate(input_filenames[:]):
+        print(f'RESOLVE PLANTS studies {i}/{len(input_filenames)}')
+        output_filepath = f'{output_folderpath}/{input_filename}'
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        if os.path.exists(output_filepath): continue
+        ###
+        input_data = io.json_read(input_filepath)
+        resolved_data = []
+        for input_item in input_data[:]:
+            # print(json.dumps(input_item, indent=True))
+            # quit()
+            input_item['study_title_reference_normalize'] = input_item['study_title_raw_normalize']
+            resolved_data.append(input_item)
+            # print(json.dumps(input_item, indent=True))
+            # quit()
+        if resolved_data != []:
+            io.json_write(output_filepath, resolved_data)
+            last_resolved_data = resolved_data
+    print(json.dumps(last_resolved_data[0], indent=4))
+    # quit()
+
+def plants_resolve(source_foldername):
+    input_folderpath = f'{HUB_FOLDERPATH}/normalize/{source_foldername}/plants/json'
+    output_folderpath = f'{HUB_FOLDERPATH}/resolve/{source_foldername}/plants/json'
+    try: shutil.rmtree(output_folderpath)
+    except: pass
+    os.makedirs(output_folderpath, exist_ok=True)
+    ###
+    wcvp_folderpath = f'{HUB_FOLDERPATH}/reference/wcvp/wcvp.db'
+    wcvp_conn = sqlite3.connect(wcvp_folderpath)
+    wcvp_conn.row_factory = sqlite3.Row
+    ###
+    input_filenames = os.listdir(input_folderpath)
+    last_resolved_data = []
+    for i, input_filename in enumerate(input_filenames[:]):
+        print(f'RESOLVE PLANTS plants {i}/{len(input_filenames)}')
+        output_filepath = f'{output_folderpath}/{input_filename}'
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        if os.path.exists(output_filepath): continue
+        ###
+        input_data = io.json_read(input_filepath)
+        resolved_data = []
+        for input_item in input_data[:]:
+            # print(json.dumps(input_item, indent=True))
+            # quit()
+            plant_name_scientific_raw_normalize = input_item['plant_name_scientific_raw_normalize']
+            wcvp_row = resolve_utils.resolve_plant_accepted(wcvp_conn, plant_name_scientific_raw_normalize)
+            ###
+            if wcvp_row:
+                wcvp_item = dict(wcvp_row)
+                input_item['plant_name_scientific_reference'] = wcvp_item['taxon_name']
+                input_item['plant_name_scientific_reference_normalize'] = wcvp_item['taxon_name_normalized']
+                resolved_data.append(input_item)
+                # print(json.dumps(input_item, indent=True))
+                # quit()
+        if resolved_data != []:
+            io.json_write(output_filepath, resolved_data)
+            last_resolved_data = resolved_data
+    wcvp_conn.close()
+    print(json.dumps(last_resolved_data[0], indent=4))
+    # quit()
+
+def activities_resolve(source_foldername):
+    input_folderpath = f'{HUB_FOLDERPATH}/normalize/{source_foldername}/activities/json'
+    output_folderpath = f'{HUB_FOLDERPATH}/resolve/{source_foldername}/activities/json'
+    try: shutil.rmtree(output_folderpath)
+    except: pass
+    os.makedirs(output_folderpath, exist_ok=True)
+    ###
+    drduke_folderpath = f'{HUB_FOLDERPATH}/reference/drduke/drduke.db'
+    drduke_conn = sqlite3.connect(drduke_folderpath)
+    drduke_conn.row_factory = sqlite3.Row
+    ###
+    input_filenames = os.listdir(input_folderpath)
+    last_resolved_data = []
+    for i, input_filename in enumerate(input_filenames[:]):
+        print(f'RESOLVE HERBS activities {i}/{len(input_filenames)}')
+        output_filepath = f'{output_folderpath}/{input_filename}'
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        if os.path.exists(output_filepath): continue
+        ###
+        input_data = io.json_read(input_filepath)
+        resolved_data = []
+        for input_item in input_data[:]:
+            # print(json.dumps(input_item, indent=True))
+            # quit()
+            ###
+            activity_name_raw_normalize = input_item['activity_name_raw_normalize']
+            drduke_cur = drduke_conn.cursor()
+            drduke_cur.execute("""
+                SELECT *
+                FROM drduke_activities_names
+                WHERE activity_name_normalize = ?
+            """, (activity_name_raw_normalize,))
+            drduke_rows = drduke_cur.fetchall()
+            drduke_items = [dict(row) for row in drduke_rows]
+            ###
+            if drduke_rows:
+                drduke_item = drduke_items[0]
+                input_item['activity_name_reference'] = drduke_item['activity_name_raw']
+                input_item['activity_name_reference_normalize'] = drduke_item['activity_name_normalize']
+                resolved_data.append(input_item)
+                # print(json.dumps(input_item, indent=4))
+                # quit()
+        if resolved_data != []:
+            io.json_write(output_filepath, resolved_data)
+            last_resolved_data = resolved_data
+    drduke_conn.close()
+    print(json.dumps(last_resolved_data[0], indent=4))
+    # quit()
+
+def plants_activities_resolve(source_foldername):
+    input_folderpath = f'{HUB_FOLDERPATH}/normalize/{source_foldername}/plants_activities/json'
+    output_folderpath = f'{HUB_FOLDERPATH}/resolve/{source_foldername}/plants_activities/json'
+    try: shutil.rmtree(output_folderpath)
+    except: pass
+    os.makedirs(output_folderpath, exist_ok=True)
+    ###
+    wcvp_folderpath = f'{HUB_FOLDERPATH}/reference/wcvp/wcvp.db'
+    wcvp_conn = sqlite3.connect(wcvp_folderpath)
+    wcvp_conn.row_factory = sqlite3.Row
+    ###
+    drduke_folderpath = f'{HUB_FOLDERPATH}/reference/drduke/drduke.db'
+    drduke_conn = sqlite3.connect(drduke_folderpath)
+    drduke_conn.row_factory = sqlite3.Row
+    ###
+    input_filenames = os.listdir(input_folderpath)
+    last_resolved_data = []
+    for i, input_filename in enumerate(input_filenames[:]):
+        print(f'RESOLVE HERBS plants_activities {i}/{len(input_filenames)}')
+        output_filepath = f'{output_folderpath}/{input_filename}'
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        if os.path.exists(output_filepath): continue
+        ###
+        input_data = io.json_read(input_filepath)
+        resolved_data = []
+        for input_item in input_data[:]:
+            # print(json.dumps(input_item, indent=True))
+            # quit()
+            plant_name_scientific_raw_normalize = input_item['plant_name_scientific_raw_normalize']
+            wcvp_row = resolve_utils.resolve_plant_accepted(wcvp_conn, plant_name_scientific_raw_normalize)
+            ###
+            activity_name_raw_normalize = input_item['activity_name_raw_normalize']
+            drduke_cur = drduke_conn.cursor()
+            drduke_cur.execute("""
+                SELECT *
+                FROM drduke_activities_names
+                WHERE activity_name_normalize = ?
+            """, (activity_name_raw_normalize,))
+            drduke_rows = drduke_cur.fetchall()
+            drduke_items = [dict(row) for row in drduke_rows]
+            ###
+            if wcvp_row and drduke_rows:
+                wcvp_item = dict(wcvp_row)
+                input_item['plant_name_scientific_reference'] = wcvp_item['taxon_name']
+                input_item['plant_name_scientific_reference_normalize'] = wcvp_item['taxon_name_normalized']
+                ###
+                drduke_item = drduke_items[0]
+                input_item['activity_name_reference'] = drduke_item['activity_name_raw']
+                input_item['activity_name_reference_normalize'] = drduke_item['activity_name_normalize']
+                resolved_data.append(input_item)
+                # print(json.dumps(input_item, indent=4))
+                # quit()
+        if resolved_data != []:
+            io.json_write(output_filepath, resolved_data)
+            last_resolved_data = resolved_data
+    drduke_conn.close()
+    print(json.dumps(last_resolved_data[0], indent=4))
+    # quit()
+
 def run():
     print('RESOLVE')
+
+    studies_resolve(source_foldername='pubmed')
+
+    # plants_resolve(source_foldername='pubmed')
+    # activities_resolve(source_foldername='pubmed')
+    # plants_activities_resolve(source_foldername='pubmed')
+    return
+    quit()
+
+    if 0:
+        resolve_activities('pubmed')
+        resolve_plants_parts('pubmed')
+        resolve_compounds('pubmed')
 
     schema_items = schema_herbs.data['items']
     for schema_item in schema_items: 
         if schema_item['process'] != True: continue
+        if schema_item['table_name'] == 'plants_activities': continue
+        if schema_item['table_name'] == 'plants_plants_parts': continue
+        if schema_item['table_name'] == 'plants_compounds': continue
         schema_resolve_gen(schema_item)
 
     if 0:
         # resolve_gen('plant_name_scientific', 'compound_name', 'pubmed', 'compounds')
         # resolve_gen('plant_name_scientific', 'preparation_name', 'pubmed', 'preparations')
-        resolve_gen('plant_name_scientific', 'plant_part_name', 'pubmed', 'plants_parts')
         resolve_gen('plant_name_scientific', 'condition_name', 'pubmed', 'conditions')
         resolve_gen('plant_name_scientific', 'activity_name', 'pubmed', 'activities')
 

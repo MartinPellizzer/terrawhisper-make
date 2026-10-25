@@ -10,11 +10,61 @@ from lib import llm
 
 HUB_FOLDERPATH = f'''{g.DATA_FOLDERPATH}/herbs'''
 
+def masterize_table_studies_add(source_foldername):
+    table_name = 'studies'
+    input_folderpath = f'{HUB_FOLDERPATH}/resolve/{source_foldername}/{table_name}/json'
+    output_folderpath = f'{HUB_FOLDERPATH}/database'
+    db_filepath = f'{output_folderpath}/terra.db'
+    ###
+    input_filenames = os.listdir(input_folderpath)
+    all_data = []
+    for i, input_filename in enumerate(input_filenames[:]):
+        print(f'STUDIES - {i}/{len(input_filenames)}')
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        input_data = io.json_read(input_filepath)
+        for input_item in input_data:
+            all_data.append(input_item)
+            # print(json.dumps(input_item, indent=4))
+            # quit()
+    # print(json.dumps(all_data[0], indent=4))
+    # quit()
+    ###
+    conn = sqlite3.connect(db_filepath)
+    cur = conn.cursor()
+    cur.executemany(
+        f"""
+            INSERT OR IGNORE INTO {table_name} (
+                study_pmid, 
+                study_title
+            )
+            VALUES (?, ?)
+        """,
+        [
+            (
+                item.get("study_pmid"),
+                item.get("study_title_raw"),
+            )
+            for item in all_data
+        ]
+    )
+    conn.commit()
+    conn.row_factory = sqlite3.Row
+    cursor = conn.execute(f'''
+        SELECT * 
+        FROM {table_name}
+    ''')
+    rows = cursor.fetchall()
+    items = [dict(row) for row in rows]
+    for item in items[:10]:
+        print(json.dumps(item, indent=4))
+    print(len(items))
+    conn.close()
+
 def masterize_table_plants_add(source_foldername, subfoldername):
     table_name = 'plants'
     input_folderpath = f'{HUB_FOLDERPATH}/resolve/{source_foldername}/{subfoldername}/json'
-    output_folderpath = f'{HUB_FOLDERPATH}/masterize'
-    db_filepath = f'{output_folderpath}/master.db'
+    output_folderpath = f'{HUB_FOLDERPATH}/database'
+    db_filepath = f'{output_folderpath}/terra.db'
     ###
     input_filenames = os.listdir(input_folderpath)
     all_data = []
@@ -48,9 +98,16 @@ def masterize_table_plants_add(source_foldername, subfoldername):
         ]
     )
     conn.commit()
-    rows = conn.execute(f"SELECT * FROM {table_name}")
-    for row in list(rows)[:10]:
-        print(row)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.execute(f'''
+        SELECT * 
+        FROM {table_name}
+    ''')
+    rows = cursor.fetchall()
+    items = [dict(row) for row in rows]
+    for item in items[:10]:
+        print(json.dumps(item, indent=4))
+    print(len(items))
     conn.close()
 
 def masterize_table_plants_parts_add(source_foldername, subfoldername):
@@ -96,9 +153,9 @@ def masterize_table_plants_parts_add(source_foldername, subfoldername):
 
 def masterize_table_activities_add(source_foldername, subfoldername):
     table_name = 'activities'
-    output_folderpath = f'{HUB_FOLDERPATH}/masterize'
+    output_folderpath = f'{HUB_FOLDERPATH}/database'
     input_folderpath = f'{HUB_FOLDERPATH}/resolve/{source_foldername}/{subfoldername}/json'
-    db_filepath = f'{output_folderpath}/master.db'
+    db_filepath = f'{output_folderpath}/terra.db'
     ###
     input_filenames = os.listdir(input_folderpath)
     all_data = []
@@ -130,9 +187,16 @@ def masterize_table_activities_add(source_foldername, subfoldername):
         ]
     )
     conn.commit()
-    rows = conn.execute(f"SELECT * FROM {table_name}")
-    for row in list(rows)[:10]:
-        print(row)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.execute(f'''
+        SELECT * 
+        FROM {table_name}
+    ''')
+    rows = cursor.fetchall()
+    items = [dict(row) for row in rows]
+    for item in items[:10]:
+        print(json.dumps(item, indent=4))
+    print(len(items))
     conn.close()
 
 def masterize_table_chemicals_add(source_foldername, subfoldername):
@@ -179,6 +243,10 @@ def masterize_table_chemicals_add(source_foldername, subfoldername):
 def run():
     print('MASTERIZE')
 
+    # masterize_table_studies_add(source_foldername='pubmed')
+    # masterize_table_plants_add(source_foldername='pubmed', subfoldername='plants')
+    # masterize_table_activities_add(source_foldername='pubmed', subfoldername='activities')
+
     if 0:
         # masterize_table_plants_add(source_foldername='drduke', subfoldername='activities')
         # masterize_table_plants_add(source_foldername='drduke', subfoldername='chemicals')
@@ -191,8 +259,9 @@ def run():
         masterize_table_plants_add(source_foldername='pubmed', subfoldername='plants_parts')
         masterize_table_plants_add(source_foldername='pubmed', subfoldername='preparations')
 
+    return
+
     masterize_table_activities_add(source_foldername='drduke', subfoldername='activities')
-    masterize_table_activities_add(source_foldername='pubmed', subfoldername='activities')
 
     # masterize_table_chemicals_add(source_foldername='drduke', subfoldername='chemicals')
     masterize_table_chemicals_add(source_foldername='pubmed', subfoldername='chemicals')

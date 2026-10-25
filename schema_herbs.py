@@ -1,5 +1,63 @@
 ### TODO: augment -> create paragraph with the more frequent info, not the first one (ex. the more frequent activities, not the first ones founded)
 
+morphology_data = {
+    'items': [
+        {
+            'process': False,
+            'regen': False,
+            'table_name': 'plants_growth_forms',
+            'section_heading': 'Morphologies',
+            'fields': [
+                {'field_name': 'plant_name_scientific',},
+                {'field_name': 'relationship_name',},
+                {'field_name': 'growth_form_name',},
+                {'field_name': 'category', 'derive': 1, 'augment': 0},
+            ],
+            'sources': [
+                {
+                    'source_name': 'gift',
+                },
+            ],
+        },
+
+        {
+            'process': False,
+            'regen': False,
+            'table_name': 'plants_climbers',
+            'section_heading': 'Morphologies',
+            'fields': [
+                {'field_name': 'plant_name_scientific',},
+                {'field_name': 'relationship_name',},
+                {'field_name': 'climber_name',},
+                {'field_name': 'category', 'derive': 1, 'augment': 0},
+            ],
+            'sources': [
+                {
+                    'source_name': 'gift',
+                },
+            ],
+        },
+
+        {
+            'process': False,
+            'regen': False,
+            'table_name': 'plants_heights',
+            'section_heading': 'Morphologies',
+            'fields': [
+                {'field_name': 'plant_name_scientific',},
+                {'field_name': 'relationship_name',},
+                {'field_name': 'height_name',},
+                {'field_name': 'category', 'derive': 1, 'augment': 0},
+            ],
+            'sources': [
+                {
+                    'source_name': 'gift',
+                },
+            ],
+        },
+    ]
+}
+
 data = {
     'items': [
         {
@@ -86,74 +144,14 @@ data = {
         },
 
         {
-            'process': True,
-            'regen': True,
-            'table_name': 'plants_growth_forms',
-            'section_heading': 'Morphologies',
-            'fields': [
-                {'field_name': 'plant_name_scientific',},
-                {'field_name': 'relationship_name',},
-                {'field_name': 'growth_form_name',},
-                {'field_name': 'category', 'derive': 1, 'augment': 0},
-            ],
-            'sources': [
-                {
-                    'source_name': 'gift',
-                },
-            ],
-        },
-
-        {
-            'process': True,
-            'regen': True,
-            'table_name': 'plants_climbers',
-            'section_heading': 'Morphologies',
-            'fields': [
-                {'field_name': 'plant_name_scientific',},
-                {'field_name': 'relationship_name',},
-                {'field_name': 'climber_name',},
-                {'field_name': 'category', 'derive': 1, 'augment': 0},
-            ],
-            'sources': [
-                {
-                    'source_name': 'gift',
-                },
-            ],
-        },
-
-        {
-            'process': True,
-            'regen': True,
-            'table_name': 'plants_heights',
-            'section_heading': 'Morphologies',
-            'fields': [
-                {'field_name': 'plant_name_scientific',},
-                {'field_name': 'relationship_name',},
-                {'field_name': 'height_name',},
-                {'field_name': 'category', 'derive': 1, 'augment': 0},
-            ],
-            'sources': [
-                {
-                    'source_name': 'gift',
-                },
-            ],
-        },
-
-        {
             'process': False,
             'regen': False,
             'table_name': 'plants_activities',
             'section_heading': 'Biological Activities',
             'fields': [
-                {
-                    'field_name': 'plant_name_scientific',
-                },
-                {
-                    'field_name': 'relationship_name',
-                },
-                {
-                    'field_name': 'activity_name',
-                },
+                {'field_name': 'plant_name_scientific',},
+                {'field_name': 'relationship_name',},
+                {'field_name': 'activity_name',},
             ],
             'sources': [
                 {
@@ -227,21 +225,16 @@ data = {
                 },
             ],
         },
+
         {
             'process': False,
             'regen': False,
             'table_name': 'plants_plants_parts',
             'section_heading': 'Parts used',
             'fields': [
-                {
-                    'field_name': 'plant_name_scientific',
-                },
-                {
-                    'field_name': 'relationship_name',
-                },
-                {
-                    'field_name': 'plant_part_name',
-                },
+                {'field_name': 'plant_name_scientific',},
+                {'field_name': 'relationship_name',},
+                {'field_name': 'plant_part_name',},
             ],
             'sources': [
                 {
@@ -251,6 +244,9 @@ data = {
         },
     ],
 }
+
+for morphology_item in morphology_data['items']:
+    data['items'].append(morphology_item)
 
 """
 {

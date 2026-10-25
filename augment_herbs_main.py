@@ -829,8 +829,8 @@ def morphology_augment_gen():
 
 def run():
 
-    morphology_augment_gen()
-    return
+    # morphology_augment_gen()
+    # return
 
     schema_items = schema_herbs.data['items']
     for schema_item in schema_items: 

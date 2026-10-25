@@ -9,10 +9,10 @@ from lib import io
 
 HUB_FOLDERPATH = f'''{g.DATA_FOLDERPATH}/herbs'''
 
-def master_table_plants_create(regen=False):
-    table_name = 'plants'
-    output_folderpath = f'{HUB_FOLDERPATH}/masterize'
-    db_filepath = f'{output_folderpath}/master.db'
+def master_table_studies_create(regen=False):
+    table_name = 'studies'
+    output_folderpath = f'{HUB_FOLDERPATH}/database'
+    db_filepath = f'{output_folderpath}/terra.db'
     ###
     os.makedirs(output_folderpath, exist_ok=True)
     conn = sqlite3.connect(db_filepath)
@@ -21,7 +21,33 @@ def master_table_plants_create(regen=False):
         cur.execute(f"DROP TABLE IF EXISTS {table_name}")
     cur.execute(f"""
         CREATE TABLE IF NOT EXISTS {table_name} (
-            id INTEGER PRIMARY KEY,
+            study_id INTEGER PRIMARY KEY,
+            study_pmid TEXT NOT NULL UNIQUE,
+            study_title TEXT NOT NULL UNIQUE
+        );
+    """)
+    conn.execute("PRAGMA journal_mode = WAL;")
+    conn.execute("PRAGMA synchronous = OFF;")
+    conn.execute("PRAGMA temp_store = MEMORY;")
+    ###
+    cur.execute(f"CREATE INDEX IF NOT EXISTS idx_{table_name}_study_pmid ON {table_name}(study_pmid)")
+    cur.execute(f"CREATE INDEX IF NOT EXISTS idx_{table_name}_study_title ON {table_name}(study_title)")
+    conn.commit()
+    conn.close()
+
+def master_table_plants_create(regen=False):
+    table_name = 'plants'
+    output_folderpath = f'{HUB_FOLDERPATH}/database'
+    db_filepath = f'{output_folderpath}/terra.db'
+    ###
+    os.makedirs(output_folderpath, exist_ok=True)
+    conn = sqlite3.connect(db_filepath)
+    cur = conn.cursor()
+    if regen:
+        cur.execute(f"DROP TABLE IF EXISTS {table_name}")
+    cur.execute(f"""
+        CREATE TABLE IF NOT EXISTS {table_name} (
+            plant_id INTEGER PRIMARY KEY,
             plant_name_scientific_reference TEXT NOT NULL UNIQUE,
             plant_name_scientific_reference_normalize TEXT NOT NULL UNIQUE
         );
@@ -37,8 +63,8 @@ def master_table_plants_create(regen=False):
 
 def master_table_activities_create(regen=False):
     table_name = 'activities'
-    output_folderpath = f'{HUB_FOLDERPATH}/masterize'
-    db_filepath = f'{output_folderpath}/master.db'
+    output_folderpath = f'{HUB_FOLDERPATH}/database'
+    db_filepath = f'{output_folderpath}/terra.db'
     ###
     os.makedirs(output_folderpath, exist_ok=True)
     conn = sqlite3.connect(db_filepath)
@@ -47,7 +73,7 @@ def master_table_activities_create(regen=False):
         cur.execute(f"DROP TABLE IF EXISTS {table_name}")
     cur.execute(f"""
         CREATE TABLE IF NOT EXISTS {table_name} (
-            id INTEGER PRIMARY KEY,
+            activity_id INTEGER PRIMARY KEY,
             activity_name_reference TEXT NOT NULL UNIQUE,
             activity_name_reference_normalize TEXT NOT NULL UNIQUE
         );
@@ -146,13 +172,17 @@ def test():
 
 def run():
 
+    # master_table_studies_create(regen=True)
+    # master_table_plants_create(regen=True)
+    # master_table_activities_create(regen=True)
+
+
     # master_table_diseases_create(regen=True)
     # test()
 
-    # master_table_plants_create(regen=True)
 
-    master_table_activities_create(regen=True)
-    master_table_chemicals_create(regen=True)
-    master_table_plants_parts_create(regen=True)
+
+    # master_table_chemicals_create(regen=True)
+    # master_table_plants_parts_create(regen=True)
 
     pass

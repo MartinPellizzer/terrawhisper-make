@@ -62,7 +62,7 @@ def hero_html_gen(title):
             <div class="container-xxl">
                 <div class="exp-topbar-lay">
                     <h1 class="exp-topbar-title">{title}</h1>
-                    <ul style="list-style: none; display: flex; align-items: center; gap: 1.2rem; font-size: 1.4rem;">
+                    <ul class="exp-topbar-ul">
                         <li>{plants_num} Plants</li> <span>|</span>
                         <li>{chemicals_num} Compounds</li> <span>|</span>
                         <li>{activities_num} Activities</li> <span>|</span>
@@ -1038,11 +1038,8 @@ def herbs_activities_category():
                 plant_slug = polish.sluggify(plant_name)
                 plants_html += f'''
                     <div>
-                        <img 
-                            src="/images/herbs/{plant_slug}.jpg" 
-                            style="margin-bottom: 0.8rem; width: 80px; height: 80px;"
-                        >
-                        <p style="font-size: 1.4rem;">{plant_name}</p>
+                        <img src="/images/herbs/{plant_slug}.jpg" class="exp-card-0001-img">
+                        <p class="exp-card-0001-plant-name">{plant_name}</p>
                     </div>
                 '''
 
@@ -1068,22 +1065,22 @@ def herbs_activities_category():
             description_text = json_article[key]
 
             activities_html += f'''
-                <article style="border: 1px solid #d8d8d8; margin-bottom: 1.6rem; padding: 1.6rem;">
+                <article class="exp-card-0001-article">
                     <div style="display: flex; gap: 4.8rem;">
                         <div style="flex: 2;">
-                            <a href="/herbs/activities/{activity_slug}.html" style="text-decoration: none;">
-                                <h3 style="font-size: 1.8rem;">{activity_name}</h3>
-                            </a>
-                            <p style="margin-bottom: 1.6rem;">{description_text}</p>
-                            <p style="font-size: 1.4rem;"><span style="font-weight: 700;">Associated herbs:</span> {plants_count}</p>
+                            <h3 class="exp-card-0001-title">
+                                <a href="/herbs/activities/{activity_slug}.html">{activity_name}</a>
+                            </h3>
+                            <p class="exp-card-0001-desc">{description_text}</p>
+                            <p class="exp-card-0001-stats"><span>Associated herbs:</span> {plants_count}</p>
                         </div>
                         <div style="flex: 1;">
-                            <p style="font-size: 1.4rem; font-weight: 700; margin-bottom: 1.6rem;">Occurs naturally in</p>
+                            <p class="exp-card-0001-plants-title">Occurs naturally in</p>
                             <div class="grid-3" style="gap: 1.6rem;">
                                 {plants_html}
                             </div>
                             <a 
-                                style="color: #111; text-decoration: none; display: inline-block; margin-top: 1.6rem; font-size: 1.4rem;"
+                                class="exp-card-0001-plants-more"
                                 href="/herbs/activities/{activity_slug}.html">View all {activity_name} herbs →
                             </a>
                         </div>
@@ -1407,7 +1404,7 @@ def herbs_chemicals_category():
         print(html_filepath)
 
 def herbs_compounds_category():
-    url_slug = f'herbs/conditions'
+    url_slug = f'herbs/compounds'
     io.folders_recursive_gen(f'''{g.website_folderpath}/{url_slug}''')
     ### GROUP PLANTS IN PAGES
     page_cards_num = 48
@@ -1458,11 +1455,8 @@ def herbs_compounds_category():
                 plant_slug = polish.sluggify(plant_name)
                 plants_html += f'''
                     <div>
-                        <img 
-                            src="/images/herbs/{plant_slug}.jpg" 
-                            style="margin-bottom: 0.8rem; width: 80px; height: 80px;"
-                        >
-                        <p style="font-size: 1.4rem;">{plant_name}</p>
+                        <img src="/images/herbs/{plant_slug}.jpg" class="exp-card-0001-img">
+                        <p class="exp-card-0001-plant-name">{plant_name}</p>
                     </div>
                 '''
             ### DESCRIPTION
@@ -1486,22 +1480,22 @@ def herbs_compounds_category():
                 io.json_write(json_article_filepath, json_article)
             description_text = json_article[key]
             compounds_html += f'''
-                <article style="border: 1px solid #d8d8d8; margin-bottom: 1.6rem; padding: 1.6rem;">
+                <article class="exp-card-0001-article">
                     <div style="display: flex; gap: 4.8rem;">
                         <div style="flex: 2;">
-                            <a href="/herbs/compounds/{compound_slug}.html" style="text-decoration: none;">
-                                <h3 style="font-size: 1.8rem;">{compound_name}</h3>
-                            </a>
-                            <p style="margin-bottom: 1.6rem;">{description_text}</p>
-                            <p style="font-size: 1.4rem;"><span style="font-weight: 700;">Associated herbs:</span> {plants_count}</p>
+                            <h3 class="exp-card-0001-title">
+                                <a href="/herbs/compounds/{compound_slug}.html">{compound_name}</a>
+                            </h3>
+                            <p class="exp-card-0001-desc">{description_text}</p>
+                            <p class="exp-card-0001-stats"><span>Associated herbs:</span> {plants_count}</p>
                         </div>
                         <div style="flex: 1;">
-                            <p style="font-size: 1.4rem; font-weight: 700; margin-bottom: 1.6rem;">Occurs naturally in</p>
+                            <p class="exp-card-0001-plants-title">Occurs naturally in</p>
                             <div class="grid-3" style="gap: 1.6rem;">
                                 {plants_html}
                             </div>
                             <a 
-                                style="color: #111; text-decoration: none; display: inline-block; margin-top: 1.6rem; font-size: 1.4rem;"
+                                class="exp-card-0001-plants-more"
                                 href="/herbs/compounds/{compound_slug}.html">View all {compound_name} herbs →
                             </a>
                         </div>
@@ -1669,7 +1663,15 @@ def herbs_compounds(compound_name):
     """, (compound_name,))
     plants_rows = cur.fetchall()
     conn.close()
-    plants_rows = sorted([row[1] for row in plants_rows])
+
+    plants_rows_filter = []
+    for plant_row in plants_rows:
+        plant_name_scientific_reference = plant_row[1]
+        res = masterize_utils.masterize_plants_get_by_name_reference(plant_name_scientific_reference)
+        if res != []:
+            plants_rows_filter.append(plant_row)
+
+    plants_rows = sorted([row[1] for row in plants_rows_filter])
     plants_data = [
         {
             'plant_name_scientific_reference': name,
@@ -1689,11 +1691,11 @@ def herbs_compounds(compound_name):
             os.makedirs(f'''{g.website_folderpath}/{url_slug}/page''', exist_ok=True)
             html_filepath = f'''{g.website_folderpath}/{url_slug}/page/{group_i+1}.html'''
         hero_html = hero_html_gen(
-            title=f"Explore herbs that contain {condition_name}"
+            title=f"Explore herbs that contain {compound_name}"
         )
         sidebar_html = sidebar_html_gen()
         cards_header_html = cards_header_html_gen(group_i, page_cards_num, len(plants_data),
-            title=f"List of herbs that contain {condition_name}"
+            title=f"List of herbs that contain {compound_name}"
         )
         cards_html = cards_html_gen(group)
         pagination_html = pagination_html_gen(group_i, groups, url_slug)
@@ -1721,7 +1723,7 @@ def herbs_compounds(compound_name):
             </section>
         '''
         ###
-        meta_title = f"Explore herbs that contain {condition_name}"
+        meta_title = f"Explore herbs that contain {compound_name}"
         meta_description = ''
         canonical_html = f'''<link rel="canonical" href="https://terrawhisper.com/{url_slug}.html">'''
         head_html = components.html_head(
@@ -1803,11 +1805,8 @@ def herbs_plants_parts_category():
                 plant_slug = polish.sluggify(plant_name)
                 plants_html += f'''
                     <div>
-                        <img 
-                            src="/images/herbs/{plant_slug}.jpg" 
-                            style="margin-bottom: 0.8rem; width: 80px; height: 80px;"
-                        >
-                        <p style="font-size: 1.4rem;">{plant_name}</p>
+                        <img src="/images/herbs/{plant_slug}.jpg" class="exp-card-0001-img">
+                        <p class="exp-card-0001-plant-name">{plant_name}</p>
                     </div>
                 '''
 
@@ -1833,22 +1832,22 @@ def herbs_plants_parts_category():
             description_text = json_article[key]
 
             plants_parts_html += f'''
-                <article style="border: 1px solid #d8d8d8; margin-bottom: 1.6rem; padding: 1.6rem;">
+                <article class="exp-card-0001-article">
                     <div style="display: flex; gap: 4.8rem;">
                         <div style="flex: 2;">
-                            <a href="/herbs/parts/{plant_part_slug}.html" style="text-decoration: none;">
-                                <h3 style="font-size: 1.8rem;">{plant_part_name}</h3>
-                            </a>
-                            <p style="margin-bottom: 1.6rem;">{description_text}</p>
-                            <p style="font-size: 1.4rem;"><span style="font-weight: 700;">Associated herbs:</span> {plants_count}</p>
+                            <h3 class="exp-card-0001-title">
+                                <a href="/herbs/parts/{plant_part_slug}.html">{plant_part_name}</a>
+                            </h3>
+                            <p class="exp-card-0001-desc">{description_text}</p>
+                            <p class="exp-card-0001-stats"><span>Associated herbs:</span> {plants_count}</p>
                         </div>
                         <div style="flex: 1;">
-                            <p style="font-size: 1.4rem; font-weight: 700; margin-bottom: 1.6rem;">Occurs naturally in</p>
+                            <p class="exp-card-0001-plants-title">Occurs naturally in</p>
                             <div class="grid-3" style="gap: 1.6rem;">
                                 {plants_html}
                             </div>
                             <a 
-                                style="color: #111; text-decoration: none; display: inline-block; margin-top: 1.6rem; font-size: 1.4rem;"
+                                class="exp-card-0001-plants-more"
                                 href="/herbs/parts/{plant_part_slug}.html">View all {plant_part_name} herbs →
                             </a>
                         </div>
@@ -1920,7 +1919,14 @@ def herbs_plants_parts(plant_part_name):
     plants_rows = cur.fetchall()
     conn.close()
 
-    plants_rows = sorted([row[1] for row in plants_rows])
+    plants_rows_filter = []
+    for plant_row in plants_rows:
+        plant_name_scientific_reference = plant_row[1]
+        res = masterize_utils.masterize_plants_get_by_name_reference(plant_name_scientific_reference)
+        if res != []:
+            plants_rows_filter.append(plant_row)
+
+    plants_rows = sorted([row[1] for row in plants_rows_filter])
     plants_data = [
         {
             'plant_name_scientific_reference': name,
@@ -2020,7 +2026,7 @@ def run():
     if sidebar_compounds_rows == None:
         sidebar_compounds_get()
 
-    if 1:
+    if 0:
         herbs_index()
 
     if 0:
@@ -2064,7 +2070,7 @@ def run():
             # quit()
 
     ### PLANTS PARTS
-    if 0:
+    if 1:
         herbs_plants_parts_category()
 
     if 0:

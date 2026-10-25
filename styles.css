@@ -477,6 +477,58 @@ footer span {
     font-size: var(--font_xs);
 }
 
+.exp-card-0001-img {
+    margin-bottom: 0.5rem;
+    width: 80px; 
+    height: 80px;
+}
+
+.exp-card-0001-plants-title {
+    font-size: var(--font_xs);
+    font-weight: 700; 
+    margin-bottom: 1rem;
+}
+
+.exp-card-0001-plant-name {
+    font-size: var(--font_xs);
+}
+
+.exp-card-0001-plants-more {
+    font-size: var(--font_xs);
+    color: #111; 
+    text-decoration: none; 
+    display: inline-block; 
+    margin-top: 1rem; 
+}
+
+.exp-card-0001-article {
+    border: 1px solid #d8d8d8; 
+    margin-bottom: 1rem; 
+    padding: 1rem;
+}
+
+.exp-card-0001-title {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+}
+
+.exp-card-0001-title a {
+    text-decoration: none;
+    color: #111;
+}
+
+.exp-card-0001-desc {
+    margin-bottom: 1rem;
+}
+
+.exp-card-0001-stats {
+    font-size: var(--font_xs);
+}
+
+.exp-card-0001-stats span {
+    font-weight: 700;
+}
+
 .exp-sidebar-li-a {
     text-decoration: none; 
     color: #111; 
@@ -553,6 +605,14 @@ footer span {
 .exp-topbar-title {
     font-size: var(--font-xs);
     margin-bottom: 0;
+}
+
+.exp-topbar-ul {
+    list-style: none; 
+    display: flex; 
+    align-items: center; 
+    gap: 0.75rem; 
+    font-size: var(--font_xs);
 }
 
 /**************************************/

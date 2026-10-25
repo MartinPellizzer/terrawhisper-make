@@ -8,6 +8,7 @@ from lib import data
 
 import masterize_utils
 import schema_herbs
+import sql
 
 HUB_FOLDERPATH = f'''{g.DATA_FOLDERPATH}/herbs'''
 
@@ -1225,9 +1226,16 @@ def derive_morphology_gen():
     print(json.dumps(last, indent=4))
     # quit()
 
+def plants_activities_derive():
+    name = "panax ginseng"
+    items = sql.sql_plant_activities_by_name_normalize(name)
+    for item in items:
+        print(json.dumps(item, indent=4))
+    print(len(items))
 
 def run():
-    derive_morphology_gen()
+    plants_activities_derive()
+    # derive_morphology_gen()
     return
 
     schema_items = schema_herbs.data['items']
@@ -1235,7 +1243,7 @@ def run():
         if schema_item['process'] != True: continue
         if schema_item['table_name'] == 'plants_traits': schema_derive_traits_gen(schema_item)
         # elif schema_item['table_name'] == 'plants_distributions': schema_derive_distribution_gen(schema_item)
-        # else: schema_derive_gen(schema_item)
+        else: schema_derive_gen(schema_item)
 
     if 0:
         # compounds_gen()
