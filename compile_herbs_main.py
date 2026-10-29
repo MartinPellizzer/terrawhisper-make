@@ -7,6 +7,7 @@ from lib import data
 
 import masterize_utils
 import schema_herbs
+import sql
 
 HUB_FOLDERPATH = f'''{g.DATA_FOLDERPATH}/herbs'''
 input_folderpath = f'{HUB_FOLDERPATH}/augment'
@@ -15,12 +16,19 @@ output_folderpath = f'{HUB_FOLDERPATH}/compile'
 def run():
     io.folders_recursive_gen(output_folderpath)
     master_items = masterize_utils.masterize_plants_get_all()
+    master_items = sql.sql_plants()
     for i, master_item in enumerate(master_items):
         print(f'COMPILE {i}/{len(master_items)}')
         plant_name_scientific_reference = master_item['plant_name_scientific_reference']
         output_filepath = f'{output_folderpath}/{plant_name_scientific_reference}.json'
         output_data = {}
         output_data['plant_name_scientific_reference'] = plant_name_scientific_reference
+
+        try:
+            output_data['distributions'] = io.json_read(
+                f'{input_folderpath}/distributions/{plant_name_scientific_reference}.json'
+            )
+        except: continue
 
         ### DISTRIBUTIONS
         output_data['distributions'] = io.json_read(
@@ -32,9 +40,10 @@ def run():
             f'{input_folderpath}/names_common/{plant_name_scientific_reference}.json'
         )
 
+
         ### ACTIVITIES
         output_data['activities'] = io.json_read(
-            f'{input_folderpath}/activities/{plant_name_scientific_reference}.json'
+            f'{input_folderpath}/plants_activities/{plant_name_scientific_reference}.json'
         )
 
         ### CHEMICALS
@@ -85,7 +94,7 @@ def run():
         )
         """
 
-        ### INTRO
+        ### MORPHOLOGIES
         output_data['plants_morphologies'] = io.json_read(
             f'{input_folderpath}/plants_morphologies/{plant_name_scientific_reference}.json'
         )
@@ -100,8 +109,33 @@ def run():
                 f'{input_folderpath}/{schema_table_name}/{plant_name_scientific_reference}.json'
             )
 
+        ### PLANTS_NAMES_COMMON
+        output_data['plants__plants_names_common'] = io.json_read(
+            f'{input_folderpath}/plants__plants_names_common/{plant_name_scientific_reference}.json'
+        )
+
         io.json_write(output_filepath, output_data)
+        # print(json.dumps(output_data, indent=4))
+        # quit()
         # if output_data['plants_compounds']['plants_compounds'] != []:
             # print(json.dumps(output_data, indent=4))
             # quit()
+
+
+def run_todo():
+    io.folders_recursive_gen(output_folderpath)
+    master_items = sql.sql_plants()
+    for i, master_item in enumerate(master_items):
+        print(f'COMPILE {i}/{len(master_items)}')
+        plant_name_scientific_reference = master_item['plant_name_scientific_reference']
+        output_filepath = f'{output_folderpath}/{plant_name_scientific_reference}.json'
+        output_data = {}
+        output_data['plant_name_scientific_reference'] = plant_name_scientific_reference
+
+        ### ACTIVITIES
+        output_data['plants_activities'] = io.json_read(
+            f'{input_folderpath}/plants_activities/{plant_name_scientific_reference}.json'
+        )
+
+        io.json_write(output_filepath, output_data)
 

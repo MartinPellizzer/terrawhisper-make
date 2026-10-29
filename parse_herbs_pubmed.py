@@ -1061,7 +1061,7 @@ def observations_symptoms_extract_raw():
 
 def parse_conditions_extract_raw():
     input_folderpath = f'{HUB_FOLDERPATH}/fetch/pubmed/medicinal_plant/abstracts'
-    output_folderpath = f'{HUB_FOLDERPATH}/parse/pubmed/conditions/raw'
+    output_folderpath = f'{HUB_FOLDERPATH}/parse/pubmed/plants__conditions/raw'
     # try: shutil.rmtree(output_folderpath)
     # except: pass
     io.folders_recursive_gen(output_folderpath)
@@ -2211,6 +2211,197 @@ def studies_json_to_json():
     print(json.dumps(last, indent=4))
     # quit()
 
+def conditions_extract_raw():
+    input_folderpath = f'{HUB_FOLDERPATH}/fetch/pubmed/medicinal_plant/abstracts'
+    output_folderpath = f'{HUB_FOLDERPATH}/parse/pubmed/conditions/raw'
+    # try: shutil.rmtree(output_folderpath)
+    # except: pass
+    io.folders_recursive_gen(output_folderpath)
+    ###
+    relationships_found = []
+    input_filenames = os.listdir(input_folderpath)
+    i = 0
+    for input_filename in input_filenames[i:]:
+        i += 1
+        print(f'{i}/{len(input_filenames)}')
+        output_filepath = f'{output_folderpath}/{input_filename}'
+        if os.path.exists(output_filepath): continue
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        input_data = io.json_read(input_filepath)
+        try: article_data = input_data['PubmedArticle'][0]['MedlineCitation']['Article']
+        except: pass
+        try: input_title = article_data['ArticleTitle']
+        except: input_title = ''
+        try: input_abstract = ' '.join(article_data['Abstract']['AbstractText'])
+        except: continue
+        # print(json.dumps(input_title, indent=4))
+        # print(input_title)
+        # print(input_abstract)
+        # quit()
+            # Always write the names of the plants names exactly how you find them in the text.
+        content_to_extract = f'{input_title} {input_abstract}'
+            # By health conditions I mean things like symptoms, signs, diseases, disorders, infections, injuries, and other problems, 
+        prompt = f'''
+            From the SCIENTIFIC STUDY below, extract all the health conditions mentioned.
+            RULES:
+            Write one health condition name per new line.
+            Always write the names of the health conditions exactly how you find them in the text.
+            Only reply with the content requested.
+            If you can't find what requested, reply with "NONE".
+            SCIENTIFIC STUDY:
+            {content_to_extract}
+        '''.strip()
+        prompt = prompt.replace('<text>', content_to_extract)
+        reply = llm.reply(prompt, model_filepath, max_tokens=512)
+        if '</think>' in reply:
+            reply = reply.split('</think>')[1].strip()
+        print('################################################################################')
+        print(reply)
+        print('########################################')
+        # print(prompt)
+        print('################################################################################')
+        if 'NONE'.strip() not in reply.strip():
+            relationships_found.append(reply)
+            output_data = {
+                'title': input_title,
+                'abstract': input_abstract,
+                'reply': reply,
+            }
+            io.json_write(
+                output_filepath,
+                output_data,
+            )
+        # if i > 10:
+            # quit()
+    print(len(relationships_found))
+    # quit()
+
+def conditions_match_string():
+    input_folderpath = f'{HUB_FOLDERPATH}/parse/pubmed/conditions/raw'
+    output_folderpath = f'{HUB_FOLDERPATH}/parse/pubmed/conditions/match_string'
+    try: shutil.rmtree(output_folderpath)
+    except: pass
+    io.folders_recursive_gen(output_folderpath)
+    ###
+    input_filenames = os.listdir(input_folderpath)
+    for i, input_filename in enumerate(input_filenames[:]):
+        print(f'PARSE HERBS conditions match string {i}/{len(input_filenames)}')
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        output_filepath = f'{output_folderpath}/{input_filename}'
+        ###
+        input_data = io.json_read(input_filepath)
+        lines = [line.strip() for line in input_data['reply'].split('\n') if line.strip() != '']
+        lines_match = []
+        for line in lines:
+            if line in input_data['title'] or line in input_data['abstract']:
+                lines_match.append(line)
+        # print(json.dumps(input_data, indent=4))
+        # print(lines_match)
+        # quit()
+        output_data = input_data
+        output_data['strings_match'] = lines_match
+        io.json_write(output_filepath, output_data)
+        # print(json.dumps(output_data, indent=4))
+        # quit()
+    print(json.dumps(output_data, indent=4))
+    # quit()
+
+def conditions_match_string_to_json():
+    input_folderpath = f'{HUB_FOLDERPATH}/parse/pubmed/conditions/match_string'
+    output_folderpath = f'{HUB_FOLDERPATH}/parse/pubmed/conditions/json'
+    try: shutil.rmtree(output_folderpath)
+    except: pass
+    os.makedirs(output_folderpath, exist_ok=True)
+    ###
+    input_filenames = os.listdir(input_folderpath)
+    last = []
+    for i, input_filename in enumerate(input_filenames):
+        print(f'PARSE HERBS conditions match string to json {i}/{len(input_filenames)}')
+        # input_filename_base = input_filename.split('.')[0]
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        output_filepath = f'{output_folderpath}/{input_filename}'
+        input_data = io.json_read(input_filepath)
+        ###
+        output_items = []
+        # print(json.dumps(input_data, indent=4))
+        # quit()
+        for term in input_data['strings_match']:
+            output_item = {
+                'condition_name_raw': term,
+            }
+            output_items.append(output_item)
+        io.json_write(output_filepath, output_items)
+        if output_items != []:
+            last = output_items
+        # print(json.dumps(output_items, indent=4))
+        # quit()
+    print(json.dumps(output_items, indent=4))
+    # quit()
+
+def plants__conditions_extract_raw():
+    input_folderpath = f'{HUB_FOLDERPATH}/fetch/pubmed/medicinal_plant/abstracts'
+    output_folderpath = f'{HUB_FOLDERPATH}/parse/pubmed/plants__conditions/raw'
+    # try: shutil.rmtree(output_folderpath)
+    # except: pass
+    io.folders_recursive_gen(output_folderpath)
+    ###
+    relationships_found = []
+    input_filenames = os.listdir(input_folderpath)
+    i = 0
+    for input_filename in input_filenames[i:]:
+        i += 1
+        print(f'{i}/{len(input_filenames)}')
+        output_filepath = f'{output_folderpath}/{input_filename}'
+        if os.path.exists(output_filepath): continue
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        input_data = io.json_read(input_filepath)
+        try: article_data = input_data['PubmedArticle'][0]['MedlineCitation']['Article']
+        except: pass
+        try: input_title = article_data['ArticleTitle']
+        except: input_title = ''
+        try: input_abstract = ' '.join(article_data['Abstract']['AbstractText'])
+        except: continue
+        # print(json.dumps(input_title, indent=4))
+        # print(input_title)
+        # print(input_abstract)
+        # quit()
+            # Always write the names of the plants names exactly how you find them in the text.
+        content_to_extract = f'{input_title} {input_abstract}'
+        prompt = f'''
+            From the scientific study ABSTRACT below, extract all the relationships (observations) between plant name and condition name treated by that plant.
+            Write each observation using this format: [plant name, treats, condition name]
+            RULES:
+            Always write the names of the plants in latin binomial scientific name, no common names or abbreviated names.
+            Always write the names of the conditions names exactly how you find them in the text.
+            Only reply with the relationships requested.
+            If you can't find any of these relationships, reply with "NONE".
+            ABSTRACT:
+            {content_to_extract}
+        '''.strip()
+        prompt = prompt.replace('<text>', content_to_extract)
+        reply = llm.reply(prompt, model_filepath, max_tokens=512)
+        if '</think>' in reply:
+            reply = reply.split('</think>')[1].strip()
+        print('################################################################################')
+        print(reply)
+        print('########################################')
+        # print(prompt)
+        print('################################################################################')
+        if 'NONE'.strip() not in reply.strip():
+            relationships_found.append(reply)
+            output_data = {
+                'title': input_title,
+                'abstract': input_abstract,
+                'reply': reply,
+            }
+            io.json_write(
+                output_filepath,
+                output_data,
+            )
+        # if i > 10:
+            # quit()
+    print(len(relationships_found))
+    # quit()
 
 def run():
     print('parse >> pubmed')
@@ -2233,16 +2424,24 @@ def run():
     # activities_match_string()
     # activities_match_string_to_json()
 
+    # conditions_extract_raw()
+    # conditions_match_string()
+    # conditions_match_string_to_json()
+
+    """
+    # conditions_extract_raw()
+    # plants__conditions_extract_raw()
+    # plants__conditions_raw_to_json()
+    """
 
     ### TODO
     ### extract plants_activities for each sentence
     ### locally resolve each relationships plants_activities with plants and activities from nouns and noun phrases extract
-    quit()
     return
 
     # plants_peek_raw()
 
-    plants_raw_to_lst()
+    # plants_raw_to_lst()
     # plants_peek_lst(key='terms', count=10)
 
 
@@ -2279,5 +2478,4 @@ def run():
         compounds_raw_to_json()
         preparations_raw_to_json()
         plants_parts_raw_to_json()
-        conditions_raw_to_json()
 

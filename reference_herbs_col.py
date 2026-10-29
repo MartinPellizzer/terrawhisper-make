@@ -266,11 +266,31 @@ def table_vernacular_name_create():
         print(row)
     conn.close()
 
+    """
+    EXAMPLE OUTPUT:
+    ****************************************
+
+    HERBS >> REFERENCE >> col
+    1,000,000 inserted (4.0s)
+    2,000,000 inserted (8.1s)
+    ('4Z73V', 'spugna rossa', 'spugna rossa', 'ita', '', '', '')
+    ('74YS2', 'slime membrane sponge', 'slime membrane sponge', 'eng', '', '', '')
+    ('74YS2', 'éponge poisseuse', 'eponge poisseuse', 'fra', '', '', '')
+    ('6SYS3', 'Feigenbohrschwamm', 'Feigenbohrschwamm', 'deu', '', '', '')
+    ('6SYS3', 'Fleischschwamm', 'Fleischschwamm', 'deu', '', '', '')
+    ('6SYS3', 'esponja azul', 'esponja azul', 'spa', '', '', '')
+    ('6SYS3', 'esponja lila', 'esponja lila', 'cat', '', '', '')
+    ('6SYS3', 'esponja morada', 'esponja morada', 'spa', '', '', '')
+    ('6SYS3', 'flesh sponge', 'flesh sponge', 'eng', '', '', '')
+    ('6SYS3', 'gelobde spons', 'gelobde spons', 'nld', '', '', '')
+    reference sqlite_vernacular_name_create() - execution time:  10.074202237999998
+    """
+
 
 def run():
     print(f'''HERBS >> REFERENCE >> col''')
 
-    if 1:
+    if 0:
         start = time.perf_counter()
         table_name_usage_create()
         print(f'reference sqlite_name_usage() - execution time: ', time.perf_counter() - start)

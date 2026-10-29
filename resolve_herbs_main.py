@@ -206,6 +206,7 @@ def resolve_chemicals(source_foldername):
     print(json.dumps(resolved_data[0], indent=True))
     # quit()
 
+# ;jump
 def resolve_conditions(source_foldername):
     input_folderpath = f'{HUB_FOLDERPATH}/normalize/{source_foldername}/conditions/json'
     output_folderpath = f'{HUB_FOLDERPATH}/resolve/{source_foldername}/conditions/json'
@@ -849,6 +850,93 @@ def activities_resolve(source_foldername):
     print(json.dumps(last_resolved_data[0], indent=4))
     # quit()
 
+def conditions_resolve(source_foldername):
+    input_folderpath = f'{HUB_FOLDERPATH}/normalize/{source_foldername}/conditions/json'
+    output_folderpath = f'{HUB_FOLDERPATH}/resolve/{source_foldername}/conditions/json'
+    try: shutil.rmtree(output_folderpath)
+    except: pass
+    os.makedirs(output_folderpath, exist_ok=True)
+    ###
+    mesh_folderpath = f'{HUB_FOLDERPATH}/reference/mesh/mesh.db'
+    mesh_conn = sqlite3.connect(mesh_folderpath)
+    mesh_conn.row_factory = sqlite3.Row
+    ###
+    input_filenames = os.listdir(input_folderpath)
+    last_resolved_data = []
+    for i, input_filename in enumerate(input_filenames[:]):
+        print(f'RESOLVE HERBS conditions {i}/{len(input_filenames)}')
+        output_filepath = f'{output_folderpath}/{input_filename}'
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        if os.path.exists(output_filepath): continue
+        ###
+        input_data = io.json_read(input_filepath)
+        resolved_data = []
+        for input_item in input_data[:]:
+            # print(json.dumps(input_item, indent=True))
+            # quit()
+            ###
+            condition_name_raw_normalize = input_item['condition_name_raw_normalize']
+            if condition_name_raw_normalize == 'null': continue
+            ### RESOLVE DISEASE (MESH)
+            mesh_cur = mesh_conn.cursor()
+            mesh_cur.execute("""
+                SELECT *
+                FROM diseases
+                WHERE disease_name_normalize = ?
+            """, (condition_name_raw_normalize,))
+            mesh_rows = mesh_cur.fetchall()
+            mesh_items = [dict(row) for row in mesh_rows]
+            ###
+            if mesh_items:
+                mesh_item = mesh_items[0]
+                input_item['condition_name_reference'] = mesh_item['disease_name']
+                input_item['condition_name_reference_normalize'] = mesh_item['disease_name_normalize']
+                resolved_data.append(input_item)
+                # print(json.dumps(input_item, indent=4))
+                # quit()
+        if resolved_data != []:
+            io.json_write(output_filepath, resolved_data)
+            last_resolved_data = resolved_data
+    mesh_conn.close()
+    print(json.dumps(last_resolved_data[0], indent=4))
+    # quit()
+
+def plants_names_common_resolve(source_foldername):
+    input_folderpath = f'{HUB_FOLDERPATH}/normalize/{source_foldername}/plants_names_common/json'
+    output_folderpath = f'{HUB_FOLDERPATH}/resolve/{source_foldername}/plants_names_common/json'
+    try: shutil.rmtree(output_folderpath)
+    except: pass
+    os.makedirs(output_folderpath, exist_ok=True)
+    ###
+    input_filenames = os.listdir(input_folderpath)
+    last_resolved_data = []
+    for i, input_filename in enumerate(input_filenames[:]):
+        print(f'RESOLVE HERBS plants names common {i}/{len(input_filenames)}')
+        output_filepath = f'{output_folderpath}/{input_filename}'
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        if os.path.exists(output_filepath): continue
+        ###
+        input_data = io.json_read(input_filepath)
+        resolved_data = []
+        for input_item in input_data[:]:
+            # print(json.dumps(input_item, indent=True))
+            # quit()
+            ###
+            plant_name_common_raw_normalize = input_item['plant_name_common_raw_normalize']
+            if plant_name_common_raw_normalize == 'null': continue
+            ###
+            if True:
+                input_item['plant_name_common_reference'] = input_item['plant_name_common_raw']
+                input_item['plant_name_common_reference_normalize'] = input_item['plant_name_common_raw_normalize']
+                resolved_data.append(input_item)
+                # print(json.dumps(input_item, indent=4))
+                # quit()
+        if resolved_data != []:
+            io.json_write(output_filepath, resolved_data)
+            last_resolved_data = resolved_data
+    print(json.dumps(last_resolved_data[0], indent=4))
+    # quit()
+
 def plants_activities_resolve(source_foldername):
     input_folderpath = f'{HUB_FOLDERPATH}/normalize/{source_foldername}/plants_activities/json'
     output_folderpath = f'{HUB_FOLDERPATH}/resolve/{source_foldername}/plants_activities/json'
@@ -908,14 +996,76 @@ def plants_activities_resolve(source_foldername):
     print(json.dumps(last_resolved_data[0], indent=4))
     # quit()
 
+def resolve__plants__plants_names_common(source_foldername):
+    table_name = 'plants__plants_names_common'
+    input_folderpath = f'{HUB_FOLDERPATH}/normalize/{source_foldername}/{table_name}/json'
+    output_folderpath = f'{HUB_FOLDERPATH}/resolve/{source_foldername}/{table_name}/json'
+    try: shutil.rmtree(output_folderpath)
+    except: pass
+    os.makedirs(output_folderpath, exist_ok=True)
+    ###
+    wcvp_folderpath = f'{HUB_FOLDERPATH}/reference/wcvp/wcvp.db'
+    wcvp_conn = sqlite3.connect(wcvp_folderpath)
+    wcvp_conn.row_factory = sqlite3.Row
+    ###
+    input_filenames = os.listdir(input_folderpath)
+    last_resolved_data = []
+    failed_resolved = 0
+    failed_data = 0
+    succeded_data = 0
+    for i, input_filename in enumerate(input_filenames[:]):
+        print(f'RESOLVE HERBS plants__plants_names_common {i}/{len(input_filenames)}')
+        output_filepath = f'{output_folderpath}/{input_filename}'
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        if os.path.exists(output_filepath): continue
+        ###
+        input_data = io.json_read(input_filepath)
+        resolved_data = []
+        for input_item in input_data[:]:
+            # print(json.dumps(input_item, indent=True))
+            # quit()
+            plant_name_scientific_raw_normalize = input_item['plant_name_scientific_raw_normalize']
+            wcvp_row = resolve_utils.resolve_plant_accepted(wcvp_conn, plant_name_scientific_raw_normalize)
+            ###
+            if wcvp_row:
+                wcvp_item = dict(wcvp_row)
+                input_item['plant_name_scientific_reference'] = wcvp_item['taxon_name']
+                input_item['plant_name_scientific_reference_normalize'] = wcvp_item['taxon_name_normalized']
+                ###
+                input_item['plant_name_common_reference'] = input_item['plant_name_common_raw']
+                input_item['plant_name_common_reference_normalize'] = input_item['plant_name_common_raw_normalize']
+                resolved_data.append(input_item)
+                # print(json.dumps(input_item, indent=4))
+                # quit()
+            else:
+                failed_resolved += 1
+        if resolved_data != []:
+            io.json_write(output_filepath, resolved_data)
+            last_resolved_data = resolved_data
+            succeded_data += 1
+        else:
+            failed_data += 1
+    print(json.dumps(last_resolved_data[0], indent=4))
+    print(failed_resolved)
+    print(failed_data)
+    print(succeded_data)
+    quit()
+
 def run():
     print('RESOLVE')
 
-    studies_resolve(source_foldername='pubmed')
-
+    # studies_resolve(source_foldername='pubmed')
     # plants_resolve(source_foldername='pubmed')
     # activities_resolve(source_foldername='pubmed')
+    # conditions_resolve(source_foldername='pubmed')
+
+    # plants_names_common_resolve(source_foldername='col')
+
+    ### ASSERTIONS
     # plants_activities_resolve(source_foldername='pubmed')
+    resolve__plants__plants_names_common(source_foldername='col')
+    
+
     return
     quit()
 

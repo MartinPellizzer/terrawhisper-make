@@ -6,9 +6,9 @@ if 0:
     import reference_herbs_mesh
     import reference_herbs_gift
 
-    reference_herbs_wcvp.run()
+    # reference_herbs_wcvp.run()
     # reference_herbs_drduke.run()
-    # reference_herbs_col.run()
+    reference_herbs_col.run()
     # reference_herbs_pubchem.run()
     # reference_herbs_mesh.run()
     # reference_herbs_gift.run()
@@ -18,7 +18,7 @@ if 0:
     import masterize_herbs_main_new
     masterize_herbs_main_new.run()
 
-if 1:
+if 0:
     import parse_herbs_wcvp
     import parse_herbs_powo
     import parse_herbs_col
@@ -26,8 +26,8 @@ if 1:
     import parse_herbs_drduke
     import parse_herbs_pubmed
 
-    parse_herbs_pubmed.run()
-    # parse_herbs_col.run()
+    # parse_herbs_pubmed.run()
+    parse_herbs_col.run()
     # parse_herbs_wcvp.run()
     # parse_herbs_powo.run()
     # parse_herbs_gift.run()
@@ -72,7 +72,7 @@ if 0:
     import compile_herbs_main
     compile_herbs_main.run()
 
-if 0:
+if 1:
     import render_herbs_main
     render_herbs_main.run()
 

@@ -1227,14 +1227,44 @@ def derive_morphology_gen():
     # quit()
 
 def plants_activities_derive():
-    name = "panax ginseng"
-    items = sql.sql_plant_activities_by_name_normalize(name)
-    for item in items:
-        print(json.dumps(item, indent=4))
-    print(len(items))
+    plants_items = sql.sql_plants()
+    last = []
+    for i, plant_item in enumerate(plants_items[:]):
+        print(f'DERIVE HERBS plants activities derive {i}/{len(plants_items)}')
+        plant_name_scientific_reference = plant_item['plant_name_scientific_reference']
+        items = sql.sql_plant_activities_by_plant_name_and_group(plant_name_scientific_reference)
+        ###
+        output_items = items
+        output_filepath = f'''{HUB_FOLDERPATH}/derive/plants_activities/{plant_name_scientific_reference}.json'''
+        io.folder_create_from_filepath(output_filepath)
+        io.json_write(output_filepath, output_items)
+        if output_items != []:
+            last = output_items
+    print(json.dumps(last, indent=4))
+
+
+def derive__plants__plants_names_common():
+    table_name = 'plants__plants_names_common'
+    plants_items = sql.sql_plants()
+    last = []
+    for i, plant_item in enumerate(plants_items[:]):
+        print(f'ASSERT HERBS plants__plants_names_common__table_join {i}/{len(plants_items)}')
+        plant_name_scientific_reference = plant_item['plant_name_scientific_reference']
+        items = sql.sql__plants__plants_names_common__by_plant_name__and_group(plant_name_scientific_reference)
+        ###
+        output_items = items
+        output_filepath = f'''{HUB_FOLDERPATH}/derive/{table_name}/{plant_name_scientific_reference}.json'''
+        io.folder_create_from_filepath(output_filepath)
+        io.json_write(output_filepath, output_items)
+        if output_items != []:
+            last = output_items
+    print(json.dumps(last, indent=4))
 
 def run():
-    plants_activities_derive()
+    # plants_activities_derive()
+
+    derive__plants__plants_names_common()
+
     # derive_morphology_gen()
     return
 

@@ -11,6 +11,7 @@ from lib import polish
 
 import masterize_utils
 import schema_herbs
+import sql
 
 HUB_FOLDERPATH = f'''{g.DATA_FOLDERPATH}/herbs'''
 
@@ -682,8 +683,7 @@ def schema_augment_gen(schema_item):
         io.json_write(output_filepath, input_data)
         # quit()
 
-def morphology_augment_gen():
-    regen = True
+def morphology_augment_gen(regen=False):
     ###
     input_folderpath = f'{HUB_FOLDERPATH}/derive/plants_morphologies'
     output_folderpath = f'{HUB_FOLDERPATH}/augment/plants_morphologies'
@@ -826,11 +826,65 @@ def morphology_augment_gen():
         io.json_write(output_filepath, input_data)
         # quit()
 
+def augment_plants_activities_gen(regen=False):
+    ### TODO: at the moment it just copies. implement llm.
+    input_folderpath = f'{HUB_FOLDERPATH}/derive/plants_activities'
+    output_folderpath = f'{HUB_FOLDERPATH}/augment/plants_activities'
+    if regen:
+        try: shutil.rmtree(output_folderpath)
+        except: pass
+    io.folders_recursive_gen(output_folderpath)
+    ###
+    plants_items = sql.sql_plants()
+    for i, plant_item in enumerate(plants_items[:]):
+        print(f'AUGMENT HERBS plants activities {i}/{len(plants_items)}')
+        plant_name_scientific_reference = plant_item['plant_name_scientific_reference']
+        input_filepath = f'{input_folderpath}/{plant_name_scientific_reference}.json'
+        output_filepath = f'{output_folderpath}/{plant_name_scientific_reference}.json'
+        input_data = io.json_read(input_filepath)
+        # print(plant_name_scientific_reference)
+        # print(json.dumps(input_data, indent=4))
+        # quit()
+        if os.path.exists(output_filepath): continue
+        if input_data != []:
+            # print(json.dumps(input_data, indent=4))
+            # quit()
+            pass
+        io.json_write(output_filepath, input_data)
+
+def augment__plants__plants_names_common_gen(regen=False):
+    ### TODO: at the moment it just copies. implement llm.
+    table_name = 'plants__plants_names_common'
+    input_folderpath = f'{HUB_FOLDERPATH}/derive/{table_name}'
+    output_folderpath = f'{HUB_FOLDERPATH}/augment/{table_name}'
+    if regen:
+        try: shutil.rmtree(output_folderpath)
+        except: pass
+    io.folders_recursive_gen(output_folderpath)
+    ###
+    plants_items = sql.sql_plants()
+    for i, plant_item in enumerate(plants_items[:]):
+        print(f'AUGMENT HERBS plants__plants_names_common_gen {i}/{len(plants_items)}')
+        plant_name_scientific_reference = plant_item['plant_name_scientific_reference']
+        input_filepath = f'{input_folderpath}/{plant_name_scientific_reference}.json'
+        output_filepath = f'{output_folderpath}/{plant_name_scientific_reference}.json'
+        input_data = io.json_read(input_filepath)
+        # print(plant_name_scientific_reference)
+        # print(json.dumps(input_data, indent=4))
+        # quit()
+        if os.path.exists(output_filepath): continue
+        if input_data != []:
+            # print(json.dumps(input_data, indent=4))
+            # quit()
+            pass
+        io.json_write(output_filepath, input_data)
 
 def run():
+    # augment_plants_activities_gen(regen=True)
+    augment__plants__plants_names_common_gen(regen=True)
 
     # morphology_augment_gen()
-    # return
+    return
 
     schema_items = schema_herbs.data['items']
     for schema_item in schema_items: 
