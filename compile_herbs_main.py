@@ -13,7 +13,10 @@ HUB_FOLDERPATH = f'''{g.DATA_FOLDERPATH}/herbs'''
 input_folderpath = f'{HUB_FOLDERPATH}/augment'
 output_folderpath = f'{HUB_FOLDERPATH}/compile'
 
+### TODO: remove all "try/except" in output_data when parsed all the data
 def run():
+    try: shutil.rmtree(output_folderpath)
+    except: pass
     io.folders_recursive_gen(output_folderpath)
     master_items = masterize_utils.masterize_plants_get_all()
     master_items = sql.sql_plants()
@@ -24,42 +27,53 @@ def run():
         output_data = {}
         output_data['plant_name_scientific_reference'] = plant_name_scientific_reference
 
+        ### DISTRIBUTIONS
         try:
             output_data['distributions'] = io.json_read(
                 f'{input_folderpath}/distributions/{plant_name_scientific_reference}.json'
             )
-        except: continue
-
-        ### DISTRIBUTIONS
-        output_data['distributions'] = io.json_read(
-            f'{input_folderpath}/distributions/{plant_name_scientific_reference}.json'
-        )
+        except:
+            output_data['distributions'] = []
 
         ### NAMES COMMON (NEW) -> merge with wikidata
-        output_data['names_common'] = io.json_read(
-            f'{input_folderpath}/names_common/{plant_name_scientific_reference}.json'
-        )
-
+        try:
+            output_data['names_common'] = io.json_read(
+                f'{input_folderpath}/names_common/{plant_name_scientific_reference}.json'
+            )
+        except:
+            output_data['names_common'] = []
 
         ### ACTIVITIES
-        output_data['activities'] = io.json_read(
-            f'{input_folderpath}/plants_activities/{plant_name_scientific_reference}.json'
-        )
+        try:
+            output_data['activities'] = io.json_read(
+                f'{input_folderpath}/plants_activities/{plant_name_scientific_reference}.json'
+            )
+        except:
+            output_data['activities'] = []
 
         ### CHEMICALS
-        output_data['chemicals'] = io.json_read(
-            f'{input_folderpath}/chemicals/{plant_name_scientific_reference}.json'
-        )
+        try:
+            output_data['chemicals'] = io.json_read(
+                f'{input_folderpath}/chemicals/{plant_name_scientific_reference}.json'
+            )
+        except:
+            output_data['chemicals'] = []
 
         ### CONDITIONS
-        output_data['conditions'] = io.json_read(
-            f'{input_folderpath}/conditions/{plant_name_scientific_reference}.json'
-        )
+        try:
+            output_data['conditions'] = io.json_read(
+                f'{input_folderpath}/conditions/{plant_name_scientific_reference}.json'
+            )
+        except:
+            output_data['conditions'] = []
 
         ### PLANTS PARTS
-        output_data['plants_parts'] = io.json_read(
-            f'{input_folderpath}/plants_parts/{plant_name_scientific_reference}.json'
-        )
+        try:
+            output_data['plants_parts'] = io.json_read(
+                f'{input_folderpath}/plants_parts/{plant_name_scientific_reference}.json'
+            )
+        except:
+            output_data['plants_parts'] = []
 
         """
         ### PREPARATIONS
@@ -69,24 +83,36 @@ def run():
         """
 
         ### TRAITS
-        output_data['traits'] = io.json_read(
-            f'{input_folderpath}/traits/{plant_name_scientific_reference}.json'
-        )
+        try:
+            output_data['traits'] = io.json_read(
+                f'{input_folderpath}/traits/{plant_name_scientific_reference}.json'
+            )
+        except:
+            output_data['traits'] = []
 
         ### SYNONYMS
-        output_data['synonyms'] = io.json_read(
-            f'{input_folderpath}/synonyms/{plant_name_scientific_reference}.json'
-        )
+        try:
+            output_data['synonyms'] = io.json_read(
+                f'{input_folderpath}/synonyms/{plant_name_scientific_reference}.json'
+            )
+        except:
+            output_data['synonyms'] = []
 
         ### TAXONOMIES
-        output_data['taxonomies'] = io.json_read(
-            f'{input_folderpath}/taxonomies/{plant_name_scientific_reference}.json'
-        )
+        try:
+            output_data['taxonomies'] = io.json_read(
+                f'{input_folderpath}/taxonomies/{plant_name_scientific_reference}.json'
+            )
+        except:
+            output_data['taxonomies'] = []
 
         ### INTRO
-        output_data['intro'] = io.json_read(
-            f'{input_folderpath}/intro/{plant_name_scientific_reference}.json'
-        )
+        try:
+            output_data['intro'] = io.json_read(
+                f'{input_folderpath}/intro/{plant_name_scientific_reference}.json'
+            )
+        except:
+            output_data['intro'] = []
 
         """
         output_data['compounds'] = io.json_read(
@@ -95,9 +121,12 @@ def run():
         """
 
         ### MORPHOLOGIES
-        output_data['plants_morphologies'] = io.json_read(
-            f'{input_folderpath}/plants_morphologies/{plant_name_scientific_reference}.json'
-        )
+        try:
+            output_data['plants_morphologies'] = io.json_read(
+                f'{input_folderpath}/plants_morphologies/{plant_name_scientific_reference}.json'
+            )
+        except:
+            output_data['plants_morphologies'] = []
 
         schema_items = schema_herbs.data['items']
         for schema_item in schema_items: 
@@ -105,14 +134,20 @@ def run():
             if schema_table_name == 'plants_growth_forms': continue
             if schema_table_name == 'plants_climbers': continue
             if schema_table_name == 'plants_heights': continue
-            output_data[schema_table_name] = io.json_read(
-                f'{input_folderpath}/{schema_table_name}/{plant_name_scientific_reference}.json'
-            )
+            try:
+                output_data[schema_table_name] = io.json_read(
+                    f'{input_folderpath}/{schema_table_name}/{plant_name_scientific_reference}.json'
+                )
+            except:
+                output_data[schema_table_name] = []
 
         ### PLANTS_NAMES_COMMON
-        output_data['plants__plants_names_common'] = io.json_read(
-            f'{input_folderpath}/plants__plants_names_common/{plant_name_scientific_reference}.json'
-        )
+        try:
+            output_data['plants__plants_names_common'] = io.json_read(
+                f'{input_folderpath}/plants__plants_names_common/{plant_name_scientific_reference}.json'
+            )
+        except:
+            output_data['plants__plants_names_common'] = []
 
         io.json_write(output_filepath, output_data)
         # print(json.dumps(output_data, indent=4))

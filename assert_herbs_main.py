@@ -284,5 +284,5 @@ def run():
 
     # assertions__plants__plants_names_common__table_create()
     # assertions__plants__plants_names_common__table_add(source_foldername='col')
-    assertions__plants__plants_names_common__table_join()
+    # assertions__plants__plants_names_common__table_join()
 

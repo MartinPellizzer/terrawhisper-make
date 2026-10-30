@@ -260,8 +260,6 @@ def sql__plants__plants_names_common__by_plant_name__and_group_____backup(name):
     return items
 
 def sql__plants__plants_names_common__by_plant_name__and_group(name):
-    """
-    """
     conn = sqlite3.connect(db_filepath)
     cur = conn.cursor()
     conn.row_factory = sqlite3.Row
@@ -279,15 +277,28 @@ def sql__plants__plants_names_common__by_plant_name__and_group(name):
     cursor = conn.execute(query, (name,))
     rows = cursor.fetchall()
     items = [dict(row) for row in rows]
-    '''
-    items = [
-        {
-            **dict(row),
-            "studies": json.loads(row["studies"])
-        }
-        for row in rows
-    ]
-    '''
+    conn.close()
+    return items
+
+def sql__plants__plants_names_common__by__plant_name__language(name, language):
+    conn = sqlite3.connect(db_filepath)
+    cur = conn.cursor()
+    conn.row_factory = sqlite3.Row
+    query = """
+        SELECT
+            plants.*,
+            plants_names_common.*
+        FROM plants
+        JOIN plants__plants_names_common
+            ON plants.plant_id = plants__plants_names_common.plant_id
+        JOIN plants_names_common
+            ON plants__plants_names_common.plant_name_common_id = plants_names_common.plant_name_common_id
+        WHERE plants.plant_name_scientific_reference = ?
+            AND plants_names_common.plant_name_common_language = ?
+    """
+    cursor = conn.execute(query, (name, language))
+    rows = cursor.fetchall()
+    items = [dict(row) for row in rows]
     conn.close()
     return items
 

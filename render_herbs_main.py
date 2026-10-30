@@ -17,6 +17,7 @@ from lib import components
 import normalize_utils
 import masterize_utils
 import schema_herbs
+import sql
 
 HUB_FOLDERPATH = f'''{g.DATA_FOLDERPATH}/herbs'''
 
@@ -2567,9 +2568,12 @@ def listing_hero_gen(plant_data):
     # print(plant_data['names_common'])
     # quit()
     ## H1
-    plant_name_common = plant_data['names_common']['plant_name_common_preferred']
-    if plant_name_common != '': h1_html = f'<h1 class="mb_4">{plant_name_common}</h1>'
-    else: h1_html = f'<h1 class="mb_4">{plant_name_scientific_reference}</h1>'
+    # plant_name_common = plant_data['names_common']['plant_name_common_preferred']
+    if plant_data['plants__plants_names_common'] != []:
+        plant_name_common = plant_data['plants__plants_names_common'][0]['plant_name_common_preferred']
+    else:
+        plant_name_common = plant_name_scientific_reference
+    h1_html = f'<h1 class="mb_4">{plant_name_common}</h1>'
     ### SCIENTIFIC NAME ACCEPTED
     name_scientific_accepted = f'''
         <p>
@@ -3409,7 +3413,7 @@ def plant_listing_page_gen(master_item):
     quit()
 
 def run():
-    master_items = masterize_utils.masterize_plants_get_all()
+    master_items = sql.sql_plants()
     for master_item in master_items[:]:
         print(master_item)
         plant_listing_page_gen(master_item)

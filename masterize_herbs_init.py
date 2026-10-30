@@ -141,6 +141,7 @@ def master_table_plants_names_common_create(regen=False):
     ###
     cur.execute(f"CREATE INDEX IF NOT EXISTS idx_{table_name}_plant_name_common_reference ON {table_name}(plant_name_common_reference)")
     cur.execute(f"CREATE INDEX IF NOT EXISTS idx_{table_name}_plant_name_common_reference_normalize ON {table_name}(plant_name_common_reference_normalize)")
+    cur.execute(f"CREATE INDEX IF NOT EXISTS idx_{table_name}_plant_name_common_language ON {table_name}(plant_name_common_language)")
     conn.commit()
     conn.close()
     """

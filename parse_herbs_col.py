@@ -142,6 +142,7 @@ def parse__plants__plants_names_common():
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
     last_items = []
+    preferred_found_count = 0
     for i, master_plant_row in enumerate(master_plants_rows[:]):
         print(f'PARSE HERBS parse plants__plants_names_common {i}/{len(master_plants_rows)}')
         # print(master_plant_row)
@@ -160,6 +161,7 @@ def parse__plants__plants_names_common():
         # quit()
         output_items = []
         for item in items:
+            if item['preferred'].strip() != '': preferred_found_count += 1
             output_item = {
                 f'plant_name_scientific_raw': plant_name_scientific_reference,
                 f'relationship_name_raw': 'has_name_common',
@@ -184,6 +186,7 @@ def parse__plants__plants_names_common():
             last_items = output_items
     conn.close()
     print(json.dumps(last_items, indent=4))
+    print(preferred_found_count)
 
 def run():
     print(f'''HERBS >> PARSE >> col''')
@@ -198,14 +201,4 @@ def run():
     parse__plants__plants_names_common()
 
     return
-
-    schema_items = schema_herbs.data['items']
-    for schema_item in schema_items: 
-        if schema_item['process'] != True: continue
-        sources_names = [
-            source['source_name'] 
-            for source in schema_item['sources']
-        ]
-        if 'col' not in sources_names: continue
-        parse_names(schema_item)
 
