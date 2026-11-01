@@ -149,6 +149,23 @@ def run():
         except:
             output_data['plants__plants_names_common'] = []
 
+        ### CONDITIONS
+        try:
+            output_data['plants__conditions'] = io.json_read(
+                f'{input_folderpath}/plants__conditions/{plant_name_scientific_reference}.json'
+            )
+        except:
+            output_data['plants__conditions'] = []
+
+        ### COMPOUNDS
+        try:
+            output_data['plants__compounds'] = io.json_read(
+                f'{input_folderpath}/plants__compounds/{plant_name_scientific_reference}.json'
+            )
+        except:
+            output_data['plants__compounds'] = []
+
+
         io.json_write(output_filepath, output_data)
         # print(json.dumps(output_data, indent=4))
         # quit()

@@ -619,6 +619,15 @@ footer span {
 /* LISTING */
 /**************************************/
 
+.listing-tag {
+    display: inline-block;
+    font-size: var(--font_xxs);
+    background-color: #f2f2f2;
+    padding: 0.25rem 1rem;
+    border-radius: 9999px;
+    margin-bottom: 1rem;
+}
+
 .listing {
     max-width: 80rem;
     margin: 0 auto 3rem;

@@ -1378,28 +1378,11 @@ def plant_listing_page_gen_old(plant_name):
     with open(html_filepath, 'w') as f: f.write(html)
     print(html_filepath)
 
-def listing_names_common_gen(plant_data):
-    html_article = f''
-    # print(plant_data['plants_activities'])
-    html_table_records = ''
-    html_article += f'''
-            <section>
-                <h2>Common Names</h2>
-        '''
-    for item in plant_data['plants__plants_names_common']:
-        html_article += f'''
-            <p>{item['plant_name_common_reference']}</p>
-        '''
-    html_article += f'''
-            </section>
-        '''
-    return html_article
-
 def listing_activities_gen(plant_data):
     html_article = f''
     # print(plant_data['plants_activities'])
     html_table_records = ''
-    for activity_item in plant_data['plants_activities']:
+    for activity_item in plant_data['plants_activities'][:10]:
         # html_article += f'''<p>{activity_item['activity_name_reference']}</p>'''
         sources_num = activity_item['count']
         confidence_score = ''
@@ -1422,6 +1405,80 @@ def listing_activities_gen(plant_data):
                 <thead>
                     <tr>
                         <th>Activity</th>
+                        <th>Supporting Sources</th>
+                        <th>Confidence Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {html_table_records}
+                </tbody>
+            </table>
+        </section>
+    '''
+    return html_article
+
+def listing_conditions_gen(plant_data):
+    html_article = f''
+    html_table_records = ''
+    for condition_item in plant_data['plants__conditions']['plant_conditions'][:10]:
+        sources_num = condition_item['count']
+        confidence_score = ''
+        if int(sources_num) >= 10: confidence_score = '★★★★★'
+        elif int(sources_num) >= 7: confidence_score = '★★★★☆'
+        elif int(sources_num) >= 5: confidence_score = '★★★☆☆'
+        elif int(sources_num) >= 3: confidence_score = '★★☆☆☆'
+        elif int(sources_num) >= 1: confidence_score = '★☆☆☆☆'
+        html_table_records += f'''
+            <tr>
+                <td>{condition_item['condition_name_reference']}</td>
+                <td>{sources_num}</td>
+                <td><span>{confidence_score}</span></td>
+            </tr>
+        '''
+    html_article += f'''
+        <section>
+            <h2>Health Conditions</h2>
+            <table style="margin-top: 3.2rem;">
+                <thead>
+                    <tr>
+                        <th>Condition</th>
+                        <th>Supporting Sources</th>
+                        <th>Confidence Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {html_table_records}
+                </tbody>
+            </table>
+        </section>
+    '''
+    return html_article
+
+def listing_compounds_gen(plant_data):
+    html_article = f''
+    html_table_records = ''
+    for compound_item in plant_data['plants__compounds']['plant_compounds'][:10]:
+        sources_num = compound_item['count']
+        confidence_score = ''
+        if int(sources_num) >= 10: confidence_score = '★★★★★'
+        elif int(sources_num) >= 7: confidence_score = '★★★★☆'
+        elif int(sources_num) >= 5: confidence_score = '★★★☆☆'
+        elif int(sources_num) >= 3: confidence_score = '★★☆☆☆'
+        elif int(sources_num) >= 1: confidence_score = '★☆☆☆☆'
+        html_table_records += f'''
+            <tr>
+                <td>{compound_item['compound_name_reference']}</td>
+                <td>{sources_num}</td>
+                <td><span>{confidence_score}</span></td>
+            </tr>
+        '''
+    html_article += f'''
+        <section>
+            <h2>Bioactive Compounds</h2>
+            <table style="margin-top: 3.2rem;">
+                <thead>
+                    <tr>
+                        <th>Compound</th>
                         <th>Supporting Sources</th>
                         <th>Confidence Score</th>
                     </tr>
@@ -1562,6 +1619,7 @@ def listing_chemicals_gen(plant_data):
         '''
     return html_article
 
+"""
 def listing_compounds_gen(plant_data):
     html_article = f''
     data_key = 'compounds'
@@ -1683,6 +1741,7 @@ def listing_compounds_gen(plant_data):
             </section>
         '''
     return html_article
+"""
 
 def schema_listing_gen(plant_data, schema_item, render_table=True):
     html_article = f''
@@ -2569,11 +2628,13 @@ def listing_hero_gen(plant_data):
     # quit()
     ## H1
     # plant_name_common = plant_data['names_common']['plant_name_common_preferred']
-    if plant_data['plants__plants_names_common'] != []:
-        plant_name_common = plant_data['plants__plants_names_common'][0]['plant_name_common_preferred']
+    plant_names_common_data = plant_data['plants__plants_names_common']
+    plant_name_common_preferred = plant_names_common_data['plant_name_common_preferred']
+    h1_html = f'<h1 class="mb_4">{plant_name_scientific_reference}</h1>' ### DEFAULT
+    if plant_name_common_preferred.strip() != '':
+        h1_html = f'<h1 class="mb_4">{plant_name_common_preferred}</h1>'
     else:
-        plant_name_common = plant_name_scientific_reference
-    h1_html = f'<h1 class="mb_4">{plant_name_common}</h1>'
+        h1_html = f'<h1 class="mb_4">{plant_name_scientific_reference}</h1>'
     ### SCIENTIFIC NAME ACCEPTED
     name_scientific_accepted = f'''
         <p>
@@ -2853,12 +2914,43 @@ def listing_taxonomies_gen(plant_data):
 
 def listing_names_common_gen_new(plant_data, render_table=True):
     html_article = ''
-    section_data = plant_data['plants_names_common']['plants_names_common']
+    section_data = plant_data['plants__plants_names_common']
     if section_data != []:
         # print(json.dumps(section_data, indent=4))
         # quit()
         ### PROSE
-        paragraphs_text = plant_data['plants_names_common']['llm_intro']
+        paragraphs_text = section_data['prose_llm']
+        # paragraphs_text = ''
+        ### STRUCTURED
+        # plants_items_eng = []
+        # plants_items_eng_non = []
+        # for plant_item in section_data:
+            # if plant_item['plant_name_common_language'] == 'eng':
+                # plants_items_eng.append(plant_item['plant_name_common_reference'])
+            # else:
+                # plants_items_eng_non.append(plant_item['plant_name_common_reference'])
+        plants_items_eng = section_data['plant_names_common_eng']
+        plants_items_eng_non = section_data['plant_names_common_eng_non']
+        ### STRUCTURED ENG 
+        plant_names_common_eng_html = ''
+        if plants_items_eng != []: 
+            plant_names_common_eng_html += f'<h4 style="margin-bottom: 1rem;">English Names</h4>'
+            plant_names_common_eng_html += f'<ul style="list-style: none;">'
+            for tag in plants_items_eng:
+                plant_names_common_eng_html += f'''
+                    <li class="listing-tag">{tag}</li>
+                '''
+            plant_names_common_eng_html += f'</ul>'
+        ### STRUCTURED ENG-NON
+        plant_names_common_eng_non_html = ''
+        if plants_items_eng_non != []: 
+            plant_names_common_eng_non_html += f'<h4 style="margin-bottom: 1rem;">Non English Names</h4>'
+            plant_names_common_eng_non_html += f'<ul style="list-style: none;">'
+            for tag in plants_items_eng_non:
+                plant_names_common_eng_non_html += f'''
+                    <li class="listing-tag">{tag}</li>
+                '''
+            plant_names_common_eng_html += f'</ul>'
         ### SOURCES
         html_sources = f'''
             <p style="margin-top: 1rem;">
@@ -2870,6 +2962,8 @@ def listing_names_common_gen_new(plant_data, render_table=True):
             <section>
                 <h3>Common Names</h3>
                 <p>{paragraphs_text}</p>
+                {plant_names_common_eng_html}
+                {plant_names_common_eng_non_html}
                 {html_sources}
             </section>
         '''
@@ -3209,7 +3303,7 @@ def listing_traits_gen(plant_data):
 def plant_listing_page_gen(master_item):
     plant_name_scientific_reference = master_item['plant_name_scientific_reference']
     plant_data = io.json_read(f'{HUB_FOLDERPATH}/compile/{plant_name_scientific_reference}.json')
-    print(json.dumps(plant_data, indent=4))
+    # print(json.dumps(plant_data, indent=4))
     # print(json.dumps(plant_data['names_common'], indent=4))
     # quit()
 
@@ -3238,8 +3332,10 @@ def plant_listing_page_gen(master_item):
     html_article += listing_distribution(plant_data)
     html_article += listing_identification(plant_data)
     ### 
-    html_article += listing_names_common_gen(plant_data)
+    # html_article += listing_names_common_gen(plant_data)
     html_article += listing_activities_gen(plant_data)
+    html_article += listing_compounds_gen(plant_data)
+    html_article += listing_conditions_gen(plant_data)
     ###
     schema_items = schema_herbs.data['items']
     for schema_item in schema_items: 
@@ -3251,6 +3347,7 @@ def plant_listing_page_gen(master_item):
         if schema_item['table_name'] == 'plants_climbers': continue
         if schema_item['table_name'] == 'plants_heights': continue
         if schema_item['table_name'] == 'plants_activities': continue
+        if schema_item['table_name'] == 'plants_conditions': continue
         html_article += schema_listing_gen(plant_data, schema_item, render_table=False)
 
     ### TOC

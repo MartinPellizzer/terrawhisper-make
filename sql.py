@@ -259,7 +259,7 @@ def sql__plants__plants_names_common__by_plant_name__and_group_____backup(name):
     conn.close()
     return items
 
-def sql__plants__plants_names_common__by_plant_name__and_group(name):
+def sql__plants__plants_names_common__by_plant_name(name):
     conn = sqlite3.connect(db_filepath)
     cur = conn.cursor()
     conn.row_factory = sqlite3.Row
@@ -299,6 +299,114 @@ def sql__plants__plants_names_common__by__plant_name__language(name, language):
     cursor = conn.execute(query, (name, language))
     rows = cursor.fetchall()
     items = [dict(row) for row in rows]
+    conn.close()
+    return items
+
+def sql__condition_id_by_name_normalize(name):
+    conn = sqlite3.connect(db_filepath)
+    cur = conn.cursor()
+    conn.row_factory = sqlite3.Row
+    cursor = conn.execute(f'''
+        SELECT * 
+        FROM conditions
+        WHERE condition_name_reference_normalize == ?
+    ''', (name,))
+    rows = cursor.fetchall()
+    items = [dict(row) for row in rows]
+    if items != []: item = items[0]
+    else: item = None
+    return item
+
+def sql__plants__conditions__by__plant_name__and__group(name):
+    conn = sqlite3.connect(db_filepath)
+    cur = conn.cursor()
+    conn.row_factory = sqlite3.Row
+    query = """
+        SELECT
+            plants.*,
+            conditions.*,
+            COUNT(*) AS count,
+            json_group_array(
+                json_object(
+                    'study_pmid', studies.study_pmid,
+                    'study_title', studies.study_title
+                )
+            ) AS studies
+        FROM plants
+        JOIN plants__conditions
+            ON plants.plant_id = plants__conditions.plant_id
+        JOIN conditions
+            ON plants__conditions.condition_id = conditions.condition_id
+        JOIN studies
+            ON plants__conditions.study_id = studies.study_id
+        WHERE plants.plant_name_scientific_reference = ?
+        GROUP BY conditions.condition_id
+        ORDER BY count DESC
+    """
+    cursor = conn.execute(query, (name,))
+    rows = cursor.fetchall()
+    items = [dict(row) for row in rows]
+    items = [
+        {
+            **dict(row),
+            "studies": json.loads(row["studies"])
+        }
+        for row in rows
+    ]
+    conn.close()
+    return items
+
+def sql__compound_id_by_name_normalize(name):
+    conn = sqlite3.connect(db_filepath)
+    cur = conn.cursor()
+    conn.row_factory = sqlite3.Row
+    cursor = conn.execute(f'''
+        SELECT * 
+        FROM compounds
+        WHERE compound_name_reference_normalize == ?
+    ''', (name,))
+    rows = cursor.fetchall()
+    items = [dict(row) for row in rows]
+    if items != []: item = items[0]
+    else: item = None
+    return item
+
+def sql__plants__compounds__by__plant_name__and__group(name):
+    conn = sqlite3.connect(db_filepath)
+    cur = conn.cursor()
+    conn.row_factory = sqlite3.Row
+    query = """
+        SELECT
+            plants.*,
+            compounds.*,
+            COUNT(*) AS count,
+            json_group_array(
+                json_object(
+                    'study_pmid', studies.study_pmid,
+                    'study_title', studies.study_title
+                )
+            ) AS studies
+        FROM plants
+        JOIN plants__compounds
+            ON plants.plant_id = plants__compounds.plant_id
+        JOIN compounds
+            ON plants__compounds.compound_id = compounds.compound_id
+        JOIN studies
+            ON plants__compounds.study_id = studies.study_id
+        WHERE plants.plant_name_scientific_reference = ?
+        GROUP BY compounds.compound_id
+        ORDER BY count DESC
+    """
+    cursor = conn.execute(query, (name,))
+    rows = cursor.fetchall()
+    items = [dict(row) for row in rows]
+    items = [
+        {
+            **dict(row),
+            "studies": json.loads(row["studies"])
+        }
+        for row in rows
+    ]
     conn.close()
     return items
 

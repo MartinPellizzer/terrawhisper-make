@@ -1242,7 +1242,15 @@ def plants_activities_derive():
             last = output_items
     print(json.dumps(last, indent=4))
 
-
+### TODO: return object like:
+    """
+    {
+        'plant_name_common_preferred': '',
+        'plant_names_common': [],
+        'plant_names_common_eng': [],
+        etc...
+    }
+"""
 def derive__plants__plants_names_common():
     table_name = 'plants__plants_names_common'
     output_folderpath = f'''{HUB_FOLDERPATH}/derive/{table_name}'''
@@ -1253,27 +1261,94 @@ def derive__plants__plants_names_common():
     plants_items = sql.sql_plants()
     last = []
     for i, plant_item in enumerate(plants_items[:]):
-        print(f'ASSERT HERBS plants__plants_names_common__table_join {i}/{len(plants_items)}')
+        print(f'DERIVE HERBS plants__plants_names_common__table_join {i}/{len(plants_items)}')
         plant_name_scientific_reference = plant_item['plant_name_scientific_reference']
         sql_items = sql.sql__plants__plants_names_common__by_plant_name__and_group(plant_name_scientific_reference)
-        sql_items_eng = sql.sql__plants__plants_names_common__by__plant_name__language(
-            plant_name_scientific_reference, 
-            language='eng'
-        )
+        # sql_items_eng = sql.sql__plants__plants_names_common__by__plant_name__language(
+            # plant_name_scientific_reference, 
+            # language='eng'
+        # )
         ###
-        output_items = []
+        plant_names_common_preferred = ''
+        plant_names_common_eng = []
+        plant_names_common_eng_non = []
         for sql_item in sql_items:
-            output_item = sql_item
-            if sql_items_eng != []:
-                output_item['plant_name_common_preferred'] = sql_items_eng[0]['plant_name_common_reference']
+            if sql_item['plant_name_common_language'] == 'eng':
+                plant_names_common_eng.append(sql_item['plant_name_common_reference'])
+                if plant_names_common_preferred == '':
+                    plant_names_common_preferred = sql_item['plant_name_common_reference']
             else:
-                output_item['plant_name_common_preferred'] = sql_items[0]['plant_name_common_reference']
-            output_items.append(output_item)
+                plant_names_common_eng_non.append(sql_item['plant_name_common_reference'])
         ###
         # output_items = items
+        output_item = {
+            'plant_name_common_preferred': plant_names_common_preferred,
+            'plant_names_common_eng': plant_names_common_eng,
+            'plant_names_common_eng_non': plant_names_common_eng_non,
+        }
         output_filepath = f'''{output_folderpath}/{plant_name_scientific_reference}.json'''
         io.folder_create_from_filepath(output_filepath)
-        io.json_write(output_filepath, output_items)
+        io.json_write(output_filepath, output_item)
+        # if output_items != []:
+            # last = output_items
+        # print(json.dumps(output_item, indent=4))
+        # quit()
+    # print(json.dumps(last, indent=4))
+
+def derive__plants__conditions():
+    table_name = 'plants__conditions'
+    output_folderpath = f'''{HUB_FOLDERPATH}/derive/{table_name}'''
+    try: shutil.rmtree(output_folderpath)
+    except: pass
+    io.folders_recursive_gen(output_folderpath)
+    ###
+    plants_items = sql.sql_plants()
+    last = []
+    for i, plant_item in enumerate(plants_items[:]):
+        print(f'DERIVE HERBS {table_name} {i}/{len(plants_items)}')
+        # print(json.dumps(plant_item, indent=4))
+        # quit()
+        plant_name_scientific_reference = plant_item['plant_name_scientific_reference']
+        sql_items = sql.sql__plants__conditions__by__plant_name__and__group(plant_name_scientific_reference)
+        # print(json.dumps(sql_items, indent=4))
+        # quit()
+        ###
+        output_items = sql_items
+        output_item = {
+            'plant_conditions': output_items,
+        }
+        output_filepath = f'''{HUB_FOLDERPATH}/derive/{table_name}/{plant_name_scientific_reference}.json'''
+        io.folder_create_from_filepath(output_filepath)
+        io.json_write(output_filepath, output_item)
+        if output_items != []:
+            last = output_items
+    print(json.dumps(last, indent=4))
+
+def derive__plants__compounds():
+    table_name = 'plants__compounds'
+    output_folderpath = f'''{HUB_FOLDERPATH}/derive/{table_name}'''
+    try: shutil.rmtree(output_folderpath)
+    except: pass
+    io.folders_recursive_gen(output_folderpath)
+    ###
+    plants_items = sql.sql_plants()
+    last = []
+    for i, plant_item in enumerate(plants_items[:]):
+        print(f'DERIVE HERBS {table_name} {i}/{len(plants_items)}')
+        # print(json.dumps(plant_item, indent=4))
+        # quit()
+        plant_name_scientific_reference = plant_item['plant_name_scientific_reference']
+        sql_items = sql.sql__plants__compounds__by__plant_name__and__group(plant_name_scientific_reference)
+        # print(json.dumps(sql_items, indent=4))
+        # quit()
+        ###
+        output_items = sql_items
+        output_item = {
+            'plant_compounds': output_items,
+        }
+        output_filepath = f'''{HUB_FOLDERPATH}/derive/{table_name}/{plant_name_scientific_reference}.json'''
+        io.folder_create_from_filepath(output_filepath)
+        io.json_write(output_filepath, output_item)
         if output_items != []:
             last = output_items
     print(json.dumps(last, indent=4))
@@ -1281,7 +1356,9 @@ def derive__plants__plants_names_common():
 def run():
     # plants_activities_derive()
 
-    derive__plants__plants_names_common()
+    # derive__plants__plants_names_common()
+    # derive__plants__conditions()
+    derive__plants__compounds()
 
     # derive_morphology_gen()
     return

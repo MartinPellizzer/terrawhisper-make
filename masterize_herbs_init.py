@@ -113,6 +113,32 @@ def master_table_conditions_create(regen=False):
     conn.commit()
     conn.close()
 
+def master_table_compounds_create(regen=False):
+    table_name = 'compounds'
+    output_folderpath = f'{HUB_FOLDERPATH}/database'
+    db_filepath = f'{output_folderpath}/terra.db'
+    ###
+    os.makedirs(output_folderpath, exist_ok=True)
+    conn = sqlite3.connect(db_filepath)
+    cur = conn.cursor()
+    if regen:
+        cur.execute(f"DROP TABLE IF EXISTS {table_name}")
+    cur.execute(f"""
+        CREATE TABLE IF NOT EXISTS {table_name} (
+            compound_id INTEGER PRIMARY KEY,
+            compound_name_reference TEXT NOT NULL UNIQUE,
+            compound_name_reference_normalize TEXT NOT NULL UNIQUE
+        );
+    """)
+    conn.execute("PRAGMA journal_mode = WAL;")
+    conn.execute("PRAGMA synchronous = OFF;")
+    conn.execute("PRAGMA temp_store = MEMORY;")
+    ###
+    cur.execute(f"CREATE INDEX IF NOT EXISTS idx_{table_name}_compound_name_reference ON {table_name}(compound_name_reference)")
+    cur.execute(f"CREATE INDEX IF NOT EXISTS idx_{table_name}_compound_name_reference_normalize ON {table_name}(compound_name_reference_normalize)")
+    conn.commit()
+    conn.close()
+
 def master_table_plants_names_common_create(regen=False):
     table_name = 'plants_names_common'
     output_folderpath = f'{HUB_FOLDERPATH}/database'
@@ -245,10 +271,14 @@ def test():
 def run():
 
     # master_table_studies_create(regen=True)
+
+    # master_table_plants_names_common_create(regen=True)
+
     # master_table_plants_create(regen=True)
     # master_table_activities_create(regen=True)
     # master_table_conditions_create(regen=True)
-    master_table_plants_names_common_create(regen=True)
+    master_table_compounds_create(regen=True)
+
 
 
     # master_table_diseases_create(regen=True)
