@@ -197,7 +197,7 @@ def run():
     print(f'parse names() - execution time: ', time.perf_counter() - start)
     '''
 
-    # parse__plants_names_common()
+    parse__plants_names_common()
     parse__plants__plants_names_common()
 
     return

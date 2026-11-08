@@ -62,6 +62,36 @@ def sql_activity_id_by_name_normalize(name):
     else: item = None
     return item
 
+def sql__plant_name_common__by_name_normalize(name):
+    conn = sqlite3.connect(db_filepath)
+    cur = conn.cursor()
+    conn.row_factory = sqlite3.Row
+    cursor = conn.execute(f'''
+        SELECT * 
+        FROM plants_names_common
+        WHERE plant_name_common_reference_normalize == ?
+    ''', (name,))
+    rows = cursor.fetchall()
+    items = [dict(row) for row in rows]
+    if items != []: item = items[0]
+    else: item = None
+    return item
+
+def sql__plant_names_common_all():
+    conn = sqlite3.connect(db_filepath)
+    cur = conn.cursor()
+    conn.row_factory = sqlite3.Row
+    cursor = conn.execute(f'''
+        SELECT * 
+        FROM plants_names_common
+    ''')
+    rows = cursor.fetchall()
+    items = [dict(row) for row in rows]
+    # if items != []: item = items[0]
+    # else: item = None
+    conn.close()
+    return items
+
 def sql_plant_name_common_id_by_name_normalize(name):
     conn = sqlite3.connect(db_filepath)
     cur = conn.cursor()
@@ -218,6 +248,84 @@ def sql_plant_activities_by_plant_name_and_group(name):
     conn.close()
     return items
 
+def sql__plants__activities__by__plant_name__and__group(name):
+    conn = sqlite3.connect(db_filepath)
+    cur = conn.cursor()
+    conn.row_factory = sqlite3.Row
+    query = """
+        SELECT
+            plants.*,
+            activities.*,
+            COUNT(*) AS count,
+            json_group_array(
+                json_object(
+                    'study_pmid', studies.study_pmid,
+                    'study_title', studies.study_title
+                )
+            ) AS studies
+        FROM plants
+        JOIN plants__activities
+            ON plants.plant_id = plants__activities.plant_id
+        JOIN activities
+            ON plants__activities.activity_id = activities.activity_id
+        JOIN studies
+            ON plants__activities.study_id = studies.study_id
+        WHERE plants.plant_name_scientific_reference = ?
+        GROUP BY activities.activity_id
+        ORDER BY count DESC
+    """
+    cursor = conn.execute(query, (name,))
+    rows = cursor.fetchall()
+    items = [dict(row) for row in rows]
+    items = [
+        {
+            **dict(row),
+            "studies": json.loads(row["studies"])
+        }
+        for row in rows
+    ]
+    conn.close()
+    return items
+
+def sql__plants__parts__by__plant_name__and__group(name):
+    conn = sqlite3.connect(db_filepath)
+    cur = conn.cursor()
+    conn.row_factory = sqlite3.Row
+    query = """
+        SELECT
+            plants.*,
+            parts.*,
+            COUNT(*) AS count,
+            json_group_array(
+                json_object(
+                    'study_pmid', studies.study_pmid,
+                    'study_title', studies.study_title
+                )
+            ) AS studies
+        FROM plants
+        JOIN plants__parts
+            ON plants.plant_id = plants__parts.plant_id
+        JOIN parts
+            ON plants__parts.part_id = parts.part_id
+        JOIN studies
+            ON plants__parts.study_id = studies.study_id
+        WHERE plants.plant_name_scientific_reference = ?
+        GROUP BY parts.part_id
+        ORDER BY count DESC
+    """
+    cursor = conn.execute(query, (name,))
+    rows = cursor.fetchall()
+    items = [dict(row) for row in rows]
+    items = [
+        {
+            **dict(row),
+            "studies": json.loads(row["studies"])
+        }
+        for row in rows
+    ]
+    conn.close()
+    return items
+
 def sql__plants__plants_names_common__by_plant_name__and_group_____backup(name):
     """
     """
@@ -259,7 +367,80 @@ def sql__plants__plants_names_common__by_plant_name__and_group_____backup(name):
     conn.close()
     return items
 
+def sql__plants__plants_names_common__by_plant_name__and_group(name):
+    """
+    """
+    conn = sqlite3.connect(db_filepath)
+    cur = conn.cursor()
+    conn.row_factory = sqlite3.Row
+    query = """
+        SELECT
+            plants.*,
+            plants_names_common.*,
+            COUNT(*) AS count,
+            json_group_array(
+                json_object(
+                    'source_pmid', studies.study_pmid,
+                    'source_title', studies.study_title
+                )
+            ) AS studies
+        FROM plants
+        JOIN plants__plants_names_common
+            ON plants.plant_id = plants__plants_names_common.plant_id
+        JOIN plants_names_common
+            ON plants__plants_names_common.plant_name_common_id = plants_names_common.plant_name_common_id
+        JOIN studies
+            ON plants__plants_names_common.study_id = studies.study_id
+        WHERE plants.plant_name_scientific_reference = ?
+        GROUP BY plants_names_common.plant_name_common_id
+        ORDER BY count DESC;
+    """
+    cursor = conn.execute(query, (name,))
+    rows = cursor.fetchall()
+    items = [dict(row) for row in rows]
+    items = [
+        {
+            **dict(row),
+            "studies": json.loads(row["studies"])
+        }
+        for row in rows
+    ]
+    conn.close()
+    return items
+
 def sql__plants__plants_names_common__by_plant_name(name):
+    """
+    """
+    conn = sqlite3.connect(db_filepath)
+    cur = conn.cursor()
+    conn.row_factory = sqlite3.Row
+    query = """
+        SELECT
+            plants.*,
+            plants_names_common.*,
+            COUNT(*) AS count
+        FROM plants
+        JOIN plants__plants_names_common
+            ON plants.plant_id = plants__plants_names_common.plant_id
+        JOIN plants_names_common
+            ON plants__plants_names_common.plant_name_common_id = plants_names_common.plant_name_common_id
+        WHERE plants.plant_name_scientific_reference = ?
+        GROUP BY plants_names_common.plant_name_common_id
+        ORDER BY count DESC;
+    """
+    cursor = conn.execute(query, (name,))
+    rows = cursor.fetchall()
+    items = [dict(row) for row in rows]
+    items = [
+        {
+            **dict(row),
+        }
+        for row in rows
+    ]
+    conn.close()
+    return items
+
+def sql__plants__plants_names_common__by_plant_name_scientific_reference(name):
     conn = sqlite3.connect(db_filepath)
     cur = conn.cursor()
     conn.row_factory = sqlite3.Row
@@ -409,4 +590,127 @@ def sql__plants__compounds__by__plant_name__and__group(name):
     ]
     conn.close()
     return items
+
+def sql__preparation_id_by_name_normalize(name):
+    conn = sqlite3.connect(db_filepath)
+    cur = conn.cursor()
+    conn.row_factory = sqlite3.Row
+    cursor = conn.execute(f'''
+        SELECT * 
+        FROM preparations
+        WHERE preparation_name_reference_normalize == ?
+    ''', (name,))
+    rows = cursor.fetchall()
+    items = [dict(row) for row in rows]
+    if items != []: item = items[0]
+    else: item = None
+    return item
+
+def sql__plants__preparations__by__plant_name__and__group(name):
+    conn = sqlite3.connect(db_filepath)
+    cur = conn.cursor()
+    conn.row_factory = sqlite3.Row
+    query = """
+        SELECT
+            plants.*,
+            preparations.*,
+            COUNT(*) AS count,
+            json_group_array(
+                json_object(
+                    'study_pmid', studies.study_pmid,
+                    'study_title', studies.study_title
+                )
+            ) AS studies
+        FROM plants
+        JOIN plants__preparations
+            ON plants.plant_id = plants__preparations.plant_id
+        JOIN preparations
+            ON plants__preparations.preparation_id = preparations.preparation_id
+        JOIN studies
+            ON plants__preparations.study_id = studies.study_id
+        WHERE plants.plant_name_scientific_reference = ?
+        GROUP BY preparations.preparation_id
+        ORDER BY count DESC
+    """
+    cursor = conn.execute(query, (name,))
+    rows = cursor.fetchall()
+    items = [dict(row) for row in rows]
+    items = [
+        {
+            **dict(row),
+            "studies": json.loads(row["studies"])
+        }
+        for row in rows
+    ]
+    conn.close()
+    return items
+
+def sql__part_id_by_name_normalize(name):
+    conn = sqlite3.connect(db_filepath)
+    cur = conn.cursor()
+    conn.row_factory = sqlite3.Row
+    cursor = conn.execute(f'''
+        SELECT * 
+        FROM parts
+        WHERE part_name_reference_normalize == ?
+    ''', (name,))
+    rows = cursor.fetchall()
+    items = [dict(row) for row in rows]
+    if items != []: item = items[0]
+    else: item = None
+    return item
+
+def sql__plants__parts__by__plant_name__and__group(name):
+    conn = sqlite3.connect(db_filepath)
+    cur = conn.cursor()
+    conn.row_factory = sqlite3.Row
+    query = """
+        SELECT
+            plants.*,
+            parts.*,
+            COUNT(*) AS count,
+            json_group_array(
+                json_object(
+                    'study_pmid', studies.study_pmid,
+                    'study_title', studies.study_title
+                )
+            ) AS studies
+        FROM plants
+        JOIN plants__parts
+            ON plants.plant_id = plants__parts.plant_id
+        JOIN parts
+            ON plants__parts.part_id = parts.part_id
+        JOIN studies
+            ON plants__parts.study_id = studies.study_id
+        WHERE plants.plant_name_scientific_reference = ?
+        GROUP BY parts.part_id
+        ORDER BY count DESC
+    """
+    cursor = conn.execute(query, (name,))
+    rows = cursor.fetchall()
+    items = [dict(row) for row in rows]
+    items = [
+        {
+            **dict(row),
+            "studies": json.loads(row["studies"])
+        }
+        for row in rows
+    ]
+    conn.close()
+    return items
+
+def sql__activity_id_by_name_normalize(name):
+    conn = sqlite3.connect(db_filepath)
+    cur = conn.cursor()
+    conn.row_factory = sqlite3.Row
+    cursor = conn.execute(f'''
+        SELECT * 
+        FROM activities
+        WHERE activity_name_reference_normalize == ?
+    ''', (name,))
+    rows = cursor.fetchall()
+    items = [dict(row) for row in rows]
+    if items != []: item = items[0]
+    else: item = None
+    return item
 

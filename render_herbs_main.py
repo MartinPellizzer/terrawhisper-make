@@ -1382,7 +1382,10 @@ def listing_activities_gen(plant_data):
     html_article = f''
     # print(plant_data['plants_activities'])
     html_table_records = ''
-    for activity_item in plant_data['plants_activities'][:10]:
+    # print(json.dumps(plant_data, indent=4))
+    # print(json.dumps(plant_data['plants__activities'], indent=4))
+    # quit()
+    for activity_item in plant_data['plants__activities']['plant_activities'][:10]:
         # html_article += f'''<p>{activity_item['activity_name_reference']}</p>'''
         sources_num = activity_item['count']
         confidence_score = ''
@@ -1401,6 +1404,7 @@ def listing_activities_gen(plant_data):
     html_article += f'''
         <section>
             <h2>Biological Activities</h2>
+            <p>{plant_data['plants__activities']['intro_llm']}</p>
             <table style="margin-top: 3.2rem;">
                 <thead>
                     <tr>
@@ -1438,10 +1442,85 @@ def listing_conditions_gen(plant_data):
     html_article += f'''
         <section>
             <h2>Health Conditions</h2>
+            <p>{plant_data['plants__conditions']['intro_llm']}</p>
             <table style="margin-top: 3.2rem;">
                 <thead>
                     <tr>
                         <th>Condition</th>
+                        <th>Supporting Sources</th>
+                        <th>Confidence Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {html_table_records}
+                </tbody>
+            </table>
+        </section>
+    '''
+    return html_article
+
+def listing_preparations_gen(plant_data):
+    html_article = f''
+    html_table_records = ''
+    for preparation_item in plant_data['plants__preparations']['plant_preparations'][:10]:
+        sources_num = preparation_item['count']
+        confidence_score = ''
+        if int(sources_num) >= 10: confidence_score = '★★★★★'
+        elif int(sources_num) >= 7: confidence_score = '★★★★☆'
+        elif int(sources_num) >= 5: confidence_score = '★★★☆☆'
+        elif int(sources_num) >= 3: confidence_score = '★★☆☆☆'
+        elif int(sources_num) >= 1: confidence_score = '★☆☆☆☆'
+        html_table_records += f'''
+            <tr>
+                <td>{preparation_item['preparation_name_reference']}</td>
+                <td>{sources_num}</td>
+                <td><span>{confidence_score}</span></td>
+            </tr>
+        '''
+    html_article += f'''
+        <section>
+            <h2>Herbal Preparations</h2>
+            <table style="margin-top: 3.2rem;">
+                <thead>
+                    <tr>
+                        <th>Preparation</th>
+                        <th>Supporting Sources</th>
+                        <th>Confidence Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {html_table_records}
+                </tbody>
+            </table>
+        </section>
+    '''
+    return html_article
+
+def listing_parts_gen(plant_data):
+    html_article = f''
+    html_table_records = ''
+    for part_item in plant_data['plants__parts']['plant_parts'][:10]:
+        sources_num = part_item['count']
+        confidence_score = ''
+        if int(sources_num) >= 10: confidence_score = '★★★★★'
+        elif int(sources_num) >= 7: confidence_score = '★★★★☆'
+        elif int(sources_num) >= 5: confidence_score = '★★★☆☆'
+        elif int(sources_num) >= 3: confidence_score = '★★☆☆☆'
+        elif int(sources_num) >= 1: confidence_score = '★☆☆☆☆'
+        html_table_records += f'''
+            <tr>
+                <td>{part_item['part_name_reference']}</td>
+                <td>{sources_num}</td>
+                <td><span>{confidence_score}</span></td>
+            </tr>
+        '''
+    html_article += f'''
+        <section>
+            <h2>Plant Parts</h2>
+            <table style="margin-top: 3.2rem;">
+                <thead>
+                    <tr>
+                        <th>Part</th>
                         <th>Supporting Sources</th>
                         <th>Confidence Score</th>
                     </tr>
@@ -2274,7 +2353,7 @@ def listing_plant_parts_gen(plant_data):
         """
     return html_article
 
-def listing_preparations_gen(plant_data):
+def listing_preparations_gen_old(plant_data):
     html_article = ''
     data_key = 'preparations'
     item_key = 'preparation_name_reference'
@@ -2560,10 +2639,11 @@ def quick_facts(plant_data):
         '''
     ### NAMES COMMON
     hero_names_common_list = []
-    for value in plant_data['names_common']['en_labels']:
+    # for value in plant_data['names_common']['en_labels']:
+    for value in plant_data['plants__plants_names_common']['plant_names_common_eng']:
         hero_names_common_list.append(value)
-    for value in plant_data['names_common']['en_aliases']:
-        hero_names_common_list.append(value)
+    # for value in plant_data['names_common']['en_aliases']:
+        # hero_names_common_list.append(value)
     hero_names_common_html = ' · '.join(hero_names_common_list[:2]).title()
     hero_names_common_count = len(hero_names_common_list) - 2
     if len(hero_names_common_list) <= 0:
@@ -2585,8 +2665,10 @@ def quick_facts(plant_data):
     else: hero_distributions = 'Not available'
     ### PLANTS PARTS
     hero_plant_parts_list = []
-    for item in plant_data['plants_parts']['plants_parts'][:2]:
-        hero_plant_parts_list.append(item['plant_part_name_reference'])
+    # print(json.dumps(plant_data['plants__parts'], indent=4))
+    # quit()
+    for item in plant_data['plants__parts']['plant_parts'][:2]:
+        hero_plant_parts_list.append(item['part_name_reference'])
     hero_plant_parts_html = ' · '.join(hero_plant_parts_list)
     hero_plant_parts_html = hero_plant_parts_html.title()
     if hero_plant_parts_html == '': hero_plant_parts_html = 'Not available'
@@ -2619,6 +2701,8 @@ def quick_facts(plant_data):
     return quick_facts_html 
 
 def listing_hero_gen(plant_data):
+    # print(json.dumps(plant_data, indent=4))
+    # quit()
     plant_name_scientific_reference = plant_data['plant_name_scientific_reference']
     plant_taxon_name_slug = polish.sluggify(plant_name_scientific_reference)
     plant_taxon_name_normalized = normalize_utils.normalize_plant_name(plant_name_scientific_reference)
@@ -2629,6 +2713,8 @@ def listing_hero_gen(plant_data):
     ## H1
     # plant_name_common = plant_data['names_common']['plant_name_common_preferred']
     plant_names_common_data = plant_data['plants__plants_names_common']
+    # print(json.dumps(plant_names_common_data, indent=4))
+    # quit()
     plant_name_common_preferred = plant_names_common_data['plant_name_common_preferred']
     h1_html = f'<h1 class="mb_4">{plant_name_scientific_reference}</h1>' ### DEFAULT
     if plant_name_common_preferred.strip() != '':
@@ -2702,8 +2788,9 @@ def listing_hero_gen(plant_data):
     else: hero_distributions = 'Not available'
     ### PLANTS PARTS
     hero_plant_parts_list = []
-    for item in plant_data['plants_parts']['plants_parts'][:2]:
-        hero_plant_parts_list.append(item['plant_part_name_reference'])
+    for item in plant_data['plants__parts']['plant_parts'][:2]:
+        # print(json.dumps(item, indent=4))
+        hero_plant_parts_list.append(item['part_name_reference'])
     hero_plant_parts_html = ' · '.join(hero_plant_parts_list)
     hero_plant_parts_html = hero_plant_parts_html.title()
     if hero_plant_parts_html == '': hero_plant_parts_html = 'Not available'
@@ -2727,10 +2814,12 @@ def listing_hero_gen(plant_data):
         '''
     ### NAMES COMMON
     hero_names_common_list = []
-    for value in plant_data['names_common']['en_labels']:
+    # print(json.dumps(plant_data['plants__plants_names_common'], indent=4))
+    # quit()
+    for value in plant_data['plants__plants_names_common']['plant_names_common_eng']:
         hero_names_common_list.append(value)
-    for value in plant_data['names_common']['en_aliases']:
-        hero_names_common_list.append(value)
+    # for value in plant_data['names_common']['en_aliases']:
+        # hero_names_common_list.append(value)
     hero_names_common_html = ' · '.join(hero_names_common_list[:2]).title()
     hero_names_common_count = len(hero_names_common_list) - 2
     if len(hero_names_common_list) <= 0:
@@ -3085,8 +3174,10 @@ def listing_taxonomies_gen_new(plant_data, render_table=True):
 def listing_classification(plant_data):
     html_article = ''
     html_common_names = listing_names_common_gen_new(plant_data)
-    html_synonyms = listing_synonyms_gen_new(plant_data)
-    html_taxonomy = listing_taxonomies_gen_new(plant_data)
+    try: html_synonyms = listing_synonyms_gen_new(plant_data)
+    except: html_synonyms = ''
+    try: html_taxonomy = listing_taxonomies_gen_new(plant_data)
+    except: html_taxonomy = ''
     html_article = f'''
         <section>
             <h2>Classification</h2>
@@ -3123,7 +3214,8 @@ def listing_distribution_gen_new(plant_data, render_table=True):
 
 def listing_distribution(plant_data):
     html_article = ''
-    html_distribution = listing_distribution_gen_new(plant_data)
+    try: html_distribution = listing_distribution_gen_new(plant_data)
+    except: html_distribution = ''
     html_article = f'''
         <section>
             <h2>Distribution</h2>
@@ -3160,7 +3252,8 @@ def listing_morphology_gen_new(plant_data, render_table=True):
 
 def listing_identification(plant_data):
     html_article = ''
-    html_morphology = listing_morphology_gen_new(plant_data)
+    try: html_morphology = listing_morphology_gen_new(plant_data)
+    except: html_morphology = ''
     html_article = f'''
         <section>
             <h2>Identification</h2>
@@ -3334,8 +3427,10 @@ def plant_listing_page_gen(master_item):
     ### 
     # html_article += listing_names_common_gen(plant_data)
     html_article += listing_activities_gen(plant_data)
-    html_article += listing_compounds_gen(plant_data)
     html_article += listing_conditions_gen(plant_data)
+    html_article += listing_compounds_gen(plant_data)
+    html_article += listing_preparations_gen(plant_data)
+    html_article += listing_parts_gen(plant_data)
     ###
     schema_items = schema_herbs.data['items']
     for schema_item in schema_items: 
@@ -3348,6 +3443,9 @@ def plant_listing_page_gen(master_item):
         if schema_item['table_name'] == 'plants_heights': continue
         if schema_item['table_name'] == 'plants_activities': continue
         if schema_item['table_name'] == 'plants_conditions': continue
+        if schema_item['table_name'] == 'plants_compounds': continue
+        if schema_item['table_name'] == 'plants_preparations': continue
+        if schema_item['table_name'] == 'plants_plants_parts': continue
         html_article += schema_listing_gen(plant_data, schema_item, render_table=False)
 
     ### TOC

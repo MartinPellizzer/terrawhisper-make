@@ -509,7 +509,51 @@ def compounds_normalize(source_foldername):
     print(json.dumps(input_data[0], indent=4))
     # quit()
 
-def plants_names_common_normalize(source_foldername):
+def preparations_normalize(source_foldername):
+    table_name = 'preparations'
+    input_folderpath = f'{HUB_FOLDERPATH}/parse/{source_foldername}/{table_name}/json'
+    output_folderpath = f'{HUB_FOLDERPATH}/normalize/{source_foldername}/{table_name}/json'
+    try: shutil.rmtree(output_folderpath)
+    except: pass
+    io.folders_recursive_gen(output_folderpath)
+    input_filenames = os.listdir(input_folderpath)
+    ###
+    for i, input_filename in enumerate(input_filenames[:]):
+        print(f'NORMALIZE HERBS {table_name} {i}/{len(input_filenames)}')
+        output_filepath = f'{output_folderpath}/{input_filename}'
+        if os.path.exists(output_filepath): continue
+        ###
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        input_data = io.json_read(input_filepath)
+        for input_item in input_data:
+            input_item['preparation_name_raw_normalize'] = normalize_format(input_item['preparation_name_raw'])
+        io.json_write(output_filepath, input_data)
+    print(json.dumps(input_data[0], indent=4))
+    # quit()
+
+def parts_normalize(source_foldername):
+    table_name = 'parts'
+    input_folderpath = f'{HUB_FOLDERPATH}/parse/{source_foldername}/{table_name}/json'
+    output_folderpath = f'{HUB_FOLDERPATH}/normalize/{source_foldername}/{table_name}/json'
+    try: shutil.rmtree(output_folderpath)
+    except: pass
+    io.folders_recursive_gen(output_folderpath)
+    input_filenames = os.listdir(input_folderpath)
+    ###
+    for i, input_filename in enumerate(input_filenames[:]):
+        print(f'NORMALIZE HERBS {table_name} {i}/{len(input_filenames)}')
+        output_filepath = f'{output_folderpath}/{input_filename}'
+        if os.path.exists(output_filepath): continue
+        ###
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        input_data = io.json_read(input_filepath)
+        for input_item in input_data:
+            input_item['part_name_raw_normalize'] = normalize_format(input_item['part_name_raw'])
+        io.json_write(output_filepath, input_data)
+    print(json.dumps(input_data[0], indent=4))
+    # quit()
+
+def normalize__plants_names_common(source_foldername):
     input_folderpath = f'{HUB_FOLDERPATH}/parse/{source_foldername}/plants_names_common/json'
     output_folderpath = f'{HUB_FOLDERPATH}/normalize/{source_foldername}/plants_names_common/json'
     try: shutil.rmtree(output_folderpath)
@@ -555,6 +599,28 @@ def studies_normalize(source_foldername):
 def plants_activities_normalize(source_foldername):
     input_folderpath = f'{HUB_FOLDERPATH}/parse/{source_foldername}/plants_activities/json'
     output_folderpath = f'{HUB_FOLDERPATH}/normalize/{source_foldername}/plants_activities/json'
+    try: shutil.rmtree(output_folderpath)
+    except: pass
+    io.folders_recursive_gen(output_folderpath)
+    input_filenames = os.listdir(input_folderpath)
+    ###
+    for i, input_filename in enumerate(input_filenames[:]):
+        print(f'NORMALIZE HERBS plants_activities {i}/{len(input_filenames)}')
+        output_filepath = f'{output_folderpath}/{input_filename}'
+        if os.path.exists(output_filepath): continue
+        ###
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        input_data = io.json_read(input_filepath)
+        for input_item in input_data:
+            input_item['plant_name_scientific_raw_normalize'] = normalize_utils.normalize_plant_name(input_item['plant_name_scientific_raw'])
+            input_item['activity_name_raw_normalize'] = normalize_format(input_item['activity_name_raw'])
+        io.json_write(output_filepath, input_data)
+    print(json.dumps(input_data[0], indent=4))
+    # quit()
+
+def normalize__plants__activities(source_foldername):
+    input_folderpath = f'{HUB_FOLDERPATH}/parse/{source_foldername}/plants__activities/json'
+    output_folderpath = f'{HUB_FOLDERPATH}/normalize/{source_foldername}/plants__activities/json'
     try: shutil.rmtree(output_folderpath)
     except: pass
     io.folders_recursive_gen(output_folderpath)
@@ -643,6 +709,52 @@ def normalize__plants__compounds(source_foldername):
     print(json.dumps(input_data[0], indent=4))
     # quit()
 
+def normalize__plants__preparations(source_foldername):
+    table_name = 'plants__preparations'
+    input_folderpath = f'{HUB_FOLDERPATH}/parse/{source_foldername}/{table_name}/json'
+    output_folderpath = f'{HUB_FOLDERPATH}/normalize/{source_foldername}/{table_name}/json'
+    try: shutil.rmtree(output_folderpath)
+    except: pass
+    io.folders_recursive_gen(output_folderpath)
+    input_filenames = os.listdir(input_folderpath)
+    ###
+    for i, input_filename in enumerate(input_filenames[:]):
+        print(f'NORMALIZE HERBS {table_name} {i}/{len(input_filenames)}')
+        output_filepath = f'{output_folderpath}/{input_filename}'
+        if os.path.exists(output_filepath): continue
+        ###
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        input_data = io.json_read(input_filepath)
+        for input_item in input_data:
+            input_item['plant_name_scientific_raw_normalize'] = normalize_utils.normalize_plant_name(input_item['plant_name_scientific_raw'])
+            input_item['preparation_name_raw_normalize'] = normalize_format(input_item['preparation_name_raw'])
+        io.json_write(output_filepath, input_data)
+    print(json.dumps(input_data[0], indent=4))
+    # quit()
+
+def normalize__plants__parts(source_foldername):
+    table_name = 'plants__parts'
+    input_folderpath = f'{HUB_FOLDERPATH}/parse/{source_foldername}/{table_name}/json'
+    output_folderpath = f'{HUB_FOLDERPATH}/normalize/{source_foldername}/{table_name}/json'
+    try: shutil.rmtree(output_folderpath)
+    except: pass
+    io.folders_recursive_gen(output_folderpath)
+    input_filenames = os.listdir(input_folderpath)
+    ###
+    for i, input_filename in enumerate(input_filenames[:]):
+        print(f'NORMALIZE HERBS {table_name} {i}/{len(input_filenames)}')
+        output_filepath = f'{output_folderpath}/{input_filename}'
+        if os.path.exists(output_filepath): continue
+        ###
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        input_data = io.json_read(input_filepath)
+        for input_item in input_data:
+            input_item['plant_name_scientific_raw_normalize'] = normalize_utils.normalize_plant_name(input_item['plant_name_scientific_raw'])
+            input_item['part_name_raw_normalize'] = normalize_format(input_item['part_name_raw'])
+        io.json_write(output_filepath, input_data)
+    print(json.dumps(input_data[0], indent=4))
+    # quit()
+
 def run():
     print('NORMALIZE >> MAIN')
 
@@ -652,14 +764,20 @@ def run():
     # activities_normalize(source_foldername='pubmed')
     # conditions_normalize(source_foldername='pubmed')
     # compounds_normalize(source_foldername='pubmed')
+    # preparations_normalize(source_foldername='pubmed')
+    # parts_normalize(source_foldername='pubmed')
 
-    # plants_names_common_normalize(source_foldername='col')
+    normalize__plants_names_common(source_foldername='col')
 
     ### ASSERTIONS
-    # plants_activities_normalize(source_foldername='pubmed')
-    # normalize__plants__plants_names_common(source_foldername='col')
+
+    normalize__plants__plants_names_common(source_foldername='col')
+
+    # normalize__plants__activities(source_foldername='pubmed')
     # normalize__plants__conditions(source_foldername='pubmed')
-    normalize__plants__compounds(source_foldername='pubmed')
+    # normalize__plants__compounds(source_foldername='pubmed')
+    # normalize__plants__preparations(source_foldername='pubmed')
+    # normalize__plants__parts(source_foldername='pubmed')
     return
     quit()
 

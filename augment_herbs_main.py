@@ -459,15 +459,122 @@ def augment_preparations():
         # quit()
     print(found_num)
 
-def augment_intro():
+def augment__intro(regen=False):
+    input_activities_folderpath = f'{HUB_FOLDERPATH}/derive/plants__activities'
+    input_conditions_folderpath = f'{HUB_FOLDERPATH}/derive/plants__conditions'
+    input_compounds_folderpath = f'{HUB_FOLDERPATH}/derive/plants__compounds'
+    input_preparations_folderpath = f'{HUB_FOLDERPATH}/derive/plants__preparations'
+    input_plants_parts_folderpath = f'{HUB_FOLDERPATH}/derive/plants__parts'
+    output_folderpath = f'{HUB_FOLDERPATH}/augment/intro'
+    if regen:
+        try: shutil.rmtree(output_folderpath)
+        except: pass
+    io.folders_recursive_gen(output_folderpath)
+    ###
+    master_items = sql.sql_plants()
+    # master_items = masterize_utils.masterize_plants_get_all()
+    found_num = 0
+    for i, master_item in enumerate(master_items[:]):
+        print(f'AUGMENT PREPARATIONS {i}/{len(master_items)}')
+        plant_name_scientific_reference = master_item['plant_name_scientific_reference']
+        input_preparations_filepath = f'{input_preparations_folderpath}/{plant_name_scientific_reference}.json'
+        input_parts_filepath = f'{input_plants_parts_folderpath}/{plant_name_scientific_reference}.json'
+        input_conditions_filepath = f'{input_conditions_folderpath}/{plant_name_scientific_reference}.json'
+        input_compounds_filepath = f'{input_compounds_folderpath}/{plant_name_scientific_reference}.json'
+        input_activities_filepath = f'{input_activities_folderpath}/{plant_name_scientific_reference}.json'
+        output_filepath = f'{output_folderpath}/{plant_name_scientific_reference}.json'
+        input_preparations_data = io.json_read(input_preparations_filepath)
+        input_parts_data = io.json_read(input_parts_filepath)
+        input_conditions_data = io.json_read(input_conditions_filepath)
+        input_compounds_data = io.json_read(input_compounds_filepath)
+        input_activities_data = io.json_read(input_activities_filepath)
+        ###
+        # print(json.dumps(master_item, indent=4))
+        # print(json.dumps(input_activities_data, indent=4))
+        # quit()
+        if os.path.exists(output_filepath): continue
+        if (
+            input_preparations_data != [] or 
+            input_parts_data != [] or 
+            input_conditions_data != [] or 
+            input_compounds_data != [] or 
+            input_activities_data != []
+        ):
+            found_num += 1
+            plant_activities = input_activities_data['plant_activities']
+            plant_conditions = input_conditions_data['plant_conditions']
+            plant_compounds = input_compounds_data['plant_compounds']
+            plant_preparations = input_preparations_data['plant_preparations']
+            plant_parts = input_parts_data['plant_parts']
+            ###
+            activities = [item['activity_name_reference'] for item in plant_activities][:4]
+            conditions = [item['condition_name_reference'] for item in plant_conditions][:4]
+            compounds = [item['compound_name_reference'] for item in plant_compounds][:4]
+            preparations = [item['preparation_name_reference'] for item in plant_preparations][:4]
+            parts = [item['part_name_reference'] for item in plant_parts][:4]
+            ###
+            preparations_prompt = ', '.join(preparations)
+            parts_prompt = ', '.join(parts)
+            conditions_prompt = ', '.join(conditions)
+            compounds_prompt = ', '.join(compounds)
+            activities_prompt = ', '.join(activities)
+            # quit()
+            sentences_num = 0
+            sentences_num += len(activities_prompt)
+            sentences_num += len(compounds_prompt)
+            sentences_num += len(conditions_prompt)
+            sentences_num += len(parts_prompt)
+            sentences_num += len(preparations_prompt)
+            if activities_prompt.strip() != '': activities_prompt = f'''activities: {activities_prompt}'''
+            if compounds_prompt.strip() != '': compounds_prompt = f'''compounds: {compounds_prompt}'''
+            if conditions_prompt.strip() != '': conditions_prompt = f'''conditions: {conditions_prompt}'''
+            if parts_prompt.strip() != '': plants_parts_prompt = f'''parts: {parts_prompt}'''
+            if preparations_prompt.strip() != '': preparations_prompt = f'''preparations: {preparations_prompt}'''
+            prompt = f'''
+                Write a 5-sentence intro paragraph about the following plant: {plant_name_scientific_reference}.
+                CONTEXT:
+                {activities_prompt}
+                {compounds_prompt}
+                {conditions_prompt}
+                {parts_prompt}
+                {preparations_prompt}
+                RULES:
+                Reply only with the asked content.
+                Start with the following words: {plant_name_scientific_reference} .
+            '''.strip()
+            # print(prompt)
+            # quit()
+            reply = llm.reply(prompt, model_filepath)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            print()
+            print('########################################################################')
+            print(reply)
+            print('########################################################################')
+            print()
+            input_data = {
+                'llm_intro': reply,
+            }
+        else: 
+            input_data = {
+                'llm_intro': '',
+            }
+        print(json.dumps(input_data, indent=4))
+        io.json_write(output_filepath, input_data)
+        # quit()
+    print(found_num)
+
+def augment_intro_old(regen=False):
     input_preparations_folderpath = f'{HUB_FOLDERPATH}/derive/preparations'
     input_plants_parts_folderpath = f'{HUB_FOLDERPATH}/derive/plants_parts'
     input_conditions_folderpath = f'{HUB_FOLDERPATH}/derive/conditions'
     input_chemicals_folderpath = f'{HUB_FOLDERPATH}/derive/chemicals'
     input_activities_folderpath = f'{HUB_FOLDERPATH}/derive/activities'
     output_folderpath = f'{HUB_FOLDERPATH}/augment/intro'
-    # try: shutil.rmtree(output_folderpath)
-    # except: pass
+    if regen:
+        try: shutil.rmtree(output_folderpath)
+        except: pass
     io.folders_recursive_gen(output_folderpath)
     ###
     master_items = masterize_utils.masterize_plants_get_all()
@@ -826,7 +933,69 @@ def morphology_augment_gen(regen=False):
         io.json_write(output_filepath, input_data)
         # quit()
 
-def augment_plants_activities_gen(regen=False):
+def augment__plants__activities(regen=False):
+    ### TODO: at the moment it just copies. implement llm.
+    table_name = 'plants__activities'
+    input_folderpath = f'{HUB_FOLDERPATH}/derive/{table_name}'
+    output_folderpath = f'{HUB_FOLDERPATH}/augment/{table_name}'
+    if regen:
+        try: shutil.rmtree(output_folderpath)
+        except: pass
+    io.folders_recursive_gen(output_folderpath)
+    ###
+    plants_items = sql.sql_plants()
+    for i, plant_item in enumerate(plants_items[:]):
+        print(f'AUGMENT HERBS {table_name} {i}/{len(plants_items)}')
+        plant_name_scientific_reference = plant_item['plant_name_scientific_reference']
+        input_filepath = f'{input_folderpath}/{plant_name_scientific_reference}.json'
+        output_filepath = f'{output_folderpath}/{plant_name_scientific_reference}.json'
+        input_data = io.json_read(input_filepath)
+        # print(plant_name_scientific_reference)
+        # print(json.dumps(input_data, indent=4))
+        # quit()
+        if os.path.exists(output_filepath): continue
+        if input_data != []:
+            # print(json.dumps(input_data, indent=4))
+            # quit()
+            # pass
+            plants_activities = [item['activity_name_reference'] for item in input_data['plant_activities']][:4]
+            plants_activities_prompt = ', '.join(plants_activities)
+            # quit()
+            sentences_num = len(plants_activities)
+            prompt = f'''
+                Write a {sentences_num}-sentence paragraph about the biological activities of the following plant: 
+                {plant_name_scientific_reference}.
+                The biological activities of this plant are the following: {plants_activities_prompt}.
+                Reply only with the asked content.
+                Start with the following words: {plant_name_scientific_reference} exibits .
+            '''.strip()
+            # print(prompt)
+            # quit()
+            reply = llm.reply(prompt, model_filepath)
+            if '</think>' in reply:
+                reply = reply.split('</think>')[1].strip()
+            reply = polish.vanilla(reply)
+            print()
+            print('########################################################################')
+            print(reply)
+            print('########################################################################')
+            print()
+            # quit()
+            input_data = {
+                'plant_activities': input_data['plant_activities'],
+                'intro_llm': reply,
+            }
+        else: 
+            input_data = {
+                'plant_activities': input_data['plant_activities'],
+                'intro_llm': '',
+            }
+        # input_data['prose_llm'] = ''
+        io.json_write(output_filepath, input_data)
+        # print(json.dumps(input_data, indent=4))
+        # quit()
+
+def augment__plants__activities_gen_old(regen=False):
     ### TODO: at the moment it just copies. implement llm.
     input_folderpath = f'{HUB_FOLDERPATH}/derive/plants_activities'
     output_folderpath = f'{HUB_FOLDERPATH}/augment/plants_activities'
@@ -850,10 +1019,11 @@ def augment_plants_activities_gen(regen=False):
             # print(json.dumps(input_data, indent=4))
             # quit()
             pass
+        # print(json.dumps(input_data, indent=4))
+        # quit()
         io.json_write(output_filepath, input_data)
 
 def augment__plants__plants_names_common_gen(regen=False):
-    ### TODO: at the moment it just copies. implement llm.
     table_name = 'plants__plants_names_common'
     input_folderpath = f'{HUB_FOLDERPATH}/derive/{table_name}'
     output_folderpath = f'{HUB_FOLDERPATH}/augment/{table_name}'
@@ -883,7 +1053,6 @@ def augment__plants__plants_names_common_gen(regen=False):
         # quit()
 
 def augment__plants__conditions(regen=False):
-    ### TODO: at the moment it just copies. implement llm.
     table_name = 'plants__conditions'
     input_folderpath = f'{HUB_FOLDERPATH}/derive/{table_name}'
     output_folderpath = f'{HUB_FOLDERPATH}/augment/{table_name}'
@@ -903,16 +1072,115 @@ def augment__plants__conditions(regen=False):
         # print(json.dumps(input_data, indent=4))
         # quit()
         if os.path.exists(output_filepath): continue
-        # if input_data != []:
+        if input_data != []:
             # print(json.dumps(input_data, indent=4))
             # quit()
             # pass
-        input_data['prose_llm'] = ''
+            plants_conditions = [item['condition_name_reference'] for item in input_data['plant_conditions']][:4]
+            if plants_conditions != []:
+                plants_conditions_prompt = ', '.join(plants_conditions)
+                # quit()
+                sentences_num = len(plants_conditions)
+                prompt = f'''
+                    Write a {sentences_num}-sentence paragraph about the health conditions treated with the following plant: 
+                    {plant_name_scientific_reference}.
+                    The health conditions treated with this plant are the following: {plants_conditions_prompt}.
+                    Reply only with the asked content.
+                    Start with the following words: {plant_name_scientific_reference} .
+                '''.strip()
+                # print(prompt)
+                # quit()
+                reply = llm.reply(prompt, model_filepath)
+                if '</think>' in reply:
+                    reply = reply.split('</think>')[1].strip()
+                reply = polish.vanilla(reply)
+                print()
+                print('########################################################################')
+                print(reply)
+                print('########################################################################')
+                print()
+                # quit()
+            else:
+                reply = ''
+            input_data = {
+                'plant_conditions': input_data['plant_conditions'],
+                'intro_llm': reply,
+            }
+        else: 
+            input_data = {
+                'plant_conditions': input_data['plant_conditions'],
+                'intro_llm': '',
+            }
+        # input_data['prose_llm'] = ''
         io.json_write(output_filepath, input_data)
         # print(json.dumps(input_data, indent=4))
         # quit()
 
 def augment__plants__compounds(regen=False):
+    table_name = 'plants__compounds'
+    input_folderpath = f'{HUB_FOLDERPATH}/derive/{table_name}'
+    output_folderpath = f'{HUB_FOLDERPATH}/augment/{table_name}'
+    if regen:
+        try: shutil.rmtree(output_folderpath)
+        except: pass
+    io.folders_recursive_gen(output_folderpath)
+    ###
+    plants_items = sql.sql_plants()
+    for i, plant_item in enumerate(plants_items[:]):
+        print(f'AUGMENT HERBS {table_name} {i}/{len(plants_items)}')
+        plant_name_scientific_reference = plant_item['plant_name_scientific_reference']
+        input_filepath = f'{input_folderpath}/{plant_name_scientific_reference}.json'
+        output_filepath = f'{output_folderpath}/{plant_name_scientific_reference}.json'
+        input_data = io.json_read(input_filepath)
+        # print(plant_name_scientific_reference)
+        # print(json.dumps(input_data, indent=4))
+        # quit()
+        if os.path.exists(output_filepath): continue
+        if input_data != []:
+            # print(json.dumps(input_data, indent=4))
+            # quit()
+            # pass
+            plants_compounds = [item['compound_name_reference'] for item in input_data['plant_compounds']][:4]
+            if plants_compounds != []:
+                plants_compounds_prompt = ', '.join(plants_compounds)
+                # quit()
+                sentences_num = len(plants_compounds)
+                prompt = f'''
+                    Write a {sentences_num}-sentence paragraph about the boiactive compounds of the following plant: 
+                    {plant_name_scientific_reference}.
+                    The boiactive compounds of this plant are the following: {plants_compounds_prompt}.
+                    Reply only with the asked content.
+                    Start with the following words: {plant_name_scientific_reference} .
+                '''.strip()
+                # print(prompt)
+                # quit()
+                reply = llm.reply(prompt, model_filepath)
+                if '</think>' in reply:
+                    reply = reply.split('</think>')[1].strip()
+                reply = polish.vanilla(reply)
+                print()
+                print('########################################################################')
+                print(reply)
+                print('########################################################################')
+                print()
+                # quit()
+            else:
+                reply = ''
+            input_data = {
+                'plant_compounds': input_data['plant_compounds'],
+                'intro_llm': reply,
+            }
+        else: 
+            input_data = {
+                'plant_compounds': input_data['plant_compounds'],
+                'intro_llm': '',
+            }
+        # input_data['prose_llm'] = ''
+        io.json_write(output_filepath, input_data)
+        # print(json.dumps(input_data, indent=4))
+        # quit()
+
+def augment__plants__compounds_old(regen=False):
     ### TODO: at the moment it just copies. implement llm.
     table_name = 'plants__compounds'
     input_folderpath = f'{HUB_FOLDERPATH}/derive/{table_name}'
@@ -942,13 +1210,208 @@ def augment__plants__compounds(regen=False):
         # print(json.dumps(input_data, indent=4))
         # quit()
 
+def augment__plants__preparations(regen=False):
+    table_name = 'plants__preparations'
+    input_folderpath = f'{HUB_FOLDERPATH}/derive/{table_name}'
+    output_folderpath = f'{HUB_FOLDERPATH}/augment/{table_name}'
+    if regen:
+        try: shutil.rmtree(output_folderpath)
+        except: pass
+    io.folders_recursive_gen(output_folderpath)
+    ###
+    plants_items = sql.sql_plants()
+    for i, plant_item in enumerate(plants_items[:]):
+        print(f'AUGMENT HERBS {table_name} {i}/{len(plants_items)}')
+        plant_name_scientific_reference = plant_item['plant_name_scientific_reference']
+        input_filepath = f'{input_folderpath}/{plant_name_scientific_reference}.json'
+        output_filepath = f'{output_folderpath}/{plant_name_scientific_reference}.json'
+        input_data = io.json_read(input_filepath)
+        # print(plant_name_scientific_reference)
+        # print(json.dumps(input_data, indent=4))
+        # quit()
+        if os.path.exists(output_filepath): continue
+        if input_data != []:
+            # print(json.dumps(input_data, indent=4))
+            # quit()
+            # pass
+            plants_preparations = [item['preparation_name_reference'] for item in input_data['plant_preparations']][:4]
+            if plants_preparations != []:
+                plants_preparations_prompt = ', '.join(plants_preparations)
+                # quit()
+                sentences_num = len(plants_preparations)
+                prompt = f'''
+                    Write a {sentences_num}-sentence paragraph about the herbal preparations made with the following plant: 
+                    {plant_name_scientific_reference}.
+                    The herbal preparations made with this plant are the following: {plants_preparations_prompt}.
+                    Reply only with the asked content.
+                    Start with the following words: {plant_name_scientific_reference} .
+                '''.strip()
+                # print(prompt)
+                # quit()
+                reply = llm.reply(prompt, model_filepath)
+                if '</think>' in reply:
+                    reply = reply.split('</think>')[1].strip()
+                reply = polish.vanilla(reply)
+                print()
+                print('########################################################################')
+                print(reply)
+                print('########################################################################')
+                print()
+                # quit()
+            else:
+                reply = ''
+            input_data = {
+                'plant_preparations': input_data['plant_preparations'],
+                'intro_llm': reply,
+            }
+        else: 
+            input_data = {
+                'plant_preparations': input_data['plant_preparations'],
+                'intro_llm': '',
+            }
+        # input_data['prose_llm'] = ''
+        io.json_write(output_filepath, input_data)
+        # print(json.dumps(input_data, indent=4))
+        # quit()
+
+def augment__plants__preparations_old(regen=False):
+    ### TODO: at the moment it just copies. implement llm.
+    table_name = 'plants__preparations'
+    input_folderpath = f'{HUB_FOLDERPATH}/derive/{table_name}'
+    output_folderpath = f'{HUB_FOLDERPATH}/augment/{table_name}'
+    if regen:
+        try: shutil.rmtree(output_folderpath)
+        except: pass
+    io.folders_recursive_gen(output_folderpath)
+    ###
+    plants_items = sql.sql_plants()
+    for i, plant_item in enumerate(plants_items[:]):
+        print(f'AUGMENT HERBS {table_name} {i}/{len(plants_items)}')
+        plant_name_scientific_reference = plant_item['plant_name_scientific_reference']
+        input_filepath = f'{input_folderpath}/{plant_name_scientific_reference}.json'
+        output_filepath = f'{output_folderpath}/{plant_name_scientific_reference}.json'
+        input_data = io.json_read(input_filepath)
+        # print(plant_name_scientific_reference)
+        print(json.dumps(input_data, indent=4))
+        quit()
+        if os.path.exists(output_filepath): continue
+        # if input_data != []:
+            # print(json.dumps(input_data, indent=4))
+            # quit()
+            # pass
+        input_data['prose_llm'] = ''
+        io.json_write(output_filepath, input_data)
+        # print(json.dumps(input_data, indent=4))
+        # quit()
+
+def augment__plants__parts(regen=False):
+    table_name = 'plants__parts'
+    input_folderpath = f'{HUB_FOLDERPATH}/derive/{table_name}'
+    output_folderpath = f'{HUB_FOLDERPATH}/augment/{table_name}'
+    if regen:
+        try: shutil.rmtree(output_folderpath)
+        except: pass
+    io.folders_recursive_gen(output_folderpath)
+    ###
+    plants_items = sql.sql_plants()
+    for i, plant_item in enumerate(plants_items[:]):
+        print(f'AUGMENT HERBS {table_name} {i}/{len(plants_items)}')
+        plant_name_scientific_reference = plant_item['plant_name_scientific_reference']
+        input_filepath = f'{input_folderpath}/{plant_name_scientific_reference}.json'
+        output_filepath = f'{output_folderpath}/{plant_name_scientific_reference}.json'
+        input_data = io.json_read(input_filepath)
+        # print(plant_name_scientific_reference)
+        # print(json.dumps(input_data, indent=4))
+        # quit()
+        if os.path.exists(output_filepath): continue
+        if input_data != []:
+            # print(json.dumps(input_data, indent=4))
+            # quit()
+            # pass
+            plants_parts = [item['part_name_reference'] for item in input_data['plant_parts']][:4]
+            if plants_parts != []:
+                plants_parts_prompt = ', '.join(plants_parts)
+                # quit()
+                sentences_num = len(plants_parts)
+                prompt = f'''
+                    Write a {sentences_num}-sentence paragraph about the plant parts the following plant used for medicinal purposes: 
+                    {plant_name_scientific_reference}.
+                    The plant parts used for medicinal purposes of this plant are the following: {plants_parts_prompt}.
+                    Reply only with the asked content.
+                    Start with the following words: {plant_name_scientific_reference} .
+                '''.strip()
+                # print(prompt)
+                # quit()
+                reply = llm.reply(prompt, model_filepath)
+                if '</think>' in reply:
+                    reply = reply.split('</think>')[1].strip()
+                reply = polish.vanilla(reply)
+                print()
+                print('########################################################################')
+                print(reply)
+                print('########################################################################')
+                print()
+                # quit()
+            else:
+                reply = ''
+            input_data = {
+                'plant_parts': input_data['plant_parts'],
+                'intro_llm': reply,
+            }
+        else: 
+            input_data = {
+                'plant_parts': input_data['plant_parts'],
+                'intro_llm': '',
+            }
+        # input_data['prose_llm'] = ''
+        io.json_write(output_filepath, input_data)
+        # print(json.dumps(input_data, indent=4))
+        # quit()
+
+def augment__plants__parts_old(regen=False):
+    ### TODO: at the moment it just copies. implement llm.
+    table_name = 'plants__parts'
+    input_folderpath = f'{HUB_FOLDERPATH}/derive/{table_name}'
+    output_folderpath = f'{HUB_FOLDERPATH}/augment/{table_name}'
+    if regen:
+        try: shutil.rmtree(output_folderpath)
+        except: pass
+    io.folders_recursive_gen(output_folderpath)
+    ###
+    plants_items = sql.sql_plants()
+    for i, plant_item in enumerate(plants_items[:]):
+        print(f'AUGMENT HERBS {table_name} {i}/{len(plants_items)}')
+        plant_name_scientific_reference = plant_item['plant_name_scientific_reference']
+        input_filepath = f'{input_folderpath}/{plant_name_scientific_reference}.json'
+        output_filepath = f'{output_folderpath}/{plant_name_scientific_reference}.json'
+        input_data = io.json_read(input_filepath)
+        # print(plant_name_scientific_reference)
+        # print(json.dumps(input_data, indent=4))
+        # quit()
+        if os.path.exists(output_filepath): continue
+        # if input_data != []:
+            # print(json.dumps(input_data, indent=4))
+            # quit()
+            # pass
+        input_data['prose_llm'] = ''
+        io.json_write(output_filepath, input_data)
+        # print(json.dumps(input_data, indent=4))
+        # quit()
+
 def run():
-    # augment_plants_activities_gen(regen=True)
+    # quit()
     # augment__plants__plants_names_common_gen(regen=True)
-    # augment__plants__conditions(regen=True)
-    augment__plants__compounds(regen=True)
+
+    # augment__plants__activities(regen=False)
+    # augment__plants__conditions(regen=False)
+    # augment__plants__compounds(regen=False)
+    # augment__plants__preparations(regen=False)
+    # augment__plants__parts(regen=False)
 
     # morphology_augment_gen()
+
+    augment__intro(regen=False)
+
     return
 
     schema_items = schema_herbs.data['items']
@@ -963,7 +1426,6 @@ def run():
         # augment_copy(attribute='preparations')
         # augment_compounds()
 
-        augment_intro()
         # augment_preparations()
         augment_plants_parts()
         augment_conditions()
