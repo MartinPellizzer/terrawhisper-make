@@ -1405,12 +1405,12 @@ def run():
     # augment__plants__activities(regen=False)
     # augment__plants__conditions(regen=False)
     # augment__plants__compounds(regen=False)
-    # augment__plants__preparations(regen=False)
+    augment__plants__preparations(regen=True)
     # augment__plants__parts(regen=False)
 
     # morphology_augment_gen()
 
-    augment__intro(regen=False)
+    # augment__intro(regen=False)
 
     return
 

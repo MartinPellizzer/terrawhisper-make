@@ -1,4 +1,4 @@
-items = [
+parts_items = [
     {
         'preferred': 'leaf',
         'synonyms': ['leaf', 'leaves'],
@@ -49,6 +49,45 @@ items = [
     },
 ]
 
+preparations_items = [
+    {
+        'preferred': 'extract',
+        'synonyms': ['extract', 'extracts'],
+    },
+    {
+        'preferred': 'oil',
+        'synonyms': ['oil', 'oils'],
+    },
+    {
+        'preferred': 'essential oil',
+        'synonyms': ['essential oil', 'essential oils'],
+    },
+    {
+        'preferred': 'decoction',
+        'synonyms': ['decoction', 'decoctions'],
+    },
+    {
+        'preferred': 'infusion',
+        'synonyms': ['infusion', 'infusions'],
+    },
+    {
+        'preferred': 'powder',
+        'synonyms': ['powder', 'powders'],
+    },
+    {
+        'preferred': 'capsule',
+        'synonyms': ['capsule', 'capsules'],
+    },
+    {
+        'preferred': 'tea',
+        'synonyms': ['tea', 'teas'],
+    },
+    {
+        'preferred': 'juice',
+        'synonyms': ['juice', 'juices'],
+    },
+]
+
 import sys
 import time
 import json
@@ -87,7 +126,7 @@ def reference__parts__table_create():
     start = time.time()
     conn.execute("BEGIN")
     batch = []
-    for i, item in enumerate(items):
+    for i, item in enumerate(parts_items):
         # print(json.dumps(item, indent=4))
         # quit() 
         ref_part_id = i
@@ -153,8 +192,101 @@ def reference__parts__table_create():
         print(row)
     conn.close()
 
+def reference__preparations__table_create():
+    output_folderpath = f'{HUB_FOLDERPATH}/reference/manual'
+    io.folders_recursive_gen(output_folderpath)
+    conn = sqlite3.connect(f"{output_folderpath}/manual.db")
+    table_name = 'ref__preparations'
+    conn.executescript(
+    f"""
+        PRAGMA journal_mode = OFF;
+        PRAGMA synchronous = OFF;
+        PRAGMA temp_store = MEMORY;
+        PRAGMA cache_size = -500000;
+        DROP TABLE IF EXISTS {table_name};
+        CREATE TABLE {table_name} (
+            ref_preparation_id TEXT NOT NULL,
+            ref_preparation_name TEXT NOT NULL,
+            ref_preparation_name_normalize TEXT NOT NULL
+        );
+    """)
+    conn.commit()
+    ###
+    csv.field_size_limit(sys.maxsize)
+    BATCH_SIZE = 100000
+    processed = 0
+    start = time.time()
+    conn.execute("BEGIN")
+    batch = []
+    for i, item in enumerate(preparations_items):
+        # print(json.dumps(item, indent=4))
+        # quit() 
+        ref_preparation_id = i
+        ref_preparation_name = item['preferred']
+        ref_preparation_name_normalize = ref_preparation_name.lower().strip()
+        batch.append((
+            ref_preparation_id,
+            ref_preparation_name,
+            ref_preparation_name_normalize,
+        ))
+        if len(batch) >= BATCH_SIZE:
+            conn.executemany(
+            f"""
+                INSERT INTO {table_name}
+                (
+                    ref_preparation_id,
+                    ref_preparation_name,
+                    ref_preparation_name_normalize
+                )
+                VALUES (?, ?, ?)
+            """, batch)
+            processed += len(batch)
+            if processed % 1000000 == 0:
+                elapsed = time.time() - start
+                print(f"{processed:,} inserted ({elapsed:.1f}s)")
+            batch.clear()
+    if batch:
+        conn.executemany(
+        f"""
+            INSERT INTO {table_name}
+            (
+                    ref_preparation_id,
+                    ref_preparation_name,
+                    ref_preparation_name_normalize
+            )
+            VALUES (?, ?, ?)
+        """, batch)
+    conn.commit()
+    # Create lookup index AFTER import
+    conn.execute(
+    f"""
+        CREATE INDEX idx_{table_name}_ref_preparation_id
+        ON {table_name}(ref_preparation_id)
+    """)
+    conn.execute(
+    f"""
+        CREATE INDEX idx_{table_name}_ref_preparation_name
+        ON {table_name}(ref_preparation_name)
+    """)
+    conn.execute(
+    f"""
+        CREATE INDEX idx_{table_name}_ref_preparation_name_normalize
+        ON {table_name}(ref_preparation_name_normalize)
+    """)
+    conn.commit()
+    cursor = conn.execute(
+    f"""
+        SELECT *
+        FROM {table_name}
+        LIMIT 10
+    """)
+    for row in cursor:
+        print(row)
+    conn.close()
+
 def run():
     print(f'''HERBS >> REFERENCE >> manual''')
 
     reference__parts__table_create()
+    reference__preparations__table_create()
 

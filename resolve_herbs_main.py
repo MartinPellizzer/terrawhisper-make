@@ -968,9 +968,9 @@ def preparations_resolve(source_foldername):
     except: pass
     os.makedirs(output_folderpath, exist_ok=True)
     ###
-    # pubchem_folderpath = f'{HUB_FOLDERPATH}/reference/pubchem/pubchem.db'
-    # pubchem_conn = sqlite3.connect(pubchem_folderpath)
-    # pubchem_conn.row_factory = sqlite3.Row
+    ref_folderpath = f'{HUB_FOLDERPATH}/reference/manual/manual.db'
+    ref_conn = sqlite3.connect(ref_folderpath)
+    ref_conn.row_factory = sqlite3.Row
     ###
     input_filenames = os.listdir(input_folderpath)
     last_resolved_data = []
@@ -988,28 +988,21 @@ def preparations_resolve(source_foldername):
         for input_item in input_data[:]:
             # print(json.dumps(input_item, indent=True))
             # quit()
+            ### RESOLVE PREPARATIONS (MANUAL)
+            preparation_name_raw_normalize = input_item['preparation_name_raw_normalize']
+            ref_cur = ref_conn.cursor()
+            ref_cur.execute("""
+                SELECT *
+                FROM ref__preparations
+                WHERE ref_preparation_name_normalize = ?
+            """, (preparation_name_raw_normalize,))
+            ref_rows = ref_cur.fetchall()
+            ref_items = [dict(row) for row in ref_rows]
             ###
-            # compound_name_raw_normalize = input_item['compound_name_raw_normalize']
-            # if compound_name_raw_normalize == 'null': continue
-            ### RESOLVE CHEMICAL (PUBCHEM)
-            # pubchem_cur = pubchem_conn.cursor()
-            # pubchem_cur.execute("""
-                # SELECT *
-                # FROM pubchem_cid_synonyms
-                # WHERE alias_normalize = ?
-            # """, (compound_name_raw_normalize,))
-            # pubchem_row = pubchem_cur.fetchone()
-            # pubchem_rows = pubchem_cur.fetchall()
-            # pubchem_items = [dict(row) for row in pubchem_rows]
-            ###
-            # if pubchem_items:
-            if True:
-                # pubchem_item = pubchem_items[0]
-                pubchem_item = input_item
-                # input_item['compound_name_reference'] = pubchem_item['alias']
-                # input_item['compound_name_reference_normalize'] = pubchem_item['alias_normalize']
-                input_item['preparation_name_reference'] = input_item['preparation_name_raw']
-                input_item['preparation_name_reference_normalize'] = input_item['preparation_name_raw_normalize']
+            if ref_items:
+                ref_item = ref_items[0]
+                input_item['preparation_name_reference'] = ref_item['ref_preparation_name']
+                input_item['preparation_name_reference_normalize'] = ref_item['ref_preparation_name_normalize']
                 resolved_data.append(input_item)
                 # print(json.dumps(input_item, indent=4))
                 # quit()
@@ -1049,67 +1042,6 @@ def parts_resolve(source_foldername):
             part_name_raw_normalize = input_item['part_name_raw_normalize']
             # print(json.dumps(input_item, indent=True))
             # quit()
-            ###
-            plant_parts_canon = [
-                {
-                    'preferred': 'leaf',
-                    'synonyms': ['leaf', 'leaves'],
-                },
-                {
-                    'preferred': 'root',
-                    'synonyms': ['root', 'roots', 'hairy roots', 'dried roots', 'radix'],
-                },
-                {
-                    'preferred': 'aerial parts',
-                    'synonyms': ['aerial part', 'aerial parts'],
-                },
-                {
-                    'preferred': 'whole plant',
-                    'synonyms': ['whole plant'],
-                },
-                {
-                    'preferred': 'fruit',
-                    'synonyms': ['fruit', 'fruits', 'berry', 'berries'],
-                },
-                {
-                    'preferred': 'stem',
-                    'synonyms': ['stem', 'stems'],
-                },
-                {
-                    'preferred': 'flower',
-                    'synonyms': ['flower', 'flowers'],
-                },
-                {
-                    'preferred': 'bark',
-                    'synonyms': ['bark', 'barks', 'cortex', 'stem bark', 'root bark'],
-                },
-                {
-                    'preferred': 'rhizome',
-                    'synonyms': ['rhizome', 'rhizomes', 'rhizoma'],
-                },
-                {
-                    'preferred': 'seed',
-                    'synonyms': ['seed', 'seeds'],
-                },
-                {
-                    'preferred': 'twig',
-                    'synonyms': ['twig', 'twigs'],
-                },
-                {
-                    'preferred': 'tuber',
-                    'synonyms': ['tuber', 'tubers'],
-                },
-            ]
-            plant_part_canon = ''
-            for item in plant_parts_canon:
-                found = False
-                for raw_val in item['synonyms']:
-                    if raw_val in input_item['part_name_raw_normalize']:
-                        plant_part_canon = item['preferred']
-                        found = True
-                        break
-                if found: 
-                    break
             ### RESOLVE PARTS (MANUAL)
             ref_cur = ref_conn.cursor()
             ref_cur.execute("""
@@ -1501,9 +1433,9 @@ def resolve__plants__preparations(source_foldername):
     wcvp_conn = sqlite3.connect(wcvp_folderpath)
     wcvp_conn.row_factory = sqlite3.Row
     ###
-    # pubchem_folderpath = f'{HUB_FOLDERPATH}/reference/pubchem/pubchem.db'
-    # pubchem_conn = sqlite3.connect(pubchem_folderpath)
-    # pubchem_conn.row_factory = sqlite3.Row
+    ref_folderpath = f'{HUB_FOLDERPATH}/reference/manual/manual.db'
+    ref_conn = sqlite3.connect(ref_folderpath)
+    ref_conn.row_factory = sqlite3.Row
     ###
     input_filenames = os.listdir(input_folderpath)
     last_resolved_data = []
@@ -1524,29 +1456,23 @@ def resolve__plants__preparations(source_foldername):
             ### RESOLVE PLANT (WCVP)
             plant_name_scientific_raw_normalize = input_item['plant_name_scientific_raw_normalize']
             wcvp_row = resolve_utils.resolve_plant_accepted(wcvp_conn, plant_name_scientific_raw_normalize)
-            ### RESOLVE CHEMICAL (PUBCHEM)
-            # compound_name_raw_normalize = input_item['compound_name_raw_normalize']
-            # if compound_name_raw_normalize == 'null': continue
-            # pubchem_cur = pubchem_conn.cursor()
-            # pubchem_cur.execute("""
-                # SELECT *
-                # FROM pubchem_cid_synonyms
-                # WHERE alias_normalize = ?
-            # """, (compound_name_raw_normalize,))
-            # pubchem_row = pubchem_cur.fetchone()
-            # pubchem_rows = pubchem_cur.fetchall()
-            # pubchem_items = [dict(row) for row in pubchem_rows]
-            ###
-            # if wcvp_row and pubchem_items:
-            if wcvp_row and True:
+            ### RESOLVE PREPARATIONS (MANUAL)
+            preparation_name_raw_normalize = input_item['preparation_name_raw_normalize']
+            ref_cur = ref_conn.cursor()
+            ref_cur.execute("""
+                SELECT *
+                FROM ref__preparations
+                WHERE ref_preparation_name_normalize = ?
+            """, (preparation_name_raw_normalize,))
+            ref_rows = ref_cur.fetchall()
+            ref_items = [dict(row) for row in ref_rows]
+            if wcvp_row and ref_items:
                 wcvp_item = dict(wcvp_row)
-                # pubchem_item = pubchem_items[0]
+                ref_item = ref_items[0]
                 input_item['plant_name_scientific_reference'] = wcvp_item['taxon_name']
                 input_item['plant_name_scientific_reference_normalize'] = wcvp_item['taxon_name_normalized']
-                # input_item['compound_name_reference'] = pubchem_item['alias']
-                # input_item['compound_name_reference_normalize'] = pubchem_item['alias_normalize']
-                input_item['preparation_name_reference'] = input_item['preparation_name_raw']
-                input_item['preparation_name_reference_normalize'] = input_item['preparation_name_raw_normalize']
+                input_item['preparation_name_reference'] = ref_item['ref_preparation_name']
+                input_item['preparation_name_reference_normalize'] = ref_item['ref_preparation_name_normalize']
                 resolved_data.append(input_item)
                 # print(json.dumps(input_item, indent=4))
                 # quit()
@@ -1577,9 +1503,9 @@ def resolve__plants__parts(source_foldername):
     wcvp_conn = sqlite3.connect(wcvp_folderpath)
     wcvp_conn.row_factory = sqlite3.Row
     ###
-    # pubchem_folderpath = f'{HUB_FOLDERPATH}/reference/pubchem/pubchem.db'
-    # pubchem_conn = sqlite3.connect(pubchem_folderpath)
-    # pubchem_conn.row_factory = sqlite3.Row
+    ref_folderpath = f'{HUB_FOLDERPATH}/reference/manual/manual.db'
+    ref_conn = sqlite3.connect(ref_folderpath)
+    ref_conn.row_factory = sqlite3.Row
     ###
     input_filenames = os.listdir(input_folderpath)
     last_resolved_data = []
@@ -1600,29 +1526,26 @@ def resolve__plants__parts(source_foldername):
             ### RESOLVE PLANT (WCVP)
             plant_name_scientific_raw_normalize = input_item['plant_name_scientific_raw_normalize']
             wcvp_row = resolve_utils.resolve_plant_accepted(wcvp_conn, plant_name_scientific_raw_normalize)
-            ### RESOLVE CHEMICAL (PUBCHEM)
-            # compound_name_raw_normalize = input_item['compound_name_raw_normalize']
-            # if compound_name_raw_normalize == 'null': continue
-            # pubchem_cur = pubchem_conn.cursor()
-            # pubchem_cur.execute("""
-                # SELECT *
-                # FROM pubchem_cid_synonyms
-                # WHERE alias_normalize = ?
-            # """, (compound_name_raw_normalize,))
-            # pubchem_row = pubchem_cur.fetchone()
-            # pubchem_rows = pubchem_cur.fetchall()
-            # pubchem_items = [dict(row) for row in pubchem_rows]
+            ### RESOLVE PARTS (MANUAL)
+            part_name_raw_normalize = input_item['part_name_raw_normalize']
+            ref_cur = ref_conn.cursor()
+            ref_cur.execute("""
+                SELECT *
+                FROM ref__parts
+                WHERE ref_part_name_normalize = ?
+            """, (part_name_raw_normalize,))
+            ref_rows = ref_cur.fetchall()
+            ref_items = [dict(row) for row in ref_rows]
             ###
-            # if wcvp_row and pubchem_items:
-            if wcvp_row and True:
+            if wcvp_row and ref_items:
                 wcvp_item = dict(wcvp_row)
-                # pubchem_item = pubchem_items[0]
+                ref_item = ref_items[0]
                 input_item['plant_name_scientific_reference'] = wcvp_item['taxon_name']
                 input_item['plant_name_scientific_reference_normalize'] = wcvp_item['taxon_name_normalized']
                 # input_item['compound_name_reference'] = pubchem_item['alias']
                 # input_item['compound_name_reference_normalize'] = pubchem_item['alias_normalize']
-                input_item['part_name_reference'] = input_item['part_name_raw']
-                input_item['part_name_reference_normalize'] = input_item['part_name_raw_normalize']
+                input_item['part_name_reference'] = ref_item['ref_part_name']
+                input_item['part_name_reference_normalize'] = ref_item['ref_part_name_normalize']
                 resolved_data.append(input_item)
                 # print(json.dumps(input_item, indent=4))
                 # quit()
@@ -1706,10 +1629,133 @@ def cluster__plants__parts(source_foldername):
     # print(counts[:100])
     print(json.dumps(counts.most_common(20), indent=4))
 
+def cluster__plants__preparations(source_foldername):
+    table_name = 'plants__preparations'
+    input_folderpath = f'{HUB_FOLDERPATH}/normalize/{source_foldername}/{table_name}/json'
+    ###
+    preparations = []
+    ###
+    input_filenames = os.listdir(input_folderpath)
+    for i, input_filename in enumerate(input_filenames[:]):
+        print(f'RESOLVE HERBS CLUSTER {table_name} {i}/{len(input_filenames)}')
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        ###
+        input_data = io.json_read(input_filepath)
+        for item in input_data:
+            # print(json.dumps(item, indent=4))
+            preparation_name_raw_normalize = item['preparation_name_raw_normalize']
+            preparation_name_resolved_local = preparation_name_raw_normalize 
+            ### MERGE
+            if 'extract' in preparation_name_resolved_local.strip().lower(): preparation_name_resolved_local = 'extract'
+            if 'infusions' in preparation_name_resolved_local.strip().lower(): preparation_name_resolved_local = 'infusion'
+            if 'oils' in preparation_name_resolved_local.strip().lower(): preparation_name_resolved_local = 'oil'
+            if 'juices' in preparation_name_resolved_local.strip().lower(): preparation_name_resolved_local = 'juice'
+            if 'capsules' in preparation_name_resolved_local.strip().lower(): preparation_name_resolved_local = 'capsule'
+            # if preparation_name_resolved_local.strip().lower() == 'extracts': preparation_name_resolved_local = 'extract'
+            if preparation_name_resolved_local.strip().lower() == 'decoctions': preparation_name_resolved_local = 'decoction'
+            ### EXCLUDE
+            if preparation_name_resolved_local.strip().lower() == 'leaves': continue
+            if preparation_name_resolved_local.strip().lower() == 'roots': continue
+            if preparation_name_resolved_local.strip().lower() == 'seeds': continue
+            if preparation_name_resolved_local.strip().lower() == 'bark': continue
+            if preparation_name_resolved_local.strip().lower() == 'fractions': continue
+            if preparation_name_resolved_local.strip().lower() == 'fraction': continue
+            if preparation_name_resolved_local.strip().lower() == 'stem bark': continue
+            if preparation_name_resolved_local.strip().lower() == 'rhizomes': continue
+            if preparation_name_resolved_local.strip().lower() == 'fruits': continue
+            if preparation_name_resolved_local.strip().lower() == 'fruit': continue
+            if preparation_name_resolved_local.strip().lower() == 'whole plant': continue
+            if preparation_name_resolved_local.strip().lower() == 'eos': continue
+            if preparation_name_resolved_local.strip().lower() == 'root': continue
+            if preparation_name_resolved_local.strip().lower() == 'eo': continue
+            if preparation_name_resolved_local.strip().lower() == 'ethyl acetate': continue
+            if preparation_name_resolved_local.strip().lower() == 'drugs': continue
+            if preparation_name_resolved_local.strip().lower() == 'preparations': continue
+            if preparation_name_resolved_local.strip().lower() == 'volatile oil': continue
+            if preparation_name_resolved_local.strip().lower() == 'callus': continue
+            if preparation_name_resolved_local.strip().lower() == 'hairy roots': continue
+            if 'fraction' in preparation_name_resolved_local.strip().lower(): continue
+            # if 'fruit' in preparation_name_resolved_local.strip().lower(): continue
+            preparations.append(preparation_name_resolved_local)
+        # print(json.dumps(input_data, indent=4))
+        # print(json.dumps(preparations, indent=4))
+        # quit()
+    # print(preparations[:20])
+    from collections import Counter
+    counts = Counter(preparations)
+    # print(counts[:100])
+    print(json.dumps(counts.most_common(20), indent=4))
+
+def resolve__phrases__plants__activities(source_foldername):
+    input_folderpath = f'{HUB_FOLDERPATH}/normalize/{source_foldername}/phrases__plants__activities/json'
+    output_folderpath = f'{HUB_FOLDERPATH}/resolve/{source_foldername}/phrases__plants__activities/json'
+    try: shutil.rmtree(output_folderpath)
+    except: pass
+    os.makedirs(output_folderpath, exist_ok=True)
+    ###
+    wcvp_folderpath = f'{HUB_FOLDERPATH}/reference/wcvp/wcvp.db'
+    wcvp_conn = sqlite3.connect(wcvp_folderpath)
+    wcvp_conn.row_factory = sqlite3.Row
+    ###
+    drduke_folderpath = f'{HUB_FOLDERPATH}/reference/drduke/drduke.db'
+    drduke_conn = sqlite3.connect(drduke_folderpath)
+    drduke_conn.row_factory = sqlite3.Row
+    ###
+    input_filenames = os.listdir(input_folderpath)
+    last_resolved_data = []
+    for i, input_filename in enumerate(input_filenames[:]):
+        print(f'RESOLVE HERBS plants_activities {i}/{len(input_filenames)}')
+        output_filepath = f'{output_folderpath}/{input_filename}'
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        if os.path.exists(output_filepath): continue
+        ###
+        input_data = io.json_read(input_filepath)
+        resolved_data = []
+        # print(json.dumps(input_data, indent=4))
+        # quit()
+        for extraction in input_data['extractions']:
+            for triple_item in extraction['triples_resolve_local_subject_string_match']:
+                input_item = triple_item
+                # print(json.dumps(input_item, indent=4))
+                # quit()
+                ###
+                plant_name_scientific_raw_normalize = input_item['plant_name_scientific_raw_normalize']
+                wcvp_row = resolve_utils.resolve_plant_accepted(wcvp_conn, plant_name_scientific_raw_normalize)
+                ###
+                activity_name_raw_normalize = input_item['activity_name_raw_normalize']
+                drduke_cur = drduke_conn.cursor()
+                drduke_cur.execute("""
+                    SELECT *
+                    FROM drduke_activities_names
+                    WHERE activity_name_normalize = ?
+                """, (activity_name_raw_normalize,))
+                drduke_rows = drduke_cur.fetchall()
+                drduke_items = [dict(row) for row in drduke_rows]
+                ###
+                if wcvp_row and drduke_rows:
+                    wcvp_item = dict(wcvp_row)
+                    input_item['plant_name_scientific_reference'] = wcvp_item['taxon_name']
+                    input_item['plant_name_scientific_reference_normalize'] = wcvp_item['taxon_name_normalized']
+                    ###
+                    drduke_item = drduke_items[0]
+                    input_item['activity_name_reference'] = drduke_item['activity_name_raw']
+                    input_item['activity_name_reference_normalize'] = drduke_item['activity_name_normalize']
+                    resolved_data.append(input_item)
+                    # print(json.dumps(input_item, indent=4))
+                    # quit()
+        if resolved_data != []:
+            io.json_write(output_filepath, resolved_data)
+            last_resolved_data = resolved_data
+    wcvp_conn.close()
+    drduke_conn.close()
+    print(json.dumps(last_resolved_data[0], indent=4))
+    # quit()
+
 def run():
     print('RESOLVE')
 
     # cluster__plants__parts(source_foldername='pubmed')
+    # cluster__plants__preparations(source_foldername='pubmed')
 
     ### MASTER
     # resolve__plants_names_common(source_foldername='col')
@@ -1720,7 +1766,7 @@ def run():
     # conditions_resolve(source_foldername='pubmed')
     # compounds_resolve(source_foldername='pubmed')
     # preparations_resolve(source_foldername='pubmed')
-    parts_resolve(source_foldername='pubmed')
+    # parts_resolve(source_foldername='pubmed')
 
 
     ### ASSERTIONS
@@ -1729,8 +1775,10 @@ def run():
     # resolve__plants__activities(source_foldername='pubmed')
     # resolve__plants__conditions(source_foldername='pubmed')
     # resolve__plants__compounds(source_foldername='pubmed')
-    # resolve__plants__preparations(source_foldername='pubmed')
+    resolve__plants__preparations(source_foldername='pubmed')
     # resolve__plants__parts(source_foldername='pubmed')
+
+    # resolve__phrases__plants__activities(source_foldername='pubmed')
 
     return
     quit()

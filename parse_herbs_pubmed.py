@@ -1,5 +1,6 @@
 import os
 import json
+
 import time
 import shutil
 
@@ -3064,11 +3065,10 @@ def parse__plants__parts__raw_to_json():
 def parse__plants__activities__extract_from_phrases():
     study_folderpath = f'{HUB_FOLDERPATH}/fetch/pubmed/medicinal_plant/abstracts'
     input_folderpath = f'{HUB_FOLDERPATH}/parse/pubmed/studies_sentences/json'
-    output_folderpath = f'{HUB_FOLDERPATH}/parse/pubmed/phrases__pants__activities/raw'
-    io.folders_recursive_gen(output_folderpath)
+    output_folderpath = f'{HUB_FOLDERPATH}/parse/pubmed/phrases__plants__activities/raw'
     # try: shutil.rmtree(output_folderpath)
     # except: pass
-    os.makedirs(output_folderpath, exist_ok=True)
+    io.folders_recursive_gen(output_folderpath)
     ###
     relationships_found = []
     input_filenames = os.listdir(input_folderpath)
@@ -3144,8 +3144,253 @@ def parse__plants__activities__extract_from_phrases():
         # print(len(relationships_found))
         # quit()
 
+def parse__plants__activities__extract_from_phrases__peek():
+    input_folderpath = f'{HUB_FOLDERPATH}/parse/pubmed/phrases__plants__activities/raw'
+    io.folders_recursive_gen(input_folderpath)
+    ###
+    input_filenames = os.listdir(input_folderpath)
+    i = 0
+    for input_filename in input_filenames[i:]:
+        i += 1
+        print(f'PARSE HERBS plants__activities__extract_from_phrases__peek {i}/{len(input_filenames)}')
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        input_data = io.json_read(input_filepath)
+        print(json.dumps(input_data, indent=4))
+        break
+
+def parse__phrases__plants__activities__triples():
+    input_folderpath = f'{HUB_FOLDERPATH}/parse/pubmed/phrases__plants__activities/raw'
+    output_folderpath = f'{HUB_FOLDERPATH}/parse/pubmed/phrases__plants__activities/triples'
+    ###
+    try: shutil.rmtree(output_folderpath)
+    except: pass
+    io.folders_recursive_gen(output_folderpath)
+    ###
+    input_filenames = os.listdir(input_folderpath)
+    i = 0
+    for input_filename in input_filenames[i:]:
+        i += 1
+        print(f'PARSE HERBS phrases__plants__activities__triples {i}/{len(input_filenames)}')
+        output_filepath = f'{output_folderpath}/{input_filename}'
+        if os.path.exists(output_filepath): continue
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        input_data = io.json_read(input_filepath)
+        for extraction in input_data['extractions']:
+            sentence = extraction['sentence']
+            reply = extraction['reply']
+            triples_lines = [line.strip() for line in reply.strip().split('\n')]
+            triples = []
+            for triple_line in triples_lines:
+                triple = triple_line 
+                triple = triple.replace('[', '')
+                triple = triple.replace(']', '')
+                triple = triple.split(',')
+                triple = [item.strip() for item in triple]
+                if len(triple) != 3: triple = []
+                if triple != []:
+                    triples.append(triple)
+                # print(triple)
+            extraction['triples'] = triples
+            # print(json.dumps(extraction, indent=4))
+            # quit()
+        io.json_write(output_filepath, input_data)
+        # print(json.dumps(input_data, indent=4))
+        # break
+    # pass
+
+def parse__phrases__plants__activities__triples_string_match():
+    input_folderpath = f'{HUB_FOLDERPATH}/parse/pubmed/phrases__plants__activities/triples'
+    output_folderpath = f'{HUB_FOLDERPATH}/parse/pubmed/phrases__plants__activities/triples_string_match'
+    ###
+    try: shutil.rmtree(output_folderpath)
+    except: pass
+    io.folders_recursive_gen(output_folderpath)
+    ###
+    input_filenames = os.listdir(input_folderpath)
+    i = 0
+    for input_filename in input_filenames[i:]:
+        i += 1
+        print(f'PARSE HERBS phrases__plants__activities__triples {i}/{len(input_filenames)}')
+        output_filepath = f'{output_folderpath}/{input_filename}'
+        if os.path.exists(output_filepath): continue
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        input_data = io.json_read(input_filepath)
+        for extraction in input_data['extractions']:
+            sentence = extraction['sentence']
+            triples = extraction['triples']
+            triples_string_match = []
+            for triple in triples:
+                term_1 = triple[0]
+                term_2 = triple[1]
+                term_3 = triple[2]
+                if term_1 not in sentence: continue
+                if term_2 not in sentence: continue
+                if term_3 not in sentence: continue
+                triples_string_match.append(triple)
+            extraction['triples_string_match'] = triples_string_match
+            io.json_write(output_filepath, input_data)
+        # print(json.dumps(io.json_read(output_filepath), indent=4))
+        # quit()
+
+def parse__phrases__plants__activities__resolve_plants():
+    input_folderpath = f'{HUB_FOLDERPATH}/parse/pubmed/phrases__plants__activities/triples_string_match'
+    output_folderpath = f'{HUB_FOLDERPATH}/parse/pubmed/phrases__plants__activities/resolve_plants'
+    ###
+    # try: shutil.rmtree(output_folderpath)
+    # except: pass
+    io.folders_recursive_gen(output_folderpath)
+    ###
+    input_filenames = os.listdir(input_folderpath)
+    i = 0
+    for input_filename in input_filenames[i:]:
+        i += 1
+        print(f'PARSE HERBS phrases__plants__activities__triples {i}/{len(input_filenames)}')
+        output_filepath = f'{output_folderpath}/{input_filename}'
+        if os.path.exists(output_filepath): continue
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        input_data = io.json_read(input_filepath)
+        # print(json.dumps(input_data, indent=4))
+        # quit()
+        for extraction in input_data['extractions']:
+            sentence = extraction['sentence']
+            triples = extraction['triples_string_match']
+            triples_resolve_local_subject = []
+            for triple in triples:
+                triple_plant_name = triple[0]
+                # print(sentence)
+                # print(triple)
+                # quit()
+                ###
+                prompt = f'''
+                    Give me the full latin name of the following plant name: {triple_plant_name}.
+                    By full latin name I mean the scientific name that is usually in binomial nomenclature, no abbreviation or author attribution.
+                    On the opposite, keep variations, subspecies, etc if included in the provided plant name.
+                    If the plant name is already in its canonical form, keep it.
+                    Reply only with the asked content, meaning the full latin name.
+                    For context, this plant name comes from the following scientific study abstract:
+                    {input_data['title']} {input_data['abstract']}
+                '''.strip()
+                reply = llm.reply(prompt, model_filepath, max_tokens=512)
+                if '</think>' in reply:
+                    reply = reply.split('</think>')[1].strip()
+                print()
+                print('################################################################################')
+                print(triple_plant_name, '->', reply)
+                print('################################################################################')
+                print()
+                output = {
+                    'subject_raw': triple_plant_name,
+                    'subject_resolved_local': reply,
+                    'predicate_raw': triple[1],
+                    'object_raw': triple[2],
+                }
+                triples_resolve_local_subject.append(output)
+                # print(json.dumps(output, indent=4))
+                # quit()
+                ###
+            extraction['triples_resolve_local_subject'] = triples_resolve_local_subject
+            io.json_write(output_filepath, input_data)
+        # print(json.dumps(io.json_read(output_filepath), indent=4))
+        # quit()
+
+def parse__plants__activities__count():
+    input_folderpath = f'{HUB_FOLDERPATH}/parse/pubmed/plants__activities/json'
+    ###
+    input_filenames = os.listdir(input_folderpath)
+    for i, input_filename in enumerate(input_filenames[:]):
+        print(f'''PARSE HERBS plants__activities__count {i}/{len(input_filenames)}''')
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        input_data = io.json_read(input_filepath)
+        print(json.dumps(input_data, indent=4))
+        quit()
+        break
+
+def parse__phrases__plants__activities__count():
+    input_folderpath = f'{HUB_FOLDERPATH}/parse/pubmed/phrases__plants__activities/raw'
+    ###
+    input_filenames = os.listdir(input_folderpath)
+    i = 0
+    total = []
+    for input_filename in input_filenames[i:]:
+        i += 1
+        print(f'PARSE HERBS phrases__plants__activities__count {i}/{len(input_filenames)}')
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        input_data = io.json_read(input_filepath)
+        print(json.dumps(input_data, indent=4))
+        quit()
+        break
+
+def parse__phrases__plants__activities__resolve_plants__peek():
+    input_folderpath = f'{HUB_FOLDERPATH}/parse/pubmed/phrases__plants__activities/resolve_plants'
+    ###
+    input_filenames = os.listdir(input_folderpath)
+    i = 0
+    for input_filename in input_filenames[i:]:
+        i += 1
+        print(f'PARSE HERBS phrases__plants__activities__resolve_plants__peek {i}/{len(input_filenames)}')
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        input_data = io.json_read(input_filepath)
+        print(json.dumps(input_data, indent=4))
+        break
+
+def parse__phrases__plants__activities__resolve_plants_string_match():
+    input_folderpath = f'{HUB_FOLDERPATH}/parse/pubmed/phrases__plants__activities/resolve_plants'
+    output_folderpath = f'{HUB_FOLDERPATH}/parse/pubmed/phrases__plants__activities/resolve_plants_string_match'
+    ###
+    try: shutil.rmtree(output_folderpath)
+    except: pass
+    io.folders_recursive_gen(output_folderpath)
+    ###
+    input_filenames = os.listdir(input_folderpath)
+    i = 0
+    for input_filename in input_filenames[i:]:
+        i += 1
+        print(f'PARSE HERBS phrases__plants__activities__resolve_plants_string_match {i}/{len(input_filenames)}')
+        output_filepath = f'{output_folderpath}/{input_filename}'
+        if os.path.exists(output_filepath): continue
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        input_data = io.json_read(input_filepath)
+        abstract = input_data['abstract']
+        for extraction in input_data['extractions']:
+            triples = extraction['triples_resolve_local_subject']
+            triples_string_match = []
+            for triple in triples:
+                term_1 = triple['subject_resolved_local']
+                if term_1 not in abstract: continue
+                triples_string_match.append(triple)
+            extraction['triples_resolve_local_subject_string_match'] = triples_string_match
+            io.json_write(output_filepath, input_data)
+        # print(json.dumps(io.json_read(output_filepath), indent=4))
+        # quit()
+
+def parse__phrases__plants__activities__resolve_plants_string_match__peek():
+    input_folderpath = f'{HUB_FOLDERPATH}/parse/pubmed/phrases__plants__activities/resolve_plants_string_match'
+    ###
+    input_filenames = os.listdir(input_folderpath)
+    i = 0
+    for input_filename in input_filenames[i:]:
+        i += 1
+        print(f'PARSE HERBS phrases__plants__activities__resolve_plants_string_match__peek {i}/{len(input_filenames)}')
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        input_data = io.json_read(input_filepath)
+        print(json.dumps(input_data, indent=4))
+        break
+
+def parse__extract__entities():
+    pass 
+
+def parse__extract__assertions():
+    pass
+
 def run():
     print('parse >> pubmed')
+
+
+    ### TESTS
+    ########################################
+    # parse__plants__activities__count()
+    # parse__phrases__plants__activities__count()
+
 
     # abstracts_to_sentences_llm()
 
@@ -3188,18 +3433,16 @@ def run():
     # parse__plants__preparations__raw_to_json()
     # parse__plants__parts__raw_to_json()
 
-    parse__plants__activities__extract_from_phrases()
+    # parse__plants__activities__extract_from_phrases()
+    # parse__plants__activities__extract_from_phrases__peek()
+    # parse__phrases__plants__activities__triples()
+    # parse__phrases__plants__activities__triples_string_match()
+    # parse__phrases__plants__activities__resolve_plants()
+    # parse__phrases__plants__activities__resolve_plants__peek()
+    # parse__phrases__plants__activities__resolve_plants_string_match()
+    # parse__phrases__plants__activities__resolve_plants_string_match__peek()
 
-    ### TODO
-    ### extract plants_activities for each sentence
-    ### locally resolve each relationships plants_activities with plants and activities from nouns and noun phrases extract
     return
-
-    # plants_peek_raw()
-
-    # plants_raw_to_lst()
-    # plants_peek_lst(key='terms', count=10)
-
 
     # quit()
 

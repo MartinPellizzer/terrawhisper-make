@@ -43,13 +43,14 @@ if 0:
     import resolve_herbs_main
     resolve_herbs_main.run()
 
-if 1:
+if 0:
     import masterize_herbs_init
     import masterize_herbs_main
     masterize_herbs_init.run()
     masterize_herbs_main.run()
 
 # quit()
+"""
 if 0:
     import observe_herbs_init
     import observe_herbs_main
@@ -57,6 +58,7 @@ if 0:
     observe_herbs_init.run()
     observe_herbs_main.run()
     # observe_herbs_peek.run()
+"""
 
 if 0:
     import assert_herbs_main
@@ -66,7 +68,7 @@ if 0:
     import derive_herbs_main
     derive_herbs_main.run()
 
-if 0:
+if 1:
     import augment_herbs_main
     augment_herbs_main.run()
 

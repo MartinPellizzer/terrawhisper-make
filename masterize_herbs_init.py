@@ -330,8 +330,8 @@ def run():
     # master_table_activities_create(regen=True)
     # master_table_conditions_create(regen=True)
     # master_table_compounds_create(regen=True)
-    # master_table_preparations_create(regen=True)
-    master_table_parts_create(regen=True)
+    master_table_preparations_create(regen=True)
+    # master_table_parts_create(regen=True)
 
 
 

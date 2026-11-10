@@ -501,8 +501,8 @@ def run():
     # masterize_table_activities_add(source_foldername='pubmed', subfoldername='activities')
     # masterize_table_conditions_add(source_foldername='pubmed')
     # masterize_table_compounds_add(source_foldername='pubmed')
-    # masterize_table_preparations_add(source_foldername='pubmed')
-    masterize_table_parts_add(source_foldername='pubmed')
+    masterize_table_preparations_add(source_foldername='pubmed')
+    # masterize_table_parts_add(source_foldername='pubmed')
 
 
     if 0:

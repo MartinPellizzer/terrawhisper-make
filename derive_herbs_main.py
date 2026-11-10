@@ -1444,12 +1444,12 @@ def derive__plants__activities():
 def run():
     # plants_activities_derive()
 
-    derive__plants__plants_names_common()
+    # derive__plants__plants_names_common()
 
     # derive__plants__activities()
     # derive__plants__conditions()
     # derive__plants__compounds()
-    # derive__plants__preparations()
+    derive__plants__preparations()
     # derive__plants__parts()
 
     # derive_morphology_gen()

@@ -1517,6 +1517,7 @@ def listing_parts_gen(plant_data):
     html_article += f'''
         <section>
             <h2>Plant Parts</h2>
+            <p>{plant_data['plants__parts']['intro_llm']}</p>
             <table style="margin-top: 3.2rem;">
                 <thead>
                     <tr>

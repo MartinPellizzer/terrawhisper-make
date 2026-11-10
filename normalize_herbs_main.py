@@ -755,6 +755,39 @@ def normalize__plants__parts(source_foldername):
     print(json.dumps(input_data[0], indent=4))
     # quit()
 
+def normalize__phrases__plants__activities(source_foldername):
+    input_folderpath = f'{HUB_FOLDERPATH}/parse/{source_foldername}/phrases__plants__activities/resolve_plants_string_match'
+    output_folderpath = f'{HUB_FOLDERPATH}/normalize/{source_foldername}/phrases__plants__activities/json'
+    try: shutil.rmtree(output_folderpath)
+    except: pass
+    io.folders_recursive_gen(output_folderpath)
+    input_filenames = os.listdir(input_folderpath)
+    ###
+    last = []
+    for i, input_filename in enumerate(input_filenames[:]):
+        print(f'NORMALIZE HERBS phrases__plants__activities {i}/{len(input_filenames)}')
+        output_filepath = f'{output_folderpath}/{input_filename}'
+        if os.path.exists(output_filepath): continue
+        ###
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        input_data = io.json_read(input_filepath)
+        for extraction in input_data['extractions']:
+            # print(json.dumps(extraction, indent=4))
+            # quit()
+            for triple_item in extraction['triples_resolve_local_subject_string_match']:
+                # print(json.dumps(triple, indent=4))
+                # quit()
+                input_item = triple_item
+                input_item['plant_name_scientific_raw_normalize'] = normalize_utils.normalize_plant_name(input_item['subject_resolved_local'])
+                input_item['activity_name_raw_normalize'] = normalize_format(input_item['object_raw'])
+        io.json_write(output_filepath, input_data)
+        if input_data != []:
+            last = input_data
+        # print(json.dumps(input_data, indent=4))
+        # quit()
+    print(json.dumps(last, indent=4))
+    # quit()
+
 def run():
     print('NORMALIZE >> MAIN')
 
@@ -767,17 +800,20 @@ def run():
     # preparations_normalize(source_foldername='pubmed')
     # parts_normalize(source_foldername='pubmed')
 
-    normalize__plants_names_common(source_foldername='col')
+    # normalize__plants_names_common(source_foldername='col')
 
     ### ASSERTIONS
 
-    normalize__plants__plants_names_common(source_foldername='col')
+    # normalize__plants__plants_names_common(source_foldername='col')
 
     # normalize__plants__activities(source_foldername='pubmed')
     # normalize__plants__conditions(source_foldername='pubmed')
     # normalize__plants__compounds(source_foldername='pubmed')
     # normalize__plants__preparations(source_foldername='pubmed')
     # normalize__plants__parts(source_foldername='pubmed')
+
+    normalize__phrases__plants__activities(source_foldername='pubmed')
+
     return
     quit()
 
