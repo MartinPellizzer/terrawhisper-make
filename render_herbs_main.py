@@ -1480,6 +1480,7 @@ def listing_preparations_gen(plant_data):
     html_article += f'''
         <section>
             <h2>Herbal Preparations</h2>
+            <p>{plant_data['plants__preparations']['intro_llm']}</p>
             <table style="margin-top: 3.2rem;">
                 <thead>
                     <tr>
@@ -3613,4 +3614,7 @@ def run():
     for master_item in master_items[:]:
         print(master_item)
         plant_listing_page_gen(master_item)
+
+### TODO: count hero studies correctly
+
 

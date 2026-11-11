@@ -1110,6 +1110,8 @@ def run():
     # assertions__plants__activities___table_create()
     # assertions__plants__activities___table_add()
 
+    ### TODO: do the plants_activities using the phrases, and compare number of results in render table on website
+    ### TODO: to do that, create table for studies and studies_phrases to join and match asserts with phrases
     # assertions__phrases__plants__activities___table_create()
     # assertions__phrases__plants__activities___table_add()
 

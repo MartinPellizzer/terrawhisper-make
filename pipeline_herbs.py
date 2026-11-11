@@ -43,7 +43,7 @@ if 0:
     import resolve_herbs_main
     resolve_herbs_main.run()
 
-if 0:
+if 1:
     import masterize_herbs_init
     import masterize_herbs_main
     masterize_herbs_init.run()
@@ -68,7 +68,7 @@ if 0:
     import derive_herbs_main
     derive_herbs_main.run()
 
-if 1:
+if 0:
     import augment_herbs_main
     augment_herbs_main.run()
 

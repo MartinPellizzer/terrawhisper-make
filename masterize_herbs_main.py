@@ -7,6 +7,7 @@ import sqlite3
 from lib import g
 from lib import io
 from lib import llm
+import sql
 
 HUB_FOLDERPATH = f'''{g.DATA_FOLDERPATH}/herbs'''
 
@@ -43,6 +44,60 @@ def masterize_table_studies_add(source_foldername):
             (
                 item.get("study_pmid"),
                 item.get("study_title_raw"),
+            )
+            for item in all_data
+        ]
+    )
+    conn.commit()
+    conn.row_factory = sqlite3.Row
+    cursor = conn.execute(f'''
+        SELECT * 
+        FROM {table_name}
+    ''')
+    rows = cursor.fetchall()
+    items = [dict(row) for row in rows]
+    for item in items[:10]:
+        print(json.dumps(item, indent=4))
+    print(len(items))
+    conn.close()
+
+def masterize_table_phrases_add(source_foldername):
+    table_name = 'phrases'
+    input_folderpath = f'{HUB_FOLDERPATH}/resolve/{source_foldername}/{table_name}/json'
+    output_folderpath = f'{HUB_FOLDERPATH}/database'
+    db_filepath = f'{output_folderpath}/terra.db'
+    ###
+    input_filenames = os.listdir(input_folderpath)
+    all_data = []
+    for i, input_filename in enumerate(input_filenames[:]):
+        print(f'MASTERIZE HERBS table_phrases_add - {i}/{len(input_filenames)}')
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        input_data = io.json_read(input_filepath)
+        for input_item in input_data:
+            study_item = sql.sql_study_id_by_pmid(input_item['study_pmid'])
+            try: input_item['study_id'] = study_item['study_id']
+            except: input_item['study_id'] = None
+            all_data.append(input_item)
+            # print(json.dumps(input_item, indent=4))
+            # print(json.dumps(study_item, indent=4))
+            # quit()
+    # print(json.dumps(all_data[0], indent=4))
+    # quit()
+    ###
+    conn = sqlite3.connect(db_filepath)
+    cur = conn.cursor()
+    cur.executemany(
+        f"""
+            INSERT OR IGNORE INTO {table_name} (
+                study_id,
+                phrase_text
+            )
+            VALUES (?, ?)
+        """,
+        [
+            (
+                item.get("study_id"),
+                item.get("phrase_text"),
             )
             for item in all_data
         ]
@@ -494,6 +549,7 @@ def run():
     print('MASTERIZE')
 
     # masterize_table_studies_add(source_foldername='pubmed')
+    masterize_table_phrases_add(source_foldername='pubmed')
 
     # masterize_table_plants_names_common_add(source_foldername='col')
 
@@ -501,7 +557,7 @@ def run():
     # masterize_table_activities_add(source_foldername='pubmed', subfoldername='activities')
     # masterize_table_conditions_add(source_foldername='pubmed')
     # masterize_table_compounds_add(source_foldername='pubmed')
-    masterize_table_preparations_add(source_foldername='pubmed')
+    # masterize_table_preparations_add(source_foldername='pubmed')
     # masterize_table_parts_add(source_foldername='pubmed')
 
 

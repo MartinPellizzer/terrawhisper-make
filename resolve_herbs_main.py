@@ -760,6 +760,37 @@ def studies_resolve(source_foldername):
     print(json.dumps(last_resolved_data[0], indent=4))
     # quit()
 
+def phrases_resolve(source_foldername):
+    input_folderpath = f'{HUB_FOLDERPATH}/normalize/{source_foldername}/phrases/json'
+    output_folderpath = f'{HUB_FOLDERPATH}/resolve/{source_foldername}/phrases/json'
+    try: shutil.rmtree(output_folderpath)
+    except: pass
+    os.makedirs(output_folderpath, exist_ok=True)
+    ###
+    input_filenames = os.listdir(input_folderpath)
+    last_resolved_data = []
+    for i, input_filename in enumerate(input_filenames[:]):
+        print(f'RESOLVE PLANTS phrases {i}/{len(input_filenames)}')
+        output_filepath = f'{output_folderpath}/{input_filename}'
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        if os.path.exists(output_filepath): continue
+        ###
+        input_data = io.json_read(input_filepath)
+        resolved_data = []
+        for input_item in input_data[:]:
+            # print(json.dumps(input_item, indent=True))
+            # quit()
+            input_item['phrase_text_reference'] = input_item['phrase_text']
+            input_item['phrase_text_reference_normalize'] = input_item['phrase_text_normalize']
+            resolved_data.append(input_item)
+            # print(json.dumps(input_item, indent=True))
+            # quit()
+        if resolved_data != []:
+            io.json_write(output_filepath, resolved_data)
+            last_resolved_data = resolved_data
+    print(json.dumps(last_resolved_data[0], indent=4))
+    # quit()
+
 def plants_resolve(source_foldername):
     input_folderpath = f'{HUB_FOLDERPATH}/normalize/{source_foldername}/plants/json'
     output_folderpath = f'{HUB_FOLDERPATH}/resolve/{source_foldername}/plants/json'
@@ -1761,6 +1792,8 @@ def run():
     # resolve__plants_names_common(source_foldername='col')
 
     # studies_resolve(source_foldername='pubmed')
+    phrases_resolve(source_foldername='pubmed')
+
     # plants_resolve(source_foldername='pubmed')
     # activities_resolve(source_foldername='pubmed')
     # conditions_resolve(source_foldername='pubmed')
@@ -1775,7 +1808,7 @@ def run():
     # resolve__plants__activities(source_foldername='pubmed')
     # resolve__plants__conditions(source_foldername='pubmed')
     # resolve__plants__compounds(source_foldername='pubmed')
-    resolve__plants__preparations(source_foldername='pubmed')
+    # resolve__plants__preparations(source_foldername='pubmed')
     # resolve__plants__parts(source_foldername='pubmed')
 
     # resolve__phrases__plants__activities(source_foldername='pubmed')

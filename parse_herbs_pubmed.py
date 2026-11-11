@@ -3382,6 +3382,74 @@ def parse__extract__entities():
 def parse__extract__assertions():
     pass
 
+def phrases__to_json():
+    study_folderpath = f'{HUB_FOLDERPATH}/fetch/pubmed/medicinal_plant/abstracts'
+    input_folderpath = f'{HUB_FOLDERPATH}/parse/pubmed/studies_sentences/json'
+    output_folderpath = f'{HUB_FOLDERPATH}/parse/pubmed/phrases/json'
+    try: shutil.rmtree(output_folderpath)
+    except: pass
+    io.folders_recursive_gen(output_folderpath)
+    ###
+    relationships_found = []
+    input_filenames = os.listdir(input_folderpath)
+    i = 0
+    for input_filename in input_filenames[i:]:
+        i += 1
+        print(f'PARSE HERBS plants__activities__extract_from_phrases {i}/{len(input_filenames)}')
+        output_filepath = f'{output_folderpath}/{input_filename}'
+        if os.path.exists(output_filepath): continue
+        pmid = input_filename.split('.')[0].strip()
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        sentences_data = io.json_read(input_filepath)
+        study_filepath = f'{study_folderpath}/{input_filename}'
+        study_data = io.json_read(study_filepath)
+        study_sentences = [item['sentence_text'].strip() for item in sentences_data]
+        # print(input_filename)
+        # print(json.dumps(input_data, indent=4))
+        # print(json.dumps(study_data, indent=4))
+        # print(json.dumps(sentences_data, indent=4))
+        # print(json.dumps(study_data, indent=4))
+        # quit()
+        try: article_data = study_data['PubmedArticle'][0]['MedlineCitation']['Article']
+        except: pass
+        try: input_title = article_data['ArticleTitle']
+        except: input_title = ''
+        try: input_abstract = ' '.join(article_data['Abstract']['AbstractText'])
+        except: continue
+        # print(input_title)
+        # print(input_abstract)
+        # print(study_sentences)
+        # print(json.dumps(sentences_data, indent=4))
+        # print(json.dumps(study_data, indent=4))
+        # quit()
+        """
+        output_data = {
+            'study_pmid': pmid,
+            'study_title': input_title,
+            'study_abstract': input_abstract,
+            'study_sentences': sentences_data,
+        }
+        """
+        output_items = []
+        for sentence_item in sentences_data:
+            sentence_text = sentence_item['sentence_text']
+            output_item = {
+                f'phrase_text': sentence_text,
+                f'study_pmid': pmid,
+                # f'study_title': input_title,
+                # f'study_abstract': input_abstract,
+                f'source_name': 'Pubmed',
+                f'source_acronym': 'PM',
+            }
+            output_items.append(output_item)
+        # print(json.dumps(output_items, indent=4))
+        # quit()
+        io.json_write(output_filepath, output_items)
+        # print(json.dumps(output_data, indent=4))
+        # print(len(relationships_found))
+        # quit()
+
+
 def run():
     print('parse >> pubmed')
 
@@ -3393,6 +3461,7 @@ def run():
 
 
     # abstracts_to_sentences_llm()
+    phrases__to_json()
 
     # plant_test_count()
     # plant_activities_test_count()
