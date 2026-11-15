@@ -1421,6 +1421,49 @@ def listing_activities_gen(plant_data):
     '''
     return html_article
 
+def listing_phrases_activities_gen(plant_data):
+    html_article = f''
+    # print(plant_data['plants_activities'])
+    html_table_records = ''
+    # print(json.dumps(plant_data, indent=4))
+    # print(json.dumps(plant_data['plants__activities'], indent=4))
+    # quit()
+    for activity_item in plant_data['phrases__plants__activities']['plant_activities'][:10]:
+        # html_article += f'''<p>{activity_item['activity_name_reference']}</p>'''
+        sources_num = activity_item['count']
+        confidence_score = ''
+        if int(sources_num) >= 10: confidence_score = '★★★★★'
+        elif int(sources_num) >= 7: confidence_score = '★★★★☆'
+        elif int(sources_num) >= 5: confidence_score = '★★★☆☆'
+        elif int(sources_num) >= 3: confidence_score = '★★☆☆☆'
+        elif int(sources_num) >= 1: confidence_score = '★☆☆☆☆'
+        html_table_records += f'''
+            <tr>
+                <td>{activity_item['activity_name_reference']}</td>
+                <td>{sources_num}</td>
+                <td><span>{confidence_score}</span></td>
+            </tr>
+        '''
+    html_article += f'''
+        <section>
+            <h2>Phrases Biological Activities</h2>
+            <p>{plant_data['phrases__plants__activities']['intro_llm']}</p>
+            <table style="margin-top: 3.2rem;">
+                <thead>
+                    <tr>
+                        <th>Activity</th>
+                        <th>Supporting Sources</th>
+                        <th>Confidence Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {html_table_records}
+                </tbody>
+            </table>
+        </section>
+    '''
+    return html_article
+
 def listing_conditions_gen(plant_data):
     html_article = f''
     html_table_records = ''
@@ -3429,6 +3472,7 @@ def plant_listing_page_gen(master_item):
     ### 
     # html_article += listing_names_common_gen(plant_data)
     html_article += listing_activities_gen(plant_data)
+    html_article += listing_phrases_activities_gen(plant_data)
     html_article += listing_conditions_gen(plant_data)
     html_article += listing_compounds_gen(plant_data)
     html_article += listing_preparations_gen(plant_data)

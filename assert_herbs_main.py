@@ -957,15 +957,16 @@ def assertions__phrases__plants__activities___table_create():
             plant_activity_id INTEGER PRIMARY KEY,
             plant_id TEXT,
             activity_id TEXT,
-            study_id TEXT
+            phrase_id TEXT
         );
+
     ''')
     conn.execute("PRAGMA journal_mode = WAL;")
     conn.execute("PRAGMA synchronous = OFF;")
     conn.execute("PRAGMA temp_store = MEMORY;")
     cur.execute(f"CREATE INDEX IF NOT EXISTS idx_{table_name}_plant_id ON {table_name}(plant_id)")
     cur.execute(f"CREATE INDEX IF NOT EXISTS idx_{table_name}_activity_id ON {table_name}(activity_id)")
-    cur.execute(f"CREATE INDEX IF NOT EXISTS idx_{table_name}_study_id ON {table_name}(study_id)")
+    cur.execute(f"CREATE INDEX IF NOT EXISTS idx_{table_name}_phrase_id ON {table_name}(phrase_id)")
     conn.commit()
     conn.close()
 
@@ -990,15 +991,19 @@ def assertions__phrases__plants__activities___table_add():
     plant_success_count = 0
     activity_failed_count = 0
     activity_success_count = 0
-    study_failed_count = 0
-    study_success_count = 0
+    phrase_failed_count = 0
+    phrase_success_count = 0
     test_plant_count = 0
     for i, item in enumerate(all_data):
         print(f'ASSERT HERBS {table_name} - {i}/{len(all_data)}')
         plant_item = sql.sql_plant_id_by_name_normalize(item['plant_name_scientific_reference_normalize'])
         activity_item = sql.sql__activity_id_by_name_normalize(item['activity_name_reference_normalize'])
-        study_item = sql.sql_study_id_by_pmid(item['reference_id'])
-        # print(source_item )
+        phrase_item = sql.sql__phrase_id__by_phrase_text(item['phrase_text'])
+        # print(item)
+        # print(json.dumps(item, indent=4))
+        # print(json.dumps(plant_item, indent=4))
+        # print(json.dumps(activity_item, indent=4))
+        # print(json.dumps(phrase_item, indent=4))
         # quit()
         if plant_item == None:
             plant_failed_count += 1
@@ -1010,33 +1015,33 @@ def assertions__phrases__plants__activities___table_add():
             continue
         else:
             activity_success_count += 1
-        if study_item == None:
-            study_failed_count += 1
+        if phrase_item == None:
+            phrase_failed_count += 1
             continue
         else:
-            study_success_count += 1
+            phrase_success_count += 1
         if plant_item['plant_name_scientific_reference_normalize'] == 'panax ginseng':
             test_plant_count += 1
         plant_id = plant_item['plant_id']
         activity_id = activity_item['activity_id']
-        study_id = study_item['study_id']
+        phrase_id = phrase_item['phrase_id']
         # print(plant_id)
         # print(activity_id)
         data_ids.append(
             {
                 'plant_id': plant_item['plant_id'],
                 'activity_id': activity_item['activity_id'],
-                'study_id': study_item['study_id'],
+                'phrase_id': phrase_item['phrase_id'],
             }
         )
         # quit()
     print(data_ids[0])
     print(plant_failed_count)
     print(activity_failed_count)
-    print(study_failed_count)
+    print(phrase_failed_count)
     print(plant_success_count)
     print(activity_success_count)
-    print(study_success_count)
+    print(phrase_success_count)
     print(test_plant_count)
     # quit()
     ###
@@ -1047,7 +1052,7 @@ def assertions__phrases__plants__activities___table_add():
             INSERT OR IGNORE INTO {table_name} (
                 plant_id,
                 activity_id,
-                study_id
+                phrase_id
             )
             VALUES (?, ?, ?)
     '''
@@ -1057,7 +1062,7 @@ def assertions__phrases__plants__activities___table_add():
             (
                 item.get(f'plant_id'),
                 item.get(f'activity_id'),
-                item.get(f'study_id'),
+                item.get(f'phrase_id'),
             )
             for item in data_ids
         ]
@@ -1100,8 +1105,8 @@ def run():
     # assertions__plants__compounds___table_create()
     # assertions__plants__compounds___table_add()
 
-    assertions__plants__preparations___table_create()
-    assertions__plants__preparations___table_add()
+    # assertions__plants__preparations___table_create()
+    # assertions__plants__preparations___table_add()
 
     # assertions__plants__parts___table_create()
     # assertions__plants__parts___table_add()
@@ -1112,6 +1117,6 @@ def run():
 
     ### TODO: do the plants_activities using the phrases, and compare number of results in render table on website
     ### TODO: to do that, create table for studies and studies_phrases to join and match asserts with phrases
-    # assertions__phrases__plants__activities___table_create()
-    # assertions__phrases__plants__activities___table_add()
+    assertions__phrases__plants__activities___table_create()
+    assertions__phrases__plants__activities___table_add()
 

@@ -1771,6 +1771,7 @@ def resolve__phrases__plants__activities(source_foldername):
                     drduke_item = drduke_items[0]
                     input_item['activity_name_reference'] = drduke_item['activity_name_raw']
                     input_item['activity_name_reference_normalize'] = drduke_item['activity_name_normalize']
+                    input_item['phrase_text'] = extraction['sentence']
                     resolved_data.append(input_item)
                     # print(json.dumps(input_item, indent=4))
                     # quit()
@@ -1792,7 +1793,7 @@ def run():
     # resolve__plants_names_common(source_foldername='col')
 
     # studies_resolve(source_foldername='pubmed')
-    phrases_resolve(source_foldername='pubmed')
+    # phrases_resolve(source_foldername='pubmed')
 
     # plants_resolve(source_foldername='pubmed')
     # activities_resolve(source_foldername='pubmed')
@@ -1811,7 +1812,7 @@ def run():
     # resolve__plants__preparations(source_foldername='pubmed')
     # resolve__plants__parts(source_foldername='pubmed')
 
-    # resolve__phrases__plants__activities(source_foldername='pubmed')
+    resolve__phrases__plants__activities(source_foldername='pubmed')
 
     return
     quit()

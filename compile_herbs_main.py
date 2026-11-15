@@ -157,6 +157,14 @@ def run():
         except:
             output_data['plants__activities'] = []
 
+        ### PHRASES ACTIVITIES
+        try:
+            output_data['phrases__plants__activities'] = io.json_read(
+                f'{input_folderpath}/phrases__plants__activities/{plant_name_scientific_reference}.json'
+            )
+        except:
+            output_data['plants__activities'] = []
+
         ### CONDITIONS
         try:
             output_data['plants__conditions'] = io.json_read(

@@ -1,0 +1,628 @@
+great, now give me **SET 2 — Overview, Botanical Descriptions, Identification, Morphology, Anatomy & Microscopy**
+
+
+
+
+# SET 2 — Overview, Botanical Descriptions, Identification, Morphology, Anatomy & Microscopy
+
+This set supplies the data needed to describe medicinal plants accurately and help users identify them. It covers:
+
+- General botanical descriptions
+- Morphological characteristics
+- Diagnostic identification features
+- Plant organs and anatomy
+- Microscopic characteristics
+- Botanical illustrations and photographs
+- Identification keys
+- Herbarium specimens
+- Botanical terminology and descriptive standards
+
+**Important distinction:** Unlike taxonomic datasets, botanical descriptions are often distributed across regional floras, scientific publications, herbarium records, and specialized databases. There is no single comprehensive, freely downloadable global dataset containing all these features for every plant.
+
+The most effective strategy is to combine global botanical databases, regional floras, specimen repositories, trait datasets, and specialized anatomical resources.
+
+---
+
+## 1. World Flora Online (WFO) — Global botanical descriptions
+
+**One of the most important resources for your project.**
+
+World Flora Online
+
+
+
+### What it contains
+WFO is not merely a taxonomy database: its online platform includes substantial descriptive botanical content.
+
+Current indexed content includes approximately:
+- 382,000 accepted species
+- 659,000 descriptions
+- 55,000 images
+- More than 1.9 million distribution records
+- References associated with botanical information [theworldflora.org](https://www.theworldflora.org/?utm_source=chatgpt.com)
+
+
+### What you can extract/use
+- Botanical descriptions
+- Plant identification information
+- Descriptive characters
+- Distribution information
+- Images, where licensing permits
+- Source references
+
+### Access
+- **Portal:** [World Flora Online](https://www.worldfloraonline.org/?utm_source=chatgpt.com)
+- **Download data:** [WFO Data Downloads](https://www.worldfloraonline.org/downloadData?utm_source=chatgpt.com)
+
+### Recommendation
+Use WFO as a primary source for structured botanical descriptions, particularly where its descriptions are explicitly associated with references.
+
+WFO's general content license is CC BY 4.0 unless otherwise specified; retain attribution and verify individual image/content credits. [World Flora Online](https://www.worldfloraonline.org/?utm_source=chatgpt.com)
+
+---
+
+## 2. Plants of the World Online (POWO) — Kew botanical descriptions
+
+Plants of the World Online
+
+### What it contains
+POWO provides worldwide vascular plant information, including:
+
+- Detailed species descriptions
+- Growth forms
+- Botanical identification characteristics
+- Distribution
+- Habitat and biome
+- Plant traits
+- Images
+- Taxonomic information
+- Threat status
+- Uses
+- Phylogenetic information
+
+It incorporates historical botanical data and contributions from Kew and collaborating institutions. [Plants of the World Online](https://powo.science.kew.org/about?utm_source=chatgpt.com)
+
+### Access
+- **Database:** [POWO](https://powo.science.kew.org/?utm_source=chatgpt.com)
+- **About/data sources:** [POWO About](https://powo.science.kew.org/about?utm_source=chatgpt.com)
+
+### Availability
+POWO currently presents approximately:
+- 1.45 million plant names
+- 531,800 detailed descriptions
+- 549,400 images [Plants of the World Online](https://powo.science.kew.org/?utm_source=chatgpt.com)
+
+
+### Important limitation
+POWO is excellent for research and reference, but do **not** assume its entire database or image collection is freely redistributable in bulk. Check the terms associated with each dataset, image, and contributing source.
+
+### Recommendation
+Use POWO as one of your main authoritative reference sources for writing and validating plant descriptions.
+
+---
+
+## 3. TRY Plant Trait Database — Quantitative and qualitative plant traits
+
+TRY Plant Trait Database
+
+This is particularly valuable if your SQL schema will contain standardized plant characteristics.
+
+### What it contains
+TRY aggregates plant traits from hundreds of datasets, including published and unpublished observations.
+
+The traits include:
+
+| Category | Examples |
+|---|---|
+| Morphology | Plant height, leaf area, leaf dimensions |
+| Anatomy | Leaf anatomical characteristics |
+| Phenology | Flowering time, leaf persistence |
+| Physiology | Photosynthetic characteristics |
+| Biochemistry | Plant chemical characteristics |
+| Ecology | Growth form, woodiness, habitat-related traits |
+| Functional traits | Specific leaf area, leaf mass, seed mass |
+
+TRY Version 7, released in September 2026, reports approximately **22.86 million trait records and 306,701 plant taxa**. [try-db.org](https://www.try-db.org/?utm_source=chatgpt.com)
+
+### Access
+- **Database:** [TRY Database](https://www.try-db.org/?utm_source=chatgpt.com)
+- **Data portal:** [TRY Data Portal](https://www.try-db.org/TryWeb/Database.php?utm_source=chatgpt.com)
+
+### Downloading
+TRY provides data requests and downloads, but access to particular datasets or bulk exports can involve registration, request workflows, and dataset-specific terms.
+
+### Recommendation
+Use TRY for quantitative trait data—not as a substitute for a complete botanical description.
+
+**Critical:** Store each trait as an observation with its original unit, value, source, measurement context, and uncertainty. Do not collapse multiple measurements into a single supposedly definitive species value.
+
+---
+
+## 4. BIEN — Botanical Information and Ecology Network
+
+Botanical Information and Ecology Network
+
+### What it contains
+BIEN integrates botanical occurrence, vegetation-plot, and standardized plant-trait data.
+
+The BIEN 4.2 release reports:
+
+- 284 million plant occurrence records
+- 363,258 vegetation plots
+- 25.9 million trait observations
+- 54 standardized traits
+- 98,829 species with modeled range maps [bien.nceas.ucsb.edu](https://bien.nceas.ucsb.edu/bien/?utm_source=chatgpt.com)
+
+
+### Access
+- **Main portal:** [BIEN](https://bien.nceas.ucsb.edu/bien/?utm_source=chatgpt.com)
+- **Data access:** [BIEN Data & Access](https://bien.nceas.ucsb.edu/bien/data-and-access/?utm_source=chatgpt.com)
+
+BIEN provides a data portal, R package, and other programmatic access routes. [bien.nceas.ucsb.edu](https://bien.nceas.ucsb.edu/bien/data-and-access/?utm_source=chatgpt.com)
+
+### What it is useful for
+- Plant height and other functional traits
+- Ecological characteristics
+- Occurrence-based contextual information
+- Trait validation and comparison
+- Plant distribution context
+
+### Recommendation
+Use BIEN as a supplementary source of trait observations and ecological information. It is not a replacement for taxonomic descriptions or identification keys.
+
+---
+
+---
+
+## 5. Regional Floras — The most detailed botanical descriptions
+
+Regional floras are indispensable because they often contain more detailed morphological descriptions than global databases.
+
+They are especially useful for:
+- Precise measurements of organs
+- Diagnostic characteristics
+- Species differentiation
+- Morphological variation
+- Identification keys
+- Botanical terminology
+- Descriptions of flowers, fruits, seeds, and vegetative structures
+
+### A. eFloras — Flora of China and other floras
+
+[eFloras portal](https://www.efloras.org/?utm_source=chatgpt.com)
+
+Includes:
+- Flora of China
+- Flora of North America treatments
+- Detailed botanical descriptions
+- Identification keys
+- Taxonomic treatments
+- Illustrations and references
+
+Flora of China provides descriptions and interactive identification keys, including DELTA and NaviKey resources. [efloras.org](https://www.efloras.org/flora_page.aspx?flora_id=2\&lang=en\&utm_source=chatgpt.com)
+
+**Use:** Excellent source for detailed species descriptions, particularly Asian medicinal plants.
+
+**Bulk availability:** Primarily an online reference; don't assume unrestricted bulk extraction or republication.
+
+### B. Flora of Australia
+
+[Flora of Australia](https://profiles.ala.org.au/opus/foa?utm_source=chatgpt.com)
+
+Provides:
+- Detailed botanical descriptions
+- Identification keys
+- Distribution
+- Habitat
+- Taxonomic information
+- Species profiles
+- Illustrations and images
+
+Its digital platform incorporates historical Flora of Australia treatments and updated information. [profiles.ala.org.au](https://profiles.ala.org.au/opus/foa?utm_source=chatgpt.com)
+
+**Use:** Particularly valuable for Australian medicinal species.
+
+### C. FloraBase — Western Australia
+
+[FloraBase](https://florabase.dpaw.wa.gov.au/?utm_source=chatgpt.com)
+
+Includes:
+- Botanical descriptions
+- Identification information
+- Plant characteristics
+- Habitat and locality information
+- Images
+- Herbarium specimen information
+- Interactive identification keys
+
+FloraBase is a comprehensive regional flora integrating descriptions, specimen records, and images. [Western Australian Government](https://www.wa.gov.au/service/science/biological-sciences/access-database-of-western-australian-flora?utm_source=chatgpt.com)
+
+### D. African Plants — Photo Guide
+
+[African Plants Photo Guide](https://africanplants.senckenberg.de/?utm_source=chatgpt.com)
+
+This is a particularly interesting resource for your project.
+
+It contains:
+- Photographs of African vascular plants
+- Species and infraspecific taxon information
+- Morphological character coding
+- Growth forms
+- Leaf characteristics
+- Flower characteristics
+- Identification-oriented character filters
+
+The system uses 18 morphological characteristics for searching and identifying plants. [Senckenberg Naturforschung](https://www.senckenberg.de/en/african-plants-an-interactive-photoguide/?utm_source=chatgpt.com)
+
+The dataset is registered on GBIF and available as a Darwin Core Archive under CC BY 4.0. [DOI](https://doi.org/10.15468/r9azth?utm_source=chatgpt.com)
+
+**Image restrictions:** The website states that its images can be used freely for non-commercial scientific and educational purposes; other uses require permission. The GBIF dataset license does not automatically mean all associated images have identical licensing.
+
+### E. Flora of North America
+
+[Flora of North America](https://floranorthamerica.org/?utm_source=chatgpt.com)
+
+Useful for:
+- Detailed descriptions
+- Diagnostic features
+- Identification keys
+- Morphological terminology
+- Distribution
+- Species differentiation
+
+It is particularly useful for North American medicinal plants.
+
+---
+
+## 6. GBIF — Occurrence records and botanical images
+
+[GBIF](https://www.gbif.org/?utm_source=chatgpt.com)
+
+GBIF is not primarily a botanical description database, but it is an excellent source of specimen-associated and observation-associated images.
+
+### What you can obtain
+- Plant occurrence records
+- Scientific names
+- Collection dates
+- Localities
+- Coordinates
+- Collectors
+- Herbarium information
+- Images
+- Associated media metadata
+- Identification information
+
+### Download
+- **Occurrence download:** [GBIF Download](https://www.gbif.org/occurrence/download)
+- **API:** [GBIF API](https://api.gbif.org/)
+- **Download formats:** [GBIF Download Formats](https://techdocs.gbif.org/en/data-use/download-formats)
+
+GBIF provides CSV/TSV and Darwin Core Archive formats, including associated multimedia metadata. [techdocs.gbif.org](https://techdocs.gbif.org/en/data-use/download-formats?utm_source=chatgpt.com)
+
+### Licensing
+Occurrence records can have CC0, CC BY, or CC BY-NC licenses. Images may have different licenses from their associated occurrence records. [techdocs.gbif.org](https://techdocs.gbif.org/en/data-publishing/multimedia-publishing?utm_source=chatgpt.com)
+
+### Recommendation
+Use GBIF as a source for:
+- Plant photographs
+- Specimen provenance
+- Geographic context
+- Observed morphological variation
+
+Don't treat a photograph or citizen-science observation as definitive species identification without validation.
+
+---
+
+## 7. iDigBio — Herbarium and museum specimens
+
+[iDigBio](https://www.idigbio.org/?utm_source=chatgpt.com)
+
+### What it contains
+iDigBio aggregates digitized specimen data from natural history collections.
+
+It is useful for:
+- Herbarium specimen metadata
+- Specimen collection information
+- Locality and collector data
+- Specimen images
+- Historical plant records
+- Taxonomic identification metadata
+
+The iDigBio infrastructure has offered specimen and media records through its portal and API. Its portal announced that its data stopped updating on May 8, 2026, with services expected to remain operational through 2026; for current data, it directs users to its GBIF Hosted Portal. [iDigBio Specimen Portal](https://portal.idigbio.org/?utm_source=chatgpt.com)
+
+### Access
+- [iDigBio Portal](https://portal.idigbio.org/)
+- [iDigBio API](https://www.idigbio.org/wiki/index.php/IDigBio_API)
+
+### Recommendation
+Use it for historical specimen evidence and as a supplementary image source, while checking current data availability and image rights.
+
+---
+
+## 8. InsideWood — Microscopic wood anatomy
+
+[InsideWood](https://insidewood.lib.ncsu.edu/?utm_source=chatgpt.com)
+
+This is one of the most specialized resources in this set.
+
+### What it contains
+- Microscopic wood anatomy descriptions
+- Hardwood anatomy
+- Softwood anatomy
+- Fossil wood anatomy
+- Anatomical character codes
+- Microscopic images
+- Identification features
+
+The database contains approximately:
+- 10,452 descriptions
+- 77,257 images
+- 7,945 modern hardwood descriptions
+- 2,271 fossil hardwood descriptions
+- 236 modern softwood descriptions [insidewood.lib.ncsu.edu](https://insidewood.lib.ncsu.edu/search?utm_source=chatgpt.com)
+
+
+### Anatomy standards
+InsideWood uses the International Association of Wood Anatomists (IAWA) feature lists for hardwood and softwood identification. [insidewood.lib.ncsu.edu](https://insidewood.lib.ncsu.edu/databasedetails?utm_source=chatgpt.com)
+
+### Important licensing limitation
+InsideWood permits copying its data and images for nonprofit personal or institutional research and teaching, with acknowledgment. Large-scale redistribution or republishing on another website requires written permission. [insidewood.lib.ncsu.edu](https://insidewood.lib.ncsu.edu/disclaimer?utm_source=chatgpt.com)
+
+### Recommendation
+Use InsideWood for:
+- Wood anatomy
+- Microscopic identification characteristics
+- Anatomical reference information
+
+For commercial or public website reuse, obtain permission first.
+
+---
+
+## 9. DELTA / Intkey — Structured botanical descriptions and identification keys
+
+[DELTA System](https://www.delta-intkey.com/?utm_source=chatgpt.com)
+
+DELTA is not a single plant database. It is a standardized system for representing taxonomic descriptions and producing interactive identification keys.
+
+### Why it matters
+DELTA data can represent:
+- Morphological characters
+- Character states
+- Measurements
+- Taxonomic descriptions
+- Illustrations
+- Diagnostic descriptions
+- Identification keys
+
+Its data structure is particularly relevant to your own database because it separates taxa from their character states.
+
+### Existing datasets
+- [DELTA datasets](https://www.delta-intkey.com/www/data.htm)
+- [DELTA taxonomic datasets](https://www.delta-intkey.com/www/datadvd.htm)
+- [DELTA overview](https://www.delta-intkey.com/www/overview.htm)
+
+Available resources include Flora of China, Flora of Western Australia, world grass genera, and other botanical datasets. [delta-intkey.com](https://www.delta-intkey.com/www/data.htm?utm_source=chatgpt.com)
+
+### Recommendation
+**Study DELTA's data model even if you don't use its software.**
+
+It offers a useful foundation for your own morphological character system and future plant identification tools.
+
+---
+
+## 10. JSTOR Global Plants — Type specimens and historical botanical material
+
+[JSTOR Global Plants](https://plants.jstor.org/?utm_source=chatgpt.com)
+
+### What it contains
+- Digitized type specimens
+- Herbarium sheets
+- Historical botanical illustrations
+- Photographs
+- Collector information
+- Botanical correspondence
+- Reference works
+
+The collection contains nearly three million digitized type specimens and related materials from more than 300 herbaria in over 70 countries. [About JSTOR](https://about.jstor.org/products/journals-and-primary-sources/licensed-collections/global-plants/?utm_source=chatgpt.com)
+
+### Recommendation
+Use it for:
+- Verification of historical identifications
+- Research into botanical descriptions
+- Historical illustrations
+- Reference material for species identity
+
+**Important:** Access and reuse rights differ by material. It is primarily a research/reference source rather than a freely redistributable image dataset.
+
+---
+
+# 11. Additional resources worth adding to your collection
+
+| Resource | What it contributes | Access |
+|---|---|---|
+| [Purdue Arboretum Botanical Glossary](https://www.arboretum.purdue.edu/explorer/definitions/) | Illustrated botanical terminology and morphology | Online |
+| [IAWA](https://www.iawa-website.org/) | Wood anatomical identification standards | Publications and resources |
+| [USDA Plants](https://plants.usda.gov/) | North American plant descriptions, characteristics, images | Online |
+| [Wikimedia Commons](https://commons.wikimedia.org/) | Botanical photographs and illustrations | Downloadable; individual licenses |
+| [Kew Herbarium](https://www.kew.org/science/engage/accessing-our-science/access-our-collections/herbarium) | Specimen images and botanical collection data | Online Data Portal |
+| [Flora of South Australia](https://flora.sa.gov.au/ed5) | Detailed regional botanical treatments | Free publications |
+| [Families of Flowering Plants of Australia](https://www.dcceew.gov.au/science-research/abrs/publications/cds/flowering-plants) | Family descriptions, illustrated identification keys | Free online |
+
+Purdue's glossary, for example, provides 369 illustrated botanical definitions, including leaf, flower, fruit, and general anatomical terminology. [arboretum.purdue.edu](https://www.arboretum.purdue.edu/explorer/definitions/?utm_source=chatgpt.com)
+
+Kew is also digitizing millions of herbarium specimens through its Data Portal. [kew.org](https://www.kew.org/science/engage/accessing-our-science/access-our-collections/herbarium?utm_source=chatgpt.com)
+
+---
+
+# 12. What I would actually download or integrate first
+
+For your project, I would prioritize these resources:
+
+| Priority | Resource | Main role |
+|---|---|---|
+| 1 | **WFO** | Global botanical descriptions and descriptive information |
+| 2 | **POWO** | Authoritative botanical descriptions and reference material |
+| 3 | **TRY** | Standardized quantitative and qualitative plant traits |
+| 4 | **BIEN** | Supplementary plant trait observations |
+| 5 | **GBIF** | Occurrences, specimen data, associated photographs |
+| 6 | **African Plants Photo Guide** | Morphological character coding and images |
+| 7 | **Regional floras** | Detailed descriptions and identification keys |
+| 8 | **DELTA** | Structured morphology and identification data model |
+| 9 | **InsideWood** | Microscopic wood anatomy |
+| 10 | **JSTOR Global Plants / herbarium portals** | Type specimens and historical botanical evidence |
+
+---
+
+# 13. Suggested SQL architecture for this set
+
+I strongly recommend separating **descriptive statements**, **measured traits**, **diagnostic characters**, and **images**.
+
+### A. Botanical descriptions
+
+`botanical_descriptions`
+
+| Field | Purpose |
+|---|---|
+| description_id | Internal identifier |
+| taxon_id | Taxon reference |
+| description_type | General, diagnostic, habit, floral, fruit, etc. |
+| description_text | Original or processed description |
+| language | Description language |
+| source_id | Source |
+| source_reference | Page, section, DOI, URL |
+| verbatim | Boolean |
+| attribution | Attribution text |
+| license_id | Applicable license |
+
+### B. Morphological traits
+
+`plant_traits`
+
+| Field | Purpose |
+|---|---|
+| trait_id | Internal identifier |
+| taxon_id | Taxon |
+| trait_name | E.g., leaf arrangement |
+| trait_category | Morphology, anatomy, phenology, etc. |
+| value_text | Qualitative value |
+| value_numeric | Numeric measurement |
+| unit | Measurement unit |
+| min_value | Range minimum |
+| max_value | Range maximum |
+| measurement_method | How measured |
+| observation_context | Wild, cultivated, herbarium, etc. |
+| source_id | Source |
+| confidence | Confidence/quality assessment |
+
+### C. Identification characters
+
+`identification_characters`
+
+| Field | Purpose |
+|---|---|
+| character_id | Internal identifier |
+| taxon_id | Taxon |
+| organ | Leaf, stem, flower, fruit, root |
+| character_name | E.g., leaf margin |
+| character_state | E.g., entire, serrate |
+| diagnostic_value | Diagnostic relevance |
+| source_id | Source |
+
+### D. Anatomical observations
+
+`plant_anatomy`
+
+| Field | Purpose |
+|---|---|
+| anatomy_id | Internal identifier |
+| taxon_id | Taxon |
+| organ | Root, stem, leaf, wood, etc. |
+| tissue | Xylem, phloem, epidermis, etc. |
+| feature | Anatomical characteristic |
+| description | Text |
+| microscopic_level | Cellular, tissue, organ |
+| preparation_method | Sectioning, staining, etc. |
+| source_id | Source |
+
+### E. Images
+
+`plant_media`
+
+| Field | Purpose |
+|---|---|
+| media_id | Internal identifier |
+| taxon_id | Taxon |
+| media_type | Photo, illustration, microscopy |
+| organ | Leaf, flower, fruit, whole plant, etc. |
+| original_url | Source image |
+| local_storage_path | Your stored copy, if permitted |
+| creator | Photographer/illustrator |
+| license_id | Image license |
+| attribution | Required credit |
+| specimen_id | Associated specimen |
+| source_id | Source |
+
+### F. Botanical references
+
+`botanical_sources`
+
+| Field | Purpose |
+|---|---|
+| source_id | Internal identifier |
+| title | Source title |
+| author | Author |
+| publication_year | Year |
+| publisher | Publisher/institution |
+| DOI | DOI |
+| ISBN | ISBN |
+| URL | Source URL |
+| page_number | Page |
+| access_date | Access date |
+| license_id | License |
+
+---
+
+# 14. Important design decision: preserve original descriptions
+
+For a consensus botanical website, I recommend keeping **two separate layers**:
+
+1. **Source layer:** Original descriptions, original measurements, original terminology, original citations.
+2. **Normalized layer:** Your standardized descriptions and trait values, mapped into your own botanical vocabulary.
+
+For example, three floras might describe a leaf as:
+
+- Ovate
+- Broadly ovate
+- Egg-shaped
+
+You can normalize these into a common controlled vocabulary, but preserve each original statement and its source.
+
+This gives you:
+- Traceability
+- Reliable citations
+- A way to resolve disagreements
+- Better future updates
+- Ability to display multiple authoritative descriptions
+- Machine-readable botanical characteristics
+
+For images, preserve the original attribution and license at the individual image level—not merely at the dataset level.
+
+---
+
+## SET 2 — Final recommendation
+
+**The three resources I would prioritize most heavily for this section are:**
+
+1. **WFO:** Botanical descriptions and descriptive data.
+2. **TRY:** Standardized plant traits and measurements.
+3. **Regional floras:** Detailed morphology and identification keys.
+
+Then add GBIF and herbarium specimen repositories for visual evidence, and DELTA/InsideWood for specialized morphological and anatomical data.
+
+---
+
+### Next set in your master monograph structure
+
+**SET 3 — Distribution, Geography, Habitat, Ecology & Environmental Conditions**
+
+This will cover global plant occurrence datasets, native and introduced ranges, biogeographic regions, habitats, environmental niches, elevation, climate, soils, ecological interactions, and distribution maps.

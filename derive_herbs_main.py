@@ -1440,6 +1440,35 @@ def derive__plants__activities():
             last = output_items
     print(json.dumps(last, indent=4))
 
+def derive__phrases__plants__activities():
+    table_name = 'phrases__plants__activities'
+    output_folderpath = f'''{HUB_FOLDERPATH}/derive/{table_name}'''
+    try: shutil.rmtree(output_folderpath)
+    except: pass
+    io.folders_recursive_gen(output_folderpath)
+    ###
+    plants_items = sql.sql_plants()
+    last = []
+    for i, plant_item in enumerate(plants_items[:]):
+        print(f'DERIVE HERBS {table_name} {i}/{len(plants_items)}')
+        # print(json.dumps(plant_item, indent=4))
+        # quit()
+        plant_name_scientific_reference = plant_item['plant_name_scientific_reference']
+        sql_items = sql.sql__phrases__plants__activities__by__plant_name__and__group(plant_name_scientific_reference)
+        # print(json.dumps(sql_items, indent=4))
+        # quit()
+        ###
+        output_items = sql_items
+        output_item = {
+            table_name: output_items,
+        }
+        output_filepath = f'''{HUB_FOLDERPATH}/derive/{table_name}/{plant_name_scientific_reference}.json'''
+        io.folder_create_from_filepath(output_filepath)
+        io.json_write(output_filepath, output_item)
+        if output_items != []:
+            last = output_items
+    print(json.dumps(last, indent=4))
+
 
 def run():
     # plants_activities_derive()
@@ -1449,10 +1478,13 @@ def run():
     # derive__plants__activities()
     # derive__plants__conditions()
     # derive__plants__compounds()
-    derive__plants__preparations()
+    # derive__plants__preparations()
     # derive__plants__parts()
 
     # derive_morphology_gen()
+
+    derive__phrases__plants__activities()
+
     return
 
     schema_items = schema_herbs.data['items']

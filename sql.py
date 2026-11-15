@@ -122,6 +122,21 @@ def sql_study_id_by_pmid(pmid):
     else: item = None
     return item
 
+def sql__phrase_id__by_phrase_text(name):
+    conn = sqlite3.connect(db_filepath)
+    cur = conn.cursor()
+    conn.row_factory = sqlite3.Row
+    cursor = conn.execute(f'''
+        SELECT * 
+        FROM phrases
+        WHERE phrase_text == ?
+    ''', (name,))
+    rows = cursor.fetchall()
+    items = [dict(row) for row in rows]
+    if items != []: item = items[0]
+    else: item = None
+    return item
+
 ########################################
 # ASSERTIONS
 ########################################
@@ -281,6 +296,44 @@ def sql__plants__activities__by__plant_name__and__group(name):
         {
             **dict(row),
             "studies": json.loads(row["studies"])
+        }
+        for row in rows
+    ]
+    conn.close()
+    return items
+
+def sql__phrases__plants__activities__by__plant_name__and__group(name):
+    conn = sqlite3.connect(db_filepath)
+    cur = conn.cursor()
+    conn.row_factory = sqlite3.Row
+    query = """
+        SELECT
+            plants.*,
+            activities.*,
+            COUNT(*) AS count,
+            json_group_array(
+                json_object(
+                    'phrase_text', phrases.phrase_text
+                )
+            ) AS phrases
+        FROM plants
+        JOIN phrases__plants__activities
+            ON phrases__plants__activities.plant_id = plants.plant_id
+        JOIN activities
+            ON phrases__plants__activities.activity_id = activities.activity_id
+        JOIN phrases
+            ON phrases__plants__activities.phrase_id = phrases.phrase_id
+        WHERE plants.plant_name_scientific_reference = ?
+        GROUP BY activities.activity_id
+        ORDER BY count DESC
+    """
+    cursor = conn.execute(query, (name,))
+    rows = cursor.fetchall()
+    items = [dict(row) for row in rows]
+    items = [
+        {
+            **dict(row),
+            "phrases": json.loads(row["phrases"])
         }
         for row in rows
     ]

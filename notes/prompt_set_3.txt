@@ -1,0 +1,756 @@
+great, go to **SET 3 — Distribution, Geography, Habitat, Ecology & Environmental Conditions**
+
+
+
+
+
+# SET 3 — Distribution, Geography, Habitat, Ecology & Environmental Conditions
+
+This set covers the resources you'll need to describe **where medicinal plants occur, where they are native or introduced, which environments they inhabit, and what ecological conditions influence their growth**.
+
+For a global medicinal plant database, this is particularly important because a species may have:
+- A native distribution
+- Introduced populations
+- Naturalized populations
+- Cultivated populations
+- Invasive populations
+- Different ecological requirements across its range
+
+**Key recommendation:** Never represent a plant's distribution using only one geographic field. Native range, observed occurrence, cultivation, naturalization, and invasion should be separate concepts.
+
+I'll distinguish downloadable datasets, APIs, authoritative reference databases, and resources that are primarily online.
+
+---
+
+# PART I — Plant distribution and geographic range
+
+## 1. GBIF — Global Biodiversity Information Facility
+
+**The most important global source for observed plant occurrences.**
+
+
+
+### What it contains
+GBIF aggregates occurrence data from:
+- Herbarium specimens
+- Botanical collections
+- Museum collections
+- Biodiversity monitoring
+- Citizen science observations
+- Research projects
+- Environmental surveys
+
+You can obtain:
+- Latitude and longitude
+- Country and locality
+- Collection date
+- Scientific name and identification
+- Basis of record
+- Institution and collection
+- Collector
+- Identification history
+- Associated photographs and media
+- Dataset provenance
+
+### Download and API
+- **Portal:** [GBIF](https://www.gbif.org/?utm_source=chatgpt.com)
+- **Occurrence downloads:** [GBIF Occurrence Download](https://www.gbif.org/occurrence/download?utm_source=chatgpt.com)
+- **API documentation:** [GBIF Occurrence API](https://techdocs.gbif.org/en/openapi/v1/occurrence?utm_source=chatgpt.com)
+- **Bulk download documentation:** [GBIF API Downloads](https://techdocs.gbif.org/en/data-use/api-downloads?utm_source=chatgpt.com)
+
+GBIF supports authenticated, asynchronous bulk occurrence downloads in CSV and Darwin Core Archive formats. [techdocs.gbif.org](https://techdocs.gbif.org/en/openapi/v1/occurrence?utm_source=chatgpt.com)
+
+### License
+Occurrence records may have CC0, CC BY, or CC BY-NC licenses. Each record and associated media must be checked independently. [gbif.org](https://www.gbif.org/publishing-data?utm_source=chatgpt.com)
+
+### How to use it
+For every medicinal plant, retrieve its occurrence records and construct:
+- Observed distribution maps
+- Geographic occurrence summaries
+- Regional presence
+- Historical occurrence timelines
+- Collection density maps
+
+**Important:** GBIF occurrences are not equivalent to a species' true geographic range. Sampling bias, misidentification, cultivated specimens, and geographic gaps can distort maps.
+
+---
+
+## 2. POWO / WCVP — Native and introduced distribution
+
+### What it contains
+Kew's World Checklist of Vascular Plants (WCVP), used by POWO, provides authoritative geographic distribution information for accepted vascular plant taxa.
+
+It distinguishes:
+- Native distributions
+- Introduced distributions
+- Geographic regions
+- Subregional distributions
+
+POWO represents distributions using narrative descriptions and TDWG geographical codes, generally at the third geographical level. [Plants of the World Online](https://powo.science.kew.org/about-wcvp?utm_source=chatgpt.com)
+
+### Access
+- **POWO:** [Plants of the World Online](https://powo.science.kew.org/?utm_source=chatgpt.com)
+- **WCVP documentation:** [About WCVP](https://powo.science.kew.org/about-wcvp?utm_source=chatgpt.com)
+
+### What you should extract
+For each species:
+- Native range
+- Introduced range
+- Region codes
+- Geographic narrative
+- Source/reference
+- Taxonomic concept used
+
+### Recommendation
+Use POWO/WCVP as a major source for **expert-compiled geographic range**, and GBIF for **individual observed occurrences**.
+
+These are complementary data types.
+
+---
+
+## 3. IUCN Red List — Species range maps and conservation geography
+
+### What it contains
+The International Union for Conservation of Nature Red List provides:
+- Species distribution maps
+- Range polygons
+- Point records for some taxa
+- Geographic range metadata
+- Threat status
+- Population and habitat information
+- Geographic assessment information
+
+### Download
+**IUCN spatial data:**
+
+[IUCN Red List Spatial Data Download](https://nrl.iucnredlist.org/resources/spatial-data-download?utm_source=chatgpt.com)
+
+Spatial data are available in:
+- Shapefile polygons
+- CSV point data
+- Other group-specific geographic formats
+
+IUCN reports that spatial data are available for more than 155,800 assessed species, although coverage varies considerably by taxonomic group. [nrl.iucnredlist.org](https://nrl.iucnredlist.org/resources/spatial-data-download?utm_source=chatgpt.com)
+
+### License and limitation
+IUCN spatial data are generally made available for non-commercial use under their terms. Commercial or other reuse may require additional permission. [nrl.iucnredlist.org](https://nrl.iucnredlist.org/resources/spatial-data-download?utm_source=chatgpt.com)
+
+### Recommendation
+Use IUCN range polygons for:
+- Conservation-oriented maps
+- Threatened medicinal plants
+- Endemicity
+- Geographic conservation assessments
+
+Do not assume IUCN has range polygons for every medicinal plant.
+
+---
+
+## 4. Map of Life — Species distributions and biodiversity mapping
+
+### What it provides
+Map of Life integrates species information with spatial environmental layers and expert range data.
+
+Its platform combines:
+- Occurrence records
+- Expert ranges
+- Checklists
+- Species traits
+- Habitat information
+- Land cover
+- Climate
+- Environmental pressures
+
+Its biodiversity modeling platform reports coverage of more than 450,000 modeled species and spatial analysis at approximately 1 km resolution. [mapoflife.ai](https://mapoflife.ai/data?utm_source=chatgpt.com)
+
+### Access
+- [Map of Life](https://mol.org/?utm_source=chatgpt.com)
+- [Map of Life Data Platform](https://mapoflife.ai/data?utm_source=chatgpt.com)
+
+### Recommendation
+Useful for understanding species distributions and exploring ecological context. Verify the availability, terms, and download rights of individual datasets before incorporating them into your own database.
+
+---
+
+# PART II — Habitat and ecological information
+
+## 5. sPlotOpen — Global vegetation plots
+
+**One of the best open resources for understanding plant communities and ecological habitats.**
+
+### What it contains
+sPlotOpen contains:
+- Species composition of vegetation plots
+- Plant abundance or cover information
+- Plot coordinates
+- Plot size
+- Sampling dates
+- Elevation
+- Slope
+- Aspect
+- Biome
+- Vegetation type
+- Environmental information
+- Plant functional traits
+
+The open dataset contains **95,104 vegetation plots**, representing 42,677 vascular plant species, with plot records spanning 1888–2015. [iDiv](https://www.idiv.de/research/projects/splot/splotopen-splot/?utm_source=chatgpt.com)
+
+### Download
+- **Project:** [sPlotOpen](https://www.idiv.de/research/projects/splot/splotopen-splot/?utm_source=chatgpt.com)
+- **Dataset DOI:** [sPlotOpen Dataset](https://doi.org/10.25829/idiv.3474-40-3292?utm_source=chatgpt.com)
+- **Download repository:** [iDiv Data Portal](https://idata.idiv.de/?utm_source=chatgpt.com)
+
+### What you can derive
+For each medicinal plant:
+- Plant communities in which it occurs
+- Associated species
+- Vegetation types
+- Ecological context
+- Elevation distribution
+- Habitat associations
+- Relative abundance in vegetation plots
+
+### Recommendation
+This is an excellent resource for building a **habitat association database**, rather than merely listing generic habitats such as forest or grassland.
+
+Remember that vegetation-plot presence represents sampled ecological conditions, not necessarily the complete habitat range of a species.
+
+---
+
+## 6. EUNIS — European habitat classification
+
+### What it is
+EUNIS is a hierarchical habitat classification developed for harmonized habitat description and biodiversity assessment in Europe.
+
+It covers:
+- Forests
+- Grasslands
+- Heathlands
+- Scrub
+- Wetlands
+- Inland waters
+- Coastal habitats
+- Rocky habitats
+- Artificial habitats
+- Marine habitats
+
+### Download
+- **Classification and datasets:** [EEA EUNIS Habitat Classification](https://www.eea.europa.eu/en/datahub/datahubitem-view/638330ea-90e6-4e41-81ea-e70f25ae7117?utm_source=chatgpt.com)
+- **Classification documentation:** [EEA EUNIS Documentation](https://www.eea.europa.eu/en/datahub/datahubitem-view/1b87cddc-2593-40cc-a341-426246cc7c38?utm_source=chatgpt.com)
+- **Habitat datasets:** [EEA Habitat Data Hub](https://www.eea.europa.eu/en/datahub/datahubitem-view/123d0c9a-a6fa-4f2d-b887-5d8e5468faed?utm_source=chatgpt.com)
+
+The classification includes habitat codes, names, descriptions, and crosswalks to other habitat typologies. Tabular downloads are available in Excel formats. [eea.europa.eu](https://www.eea.europa.eu/en/datahub/datahubitem-view/638330ea-90e6-4e41-81ea-e70f25ae7117?utm_source=chatgpt.com)
+
+### Recommendation
+Use EUNIS as a controlled habitat vocabulary for European species.
+
+You could build a table mapping:
+`plant_species → habitat_code → source → confidence`
+
+Do not automatically assume EUNIS codes apply globally. For worldwide coverage, map regional habitat descriptions to broader international classifications.
+
+---
+
+## 7. WWF Terrestrial Ecoregions
+
+The WWF terrestrial ecoregion system is a widely used global biogeographic classification.
+
+### What it contains
+- Ecoregion polygons
+- Ecoregion names
+- Ecoregion codes
+- Biogeographic descriptions
+- Ecological characteristics
+- Conservation context
+
+### Access
+- [WWF Ecoregions of the World](https://www.worldwildlife.org/publications/terrestrial-ecoregions-of-the-world?utm_source=chatgpt.com)
+- [WWF GIS datasets](https://www.worldwildlife.org/publications/terrestrial-ecoregions-of-the-world?utm_source=chatgpt.com)
+
+### What it is useful for
+You can associate occurrence points or distribution polygons with:
+- Tropical moist forests
+- Tropical dry forests
+- Mediterranean forests
+- Temperate forests
+- Boreal forests
+- Grasslands
+- Deserts
+- Tundra
+- Montane ecosystems
+
+### Recommendation
+Use ecoregions to contextualize a plant's geographic distribution.
+
+For example:
+
+> This species occurs in the Mediterranean Basin, particularly within Mediterranean forests, woodlands, and shrub ecosystems.
+
+The ecological association should be supported by occurrence or ecological evidence rather than inferred solely from a broad range polygon.
+
+---
+
+# PART III — Climate, temperature, rainfall, and environmental conditions
+
+These datasets are not botanical databases. They are environmental layers that you can intersect with validated plant occurrence records to estimate environmental conditions in which a species is observed.
+
+This distinction is essential:
+
+- A botanical source says where a plant occurs.
+- A climate dataset says what the climate is at a location.
+- A spatial analysis combines the two to estimate the climate associated with observed populations.
+
+## 8. WorldClim — Global climate data
+
+**One of the most important environmental datasets for your project.**
+
+### What it contains
+WorldClim provides global gridded climate data:
+
+- Minimum temperature
+- Mean temperature
+- Maximum temperature
+- Precipitation
+- Solar radiation
+- Wind speed
+- Water vapor pressure
+- Bioclimatic variables
+
+It includes historical climate, future climate projections, and other climate products.
+
+### Access
+- **Official website:** [WorldClim](https://www.worldclim.org/?utm_source=chatgpt.com)
+- **Historical climate:** [WorldClim Historical Data](https://www.worldclim.org/data/worldclim21.html?utm_source=chatgpt.com)
+- **Future climate:** [WorldClim CMIP6](https://www.worldclim.org/data/cmip6/cmip6_clim30s.html?utm_source=chatgpt.com)
+
+### Important variables
+WorldClim's BIO variables include:
+
+| Variable | Meaning |
+|---|---|
+| BIO1 | Annual mean temperature |
+| BIO2 | Mean diurnal temperature range |
+| BIO3 | Isothermality |
+| BIO4 | Temperature seasonality |
+| BIO5 | Maximum temperature of warmest month |
+| BIO6 | Minimum temperature of coldest month |
+| BIO7 | Annual temperature range |
+| BIO8–BIO11 | Temperatures during selected quarters |
+| BIO12 | Annual precipitation |
+| BIO13 | Precipitation of wettest month |
+| BIO14 | Precipitation of driest month |
+| BIO15 | Precipitation seasonality |
+| BIO16–BIO19 | Precipitation during selected quarters |
+
+### Recommendation
+Use WorldClim to calculate:
+- Typical temperature ranges
+- Annual precipitation
+- Seasonal precipitation patterns
+- Environmental conditions at occurrence locations
+- Potential climate suitability analyses
+
+For reproducibility, record the WorldClim version, spatial resolution, time period, and climate model used.
+
+---
+
+## 9. CHELSA — High-resolution global climate data
+
+**An excellent alternative and complement to WorldClim.**
+
+### What it contains
+CHELSA provides global climate datasets, including:
+- Bioclimatic variables
+- Monthly climate
+- Daily climate
+- Climate climatologies
+- Drought indices
+- Historical climate reconstructions
+- Future climate projections
+
+CHELSA V2.1 includes global kilometer-scale bioclimatic data and multiple climate products. [chelsa-climate.org](https://www.chelsa-climate.org/datasets?utm_source=chatgpt.com)
+
+### Access
+- **Official portal:** [CHELSA](https://www.chelsa-climate.org/?utm_source=chatgpt.com)
+- **Dataset catalog:** [CHELSA Dataset Search](https://www.chelsa-climate.org/datasets?utm_source=chatgpt.com)
+- **Bioclimatic variables:** [CHELSA Bioclim](https://www.chelsa-climate.org/datasets/chelsa_bioclim?utm_source=chatgpt.com)
+
+### Recommendation
+Use CHELSA alongside WorldClim if you want a robust environmental dataset.
+
+For species distribution modeling, compare the environmental values derived from both products instead of treating either as ground truth.
+
+---
+
+## 10. SoilGrids — Global soil properties
+
+**Very useful for plant habitat and cultivation sections.**
+
+### What it contains
+SoilGrids provides global gridded soil information, including:
+
+- Soil pH
+- Organic carbon
+- Soil texture
+- Sand content
+- Silt content
+- Clay content
+- Bulk density
+- Cation exchange capacity
+- Nitrogen
+- Soil depth-related properties
+
+It provides predictions at multiple soil depths and spatial resolutions.
+
+### Access
+- **Official portal:** [SoilGrids](https://soilgrids.org/?utm_source=chatgpt.com)
+- **ISRIC information:** [ISRIC SoilGrids](https://isric.org/explore/soilgrids/?utm_source=chatgpt.com)
+- **REST API documentation:** [SoilGrids REST API](https://rest.isric.org/soilgrids/v2.0/docs?utm_source=chatgpt.com)
+
+### Important current limitation
+ISRIC reports that the SoilGrids REST API is temporarily paused due to service issues. Alternative data access methods are available, so do not make your production pipeline dependent on the API alone. [isric.org](https://isric.org/explore/soilgrids/?utm_source=chatgpt.com)
+
+### Recommendation
+Use SoilGrids to estimate:
+- Soil pH associated with plant occurrences
+- Soil texture
+- Soil organic carbon
+- Nutrient-related environmental context
+- Potential soil preferences
+
+**Do not write that a species prefers a specific soil simply because its occurrence points fall on that soil type.** Soil preference requires botanical or ecological evidence, ideally supplemented by statistical analysis.
+
+---
+
+## 11. FAO Harmonized World Soil Database (HWSD)
+
+### What it contains
+HWSD provides a global soil inventory containing:
+- Soil types
+- Soil mapping units
+- Soil morphology
+- Soil physical properties
+- Soil chemical properties
+- Soil texture
+- Soil organic carbon
+- Soil pH
+- Water storage capacity
+- Soil depth
+- Nutrient-related properties
+
+HWSD v2.0 includes a 1 km / 30 arc-second raster and a linked soil attribute database, with seven soil depth layers. [FAOHome](https://www.fao.org/land-water/resources/tools/databases/hwsd/en?utm_source=chatgpt.com)
+
+FAO announced **HWSD v2.2 on November 3, 2026**, with improvements in coverage, soil properties, classification, and harmonization. [FAOHome](https://www.fao.org/agroinformatics/training-and-resources/data-sets/data-set-detail/new-version-of-the-harmonized-world-soil-database/en?utm_source=chatgpt.com)
+
+### Access
+- **FAO database:** [Harmonized World Soil Database](https://www.fao.org/land-water/resources/tools/databases/hwsd/en?utm_source=chatgpt.com)
+- **FAO data portal:** [FAO Soil Data Hub](https://www.fao.org/soils-portal/data-hub/soil-maps-and-databases/en/?utm_source=chatgpt.com)
+
+### Recommendation
+Use HWSD as an alternative or complementary soil source to SoilGrids.
+
+---
+
+## 12. FAO ECOCROP — Crop environmental requirements
+
+This is particularly relevant for medicinal plants that are cultivated commercially.
+
+### What it contains
+ECOCROP provides crop environmental requirements for more than 2,000 plant species, including information relevant to productivity and ecological adaptation.
+
+FAO describes ECOCROP as containing environmental parameters for crop productivity analysis. [FAOHome](https://www.fao.org/land-water/resources/tools/databases/en?utm_source=chatgpt.com)
+
+### Access
+- [FAO ECOCROP and Databases](https://www.fao.org/land-water/resources/tools/databases/en?utm_source=chatgpt.com)
+
+### What it can contribute
+Depending on species coverage:
+- Temperature requirements
+- Rainfall requirements
+- Soil requirements
+- Altitude
+- Climate suitability
+- Growing conditions
+
+### Recommendation
+ECOCROP can be especially valuable for your cultivation and environmental requirements sections.
+
+However, medicinal plant coverage is incomplete. It is not a universal database of wild medicinal plants.
+
+---
+
+# PART IV — Elevation, terrain, land cover, and ecological classification
+
+## 13. Global elevation datasets
+
+Elevation strongly influences plant distribution, temperature, precipitation, and vegetation zones.
+
+### A. Copernicus DEM
+
+European Space Agency / Copernicus
+
+- **Dataset:** [Copernicus DEM](https://spacedata.copernicus.eu/collections/copernicus-digital-elevation-model?utm_source=chatgpt.com)
+
+Provides global digital elevation models, useful for:
+- Elevation at occurrence points
+- Altitudinal ranges
+- Terrain analysis
+- Mountain habitats
+- Slope and aspect calculations
+
+### B. NASA SRTM
+
+- **Dataset:** [NASA SRTM](https://www.earthdata.nasa.gov/data/instruments/srtm?utm_source=chatgpt.com)
+
+Provides elevation data with approximately 30 m resolution for most land areas between 60°N and 56°S.
+
+**Recommendation:** Calculate elevation ranges from verified occurrences, but distinguish observed elevation ranges from published ecological elevation preferences.
+
+---
+
+## 14. ESA WorldCover — Global land cover
+
+### What it contains
+ESA WorldCover provides global land-cover maps, including:
+- Tree cover
+- Shrubland
+- Grassland
+- Cropland
+- Built-up areas
+- Bare/sparse vegetation
+- Snow and ice
+- Permanent water
+- Herbaceous wetland
+- Mangroves
+- Moss and lichen
+
+### Access
+- [ESA WorldCover](https://worldcover2021.esa.int/?utm_source=chatgpt.com)
+- [ESA WorldCover Data Access](https://esa-worldcover.org/en/data-access?utm_source=chatgpt.com)
+
+### Recommendation
+Use WorldCover to characterize land cover around occurrence points.
+
+For example, you could calculate the proportion of observations associated with:
+- Forest
+- Shrubland
+- Grassland
+- Wetland
+- Cropland
+
+This can provide useful ecological context, but land-cover classification is not equivalent to botanical habitat classification.
+
+---
+
+# PART V — Other ecological datasets worth integrating
+
+| Dataset | Main contribution | Access |
+|---|---|---|
+| **Global Biodiversity Information Facility (GBIF)** | Occurrence data | [GBIF](https://www.gbif.org/?utm_source=chatgpt.com) |
+| **sPlotOpen** | Vegetation communities and habitat associations | [sPlotOpen](https://www.idiv.de/research/projects/splot/splotopen-splot/?utm_source=chatgpt.com) |
+| **TRY** | Plant functional traits | [TRY Database](https://www.try-db.org/?utm_source=chatgpt.com) |
+| **BIEN** | Plant traits and ecological observations | [BIEN](https://bien.nceas.ucsb.edu/bien/?utm_source=chatgpt.com) |
+| **EUNIS** | European habitat classification | [EUNIS](https://eunis.eea.europa.eu/?utm_source=chatgpt.com) |
+| **WWF Ecoregions** | Global terrestrial biogeographic regions | [WWF Ecoregions](https://www.worldwildlife.org/publications/terrestrial-ecoregions-of-the-world?utm_source=chatgpt.com) |
+| **WorldClim** | Climate variables | [WorldClim](https://www.worldclim.org/?utm_source=chatgpt.com) |
+| **CHELSA** | High-resolution climate | [CHELSA](https://www.chelsa-climate.org/?utm_source=chatgpt.com) |
+| **SoilGrids** | Global soil properties | [SoilGrids](https://soilgrids.org/?utm_source=chatgpt.com) |
+| **FAO HWSD** | Soil classification and properties | [FAO HWSD](https://www.fao.org/land-water/resources/tools/databases/hwsd/en?utm_source=chatgpt.com) |
+| **ECOCROP** | Crop environmental requirements | [FAO ECOCROP](https://www.fao.org/land-water/resources/tools/databases/en?utm_source=chatgpt.com) |
+| **IUCN Red List** | Species range maps and conservation status | [IUCN Spatial Data](https://nrl.iucnredlist.org/resources/spatial-data-download?utm_source=chatgpt.com) |
+| **Map of Life** | Species distribution modeling and biodiversity mapping | [Map of Life](https://mol.org/?utm_source=chatgpt.com) |
+
+---
+
+# PART VI — SQL database architecture for distribution and ecology
+
+I recommend separating **geographic range**, **occurrence records**, **habitat descriptions**, and **environmental observations**.
+
+## 1. Geographic ranges
+
+### `taxon_ranges`
+
+| Field | Description |
+|---|---|
+| range_id | Internal identifier |
+| taxon_id | Taxon |
+| region_id | Geographic region |
+| range_type | Native, introduced, naturalized, invasive, etc. |
+| presence_status | Present, uncertain, extinct, etc. |
+| source_id | Source |
+| source_reference | Citation |
+| confidence | Confidence level |
+| valid_from | Beginning of validity |
+| valid_to | End of validity |
+
+### `geographic_regions`
+
+| Field | Description |
+|---|---|
+| region_id | Internal identifier |
+| region_name | Region name |
+| region_type | Country, continent, TDWG region, ecoregion, etc. |
+| parent_region_id | Hierarchical parent |
+| region_code | Standardized code |
+| geometry | Polygon, if applicable |
+
+Do not force all geographic concepts into one hierarchy. Countries, TDWG regions, biogeographic realms, and ecoregions represent different systems.
+
+---
+
+## 2. Occurrence records
+
+### `plant_occurrences`
+
+| Field | Description |
+|---|---|
+| occurrence_id | Internal identifier |
+| taxon_id | Taxon |
+| source_occurrence_id | Original identifier |
+| latitude | Latitude |
+| longitude | Longitude |
+| coordinate_uncertainty | Spatial uncertainty |
+| occurrence_date | Observation/collection date |
+| basis_of_record | Specimen, observation, etc. |
+| occurrence_status | Present/absent |
+| cultivated_status | Cultivated, wild, unknown |
+| identification_qualifier | Identification uncertainty |
+| institution_code | Institution |
+| collection_code | Collection |
+| dataset_id | Dataset |
+| source_id | Source |
+
+For GBIF, preserve the original occurrence identifier and dataset key so the record remains traceable.
+
+---
+
+## 3. Habitat associations
+
+### `taxon_habitats`
+
+| Field | Description |
+|---|---|
+| habitat_id | Internal identifier |
+| taxon_id | Taxon |
+| habitat_name | Original habitat description |
+| habitat_classification | EUNIS, regional flora, etc. |
+| habitat_code | Classification code |
+| habitat_role | Preferred, observed, possible, etc. |
+| evidence_type | Flora description, plot data, observation |
+| source_id | Source |
+| source_reference | Citation |
+| confidence | Confidence |
+
+### `taxon_habitat_observations`
+
+This table can connect taxa to vegetation plots.
+
+| Field | Description |
+|---|---|
+| observation_id | Internal identifier |
+| taxon_id | Taxon |
+| plot_id | Vegetation plot |
+| abundance | Original abundance |
+| abundance_unit | Cover, percentage, etc. |
+| source_id | Source |
+
+---
+
+## 4. Environmental variables
+
+### `environmental_layers`
+
+| Field | Description |
+|---|---|
+| layer_id | Internal identifier |
+| layer_name | BIO1, soil pH, elevation, etc. |
+| variable_type | Climate, soil, elevation, land cover |
+| unit | Measurement unit |
+| spatial_resolution | Resolution |
+| temporal_period | Period |
+| source_id | Source |
+| version | Dataset version |
+
+### `taxon_environmental_observations`
+
+| Field | Description |
+|---|---|
+| observation_id | Internal identifier |
+| taxon_id | Taxon |
+| occurrence_id | Occurrence, if applicable |
+| layer_id | Environmental layer |
+| value | Extracted value |
+| unit | Unit |
+| extraction_method | Raster extraction, published measurement, etc. |
+| uncertainty | Uncertainty |
+| source_id | Source |
+
+---
+
+# PART VII — My recommended acquisition order
+
+If I were building your database from scratch, I would do the following.
+
+| Order | Resource | Why |
+|---|---|---|
+| 1 | POWO/WCVP | Native and introduced distributions |
+| 2 | GBIF | Global occurrence records |
+| 3 | IUCN | Range maps and conservation geography |
+| 4 | sPlotOpen | Ecological associations |
+| 5 | WorldClim | Climate |
+| 6 | CHELSA | Complementary climate |
+| 7 | SoilGrids | Soil environmental conditions |
+| 8 | EUNIS | Standardized European habitats |
+| 9 | WWF Ecoregions | Global biogeographic context |
+| 10 | ECOCROP | Cultivation environmental requirements |
+| 11 | Elevation datasets | Altitudinal context |
+| 12 | ESA WorldCover | Land-cover context |
+
+## The most important conceptual distinction
+
+For your future medicinal plant pages, I would display these separately:
+
+**Distribution**
+- Native range
+- Introduced range
+- Naturalized range
+- Invasive range
+- Cultivated distribution
+- Observed occurrences
+
+**Habitat**
+- Published habitat descriptions
+- Vegetation communities
+- Habitat classifications
+- Associated species
+
+**Environmental requirements**
+- Temperature
+- Rainfall
+- Elevation
+- Soil
+- Light
+- Moisture
+- Climate zone
+
+**Ecological observations**
+- Actual recorded environmental conditions
+- Statistical summaries of occurrences
+- Trait/environment associations
+- Ecological modeling results
+
+This will prevent your website from confusing observed distribution with ecological preference.
+
+---
+
+## SET 3 — Final recommendation
+
+For this monograph section, **POWO/WCVP + GBIF + sPlotOpen + WorldClim + SoilGrids** form an excellent initial foundation.
+
+Add IUCN for conservation geography, EUNIS and WWF for standardized habitat classification, and CHELSA for additional climate information.
+
+**Next in your master structure:**
+
+**SET 4 — Botanical Diversity, Varieties, Subspecies, Cultivars, Chemotypes, Ecotypes & Infraspecific Variation**
+
+This next set will focus on databases and resources for understanding medicinal plant diversity within species, including taxonomic varieties, subspecies, cultivars, chemotypes, ecotypes, hybrids, genetic diversity, and population-level variation.

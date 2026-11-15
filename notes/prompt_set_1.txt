@@ -1,0 +1,558 @@
+great, i want to do everything you suggested me, so i have to gather a massive amount of data. the website will be filled with "articles" (or monographs) of all the possible medicinal plants in the world. the goal is to make a consensus based website, so i have to gather these pieces of info from the web, mainly authoritative resources, so i can write the article and be able to reference every and each piece of info to a source. also, my backend will be a sql database of these info, which i'll use to make the plants pages programmatically. that being said, let's start in order. i need the all the datasets and databases that i can freely download/use to start making my own database. give me the first set of resources going in order from the massive list of thing i have to include you gave me, give me just the first set, then stop and wait me to prompt for the next set.
+
+
+# Medicinal Plant Database — Dataset Collection, Set 1
+## Botanical Identity, Taxonomy & Nomenclature
+
+We're going to build this systematically, following the exact order of the master monograph structure.
+
+**Set 1 covers only the first section: Botanical Identity.**
+
+The objective is to identify datasets you can actually download, ingest into SQL, reuse legally, and cite as authoritative sources.
+
+For each resource, I'll distinguish:
+- **What it contains**
+- **Why you need it**
+- **Whether bulk download is available**
+- **API availability**
+- **Licensing**
+- **How I would use it in your database**
+
+A crucial architectural decision: **never treat one taxonomic database as the absolute authority for every plant.** Your system should preserve taxonomic opinions, source identifiers, synonyms, and the date each source was consulted.
+
+# 1.1 — The core botanical datasets
+
+These are the datasets I would investigate first, before collecting medicinal, chemical, or pharmacological information.
+
+## A. World Flora Online — Plant List
+
+**Priority: Extremely high**
+
+World Flora Online
+
+- **Dataset:** World Flora Online Plant List
+- **Coverage:** Global plant taxonomic backbone
+- **Contains:** Accepted names, synonyms, taxonomic relationships, classification, nomenclatural information, taxon identifiers
+- **Bulk download:** Yes
+- **SQL-ready format:** Yes, SQL dumps are available
+- **License:** CC0 1.0 Public Domain
+- **Update frequency:** Approximately every six months
+
+### Download
+
+**Official download portal:**
+
+[World Flora Online — Download Data](https://www.worldfloraonline.org/downloadData?utm_source=chatgpt.com)
+
+**Latest dataset on Zenodo:**
+
+[World Flora Online Plant List — Zenodo](https://zenodo.org/records/20782718?utm_source=chatgpt.com)
+
+WFO explicitly provides its taxonomic backbone as CC0, making it particularly attractive for building your own database. [World Flora Online](https://www.worldfloraonline.org/downloadData?utm_source=chatgpt.com)
+
+### What I would import
+
+- Taxon identifiers
+- Scientific names
+- Accepted names
+- Synonyms
+- Taxonomic ranks
+- Parent taxa
+- Classification hierarchy
+- Nomenclatural information
+- Deprecated names
+- Name mappings
+
+**My recommendation:** Use WFO as one of your principal botanical taxonomic backbones.
+
+---
+
+## B. Catalogue of Life
+
+**Priority: Extremely high**
+
+Catalogue of Life
+
+- **Dataset:** Catalogue of Life Base Release
+- **Coverage:** Global species checklist
+- **Contains:** Accepted names, synonyms, taxonomic hierarchy, species classification, source information, taxon identifiers
+- **Bulk download:** Yes
+- **Formats:** Darwin Core Archive, ColDP, TextTree
+- **Partial downloads:** Yes
+- **License:** Check the individual dataset and constituent source licenses before redistributing the complete dataset
+- **Update frequency:** Monthly
+
+### Download
+
+[Catalogue of Life — Data Download](https://www.catalogueoflife.org/data/download?utm_source=chatgpt.com)
+
+You can download the complete catalogue or restrict downloads to particular taxonomic groups.
+
+Catalogue of Life distinguishes between:
+
+- **Base Release:** prioritizes accuracy and scrutinized taxonomic sources.
+- **Extended Release:** maximizes coverage by incorporating additional sources programmatically.
+
+For your purposes, I would initially use the **Base Release**, then use Extended Release to discover additional names and possible taxonomic gaps. [Catalogue of Life](https://www.catalogueoflife.org/data/download?utm_source=chatgpt.com)
+
+### What I would import
+
+- COL taxon identifiers
+- Scientific names
+- Accepted names
+- Synonyms
+- Taxonomic ranks
+- Parent taxon identifiers
+- Taxonomic status
+- Source references
+- Classification hierarchy
+
+**My recommendation:** Use COL as a second major taxonomic backbone and a cross-reference source.
+
+---
+
+## C. GBIF Backbone Taxonomy
+
+**Priority: Extremely high**
+
+GBIF
+
+- **Dataset:** GBIF Backbone Taxonomy
+- **Coverage:** Taxonomic names encountered throughout GBIF's biodiversity infrastructure
+- **Contains:** Scientific names, synonyms, taxonomic hierarchy, identifiers, vernacular names, distributions, references
+- **Bulk download:** Yes
+- **Format:** Darwin Core Archive or tab-delimited text
+- **License:** CC BY 4.0
+- **Update frequency:** Regular updates
+
+### Download
+
+**Direct download:**
+
+[GBIF Backbone Taxonomy — Download Archive](https://hosted-datasets.gbif.org/datasets/backbone/current/backbone.zip?utm_source=chatgpt.com)
+
+**Dataset documentation:**
+
+[GBIF Backbone Taxonomy — README](https://hosted-datasets.gbif.org/datasets/backbone/README.html?utm_source=chatgpt.com)
+
+**Dataset citation:**
+
+[GBIF Backbone Taxonomy — Dataset Record](https://www.gbif.org/dataset/d7dddbf4-2cf0-4f39-9b2a-bb099caae36c?utm_source=chatgpt.com)
+
+GBIF's backbone is a synthetic classification integrating multiple taxonomic sources. It is particularly useful for matching names across biodiversity datasets. [GBIF](https://www.gbif.org/dataset/d7dddbf4-2cf0-4f39-9b2a-bb099caae36c?utm_source=chatgpt.com)
+
+### What I would import
+
+- GBIF taxon identifiers
+- Scientific names
+- Accepted names
+- Synonyms
+- Taxonomic status
+- Parent identifiers
+- Classification hierarchy
+- Vernacular names
+- Distribution records
+- References
+- Source dataset identifiers
+
+**My recommendation:** GBIF should be a fundamental cross-referencing layer in your database.
+
+---
+
+## D. International Plant Names Index — IPNI
+
+**Priority: Extremely high for nomenclature**
+
+International Plant Names Index
+
+- **Dataset:** IPNI
+- **Coverage:** Published scientific names of vascular plants
+- **Contains:** Scientific names, author citations, publication information, nomenclatural records
+- **Bulk download:** Data access is available, but verify the current bulk redistribution terms
+- **API:** Available
+- **License:** Do not assume CC0; verify IPNI's data-use conditions
+
+### Access
+
+[International Plant Names Index](https://www.ipni.org/?utm_source=chatgpt.com)
+
+IPNI is particularly important for:
+
+- Correct scientific author citations
+- Original publication information
+- Publication dates
+- Basionyms
+- Nomenclatural history
+- Botanical name verification
+
+IPNI is a **nomenclatural database, not a complete taxonomic authority**. A name being present in IPNI does not necessarily mean that it is currently accepted. [Kew Gardens](https://www.kew.org/science/collections-and-resources/data-and-digital?utm_source=chatgpt.com)
+
+### What I would import
+
+- Name identifiers
+- Scientific names
+- Author citations
+- Publication references
+- Publication dates
+- Basionyms
+- Nomenclatural relationships
+
+**My recommendation:** IPNI should supply your nomenclatural metadata, while WFO and COL provide taxonomic opinions.
+
+---
+
+## E. Plants of the World Online — POWO
+
+**Priority: Extremely high**
+
+Plants of the World Online
+
+- **Dataset:** POWO
+- **Publisher:** Royal Botanic Gardens, Kew
+- **Coverage:** Global vascular plants
+- **Contains:** Accepted names, synonyms, taxonomy, distribution, descriptions, identification information, images, uses, conservation information
+- **Public access:** Yes
+- **Bulk access:** Availability depends on data category and Kew's terms
+- **API:** Investigate available services and access conditions
+- **License:** Verify the license of each data product; do not assume all POWO content is freely redistributable
+
+### Access
+
+[Plants of the World Online](https://powo.science.kew.org/?utm_source=chatgpt.com)
+
+**Documentation:**
+
+[POWO — About the Database](https://powo.science.kew.org/about?utm_source=chatgpt.com)
+
+POWO provides taxonomy, identification, geographic distribution, traits, threat status, phylogenies, and uses, drawing on Kew and partner institutions. [Plants of the World Online](https://powo.science.kew.org/about?utm_source=chatgpt.com)
+
+### What I would import or reference
+
+- Accepted scientific names
+- Synonyms
+- Kew taxon identifiers
+- Taxonomic hierarchy
+- Distribution information
+- Botanical descriptions
+- Conservation information
+- Relevant plant traits
+- Source references
+
+**Important:** POWO is an outstanding authority for botanical information, but you should not scrape or redistribute its entire content without confirming the applicable data license.
+
+---
+
+## F. NCBI Taxonomy
+
+**Priority: High**
+
+NCBI
+
+- **Dataset:** NCBI Taxonomy
+- **Coverage:** Organisms represented in NCBI sequence databases
+- **Contains:** Taxonomic identifiers, names, synonyms, classification, lineage information
+- **Bulk download:** Yes
+- **API:** Yes
+- **License:** Review NCBI data usage policies
+- **Update frequency:** Regular updates
+
+### Download
+
+[NCBI Taxonomy — Download and Access](https://www.ncbi.nlm.nih.gov/datasets/taxonomy/?utm_source=chatgpt.com)
+
+**Bulk FTP instructions:**
+
+[NCBI Taxonomy — Bulk Download Instructions](https://support.nlm.nih.gov/knowledgebase/article/KA-05543/en-us?utm_source=chatgpt.com)
+
+The expanded taxonomy dump includes files such as:
+
+- `nodes.dmp`
+- `names.dmp`
+- `merged.dmp`
+- `delnodes.dmp`
+
+It also includes additional lineage and type-material information. [NCBI](https://www.ncbi.nlm.nih.gov/datasets/taxonomy/?utm_source=chatgpt.com)
+
+### What I would import
+
+- NCBI taxon IDs
+- Names
+- Synonyms
+- Taxonomic lineage
+- Parent taxa
+- Taxonomic ranks
+- Merged identifiers
+- Deleted identifiers
+
+**My recommendation:** NCBI is especially useful later for linking medicinal plants to genomic, transcriptomic, proteomic, and molecular research datasets.
+
+---
+
+---
+
+## G. Kew Medicinal Plant Names Services — MPNS
+
+**Priority: Absolutely essential for your project**
+
+This is probably the most specifically relevant resource to your entire undertaking.
+
+- **Dataset:** Medicinal Plant Names Services (MPNS)
+- **Publisher:** Royal Botanic Gardens, Kew
+- **Coverage:** Medicinal plants and herbal substances documented in medicinal literature
+- **Contains:** Scientific names, pharmaceutical names, herbal drug names, common names, synonyms, medicinal references, plant parts, herbal drug forms
+- **Bulk data:** Kew offers tailored data subsets and data supply services
+- **API/web service:** Available services for data validation and updating
+- **License:** Confirm terms directly with Kew for your intended database use and redistribution
+
+### Access
+
+**Portal:** 
+
+**Official documentation:** 
+
+**Version information:** 
+
+### Why this dataset is extraordinary
+
+MPNS V15 contains:
+- 41,878 medicinal plants
+- 346,175 scientific names
+- 286,700+ pharmaceutical, herbal drug, and common names
+- Names in multiple languages and scripts
+- Information from 422 medicinal publications
+- Plant parts and medicinal material forms
+- References associating names with medicinal sources
+
+These numbers are reported in the official MPNS documentation. [Medicinal Plant Names Services](https://mpns.science.kew.org/mpns-portal/version?utm_source=chatgpt.com)
+
+### What I would import
+
+- MPNS plant identifiers
+- Scientific names
+- Scientific synonyms
+- Pharmaceutical names
+- Herbal drug names
+- Common names
+- Name languages
+- Name scripts
+- Name-source relationships
+- Medicinal references
+- Medicinal plant parts
+- Herbal material forms
+- Taxonomic mappings
+
+### The most important feature
+
+MPNS connects **botanical names to names actually used in medicinal literature**.
+
+That is extremely valuable for your project because it can help you discover:
+- Which medicinal publications mention a plant
+- Which names those publications use
+- Which parts of the plant are described
+- Which herbal substances are derived from it
+
+### My recommendation
+
+**Contact Kew directly and request access to an MPNS data subset or licensing arrangement for your project.**
+
+Kew explicitly offers data supply, name validation, harmonization, and web services to organizations building their own databases. [Kew Gardens](https://www.kew.org/science/our-science/science-services/medicinal-plant-names-services?utm_source=chatgpt.com)
+
+This could save you an enormous amount of manual work.
+
+---
+
+## H. Integrated Taxonomic Information System — ITIS
+
+**Priority: Medium**
+
+- **Dataset:** ITIS
+- **Coverage:** Taxonomic records for North American and globally represented organisms
+- **Contains:** Scientific names, synonyms, taxonomic hierarchy, authorities, identifiers
+- **Bulk download:** Yes
+- **Formats:** MySQL, PostgreSQL, SQLite, SQL Server and others
+- **License:** Public-domain-oriented US government resource; check specific records and data policies
+- **Update frequency:** Monthly database releases
+
+### Download
+
+**Official download page:**
+
+
+
+**Instructions:**
+
+
+
+ITIS offers a complete database in formats including PostgreSQL, MySQL, and SQLite, making it particularly convenient for SQL integration. [itis.gov](https://www.itis.gov/downloads/?utm_source=chatgpt.com)
+
+### What I would import
+
+- ITIS identifiers
+- Scientific names
+- Taxonomic authorities
+- Synonyms
+- Taxonomic hierarchy
+- Taxonomic ranks
+- Source references
+
+**My recommendation:** Use ITIS as an additional taxonomic cross-reference, not as your principal global botanical authority.
+
+---
+
+# 1.2 — What I would actually download first
+
+Here is my recommended acquisition order.
+
+| Order | Dataset | Importance | Why |
+|---|---|---|---|
+| 1 | World Flora Online | Essential | Global botanical taxonomy |
+| 2 | Catalogue of Life Base | Essential | Additional taxonomy and synonymy |
+| 3 | GBIF Backbone | Essential | Cross-dataset taxonomic matching |
+| 4 | IPNI | Essential | Scientific nomenclature and authorship |
+| 5 | MPNS | Essential | Medicinal plant names and herbal drug nomenclature |
+| 6 | POWO | Essential reference | Kew botanical taxonomy and descriptions |
+| 7 | NCBI Taxonomy | Important | Molecular and genomic database linkage |
+| 8 | ITIS | Supplementary | Additional taxonomic cross-reference |
+
+**If you only download three datasets initially: WFO, COL, and GBIF.**
+
+If you can obtain a usable MPNS data package from Kew, I would consider that one of the most valuable acquisitions for the medicinal-specific dimension of your project.
+
+---
+
+# 1.3 — An important database architecture decision
+
+Do not create one table called `plants` containing a single scientific name and a list of synonyms.
+
+That architecture will become a serious problem as your database grows.
+
+Instead, I would start with the following entities:
+
+### `taxa`
+
+Represents taxonomic concepts as defined by a particular source.
+
+| Column | Purpose |
+|---|---|
+| `taxon_id` | Your internal identifier |
+| `rank` | Species, genus, family, etc. |
+| `parent_taxon_id` | Internal parent |
+| `taxonomic_status` | Accepted, synonym, unresolved, etc. |
+| `created_at` | Record creation |
+| `updated_at` | Last update |
+
+### `scientific_names`
+
+Stores scientific nomenclatural records.
+
+| Column | Purpose |
+|---|---|
+| `name_id` | Internal identifier |
+| `scientific_name` | Name string |
+| `author_citation` | Botanical author |
+| `publication_year` | Publication year |
+| `basionym_id` | Related basionym |
+| `ipni_id` | IPNI identifier, if available |
+
+### `taxonomic_name_usage`
+
+Connects names to taxonomic opinions.
+
+| Column | Purpose |
+|---|---|
+| `usage_id` | Internal identifier |
+| `name_id` | Scientific name |
+| `taxon_id` | Taxon concept |
+| `source_id` | Taxonomic source |
+| `status` | Accepted, synonym, etc. |
+| `accepted_name_id` | Accepted name according to source |
+
+### `taxonomic_sources`
+
+| Column | Purpose |
+|---|---|
+| `source_id` | Internal source identifier |
+| `source_name` | WFO, COL, GBIF, etc. |
+| `source_version` | Dataset version |
+| `source_date` | Release date |
+| `license` | License |
+| `source_url` | Dataset URL |
+| `citation` | Formal citation |
+
+### `vernacular_names`
+
+| Column | Purpose |
+|---|---|
+| `vernacular_id` | Internal identifier |
+| `taxon_id` | Associated taxon |
+| `name` | Common name |
+| `language_code` | Language |
+| `country_code` | Geographic context |
+| `source_id` | Source |
+| `source_reference` | Citation |
+
+### `taxonomic_identifiers`
+
+| Column | Purpose |
+|---|---|
+| `identifier_id` | Internal identifier |
+| `taxon_id` | Your internal taxon |
+| `identifier_type` | WFO, GBIF, COL, NCBI, etc. |
+| `external_id` | External identifier |
+| `source_version` | Version associated with ID |
+
+This allows you to preserve taxonomic disagreements instead of accidentally overwriting them.
+
+**Especially important:** WFO, COL, and GBIF identifiers are not interchangeable. Never assume that an identifier from one database can be used in another.
+
+---
+
+# 1.4 — The licensing issue you must solve from day one
+
+Since you intend to publish your own website and database, there are two separate questions:
+
+1. Can you download and use the data?
+2. Can you redistribute the data, including in a public-facing database?
+
+These are not always equivalent.
+
+| Dataset | License / data-use situation |
+|---|---|
+| WFO Plant List | CC0; exceptionally permissive |
+| GBIF Backbone | CC BY 4.0; attribution required |
+| Catalogue of Life | Check release and constituent data conditions |
+| IPNI | Verify applicable data-use terms |
+| POWO | Verify individual dataset and content licensing |
+| MPNS | Contact Kew for data supply and reuse terms |
+| NCBI Taxonomy | Review NCBI data usage policies |
+| ITIS | Review specific dataset and usage conditions |
+
+For Kew datasets, the applicable license is specified in individual dataset metadata; Kew's general terms explain the conditions for using its resources. [Kew Gardens](https://www.kew.org/science/collections-and-resources/data-and-digital/terms-of-use?utm_source=chatgpt.com)
+
+**I strongly recommend maintaining a license registry in your SQL database.** Every imported dataset should have a recorded license, attribution requirement, version, and redistribution status.
+
+---
+
+# 1.5 — My final recommendation for Set 1
+
+For the Botanical Identity section of your medicinal plant monographs, I would build your initial taxonomic backbone from:
+
+**WFO + Catalogue of Life + GBIF + IPNI + MPNS**
+
+With:
+
+- POWO as an authoritative botanical reference
+- NCBI as a molecular research identifier bridge
+- ITIS as a supplementary source
+
+This gives you a robust foundation for scientific names, taxonomic hierarchy, synonyms, author citations, nomenclatural history, medicinal plant names, and source-specific taxonomic opinions.
+
+### What comes next
+
+Following the order of our master monograph, the next dataset collection should be:
+
+**SET 2 — Overview, Botanical Descriptions, Identification, Morphology, Anatomy & Microscopy**
+
+That will cover the databases, downloadable datasets, botanical trait repositories, floras, identification resources, morphological datasets, and image collections that can populate those sections.
+
+I have deliberately stopped here at **Botanical Identity & Classification**, so we can build your resource one dataset category at a time.

@@ -393,12 +393,358 @@ def wcvp_table_plants_names_peek():
         tablefmt="plain")
     )
 
+def wcvp_plants_names_preview_csv():
+    input_folderpath = f'{HUB_FOLDERPATH}/fetch/wcvp/wcvp'
+    with open(
+        f"{input_folderpath}/wcvp_names.csv",
+        "r",
+        encoding="utf8",
+        errors="ignore",
+        newline="",
+    ) as f:
+        reader = csv.DictReader(f, delimiter="|")
+        batch = []
+        for row in reader:
+            print(json.dumps(row, indent=4))
+            quit() 
+
+def wcvp_plants_distributions_preview_csv():
+    input_folderpath = f'{HUB_FOLDERPATH}/fetch/wcvp/wcvp'
+    with open(
+        f"{input_folderpath}/wcvp_distribution.csv",
+        "r",
+        encoding="utf8",
+        errors="ignore",
+        newline="",
+    ) as f:
+        reader = csv.DictReader(f, delimiter="|")
+        batch = []
+        for row in reader:
+            print(json.dumps(row, indent=4))
+            quit() 
+
+def ref__wcvp__names__table_create():
+    table_name = 'ref__wcvp__names'
+    input_folderpath = f'{HUB_FOLDERPATH}/fetch/wcvp/wcvp'
+    output_folderpath = f'{HUB_FOLDERPATH}/reference/wcvp'
+    io.folders_recursive_gen(output_folderpath)
+    conn = sqlite3.connect(f"{output_folderpath}/wcvp.db")
+    conn.executescript(f"""
+        PRAGMA journal_mode = OFF;
+        PRAGMA synchronous = OFF;
+        PRAGMA temp_store = MEMORY;
+        PRAGMA cache_size = -500000;
+        DROP TABLE IF EXISTS {table_name};
+        CREATE TABLE {table_name} (
+            plant_name_id TEXT,
+            ipni_id TEXT,
+            taxon_rank TEXT,
+            taxon_status TEXT,
+            family TEXT,
+            genus_hybrid TEXT,
+            genus TEXT,
+            species_hybrid TEXT,
+            species TEXT,
+            infraspecific_rank TEXT,
+            infraspecies TEXT,
+            parenthetical_author TEXT,
+            primary_author TEXT,
+            publication_author TEXT,
+            place_of_publication TEXT,
+            volume_and_page TEXT,
+            first_published TEXT,
+            nomenclatural_remarks TEXT,
+            geographic_area TEXT,
+            lifeform_description TEXT,
+            climate_description TEXT,
+            taxon_name TEXT,
+            taxon_authors TEXT,
+            accepted_plant_name_id TEXT,
+            basionym_plant_name_id TEXT,
+            replaced_synonym_author TEXT,
+            homotypic_synonym TEXT,
+            parent_plant_name_id TEXT,
+            powo_id TEXT,
+            hybrid_formula TEXT,
+            reviewed TEXT,
+            taxon_name_normalized TEXT
+        );
+    """)
+    conn.commit()
+    BATCH_SIZE = 100000
+    processed = 0
+    start = time.time()
+    conn.execute("BEGIN")
+    with open(
+        f"{input_folderpath}/wcvp_names.csv",
+        "r",
+        encoding="utf8",
+        errors="ignore",
+        newline="",
+    ) as f:
+        reader = csv.DictReader(f, delimiter="|")
+        batch = []
+        for row in reader:
+            # print(json.dumps(row, indent=4))
+            # quit() 
+            plant_name_id = row['plant_name_id']
+            ipni_id = row['ipni_id']
+            taxon_rank = row['taxon_rank']
+            taxon_status = row['taxon_status']
+            family = row['family']
+            genus_hybrid = row['genus_hybrid']
+            genus = row['genus']
+            species_hybrid = row['species_hybrid']
+            species = row['species']
+            infraspecific_rank = row['infraspecific_rank']
+            infraspecies = row['infraspecies']
+            parenthetical_author = row['parenthetical_author']
+            primary_author = row['primary_author']
+            publication_author = row['publication_author']
+            place_of_publication = row['place_of_publication']
+            volume_and_page = row['volume_and_page']
+            first_published = row['first_published']
+            nomenclatural_remarks = row['nomenclatural_remarks']
+            geographic_area = row['geographic_area']
+            lifeform_description = row['lifeform_description']
+            climate_description = row['climate_description']
+            taxon_name = row['taxon_name']
+            taxon_authors = row['taxon_authors']
+            accepted_plant_name_id = row['accepted_plant_name_id']
+            basionym_plant_name_id = row['basionym_plant_name_id']
+            replaced_synonym_author = row['replaced_synonym_author']
+            homotypic_synonym = row['homotypic_synonym']
+            parent_plant_name_id = row['parent_plant_name_id']
+            powo_id = row['powo_id']
+            hybrid_formula = row['hybrid_formula']
+            reviewed = row['reviewed']
+            taxon_name_normalized = normalize_plant_name(taxon_name)
+            ###
+            batch.append((
+                plant_name_id,
+                ipni_id,
+                taxon_rank,
+                taxon_status,
+                family,
+                genus_hybrid,
+                genus,
+                species_hybrid,
+                species,
+                infraspecific_rank,
+                infraspecies,
+                parenthetical_author,
+                primary_author,
+                publication_author,
+                place_of_publication,
+                volume_and_page,
+                first_published,
+                nomenclatural_remarks,
+                geographic_area,
+                lifeform_description,
+                climate_description,
+                taxon_name,
+                taxon_authors,
+                accepted_plant_name_id,
+                basionym_plant_name_id,
+                replaced_synonym_author,
+                homotypic_synonym,
+                parent_plant_name_id,
+                powo_id,
+                hybrid_formula,
+                reviewed,
+                taxon_name_normalized,
+            ))
+            if len(batch) >= BATCH_SIZE:
+                conn.executemany(f"""
+                    INSERT INTO {table_name}
+                    (
+                        plant_name_id,
+                        ipni_id,
+                        taxon_rank,
+                        taxon_status,
+                        family,
+                        genus_hybrid,
+                        genus,
+                        species_hybrid,
+                        species,
+                        infraspecific_rank,
+                        infraspecies,
+                        parenthetical_author,
+                        primary_author,
+                        publication_author,
+                        place_of_publication,
+                        volume_and_page,
+                        first_published,
+                        nomenclatural_remarks,
+                        geographic_area,
+                        lifeform_description,
+                        climate_description,
+                        taxon_name,
+                        taxon_authors,
+                        accepted_plant_name_id,
+                        basionym_plant_name_id,
+                        replaced_synonym_author,
+                        homotypic_synonym,
+                        parent_plant_name_id,
+                        powo_id,
+                        hybrid_formula,
+                        reviewed,
+                        taxon_name_normalized
+                    )
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """, batch)
+                processed += len(batch)
+                if processed % 1000000 == 0:
+                    elapsed = time.time() - start
+                    print(f"{processed:,} inserted ({elapsed:.1f}s)")
+                batch.clear()
+        if batch:
+            conn.executemany(f"""
+                INSERT INTO {table_name}
+                (
+                        plant_name_id,
+                        ipni_id,
+                        taxon_rank,
+                        taxon_status,
+                        family,
+                        genus_hybrid,
+                        genus,
+                        species_hybrid,
+                        species,
+                        infraspecific_rank,
+                        infraspecies,
+                        parenthetical_author,
+                        primary_author,
+                        publication_author,
+                        place_of_publication,
+                        volume_and_page,
+                        first_published,
+                        nomenclatural_remarks,
+                        geographic_area,
+                        lifeform_description,
+                        climate_description,
+                        taxon_name,
+                        taxon_authors,
+                        accepted_plant_name_id,
+                        basionym_plant_name_id,
+                        replaced_synonym_author,
+                        homotypic_synonym,
+                        parent_plant_name_id,
+                        powo_id,
+                        hybrid_formula,
+                        reviewed,
+                        taxon_name_normalized
+                )
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """, batch)
+    conn.commit()
+    # Create lookup index AFTER import
+    conn.execute(f"""
+        CREATE INDEX idx_{table_name}_plant_name_id
+        ON {table_name}(plant_name_id)
+    """)
+    conn.execute(f"""
+        CREATE INDEX idx_{table_name}_accepted_plant_name_id
+        ON {table_name}(accepted_plant_name_id)
+    """)
+    conn.execute(f"""
+        CREATE INDEX idx_{table_name}_taxon_name_normalized
+        ON {table_name}(taxon_name_normalized)
+    """)
+    conn.execute(f"""
+        CREATE INDEX idx_{table_name}_powo_id
+        ON {table_name}(powo_id)
+    """)
+    conn.execute(f"""
+        CREATE INDEX idx_{table_name}_ipni_id
+        ON {table_name}(ipni_id)
+    """)
+    conn.commit()
+    cursor = conn.execute(f"""
+        SELECT *
+        FROM {table_name}
+        LIMIT 10
+    """)
+    for row in cursor:
+        print(row)
+    conn.close()
+    print("Done")
+
+def ref__wcvp__names__table_peek():
+    table_name = 'ref__wcvp__names'
+    output_folderpath = f'{HUB_FOLDERPATH}/reference/wcvp'
+    io.folders_recursive_gen(output_folderpath)
+    conn = sqlite3.connect(f"{output_folderpath}/wcvp.db")
+    cursor = conn.execute(f"""
+        SELECT *
+        FROM {table_name}
+        LIMIT 10
+    """)
+    rows = cursor.fetchall()
+    conn.close()
+    print(tabulate(rows, 
+        headers=[
+            'PLANT_NAME_ID',
+            'IPNI_ID',
+            'TAXON_RANK',
+            'TAXON_STATUS',
+            'FAMILY',
+            'GENUS_HYBRID',
+            'GENUS',
+            'SPECIES_HYBRID',
+            'SPECIES',
+            'INFRASPECIFIC_RANK',
+            'INFRASPECIES',
+            'PARENTHETICAL_AUTHOR',
+            'PRIMARY_AUTHOR',
+            'PUBLICATION_AUTHOR',
+            'PLACE_OF_PUBLICATION',
+            'VOLUME_AND_PAGE',
+            'FIRST_PUBLISHED',
+            'NOMENCLATURAL_REMARKS',
+            'GEOGRAPHIC_AREA',
+            'LIFEFORM_DESCRIPTION',
+            'CLIMATE_DESCRIPTION',
+            'TAXON_NAME',
+            'TAXON_AUTHORS',
+            'ACCEPTED_PLANT_NAME_ID',
+            'BASIONYM_PLANT_NAME_ID',
+            'REPLACED_SYNONYM_AUTHOR',
+            'HOMOTYPIC_SYNONYM',
+            'PARENT_PLANT_NAME_ID',
+            'POWO_ID',
+            'HYBRID_FORMULA',
+            'REVIEWED',
+            'TAXON_NAME_NORMALIZED',
+        ], 
+        tablefmt="plain")
+    )
+    conn = sqlite3.connect(f"{output_folderpath}/wcvp.db")
+    conn.row_factory = sqlite3.Row
+    cursor = conn.execute(f"""
+        SELECT *
+        FROM {table_name}
+        LIMIT 10
+    """)
+    rows = cursor.fetchall()
+    items = [dict(row) for row in rows]
+    for item in items:
+        print(json.dumps(item, indent=4))
+    conn.close()
+
 def run():
     print(f'REFERENCE >> wcvp')
 
+    # wcvp_plants_names_preview_csv()
+    # wcvp_plants_distributions_preview_csv()
+
     # wcvp_table_plants_names_create()
     # wcvp_table_plants_distribution_create()
-    wcvp_table_plants_distributions_peek()
-    wcvp_table_plants_names_peek()
+
+    # wcvp_table_plants_names_peek()
+    # wcvp_table_plants_distributions_peek()
+
+    # ref__wcvp__names__table_create()
+    ref__wcvp__names__table_peek()
 
     quit()

@@ -2540,6 +2540,73 @@ def parts_match_string_to_json():
     print(json.dumps(output_items, indent=4))
     # quit()
 
+def traditional_medicinal_systems_extract_raw():
+    table_name = 'traditional_medicinal_systems'
+    input_folderpath = f'{HUB_FOLDERPATH}/fetch/pubmed/medicinal_plant/abstracts'
+    output_folderpath = f'{HUB_FOLDERPATH}/parse/pubmed/{table_name}/raw'
+    # try: shutil.rmtree(output_folderpath)
+    # except: pass
+    io.folders_recursive_gen(output_folderpath)
+    ###
+    relationships_found = []
+    input_filenames = os.listdir(input_folderpath)
+    i = 0
+    for input_filename in input_filenames[i:]:
+        i += 1
+        print(f'{i}/{len(input_filenames)}')
+        output_filepath = f'{output_folderpath}/{input_filename}'
+        if os.path.exists(output_filepath): continue
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        input_data = io.json_read(input_filepath)
+        try: article_data = input_data['PubmedArticle'][0]['MedlineCitation']['Article']
+        except: pass
+        try: input_title = article_data['ArticleTitle']
+        except: input_title = ''
+        try: input_abstract = ' '.join(article_data['Abstract']['AbstractText'])
+        except: continue
+        # print(json.dumps(input_title, indent=4))
+        # print(input_title)
+        # print(input_abstract)
+        # quit()
+            # Always write the names of the plants names exactly how you find them in the text.
+        content_to_extract = f'{input_title} {input_abstract}'
+            # By health conditions I mean things like symptoms, signs, diseases, disorders, infections, injuries, and other problems, 
+        prompt = f'''
+            From the SCIENTIFIC STUDY below, extract all the traditional medicinal systems mentioned.
+            RULES:
+            Write one traditional medicinal system name per new line.
+            Always write the names of the traditional medicinal systems exactly how you find them in the text.
+            Only reply with the content requested.
+            If you can't find what requested, reply with "NONE".
+            SCIENTIFIC STUDY:
+            {content_to_extract}
+        '''.strip()
+            # For reference, by preparations I mean things like tea, infusion, tincture, extract, essential oil, etc...
+        prompt = prompt.replace('<text>', content_to_extract)
+        reply = llm.reply(prompt, model_filepath, max_tokens=512)
+        if '</think>' in reply:
+            reply = reply.split('</think>')[1].strip()
+        print('################################################################################')
+        print(reply)
+        print('########################################')
+        # print(prompt)
+        print('################################################################################')
+        if 'NONE'.strip() not in reply.strip():
+            relationships_found.append(reply)
+            output_data = {
+                'title': input_title,
+                'abstract': input_abstract,
+                'reply': reply,
+            }
+            io.json_write(
+                output_filepath,
+                output_data,
+            )
+        # if i > 10:
+            # quit()
+    print(len(relationships_found))
+    # quit()
+
 def compounds_match_string():
     input_folderpath = f'{HUB_FOLDERPATH}/parse/pubmed/compounds/raw'
     output_folderpath = f'{HUB_FOLDERPATH}/parse/pubmed/compounds/match_string'
@@ -3208,6 +3275,7 @@ def parse__phrases__plants__activities__triples_string_match():
     ###
     input_filenames = os.listdir(input_folderpath)
     i = 0
+    last = []
     for input_filename in input_filenames[i:]:
         i += 1
         print(f'PARSE HERBS phrases__plants__activities__triples {i}/{len(input_filenames)}')
@@ -3224,20 +3292,23 @@ def parse__phrases__plants__activities__triples_string_match():
                 term_2 = triple[1]
                 term_3 = triple[2]
                 if term_1 not in sentence: continue
-                if term_2 not in sentence: continue
+                # if term_2 not in sentence: continue
                 if term_3 not in sentence: continue
                 triples_string_match.append(triple)
             extraction['triples_string_match'] = triples_string_match
             io.json_write(output_filepath, input_data)
-        # print(json.dumps(io.json_read(output_filepath), indent=4))
-        # quit()
+            if triples_string_match != []:
+                last = input_data
+    print(json.dumps(last, indent=4))
+    # quit()
 
-def parse__phrases__plants__activities__resolve_plants():
+def parse__phrases__plants__activities__resolve_plants(regen=False):
     input_folderpath = f'{HUB_FOLDERPATH}/parse/pubmed/phrases__plants__activities/triples_string_match'
     output_folderpath = f'{HUB_FOLDERPATH}/parse/pubmed/phrases__plants__activities/resolve_plants'
     ###
-    # try: shutil.rmtree(output_folderpath)
-    # except: pass
+    if regen:
+        try: shutil.rmtree(output_folderpath)
+        except: pass
     io.folders_recursive_gen(output_folderpath)
     ###
     input_filenames = os.listdir(input_folderpath)
@@ -3270,6 +3341,7 @@ def parse__phrases__plants__activities__resolve_plants():
                     For context, this plant name comes from the following scientific study abstract:
                     {input_data['title']} {input_data['abstract']}
                 '''.strip()
+                    # If the plant is both mentioned by general species (like "Hypoxis species") and by more specific species (like "H. rooperi"), resolve using the more specific one, like "Hypoxis rooperi").
                 reply = llm.reply(prompt, model_filepath, max_tokens=512)
                 if '</think>' in reply:
                     reply = reply.split('</think>')[1].strip()
@@ -3352,6 +3424,13 @@ def parse__phrases__plants__activities__resolve_plants_string_match():
         input_data = io.json_read(input_filepath)
         abstract = input_data['abstract']
         for extraction in input_data['extractions']:
+            """
+            try: triples = extraction['triples_resolve_local_subject']
+            except: 
+                print(input_filename)
+                print(extraction)
+                quit()
+            """
             triples = extraction['triples_resolve_local_subject']
             triples_string_match = []
             for triple in triples:
@@ -3449,6 +3528,78 @@ def phrases__to_json():
         # print(len(relationships_found))
         # quit()
 
+def parse__plants__traditional_medicinal_systems__extract():
+    table_name = f'plants__traditional_medicinal_systems'
+    study_folderpath = f'{HUB_FOLDERPATH}/fetch/pubmed/medicinal_plant/abstracts'
+    input_folderpath = f'{HUB_FOLDERPATH}/parse/pubmed/studies_sentences/json'
+    output_folderpath = f'{HUB_FOLDERPATH}/parse/pubmed/{table_name}/raw'
+    # try: shutil.rmtree(output_folderpath)
+    # except: pass
+    io.folders_recursive_gen(output_folderpath)
+    ###
+    relationships_found = []
+    input_filenames = os.listdir(input_folderpath)
+    i = 0
+    for input_filename in input_filenames[i:]:
+        i += 1
+        print(f'PARSE HERBS {table_name} {i}/{len(input_filenames)}')
+        output_filepath = f'{output_folderpath}/{input_filename}'
+        if os.path.exists(output_filepath): continue
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        sentences_data = io.json_read(input_filepath)
+        study_filepath = f'{study_folderpath}/{input_filename}'
+        study_data = io.json_read(study_filepath)
+        study_sentences = [item['sentence_text'].strip() for item in sentences_data]
+        # print(input_filename)
+        # print(json.dumps(input_data, indent=4))
+        # print(json.dumps(study_data, indent=4))
+        # print(json.dumps(sentences_data, indent=4))
+        # print(json.dumps(study_data, indent=4))
+        # quit()
+        try: article_data = study_data['PubmedArticle'][0]['MedlineCitation']['Article']
+        except: pass
+        try: input_title = article_data['ArticleTitle']
+        except: input_title = ''
+        try: input_abstract = ' '.join(article_data['Abstract']['AbstractText'])
+        except: continue
+        # print(input_title)
+        # print(input_abstract)
+        # print(study_sentences)
+        # print(json.dumps(sentences_data, indent=4))
+        # print(json.dumps(study_data, indent=4))
+        # quit()
+        output_data = {
+            'title': input_title,
+            'abstract': input_abstract,
+            'reply': '',
+        }
+        context = f'{input_title} {input_abstract}'
+        prompt = f'''
+            From the ABSTRACT below, extract all the relationships between the plants and the traditional medicinal systems that use them.
+            Write each relationship using this triple format: [plant name, used_in_traditional_system, traditional medicinal system name]
+            RULES:
+            Always write the names of the plants exactly how you find them in the text.
+            Always write the names of the traditional medicinal systems exactly how you find them in the text.
+            Only reply with the relationships requested.
+            If you can't find any of these relationships, reply with "NONE".
+            ABSTRACT:
+            {context}
+        '''.strip()
+        # print(prompt)
+        reply = llm.reply(prompt, model_filepath, max_tokens=512)
+        if '</think>' in reply:
+            reply = reply.split('</think>')[1].strip()
+        print()
+        print('################################################################################')
+        print(reply)
+        print('################################################################################')
+        print()
+        if 'NONE'.strip() not in reply.strip():
+            output_data['reply'] = reply
+        io.json_write(output_filepath, output_data)
+    # print(json.dumps(output_data, indent=4))
+    # print(len(relationships_found))
+    # quit()
 
 def run():
     print('parse >> pubmed')
@@ -3461,7 +3612,7 @@ def run():
 
 
     # abstracts_to_sentences_llm()
-    phrases__to_json()
+    # phrases__to_json()
 
     # plant_test_count()
     # plant_activities_test_count()
@@ -3495,6 +3646,8 @@ def run():
     # parts_match_string()
     # parts_match_string_to_json()
 
+    # traditional_medicinal_systems_extract_raw()
+
     ### ASSERT
     # parse__plants__activities__raw_to_json()
     # parse__plants__conditions__raw_to_json()
@@ -3502,11 +3655,13 @@ def run():
     # parse__plants__preparations__raw_to_json()
     # parse__plants__parts__raw_to_json()
 
+    parse__plants__traditional_medicinal_systems__extract()
+
     # parse__plants__activities__extract_from_phrases()
     # parse__plants__activities__extract_from_phrases__peek()
     # parse__phrases__plants__activities__triples()
     # parse__phrases__plants__activities__triples_string_match()
-    # parse__phrases__plants__activities__resolve_plants()
+    # parse__phrases__plants__activities__resolve_plants(regen=False)
     # parse__phrases__plants__activities__resolve_plants__peek()
     # parse__phrases__plants__activities__resolve_plants_string_match()
     # parse__phrases__plants__activities__resolve_plants_string_match__peek()

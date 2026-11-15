@@ -1,29 +1,396 @@
-do you know what the koray semantic topical authority methodology is?
+PROMPT TO GET COMPLETE EXHAUSTIVE LIST OF RESOURCES FOR ALL DATAPOINTS OF MONOGRAPH
+
+ok but don't fixate on the etymologies, it was just an example. what i mean is that you said i have to collect all these datapoints to make a comprehensive monograph, but you just gave me resources to cover a few points. so in the section related to the botanical identity and classification, give me all resources i need to be able to gather values for all the datapoints that you told me i have to cover.
+
+ex. answer:
+----------------------------------------
+
+You're right. My previous Set 1 was **a list of foundational taxonomic datasets, not a complete resource collection mapped against all the fields in your monograph schema**.
+
+For your website, we need a different approach:
+
+- Every datapoint in your schema must have one or more identified sources.
+- Sources must be classified as datasets, APIs, searchable databases, literature repositories, or specialist references.
+- We must distinguish resources that provide actual downloadable records from resources that require querying or manual extraction.
+- We must identify licensing and reuse limitations.
+- We must identify gaps where no global database exists.
+
+Below is a more complete resource inventory for **Section 1 — Botanical Identity & Classification**, covering all the fields you listed.
+
+# SET 1 — Complete resource inventory
+## Botanical Identity & Classification (Section 1)
+
+This is the resource collection you actually need for Section 1. I have separated the resources by **what they can supply**, rather than simply listing botanical databases.
+
+The central principle: **no single botanical database provides all 27 datapoints in your identity/classification section.** A combination of global taxonomic backbones, nomenclatural indexes, medicinal-name databases, herbarium records, phylogenetic datasets, and historical literature is necessary.
 
 ---
 
-my core entity is "medicinal herbs". give me a complete and exhaustive list of subtopics (attribute vectors based on the EAV) i have to write about in this topic hub based on STA.
+## A. Global taxonomic backbone and accepted names
+
+These establish your primary plant identity, accepted scientific name, taxonomy, synonymy, classification, and related taxonomic information.
+
+| Resource | Main contribution | Access |
+|---|---|---|
+| **World Checklist of Vascular Plants (WCVP)** | Accepted names, synonymy, taxonomic concepts, global vascular plant taxonomy | Download/search |
+| **World Flora Online (WFO)** | Taxonomic backbone, accepted names, synonyms, classification | Bulk download |
+| **Catalogue of Life (COL)** | Global taxonomic classification, synonyms, names, taxon identifiers | Bulk download |
+| **GBIF Backbone Taxonomy** | Name matching, taxon identifiers, synonyms, hierarchy, classification | Bulk download |
+| **Plants of the World Online (POWO)** | Accepted names, synonyms, family, distribution, taxonomic information, descriptions | Search/API/reference |
+| **World Checklist of Selected Plant Families (WCSP)** | Peer-reviewed taxonomic information for selected families | Search/reference |
+| **ITIS** | Taxonomic classification, scientific names, synonyms, identifiers | Bulk download |
+
+### Primary resources
+
+- [World Checklist of Vascular Plants (WCVP)](https://www.kew.org/science/collections-and-resources/data-and-digital/names-and-taxonomy?utm_source=chatgpt.com)
+- [World Flora Online Downloads](https://www.worldfloraonline.org/downloadData?utm_source=chatgpt.com)
+- [Catalogue of Life Downloads](https://www.catalogueoflife.org/data/download?utm_source=chatgpt.com)
+- [GBIF Backbone Taxonomy](https://hosted-datasets.gbif.org/datasets/backbone/current/backbone.zip?utm_source=chatgpt.com)
+- [POWO](https://powo.science.kew.org/?utm_source=chatgpt.com)
+- [ITIS Downloads](https://www.itis.gov/downloads/?utm_source=chatgpt.com)
+
+WCVP deserves particular attention: Kew describes it as its comprehensive, actively curated vascular-plant taxonomic dataset, containing accepted names and more than one million synonyms. It underlies POWO and is also used by several other global taxonomic services. [kew.org](https://www.kew.org/science/collections-and-resources/data-and-digital/names-and-taxonomy?utm_source=chatgpt.com)
+
+**Recommended use:** WCVP/POWO as your primary taxonomic reference, WFO and COL as additional taxonomic opinions, and GBIF as a name-resolution and integration layer.
 
 ---
 
-great, now rewrite the headings of the titles in one word each, the one that is the most semantically correct as umbrella term for the cluster of attributes.
+## B. Scientific names, authorship, basionyms and original publications
+
+This is a separate layer from accepted taxonomy.
+
+| Resource | Main contribution |
+|---|---|
+| **International Plant Names Index (IPNI)** | Scientific names, botanical authors, publication dates, original publication citations, nomenclatural details |
+| **Tropicos** | Scientific names, basionyms, synonymy, types, bibliographic references, specimen records |
+| **Biodiversity Heritage Library (BHL)** | Digitized original botanical publications, protologues, historical descriptions |
+| **International Code of Nomenclature (ICN)** | Rules governing botanical nomenclature |
+| **Index Herbariorum** | Herbarium institution identifiers, names, locations, institutional information |
+
+### Links
+
+- [IPNI](https://www.ipni.org/?utm_source=chatgpt.com)
+- [Tropicos](https://www.tropicos.org/?utm_source=chatgpt.com)
+- [Biodiversity Heritage Library](https://www.biodiversitylibrary.org/?utm_source=chatgpt.com)
+- [International Code of Nomenclature](https://www.iaptglobal.org/icn?utm_source=chatgpt.com)
+- [Index Herbariorum](https://sweetgum.nybg.org/science/ih/?utm_source=chatgpt.com)
+
+IPNI is especially important for your database because it provides the nomenclatural information behind plant names, including authorship and first publication information. It explicitly distinguishes nomenclature from accepted taxonomic classification. [International Plant Names Index](https://ipni.org/?utm_source=chatgpt.com)
+
+Tropicos complements IPNI by linking names to bibliographic, specimen, and type information. [CASRAI](https://casrai.org/guides/tropicos?utm_source=chatgpt.com)
+
+BHL is essential when you need to move beyond a citation and inspect the original publication itself.
 
 ---
 
-Convert the umbrella heading in form of questions that are optimized for koray STA. Use as few words as possible while still preserving the semantic meaning.
+## C. Type specimens, herbarium vouchers and taxonomic verification
+
+These resources allow you to document whether a plant's identity is supported by actual botanical material.
+
+| Resource | Main contribution |
+|---|---|
+| **JSTOR Global Plants** | Digitized type specimens, herbarium sheets, historical botanical materials |
+| **GBIF Specimen Records** | Herbarium occurrences, vouchers, collection details, specimen metadata |
+| **iDigBio** | Digitized museum/herbarium specimens and collection records |
+| **Tropicos Specimens** | Specimen records, vouchers, types, collection data |
+| **Natural History Museum collections** | Digitized herbarium specimens and type material |
+| **Herbaria portals worldwide** | Institution-specific specimen records and images |
+
+### Links
+
+- [JSTOR Global Plants](https://about.jstor.org/products/journals-and-primary-sources/licensed-collections/global-plants/?utm_source=chatgpt.com)
+- [GBIF Occurrence Search](https://www.gbif.org/occurrence/search?utm_source=chatgpt.com)
+- [iDigBio Portal](https://portal.idigbio.org/?utm_source=chatgpt.com)
+- [Tropicos Specimens](https://www.tropicos.org/?utm_source=chatgpt.com)
+- [Natural History Museum Herbarium](https://www.nhm.ac.uk/our-science/services/collections/botany/general-herbarium.html?utm_source=chatgpt.com)
+
+JSTOR Global Plants contains nearly three million digitized plant specimens and reference materials from hundreds of herbaria, making it particularly valuable for type verification. [About JSTOR](https://about.jstor.org/products/journals-and-primary-sources/licensed-collections/global-plants/?utm_source=chatgpt.com)
+
+GBIF and iDigBio provide specimen metadata, including collector, collection date, locality, institution, taxonomic identification, and sometimes images. [iDigBio Specimen Portal](https://portal.idigbio.org/portal/search/records?utm_source=chatgpt.com)
+
+**Important:** a specimen record is evidence supporting an identification; it is not automatically proof that the identification is correct.
 
 ---
 
-Assign answer length + entity density targets
+## D. Medicinal plant names, pharmaceutical names and traditional nomenclature
+
+This is particularly important because your website focuses on medicinal plants, not all botanical species equally.
+
+| Resource | Main contribution |
+|---|---|
+| **Medicinal Plant Names Services (MPNS)** | Pharmaceutical, herbal drug, scientific and common names; medicinal literature references |
+| **Multilingual Multiscripted Plant Name Database (MMPND)** | Plant names in different languages and scripts |
+| **WHO medicinal plant publications** | Medicinal names and nomenclature used in WHO monographs and technical documents |
+| **Pharmacopoeias** | Official herbal drug names and nomenclature |
+| **European Pharmacopoeia** | Official European herbal drug nomenclature |
+| **Chinese Pharmacopoeia** | Chinese medicinal plant and drug names |
+| **Ayurvedic Pharmacopoeia of India** | Ayurvedic plant and herbal drug names |
+| **United States Pharmacopeia (USP)** | Herbal ingredient nomenclature and standards |
+| **National and regional pharmacopoeias** | Local medicinal plant nomenclature |
+
+### Links
+
+- [Medicinal Plant Names Services (MPNS)](https://mpns.science.kew.org/?utm_source=chatgpt.com)
+- [MMPND](https://plantnames.unimelb.edu.au/?utm_source=chatgpt.com)
+- [WHO Publications](https://www.who.int/publications?utm_source=chatgpt.com)
+- [European Pharmacopoeia](https://pheur.edqm.eu/?utm_source=chatgpt.com)
+- [Ayurvedic Pharmacopoeia of India](https://www.ayush.gov.in/?utm_source=chatgpt.com)
+- [USP Herbal Medicines](https://www.usp.org/health-quality-safety/herbal-medicines?utm_source=chatgpt.com)
+
+MPNS V15 contains scientific, pharmaceutical, herbal drug, and common names from 422 medicinal publications, covering more than 41,000 plants and hundreds of thousands of names in multiple languages and scripts. It also associates names with the medicinal sources in which they appear. [Medicinal Plant Names Services](https://mpns.science.kew.org/mpns-portal/version?utm_source=chatgpt.com)
+
+**This is one of the most important datasets for your project.**
+
+However, pharmacopoeial material is often copyrighted or commercially licensed. You may be able to cite and extract permitted factual information without being entitled to redistribute entire datasets or documents.
 
 ---
 
-Write perfect first-answer blocks for all 13
+## E. Common names, vernacular names and name origins
+
+This layer is substantially different from taxonomic nomenclature.
+
+| Resource | Main contribution |
+|---|---|
+| **MPNS** | Medicinal common names, drug names, multilingual naming records |
+| **MMPND** | Multilingual plant names |
+| **GRIN-Global Taxonomy** | Common names, taxonomy, germplasm-associated plant information |
+| **Plants For A Future (PFAF)** | Common names and useful plant information |
+| **Regional floras** | Common names in local languages and geographic contexts |
+| **Ethnobotanical literature** | Traditional names, culturally specific names, local naming systems |
+| **Historical botanical dictionaries** | Historical names, meanings and sometimes origins |
+| **Biodiversity Heritage Library** | Historical dictionaries, herbals and botanical literature |
+
+### Links
+
+- [GRIN-Global Taxonomy](https://npgsweb.ars-grin.gov/gringlobal/taxon/taxonomysearch?utm_source=chatgpt.com)
+- [Plants For A Future](https://pfaf.org/?utm_source=chatgpt.com)
+- [A Dictionary of English Plant-Names (BHL)](https://www.biodiversitylibrary.org/item/220926?utm_source=chatgpt.com)
+- [MMPND](https://plantnames.unimelb.edu.au/?utm_source=chatgpt.com)
+
+For traditional names and their cultural meanings, you will additionally need ethnobotanical publications and regional literature. No single global dataset captures all indigenous or traditional plant names.
 
 ---
 
-Rewrite these to exact featured-snippet length tuning
+## F. Taxonomic misapplications, historical names and disagreements
+
+These fields require you to preserve historical and conflicting taxonomic usage rather than simply importing one accepted-name record.
+
+| Resource | Main contribution |
+|---|---|
+| **MPNS** | Names as used in medicinal publications, including conflicting usages |
+| **Tropicos** | Nomenclatural records, synonymy, historical usages, bibliographic connections |
+| **IPNI** | Published names, nomenclatural relationships and original references |
+| **POWO / WCVP** | Accepted names and synonymy |
+| **Biodiversity Heritage Library** | Original literature and historical usages |
+| **Google Scholar / Crossref / PubMed** | Taxonomic publications and scholarly discussions |
+| **Specialist taxonomic revisions** | Authoritative explanations of species boundaries and taxonomic disagreements |
+| **Family-specific monographs and revisions** | Detailed taxonomic history and competing classifications |
+
+### Links
+
+- [Tropicos](https://www.tropicos.org/?utm_source=chatgpt.com)
+- [IPNI](https://www.ipni.org/?utm_source=chatgpt.com)
+- [POWO](https://powo.science.kew.org/?utm_source=chatgpt.com)
+- [Crossref](https://www.crossref.org/?utm_source=chatgpt.com)
+- [Google Scholar](https://scholar.google.com/?utm_source=chatgpt.com)
+
+For taxonomic disagreements, **primary taxonomic revisions are more important than aggregator databases**. You should store the author, publication, date, taxonomic treatment, and alternative interpretation.
 
 ---
 
-Or calculate how many total pages you need to dominate the topic
+## G. Family and genus characteristics, distinctive features and evolutionary relationships
+
+Taxonomic databases generally provide family placement, but not complete descriptions of family/genus characteristics or evolutionary context.
+
+| Resource | Main contribution |
+|---|---|
+| **Angiosperm Phylogeny Website (APWeb)** | Family characteristics, evolutionary relationships, classification, phylogeny |
+| **Kew Tree of Life Explorer** | DNA-based evolutionary tree of flowering plants |
+| **Open Tree of Life** | Synthetic phylogenetic trees combining published research |
+| **APG classification publications** | Authoritative angiosperm classification and family relationships |
+| **Flora of North America / Flora of China / regional floras** | Family and genus descriptions, distinguishing characteristics |
+| **POWO** | Family and genus information, descriptions and classification |
+| **Family-specific taxonomic revisions** | Detailed evolutionary relationships and diagnostic characters |
+
+### Links
+
+- [Angiosperm Phylogeny Website](https://www.mobot.org/MOBOT/research/APweb/)
+- [Kew Tree of Life Explorer](https://treeoflife.kew.org/)
+- [Open Tree of Life](https://opentreeoflife.github.io/)
+- [APG classification publications](https://www.iaptglobal.org/)
+
+Kew's Tree of Life Explorer provides downloadable evolutionary trees and DNA-based phylogenetic data for more than 20,000 flowering plant species. ([treeoflife.kew.org](https://treeoflife.kew.org/))
+
+Open Tree of Life provides synthetic phylogenies assembled from published trees and taxonomic information. ([opentreeoflife.github.io](https://opentreeoflife.github.io/))
+
+**For family characteristics and distinctive taxonomic features, APWeb and family-specific botanical revisions are particularly important.**
+
+---
+
+## H. Molecular phylogeny and DNA-based identification
+
+These are separate concepts:
+
+- Molecular phylogeny: evolutionary relationships inferred from genetic data.
+- DNA identification: molecular evidence supporting the identification of an individual specimen.
+
+| Resource | Main contribution |
+|---|---|
+| **GenBank** | DNA sequences, sequence annotations, linked taxonomic identifiers |
+| **BOLD Systems** | DNA barcode sequences and barcode-based identification |
+| **NCBI Taxonomy** | Taxonomic framework associated with molecular sequence records |
+| **Kew Tree of Life Explorer** | Phylogenomic data and evolutionary trees |
+| **Open Tree of Life** | Phylogenetic synthesis |
+| **TreeBASE** | Published phylogenetic studies and associated trees/data |
+| **Dryad** | Research datasets, including phylogenetic and molecular datasets |
+
+### Links
+
+- [GenBank](https://www.ncbi.nlm.nih.gov/genbank/)
+- [NCBI Taxonomy](https://www.ncbi.nlm.nih.gov/datasets/taxonomy/)
+- [BOLD Systems](https://portal.boldsystems.org/)
+- [TreeBASE](https://treebase.org/)
+- [Dryad](https://datadryad.org/)
+
+NCBI Taxonomy connects organisms to sequence records and molecular research. ([ncbi.nlm.nih.gov](https://www.ncbi.nlm.nih.gov/guide/taxonomy/))
+
+BOLD provides plant barcode records and identification tools, including reference sequences for markers such as *rbcL*, *matK*, and ITS. ([boldsystems.org](https://id.boldsystems.org/))
+
+---
+
+## I. Scientific name pronunciation and botanical name etymology
+
+These are specialized fields and should not be expected from WFO, COL, or GBIF.
+
+| Resource | Main contribution |
+|---|---|
+| **World Botanical Dictionary (WBD)** | Botanical name etymology, origins of genera and species epithets, pronunciation information |
+| **International Plant Names Index** | Scientific name spelling and nomenclatural identity, not pronunciation |
+| **Botanical nomenclature textbooks** | Naming conventions, Latinization, formation of scientific names |
+| **Botanical Latin references** | Pronunciation conventions and linguistic explanations |
+| **Scientific name pronunciation references** | Pronunciation rules, commonly accepted pronunciations |
+| **Regional botanical pronunciation guides** | Pronunciation adapted to regional linguistic conventions |
+
+### Links
+
+- [World Botanical Dictionary](https://patanjali.res.in/world-botanical-dictionary.php)
+- [Botanical name pronunciation guide](https://plants.sdsu.edu/plantsystematics/botnames.html)
+- [IPNI](https://www.ipni.org/)
+
+The World Botanical Dictionary specifically covers the origins of botanical names, including family, genus, and species epithets, with references and pronunciation information. Its coverage is extensive but not complete for every botanical name. ([patanjali.res.in](https://patanjali.res.in/world-botanical-dictionary.php))
+
+**Important:** scientific name pronunciation is not completely standardized internationally. You should ideally store a pronunciation convention and, where relevant, alternative pronunciations.
+
+---
+
+# J. Complete field-to-resource mapping
+
+Here is the practical coverage map for your entire Section 1.
+
+| Your datapoint | Principal resources |
+|---|---|
+| Accepted scientific name | WCVP, POWO, WFO, COL |
+| Botanical author citation | IPNI, POWO, WFO, Tropicos |
+| Scientific name pronunciation | Botanical pronunciation references, WBD |
+| Taxonomic authority | POWO, WCVP, WFO, taxonomic revisions |
+| Year of original description | IPNI, Tropicos, original publication |
+| Original publication | IPNI, Tropicos, BHL |
+| Basionym | IPNI, Tropicos, POWO |
+| Synonyms | WCVP, POWO, WFO, COL, Tropicos |
+| Homotypic synonyms | IPNI, Tropicos, taxonomic revisions |
+| Heterotypic synonyms | POWO, WCVP, Tropicos, taxonomic revisions |
+| Taxonomic misapplications | Tropicos, MPNS, historical literature, taxonomic revisions |
+| Historical scientific names | IPNI, Tropicos, BHL, historical literature |
+| Common names | MPNS, GRIN, MMPND, floras, PFAF |
+| Regional common names | Regional floras, ethnobotanical literature, MPNS, GRIN |
+| Vernacular names by language | MPNS, MMPND, GRIN, ethnobotanical publications |
+| Traditional names | Ethnobotanical literature, regional publications, MPNS |
+| Pharmaceutical name | MPNS, pharmacopoeias |
+| Drug nomenclature used in pharmacopoeias | Pharmacopoeias, MPNS |
+| Etymology of scientific name | WBD, botanical dictionaries, protologues, historical literature |
+| Etymology of common names | Historical dictionaries, linguistic resources, ethnobotanical literature |
+| Kingdom | WFO, COL, GBIF, NCBI |
+| Clade | APWeb, APG, POWO, phylogenetic databases |
+| Division | WFO, COL, GBIF, POWO |
+| Class | WFO, COL, GBIF, POWO |
+| Order | WFO, COL, GBIF, POWO |
+| Family | WFO, POWO, COL, APWeb |
+| Subfamily | WFO, POWO, specialist taxonomic revisions |
+| Tribe | WFO, POWO, specialist taxonomic revisions |
+| Genus | WCVP, POWO, WFO, IPNI |
+| Species | WCVP, POWO, WFO, COL |
+| Subspecies | WCVP, POWO, IPNI, specialist revisions |
+| Variety | WCVP, POWO, IPNI, specialist revisions |
+| Form | IPNI, specialist taxonomic revisions |
+| Cultivar | GRIN, RHS, cultivar registers, ICNCP-based resources |
+| Taxonomic authorities | IPNI, POWO, WFO, specialist publications |
+| Current taxonomic status | POWO, WCVP, WFO, COL |
+| Taxonomic classification history | IPNI, Tropicos, historical floras, BHL, revisions |
+| Phylogenetic relationships | APWeb, Kew Tree of Life, Open Tree of Life |
+| Molecular phylogeny | GenBank, TreeBASE, Kew Tree of Life, Dryad |
+| Closely related species | POWO, APWeb, taxonomic revisions, phylogenetic datasets |
+| Taxonomic disagreements | Specialist revisions, taxonomic publications, Tropicos, historical literature |
+| Family characteristics | APWeb, regional floras, family monographs |
+| Genus characteristics | POWO, regional floras, genus monographs |
+| Related medicinal species | MPNS, medicinal floras, medicinal literature |
+| Evolutionary relationships | APWeb, Kew Tree of Life, Open Tree of Life |
+| Distinctive taxonomic features | Floras, taxonomic revisions, species descriptions |
+| Phylogenetic position | APWeb, Kew Tree of Life, Open Tree of Life |
+| Accepted taxonomic databases | WCVP, WFO, POWO, COL, GBIF |
+| Herbarium records | GBIF, iDigBio, Tropicos, institutional herbaria |
+| Botanical voucher specimens | GBIF, iDigBio, Tropicos, herbaria |
+| Type specimens | JSTOR Global Plants, Tropicos, institutional herbaria |
+| DNA-based identification references | BOLD, GenBank, published DNA barcoding studies |
+| Taxonomic verification date | Your own verification metadata |
+
+---
+
+# K. What I would actually acquire first
+
+For this section, I would prioritize the following **12 resources**:
+
+| Priority | Resource | Role |
+|---|---|---|
+| 1 | WCVP | Global taxonomic backbone |
+| 2 | IPNI | Scientific nomenclature and publications |
+| 3 | POWO | Taxonomic reference and descriptions |
+| 4 | WFO | Additional taxonomic backbone |
+| 5 | Catalogue of Life | Additional classification |
+| 6 | GBIF | Taxonomic IDs and specimen integration |
+| 7 | MPNS | Medicinal nomenclature |
+| 8 | Tropicos | Names, types, references, specimens |
+| 9 | GRIN-Global | Common names and cultivated plant taxonomy |
+| 10 | BHL | Original botanical literature |
+| 11 | GBIF / iDigBio / JSTOR Global Plants | Specimens and type verification |
+| 12 | APWeb / Kew Tree of Life / Open Tree | Evolutionary relationships |
+
+Then add the specialist resources for linguistic etymology, cultivars, DNA identification, and taxonomic revisions.
+
+---
+
+# L. One essential architectural decision
+
+I would **not** make your SQL database a direct copy of WFO or POWO.
+
+Instead, preserve:
+
+- Your own internal plant identifier.
+- External taxonomic identifiers from each source.
+- The source-specific accepted name.
+- Taxonomic classification as reported by each source.
+- The date and version of each imported dataset.
+- Original publication references.
+- Evidence supporting taxonomic decisions.
+- Your editorial decision about which taxonomic treatment to display.
+
+This is particularly important because WFO, COL, POWO, and GBIF may differ in accepted names, ranks, or taxonomic circumscriptions.
+
+Your database should preserve those differences rather than silently erase them.
+
+---
+
+**This completes the expanded resource inventory for Section 1 — Botanical Identity & Classification.**
+
+The next section in your monograph architecture is:
+
+**SET 2 — Overview, Botanical Descriptions, Identification, Morphology, Anatomy & Microscopy.**

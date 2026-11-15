@@ -794,6 +794,8 @@ def normalize__phrases__plants__activities(source_foldername):
         ###
         input_filepath = f'{input_folderpath}/{input_filename}'
         input_data = io.json_read(input_filepath)
+        # print(json.dumps(input_data, indent=4))
+        # quit()
         for extraction in input_data['extractions']:
             # print(json.dumps(extraction, indent=4))
             # quit()
@@ -808,7 +810,7 @@ def normalize__phrases__plants__activities(source_foldername):
             last = input_data
         # print(json.dumps(input_data, indent=4))
         # quit()
-    print(json.dumps(last, indent=4))
+    # print(json.dumps(last, indent=4))
     # quit()
 
 def run():
@@ -816,7 +818,7 @@ def run():
 
     ### MASTER?
     # studies_normalize(source_foldername='pubmed')
-    phrases_normalize(source_foldername='pubmed')
+    # phrases_normalize(source_foldername='pubmed')
 
     # plants_normalize(source_foldername='pubmed')
     # activities_normalize(source_foldername='pubmed')
@@ -837,7 +839,7 @@ def run():
     # normalize__plants__preparations(source_foldername='pubmed')
     # normalize__plants__parts(source_foldername='pubmed')
 
-    # normalize__phrases__plants__activities(source_foldername='pubmed')
+    normalize__phrases__plants__activities(source_foldername='pubmed')
 
     return
     quit()
