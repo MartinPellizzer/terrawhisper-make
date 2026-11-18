@@ -1,4 +1,4 @@
-if 1:
+if 0:
     import reference_manual
     import reference_herbs_wcvp
     import reference_herbs_wfo
@@ -30,9 +30,9 @@ if 0:
     import parse_herbs_drduke
     import parse_herbs_pubmed
 
-    parse_herbs_pubmed.run()
+    # parse_herbs_pubmed.run()
     # parse_herbs_col.run()
-    # parse_herbs_wcvp.run()
+    parse_herbs_wcvp.run()
     # parse_herbs_powo.run()
     # parse_herbs_gift.run()
     # parse_herbs_drduke.run()
@@ -62,7 +62,7 @@ if 0:
     # observe_herbs_peek.run()
 """
 
-if 0:
+if 1:
     import assert_herbs_main
     assert_herbs_main.run()
 

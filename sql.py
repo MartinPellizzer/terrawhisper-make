@@ -7,6 +7,8 @@ HUB_FOLDERPATH = f'''{g.DATA_FOLDERPATH}/herbs'''
 output_folderpath = f'{HUB_FOLDERPATH}/database'
 db_filepath = f'{output_folderpath}/terra.db'
 
+ref__wcvp__db_filepath = f'{HUB_FOLDERPATH}/reference/wcvp/wcvp.db'
+
 sql_query_plants_activities_table_create = f'''
     CREATE TABLE IF NOT EXISTS plants_activities (
         plant_activity_id INTEGER PRIMARY KEY,
@@ -15,6 +17,50 @@ sql_query_plants_activities_table_create = f'''
         study_id TEXT
     );
 '''
+
+########################################
+# REF
+########################################
+
+def sql__ref__wcvp__names__get_all():
+    conn = sqlite3.connect(ref__wcvp__db_filepath)
+    cur = conn.cursor()
+    conn.row_factory = sqlite3.Row
+    cursor = conn.execute(f'''
+        SELECT * 
+        FROM ref__wcvp__names
+    ''')
+    rows = cursor.fetchall()
+    items = [dict(row) for row in rows]
+    return items
+
+def sql__ref__wcvp__names__resolve_to_plant_accepted(conn, name_normalize):
+    wcvp_cur = conn.cursor()
+    wcvp_cur.execute("""
+        SELECT *
+        FROM ref__wcvp__names
+        WHERE taxon_name_normalize = ?
+    """, (name_normalize,))
+    wcvp_row = wcvp_cur.fetchone()
+    # print(json.dumps(dict(wcvp_row), indent=4))
+    # return
+    if wcvp_row != None:
+        wcvp_item = dict(wcvp_row)
+        plant_name_id = wcvp_item['plant_name_id']
+        accepted_plant_name_id = wcvp_item['accepted_plant_name_id']
+        # print(plant_name_id )
+        # print(accepted_plant_name_id  )
+        if plant_name_id != accepted_plant_name_id:
+            wcvp_cur.execute("""
+                SELECT *
+                FROM ref__wcvp__names
+                WHERE plant_name_id = ?
+            """, (accepted_plant_name_id,))
+            wcvp_row = wcvp_cur.fetchone()
+            # print(json.dumps(dict(wcvp_row), indent=4))
+            # quit()
+    return wcvp_row
+
 
 ########################################
 # ENTITIES

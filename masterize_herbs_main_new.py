@@ -402,7 +402,7 @@ def masterize_plants_add():
 
 
 def run():
-    if 0:
+    if 1:
         start = time.perf_counter()
         # plants_extract_raw() ### WARNING: takes many many hours (nightly running)
         # plants_string_match()
@@ -410,17 +410,17 @@ def run():
         parse_plants_json()
         print(f'parse plants() - execution time: ', time.perf_counter() - start)
  
-    if 0:
+    if 1:
         start = time.perf_counter()
         normalize_plants_names()
         print(f'normalize plants names() - execution time: ', time.perf_counter() - start)
 
-    if 0:
+    if 1:
         start = time.perf_counter()
         resolve_plants_names()
         print(f'resolve plants names() - execution time: ', time.perf_counter() - start)
 
-    if 0:
+    if 1:
         start = time.perf_counter()
         masterize_plants_init(regen=True)
         masterize_plants_add()

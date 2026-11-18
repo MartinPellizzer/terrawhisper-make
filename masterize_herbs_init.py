@@ -348,12 +348,13 @@ def test():
 
 def run():
 
+    master_table_plants_create(regen=True)
+
     # master_table_studies_create(regen=True)
-    master_table_phrases_create(regen=True)
+    # master_table_phrases_create(regen=True)
 
     # master_table_plants_names_common_create(regen=True)
 
-    # master_table_plants_create(regen=True)
     # master_table_activities_create(regen=True)
     # master_table_conditions_create(regen=True)
     # master_table_compounds_create(regen=True)

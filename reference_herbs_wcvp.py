@@ -467,7 +467,7 @@ def ref__wcvp__names__table_create():
             powo_id TEXT,
             hybrid_formula TEXT,
             reviewed TEXT,
-            taxon_name_normalized TEXT
+            taxon_name_normalize TEXT
         );
     """)
     conn.commit()
@@ -518,7 +518,7 @@ def ref__wcvp__names__table_create():
             powo_id = row['powo_id']
             hybrid_formula = row['hybrid_formula']
             reviewed = row['reviewed']
-            taxon_name_normalized = normalize_plant_name(taxon_name)
+            taxon_name_normalize = normalize_plant_name(taxon_name)
             ###
             batch.append((
                 plant_name_id,
@@ -552,7 +552,7 @@ def ref__wcvp__names__table_create():
                 powo_id,
                 hybrid_formula,
                 reviewed,
-                taxon_name_normalized,
+                taxon_name_normalize,
             ))
             if len(batch) >= BATCH_SIZE:
                 conn.executemany(f"""
@@ -589,7 +589,7 @@ def ref__wcvp__names__table_create():
                         powo_id,
                         hybrid_formula,
                         reviewed,
-                        taxon_name_normalized
+                        taxon_name_normalize
                     )
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """, batch)
@@ -633,7 +633,7 @@ def ref__wcvp__names__table_create():
                         powo_id,
                         hybrid_formula,
                         reviewed,
-                        taxon_name_normalized
+                        taxon_name_normalize
                 )
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """, batch)
@@ -648,8 +648,8 @@ def ref__wcvp__names__table_create():
         ON {table_name}(accepted_plant_name_id)
     """)
     conn.execute(f"""
-        CREATE INDEX idx_{table_name}_taxon_name_normalized
-        ON {table_name}(taxon_name_normalized)
+        CREATE INDEX idx_{table_name}_taxon_name_normalize
+        ON {table_name}(taxon_name_normalize)
     """)
     conn.execute(f"""
         CREATE INDEX idx_{table_name}_powo_id

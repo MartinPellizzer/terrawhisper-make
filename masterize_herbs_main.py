@@ -548,30 +548,18 @@ def masterize_table_chemicals_add(source_foldername, subfoldername):
 def run():
     print('MASTERIZE')
 
+    masterize_table_plants_add(source_foldername='pubmed', subfoldername='plants')
+
     # masterize_table_studies_add(source_foldername='pubmed')
-    masterize_table_phrases_add(source_foldername='pubmed')
+    # masterize_table_phrases_add(source_foldername='pubmed')
 
     # masterize_table_plants_names_common_add(source_foldername='col')
 
-    # masterize_table_plants_add(source_foldername='pubmed', subfoldername='plants')
     # masterize_table_activities_add(source_foldername='pubmed', subfoldername='activities')
     # masterize_table_conditions_add(source_foldername='pubmed')
     # masterize_table_compounds_add(source_foldername='pubmed')
     # masterize_table_preparations_add(source_foldername='pubmed')
     # masterize_table_parts_add(source_foldername='pubmed')
-
-
-    if 0:
-        # masterize_table_plants_add(source_foldername='drduke', subfoldername='activities')
-        # masterize_table_plants_add(source_foldername='drduke', subfoldername='chemicals')
-        '''
-        masterize_table_plants_add(source_foldername='pubmed', subfoldername='diseases')
-        '''
-        masterize_table_plants_add(source_foldername='pubmed', subfoldername='activities')
-        masterize_table_plants_add(source_foldername='pubmed', subfoldername='chemicals')
-        masterize_table_plants_add(source_foldername='pubmed', subfoldername='conditions')
-        masterize_table_plants_add(source_foldername='pubmed', subfoldername='plants_parts')
-        masterize_table_plants_add(source_foldername='pubmed', subfoldername='preparations')
 
     return
 

@@ -186,6 +186,27 @@ def assertions__plants__plants_names_common__table_create():
     conn.commit()
     conn.close()
 
+def assertions__taxonomies__table_create():
+    table_name = f'taxonomies'
+    conn = sqlite3.connect(db_filepath)
+    cur = conn.cursor()
+    cur.execute(f"DROP TABLE IF EXISTS {table_name}")
+    cur.execute(f'''
+        CREATE TABLE IF NOT EXISTS {table_name} (
+            taxonomy_id INTEGER PRIMARY KEY,
+            plant_id TEXT,
+            source_name TEXT,
+            taxonomy_family TEXT
+        );
+    ''')
+    conn.execute("PRAGMA journal_mode = WAL;")
+    conn.execute("PRAGMA synchronous = OFF;")
+    conn.execute("PRAGMA temp_store = MEMORY;")
+    cur.execute(f"CREATE INDEX IF NOT EXISTS idx_{table_name}_taxonomy_id ON {table_name}(taxonomy_id)")
+    cur.execute(f"CREATE INDEX IF NOT EXISTS idx_{table_name}_plant_id ON {table_name}(plant_id)")
+    conn.commit()
+    conn.close()
+
 def assertions__plants__plants_names_common__table_add(source_foldername):
     table_name = 'plants__plants_names_common'
     input_folderpath = f'{HUB_FOLDERPATH}/resolve/{source_foldername}/{table_name}/json'
@@ -244,6 +265,87 @@ def assertions__plants__plants_names_common__table_add(source_foldername):
                 item.get(f'plant_name_common_id'),
             )
             for item in data_ids
+        ]
+    )
+    conn.commit()
+    ### PEEK
+    conn.row_factory = sqlite3.Row
+    cursor = conn.execute(f'''
+        SELECT * 
+        FROM {table_name}
+    ''')
+    rows = cursor.fetchall()
+    items = [dict(row) for row in rows]
+    for item in items[:10]:
+        print(json.dumps(item, indent=4))
+    print(len(items))
+    ###
+    print(f'PLANT ITEM FAILED: {plant_item_failed}')
+    conn.close()
+
+def assertions__taxonomies__table_add(source_foldername):
+    table_name = 'taxonomies'
+    input_folderpath = f'{HUB_FOLDERPATH}/resolve/{source_foldername}/{table_name}/json'
+    input_filenames = os.listdir(input_folderpath)
+    ###
+    all_data = []
+    for i, input_filename in enumerate(input_filenames[:]):
+        print(f'ASSERT HERBS {table_name} add - {i}/{len(input_filenames)}')
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        input_data = io.json_read(input_filepath)
+        for input_item in input_data:
+            all_data.append(input_item)
+            # print(json.dumps(input_item, indent=4))
+            # quit()
+    # print(json.dumps(all_data[0], indent=4))
+    # quit()
+    ###
+    plant_item_failed = 0
+    data_table = [] 
+    for i, taxonomy_item in enumerate(all_data):
+        print(f'ASSERT HERBS {table_name} add - {i}/{len(all_data)}')
+        plant_item = sql.sql_plant_id_by_name_normalize(taxonomy_item['plant_name_scientific_reference_normalize'])
+        # plant_name_common_item = sql.sql_plant_name_common_id_by_name_normalize(item['plant_name_common_reference_normalize'])
+        # print(plant_name_common_item)
+        # quit()
+        # study_item = sql.sql_study_id_by_pmid(item['source_id'])
+        ###
+        # print(plant_item)
+        # print(plant_name_common_item)
+        try: plant_id = plant_item['plant_id']
+        except:
+            plant_item_failed += 1
+            continue
+        # plant_name_common_id = plant_name_common_item['plant_name_common_id']
+        # study_id = study_item['study_id']
+        data_table.append(
+            {
+                'plant_id': plant_item['plant_id'],
+                'source_name': taxonomy_item['source_name'],
+                'taxonomy_family': taxonomy_item['taxonomy_family'],
+                # 'plant_name_common_id': plant_name_common_item['plant_name_common_id'],
+                # 'study_id': study_item['study_id'],
+            }
+        )
+    conn = sqlite3.connect(db_filepath)
+    cur = conn.cursor()
+    sql_query = f'''
+            INSERT OR IGNORE INTO {table_name} (
+                plant_id,
+                source_name,
+                taxonomy_family
+            )
+            VALUES (?, ?, ?)
+    '''
+    cur.executemany(
+        sql_query,
+        [
+            (
+                item.get(f'plant_id'),
+                item.get(f'source_name'),
+                item.get(f'taxonomy_family'),
+            )
+            for item in data_table
         ]
     )
     conn.commit()
@@ -1091,6 +1193,9 @@ def assertions__phrases__plants__activities___table_add():
 
 
 def run():
+    assertions__taxonomies__table_create()
+    assertions__taxonomies__table_add(source_foldername='wcvp')
+
     # assertions__plants__plants_names_common__table_create()
     # assertions__plants__plants_names_common__table_add(source_foldername='col')
     # assertions__plants__plants_names_common__table_join()
@@ -1117,6 +1222,6 @@ def run():
 
     ### TODO: do the plants_activities using the phrases, and compare number of results in render table on website
     ### TODO: to do that, create table for studies and studies_phrases to join and match asserts with phrases
-    assertions__phrases__plants__activities___table_create()
-    assertions__phrases__plants__activities___table_add()
+    # assertions__phrases__plants__activities___table_create()
+    # assertions__phrases__plants__activities___table_add()
 
