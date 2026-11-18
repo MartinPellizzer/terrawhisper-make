@@ -1195,6 +1195,7 @@ def assertions__phrases__plants__activities___table_add():
 def run():
     assertions__taxonomies__table_create()
     assertions__taxonomies__table_add(source_foldername='wcvp')
+    # TODO: do join function, verify plants_taxonomy matches correctly
 
     # assertions__plants__plants_names_common__table_create()
     # assertions__plants__plants_names_common__table_add(source_foldername='col')
