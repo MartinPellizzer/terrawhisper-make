@@ -62,7 +62,7 @@ if 0:
     # observe_herbs_peek.run()
 """
 
-if 1:
+if 0:
     import assert_herbs_main
     assert_herbs_main.run()
 
@@ -78,7 +78,7 @@ if 0:
     import compile_herbs_main
     compile_herbs_main.run()
 
-if 0:
+if 1:
     import render_herbs_main
     render_herbs_main.run()
 

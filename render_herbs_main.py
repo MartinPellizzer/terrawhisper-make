@@ -2746,6 +2746,402 @@ def quick_facts(plant_data):
     return quick_facts_html 
 
 def listing_hero_gen(plant_data):
+    plant_name_scientific_reference = plant_data['plant_name_scientific_reference']
+    plant_taxon_name_slug = polish.sluggify(plant_name_scientific_reference)
+    plant_taxon_name_normalized = normalize_utils.normalize_plant_name(plant_name_scientific_reference)
+    url_slug = f'herbs/{plant_taxon_name_slug}'
+    html_article = ''
+    plant_names_common_data = plant_data['plants__plants_names_common']
+    plant_name_common_preferred = plant_names_common_data['plant_name_common_preferred']
+    ### SCIENTIFIC NAME ACCEPTED
+    name_scientific_accepted = f'''
+        <p>
+            <i lang="la">{plant_name_scientific_reference}</i> · 
+            <span>Accepted scientific name</span>
+        </p>
+    '''
+    ### EVIDENCE CONSENSUS
+    db_filepath = f'{HUB_FOLDERPATH}/observe/observations.db'
+    conn = sqlite3.connect(db_filepath)
+    rows_num = 0
+    ###
+    plant_name_scientific_reference = plant_name_scientific_reference
+    cursor = conn.execute("""
+        SELECT COUNT (*)
+        FROM plants_activities
+        WHERE plant_name_scientific_reference = ?
+    """, (plant_name_scientific_reference,))
+    rows_num += int(cursor.fetchone()[0])
+    evidence_consensus_count = rows_num
+    ###
+    if evidence_consensus_count >= 200: 
+        consensus_stars = '★★★★★'
+        consensus_tag = 'Very Extensive'
+    elif evidence_consensus_count >= 150: 
+        consensus_stars = '★★★★☆'
+        consensus_tag = 'Extensive'
+    elif evidence_consensus_count >= 100: 
+        consensus_stars = '★★★☆☆'
+        consensus_tag = 'Moderate'
+    elif evidence_consensus_count >= 50: 
+        consensus_stars = '★★☆☆☆'
+        consensus_tag = 'Sparse'
+    else: 
+        consensus_stars = '★☆☆☆☆'
+        consensus_tag = 'Very Sparse'
+    intro_text = plant_data['intro']['llm_intro']
+    ### TAXONOMY
+    if plant_data['plants__taxonomies']['plants__taxonomies'] != []: 
+        hero_taxonomy_family = plant_data['plants__taxonomies']['plants__taxonomies'][0]['taxonomy_family'].title()
+        hero_taxonomy_genus = plant_data['plants__taxonomies']['plants__taxonomies'][0]['taxonomy_genus'].title()
+        hero_taxonomy_species = plant_data['plants__taxonomies']['plants__taxonomies'][0]['taxonomy_species'].title()
+        hero_taxonomy_infraspecific_rank = plant_data['plants__taxonomies']['plants__taxonomies'][0]['taxonomy_infraspecific_rank'].title()
+        hero_taxonomy_infraspecies = plant_data['plants__taxonomies']['plants__taxonomies'][0]['taxonomy_infraspecies'].title()
+    else: 
+        hero_taxonomy_family = 'Not available'
+        hero_taxonomy_genus = 'Not available'
+        hero_taxonomy_species = 'Not available'
+        hero_taxonomy_infraspecific_rank = 'Not available'
+        hero_taxonomy_infraspecies = 'Not available'
+    ### AUTHORS (DATA)
+    if plant_data['plants__authors']['plants__authors'] != []: 
+        authors_items = plant_data['plants__authors']['plants__authors']
+        source_name = authors_items[0]['source_name'].title()
+        author_parenthetical = authors_items[0]['author_parenthetical'].title()
+        author_primary = authors_items[0]['author_primary'].title()
+        author_publication = authors_items[0]['author_publication'].title()
+        publication_place = authors_items[0]['publication_place'].title()
+        publication_volume_and_page = authors_items[0]['publication_volume_and_page'].title()
+        publication_year_first = authors_items[0]['publication_year_first'].title()
+        nomenclatural_remarks = authors_items[0]['nomenclatural_remarks'].title()
+        author_html = f'''
+            <ul>
+                <li>source_name: {source_name}</li>
+                <li>author_parenthetical: {author_parenthetical}</li>
+                <li>author_primary: {author_primary}</li>
+                <li>author_publication: {author_publication}</li>
+                <li>publication_place: {publication_place}</li>
+                <li>publication_volume_and_page: {publication_volume_and_page}</li>
+                <li>publication_year_first: {publication_year_first}</li>
+                <li>nomenclatural_remarks: {nomenclatural_remarks}</li>
+            </ul>
+<section class="nomenclature"
+         aria-labelledby="nomenclature-heading">
+
+  <h2 id="nomenclature-heading">
+    Nomenclature and Original Publication
+  </h2>
+
+  <!-- Main botanical citation -->
+  <p class="nomenclatural-citation">
+    <strong>Original publication:</strong>
+
+    <cite>
+      Species Plantarum
+    </cite>
+    1: 492. 1753.
+  </p>
+
+  <!-- Detailed publication information -->
+  <div class="publication-details">
+
+    <h3>Publication details</h3>
+
+    <dl>
+      <dt>Name author</dt>
+      <dd>L.</dd>
+
+      <dt>Original publication author</dt>
+      <dd>Carl Linnaeus</dd>
+
+      <dt>Publication</dt>
+      <dd>
+        <cite>Species Plantarum</cite>
+      </dd>
+
+      <dt>Volume and page</dt>
+      <dd>1: 492</dd>
+
+      <dt>First published</dt>
+      <dd>
+        <time datetime="1753">1753</time>
+      </dd>
+    </dl>
+
+  </div>
+
+  <!-- Optional nomenclatural remarks -->
+  <div class="nomenclatural-remarks">
+
+    <h3>Nomenclatural remarks</h3>
+
+    <p>
+      Additional information about the nomenclature
+      of this plant name.
+    </p>
+
+  </div>
+
+</section>
+        '''
+    else:
+        authors_items = ''
+        source_name = ''
+        author_parenthetical = ''
+        author_primary = ''
+        author_publication = ''
+        publication_place = ''
+        publication_volume_and_page = ''
+        publication_year_first = ''
+        nomenclatural_remarks = ''
+        author_html = ''
+
+    ### DISTRIBUTIONS
+    if plant_data['distributions'] != []: hero_distributions = plant_data['distributions'][0]['locality_continent'].title()
+    else: hero_distributions = 'Not available'
+    ### PLANTS PARTS
+    hero_plant_parts_list = []
+    for item in plant_data['plants__parts']['plant_parts'][:2]:
+        # print(json.dumps(item, indent=4))
+        hero_plant_parts_list.append(item['part_name_reference'])
+    hero_plant_parts_html = ' · '.join(hero_plant_parts_list)
+    hero_plant_parts_html = hero_plant_parts_html.title()
+    if hero_plant_parts_html == '': hero_plant_parts_html = 'Not available'
+    ### SYNONYMS
+    hero_synonyms_list = []
+    plant_synonyms = plant_data['synonyms']
+    for item in plant_synonyms:
+        hero_synonyms_list.append(item['plant_synonym_reference'])
+    hero_synonyms_html = ' · '.join(hero_synonyms_list[:2]).title()
+    hero_synonyms_count = len(plant_synonyms) - 2
+    if len(hero_synonyms_list) <= 0:
+        hero_synonyms_html = f'''Not available'''
+    elif len(hero_synonyms_list) <= 2:
+        hero_synonyms_html = f'''
+            <i lang="la">{hero_synonyms_html}</i>
+        '''
+    else:
+        hero_synonyms_html = f'''
+            <i lang="la">{hero_synonyms_html}</i> · 
+            <a href="#synonyms">{hero_synonyms_count} more</a>
+        '''
+    ### NAMES COMMON
+    hero_names_common_list = []
+    for value in plant_data['plants__plants_names_common']['plant_names_common_eng']:
+        hero_names_common_list.append(value)
+    hero_names_common_html = ' · '.join(hero_names_common_list[:2]).title()
+    hero_names_common_count = len(hero_names_common_list) - 2
+    if len(hero_names_common_list) <= 0:
+        hero_names_common_html = f'''Not available'''
+    elif len(hero_names_common_list) <= 2:
+        hero_names_common_html = f'''
+            <i lang="la">{hero_names_common_html}</i>
+        '''
+    else:
+        hero_names_common_html = f'''
+            <i lang="la">{hero_names_common_html}</i> · 
+            <a href="#common-names">{hero_names_common_count} more</a>
+        '''
+    ###
+    html_hero = f'''
+        {sections.breadcrumbs_explorer(url_slug)}
+        <div class="flex-auto" 
+            style="
+                gap: 2.4rem;
+                padding-bottom: 4.8rem;
+                border-bottom: 1px solid #dcdcdc;
+            "
+        >
+            <div style="flex: 3;">
+                {name_scientific_accepted}
+                <p>
+                    <span style="font-weight: 700;">Scientific literature:</span>
+                    <span>{consensus_tag}</span>
+                    <span>({evidence_consensus_count} studies)</span> · 
+                    <span aria-label="{consensus_tag}">{consensus_stars}</span>
+                </p>
+                <p>
+                    {intro_text}
+                </p>
+                <dl class="quick-facts">
+                    <div>
+                        <dt>Synonyms</dt>
+                        <dd>{hero_synonyms_html}</dd>
+                    </div>
+                    <div>
+                        <dt>Common names</dt>
+                        <dd>{hero_names_common_html}</dd>
+                    </div>
+                    <div>
+                        <dt>Family</dt>
+                    </div>
+                    <div>
+                        <dt>Distribution</dt>
+                        <dd>{hero_distributions}</dd>
+                    </div>
+                    <div>
+                        <dt>Plant Parts</dt>
+                        <dd>{hero_plant_parts_html}</dd>
+                    </div>
+                </dl>
+            </div>
+            <div style="flex: 2;">
+                <img 
+                    src="/images/herbs/{plant_taxon_name_slug}.jpg"
+                    style="
+                        height: 100%;
+                        object-fit: cover;
+                        object-position: center;
+                    "
+                >
+            </div>
+        </div>
+    '''
+
+    plant_name_scientific_reference_html = f''
+    if plant_name_scientific_reference != '':
+        plant_name_scientific_reference_html = f'''
+            <div>
+                <dt>Scientific name</dt>
+                <dd><i>{plant_name_scientific_reference}</i></dd>
+            </div>
+        '''          
+    ###
+    author_primary_html = f''
+    if author_primary != '':
+        author_primary_html = f'''
+            <div>
+                <dt>Author</dt>
+                <dd>{author_primary}</dd>
+            </div>
+        '''          
+    ###
+    plant_names_common_html = f''
+    if hero_names_common_html != '':
+        plant_names_common_html = f'''
+            <div>
+                <dt>Common names</dt>
+                <dd>{hero_names_common_html}</dd>
+            </div>
+        '''          
+    ###
+    synonyms_html = f''
+    if hero_synonyms_html != '':
+        synonyms_html = f'''
+            <div>
+                <dt>Synonyms</dt>
+                <dd>{hero_synonyms_html}</dd>
+            </div>
+        '''          
+    ###
+    family_html = f''
+    if hero_taxonomy_family != '':
+        family_html = f'''
+            <div>
+                <dt>Family</dt>
+                <dd>{hero_taxonomy_family}</dd>
+            </div>
+        '''          
+    ###
+    plant_type_html = f''
+    # if hero_taxonomy_family != '':
+    if True:
+        plant_type_html = f'''
+            <div>
+                <dt>Plant type</dt>
+                <dd></dd>
+            </div>
+        '''          
+    ###
+    native_range_html = f''
+    # if hero_taxonomy_family != '':
+    if True:
+        native_range_html = f'''
+            <div>
+                <dt>Native range</dt>
+                <dd></dd>
+            </div>
+        '''          
+    ###
+    life_form_html = f''
+    # if hero_taxonomy_family != '':
+    if True:
+        life_form_html = f'''
+            <div>
+                <dt>Life form</dt>
+                <dd></dd>
+            </div>
+        '''          
+    ###
+    medicianl_parts_html = f''
+    if hero_plant_parts_html != '':
+        medicinal_parts_html = f'''
+            <div>
+                <dt>Medicianl parts</dt>
+                <dd>{hero_plant_parts_html}</dd>
+            </div>
+        '''          
+    ###
+    quick_facts_html = f'''
+        <section class="botanical-identity"
+                 aria-label="Botanical identity"
+            style="padding-top: 1rem; padding-bottom: 1rem;"
+        >
+          <dl>
+            {plant_name_scientific_reference_html}
+            {author_primary_html}
+            {synonyms_html}
+            {plant_names_common_html}
+            {family_html}
+            {plant_type_html}
+            {native_range_html}
+            {life_form_html}
+            {medicinal_parts_html}
+          </dl>
+        </section>
+    '''
+        # <div class="toc-heading" style="margin-top: 2rem;">Quick facts</div>
+        # <p>
+            # {hero_taxonomy_genus} {hero_taxonomy_species} {hero_taxonomy_infraspecific_rank} {hero_taxonomy_infraspecies}
+        # </p>
+        # {author_html}
+    '''
+        <p>
+            <span style="font-weight: 700;">Scientific literature:</span>
+            <span>{consensus_tag}</span>
+            <span>({evidence_consensus_count} studies)</span> · 
+            <span aria-label="{consensus_tag}">{consensus_stars}</span>
+        </p>
+    '''
+    ## H1
+    h1_html = f'''
+        <h1 class="mb_4">
+            <i>{plant_name_scientific_reference}</i> {author_primary}
+        </h1>
+    '''
+    html_hero = f'''
+        {sections.breadcrumbs_explorer(url_slug)}
+        {h1_html}
+        {quick_facts_html}
+        <img 
+            src="/images/herbs/{plant_taxon_name_slug}.jpg"
+            style="
+                height: 100%;
+                object-fit: cover;
+                object-position: center;
+                margin-top: 1rem;
+                margin-bottom: 1rem;
+            "
+        >
+        <p>
+            {intro_text}
+        </p>
+        [toc]
+    '''
+    html_article += html_hero
+    return html_article
+
+def listing_hero_gen_old(plant_data):
     # print(json.dumps(plant_data, indent=4))
     # quit()
     plant_name_scientific_reference = plant_data['plant_name_scientific_reference']
@@ -2763,7 +3159,7 @@ def listing_hero_gen(plant_data):
     plant_name_common_preferred = plant_names_common_data['plant_name_common_preferred']
     h1_html = f'<h1 class="mb_4">{plant_name_scientific_reference}</h1>' ### DEFAULT
     if plant_name_common_preferred.strip() != '':
-        h1_html = f'<h1 class="mb_4">{plant_name_common_preferred}</h1>'
+        h1_html = f'<h1 class="mb_4">{plant_name_scientific_reference}</h1>'
     else:
         h1_html = f'<h1 class="mb_4">{plant_name_scientific_reference}</h1>'
     ### SCIENTIFIC NAME ACCEPTED
@@ -2826,8 +3222,21 @@ def listing_hero_gen(plant_data):
         consensus_tag = 'Very Sparse'
     intro_text = plant_data['intro']['llm_intro']
     ### FAMILY
-    if plant_data['taxonomies'] != []: hero_taxonomy = plant_data['taxonomies'][0]['family'].title()
-    else: hero_taxonomy = 'Not available'
+    # if plant_data['taxonomies'] != []: hero_taxonomy = plant_data['taxonomies'][0]['family'].title()
+    # else: hero_taxonomy = 'Not available'
+    if plant_data['plants__taxonomies']['plants__taxonomies'] != []: 
+        hero_taxonomy_family = plant_data['plants__taxonomies']['plants__taxonomies'][0]['taxonomy_family'].title()
+        hero_taxonomy_genus = plant_data['plants__taxonomies']['plants__taxonomies'][0]['taxonomy_genus'].title()
+        hero_taxonomy_species = plant_data['plants__taxonomies']['plants__taxonomies'][0]['taxonomy_species'].title()
+        hero_taxonomy_infraspecific_rank = plant_data['plants__taxonomies']['plants__taxonomies'][0]['taxonomy_infraspecific_rank'].title()
+        hero_taxonomy_infraspecies = plant_data['plants__taxonomies']['plants__taxonomies'][0]['taxonomy_infraspecies'].title()
+        # hero_taxonomy = 'Not available'
+    else: 
+        hero_taxonomy_family = 'Not available'
+        hero_taxonomy_genus = 'Not available'
+        hero_taxonomy_species = 'Not available'
+        hero_taxonomy_infraspecific_rank = 'Not available'
+        hero_taxonomy_infraspecies = 'Not available'
     ### DISTRIBUTIONS
     if plant_data['distributions'] != []: hero_distributions = plant_data['distributions'][0]['locality_continent'].title()
     else: hero_distributions = 'Not available'
@@ -2911,7 +3320,6 @@ def listing_hero_gen(plant_data):
                     </div>
                     <div>
                         <dt>Family</dt>
-                        <dd>{hero_taxonomy}</dd>
                     </div>
                     <div>
                         <dt>Distribution</dt>
@@ -2961,6 +3369,12 @@ def listing_hero_gen(plant_data):
         </p>
         <p>
             {intro_text}
+        </p>
+        <p>
+            {hero_taxonomy_family}
+        </p>
+        <p>
+            {hero_taxonomy_genus} {hero_taxonomy_species} {hero_taxonomy_infraspecific_rank} {hero_taxonomy_infraspecies}
         </p>
         <div class="quick-facts-mobile" style="margin-top: 2rem;">
             <img 

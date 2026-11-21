@@ -962,3 +962,75 @@ ORGANIZATION LISTING
     border: 1px solid oklch(92.2% 0 0);
 }
 
+.quick-facts-intro {
+    font-size: var(--font_xs);
+    display: table;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.quick-facts-intro > div {
+    display: table-row;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.quick-facts-intro dt,
+.quick-facts-intro dd {
+    display: table-cell;
+    padding: 10px 12px;
+    text-align: left;
+    vertical-align: top;
+}
+
+.quick-facts-intro dt {
+    width: 30%;
+    font-weight: 600;
+    color: #555;
+}
+
+.quick-facts-intro dd {
+    margin: 0;
+}
+
+.botanical-identity dl {
+    font-size: var(--font_xs);
+    display: grid;
+    grid-template-columns: minmax(140px, 30%) 1fr;
+    margin: 0;
+    border-top: 1px solid #ddd;
+}
+
+.botanical-identity dl > div {
+    display: contents;
+}
+
+.botanical-identity dt,
+.botanical-identity dd {
+    padding: 12px 16px;
+    margin: 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.botanical-identity dt {
+    font-weight: 600;
+    background: #f7f7f7;
+}
+
+.botanical-identity dd {
+    background: #fff;
+}
+
+@media (max-width: 480px) {
+    .botanical-identity dl {
+        grid-template-columns: 1fr;
+    }
+
+    .botanical-identity dt {
+        padding-bottom: 4px;
+        border-bottom: 0;
+    }
+
+    .botanical-identity dd {
+        padding-top: 4px;
+    }
+}

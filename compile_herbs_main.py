@@ -197,6 +197,22 @@ def run():
         except:
             output_data['plants__parts'] = []
 
+        ### PLANTS__TAXONOMIES
+        try:
+            output_data['plants__taxonomies'] = io.json_read(
+                f'{input_folderpath}/plants__taxonomies/{plant_name_scientific_reference}.json'
+            )
+        except:
+            output_data['plants__taxonomies'] = []
+
+        ### PLANTS__AUTHORS
+        try:
+            output_data['plants__authors'] = io.json_read(
+                f'{input_folderpath}/plants__authors/{plant_name_scientific_reference}.json'
+            )
+        except:
+            output_data['plants__authors'] = []
+
 
         io.json_write(output_filepath, output_data)
         # print(json.dumps(output_data, indent=4))

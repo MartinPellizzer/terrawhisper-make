@@ -1460,12 +1460,74 @@ def augment__plants__parts_old(regen=False):
         # print(json.dumps(input_data, indent=4))
         # quit()
 
+def augment__plants__taxonomies__gen(regen=False):
+    table_name = 'plants__taxonomies'
+    input_folderpath = f'{HUB_FOLDERPATH}/derive/{table_name}'
+    output_folderpath = f'{HUB_FOLDERPATH}/augment/{table_name}'
+    if regen:
+        try: shutil.rmtree(output_folderpath)
+        except: pass
+    io.folders_recursive_gen(output_folderpath)
+    ###
+    plants_items = sql.sql_plants()
+    for i, plant_item in enumerate(plants_items[:]):
+        print(f'AUGMENT HERBS {table_name} {i}/{len(plants_items)}')
+        plant_name_scientific_reference = plant_item['plant_name_scientific_reference']
+        input_filepath = f'{input_folderpath}/{plant_name_scientific_reference}.json'
+        output_filepath = f'{output_folderpath}/{plant_name_scientific_reference}.json'
+        input_data = io.json_read(input_filepath)
+        # print(plant_name_scientific_reference)
+        # print(json.dumps(input_data, indent=4))
+        # quit()
+        if os.path.exists(output_filepath): continue
+        # if input_data != []:
+            # print(json.dumps(input_data, indent=4))
+            # quit()
+            # pass
+        input_data['prose_llm'] = ''
+        io.json_write(output_filepath, input_data)
+        # print(json.dumps(input_data, indent=4))
+        # quit()
+
+def augment__plants__authors__gen(regen=False):
+    table_name = 'plants__authors'
+    input_folderpath = f'{HUB_FOLDERPATH}/derive/{table_name}'
+    output_folderpath = f'{HUB_FOLDERPATH}/augment/{table_name}'
+    if regen:
+        try: shutil.rmtree(output_folderpath)
+        except: pass
+    io.folders_recursive_gen(output_folderpath)
+    ###
+    plants_items = sql.sql_plants()
+    for i, plant_item in enumerate(plants_items[:]):
+        print(f'AUGMENT HERBS {table_name} {i}/{len(plants_items)}')
+        plant_name_scientific_reference = plant_item['plant_name_scientific_reference']
+        input_filepath = f'{input_folderpath}/{plant_name_scientific_reference}.json'
+        output_filepath = f'{output_folderpath}/{plant_name_scientific_reference}.json'
+        input_data = io.json_read(input_filepath)
+        # print(plant_name_scientific_reference)
+        # print(json.dumps(input_data, indent=4))
+        # quit()
+        if os.path.exists(output_filepath): continue
+        # if input_data != []:
+            # print(json.dumps(input_data, indent=4))
+            # quit()
+            # pass
+        input_data['prose_llm'] = ''
+        io.json_write(output_filepath, input_data)
+        # print(json.dumps(input_data, indent=4))
+        # quit()
+
+
 def run():
+    # augment__plants__taxonomies__gen(regen=True)
+    augment__plants__authors__gen(regen=True)
+
     # quit()
     # augment__plants__plants_names_common_gen(regen=True)
 
     # augment__plants__activities(regen=False)
-    augment__phrases__plants__activities(regen=False)
+    # augment__phrases__plants__activities(regen=False)
 
     # augment__plants__conditions(regen=False)
     # augment__plants__compounds(regen=False)

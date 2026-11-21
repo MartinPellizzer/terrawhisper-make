@@ -813,3 +813,41 @@ def sql__activity_id_by_name_normalize(name):
     else: item = None
     return item
 
+def sql__plants__taxonomies__by_plant_name_scientific_reference(name):
+    conn = sqlite3.connect(db_filepath)
+    cur = conn.cursor()
+    conn.row_factory = sqlite3.Row
+    query = """
+        SELECT
+            plants.*,
+            plants__taxonomies.*
+        FROM plants
+        JOIN plants__taxonomies
+            ON plants.plant_id = plants__taxonomies.plant_id
+        WHERE plants.plant_name_scientific_reference = ?
+    """
+    cursor = conn.execute(query, (name,))
+    rows = cursor.fetchall()
+    items = [dict(row) for row in rows]
+    conn.close()
+    return items
+
+def sql__plants__authors__by_plant_name_scientific_reference(name):
+    conn = sqlite3.connect(db_filepath)
+    cur = conn.cursor()
+    conn.row_factory = sqlite3.Row
+    query = """
+        SELECT
+            plants.*,
+            plants__authors.*
+        FROM plants
+        JOIN plants__authors
+            ON plants.plant_id = plants__authors.plant_id
+        WHERE plants.plant_name_scientific_reference = ?
+    """
+    cursor = conn.execute(query, (name,))
+    rows = cursor.fetchall()
+    items = [dict(row) for row in rows]
+    conn.close()
+    return items
+

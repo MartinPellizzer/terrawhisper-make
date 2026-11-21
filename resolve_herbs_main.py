@@ -875,9 +875,10 @@ def resolve__plants(source_foldername):
     print(json.dumps(last_resolved_data[0], indent=4))
     # quit()
 
-def resolve__taxonomies(source_foldername):
-    input_folderpath = f'{HUB_FOLDERPATH}/normalize/{source_foldername}/taxonomies/json'
-    output_folderpath = f'{HUB_FOLDERPATH}/resolve/{source_foldername}/taxonomies/json'
+def resolve__plants__taxonomies(source_foldername):
+    table_name = 'plants__taxonomies'
+    input_folderpath = f'{HUB_FOLDERPATH}/normalize/{source_foldername}/{table_name}/json'
+    output_folderpath = f'{HUB_FOLDERPATH}/resolve/{source_foldername}/{table_name}/json'
     try: shutil.rmtree(output_folderpath)
     except: pass
     os.makedirs(output_folderpath, exist_ok=True)
@@ -888,7 +889,60 @@ def resolve__taxonomies(source_foldername):
     ###
     input_filenames = os.listdir(input_folderpath)
     for i, input_filename in enumerate(input_filenames[:]):
-        print(f'RESOLVE PLANTS taxonomies {i}/{len(input_filenames)}')
+        print(f'RESOLVE PLANTS {table_name} {i}/{len(input_filenames)}')
+        output_filepath = f'{output_folderpath}/{input_filename}'
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        if os.path.exists(output_filepath): continue
+        ###
+        input_data = io.json_read(input_filepath)
+        resolved_data = []
+        # found = False
+        for input_item in input_data[:]:
+            # print(json.dumps(input_item, indent=4))
+            # quit()
+            plant_name_scientific_raw_normalize = input_item['plant_name_scientific_raw_normalize']
+            wcvp_row = sql.sql__ref__wcvp__names__resolve_to_plant_accepted(wcvp_conn, plant_name_scientific_raw_normalize)
+            # wcvp_row = resolve_utils.resolve_plant_accepted(wcvp_conn, plant_name_scientific_raw_normalize)
+            # print(json.dumps(dict(wcvp_row), indent=4))
+            # print(wcvp_row)
+            # quit()
+            ###
+            if wcvp_row:
+                wcvp_item = dict(wcvp_row)
+                # print(json.dumps(wcvp_item, indent=4))
+                input_item['plant_name_scientific_reference'] = wcvp_item['taxon_name']
+                input_item['plant_name_scientific_reference_normalize'] = wcvp_item['taxon_name_normalize']
+                resolved_data.append(input_item)
+                # if wcvp_item['taxon_name_normalize'] == 'hypericum australe':
+                    # print(json.dumps(input_item, indent=4))
+                    # quit()
+                    # print(json.dumps(wcvp_item, indent=4))
+                    # quit()
+                    # found = True
+        if resolved_data != []:
+            io.json_write(output_filepath, resolved_data)
+        # if found: 
+            # print(json.dumps(resolved_data, indent=4))
+            # quit()
+    wcvp_conn.close()
+    # print(json.dumps(last_resolved_data[0], indent=4))
+    # quit()
+
+def resolve__plants__authors(source_foldername):
+    table_name = 'plants__authors'
+    input_folderpath = f'{HUB_FOLDERPATH}/normalize/{source_foldername}/{table_name}/json'
+    output_folderpath = f'{HUB_FOLDERPATH}/resolve/{source_foldername}/{table_name}/json'
+    try: shutil.rmtree(output_folderpath)
+    except: pass
+    os.makedirs(output_folderpath, exist_ok=True)
+    ###
+    wcvp_folderpath = f'{HUB_FOLDERPATH}/reference/wcvp/wcvp.db'
+    wcvp_conn = sqlite3.connect(wcvp_folderpath)
+    wcvp_conn.row_factory = sqlite3.Row
+    ###
+    input_filenames = os.listdir(input_folderpath)
+    for i, input_filename in enumerate(input_filenames[:]):
+        print(f'RESOLVE PLANTS {table_name} {i}/{len(input_filenames)}')
         output_filepath = f'{output_folderpath}/{input_filename}'
         input_filepath = f'{input_folderpath}/{input_filename}'
         if os.path.exists(output_filepath): continue
@@ -1887,7 +1941,8 @@ def run():
     ### MASTER
     # resolve__plants(source_foldername='pubmed')
 
-    resolve__taxonomies(source_foldername='wcvp')
+    # resolve__plants__taxonomies(source_foldername='wcvp')
+    resolve__plants__authors(source_foldername='wcvp')
 
     # resolve__plants_names_common(source_foldername='col')
 

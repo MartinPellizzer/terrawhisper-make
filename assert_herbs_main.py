@@ -187,22 +187,57 @@ def assertions__plants__plants_names_common__table_create():
     conn.close()
 
 def assertions__taxonomies__table_create():
-    table_name = f'taxonomies'
+    table_name = f'plants__taxonomies'
     conn = sqlite3.connect(db_filepath)
     cur = conn.cursor()
     cur.execute(f"DROP TABLE IF EXISTS {table_name}")
     cur.execute(f'''
         CREATE TABLE IF NOT EXISTS {table_name} (
-            taxonomy_id INTEGER PRIMARY KEY,
+            plant_taxonomy_id INTEGER PRIMARY KEY,
             plant_id TEXT,
             source_name TEXT,
-            taxonomy_family TEXT
+            taxonomy_rank TEXT,
+            taxonomy_status TEXT,
+            taxonomy_family TEXT,
+            taxonomy_genus_hybrid TEXT,
+            taxonomy_genus TEXT,
+            taxonomy_species_hybrid TEXT,
+            taxonomy_species TEXT,
+            taxonomy_infraspecific_rank TEXT,
+            taxonomy_infraspecies TEXT
         );
     ''')
     conn.execute("PRAGMA journal_mode = WAL;")
     conn.execute("PRAGMA synchronous = OFF;")
     conn.execute("PRAGMA temp_store = MEMORY;")
-    cur.execute(f"CREATE INDEX IF NOT EXISTS idx_{table_name}_taxonomy_id ON {table_name}(taxonomy_id)")
+    cur.execute(f"CREATE INDEX IF NOT EXISTS idx_{table_name}_plant_taxonomy_id ON {table_name}(plant_taxonomy_id)")
+    cur.execute(f"CREATE INDEX IF NOT EXISTS idx_{table_name}_plant_id ON {table_name}(plant_id)")
+    conn.commit()
+    conn.close()
+
+def assertions__authors__table_create():
+    table_name = f'plants__authors'
+    conn = sqlite3.connect(db_filepath)
+    cur = conn.cursor()
+    cur.execute(f"DROP TABLE IF EXISTS {table_name}")
+    cur.execute(f'''
+        CREATE TABLE IF NOT EXISTS {table_name} (
+            plant_author_id INTEGER PRIMARY KEY,
+            plant_id TEXT,
+            source_name TEXT,
+            author_parenthetical TEXT,
+            author_primary TEXT,
+            author_publication TEXT,
+            publication_place TEXT,
+            publication_volume_and_page TEXT,
+            publication_year_first TEXT,
+            nomenclatural_remarks TEXT
+        );
+    ''')
+    conn.execute("PRAGMA journal_mode = WAL;")
+    conn.execute("PRAGMA synchronous = OFF;")
+    conn.execute("PRAGMA temp_store = MEMORY;")
+    cur.execute(f"CREATE INDEX IF NOT EXISTS idx_{table_name}_plant_author_id ON {table_name}(plant_author_id)")
     cur.execute(f"CREATE INDEX IF NOT EXISTS idx_{table_name}_plant_id ON {table_name}(plant_id)")
     conn.commit()
     conn.close()
@@ -284,7 +319,7 @@ def assertions__plants__plants_names_common__table_add(source_foldername):
     conn.close()
 
 def assertions__taxonomies__table_add(source_foldername):
-    table_name = 'taxonomies'
+    table_name = 'plants__taxonomies'
     input_folderpath = f'{HUB_FOLDERPATH}/resolve/{source_foldername}/{table_name}/json'
     input_filenames = os.listdir(input_folderpath)
     ###
@@ -302,9 +337,9 @@ def assertions__taxonomies__table_add(source_foldername):
     ###
     plant_item_failed = 0
     data_table = [] 
-    for i, taxonomy_item in enumerate(all_data):
+    for i, plants__taxonomies__item in enumerate(all_data):
         print(f'ASSERT HERBS {table_name} add - {i}/{len(all_data)}')
-        plant_item = sql.sql_plant_id_by_name_normalize(taxonomy_item['plant_name_scientific_reference_normalize'])
+        plant_item = sql.sql_plant_id_by_name_normalize(plants__taxonomies__item['plant_name_scientific_reference_normalize'])
         # plant_name_common_item = sql.sql_plant_name_common_id_by_name_normalize(item['plant_name_common_reference_normalize'])
         # print(plant_name_common_item)
         # quit()
@@ -320,11 +355,17 @@ def assertions__taxonomies__table_add(source_foldername):
         # study_id = study_item['study_id']
         data_table.append(
             {
-                'plant_id': plant_item['plant_id'],
-                'source_name': taxonomy_item['source_name'],
-                'taxonomy_family': taxonomy_item['taxonomy_family'],
-                # 'plant_name_common_id': plant_name_common_item['plant_name_common_id'],
-                # 'study_id': study_item['study_id'],
+                'plant_id': plant_id,
+                'source_name': plants__taxonomies__item['source_name'],
+                'taxonomy_rank': plants__taxonomies__item['taxonomy_rank'],
+                'taxonomy_status': plants__taxonomies__item['taxonomy_status'],
+                'taxonomy_family': plants__taxonomies__item['taxonomy_family'],
+                'taxonomy_genus_hybrid': plants__taxonomies__item['taxonomy_genus_hybrid'],
+                'taxonomy_genus': plants__taxonomies__item['taxonomy_genus'],
+                'taxonomy_species_hybrid': plants__taxonomies__item['taxonomy_species_hybrid'],
+                'taxonomy_species': plants__taxonomies__item['taxonomy_species'],
+                'taxonomy_infraspecific_rank': plants__taxonomies__item['taxonomy_infraspecific_rank'],
+                'taxonomy_infraspecies': plants__taxonomies__item['taxonomy_infraspecies'],
             }
         )
     conn = sqlite3.connect(db_filepath)
@@ -333,17 +374,130 @@ def assertions__taxonomies__table_add(source_foldername):
             INSERT OR IGNORE INTO {table_name} (
                 plant_id,
                 source_name,
-                taxonomy_family
+                taxonomy_rank,
+                taxonomy_status,
+                taxonomy_family,
+                taxonomy_genus_hybrid,
+                taxonomy_genus,
+                taxonomy_species_hybrid,
+                taxonomy_species,
+                taxonomy_infraspecific_rank,
+                taxonomy_infraspecies
             )
-            VALUES (?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     '''
     cur.executemany(
         sql_query,
         [
             (
-                item.get(f'plant_id'),
-                item.get(f'source_name'),
-                item.get(f'taxonomy_family'),
+                item.get('plant_id'),
+                item.get('source_name'),
+                item.get('taxonomy_rank'),
+                item.get('taxonomy_status'),
+                item.get('taxonomy_family'),
+                item.get('taxonomy_genus_hybrid'),
+                item.get('taxonomy_genus'),
+                item.get('taxonomy_species_hybrid'),
+                item.get('taxonomy_species'),
+                item.get('taxonomy_infraspecific_rank'),
+                item.get('taxonomy_infraspecies'),
+            )
+            for item in data_table
+        ]
+    )
+    conn.commit()
+    ### PEEK
+    conn.row_factory = sqlite3.Row
+    cursor = conn.execute(f'''
+        SELECT * 
+        FROM {table_name}
+    ''')
+    rows = cursor.fetchall()
+    items = [dict(row) for row in rows]
+    for item in items[:10]:
+        print(json.dumps(item, indent=4))
+    print(len(items))
+    ###
+    print(f'PLANT ITEM FAILED: {plant_item_failed}')
+    conn.close()
+
+def assertions__authors__table_add(source_foldername):
+    table_name = 'plants__authors'
+    input_folderpath = f'{HUB_FOLDERPATH}/resolve/{source_foldername}/{table_name}/json'
+    input_filenames = os.listdir(input_folderpath)
+    ###
+    all_data = []
+    for i, input_filename in enumerate(input_filenames[:]):
+        print(f'ASSERT HERBS {table_name} add - {i}/{len(input_filenames)}')
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        input_data = io.json_read(input_filepath)
+        for input_item in input_data:
+            all_data.append(input_item)
+            # print(json.dumps(input_item, indent=4))
+            # quit()
+    # print(json.dumps(all_data[0], indent=4))
+    # quit()
+    ###
+    plant_item_failed = 0
+    data_table = [] 
+    for i, plants__authors__item in enumerate(all_data):
+        print(f'ASSERT HERBS {table_name} add - {i}/{len(all_data)}')
+        plant_item = sql.sql_plant_id_by_name_normalize(plants__authors__item['plant_name_scientific_reference_normalize'])
+        # plant_name_common_item = sql.sql_plant_name_common_id_by_name_normalize(item['plant_name_common_reference_normalize'])
+        # print(plant_name_common_item)
+        # quit()
+        # study_item = sql.sql_study_id_by_pmid(item['source_id'])
+        ###
+        # print(plant_item)
+        # print(plant_name_common_item)
+        try: plant_id = plant_item['plant_id']
+        except:
+            plant_item_failed += 1
+            continue
+        # plant_name_common_id = plant_name_common_item['plant_name_common_id']
+        # study_id = study_item['study_id']
+        data_table.append(
+            {
+                'plant_id': plant_id,
+                'source_name': plants__authors__item['source_name'],
+                'author_parenthetical': plants__authors__item['author_parenthetical'],
+                'author_primary': plants__authors__item['author_primary'],
+                'author_publication': plants__authors__item['author_publication'],
+                'publication_place': plants__authors__item['publication_place'],
+                'publication_volume_and_page': plants__authors__item['publication_volume_and_page'],
+                'publication_year_first': plants__authors__item['publication_year_first'],
+                'nomenclatural_remarks': plants__authors__item['nomenclatural_remarks'],
+            }
+        )
+    conn = sqlite3.connect(db_filepath)
+    cur = conn.cursor()
+    sql_query = f'''
+            INSERT OR IGNORE INTO {table_name} (
+                plant_id,
+                source_name,
+                author_parenthetical,
+                author_primary,
+                author_publication,
+                publication_place,
+                publication_volume_and_page,
+                publication_year_first,
+                nomenclatural_remarks
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    '''
+    cur.executemany(
+        sql_query,
+        [
+            (
+                item.get('plant_id'),
+                item.get('source_name'),
+                item.get('author_parenthetical'),
+                item.get('author_primary'),
+                item.get('author_publication'),
+                item.get('publication_place'),
+                item.get('publication_volume_and_page'),
+                item.get('publication_year_first'),
+                item.get('nomenclatural_remarks'),
             )
             for item in data_table
         ]
@@ -1191,10 +1345,23 @@ def assertions__phrases__plants__activities___table_add():
     ###
     conn.close()
 
+def assertions__plants__taxonomies__table_join():
+    plant_name = "Panax ginseng"
+    # plant_name = 'Senna occidentalis'
+    items = sql.sql__plants__taxonomies__by_plant_name_scientific_reference(plant_name)
+    for item in items[:]:
+        print(json.dumps(item, indent=4))
+    print(len(items))
+
 
 def run():
-    assertions__taxonomies__table_create()
-    assertions__taxonomies__table_add(source_foldername='wcvp')
+    # assertions__taxonomies__table_create()
+    # assertions__taxonomies__table_add(source_foldername='wcvp')
+
+    assertions__authors__table_create()
+    assertions__authors__table_add(source_foldername='wcvp')
+
+    # assertions__plants__taxonomies__table_join()
     # TODO: do join function, verify plants_taxonomy matches correctly
 
     # assertions__plants__plants_names_common__table_create()

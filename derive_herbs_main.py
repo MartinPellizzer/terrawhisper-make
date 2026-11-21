@@ -1,3 +1,4 @@
+import os
 import json
 import sqlite3
 from collections import defaultdict
@@ -1469,8 +1470,83 @@ def derive__phrases__plants__activities():
             last = output_items
     print(json.dumps(last, indent=4))
 
+def derive__plants__taxonomies():
+    table_name = 'plants__taxonomies'
+    output_folderpath = f'''{HUB_FOLDERPATH}/derive/{table_name}'''
+    try: shutil.rmtree(output_folderpath)
+    except: pass
+    io.folders_recursive_gen(output_folderpath)
+    ###
+    plants_items = sql.sql_plants()
+    last = []
+    for i, plant_item in enumerate(plants_items[:]):
+        print(f'DERIVE HERBS {table_name} {i}/{len(plants_items)}')
+        # print(f'{plant_item}')
+        plant_name_scientific_reference = plant_item['plant_name_scientific_reference']
+        sql_items = sql.sql__plants__taxonomies__by_plant_name_scientific_reference(plant_name_scientific_reference)
+        # print(json.dumps(sql_items, indent=4))
+        # quit()
+        ###
+        output_items = sql_items
+        output_item = {
+            'plants__taxonomies': output_items,
+        }
+        output_filepath = f'''{HUB_FOLDERPATH}/derive/{table_name}/{plant_name_scientific_reference}.json'''
+        io.folder_create_from_filepath(output_filepath)
+        io.json_write(output_filepath, output_item)
+        if output_items != []:
+            last = output_items
+        ###
+    # print(json.dumps(last, indent=4))
+    filenames = os.listdir(output_folderpath)
+    for filename in filenames:
+        filepath = f'{output_folderpath}/{filename}'
+        data = io.json_read(filepath)
+        print(json.dumps(data, indent=4))
+        break
+    # quit()
+
+def derive__plants__authors():
+    table_name = 'plants__authors'
+    output_folderpath = f'''{HUB_FOLDERPATH}/derive/{table_name}'''
+    try: shutil.rmtree(output_folderpath)
+    except: pass
+    io.folders_recursive_gen(output_folderpath)
+    ###
+    plants_items = sql.sql_plants()
+    last = []
+    for i, plant_item in enumerate(plants_items[:]):
+        print(f'DERIVE HERBS {table_name} {i}/{len(plants_items)}')
+        # print(f'{plant_item}')
+        plant_name_scientific_reference = plant_item['plant_name_scientific_reference']
+        sql_items = sql.sql__plants__authors__by_plant_name_scientific_reference(plant_name_scientific_reference)
+        # print(json.dumps(sql_items, indent=4))
+        # quit()
+        ###
+        output_items = sql_items
+        output_item = {
+            'plants__authors': output_items,
+        }
+        output_filepath = f'''{HUB_FOLDERPATH}/derive/{table_name}/{plant_name_scientific_reference}.json'''
+        io.folder_create_from_filepath(output_filepath)
+        io.json_write(output_filepath, output_item)
+        if output_items != []:
+            last = output_items
+        ###
+    # print(json.dumps(last, indent=4))
+    filenames = os.listdir(output_folderpath)
+    for filename in filenames:
+        filepath = f'{output_folderpath}/{filename}'
+        data = io.json_read(filepath)
+        print(json.dumps(data, indent=4))
+        break
+    # quit()
+
 
 def run():
+    # derive__plants__taxonomies()
+    derive__plants__authors()
+
     # plants_activities_derive()
 
     # derive__plants__plants_names_common()
@@ -1483,7 +1559,7 @@ def run():
 
     # derive_morphology_gen()
 
-    derive__phrases__plants__activities()
+    # derive__phrases__plants__activities()
 
     return
 
