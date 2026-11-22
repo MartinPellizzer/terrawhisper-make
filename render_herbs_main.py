@@ -2825,64 +2825,6 @@ def listing_hero_gen(plant_data):
                 <li>publication_year_first: {publication_year_first}</li>
                 <li>nomenclatural_remarks: {nomenclatural_remarks}</li>
             </ul>
-<section class="nomenclature"
-         aria-labelledby="nomenclature-heading">
-
-  <h2 id="nomenclature-heading">
-    Nomenclature and Original Publication
-  </h2>
-
-  <!-- Main botanical citation -->
-  <p class="nomenclatural-citation">
-    <strong>Original publication:</strong>
-
-    <cite>
-      Species Plantarum
-    </cite>
-    1: 492. 1753.
-  </p>
-
-  <!-- Detailed publication information -->
-  <div class="publication-details">
-
-    <h3>Publication details</h3>
-
-    <dl>
-      <dt>Name author</dt>
-      <dd>L.</dd>
-
-      <dt>Original publication author</dt>
-      <dd>Carl Linnaeus</dd>
-
-      <dt>Publication</dt>
-      <dd>
-        <cite>Species Plantarum</cite>
-      </dd>
-
-      <dt>Volume and page</dt>
-      <dd>1: 492</dd>
-
-      <dt>First published</dt>
-      <dd>
-        <time datetime="1753">1753</time>
-      </dd>
-    </dl>
-
-  </div>
-
-  <!-- Optional nomenclatural remarks -->
-  <div class="nomenclatural-remarks">
-
-    <h3>Nomenclatural remarks</h3>
-
-    <p>
-      Additional information about the nomenclature
-      of this plant name.
-    </p>
-
-  </div>
-
-</section>
         '''
     else:
         authors_items = ''
@@ -3082,6 +3024,7 @@ def listing_hero_gen(plant_data):
             </div>
         '''          
     ###
+    # ;jump
     quick_facts_html = f'''
         <section class="botanical-identity"
                  aria-label="Botanical identity"
@@ -3630,21 +3573,160 @@ def listing_taxonomies_gen_new(plant_data, render_table=True):
         '''
     return html_article
 
+def listing_author_gen(plant_data):
+    ### AUTHORS (DATA)
+    if plant_data['plants__authors']['plants__authors'] != []: 
+        authors_items = plant_data['plants__authors']['plants__authors']
+        source_name = authors_items[0]['source_name']
+        author_parenthetical = authors_items[0]['author_parenthetical']
+        author_primary = authors_items[0]['author_primary']
+        author_publication = authors_items[0]['author_publication']
+        publication_place = authors_items[0]['publication_place']
+        publication_volume_and_page = authors_items[0]['publication_volume_and_page']
+        publication_year_first = authors_items[0]['publication_year_first']
+        nomenclatural_remarks = authors_items[0]['nomenclatural_remarks']
+        author_html = f'''
+            <ul>
+                <li>source_name: {source_name}</li>
+                <li>author_parenthetical: {author_parenthetical}</li>
+                <li>author_primary: {author_primary}</li>
+                <li>author_publication: {author_publication}</li>
+                <li>publication_place: {publication_place}</li>
+                <li>publication_volume_and_page: {publication_volume_and_page}</li>
+                <li>publication_year_first: {publication_year_first}</li>
+                <li>nomenclatural_remarks: {nomenclatural_remarks}</li>
+            </ul>
+        '''
+    else:
+        source_name = ''
+        author_parenthetical = ''
+        author_primary = ''
+        author_publication = ''
+        publication_place = ''
+        publication_volume_and_page = ''
+        publication_year_first = ''
+        nomenclatural_remarks = ''
+        author_html = ''
+            # <strong>Original publication:</strong>
+    html_one_liner = f'''
+        <p class="nomenclatural-citation">
+            Original publication:
+            <cite>Species Plantarum</cite> 1: 492. 1753.
+        </p>
+    '''
+    author_primary_html = f''
+    if author_primary != '':
+        author_primary_html = f'''
+            <div>
+                <dt>Primary author</dt>
+                <dd>{author_primary}</dd>
+            </div>
+        '''          
+    author_parenthetical_html = f''
+    if author_parenthetical != '':
+        author_parenthetical_html = f'''
+            <div>
+                <dt>Parenthetical author</dt>
+                <dd>{author_parenthetical}</dd>
+            </div>
+        '''          
+    author_publication_html = f''
+    if author_publication != '':
+        author_publication_html = f'''
+            <div>
+                <dt>Original publication author</dt>
+                <dd>{author_publication}</dd>
+            </div>
+        '''          
+    publication_place_html = f''
+    if publication_place != '':
+        publication_place_html = f'''
+            <div>
+                <dt>Publication</dt>
+                <dd><cite>{publication_place}</cite></dd>
+            </div>
+        '''          
+    publication_volume_and_page_html = f''
+    if publication_volume_and_page != '':
+        publication_volume_and_page_html = f'''
+            <div>
+                <dt>Volume and page</dt>
+                <dd>{publication_volume_and_page}</dd>
+            </div>
+        '''          
+    publication_year_first_html = f''
+    if publication_year_first != '':
+        publication_year_first_polish = publication_year_first.replace('(', '').replace(')', '').strip()
+        publication_year_first_html = f'''
+            <div>
+                <dt>First published year</dt>
+                <dd><time datetime="{publication_year_first_polish}">{publication_year_first_polish}</time></dd>
+            </div>
+        '''          
+    nomenclatural_remarks_html = f''
+    if nomenclatural_remarks != '':
+        nomenclatural_remarks_html = f'''
+            <h4>Nomenclatural remarks</h4>
+            <p>{nomenclatural_remarks}</p>
+        '''
+    ###
+    html_details = ''
+    if author_primary_html != '': html_details += f'{author_primary_html}\n'
+    if author_parenthetical_html != '': html_details += f'{author_parenthetical_html}\n'
+    if author_publication_html != '': html_details += f'{author_publication_html}\n'
+    if publication_place_html != '': html_details += f'{publication_place_html}\n'
+    if publication_volume_and_page_html != '': html_details += f'{publication_volume_and_page_html}\n'
+    if publication_year_first_html != '': html_details += f'{publication_year_first_html}\n'
+    if html_details != '':
+        html_details = f'''
+            <h4 style="margin-top: 1rem; margin-bottom: 1rem;">Publication details</h4>
+            <dl>
+                {author_primary_html}
+                {author_parenthetical_html}
+                {author_publication_html}
+                {publication_place_html}
+                {publication_volume_and_page_html}
+                {publication_year_first_html}
+            </dl>
+        '''
+    # ;jump
+    html = f'''
+        <section 
+            class="botanical-identity"
+            aria-labelledby="nomenclature-heading"
+        >
+            <h3>Nomenclature and Original Publication</h3>
+            {html_one_liner}
+            {html_details}
+            {nomenclatural_remarks_html}
+        </section>
+    '''
+    return html
+
 def listing_classification(plant_data):
     html_article = ''
-    html_common_names = listing_names_common_gen_new(plant_data)
+    try: html_common_names = listing_names_common_gen_new(plant_data)
+    except: html_common_name = ''
     try: html_synonyms = listing_synonyms_gen_new(plant_data)
     except: html_synonyms = ''
     try: html_taxonomy = listing_taxonomies_gen_new(plant_data)
     except: html_taxonomy = ''
-    html_article = f'''
-        <section>
-            <h2>Classification</h2>
-            {html_common_names}
-            {html_synonyms}
-            {html_taxonomy}
-        </section>
-    '''
+    try: html_author = listing_author_gen(plant_data)
+    except: html_author = ''
+    html_subsections = ''
+    if html_common_names != '': html_subsections += f'{html_common_names}\n'
+    if html_synonyms != '': html_subsections += f'{html_synonyms}\n'
+    if html_taxonomy != '': html_subsections += f'{html_taxonomy}\n'
+    if html_author != '': html_subsections += f'{html_author}\n'
+    if html_subsections != '':
+        html_article = f'''
+            <section>
+                <h2>Classification</h2>
+                {html_subsections}
+            </section>
+        '''
+    else:
+        html_article = f''
     return html_article
 
 def listing_distribution_gen_new(plant_data, render_table=True):
