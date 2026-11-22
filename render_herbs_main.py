@@ -2746,6 +2746,9 @@ def quick_facts(plant_data):
     return quick_facts_html 
 
 def listing_hero_gen(plant_data):
+    # if plant_data['plant_name_scientific_reference'].lower() == 'panax ginseng':
+        # print(json.dumps(plant_data['plants__geographies'], indent=4))
+        # quit()
     plant_name_scientific_reference = plant_data['plant_name_scientific_reference']
     plant_taxon_name_slug = polish.sluggify(plant_name_scientific_reference)
     plant_taxon_name_normalized = normalize_utils.normalize_plant_name(plant_name_scientific_reference)
@@ -2837,6 +2840,29 @@ def listing_hero_gen(plant_data):
         publication_year_first = ''
         nomenclatural_remarks = ''
         author_html = ''
+
+    ### GEOGRAPHIES (DATA)
+    if plant_data['plants__geographies']['plants__geographies'] != []: 
+        geographies_items = plant_data['plants__geographies']['plants__geographies']
+        source_name = geographies_items[0]['source_name']
+        geographic_area = geographies_items[0]['geographic_area']
+        lifeform_description = geographies_items[0]['lifeform_description'].title()
+        climate_description = geographies_items[0]['climate_description']
+        geographies_html = f'''
+            <ul>
+                <li>source_name: {source_name}</li>
+                <li>geographic_area: {geographic_area}</li>
+                <li>lifeform_description: {lifeform_description}</li>
+                <li>climate_description: {climate_description}</li>
+            </ul>
+        '''
+    else:
+        geographies_html = ''
+        authors_items = ''
+        source_name = ''
+        geographic_area = ''
+        lifeform_description = ''
+        climate_description = ''
 
     ### DISTRIBUTIONS
     if plant_data['distributions'] != []: hero_distributions = plant_data['distributions'][0]['locality_continent'].title()
@@ -2986,34 +3012,33 @@ def listing_hero_gen(plant_data):
         '''          
     ###
     plant_type_html = f''
-    # if hero_taxonomy_family != '':
-    if True:
+    if lifeform_description != '':
         plant_type_html = f'''
             <div>
                 <dt>Plant type</dt>
-                <dd></dd>
+                <dd>{lifeform_description}</dd>
             </div>
         '''          
     ###
     native_range_html = f''
-    # if hero_taxonomy_family != '':
-    if True:
+    if geographic_area != '':
         native_range_html = f'''
             <div>
                 <dt>Native range</dt>
-                <dd></dd>
+                <dd>{geographic_area}</dd>
             </div>
         '''          
     ###
+    """
     life_form_html = f''
-    # if hero_taxonomy_family != '':
-    if True:
+    if lifeform_description != '':
         life_form_html = f'''
             <div>
                 <dt>Life form</dt>
-                <dd></dd>
+                <dd>{lifeform_description}</dd>
             </div>
         '''          
+    """
     ###
     medicianl_parts_html = f''
     if hero_plant_parts_html != '':
@@ -3038,7 +3063,6 @@ def listing_hero_gen(plant_data):
             {family_html}
             {plant_type_html}
             {native_range_html}
-            {life_form_html}
             {medicinal_parts_html}
           </dl>
         </section>
@@ -3607,13 +3631,6 @@ def listing_author_gen(plant_data):
         publication_year_first = ''
         nomenclatural_remarks = ''
         author_html = ''
-            # <strong>Original publication:</strong>
-    html_one_liner = f'''
-        <p class="nomenclatural-citation">
-            Original publication:
-            <cite>Species Plantarum</cite> 1: 492. 1753.
-        </p>
-    '''
     author_primary_html = f''
     if author_primary != '':
         author_primary_html = f'''
@@ -3670,6 +3687,18 @@ def listing_author_gen(plant_data):
             <p>{nomenclatural_remarks}</p>
         '''
     ###
+    html_one_liner_subsection = ''
+    if publication_place != '': html_one_liner_subsection += f'<cite>{publication_place}</cite> '
+    if publication_volume_and_page != '': html_one_liner_subsection += f'{publication_volume_and_page} '
+    if publication_year_first != '': html_one_liner_subsection += f'<time datetime="{publication_year_first_polish}">{publication_year_first}<time>'
+    if html_one_liner_subsection != '':
+        html_one_liner_subsection = f'''
+            <p>
+                Original publication:
+                {html_one_liner_subsection}.
+            </p>
+        '''
+    ###
     html_details = ''
     if author_primary_html != '': html_details += f'{author_primary_html}\n'
     if author_parenthetical_html != '': html_details += f'{author_parenthetical_html}\n'
@@ -3696,7 +3725,7 @@ def listing_author_gen(plant_data):
             aria-labelledby="nomenclature-heading"
         >
             <h3>Nomenclature and Original Publication</h3>
-            {html_one_liner}
+            {html_one_liner_subsection}
             {html_details}
             {nomenclatural_remarks_html}
         </section>

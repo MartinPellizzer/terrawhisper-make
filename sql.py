@@ -851,3 +851,22 @@ def sql__plants__authors__by_plant_name_scientific_reference(name):
     conn.close()
     return items
 
+def sql__plants__geographies__by_plant_name_scientific_reference(name):
+    conn = sqlite3.connect(db_filepath)
+    cur = conn.cursor()
+    conn.row_factory = sqlite3.Row
+    query = """
+        SELECT
+            plants.*,
+            plants__geographies.*
+        FROM plants
+        JOIN plants__geographies
+            ON plants.plant_id = plants__geographies.plant_id
+        WHERE plants.plant_name_scientific_reference = ?
+    """
+    cursor = conn.execute(query, (name,))
+    rows = cursor.fetchall()
+    items = [dict(row) for row in rows]
+    conn.close()
+    return items
+
