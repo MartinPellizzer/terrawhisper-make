@@ -1034,3 +1034,12 @@ ORGANIZATION LISTING
         padding-top: 4px;
     }
 }
+
+.list-indent {
+    margin-left: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.source {
+    font-size: var(--font_xxs);
+}

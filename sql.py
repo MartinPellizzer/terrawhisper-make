@@ -61,6 +61,30 @@ def sql__ref__wcvp__names__resolve_to_plant_accepted(conn, name_normalize):
             # quit()
     return wcvp_row
 
+def sql__ref__wcvp__names__get_plant_synonyms(conn, name_normalize):
+    wcvp_cur = conn.cursor()
+    # Resolve supplied name
+    wcvp_cur.execute("""
+        SELECT *
+        FROM ref__wcvp__names
+        WHERE taxon_name_normalize = ?
+    """, (name_normalize,))
+    wcvp_row = wcvp_cur.fetchone()
+    if wcvp_row is None:
+        return []
+    wcvp_item = dict(wcvp_row)
+    # Get accepted plant name ID
+    accepted_id = wcvp_item['accepted_plant_name_id']
+    ###
+    # Retrieve all synonyms
+    wcvp_cur.execute("""
+        SELECT *
+        FROM ref__wcvp__names
+        WHERE accepted_plant_name_id = ?
+          AND plant_name_id != ?
+        ORDER BY taxon_name
+    """, (accepted_id, accepted_id))
+    return [dict(row) for row in wcvp_cur.fetchall()]
 
 ########################################
 # ENTITIES
@@ -862,6 +886,25 @@ def sql__plants__geographies__by_plant_name_scientific_reference(name):
         FROM plants
         JOIN plants__geographies
             ON plants.plant_id = plants__geographies.plant_id
+        WHERE plants.plant_name_scientific_reference = ?
+    """
+    cursor = conn.execute(query, (name,))
+    rows = cursor.fetchall()
+    items = [dict(row) for row in rows]
+    conn.close()
+    return items
+
+def sql__plants__synonyms__by_plant_name_scientific_reference(name):
+    conn = sqlite3.connect(db_filepath)
+    cur = conn.cursor()
+    conn.row_factory = sqlite3.Row
+    query = """
+        SELECT
+            plants.*,
+            plants__synonyms.*
+        FROM plants
+        JOIN plants__synonyms
+            ON plants.plant_id = plants__synonyms.plant_id
         WHERE plants.plant_name_scientific_reference = ?
     """
     cursor = conn.execute(query, (name,))

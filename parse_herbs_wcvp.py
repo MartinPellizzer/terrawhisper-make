@@ -455,11 +455,67 @@ def parse__plants__geographies():
     print(json.dumps(output_items, indent=4))
     # quit()
 
+def parse__plants__synonyms():
+    table_name = 'plants__synonyms'
+    output_folderpath = f'{HUB_FOLDERPATH}/parse/wcvp/{table_name}/json'
+    try: shutil.rmtree(output_folderpath)
+    except: pass
+    io.folders_recursive_gen(output_folderpath)
+    ###
+    wcvp_folderpath = f'{HUB_FOLDERPATH}/reference/wcvp/wcvp.db'
+    conn = sqlite3.connect(wcvp_folderpath)
+    conn.row_factory = sqlite3.Row
+    ###
+    plants_items = sql.sql_plants()
+    for i, plant_item in enumerate(plants_items[:]):
+        print(f'{i}/{len(plants_items)}')
+        # print(json.dumps(plant_item, indent=4))
+        # quit()
+        plant_id = plant_item['plant_id']
+        plant_name_scientific_reference = plant_item['plant_name_scientific_reference']
+        plant_name_scientific_reference_normalize = plant_item['plant_name_scientific_reference_normalize']
+        items = sql.sql__ref__wcvp__names__get_plant_synonyms(conn, plant_name_scientific_reference_normalize)
+        # if plant_name_scientific_reference_normalize != 'panax ginseng':
+            # continue
+        # print(json.dumps(synonyms_items, indent=4))
+        # quit()
+        ###
+        """
+        cursor = conn.execute('''
+            SELECT *
+            FROM ref__wcvp__names
+            WHERE taxon_name_normalize = ?
+        ''' (plant_name_scientific_reference_normalize,))
+        rows = cursor.fetchall()
+        items = [dict(row) for row in rows]
+        """
+        ###
+        output_items = []
+        for item in items:
+            # print(json.dumps(item, indent=4))
+            # quit()
+            output_item = {
+                'plant_name_scientific_raw': plant_name_scientific_reference,
+                'source_name': 'WCVP',
+                'synonym_scientific_reference': item['taxon_name'],
+                'author_primary': item['primary_author'],
+            }
+            output_items.append(output_item)
+            # print(json.dumps(output_items, indent=4))
+            # quit()
+        output_filepath = f'{output_folderpath}/{plant_name_scientific_reference_normalize}.json'
+        io.json_write(output_filepath, output_items)
+        # print(json.dumps(output_items, indent=4))
+        # quit()
+    print(json.dumps(output_items, indent=4))
+    # quit()
+
 def run():
     print('PARSE >> wcvp')
+    parse__plants__synonyms()
     # parse__plants__taxonomies()
     # parse__plants__authors()
-    parse__plants__geographies()
+    # parse__plants__geographies()
     return
 
     schema_items = schema_herbs.data['items']

@@ -221,6 +221,14 @@ def run():
         except:
             output_data['plants__geographies'] = []
 
+        ### PLANTS__SYNONYMS
+        try:
+            output_data['plants__synonyms'] = io.json_read(
+                f'{input_folderpath}/plants__synonyms/{plant_name_scientific_reference}.json'
+            )
+        except:
+            output_data['plants__synonyms'] = []
+
 
         io.json_write(output_filepath, output_data)
         # print(json.dumps(output_data, indent=4))

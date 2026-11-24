@@ -2877,9 +2877,9 @@ def listing_hero_gen(plant_data):
     if hero_plant_parts_html == '': hero_plant_parts_html = 'Not available'
     ### SYNONYMS
     hero_synonyms_list = []
-    plant_synonyms = plant_data['synonyms']
+    plant_synonyms = plant_data['plants__synonyms']['plants__synonyms']
     for item in plant_synonyms:
-        hero_synonyms_list.append(item['plant_synonym_reference'])
+        hero_synonyms_list.append(item['synonym_scientific_reference'])
     hero_synonyms_html = ' · '.join(hero_synonyms_list[:2]).title()
     hero_synonyms_count = len(plant_synonyms) - 2
     if len(hero_synonyms_list) <= 0:
@@ -3486,27 +3486,59 @@ def listing_names_common_gen_new(plant_data, render_table=True):
 
 def listing_synonyms_gen_new(plant_data, render_table=True):
     html_article = ''
-    section_data = plant_data['plants_synonyms']['plants_synonyms']
+    # print(json.dumps(plant_data['plants_synonyms'], indent=4))
+    # quit()
+    # section_data = plant_data['plants_synonyms']['plants_synonyms']
+    section_data = plant_data['plants__synonyms']['plants__synonyms']
     if section_data != []:
         # print(json.dumps(section_data, indent=4))
         # quit()
         ### PROSE
-        paragraphs_text = plant_data['plants_synonyms']['llm_intro']
+        # paragraphs_text = plant_data['plants__synonyms']['llm_intro']
+        ### LIST
+        html_synonyms = ''
+        synonyms_lst = []
+        for item in section_data:
+            synonym_item = {
+                'synonym_scientific_reference': item['synonym_scientific_reference'],
+                'author_primary': item['author_primary'],
+            }
+            synonyms_lst.append(synonym_item)
+        if synonyms_lst != []:
+            html_synonyms += f'<ul class="list-indent">\n'
+            for synonym_item in synonyms_lst:
+                html_synonyms += f'''
+                    <li>
+                        <i>{synonym_item['synonym_scientific_reference']}</i> 
+                        {synonym_item['author_primary']}
+                    </li>\n
+                '''
+            html_synonyms += f'</ul>\n'
+            
         ### SOURCES
         html_sources = f'''
-            <p style="margin-top: 1rem;">
-                Sources: The World Checklist of Vascular Plants (WCVP)
+            <p style="margin-top: 1rem;" class="source">
+                Source: The World Checklist of Vascular Plants (WCVP)
             </p>
         '''
         ###
+                # <p>{paragraphs_text}</p>
+        plant_name_scientific_reference = plant_data['plant_name_scientific_reference']
         html_article += f'''
             <section>
                 <h3>Synonyms</h3>
-                <p>{paragraphs_text}</p>
+                <p style="margin-bottom: 1rem;">
+                    The following scientific names are synonyms of this plant.
+                </p>
+                {html_synonyms}
+                <p style="margin-bottom: 1rem;">
+                    The currently accepted name is <i>{plant_name_scientific_reference}</i>.
+                </p>
                 {html_sources}
             </section>
         '''
-    return html_article
+        return html_article
+    return ''
 
 def listing_taxonomies_gen_new(plant_data, render_table=True):
     html_article = ''
@@ -3736,6 +3768,7 @@ def listing_classification(plant_data):
     html_article = ''
     try: html_common_names = listing_names_common_gen_new(plant_data)
     except: html_common_name = ''
+    html_synonyms = listing_synonyms_gen_new(plant_data)
     try: html_synonyms = listing_synonyms_gen_new(plant_data)
     except: html_synonyms = ''
     try: html_taxonomy = listing_taxonomies_gen_new(plant_data)
@@ -4183,7 +4216,4 @@ def run():
     for master_item in master_items[:]:
         print(master_item)
         plant_listing_page_gen(master_item)
-
-### TODO: count hero studies correctly
-
 
