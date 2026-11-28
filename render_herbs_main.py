@@ -2792,7 +2792,11 @@ def listing_hero_gen(plant_data):
     else: 
         consensus_stars = '★☆☆☆☆'
         consensus_tag = 'Very Sparse'
-    intro_text = plant_data['intro']['llm_intro']
+    intro_text = f'''
+        <p>
+            {plant_data['intro']['llm_intro']}
+        </p>
+    '''
     ### TAXONOMY
     if plant_data['plants__taxonomies']['plants__taxonomies'] != []: 
         hero_taxonomy_family = plant_data['plants__taxonomies']['plants__taxonomies'][0]['taxonomy_family'].title()
@@ -2877,7 +2881,8 @@ def listing_hero_gen(plant_data):
     if hero_plant_parts_html == '': hero_plant_parts_html = 'Not available'
     ### SYNONYMS
     hero_synonyms_list = []
-    plant_synonyms = plant_data['plants__synonyms']['plants__synonyms']
+    # print(json.dumps(plant_data['plants__synonyms'], indent=4))
+    plant_synonyms = plant_data['plants__synonyms']['plants__synonyms']['plants__synonyms__all']
     for item in plant_synonyms:
         hero_synonyms_list.append(item['synonym_scientific_reference'])
     hero_synonyms_html = ' · '.join(hero_synonyms_list[:2]).title()
@@ -3086,23 +3091,49 @@ def listing_hero_gen(plant_data):
             <i>{plant_name_scientific_reference}</i> {author_primary}
         </h1>
     '''
-    html_hero = f'''
-        {sections.breadcrumbs_explorer(url_slug)}
-        {h1_html}
-        {quick_facts_html}
+    html_image = f'''
         <img 
             src="/images/herbs/{plant_taxon_name_slug}.jpg"
             style="
-                height: 100%;
+                height: 75%;
                 object-fit: cover;
                 object-position: center;
                 margin-top: 1rem;
                 margin-bottom: 1rem;
             "
         >
-        <p>
-            {intro_text}
-        </p>
+    '''
+    html_image = f'''
+    <figure
+
+            style="
+                width: 100%;
+                margin: 1rem 0;
+            "
+    >
+        <img
+            src="/images/herbs/{plant_taxon_name_slug}.jpg"
+            alt="{plant_name_scientific_reference} plant material"
+            width="768"
+            height="768"
+            fetchpriority="high"
+            style="
+               display: block;
+                width: 100%;
+                aspect-ratio: 4 / 3;
+                height: auto;
+                object-fit: cover;
+                object-position: center;
+            "
+        >
+    </figure>
+    '''
+    html_hero = f'''
+        {sections.breadcrumbs_explorer(url_slug)}
+        {h1_html}
+        {intro_text}
+        {html_image}
+        {quick_facts_html}
         [toc]
     '''
     html_article += html_hero
@@ -3484,11 +3515,13 @@ def listing_names_common_gen_new(plant_data, render_table=True):
         '''
     return html_article
 
+# TODO: add basionyms, (author_historical) (year)
 def listing_synonyms_gen_new(plant_data, render_table=True):
     html_article = ''
     # print(json.dumps(plant_data['plants_synonyms'], indent=4))
     # quit()
     # section_data = plant_data['plants_synonyms']['plants_synonyms']
+    basionyms_data = plant_data['plants__basionyms']['plants__basionyms']
     section_data = plant_data['plants__synonyms']['plants__synonyms']
     if section_data != []:
         # print(json.dumps(section_data, indent=4))
@@ -3496,21 +3529,82 @@ def listing_synonyms_gen_new(plant_data, render_table=True):
         ### PROSE
         # paragraphs_text = plant_data['plants__synonyms']['llm_intro']
         ### LIST
+        plants__synonyms__all = section_data['plants__synonyms__all']
+        plants__synonyms__homotypic = section_data['plants__synonyms__homotypic']
+        plants__synonyms__unspecified = section_data['plants__synonyms__unspecified']
+        ###
+        html_basionyms = ''
+        basionyms_lst = []
+        for item in basionyms_data:
+            basionym_item = {
+                'basionym': item['basionym'],
+                'author_primary': item['author_primary'],
+                'publication_year_first': item['publication_year_first'],
+            }
+            basionyms_lst.append(basionym_item)
+        if basionyms_lst != []:
+            html_basionyms += f'<h4 style="margin-bottom: 1rem;">Basionyms</h4>\n'
+            html_basionyms += f'<ul class="list-indent">\n'
+            for basionym_item in basionyms_lst:
+                html_basionyms += f'''
+                    <li>
+                        <i>{basionym_item['basionym']}</i> 
+                        {basionym_item['author_primary']}
+                        {basionym_item['publication_year_first']}
+                    </li>\n
+                '''
+            html_basionyms += f'</ul>\n'
+        ###
         html_synonyms = ''
-        synonyms_lst = []
-        for item in section_data:
+        synonyms_homotypic_lst = []
+        synonyms_unspecified_lst = []
+        for item in plants__synonyms__homotypic:
+            # print(item)
             synonym_item = {
                 'synonym_scientific_reference': item['synonym_scientific_reference'],
+                'author_parenthetical': item['author_parenthetical'],
                 'author_primary': item['author_primary'],
+                'publication_year_first': item['publication_year_first'],
             }
-            synonyms_lst.append(synonym_item)
-        if synonyms_lst != []:
+            synonyms_homotypic_lst.append(synonym_item)
+        for item in plants__synonyms__unspecified:
+            synonym_item = {
+                'synonym_scientific_reference': item['synonym_scientific_reference'],
+                'author_parenthetical': item['author_parenthetical'],
+                'author_primary': item['author_primary'],
+                'publication_year_first': item['publication_year_first'],
+            }
+            synonyms_unspecified_lst.append(synonym_item)
+        ###
+        if synonyms_homotypic_lst != []:
+            html_synonyms += f'<h4 style="margin-bottom: 1rem;">Homotypic synonyms</h4>\n'
             html_synonyms += f'<ul class="list-indent">\n'
-            for synonym_item in synonyms_lst:
+            for synonym_item in synonyms_homotypic_lst:
+                html_author_parenthetical = ''
+                if synonym_item['author_parenthetical'].strip() != '':
+                    html_author_parenthetical = f'''({synonym_item['author_parenthetical']})'''
                 html_synonyms += f'''
                     <li>
                         <i>{synonym_item['synonym_scientific_reference']}</i> 
+                        {html_author_parenthetical}
                         {synonym_item['author_primary']}
+                        {synonym_item['publication_year_first']}
+                    </li>\n
+                '''
+            html_synonyms += f'</ul>\n'
+        if synonyms_unspecified_lst != []:
+            html_synonyms += f'<h4 style="margin-bottom: 1rem;">Unspecified synonyms</h4>\n'
+            html_synonyms += f'<ul class="list-indent">\n'
+            for synonym_item in synonyms_unspecified_lst:
+                html_author_parenthetical = ''
+                if synonym_item['author_parenthetical'].strip() != '':
+                    html_author_parenthetical = f'''({synonym_item['author_parenthetical']})'''
+                html_synonyms += f'''
+                    <li>
+                        <i>{synonym_item['synonym_scientific_reference']}</i> 
+                        {html_author_parenthetical}
+                        {synonym_item['author_primary']}
+                        {synonym_item['publication_year_first']}
                     </li>\n
                 '''
             html_synonyms += f'</ul>\n'
@@ -3528,17 +3622,20 @@ def listing_synonyms_gen_new(plant_data, render_table=True):
             <section>
                 <h3>Synonyms</h3>
                 <p style="margin-bottom: 1rem;">
-                    The following scientific names are synonyms of this plant.
+                    The synonyms (and basionyms) of this plant are listed below.
                 </p>
+                {html_basionyms}
                 {html_synonyms}
-                <p style="margin-bottom: 1rem;">
-                    The currently accepted name is <i>{plant_name_scientific_reference}</i>.
-                </p>
                 {html_sources}
             </section>
         '''
         return html_article
     return ''
+    '''
+                <p style="margin-bottom: 1rem;">
+                    The currently accepted name is <i>{plant_name_scientific_reference}</i>.
+                </p>
+    '''
 
 def listing_taxonomies_gen_new(plant_data, render_table=True):
     html_article = ''
@@ -4097,6 +4194,7 @@ def plant_listing_page_gen(master_item):
             {quick_facts_html}
         </aside>
     '''
+    listing_sidebar_right_html = f''
  
     meta_title = f'{plant_name_scientific_reference}'
     meta_description = f''

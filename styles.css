@@ -1,11 +1,45 @@
+@font-face {
+font-family: charter;
+font-style: normal;
+font-weight: normal;
+font-stretch: normal;
+src: url('charter_regular.woff2') format('woff2');
+}
+
+@font-face {
+font-family: charter;
+font-style: italic;
+font-weight: normal;
+font-stretch: normal;
+src: url('charter_italic.woff2') format('woff2');
+}
+
+@font-face {
+font-family: charter;
+font-style: normal;
+font-weight: bold;
+font-stretch: normal;
+src: url('charter_bold.woff2') format('woff2');
+}
+
+@font-face {
+font-family: charter;
+font-style: italic;
+font-weight: bold;
+font-stretch: normal;
+src: url('charter_bold_italic.woff2') format('woff2');
+}
+
 :root {
-    --font: "Helvetica", sans-serif;
+    --font: 'carter';
+    /* --font: "Helvetica", sans-serif; */
     --font_normal: 400;
     --font_bold: 700;
     --font_xl: 3rem;
     --font_lg: 2rem;
     --font_md: 1.5rem;
     --font_sm: 1rem;
+    --font_sm: 1.125rem;
     --font_xs: 0.875rem;
     --font_xxs: 0.75rem;
     
@@ -34,6 +68,7 @@ body {
 
     color: var(--text);
     background: var(--bg);
+    font-size: var(--font_sm);
 }
 
 .container-xxl {
@@ -83,8 +118,7 @@ h3 {
 }
 
 p {
-    font-size: var(--font_sm);
-    line-height: 1.5;
+    line-height: 1.45;
 }
 
 img {

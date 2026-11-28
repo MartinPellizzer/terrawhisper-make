@@ -276,13 +276,40 @@ def assertions__plants__synonyms__table_create():
             plant_id TEXT,
             source_name TEXT,
             synonym_scientific_reference TEXT,
-            author_primary TEXT
+            author_parenthetical TEXT,
+            author_primary TEXT,
+            publication_year_first TEXT,
+            homotypic_synonym TEXT
         );
     ''')
     conn.execute("PRAGMA journal_mode = WAL;")
     conn.execute("PRAGMA synchronous = OFF;")
     conn.execute("PRAGMA temp_store = MEMORY;")
     cur.execute(f"CREATE INDEX IF NOT EXISTS idx_{table_name}_plant_synonym_id ON {table_name}(plant_synonym_id)")
+    cur.execute(f"CREATE INDEX IF NOT EXISTS idx_{table_name}_plant_id ON {table_name}(plant_id)")
+    conn.commit()
+    conn.close()
+
+def assertions__plants__basionyms__table_create():
+    table_name = f'plants__basionyms'
+    conn = sqlite3.connect(db_filepath)
+    cur = conn.cursor()
+    cur.execute(f"DROP TABLE IF EXISTS {table_name}")
+    cur.execute(f'''
+        CREATE TABLE IF NOT EXISTS {table_name} (
+            plant_basionym_id INTEGER PRIMARY KEY,
+            plant_id TEXT,
+            source_name TEXT,
+            basionym TEXT,
+            author_parenthetical TEXT,
+            author_primary TEXT,
+            publication_year_first TEXT
+        );
+    ''')
+    conn.execute("PRAGMA journal_mode = WAL;")
+    conn.execute("PRAGMA synchronous = OFF;")
+    conn.execute("PRAGMA temp_store = MEMORY;")
+    cur.execute(f"CREATE INDEX IF NOT EXISTS idx_{table_name}_plant_basionym_id ON {table_name}(plant_basionym_id)")
     cur.execute(f"CREATE INDEX IF NOT EXISTS idx_{table_name}_plant_id ON {table_name}(plant_id)")
     conn.commit()
     conn.close()
@@ -670,7 +697,10 @@ def assertions__plants__synonyms__table_add(source_foldername):
                 'plant_id': plant_id,
                 'source_name': plants__synonyms__item['source_name'],
                 'synonym_scientific_reference': plants__synonyms__item['synonym_scientific_reference'],
+                'author_parenthetical': plants__synonyms__item['author_parenthetical'],
                 'author_primary': plants__synonyms__item['author_primary'],
+                'publication_year_first': plants__synonyms__item['publication_year_first'],
+                'homotypic_synonym': plants__synonyms__item['homotypic_synonym'],
             }
         )
     conn = sqlite3.connect(db_filepath)
@@ -680,9 +710,12 @@ def assertions__plants__synonyms__table_add(source_foldername):
                 plant_id,
                 source_name,
                 synonym_scientific_reference,
-                author_primary
+                author_parenthetical,
+                author_primary,
+                publication_year_first,
+                homotypic_synonym
             )
-            VALUES (?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
     '''
     cur.executemany(
         sql_query,
@@ -691,7 +724,89 @@ def assertions__plants__synonyms__table_add(source_foldername):
                 item.get('plant_id'),
                 item.get('source_name'),
                 item.get('synonym_scientific_reference'),
+                item.get('author_parenthetical'),
                 item.get('author_primary'),
+                item.get('publication_year_first'),
+                item.get('homotypic_synonym'),
+            )
+            for item in data_table
+        ]
+    )
+    conn.commit()
+    ### PEEK
+    conn.row_factory = sqlite3.Row
+    cursor = conn.execute(f'''
+        SELECT * 
+        FROM {table_name}
+    ''')
+    rows = cursor.fetchall()
+    items = [dict(row) for row in rows]
+    for item in items[:10]:
+        print(json.dumps(item, indent=4))
+    print(len(items))
+    ###
+    print(f'PLANT ITEM FAILED: {plant_item_failed}')
+    conn.close()
+
+def assertions__plants__basionyms__table_add(source_foldername):
+    table_name = 'plants__basionyms'
+    input_folderpath = f'{HUB_FOLDERPATH}/resolve/{source_foldername}/{table_name}/json'
+    input_filenames = os.listdir(input_folderpath)
+    ###
+    all_data = []
+    for i, input_filename in enumerate(input_filenames[:]):
+        print(f'ASSERT HERBS {table_name} add - {i}/{len(input_filenames)}')
+        input_filepath = f'{input_folderpath}/{input_filename}'
+        input_data = io.json_read(input_filepath)
+        for input_item in input_data:
+            all_data.append(input_item)
+            # print(json.dumps(input_item, indent=4))
+            # quit()
+    # print(json.dumps(all_data[0], indent=4))
+    # quit()
+    ###
+    plant_item_failed = 0
+    data_table = [] 
+    for i, plants__basionyms__item in enumerate(all_data):
+        print(f'ASSERT HERBS {table_name} add - {i}/{len(all_data)}')
+        plant_item = sql.sql_plant_id_by_name_normalize(plants__basionyms__item['plant_name_scientific_reference_normalize'])
+        try: plant_id = plant_item['plant_id']
+        except:
+            plant_item_failed += 1
+            continue
+        data_table.append(
+            {
+                'plant_id': plant_id,
+                'source_name': plants__basionyms__item['source_name'],
+                'basionym': plants__basionyms__item['basionym'],
+                'author_parenthetical': plants__basionyms__item['author_parenthetical'],
+                'author_primary': plants__basionyms__item['author_primary'],
+                'publication_year_first': plants__basionyms__item['publication_year_first'],
+            }
+        )
+    conn = sqlite3.connect(db_filepath)
+    cur = conn.cursor()
+    sql_query = f'''
+            INSERT OR IGNORE INTO {table_name} (
+                plant_id,
+                source_name,
+                basionym,
+                author_parenthetical,
+                author_primary,
+                publication_year_first
+            )
+            VALUES (?, ?, ?, ?, ?, ?)
+    '''
+    cur.executemany(
+        sql_query,
+        [
+            (
+                item.get('plant_id'),
+                item.get('source_name'),
+                item.get('basionym'),
+                item.get('author_parethetical'),
+                item.get('author_primary'),
+                item.get('publication_year_first'),
             )
             for item in data_table
         ]
@@ -1560,6 +1675,9 @@ def run():
 
     assertions__plants__synonyms__table_create()
     assertions__plants__synonyms__table_add(source_foldername='wcvp')
+
+    assertions__plants__basionyms__table_create()
+    assertions__plants__basionyms__table_add(source_foldername='wcvp')
 
     # assertions__plants__taxonomies__table_join()
     # TODO: do join function, verify plants_taxonomy matches correctly

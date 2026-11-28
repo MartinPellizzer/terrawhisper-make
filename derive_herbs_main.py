@@ -1595,16 +1595,71 @@ def derive__plants__synonyms():
         # print(json.dumps(sql_items, indent=4))
         # quit()
         ###
-        output_items = sql_items
+        output_items_all = []
+        output_items_homotypic = []
+        output_items_unspecified = []
+        for sql_item in sql_items:
+            if sql_item['homotypic_synonym'].strip() == 'T':
+                output_items_homotypic.append(sql_item)
+                output_items_all.append(sql_item)
+            else:
+                output_items_unspecified.append(sql_item)
+                output_items_all.append(sql_item)
+        ###
         output_item = {
-            'plants__synonyms': output_items,
+            'plants__synonyms': {
+                'plants__synonyms__all': output_items_all,
+                'plants__synonyms__homotypic': output_items_homotypic,
+                'plants__synonyms__unspecified': output_items_unspecified,
+            }
+        }
+        ###
+        output_filepath = f'''{HUB_FOLDERPATH}/derive/{table_name}/{plant_name_scientific_reference}.json'''
+        io.folder_create_from_filepath(output_filepath)
+        io.json_write(output_filepath, output_item)
+        # print(json.dumps(output_item, indent=4))
+        # quit()
+    ###
+    filenames = os.listdir(output_folderpath)
+    for filename in filenames:
+        filepath = f'{output_folderpath}/{filename}'
+        data = io.json_read(filepath)
+        print(json.dumps(data, indent=4))
+        break
+
+def derive__plants__basionyms():
+    table_name = 'plants__basionyms'
+    output_folderpath = f'''{HUB_FOLDERPATH}/derive/{table_name}'''
+    try: shutil.rmtree(output_folderpath)
+    except: pass
+    io.folders_recursive_gen(output_folderpath)
+    ###
+    plants_items = sql.sql_plants()
+    last = []
+    for i, plant_item in enumerate(plants_items[:]):
+        print(f'DERIVE HERBS {table_name} {i}/{len(plants_items)}')
+        # print(f'{plant_item}')
+        plant_name_scientific_reference = plant_item['plant_name_scientific_reference']
+        sql_items = sql.sql__plants__basionyms__by_plant_name_scientific_reference(plant_name_scientific_reference)
+        # print(json.dumps(sql_items, indent=4))
+        # quit()
+        ###
+        output_item = {
+            'plants__basionyms': sql_items,
         }
         output_filepath = f'''{HUB_FOLDERPATH}/derive/{table_name}/{plant_name_scientific_reference}.json'''
         io.folder_create_from_filepath(output_filepath)
         io.json_write(output_filepath, output_item)
-        if output_items != []:
-            last = output_items
+        if output_item != {}:
+            last = output_item
         ###
+        # for item in output_items:
+            # if (
+                # item['homotypic_synonym'].strip() != '' and 
+                # item['homotypic_synonym'].strip() != 'T'
+            # ):
+        # print(json.dumps(output_item, indent=4))
+        # quit()
     # print(json.dumps(last, indent=4))
     filenames = os.listdir(output_folderpath)
     for filename in filenames:
@@ -1614,12 +1669,12 @@ def derive__plants__synonyms():
         break
     # quit()
 
-
 def run():
     # derive__plants__taxonomies()
     # derive__plants__authors()
     # derive__plants__geographies()
     derive__plants__synonyms()
+    derive__plants__basionyms()
 
     # plants_activities_derive()
 
